@@ -1,2 +1,119 @@
-# ELF
-English Learning 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+     <!-- content attribute is for search engines -->    
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+     <meta http-equiv="Pragma" content="no-cache" />
+     <meta http-equiv="Expires" content="0" />
+    
+
+    <title>Home</title>
+    <!-- link rel="stylesheet" href="style.css" -->
+    <!-- <script src="script.js"></script -->     
+<style>
+body {background-color: #778899; font-family: Arial, Helvetica, sans-serif; max-width: 100vw; }
+menu {
+  background-color: #bcc6cc; margin-top: 1em; padding-top: 1ex;
+}
+
+li {
+  display: inline-block; border-style:  solid solid none solid; border-width:thin; border-color: darkblue; padding: 1ex; border-radius: 10px 10px 0px 0px; background-color: #fff8dc ; margin: 0px 2px 0px 0px;
+  
+}
+
+.menuTabs {text-decoration:none; 
+}
+
+section { display: block; background-color:#d4e6f1; margin: 4em 3em; padding: 1em; border-radius: 3px; }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+}
+  
+h1 {text-align: center; background-color: #d4e6f1; padding: 10px 0px 10px 0px; max-width:100vw;
+}
+  
+</style>
+</head>
+  
+<body>
+
+<header>
+
+ <img class="center" src="hallB.jpg" alt="headerPic" width="1024" height="167"> 
+<h1> Dr. Ray's EFL/ESL Weblog</h1>
+<menu>
+<li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/">Home</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/why-dr-ray-eflesl.html">About Dr. Ray's EFL/ESL</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/simply-speaking-why-and-how.html">Simply Speaking: Why and How?</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/simply-speaking-i.html">Simply Speaking I</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/simply-speaking-ii.html">Simply Speaking II</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/simply-speaking-iii.html">Simply Speaking III</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/simply-speaking-iv.html">Simply Speaking IV</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/blog-page.html">Pronunciation</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/essential-handouts.html">Essential Handouts</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/music-videos-youtube-playlist.html">Music Videos</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/blog-page_11.html">Media Class</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/business-mini-course.html">Biz </a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/cultural-communication.html">Culture</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_52.html">Presentations</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_14.html">Comm. Skills</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_4.html">Airport</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_9.html">Tourism</a>
+</li><li>
+<a class="menuTabs" href="http://drrayefl-esl.blogspot.com/p/other.html">Other</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_54.html">How Much Food</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/news.html">News</a>
+</li><li>
+<a class="menuTabs" href="https://drrayefl-esl.blogspot.com/p/blog-page_15.html">Sr. Performance</a>
+</li><li>
+<a class="menuTabs" href="http://red3z.site/crimeAndCourts/crimeMenuB.html">Crime and Courts</a>
+</li>
+
+</menu>
+</header>
+
+<main>
+<section>
+<p>
+<a href="http://drray22qz.42web.io/quizFlashCard/V2flashcardMaker.html
+">FlashCardMaker</a>
+<br>
+<a href="http://drray22qz.42web.io/quizFlashCard/V2quizMaker.html
+">quizMaker</a>
+</p>
+</section>
+</main>
+
+ <!-- END -->
+          
+</body>
+</html>  
+  
+
