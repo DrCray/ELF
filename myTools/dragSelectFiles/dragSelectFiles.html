@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" /> 
+<title>dragSelectFiles</title>
+
+
+<style>
+body{
+    font-family: sans-serif;
+    background-color:  #d4e6f1  ;
+    margin: 0 3em 0 3em;
+    padding: 1ex 2ex 1ex 2ex;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0; } 
+
+.fake-button {
+    background-color: #E9E9ED; 
+    border-style:solid; border-width:thin; border-radius: 3px;
+     padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+}
+
+.fake-button:hover {
+    background-color: lightblue;
+     border-radius: 3px; 
+
+}
+
+#zztitle {
+    background-color:#fff8dc;
+    border-style:solid;  border-width: medium;
+    border-color:#8b0000; border-radius: 7px;
+    padding:2ex; margin-bottom: 3ex;
+}
+
+
+#zzpageHeader {  
+    margin: auto; box-shadow: 0 1ex 1ex 0;
+    border-radius: 7px;
+}
+
+    
+.hlBtn {border-radius:5px;}
+
+.hlBtn:hover {
+    background-color:lightblue;  border-radius: 5px;
+}    
+
+#scores {
+     display:inline-block; text-align: right;
+} 
+   
+tr {
+    background:#FAEBD7;
+}
+.studts {
+    border: 1px solid; 
+    padding: 0 1ex 0 1ex;   */
+}    
+
+th{
+    background:lightblue; border: 1px solid; 
+    padding: 0 1ex 0 1ex;
+}
+    
+/* =====  dragZone with highlight dragenter/leave */
+#dropZone {
+  background-color: antiquewhite ;
+  border: 4px dashed #ccc;
+  border-radius: 20px;
+  border-color: darkgoldenrod;
+  font-family: sans-serif;
+  margin: 2ex 0 2ex 0;
+  padding: 20px;
+}
+#dropZone.highlight {
+  border-color: darkgreen;
+}
+
+.my-form {
+  margin-bottom: 10px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px;
+  background-color: lightblue;
+    box-shadow: 1px 1px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+.button:hover {
+    background-color: #fff8dc;
+    border-radius: 10px; box-shadow: 3px 3px gray;
+}
+input#fileElem {
+  display: none;
+}
+
+/* =====  //end drag area highlight */
+
+#doneDone {
+    display:block; background: #E3CEE9;  padding:1ex;
+        border-radius:7px;
+}
+</style>
+
+
+</head>
+<body>
+    
+<header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+
+    <!--zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz -->
+    <!--zzzzzzzzzzzzzzzzzzzz Type title here zzzzzzzzzzz -->
+
+    Dr Ray  <br>
+    Summer 2022, <br>
+    Professional English <br>
+   
+    <strong>
+        Course 101    
+    </strong>
+
+
+    <!-- zzzzzzzzzzzzzzzzzzz End title zzzzzzzzzzzzzzzzz -->
+    <!-- zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz -->
+
+    <!--   ------------ Don’t type heading past this line ------------  -->
+
+
+    </section>
+
+</header>
+
+    
+<!-- testing drop area with highlight dragleave -- ========= -->
+ <div id="dropZone">
+  <form class="my-form">
+     
+    <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)">
+    <label class="button" for="fileElem"><strong>Select files</strong> <br>(opens your file manager)</label>
+          <p><span style="font-size:x-large; font-weight:bold;">Drag and Drop files </span><br>(to anywhere in this box)</p>
+
+  </form>
+</div>   
+ 
+
+<div id="picGallery">  
+    </div>
+    
+ 
+    
+ 
+<section id="buttons" >
+
+
+    <div id="doneDone">
+        <button id="done" onclick="saveDownload()"> Save/Download </button>
+    </div>
+    
+</section>
+
+     
+    
+<script>
+    
+// show hide function ====================   
+    function toglDisplay(zElmt) {let zshow = document.getElementById(zElmt);
+         if (zshow.style.display === "block")
+             {zshow.style.display = "none";}
+         else {zshow.style.display = "block";}}
+//end show hide function =================     
+    
+    
+let dropZone = document.getElementById('dropZone');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, preventDefaults, false)
+})
+
+function preventDefaults (e) {
+  e.preventDefault()
+  e.stopPropagation()
+};
+    
+['dragenter', 'dragover'].forEach(eventName => {
+  dropZone.addEventListener(eventName, highlight, false)
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, unhighlight, false)
+})
+
+function highlight(e) {
+  dropZone.classList.add('highlight')
+}
+
+function unhighlight(e) {
+  dropZone.classList.remove('highlight')
+}
+dropZone.addEventListener('drop', handleDrop, false)
+
+function handleDrop(e) {
+  let dt = e.dataTransfer
+  let files = dt.files
+//console.log(files);
+    
+    handleFiles(files)  
+}
+    
+function handleFiles(files) {
+//let mainList = [];
+  for (const file of files) {
+    
+      /*my manipulation*/      
+      let zfilenameX = file.name;
+      let zfilename = zfilenameX.replace(".pdf","");
+      const fileNameArr = zfilename.split("_");
+      ////console.log(fileNameArr);
+      let scoreDecode= Number((fileNameArr[3]).substring(1, 4)) - 357;
+      //console.log(scoreDecode);
+      fileNameArr.pop(); //remove score code from end
+      //console.log(fileNameArr);
+      fileNameArr.push(scoreDecode); //put score on end
+      //console.log(fileNameArr);
+      /* /End my manipulation*/    
+      const tr = document.createElement('tr');
+        tr.setAttribute("data-zid", fileNameArr[0]);
+  
+  } // /end for .. file of files
+    
+
+    //calcAvg();
+ 
+} //end handle files    
+ 
+</script>    
+<!-- //End drop area with highlight dragenter/leave -- ========= -->
+
+    
+
+<script>
+    
+    
+function saveDownload(){
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = "testEditMode.html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+           alert("Check the browser's \n default download folder");
+} // /end fn saveDownload
+
+</script>
+ 
+
+
+
+<div style='margin:5ex;'></div>
+</body>
+</html>
