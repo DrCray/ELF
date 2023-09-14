@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+ 		
+		<title>aWebPage</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:1ex; margin: 0 0 1ex 1em;
+            border-radius: 10px; width: fit-content;
+         }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+         
+
+         .answer {
+            display:inline-block; margin:0 0 0 3px; min-width: 1.2em;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue; text-align: center;
+            padding:5px; border-radius: 5px; width: fit-content;
+         }
+         
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+        
+        .instrcs{
+            border: thin solid darkgreen; border-radius: 5px; 
+            margin: 1.3em 0 1ex 1em; background-color: #F5ECF7;
+            padding: 1ex; width: fit-content; color: #080865;
+        }
+        
+        #printOptions {
+            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
+            border-radius: 5px;
+            box-shadow: 3px 3px darkgreen;
+            margin: 1ex 0 1ex 0;
+            padding:1ex;
+            font-weight: bold; font-size:85%;
+        }          
+    </style>  
+    
+  </head>
+  
+  <body>
+      
+      <div id="ii">1</div>
+      
+      <div style="border-left: thin solid; border-right: thin solid; border-color: lightgray;">
+      <div style="border-left: medium solid; border-right: medium solid; border-color: darkgray;">      
+      <div style="border-left: medium solid; border-right: medium solid; border-color: gray;">          
+      <div style="border-left: thin solid; border-right: thin solid; border-color: black;">
+        <img
+            class="center"
+            src="topImage.jpg"
+            alt=""
+            width="100%"
+        /> 
+      </div>
+      </div>
+      </div>
+      </div>
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">            
+        Dr Ray  <br>
+        Summer 2022, <br>
+        Professional English <br> 
+        Course 101, Student  Exercise, Chapter 3 
+        <br>
+        <br>
+        <strong>
+        Exercise Quiz, Chapter 3
+        </strong>
+        <br>
+        <strong>
+        Article: Raining Money
+        </strong> 
+    </section>   
+</header>
+      
+<!-- ====== Name ID Toggle and input ================= -->
+<script>
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    document.getElementById("toggle").checked=1;
+  }
+};
+</script>
+
+<input  id="toggle" type="checkbox" >
+<label id="toggleLbl" for="toggle">Hide/Show Name and ID</label>
+<br>
+<input id="name" type="text" value="name">
+<input id="id" type="text" value="id#">
+
+<script>
+  const toggle = document.getElementById('toggle');
+  const nameInput = document.getElementById('name');
+  const idInput = document.getElementById('id');
+  
+  toggle.addEventListener('change', event => {
+    const checked = event.target.checked;
+    if (checked){
+    nameInput.style.display="inline-block";
+    idInput.style.display="inline-block";}
+    else {
+    nameInput.style.display="none";
+    idInput.style.display="none";}
+  });
+</script>      
+      
+
+<div id="canvas" style="display:none;"></div>
+      
+      
+<section id="inputList" class="card" id="wordGame">
+     <div class="quStyle"><label for="wordList">Type/paste the correct sentence. 
+        
+         <br>
+         <br>
+         </label>
+         <textarea id="zList"  style="width: 40%; min-width:30ex" rows = "5">elephant
+         </textarea> <br>             
+             (drag corner to make input box bigger)
+     </div>     
+    
+        <label id="noShowAnsPeekLbl" for="noShowAnsPeek" style="display:block">
+            <input id="noShowAnsPeek" type="checkbox">no answer-peeks
+        </label>
+    
+        <button class="hlBtn" onclick="getzList()">Input List</button>
+</section>  
+      
+      
+<script>
+     let ii = document.getElementById('ii').innerHTML;
+    
+     function getzList(){
+         
+         let canvas = document.getElementById("canvas");
+         canvas.style.display="block";
+         
+         let instrcs = document.createElement("div");
+         instrucsID= "instrcs" + ii;
+         instrcs.id=instrucsID;
+         instrcs.innerHTML = "Type your instructions or other information here";
+         instrcs.contentEditable = "true";
+         instrcs.className="instrcs";
+         canvas.appendChild(instrcs);
+         canvas.insertAdjacentHTML("beforeend","\n");
+         canvas.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.previousElementSibling.remove(); this.remove();'> del info/instructions </button>");
+         canvas.insertAdjacentHTML("beforeend","\n");
+         canvas.insertAdjacentHTML("beforeend","\n");
+
+         
+         let allSorts = document.createElement("div");
+         allSortsID= "allSorts"+ii;
+         allSorts.id=allSortsID;
+         allSorts.className = "quStyle";
+         canvas.appendChild(allSorts);
+         canvas.insertAdjacentHTML("beforeend","\n");
+
+         
+         
+         
+         let listArrB = [];
+         let i = 0;
+         
+         let listCheck =   document.getElementById("zList").value.trim(); //console.log(listCheck);
+         let listDeSpaces = listCheck.replace(/\s+/g, ' ');
+         let listArrz = listDeSpaces.split(''); //console.log(listArrz);
+         
+         for (const listArr of listArrz){
+             listArrB[i] = listArr.trim(); i++;
+         } //end for listArrz
+                        //console.log("original" + listArrB); 
+         
+         let listArrBcopy = [...listArrB];
+                            console.log("copy" + listArrBcopy);   
+         
+         while (JSON.stringify(listArrB)==JSON.stringify(listArrBcopy)){
+             listArrBcopy.sort(function () {
+                    return Math.random() - 0.5;
+             });
+                console.log("shuffled" + listArrBcopy);      
+         } //endWhile
+
+        let thisSort = document.createElement("div");
+        let thisSortID = "thisSort" + ii; // console.log("ii zz " + ii);
+        thisSort.id = thisSortID;
+        allSorts.appendChild(thisSort);
+        // thisSort.id = thisSortID;
+        for (const addSentc of listArrBcopy){
+            let sentc = document.createElement("span");
+            let sentcID = "sentc" + ii; ii++;
+            sentc.id = sentcID;
+            sentc.innerHTML=addSentc;
+            sentc.className ="answer";
+            zmoveFn = "zmove('" + thisSortID + "','" + sentcID + "')";
+            sentc.setAttribute("onclick", zmoveFn);
+            thisSort.appendChild(sentc);
+         thisSort.insertAdjacentHTML("beforeend","\n");
+
+        } // end for addSentc
+         
+
+    if(!document.getElementById("noShowAnsPeek").checked){
+        
+         let ansBox = document.createElement("details");
+         let ansBoxID="ansbox"+ii;
+         ansBox.id = ansBoxID;
+         ansBox.style.backgroundColor="#C5F8E0";
+         ansBox.style.color="#0E237E";
+         ansBox.style.padding="1ex";
+         ansBox.style.margin="1.3em 0 0 0";
+         ansBox.style.borderRadius="4px";
+         ansBox.insertAdjacentHTML("beforeend", listDeSpaces);        
+         allSorts.appendChild(ansBox);
+         allSorts.insertAdjacentHTML("beforeend","\n");
+
+         
+         let ansBoxSmry = document.createElement("summary");
+         ansBoxSmryID= "ansBoxSmry" + ii;
+         ansBoxSmry.innerHTML = "Answer";
+         ansBox.appendChild(ansBoxSmry);
+    }//end if show/hide ans
+          
+         allSorts.insertAdjacentHTML("beforeend","\n");
+         allSorts.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.parentElement.remove()'> del this scrambled word </button>");
+         allSorts.insertAdjacentHTML("beforeend","\n");
+
+         
+         
+     }   // end getzList ********* 
+    
+
+    
+    
+    
+    function zmove(zparent,zchild){ 
+        let zthis = document.getElementById(zchild);
+        //let zthat = document.getElementById(zparent);
+          zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
+        //zchild.insertAdjacentHTML("afterend"", "<br>)
+    }
+</script>
+      
+      
+      <script>
+        function checkThenPrint(){
+          let Name =  document.getElementById("name").value.trim();
+          let ID = document.getElementById("id").value.trim();
+                  
+          if (
+              document.getElementById("toggle").checked && 
+              (Name==="name" || ID==="id\#" || Name==="" || ID==="")
+              ){
+              alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
+              return;
+              }
+           window.print();
+       } // end checkThenPrint
+     </script>      
+      
+     <br> 
+     <div id="printOptions">
+        Print (save as PDF) <br>
+         <button id="printFullView" class="hlBtn" onclick="checkThenPrint()"> Print </button>
+        <br>
+         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
+    </div>  
+             
+        <button id="editOff" onclick="toggleEditOff()">Preview</button>
+        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button> 
+      
+      <!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+      <script>
+        function toggleEditOff(){
+            // remove all editables ***********************************
+            let contEdbls = document.querySelectorAll("[contenteditable=true]");
+            let hlBtns = document.querySelectorAll(".hlBtn");
+
+            for (const contEdbl of contEdbls ){
+                contEdbl.contentEditable = "false";
+            }
+
+            for (const hlBtn of hlBtns ){                                        
+                hlBtn.style.display = "none";
+            }
+
+
+            document.getElementById("inputList").style.display="none";
+            document.getElementById("saveDom").style.display="none";
+
+            let closeDetails = document.getElementsByTagName("details")
+                for (closeDetail of closeDetails){
+                    closeDetail.open=false; 
+                }    
+
+            // end remove all editables ************************      
+        document.getElementById("editOff").style.display="none";
+        document.getElementById("editOn").style.display="initial";     
+            
+            document.getElementById("printOptions").style.display="block";
+            document.getElementById("printFullView").style.display="block";  
+            
+            document.getElementById("toggle").style.display  = "none";          
+            document.getElementById("toggleLbl").style.display  = "none";  
+          
+        }
+          
+        function toggleEditOn(){
+
+            let contEdbls = document.querySelectorAll("[contenteditable=false]");
+            let hlBtns = document.querySelectorAll(".hlBtn");
+            // restore editables ***************************
+            for (const contEdbl of contEdbls ){
+                contEdbl.contentEditable = "true";
+            }
+
+            for (const hlBtn of hlBtns ){                                        
+                hlBtn.style.display = "block";
+            }
+
+
+            document.getElementById("inputList").style.display="block";
+            document.getElementById("saveDom").style.display="block";
+            //end restore editabels **********************            
+            document.getElementById("editOff").style.display="initial";
+            document.getElementById("editOn").style.display="none";
+            
+            document.getElementById("printOptions").style.display="none";
+
+            document.getElementById("toggle").style.display  = "initial";          
+            document.getElementById("toggleLbl").style.display  = "initial";                
+            
+        }
+      </script>      
+      
+      <script>
+function saveDom(){
+    
+     document.getElementById('ii').innerHTML=ii;
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title = fileName;
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+    
+        toggleEditOff();
+        document.getElementById("editOff").style.display="none";
+        document.getElementById("editOn").style.display="none";
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        document.title = oldTitle;
+    
+    
+        alert("Check the browser's \n default download folder");  
+    
+    toggleEditOn();
+    
+}
+          
+          
+          
+          
+</script>
+      <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
+      
+      
+      
+      
+      
+      
+<p style="margin:35px"> ... end. </p>
+  </body>
+</html>  
+  
+
