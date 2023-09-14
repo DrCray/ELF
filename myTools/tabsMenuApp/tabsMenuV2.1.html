@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning" />
+    <meta name="generator" content="Bluefish 2.2.12" />
+    <!-- content attribute is for search engines -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Tabs Menu</title>
+    <!-- link rel="stylesheet" href="style.css" -->
+    <!-- <script src="script.js"></script -->
+
+    <style>
+      body {
+        background-color: #778899; font-family: Arial, Helvetica, sans-serif; max-width: 100vw;       
+      }
+      
+      nav {
+        background-color: #bcc6cc; margin-top: 5em 1em 0px 2em; padding-top: 1ex;
+      }
+
+      .navLi {
+        display: inline-block; border-style:  solid solid none solid; border-width:thin; border-color: darkblue; padding: 1.5ex; border-radius: 10px 10px 0px 0px; background-color: #fff8dc ; margin: 0px 0px 0px -.5ex;
+
+      }
+      
+
+      .navTabs {text-decoration:none; display:inline-block; 
+                /*margin: 0px 0px 0px 0px;*/
+      }
+      #hr1st {
+       height:3px; background-color: #fff8dc ; border-style:solid; border-color:tan; border-width:thin; 
+      }
+
+      section { display: block; background-color:#d4e6f1; margin: 4em 3em; padding: 1em; border-radius: 3px; }
+
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width:100vw;      }
+
+      .topHeading {text-align: center; background-color: #d4e6f1; padding: 10px 0px 10px 0px; max-width:100vw;
+      }
+        
+        #navBar {
+          font-family: Consolas,"courier new";
+          color: crimson; border: thin solid black; border-radius: 3px; box-shadow:inset 2px 3px gray;
+          background-color: #f1f1f1;
+          padding: 1em; margin:1em 1em 4em 1em;
+          font-size: 105%;
+        }
+        
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: .5ex 1ex .5ex 1ex; font-size: .8em; text-decoration: none;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        .hlBtn {border-radius:5px; margin:1ex 0 0 1ex;}
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        } 
+        
+        .tempHref {
+            display:block;
+        }
+    </style>
+  </head>
+  <body>
+      
+      <div id="navLiIDcount" style="display:none">1</div>
+      <div id="moveTabs" style="display:none;">on</div>
+      
+        <img
+            class="center"
+            src="topImage.jpg"
+            alt=""
+            width="100%"
+        />
+    <header>
+        <div class = "topHeading" contenteditable="true">              If you want an image at the top of this page, just name your image "topImage.jpg". Put the image in the same folder as the saved file. <br>Highlight and delete these instructions.<h1>Put a heading here</h1> <h2>and other text here</h2> And more here</div>
+        
+      <!--button id="goBack" style="font-size:1em; padding:1ex; margin:1ex; background-color:#4FD3FB" onclick="history.back()">Go Back</button-->
+        
+
+
+      <nav> 
+          
+          <label id = renameLinkLbl for="renameLink" style="margin:0  1ex 0 1ex;">rename the tab
+          <input id="renameLink" style="margin:0  1ex 0 1ex;" type="text" size="32" value="new tab name">
+          </label>          
+          
+          <div style="inline-block;">
+              <label id = updateLinkLbl for="zupdateLink" style="margin:0  1ex 0 1ex;">update a tab link
+              <input id="zupdateLink" style="margin:0  1ex 0 1ex;" type="text" size="32" value="https://">
+              </label>
+              <div style = "color:darkblue; background-color: lightblue; display:block">Add a tab, then click on the tabs update buttons to update with above info. Also, update existing tabs. </div>
+          </div>
+          
+          <div id="nav" style="margin: 0 0 0 1ex"></div>
+      </nav>          
+      <div id="hr1st"></div>
+    </header>
+      
+        <!--label style="background-color: antiquewhite"> Tab Name &nbsp;
+          <input id="tabName" type="text" size="20" value="Tab Name">
+        </label><br>
+        <label style="background-color: antiquewhite">  link &nbsp;
+          <input id="tabLink" type="text" size="40" value="Tab link">
+        </label><br -->
+      
+      <button onclick="addTab()" class="hlBtn">Add Tab</button>
+      
+      
+      <script>
+      let nav=document.getElementById("nav");
+          
+      let navLiIDcountEl = document.getElementById("navLiIDcount");
+      let navLiIDcount = Number(navLiIDcountEl.innerHTML); //console.log (navLiIDcount);
+          
+      function addTab(){
+        
+      //let tabName = document.getElementById("tabName").value; 
+      //let tabLink = document.getElementById("tabLink").value;
+          
+       let newTab = document.createElement("li");
+        newTabID = "navLi" + navLiIDcount; 
+        newTab.id = newTabID;
+            //console.log(newTab.id);
+        newTab.className = "navLi";
+        /*newTab.innerHTML ="<<<&nbsp;";
+        newTab.style.cursor ="default";
+        moveThis = newTab.id; //console.log(moveThis);
+        zmoveFn = "zmove('" + moveThis + "')";
+        newTab.setAttribute("onclick", zmoveFn);*/
+
+       let newLink = document.createElement("a");
+        newLink.innerHTML = "Tab Name";
+        newLinkID = "a" + navLiIDcount;
+        newLink.id = newLinkID;
+        newLink.className = "navTabs" ;
+        newLink.href = "no link yet";
+        newLink.target="_blank";
+          
+        const changeLinkName = document.createElement("button");
+        changeLinkName.innerHTML="rename";
+        changeLinkName.style.display = "inline-block";
+        changeLinkName.setAttribute("onclick", "renameLink('" + newLinkID + "')");
+       
+        const changeLink = document.createElement("button");
+        changeLink.innerHTML="update link";
+        changeLink.style.display = "inline-block";
+        changeLink.setAttribute("onclick", "updateLink('" + newLinkID + "')");
+          
+        const delTab = document.createElement("button");
+        delTab.innerHTML="del Tab";
+        delTab.setAttribute("onclick", "this.parentElement.remove()");
+        delTab.style.margin ="0 0 0 1ex"; 
+          
+        const moveTabLeft = document.createElement("button");
+          moveThis = newTabID; //console.log(moveThis);      
+          moveTabLeftID= "moveTabLeft" + navLiIDcount;
+          moveTabLeft.id = "moveTabLeftID";
+          moveTabLeft.innerHTML="<<";
+          zmoveFn = "zmove('" + moveThis + "')";
+          moveTabLeft.setAttribute("onclick", zmoveFn);
+          
+        const moveTabRight = document.createElement("button");
+          //moveThis = newTabID; //console.log(moveThis);      
+          moveTabRightID= "moveTabRight" + navLiIDcount;
+          moveTabRight.id = "moveTabRightID";
+          moveTabRight.innerHTML=">>";
+          zmoveDownFn = "zmoveDown('" + moveThis + "')";
+          moveTabRight.setAttribute("onclick", zmoveDownFn);          
+
+        newTab.appendChild(newLink);
+        newTab.innerHTML +="<br>";
+        newTab.appendChild(moveTabLeft);
+        newTab.appendChild(moveTabRight);
+          
+        newTab.appendChild(changeLinkName);        
+        newTab.appendChild(changeLink);
+        newTab.appendChild(delTab);
+        nav.appendChild(newTab);
+          
+          navLiIDcount++;
+          navLiIDcountEl.innerHTML = navLiIDcount;          
+        
+      }
+          
+     function renameLink(elmt){ //console.log(elmt);
+         renameLinkz = document.getElementById("renameLink").value; console.log(renameLink);
+         zElmt = document.getElementById(elmt);
+         zElmt.innerText = renameLinkz;
+      }
+          
+     function updateLink(elmt){ //console.log(elmt);
+         updateZlink = document.getElementById("zupdateLink").value; console.log(updateZlink);
+         zElmt = document.getElementById(elmt);
+         zElmt.href=updateZlink;
+         
+         //alert("updated to: " + updateZlink);
+         let tempHref = document.createElement('div');
+         tempHref.setAttribute("class", "tempHref");
+         tempHref.innerHTML = updateZlink;
+         if (!zElmt.parentElement.querySelector(".tempHref")){
+         zElmt.parentElement.appendChild(tempHref);
+         }
+         else {
+             zElmt.parentElement.querySelector(".tempHref").innerHTML = updateZlink;
+         }
+      }          
+      </script>
+      
+      <br>
+        <button  id="editOff" class = "hlBtn" onclick="toggleEditOff()">Preview</button>
+        <button id="editOn" class = "hlBtn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>      
+      
+<!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+
+      
+<script>
+    let moveTab = document.getElementById("moveTabs").innerHTML;
+    
+    function zmove(zchild){ 
+      if(moveTab==="on"){
+                      let zthis = document.getElementById(zchild);
+
+          if(zthis !== zthis.parentElement.firstElementChild){
+            zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
+            }
+          }
+    }     
+    
+    
+    function zmoveDown(zchild){ 
+        let zthis = document.getElementById(zchild);
+        let nextChild = zthis.nextElementSibling;
+        // the second part of the if statement might be redundant, but I was trying to prevent
+        // "click twice for move" and this works, so I just left it
+        if ((nextChild !== undefined && nextChild !== null) && (zthis !== zthis.parentNode.lastElementChild)){
+          nextChild.parentNode.insertBefore(nextChild, zthis);      
+        }
+    }     
+</script> 
+      
+<script>
+    
+    function toggleEditOff(){ //preview
+        // remove all editables ***********************************
+        
+        moveTab = "off";
+        
+        let moveTabsToggles = document.querySelectorAll(".navLi");
+        for (const moveTabsToggle of moveTabsToggles){
+            moveTabsToggle.firstChild.nodeValue="";
+        }
+        
+    let contEdbls = document.querySelectorAll("[contenteditable=true]");
+    let delBtns = document.getElementsByTagName("button");
+    let delInputs = document.getElementsByTagName("label");
+    let tempHrefs = document.querySelectorAll(".tempHref");
+        
+        for (const tempHref of tempHrefs){
+            tempHref.style="display:none";
+        }
+        
+        for (const contEdbl of contEdbls ){
+            contEdbl.contentEditable = "false";
+        }
+    
+        for (const delBtn of delBtns ){                                        
+            delBtn.style.display = "none";
+        }
+    
+        for (const delInput of delInputs ){                                        
+            delInput.style.display = "none";
+        }    
+    
+        //document.getElementById("inputList").style.display="none";
+        document.getElementById("saveDom").style.display="none";    
+        document.getElementById("tabs").style.display="none";    
+        document.getElementById("editOn").style.display="initial";
+        //document.getElementById("goBack").style.display="initial";
+        
+    // end remove all editables ************************
+    }
+    
+    
+    function toggleEditOn(){
+          // restore editables ***************************
+        
+        moveTab = "on";
+        
+        let moveTabsToggles = document.querySelectorAll(".navLi");
+        for (const moveTabsToggle of moveTabsToggles){
+           moveTabsToggle.firstChild.nodeValue="<<< ";
+        }        
+        
+    let contEdbls = document.querySelectorAll("[contenteditable=false]");
+    let delBtns = document.getElementsByTagName("button");
+    let delInputs = document.getElementsByTagName("label");
+    let tempHrefs = document.querySelectorAll(".tempHref");
+        
+        for (const tempHref of tempHrefs){
+            tempHref.style="display:block";
+        }        
+        
+        for (const contEdbl of contEdbls ){
+            contEdbl.contentEditable = "true";
+        }
+    
+        for (const delBtn of delBtns ){                                        
+            delBtn.style.display = "initial";
+        }
+    
+        for (const delInput of delInputs ){                                        
+            delInput.style.display = "initial";
+        }    
+    
+        //document.getElementById("inputList").style.display="none";
+        document.getElementById("saveDom").style.display="block";
+        document.getElementById("tabs").style.display="block";    
+        document.getElementById("editOff").style.display="initial";
+        document.getElementById("editOn").style.display="none";
+
+    //end restore editabels **********************
+    }
+    
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title = fileName;
+    
+        //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+    
+        toggleEditOff();
+        
+        document.getElementById("editOn").style.display="none";
+        
+    
+           //  theDOM study mode
+        document.getElementById("moveTabs").innerHTML = "off";
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+        
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        document.title = oldTitle;
+    
+        alert("Check the browser's \n default download folder");
+    
+  toggleEditOn();
+    
+    // This is NOT in the usual saveDOM function **********
+    // Just for the navigation app *****************
+        
+    let navTopA = "&lt;div style=&quot;width: 30em;&quot;&gt;&lt;span style=&quot;display: inline-block; border-style:  solid solid none solid; border-width:thin; border-color: darkblue; padding: 1ex; border-radius: 10px 10px 0px 0px; background-color: #fff8dc ;&quot;&gt; &lt;a href=&quot;nav.html&quot; style=&quot;text-decoration: none&quot;&gt; Tabs Menu &lt;/a&gt;  &lt;/span&gt; &lt;span style=&quot;display: inline-block; border-style:  solid solid none solid; border-width:thin; border-color: darkblue; padding: 1ex; border-radius: 10px 10px 0px 0px; background-color: #fff8dc ; width:3em; text-align: center; font-weight: bolder&quot;&gt; &lt;a href=&quot;nav.html&quot; style=&quot;text-decoration: none;&quot;&gt; ... &lt;/a&gt;  &lt;/span&gt; &lt;/div&gt;"
+    
+    let navTop = navTopA.replaceAll("nav.html", fileName + ".html");
+    document.getElementById("navBar").innerHTML = navTop;
+} 
+//end saveDom *******************
+
+</script>
+<br>
+
+    <div id="tabs" style="background-color:lightblue; width:70%; min-width:15em; padding: 1em; margin:1em">
+        
+        <details id="navBarCode"><summary><span class="fake-button">Code to Link back to your new Tabs Menu page </span>
+            <p> AFTER save</p> </summary>
+        <p style="background-color:lightcyan; color:darkred;">If you are editing a current Tabs Menu Page, then ignore the code below. </p> 
+        
+        <p> AFTER clicking save/download, copy the code below and paste it in your HTML code somewhere at the top of your web pages that you linke to. This will provide a link back to the tabs menu navigation page. <br> Also, after saving or updating the tabs file, make sure a copy of the file is in the main/home folder and each subfolder where your linked files are located</p>
+        <p>The rendered code will look like this:</p>
+        <div style="width: 30em;"><span style="display: inline-block; border-style: solid solid none solid; border-width:thin; border-color: darkblue; padding: 1ex; border-radius: 10px 0px 0px 0px; background-color: #fff8dc ;"> <a href="#tabs" style="text-decoration: none"> Tabs Menu </a> </span> <span style="display: inline-block; border-style: solid solid none solid; border-width:thin; border-color: darkblue; padding: 1ex; border-radius: 10px 0px 0px 0px; background-color: #fff8dc ; width:3em; text-align: center; font-weight: bolder; margin:0 0 0 -1ex;"> <a href="#tabs" style="text-decoration: none;"> ... </a> </span> 
+        </div><br>
+        </details>      
+
+           <div id="navBar">Code Will Appear Here After Save</div>
+    </div>
+      
+    <!-- END -->
+  </body>
+</html>
