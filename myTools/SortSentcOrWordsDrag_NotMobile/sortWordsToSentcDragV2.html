@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>dragWords</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 5px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; 
+            margin:2ex 1ex 0 1ex; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:3ex; 
+            border-radius: 5px;
+         }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+        
+        .liTemplate {
+            display:inline-block;
+        }
+
+         .answer {
+            display:inline-block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:1ex; border-radius: 5px; 
+         }
+        
+        .delBtn {
+            margin: 1ex 0 0 0;
+        }
+        
+        .delBtn2{
+            margin: 3ex 0 0 0; background-color:lightyellow; color:darkred; border-radius:5px;
+        }
+        
+        .zsummary {
+            width: 7em; padding: 0 0 0 1ex; margin: 1ex 0 0 0;
+            background-color:#d4e6f1; border-width:thin; border-style:solid; 
+            border-color: blue;
+            border-radius: 5px; 
+            
+        }
+        
+        details {margin: 1ex 0 0 0;}
+        
+        .zdetails {
+            background-color:#d4e6f1; border-width:thin; border-style:solid; 
+            border-color: blue; padding: 1ex 1ex 1ex 2ex; margin: 1ex 0 0 0;
+            border-radius: 5px; 
+        }
+        
+        ul {
+            margin: 0 0 2ex 0;
+        }
+        
+        
+        button {display: inline-block;}
+        
+        
+        
+         /* Sort-LIST STYLES */
+        
+        li {
+            cursor:grab;          
+            border: thin solid black;
+            display:inline-block;
+            padding: 0 0 0 0;
+
+        }
+        
+        .slist {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        .slist li {
+          margin: 2px;
+          padding: 1ex;
+          background: #fff8dc;
+        }
+
+        /* (B) DRAG-AND-DROP HINT */
+        .slist li.hint {
+        }
+        .slist li.active {
+          background: lightgray;
+        }
+        /* end the Sort-List styles*/
+        
+        
+        #printOptions {
+            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
+            border-radius: 5px;
+            box-shadow: 3px 3px darkgreen;
+            padding:1ex;
+            font-weight: bold; font-size:85%;
+        }
+        
+    </style>  
+    
+  </head>
+  
+  <body id="zbody" onload="cloneAppendDivLi()">
+  
+      <div id="editMode" style="display:none">1</div>
+      
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">  
+        
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        Summer 2022, <br>
+        Professional English <br> 
+        Course 101, Student  Exercise, Chapter 3 
+        <br>
+        <br>
+        <strong>
+        Exercise Quiz, Chapter 3
+        </strong>
+        <br>
+        <strong>
+        Article: Raining Money
+        </strong> 
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->          
+    </section>   
+</header>
+  
+      
+<!--    hidden li item as template ===============  -->
+       
+<div  class="quStyle" style="display:none">
+     <button class="addItem" onclick="cloneAppendLi('sortlist')">Add item</button>
+    <!-- (B) THE LIST -->
+    <p contenteditable="true">Put in the correct order. </p>
+    <p><strong>Drag and drop</strong> on top of the sentence you'd like to replace.</p>
+    
+    <ul id="sortlist"  onmouseover="startDrag('sortlist')"> 
+        
+
+        
+        <div class="liTemplate" style="display:inline-block">
+          <li class="answer" contenteditable="true">
+              Type or paste item here, then add-item above
+          </li>
+            <button class="delBtn" onclick="this.previousElementSibling.remove(); this.remove();"> del </button>
+        </div>    
+        
+    </ul> 
+    
+    
+    <details open>
+        <summary class="zsummary">Answer</summary>
+        <div class="zdetails"  contenteditable="true">
+        Type/paste the answer here. <br>
+        Type/paste the answer here.            
+        </div>    
+    </details>
+		<button class="delBtn2" onclick="this.parentElement.remove()"> delete section</button>
+    
+</div> <!-- //end quStyle -->
+      
+      
+      
+<!--    hidden li item as template ===============  -->
+    
+
+<div id="allLists">
+</div> <!-- //end allLists -->
+      
+     <button style="display:block; margin:2ex; background-color: lightgreen;" onclick="cloneAppendDivLi()">
+         Add section
+      </button>   
+      
+      <button style="display:block; margin:2ex;" onclick="saveDownload()">
+         save/download file
+      </button>  
+      
+
+    <!-- (C) INIT ON PAGE LOAD -->
+    <script>
+        let i=1;
+      function cloneAppendDivLi(){
+        
+        let divLiElmt = document.querySelector(".quStyle");
+        let divLiClone =  divLiElmt.cloneNode(true);
+          divLiClone.style.display="block";
+        let insertToBody = document.getElementById("allLists");
+        //console.log (divLiElmt);
+        insertToBody.append(divLiClone);
+          
+         let getUl = divLiClone.querySelector('ul');          
+          newID="sortlist" + i; i++;
+          getUl.id= newID;
+          fnName= "startDrag('" + newID + "')";
+          getUl.setAttribute("onmouseover", fnName);
+          
+          let getNewDiv = document.getElementById(newID).parentElement;
+            console.log(getNewDiv);
+          let getBtn = getNewDiv.querySelector('button');
+          fnName2= "cloneAppendLi('" + newID + "')";
+          getBtn.setAttribute("onclick", fnName2);          
+        }
+    </script>
+      
+      
+    <script>
+      function cloneAppendLi(addToThis){
+        
+        let liElmt = document.querySelector(".liTemplate");
+        let liClone =  liElmt.cloneNode(true);
+        let ulist= document.getElementById(addToThis);
+        liClone.style.display="inline-block";
+          
+        console.log (liElmt);
+        ulist.prepend(liClone);
+          
+        }
+    </script>
+      
+            
+    <script>
+     /*   
+    window.addEventListener("DOMContentLoaded", () => { */
+      function startDrag(thisElmt){
+        slist(document.getElementById(thisElmt));
+      }
+        /*});*/
+    </script>
+    
+    <script>
+        function slist (target) {
+        // (A) SET CSS + GET ALL LIST ITEMS
+        target.classList.add("slist");
+        let items = target.getElementsByTagName("li"), current = null;
+            
+
+            
+         let editMode = document.getElementById("editMode").innerHTML;  
+            
+    if (editMode==="0"){
+        // (B) MAKE ITEMS DRAGGABLE + SORTABLE
+        for (let i of items) {
+          // (B1) ATTACH DRAGGABLE
+          i.draggable = true;
+
+          // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
+          i.ondragstart = (ev) => {
+            current = i;
+            for (let it of items) {
+              if (it != current) { it.classList.add("hint"); }
+            }
+          };
+
+          // (B3) DRAG ENTER - RED HIGHLIGHT DROPZONE
+          i.ondragenter = (ev) => {
+            if (i != current) { i.classList.add("active"); }
+          };
+
+          // (B4) DRAG LEAVE - REMOVE RED HIGHLIGHT
+          i.ondragleave = () => {
+            i.classList.remove("active");
+          };
+
+          // (B5) DRAG END - REMOVE ALL HIGHLIGHTS
+          i.ondragend = () => { for (let it of items) {
+            it.classList.remove("hint");
+            it.classList.remove("active");
+          }};
+
+          // (B6) DRAG OVER - PREVENT THE DEFAULT "DROP", SO WE CAN DO OUR OWN
+          i.ondragover = (evt) => { evt.preventDefault(); };
+
+          // (B7) ON DROP - DO SOMETHING
+          i.ondrop = (evt) => {
+            evt.preventDefault();
+            if (i != current) {
+              let currentpos = 0, droppedpos = 0;
+              for (let it=0; it<items.length; it++) {
+                if (current == items[it]) { currentpos = it; }
+                if (i == items[it]) { droppedpos = it; }
+              }
+
+              if (currentpos < droppedpos) {
+                i.parentNode.insertBefore(current, i.nextSibling);
+              } else {
+                i.parentNode.insertBefore(current, i);
+              }
+            }
+          };
+        } // end for i items  
+        }   //end if editMode
+      } // end fn slist
+    </script>    
+      
+      
+      
+      <script> //save theDom
+        function saveDownload(){
+        
+            
+        // take out editing tools **********************
+            
+        let answEdbls = document.querySelectorAll("[contenteditable]");
+            for (const answEdbl of answEdbls){
+                answEdbl.setAttribute("contenteditable", "false");
+            }            
+    
+        let buttonzs = document.getElementsByTagName("button");
+            for (buttonz of buttonzs){
+                buttonz.style.display = "none"; 
+            }
+            
+        let closeDetails = document.getElementsByTagName("details")
+            for (closeDetail of closeDetails){
+                closeDetail.open=false; 
+            }
+            
+             document.getElementById("zbody").removeAttribute("onload");
+        // end take out editing tools ***************
+            
+          
+        // set editMode to 0 **********
+            document.getElementById("editMode").innerHTML="0";  
+        // end set editMode
+            
+            document.getElementById("showAnswers").style.display="inline-block";
+            document.getElementById("printFullView").style.display="inline-block";
+            document.getElementById("printSimpleView").style.display="inline-block";
+
+            
+            
+        //save theDom *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "sortZwords.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom
+            
+        //put back editing tools ********************
+          let answEdblsz = document.querySelectorAll("[contenteditable]");
+            for (const answEdblz of answEdblsz){
+                answEdblz.setAttribute("contenteditable", "true");
+            }
+            
+          let buttonzsz = document.getElementsByTagName("button"); 
+            for (buttonzz of buttonzsz){
+                buttonzz.style.display = "inline-block"; 
+            }
+            
+            for (closeDetail of closeDetails){
+                closeDetail.open=true; 
+            }
+            
+            document.getElementById("showAnswers").style.display="none";
+            
+        // end put back editing tools
+            
+        // set editMode to 1 **********
+            document.getElementById("editMode").innerHTML="1";  
+        // end set editMode
+            
+          
+          alert("Check the browser's \n default download folder");
+        } // and save dom restore editing
+      </script>
+      
+      
+      
+      
+      
+      <!-- ***********************   PRint save PDF **********************-->
+         <script>
+	    function noStyle() {
+            document.querySelectorAll('style,link[rel="stylesheet"]')
+              .forEach(element => element.remove()); window.print();
+            alert ("refresh to cancel simple view");
+        }  //end noStyle
+        
+      function showAnswers(){
+        let showAnswers = document.querySelectorAll(".zdetails");
+          for (const showAnswer of showAnswers){
+                        console.log(showAnswer);
+
+              showAnswer.parentElement.open=true;
+          }  
+        document.getElementById("hideAnswers").style.display="inline-block";
+        document.getElementById("showAnswers").style.display="none";
+
+      }  //end showAnswers   
+      
+      function hideAnswers(){
+        let hideAnswers = document.querySelectorAll(".zdetails");
+          for (const hideAnswer of hideAnswers){
+              hideAnswer.parentElement.open=false; console.log(hideAnswer);
+          }  
+        document.getElementById("hideAnswers").style.display="none";
+        document.getElementById("showAnswers").style.display="inline-block";
+      }  //end hideAnswers  
+	</script>
+<div id="viewPrint" style="display:block; margin:2ex;">
+    <div id="printOptions" style="display: inline-block; margin: 0 0 7px 0; padding: 1ex; 0"> 
+        View  
+        <br>
+            <button id="showAnswers" class="hlBtn" style="display:none;" onclick="showAnswers()">
+                Show/Hide All Answers</button>
+            <button id="hideAnswers" class="hlBtn" style="color:darkblue" onclick="hideAnswers()">
+                Show/Hide All Answers</button>       
+    </div>
+    <div style="display:inline-block; margin: 5px 3px 0 0;">
+    </div>
+    <div id="printOptions" style="display: inline-block;">
+        Print (save as PDF) <br>
+        (choose desired view before printing)<br>
+         <button id="printFullView" class="hlBtn" onclick="window.print()"> Print </button>
+        <br>
+         <button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button>
+    </div>
+</div>
+<!-- 888888888888888888888888888  end Print/save pdf -->      
+      
+      
+  </body>
+</html>  
+  
+
