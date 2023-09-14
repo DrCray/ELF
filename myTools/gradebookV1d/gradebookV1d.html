@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" /> 
+<title>GradeBook</title>
+
+
+<style>
+body{
+    font-family: sans-serif;
+    background-color:  #d4e6f1  ;
+    margin: 0 3em 0 3em;
+    padding: 1ex 2ex 1ex 2ex;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0; } 
+
+.fake-button {
+    background-color: #E9E9ED; 
+    border-style:solid; border-width:thin; border-radius: 3px;
+     padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+}
+
+.fake-button:hover {
+    background-color: lightblue;
+     border-radius: 3px; 
+
+}
+
+#zztitle {
+    background-color:#fff8dc;
+    border-style:solid;  border-width: medium;
+    border-color:#8b0000; border-radius: 7px;
+    padding:2ex; margin-bottom: 3ex;
+}
+
+
+#zzpageHeader {  
+    margin: auto; box-shadow: 0 1ex 1ex 0;
+    border-radius: 7px;
+}
+
+    
+.hlBtn {border-radius:5px;}
+
+.hlBtn:hover {
+    background-color:lightblue;  border-radius: 5px;
+}    
+
+#scores {
+     display:inline-block; text-align: right;
+} 
+   
+tr {
+    background:#FAEBD7;
+}
+.studts {
+    border: 1px solid; 
+    padding: 0 1ex 0 1ex;   */
+}    
+
+th{
+    background:lightblue; border: 1px solid; 
+    padding: 0 1ex 0 1ex;
+}
+    
+/* =====  dragZone with highlight dragenter/leave */
+#dropZone {
+  background-color: antiquewhite ;
+  border: 4px dashed #ccc;
+  border-radius: 20px;
+  border-color: darkgoldenrod;
+  font-family: sans-serif;
+  margin: 2ex 0 2ex 0;
+  padding: 20px;
+}
+#dropZone.highlight {
+  border-color: darkgreen;
+}
+
+.my-form {
+  margin-bottom: 10px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px;
+  background-color: lightblue;
+    box-shadow: 1px 1px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+.button:hover {
+    background-color: #fff8dc;
+    border-radius: 10px; box-shadow: 3px 3px gray;
+}
+input#fileElem {
+  display: none;
+}
+
+/* =====  //end drag area highlight */
+
+#doneDone {
+    display:block; background: #E3CEE9;  padding:1ex;
+        border-radius:7px;
+}
+</style>
+
+
+</head>
+<body>
+    
+<header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+
+    <!--zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz -->
+    <!--zzzzzzzzzzzzzzzzzzzz Type title here zzzzzzzzzzz -->
+
+    Dr Ray  <br>
+    Summer 2022, <br>
+    Professional English <br>
+   
+    <strong>
+        Course 101    
+    </strong>
+
+
+    <!-- zzzzzzzzzzzzzzzzzzz End title zzzzzzzzzzzzzzzzz -->
+    <!-- zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz -->
+
+    <!--   ------------ Don’t type heading past this line ------------  -->
+
+
+    </section>
+
+</header>
+
+    
+<!-- testing drop area with highlight dragleave -- ========= -->
+ <div id="dropZone">
+  <form class="my-form">
+     
+    <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)">
+    <label class="button" for="fileElem"><strong>Select files</strong> <br>(opens your file manager)</label>
+          <p><span style="font-size:x-large; font-weight:bold;">Drag and Drop files </span><br>(to anywhere in this box)</p>
+
+  </form>
+</div>   
+ 
+
+<div id="scores">
+  <table id="gradeBookTable">
+      <thead>
+        <tr>  <th>ID#</th> <th>Name</th> <th>Quiz</th> <th> Score</th><th> Avg </th>
+        </tr> 
+      </thead>
+    <tbody id="gradeBook">
+    </tbody>
+  </table>
+</div>
+    
+    <button onclick='toglDisplay("addRowz")' style= "display:block">add row</button>
+    <div id="addRowz" style="text-align:left; margin:3px; display:none;">
+        <input id="idCell" type="text" style="width:18ex" value="ID#">
+        <input id="nameCell" type="text" style="width:18ex" value="name">
+        <input id="quizCell" type="text" style="width:18ex" value="quiz/exam id">
+        <input id="scoreCell" type="text" style="width:5ex" value="100">
+        <br>
+        <button onclick="addRow();clearRowInput();">add</button>
+    </div>
+    
+ 
+<section id="buttons" >
+
+     <br><br>   
+
+<button class="hlBtn" onclick="calcAvg()">calculate averages</button>
+    
+
+ <!-- br><br>   
+    <button class="hlBtn" onclick="addRow()">add row</button -->
+ <!--br><br>  
+<button class="hlBtn" onclick="sortList('gradeBook','tr')">Sort Records</button-->
+    
+    
+ <br><br>    
+<div id="doneDone">
+            <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName4save" type="text" size="30" value="fileName">
+        </label><br>
+    <button id="done" onclick="saveDownload()"> Save/Download </button>
+</div>
+    
+</section>
+
+     
+    
+<script>
+    
+// show hide function ====================   
+    function toglDisplay(zElmt) {let zshow = document.getElementById(zElmt);
+         if (zshow.style.display === "block")
+             {zshow.style.display = "none";}
+         else {zshow.style.display = "block";}}
+//end show hide function =================     
+    
+    
+let dropZone = document.getElementById('dropZone');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, preventDefaults, false)
+})
+
+function preventDefaults (e) {
+  e.preventDefault()
+  e.stopPropagation()
+};
+    
+['dragenter', 'dragover'].forEach(eventName => {
+  dropZone.addEventListener(eventName, highlight, false)
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, unhighlight, false)
+})
+
+function highlight(e) {
+  dropZone.classList.add('highlight')
+}
+
+function unhighlight(e) {
+  dropZone.classList.remove('highlight')
+}
+dropZone.addEventListener('drop', handleDrop, false)
+
+function handleDrop(e) {
+  let dt = e.dataTransfer
+  let files = dt.files
+//console.log(files);
+    
+    handleFiles(files)  
+}
+    
+function handleFiles(files) {
+//let mainList = [];
+  for (const file of files) {
+    
+      /*my manipulation*/      
+      let zfilenameX = file.name;
+      let zfilename = zfilenameX.replace(".pdf","");
+      const fileNameArr = zfilename.split("_");
+      ////console.log(fileNameArr);
+      let scoreDecode= Number((fileNameArr[3]).substring(1, 4)) - 357;
+      //console.log(scoreDecode);
+      fileNameArr.pop(); //remove score code from end
+      //console.log(fileNameArr);
+      fileNameArr.push(scoreDecode); //put score on end
+      //console.log(fileNameArr);
+      /* /End my manipulation*/    
+      const tr = document.createElement('tr');
+        tr.setAttribute("data-zid", fileNameArr[0]);
+//console.log(tr);
+
+ let newtrInner ="<td class='studts' data-idz='" + fileNameArr[0] + "'>" + fileNameArr[0] + "</td><td class='studts' data-sName='" + fileNameArr[1] + "'>" + fileNameArr[1] + "</td><td class='studts' data-quiz='" + fileNameArr[2] + "'>" + fileNameArr[2] + "</td><td class='studts' data-score='" + fileNameArr[3] + "' contenteditable='true'>" + fileNameArr[3] + "</td>" + "<td class='studts' data-avg='99'>---</td>" + "<td><button  onclick='this.parentElement.parentElement.remove()'> delete </button></td>" ;
+                      //  console.log(newtrInner);
+      
+      tr.insertAdjacentHTML("beforeend", newtrInner);
+        
+      gradeBook.appendChild(tr);  
+
+       // mainList.push(fileNameArr);    
+  } // /end for .. file of files
+    
+    sortList('gradeBook','tr');
+    
+    //calcAvg();
+ 
+    } //end handle files    
+ 
+</script>    
+<!-- //End drop area with highlight dragenter/leave -- ========= -->
+
+
+    
+<script>
+    
+    function clearRowInput(){
+       document.getElementById("idCell").value="ID#";
+       document.getElementById("nameCell").value="name";
+       document.getElementById("quizCell").value="quiz/exam id";
+       document.getElementById("scoreCell").value="100";
+    }
+    
+    function addRow(){
+       let idCell = document.getElementById("idCell").value.trim();
+       let nameCell = document.getElementById("nameCell").value.trim();
+       let quizCell = document.getElementById("quizCell").value.trim();
+       let scoreCell = Number(document.getElementById("scoreCell").value.trim());
+        console.log(idCell);
+        console.log(nameCell);
+        console.log(quizCell);
+         console.log(scoreCell);
+       
+        document.getElementById("addRowz").style.display="none";
+        
+        
+              const trAdd = document.createElement('tr');
+                trAdd.setAttribute("data-zid", idCell);
+
+//console.log(tr);
+
+ let newRow ="<td class='studts' data-idz='" + idCell + "'>" + idCell + "</td><td class='studts' data-sName='" + nameCell + "'>" + nameCell + "</td><td class='studts' data-quiz='" + quizCell + "'>" + quizCell + "</td><td class='studts' data-score='" + scoreCell + "' contenteditable='true'>" + scoreCell + "</td>" + "<td class='studts' data-avg='99'>---</td>" + "<td><button  onclick='this.parentElement.parentElement.remove()'> delete </button></td>" ;
+                       // console.log(" newInner" + newRow);
+      
+      trAdd.insertAdjacentHTML("beforeend", newRow);
+        
+      gradeBook.appendChild(trAdd);  
+       
+     /*    const ztbody = document.getElementById("gradeBookTestDiv");
+          const ztrow = document.getElementById("cloneThisRow");
+          const clonedRow = ztrow.cloneNode(true);
+
+
+          //APPEND APPEND APPEND              
+          ztbody.appendChild(clonedRow); 
+            // also prepend(clone) to place before first child
+            clonedRow.style.display="block";
+        */
+            
+        
+        /* // Find a <table> element with id="myTable":
+        let table = document.getElementById("gradeBookTable");
+
+        // Create an empty <tr> element and add it to the 1st position of the table:
+        let row = table.insertRow(1);
+
+        // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        // Add some text to the new cells:
+        cell1.innerHTML = "CELL1";
+        cell2.innerHTML = "CELL2"; 
+        cell3.innerHTML = "CELL3";
+        cell4.innerHTML = "CELL4";
+        cell5.innerHTML = "CELL5";
+        */
+
+    }
+    
+</script>    
+    
+    
+<script>
+    
+function calcAvg(){
+    
+        sortList('gradeBook','tr');
+
+       //prepping for *loopA:*
+    let gradebook = document.getElementById('gradeBook');
+    
+    console.log("gradebook: " + gradebook) ;
+    let zentries = gradebook.querySelectorAll("[data-zid]"); // tr (table row)
+    //console.log(zentries[1]);    
+    let zcount = 1;  
+    let zsumScores=0;
+    let zavg=0;
+    loopA:
+    for (let i = 0; i < zentries.length; i++) {
+        
+        let zentryIdA = zentries[i].getAttribute('data-zid');
+                               // console.log(zentryIdA);
+        
+            if (i == zentries.length-1) //*********break
+                {
+                  //let zscoreB = zentries[i].querySelector('[data-score]').getAttribute('data-score');
+
+                  let zscoreB = zentries[i].querySelector('[data-score]').innerText.trim();
+                    
+                                    console.log('zzzscoreB ' + zscoreB); 
+                  let zscoreBn = Number(zscoreB);
+                  zsumScores += zscoreBn;   
+                        
+                   zavg = Math.round(zsumScores/zcount);
+                        
+                      //  console.log("last: " + zsumScores);
+            
+                    //    console.log("avg is: " + zavg);
+                     //   console.log("****break******"); 
+                    
+                    let x = zentries[i].insertCell(4);
+                    x.innerHTML = zavg;
+                    x.setAttribute ("class", "studts");
+                    //x.setAttribute ("contenteditable", "true");
+                    x.style.fontWeight="bold";
+
+                    zentries[i].deleteCell(5);
+
+                    
+                  break loopA;
+                } //***break
+        
+        let zentryIdB = zentries[i+1].getAttribute('data-zid');
+        
+                    //    console.log(zentryIdB);
+        
+        if (zentryIdA === zentryIdB){
+            
+            //let zscoreA = zentries[i].querySelector('[data-score]').getAttribute('data-score'); 
+            //let zscoreB = zentries[i+1].querySelector('[data-score]').getAttribute('data-score');
+            let zscoreA = zentries[i].querySelector('[data-score]').innerText.trim();
+                    
+                                    console.log('zzzscoreA ' + zscoreA);
+            let zscoreAn = Number(zscoreA);
+            //let zscoreBn = Number(zscoreB);
+            zsumScores += zscoreAn;
+                    //    console.log("score: " + zsumScores);
+            
+            zcount = zcount + 1; 
+            
+                     //   console.log("ifA " + zcount);
+            
+
+
+        }
+        else {
+            //let zscoreB = zentries[i].querySelector('[data-score]').getAttribute('data-score');
+            let zscoreB = zentries[i].querySelector('[data-score]').innerText.trim();
+                    
+                                    console.log('zzzscoreB ' + zscoreB);
+            let zscoreBn = Number(zscoreB);
+            zsumScores += zscoreBn;
+            zavg = Math.round(zsumScores/zcount);
+                        
+                    //    console.log("last: " + zsumScores);
+            
+                        console.log("Else: " + zavg);    
+            
+              let x = zentries[i].insertCell(4);
+              x.innerHTML = zavg;
+              x.setAttribute ("class", "studts");
+              //x.setAttribute ("contenteditable", "true");
+              x.style.fontWeight="bold";
+
+                zentries[i].deleteCell(5);
+                
+            
+            
+
+            zsumScores=0;
+            zcount = 1; 
+                        console.log("ifB " + zcount);
+        } //end else
+        
+        console.log("endLoop!!");
+      } // end for zentries
+} // end fn calcAvg
+    
+    
+</script>   
+    
+    
+    
+    
+    
+    
+    
+    
+
+<script>
+    
+// Sort by Stdt ID    
+function sortList(parentID, childTag) {
+  var list, i, switching, b, shouldSwitch;
+  list = document.getElementById(parentID);
+  switching = true;
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // start by saying: no switching is done:
+    switching = false;
+    b = list.getElementsByTagName(childTag);
+    // Loop through all list-items:
+    for (i = 0; i < (b.length - 1); i++) {
+      // start by saying there should be no switching:
+      shouldSwitch = false;
+      /* check if the next item should
+      switch place with the current item: */
+      if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+        /* if next item is alphabetically
+        lower than current item, mark as a switch
+        and break the loop: */
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark the switch as done: */
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+    }
+  }
+}  //end fn sortList
+    
+    
+   
+    
+    
+function saveDownload(){
+                
+        oldTitle = document.title;
+
+        let fileName4save = document.getElementById("fileName4save").value;
+        document.title = fileName4save;    
+    
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName4save + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+            
+        document.title =oldTitle;
+
+           alert("Check the browser's \n default download folder");
+} // /end fn saveDownload
+
+</script>
+ 
+
+
+
+
+</body>
+</html>
