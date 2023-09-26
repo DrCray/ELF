@@ -240,15 +240,33 @@ document.onreadystatechange = () => {
 <!-- hidden elements -->
       
       
-      <details id="instrcs" class=instrcs><summary>Basic Instructions</summary>
-          <br>Replace the content below with your own. <br> <u>underline</u> the answers you want to blank-out.<br><br>
-          <div class="answer2"> 
+      <details id="instrcs" class=instrcs style="border:thin solid black; padding: 1rem;"><summary>Basic Instructions</summary>
+<div style="margin: 0 2rem 0 2rem;"><br>
+          Type/Paste in the text area below that reads "Replace the content in this area ..." Then underline the words/answers you want to blank-out. (see the example) 
+          <br><br>There are two approaches: <br><br>
+          You can copy and paste from any document editor or html wysiwyg editor. Make underlines or other style changes in your editor, then copy and paste into the text area.
+          It's been tested with LibreOffice Writer in both document and web mode, and in the Blogger editor compose mode (for Google Blogger pages).
+          <br> <br>Also: <br>
+          <br> You can use the built-in simple style editor.
+          <br> Highlight the text you wish to style and then click a style button (e.g. bold, underline, xxl etc.)
+          <br>Use<code style="background-color:#FDFCE5"> ctl + z </code> for undo and<code  style="background-color:#FDFCE5"> ctl + y </code> for redo. However, once you click the style editor, you can only undo back to that point and not before. The solution is to just copy and cut, then repaste with<code  style="background-color:#FDFCE5"> ctl + shift + v </code> (paste unformatted). Everything returns to plain text and you retype as desired.
+          
+          <div style="margin:.5rem 2rem 0 2rem;"><span style="background-color:darkgreen;color:white;">Note:</span>When you copy the text be sure to highllight BEYOND both ends of where you want to correct.
+          <br>For example:
+          <br>If you want to change the underlined text in: <code style="background-color:white;"><b>Red Bull</b> is a popular <u>energy</u> drink. </code>
+          <br>You would highlight like this: <code style="background-color:white;"><b>Red Bull</b> is a popu<span style="background-color: yellow">lar <u>energy</u> dri</span>nk. </code>
+          <br>Then cut and repaste as unformatted text on the spot: <code style="background-color:white;"><b>Red Bull</b> is a popular energy drink. </code>
+          <br> Now you can highlight and restyle as you like. <code style="background-color:white;"><b>Red Bull</b> is a <u>popular</u> <b>energy</b> drink. </code><br><br>
+          </div></div>
+       <div style="background-color: antiquewhite; light-pink; border: thin solid black; border-radius:5px; padding:1em;"> 
+          <div class="answers"> Example:<br>
           Input <br> 
               <code> This is a <u>sample</u> sentence. <br>  This is <u>another</u> sample sentence. <br></code><br>
           Output<br>
-              <code>a.  another <br> b. sample <br> <br>This is a <code>1</code><u>____</u> sentence. 
-          <br>This is a <code>2</code><u>____</u> sample sentence.</code>
+              <code> a. another <br> b. sample <br> <br>This is a <u>____</u> sample sentence. 
+          <br>This is <u>____</u> sentence.</code>
           </div>
+        </div> 
       </details> 
 
       <label id="ansChoicesListLbl" for="ansChoicesList"  style="display:block; margin:1ex 0 0 0;" ><input id="ansChoicesList" type ="checkbox">include answer choices list</label>      
@@ -410,6 +428,10 @@ document.onreadystatechange = () => {
                     alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
                     }
                 else{
+                  let closeDetails = document.getElementsByTagName("details");
+                    for (closeDetail of closeDetails){
+                        closeDetail.open=false; 
+                    }                                         
                  window.print();
                 }
              } // end checkThenPrint()
