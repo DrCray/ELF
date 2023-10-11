@@ -392,7 +392,7 @@
      </div>
 <hr><!--*********** horizontal rule *****************-->
 
-     <div id="insLink" style="display:none; margin: 1ex 0 0 0;">
+     <div id="insLink" style="display: block; margin: 1ex 0px 0px;">
          <strong>make a hyperlink</strong><br>
         <input id="insLinkInputEl" type="url" name="url" style="margin: 0 0 0 1ex;" value="http://example.site/example.html">
        <label id="insLinkLabelEl" for="insLinkInputEl" class="labelx">URL</label>
@@ -407,7 +407,7 @@
          <button class="hlBtn" onclick="makeLink()">make Link</button>
          
          <div id="linkz" contenteditable="true">             
-         </div>
+         <a href="https://drcray.github.io/ELF/Professor/CCC/CultureDefFIBselect.html" class="links1" target="_blank">Culture Definition Quiz</a></div>
                   <code>copy and paste the link </code>
      </div>
 
@@ -953,7 +953,7 @@ take a look at each.</span></p><p style="line-height: 100%; margin-bottom: 0in">
 
  
 		<div id="answer4" class="answer" data-idx="1" style="display: none;" contenteditable="false">
-		   <section>coming later<br></section>
+		   <section><a href="https://drcray.github.io/ELF/Professor/CCC/CultureDefFIBselect.html" class="links1" target="_blank">Culture Definition Quiz</a></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4608,21 +4608,19 @@ function toggleText(id2toggle) {
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Select all font elements
-  const fonts = document.querySelectorAll("font");
-
-  // Loop through each font and replace with a span
-  fonts.forEach((font) => {
-    const span = document.createElement("span");
+// Select all font elements and replace with span elements
+function replaceFonts() {
+  const fonts = document.querySelectorAll('font');
+  fonts.forEach(font => {
+    const span = document.createElement('span');
 
     // Add the style attribute with the appropriate font styles
-    let style = "";
+    let style = '';
     if (font.face) style += `font-family: ${font.face}; `;
     if (font.size) style += `font-size: ${font.size}; `;
     if (font.color) style += `color: ${font.color}; `;
     if (font.style) style += `font-style: ${font.style}; `;
-    if (style) span.setAttribute("style", style.trim());
+    if (style) span.setAttribute('style', style.trim());
 
     // Copy any child elements to the new span
     while (font.firstChild) {
@@ -4632,7 +4630,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Replace the font element with the new span
     font.parentNode.replaceChild(span, font);
   });
-});
+}
+
+// Observe changes to the DOM and replace fonts whenever the DOM changes
+const observer = new MutationObserver(replaceFonts);
+const config = { childList: true, subtree: true };
+observer.observe(document.body, config);
 
 </script>
     
