@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>MakeSelectList</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            margin:0 0 1rem 0;
+            padding:3ex; 
+            border-radius: 10px; 
+            width:fit-content;
+         }
+        
+        .quStyleB {
+            display:block;
+            background-color:#D4E6F1; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            margin:1rem 0 1rem 0;
+            padding:3ex; 
+            border-radius: 10px; 
+            width:fit-content;                        
+        }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+         
+
+         .answer {
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; width:fit-content;
+         }
+        
+         .countLevel {
+            display:block;
+            background-color:#f7ebf4; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; width:fit-content;
+         }        
+         
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+        
+		.containersAll { column-count:3; width:100%; max-width:45rem;
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; width:fit-content;        
+        }                       
+
+		@media (max-width: 600px) {
+		  .containersAll {
+			column-count: 1;
+		  }
+		}         
+    </style>  
+    
+  </head>
+  
+  <body>﻿
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+    
+    
+    
+    
+    
+    
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        MyTools
+        <br><br>
+        <strong>
+Checklist  Maker        </strong>
+        <br>
+        
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->               
+        
+        
+        
+        
+        
+    </section>   
+</header>
+
+<details id="note"><summary>note:</summary><p>You may use this for any type of activity where you need students to click on items--use your imagination.<br><br>The count, level, and percentage may not be important for you, in that case, uncheck "show: count, level, percentage" at the bottom. <br><br>The levels are based on 20 percentage increments from 1 to 5. <br><br>The percentage will reflect the actual percent of selected items.</p><p>I initially used this as an assessment tool to rank my students level of vocabulary proficiency based on the number of words they recognized from a leveled list I created.</p></details>
+
+<p></p>
+  
+<!--  1   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<!--     **************************   A Card   *************************-->
+
+<textarea id="list" rows="6" style="width:95%; max-width:25rem;">Please, paste, comma-delimited, list, here., Click, "Make Select List", button, below, to give it, a try.</textarea><br><br>
+ 
+<p></p><p></p>
+<div id="container" class="quStyle">
+
+
+
+</div>
+
+<!--div class="answer" style="margin:1rem 0 1rem 0;">
+	<div style="margin:1rem;">
+		<p id="count" style="display:inline; border: solid thin black; background-color:white; margin:.2rem; padding:.2rem; width:5rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+		count
+	</div>	
+	<div style="margin:1rem;">
+		<p id="level" style="display:inline; border: solid thin black; background-color:white; margin:.2rem; padding:.2rem; width:5rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>	
+		level
+	</div>	
+</div-->
+ <div style="margin: 1rem 0 0 0;"> </div> 
+    <br><br>
+<button id="makeSelectButton" onclick="createCheckboxList()">Make Select List</button>
+    <p> 
+        <input type="checkbox" id="includeCount" checked>
+        <label for="includeCount">show: count, level, percentage</label> 
+    </p> 
+<!--     **********************::::   END Card   ***********************-->
+<!--     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->  
+
+<script>
+let checklistCount = 0; // Track the number of checklists created
+
+function createCheckboxList() {
+  const textarea = document.getElementById("list");
+  const checklistContainer = document.getElementById("container");
+  const words = textarea.value.split(',');
+
+    
+  // Create a new content-editable <div> element
+const newDiv = document.createElement('div');
+newDiv.id = `container${checklistCount}`;
+newDiv.classList.add("quStyleB");    
+newDiv.setAttribute('contenteditable', 'true');
+newDiv.textContent = `Type questions or instructions here.`; // Set an initial text/content
+
+// Append the <div> element to the document (e.g., to the body element)
+checklistContainer.appendChild(newDiv);
+    
+    
+  // Create a unique container for each checklist
+  const containerId = `container${checklistCount}`;
+  const newContainer = document.createElement('div');
+  newContainer.id = containerId;
+  newContainer.classList.add("containersAll"); // Add the "answert" class
+  checklistContainer.appendChild(newContainer);
+
+
+
+  for (const word of words) {
+    const newParagraph = document.createElement('p');
+    const newCheckbox = document.createElement('input');
+    newCheckbox.type = 'checkbox';
+    newCheckbox.id = word.trim();
+    newCheckbox.setAttribute("class", `checkboxGroup${checklistCount}`);
+    newCheckbox.setAttribute("onChange", `updateCount(${checklistCount})`); // Add onChange
+    const newLabel = document.createElement('label');
+    newLabel.setAttribute('for', word.trim());
+    newLabel.innerHTML = word.trim();
+    newParagraph.appendChild(newCheckbox);
+    newParagraph.appendChild(newLabel);
+    newContainer.appendChild(newParagraph);
+    // Add a line break after each checkbox
+    newParagraph.innerHTML += '\n';
+  }
+
+  // Create the division below each checklist
+  const newDivision = document.createElement('div');
+  newDivision.setAttribute("class", "countLevel");
+  newDivision.style.margin = "1rem 0 1rem 0";
+  newDivision.innerHTML = `
+    <div style="margin:1rem;display:inline;">
+      <p id="count${checklistCount}" style="display:inline; border: solid thin black; background-color:white; margin:.2rem; padding:.2rem; width:5rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+      selected
+    </div>
+    <div style="margin:1rem;display:inline;">
+      <p id="level${checklistCount}" style="display:inline; border: solid thin black; background-color:white; margin:.2rem; padding:.2rem; width:5rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+      level
+    </div>
+    <div style="margin:1rem;display:inline">
+      <p id="percentage${checklistCount}" style="display:inline; border: solid thin black; background-color:white; margin:.2rem; padding:.2rem; width:5rem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+      percentage
+    </div>
+  `;
+  checklistContainer.appendChild(newDivision);
+    
+    
+const includeCountCheckbox = document.getElementById("includeCount");
+
+
+  const clpElements = document.querySelectorAll(".countLevel");
+
+  if (includeCountCheckbox.checked) {
+    clpElements.forEach(element => {
+      element.style.display = "block";
+    });
+  } else {
+    clpElements.forEach(element => {
+      element.style.display = "none";
+    });
+  }
+          
+    
+    
+
+  checklistCount++; // Increment the checklist count for a unique container ID
+  //textarea.value = ''; // Clear the textarea
+}
+
+function updateCount(count) {
+  // Get the current number of checked checkboxes
+  let checkedCount = 0;
+  // Get all the checkboxes with the specified checklistCount class
+  let checkboxes = document.querySelectorAll(`.checkboxGroup${count}`);
+  let total = checkboxes.length;
+  
+  // Loop through all the checkboxes and check if they are checked
+  for (const checkbox of checkboxes) {
+    if (checkbox.checked) {
+      checkedCount++;
+    }
+  }
+
+  // Update the count element with the new number
+  document.getElementById(`count${count}`).innerHTML = checkedCount; 
+
+  
+  let percentage = Math.round((checkedCount / total) * 100);
+    
+  document.getElementById(`percentage${count}`).innerHTML = percentage;     
+  
+  // Update the level element
+  if (percentage >= 0 && percentage <= 20) {
+    document.getElementById(`level${count}`).innerHTML = "1";
+  } else if (percentage >= 21 && percentage <= 40) {
+    document.getElementById(`level${count}`).innerHTML = "2";    
+  } else if (percentage >= 41 && percentage <= 60) {
+    document.getElementById(`level${count}`).innerHTML = "3";
+  } else if (percentage >= 61 && percentage <= 80) {
+    document.getElementById(`level${count}`).innerHTML = "4";
+  } else if (percentage >= 81 && percentage <= 100) {
+    document.getElementById(`level${count}`).innerHTML = "5";
+  } else {
+    document.getElementById(`level${count}`).innerHTML = "Not in range";
+  }
+}
+</script>
+
+<script>
+const includeCountCheckbox = document.getElementById("includeCount");
+
+includeCountCheckbox.addEventListener("change", function() {
+  const clpElements = document.querySelectorAll(".countLevel");
+
+  if (includeCountCheckbox.checked) {
+    clpElements.forEach(element => {
+      element.style.display = "block";
+    });
+  } else {
+    clpElements.forEach(element => {
+      element.style.display = "none";
+    });
+  }
+});      
+</script>
+ 
+<!--  =============== DETAILED version ========================================================= -->
+<!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>     
+      
+        <button style="margin: 2ex 0 0 0; display:block;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+                 
+    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+      
+      <script>
+      function toggleEditOff(){
+
+            document.getElementById("makeSelectButton").style.display="none";                    
+            document.getElementById("list").style.display="none";          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("editOff").style.display="none";
+            document.getElementById("editOn").style.display="block";   
+            document.getElementById("note").style.display="none";
+            
+           // document.getElementById("styleEditor").style.display="none";
+            
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function toggleEditOn(){
+      
+            document.getElementById("makeSelectButton").style.display="block";                              
+            document.getElementById("list").style.display="block";                    
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("editOff").style.display="block";
+            document.getElementById("editOn").style.display="none";     
+            document.getElementById("note").style.display="block";
+            
+            
+            //document.getElementById("styleEditor").style.display="block";
+              
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      }
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        toggleEditOff();
+        document.getElementById("editOn").style.display="none";     
+            
+                 
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+ <!--  ===============  / Detailed!! SAVE THE DOM as FILE ==================== -->
+
+
+
+
+<p style="margin:35px"> ... end. </p>
+      
+      <script>
+// Set the checkbox as checked when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+  const includeCountCheckbox = document.getElementById("includeCount");
+  includeCountCheckbox.checked = true;
+  // Add your event listener here if needed
+});
+</script>
+
+
+  </body>
+</html>  
+  
+
