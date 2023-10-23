@@ -90,7 +90,32 @@
 <textarea id="listTitle" rows="1" cols="40">Click on all the fruits below.</textarea><br>
 
 <textarea id="wordListInput" rows="4">wood, apple, deer, banana, peach</textarea> <br>
-<button onclick="generateWordList()">Generate List</button>
+<button id="generateWL" onclick="generateWordList()">Generate List</button>
+
+    <!-- show/hide name and ID **!compatible with Print/Save PDF!** (below) -->
+      <!-- show name and ID and Javascript ==================-->      
+           <div id="showHideName" onclick="toglDisplay('nameAndID')" 
+               style= "margin: .3rem; padding: .3rem;
+               color:darkblue; background-color:lightcyan; 
+               text-decoration:underline; width:fit-content;">
+                  show/hide Name and ID
+            </div>
+
+            <div id="nameAndID">
+              <input id="name" type="text" value="name">
+              <input id="id" type="text" value="id#"><br><br>
+            </div>  
+            
+            <script>    
+            function toglDisplay(zElmt) {
+                let zshow = document.getElementById(zElmt);
+                 if (zshow.style.display === "none")
+                     {zshow.style.display = "block";}
+                 else {zshow.style.display = "none";}
+            }
+            </script>             
+      <!-- END show name and ID and Javascript ==================-->        
+
 <section id="wordListSection"></section>
 
 <script>
@@ -171,6 +196,69 @@ for (let i = 0; i < listTitles.length; i++) {
 }
 
 </script>
+
+
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
+
+<!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
+    
+     <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:none"> Print/Save as PDF </button>   
+      
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
 <!--  =============== DETAILED version ========================================================= -->
 <!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
 <!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
@@ -199,6 +287,11 @@ for (let i = 0; i < listTitles.length; i++) {
             document.getElementById("editOff").style.display="none";
             document.getElementById("editOn").style.display="block";   
             
+            document.getElementById("showHideName").style.display="none";   
+            document.getElementById("generateWL").style.display="none";                
+            document.getElementById("printFullView").style.display="block";                
+            
+                        
             document.getElementById("listTitle").style.display="none";  
             document.getElementById("wordListInput").style.display="none"; 
          //   document.getElementById("wordListSection").style.display="none";                                                                  
@@ -223,6 +316,11 @@ for (let i = 0; i < listTitles.length; i++) {
             document.getElementById("saveDom").style.display="block";
             document.getElementById("editOff").style.display="block";
             document.getElementById("editOn").style.display="block";     
+            
+            document.getElementById("showHideName").style.display="block";   
+            document.getElementById("generateWL").style.display="block";                
+            document.getElementById("printFullView").style.display="none";                
+            
             
             document.getElementById("listTitle").style.display="block";  
             document.getElementById("wordListInput").style.display="block"; 
