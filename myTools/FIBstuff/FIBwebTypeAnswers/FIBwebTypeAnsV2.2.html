@@ -669,6 +669,13 @@ document.onreadystatechange = () => {
         function checkThenPrint(){
             let Name =  document.getElementById("name").value.trim();
             let ID = document.getElementById("id").value.trim();
+            
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let namedisplayValue=document.getElementById("name").style.display;            
+            if (namedisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================              
 
             if (
                 (Name==="name" || ID==="id\#" || Name==="" || ID==="")
@@ -865,8 +872,8 @@ let inputs = document.querySelectorAll(".ans");
 
 inputs.forEach((input, index) => {
   input.addEventListener("input", (event) => {
-    let typedText = event.target.value.trim();
-    let correctAnswer = correctAnswers[index].trim();
+    let typedText = event.target.value.trim().replace(/\s+/g, ' '); // Remove extra spaces
+    let correctAnswer = correctAnswers[index].trim().replace(/\s+/g, ' '); // Remove extra spaces from the correct answer
 
     if (typedText === correctAnswer) {
       event.target.style.backgroundColor = "lightgreen";
