@@ -32,6 +32,35 @@ body{
 
 :focus {outline:none;}
 ::-moz-focus-inner {border:0; }
+    
+        /* begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 10rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+        .styleBtn {
+            display:inline-block; box-shadow: 3px 3px 5px darkred;
+            background-color: #D4E6F1; border-radius: 3px;
+        } 
+
+          .fsSmall{ font-size:small; }
+          .fsMedium{ font-size:medium; }
+          .fsLarge{ font-size:large; }
+          .fsXlarge{ font-size:x-large; }
+          .fsXxlarge{ font-size:xx-large; }
+        
+          .editMode{ 
+            font-size:2.2rem; color: orange; 
+            padding:3rem 0 1rem 2rem;
+            background-color: darkblue;   
+          }
+        /* end style editor*/    
+    
    
 * {
   border-radius: 5px;
@@ -136,47 +165,14 @@ body{
         line-height: 1.3;
     }   
     
-    li {     padding: 0 0 1ex 0; font-size:1.1rem; }
-    
-        
-        /* begin style editor*/
-        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
-            padding: 8px; display:inline-block;  
-            position: fixed;
-            top: 4rem;
-            left: 6rem;
-            right: 0;
-            z-index: 999; width:fit-content;
-
-        }
-
-        .styleBtn {
-            display:inline-block; box-shadow: 3px 3px 5px darkred;
-            background-color: #D4E6F1; border-radius: 3px;
-        } 
-
-          .fsSmall{ font-size:small; }
-          .fsMedium{ font-size:medium; }
-          .fsLarge{ font-size:large; }
-          .fsXlarge{ font-size:x-large; }
-          .fsXxlarge{ font-size:xx-large; }
-        /* end style editor*/
-    
+    li {     
+        padding: 0 0 1ex 0; font-size:1.1rem; 
+    }     
 </style>
 </head>
   
 <body>
-    
-<div id="unit" contenteditable = "true">Unit# (ctl+shift+v)</div>
-    
-<div id="title"><div id="mainTitle" contenteditable = "true">title (ctl+shift+v)</div><div id="subTitle" contenteditable = "true">[based on actual events]</div></div>
-    
-<div id="gettingStartedTitle">Getting Started<br>
-        <div id="gettingStarted" contenteditable = "true">    Type or paste unformatted (ctl + shift + v)
-</div>
-</div>
-    
-<div id="styleEditor" class="styleEditor">
+    <div id="styleEditor" class="styleEditor">
                 
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
@@ -211,10 +207,11 @@ body{
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
-                </div>          
-
+                </div>  
       </div>
       
+      <div id="editMode" class="editMode">Edit Mode ------ Edit Mode</div>
+    
      <script>
         function bold(){
             let bold = document.createElement("b");
@@ -272,10 +269,22 @@ body{
                   xxlAbc.className="fsXxlarge";
                   window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
               } //  end fn xxlAbc          
-    </script>         
+    </script>    
+    
+<div id="unit" contenteditable = "true">Unit# (ctl+shift+v)</div>
+    
+<div id="title"><div id="mainTitle" contenteditable = "true">title (ctl+shift+v)</div><div id="subTitle" contenteditable = "true">[based on actual events]</div></div>
+    
+<div id="gettingStartedTitle">Getting Started<br>
+        <div id="gettingStarted" contenteditable = "true">    Type or paste unformatted (ctl + shift + v)
+</div>
+</div>
+    
+     
 
 <div id="container">
-    <div id="column1" class="column1" contenteditable = "true">1Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore disputandum putant. Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae laudatur, industria, ne fortitudo quidem, sed ista sequimur, ut sine cura metuque vivamus animumque et corpus, quantum efficere possimus, molestia liberemus. Ut enim mortis metu omnis quietae.2Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore disputandum putant. Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae laudatur, industria, ne fortitudo quidem, sed ista sequimur, ut sine cura metuque vivamus animumque et corpus, quantum efficere possimus, molestia liberemus. Ut enim mortis metu omnis quietae.</div>
+    <div id="column1" class="column1" contenteditable = "true">Marley was dead: to begin with. There is no doubt whatever about that. The register of his burial was signed by the clergyman, the clerk, the undertaker, and the chief mourner. Scrooge signed it: and Scrooge's name was good upon 'Change, for anything he chose to put his hand to.
+Old Marley was as dead as a door-nail. Mind! I don't mean to say that I know, of my own knowledge, what there is particularly dead about a door-nail. I might have been inclined, myself, to regard a coffin as the only thing dead about a door-nail. But the wisdom of our ancestors is in the simile; and my unhallowed hands shall not disturb it, or the Country's done for. You will, therefore, permit me to repeat, emphatically, that Marley was as dead as a door-nail.</div>
 </div> 
     
 <div id="compQsTitle">Comprehension Questions</div>    
@@ -435,6 +444,7 @@ function textToList() {
         document.getElementById("editOff").style.display="none";
         document.getElementById("editOn").style.display="block";  
         document.getElementById("text2list").style.display="none";  
+        document.getElementById("editMode").style.display="none";  
           
           
             
@@ -453,6 +463,7 @@ function textToList() {
         document.getElementById("editOff").style.display="block";
         document.getElementById("editOn").style.display="none";  
         document.getElementById("text2list").style.display="block";  
+        document.getElementById("editMode").style.display="block";  
 
               
           let contEdbls = document.querySelectorAll('[contentEditable="false"]');
