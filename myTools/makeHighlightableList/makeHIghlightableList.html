@@ -52,7 +52,7 @@
       display: block;
       border-radius: 7px;      
       background-color: #fff8dc;
-      width:100%;    
+      width:fit-content;    
       font-size: 1.3rem;  
       margin: 0 0 .5rem 0.2rem;   
       overflow:auto;
@@ -79,6 +79,10 @@
      .btnDelThis{
           display:block;     
      }    
+    
+    .hideBtn{
+        margin:0.2rem; border: thin solid darkblue; border-radius: 5px;  padding: 0.2rem; font-size: 60%;  color: darkblue; background-color: #E8F2F8; width: fit-content;       
+    }
 </style>
 </head>
 <body>
@@ -95,9 +99,11 @@
     <!-- show/hide name and ID **!compatible with Print/Save PDF!** (below) -->
       <!-- show name and ID and Javascript ==================-->      
            <div id="showHideName" onclick="toglDisplay('nameAndID')" 
-               style= "margin: .3rem; padding: .3rem;
+               style= "margin:1rem .2rem .2rem .2rem; padding: .2rem;
+               font-size: .7rem; border: thin solid darkblue;
                color:darkblue; background-color:lightcyan; 
-               text-decoration:underline; width:fit-content;">
+               width:fit-content;">
+               
                   show/hide Name and ID
             </div>
 
@@ -155,7 +161,7 @@ function generateWordList() {
 
   let listTitleDiv = document.createElement("div");
   listTitleDiv.classList.add("listTitle");
-  listTitleDiv.textContent = listTitleRaw;
+  listTitleDiv.innerHTML = `${listTitleRaw} <span class="hideBtn"> show/hide </span>`;
   listTitleDiv.contentEditable = true;
 
   let deleteButton = document.createElement("button");
@@ -315,7 +321,7 @@ for (let i = 0; i < listTitles.length; i++) {
           
             document.getElementById("saveDom").style.display="block";
             document.getElementById("editOff").style.display="block";
-            document.getElementById("editOn").style.display="block";     
+            document.getElementById("editOn").style.display="none";     
             
             document.getElementById("showHideName").style.display="block";   
             document.getElementById("generateWL").style.display="block";                
@@ -397,8 +403,9 @@ function saveDom(){
       
           let listHides = document.querySelectorAll('.list');
             for (const listHide of listHides) {
-                listHide.style.display="none";
-            }     
+                listHide.style.display="block";
+            }    
+    
     
            //  theDOM study mode
         let theDom2 = document.documentElement.innerHTML;
