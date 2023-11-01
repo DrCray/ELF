@@ -155,7 +155,7 @@ document.onreadystatechange = () => {
 <input id="name" type="text" value="name">
 <input id="id" type="text" value="id#">
       
-        <div style="padding: 3px; width:fit-content; margin:1ex; background-color:#C4EFD7; color:darkred">
+        <div id="playHow" style="padding: 3px; width:fit-content; margin:1ex; background-color:#C4EFD7; color:darkred; display:none;">
             <ul>
                 <li>Click on a square to get a letter hint.</li>
                 <li>Type your guess then hit Enter (or <button> try </button> )</li>
@@ -478,7 +478,8 @@ document.onreadystatechange = () => {
                         showAllBtn.innerHTML="Show All Answers for this section";
                         showAllFn = "showAll('" + zsplitWordID + "')";
                         showAllBtn.setAttribute("onclick", showAllFn);
-                        showAllBtn.style.display="block";
+                        showAllBtn.classList.add("btnShowz");
+                        showAllBtn.style.display="none";
                         showAllBtn.style.margin="1em 0 0 0";
 
                         let zshowAllBtnID = "showAllBtn" + idChar;
@@ -490,7 +491,9 @@ document.onreadystatechange = () => {
                         hideAllBtn.innerHTML="Hide All Answers for this section";
                         hideAllFn = "hideAll('" + zsplitWordID + "')";
                         hideAllBtn.setAttribute("onclick", hideAllFn);
-                        hideAllBtn.style.display="block";
+                        hideAllBtn.classList.add("btnHidez");
+                    
+                        hideAllBtn.style.display="none";
                         hideAllBtn.style.margin="0 0 0 0";
 
                         let zhideAllBtnID = "hideAllBtn" + idChar;
@@ -564,9 +567,12 @@ document.onreadystatechange = () => {
         
         
     </script>
-
-      <div style="border-top: thin solid darkblue; margin: 1ex 0 0 0; padding: 1ex 0 0 0;"><button id="showAllAnsThisPage" onclick="showAll('allLists')">Show all Answers for this page</button></div>
-      <div><button id="hideAllAnsThisPage" onclick="hideAll('allLists')">Hide all Answers for this page</button></div>
+      <div id="btnShowHideAnsOnPage" style="display:none;">
+          <div style="border-top: thin solid darkblue; margin: 1ex 0 0 0; padding: 1ex 0 0 0;"><button id="showAllAnsThisPage" onclick="showAll('allLists')">Show all Answers for this page</button>
+          </div>
+          <div><button id="hideAllAnsThisPage" onclick="hideAll('allLists')">Hide all Answers for this page</button>
+          </div>
+      </div>
       <br>
       <script>
           
@@ -602,6 +608,13 @@ document.onreadystatechange = () => {
         function checkThenPrint(){
             let Name =  document.getElementById("name").value.trim();
             let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let namedisplayValue=document.getElementById("name").style.display;            
+            if (namedisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================  
 
             if (
                 (Name==="name" || ID==="id\#" || Name==="" || ID==="")
@@ -656,6 +669,9 @@ document.onreadystatechange = () => {
                 let contEdbls = document.querySelectorAll("[contenteditable=true]");
                 let delBtns = document.querySelectorAll(".delBtn");
                 let delzWords = document.querySelectorAll(".delWord");  
+                let btnShowzs = document.querySelectorAll(".btnShowz");  
+                let btnHidezs = document.querySelectorAll(".btnHidez");  
+              
 
                 for (const contEdbl of contEdbls ){
                     contEdbl.contentEditable = "false";
@@ -668,6 +684,14 @@ document.onreadystatechange = () => {
                 for (const delzWord of delzWords ){                                        
                     delzWord.style.display = "none";
                 }
+              
+                for (const btnShowz of btnShowzs ){                                        
+                    btnShowz.style.display = "block";
+                }
+              
+                for (const btnHidez of btnHidezs ){                                        
+                    btnHidez.style.display = "block";
+                }              
 
                 document.getElementById("inputList").style.display="none";
                 document.getElementById("saveDom").style.display="none";  
@@ -680,6 +704,10 @@ document.onreadystatechange = () => {
             document.getElementById("toggleShowHideNameID").style.display  = "none";          
             document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";                
 
+            document.getElementById("btnShowHideAnsOnPage").style.display  = "block";  
+            document.getElementById("playHow").style.display  = "block";                
+              
+              
                 // end remove all editables ************************
           }
           
@@ -695,7 +723,17 @@ document.onreadystatechange = () => {
                 // restore editables ***************************
                 let contEdbls = document.querySelectorAll("[contenteditable=false]");
                 let delBtns = document.querySelectorAll(".delBtn");
-                let delzWords = document.querySelectorAll(".delWord");                
+                let delzWords = document.querySelectorAll(".delWord");  
+                let btnShowzs = document.querySelectorAll(".btnShowz");  
+                let btnHidezs = document.querySelectorAll(".btnHidez");  
+              
+                for (const btnShowz of btnShowzs ){                                        
+                    btnShowz.style.display = "none";
+                }
+              
+                for (const btnHidez of btnHidezs ){                                        
+                    btnHidez.style.display = "none";
+                }                
               
                 for (const contEdbl of contEdbls ){
                     contEdbl.contentEditable = "true";
@@ -718,7 +756,11 @@ document.onreadystatechange = () => {
                 document.getElementById("printOptions").style.display="none";
               
             document.getElementById("toggleShowHideNameID").style.display  = "initial";          
-            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";                
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";   
+              
+            document.getElementById("btnShowHideAnsOnPage").style.display  = "none";                
+            document.getElementById("playHow").style.display  = "none";                
+              
                 //end restore editabels **********************              
           }
       
