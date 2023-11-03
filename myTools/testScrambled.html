@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method">		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+      
+		
+		<title>fileName</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .textbox {
+            background-color:beige; display: block;
+            border-style: double; border-width:thick; border-color:darkgreen;
+            padding: .3rem; margin:.75rem; width:fit-content;
+        }           
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quAnsSet {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:3ex; 
+            border-radius: 10px;
+         }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+         
+
+         .answer {
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; 
+         }
+         
+  
+        
+        .textLabel {
+          margin: 1rem 0 1rem 0; background-color:#fff8dc;
+          border-width:thin; border-style:solid;
+          border-color: blue; border-radius: 7px;
+          box-shadow: 3px 3px;
+          padding:1ex;
+        }        
+        
+        .fakeButton/*NO hover*/{
+            
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+        }        
+         
+        .fake-button/*for hover*/{  
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+        
+        .liItem{
+            cursor:pointer; margin: .5rem; 
+            border: thin solid darkblue; 
+            background-color:lightcyan;
+            padding: .4rem;
+            width: fit-content;
+        }   
+        
+        .liItem:active{
+            color:yellow;
+        } 
+        
+        .liItem:hover{
+            opacity: 0.7; background-color:lightpink;
+        }           
+    </style>  
+    
+  </head>
+  
+  <body>﻿
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="false">
+    
+    
+    
+    
+    
+    
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        Summer 2022, <br>
+        Professional English <br> 
+        Course 101, Student  Exercise, Chapter 3 
+        <br>
+        <br>
+        <strong>
+        Exercise Quiz, Chapter 3
+        </strong>
+        <br>
+        <strong>
+        Article: Raining Money
+        </strong> 
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->               
+        
+        
+        
+        
+        
+    </section>   
+</header>
+
+
+
+
+        <!--     **********************************************::z -->        
+        <div class="quAnsSet">
+            
+            <div id="textboxInput" class="textbox" contenteditable="false">
+            This is first. ^^
+            This is second. ^^
+            This is third. ^^
+            This is fourth.       
+            </div>
+            
+            <div id="listDiv"><ul id="ul0"><li id="li1" class="liItem">This is second.</li><li id="li2" class="liItem">This is first.</li><li id="li3" class="liItem">This is third.</li><li id="li4" class="liItem">This is fourth.</li></ul><ul id="ul1"><li id="li5" class="liItem">This is fourth.</li><li id="li6" class="liItem">This is third.</li><li id="li7" class="liItem">This is second.</li><li id="li8" class="liItem">This is first.</li></ul></div>
+            
+           <button id="makeList" class="hlBtn" onclick="makeList ()">make list</button>
+
+        </div>
+        <!--     **********************************************::z --> 
+
+      
+<script>
+    let listCounter = 0;
+    let itemCounter = 1;
+    function makeList() {
+        items = document.getElementById("textboxInput").textContent;
+        items = items.trim().split("^^").map(item => item.trim().replace('^^', '')); 
+
+        makeUnorderedList(items);
+        listCounter++; // Increment the counter for the next list
+    }
+
+    function makeUnorderedList(items) {
+        let listDiv = document.getElementById("listDiv");
+
+        let ul = document.createElement("ul");
+        let ulID = "ul" + listCounter; // Assign a unique ID to each list
+        ul.id = ulID;
+        
+        // Shuffle the items array to randomize the order
+        items = shuffle(items.filter(item => item.trim() !== ''));        
+
+        items = items.filter(item => item.trim() !== '');
+        items.forEach(item => {
+            let li = document.createElement("li");
+            let liID="li" + itemCounter; itemCounter++;
+            li.id= liID;
+            li.classList.add("liItem");
+            li.textContent = item;
+            ul.appendChild(li);
+        });
+
+        listDiv.appendChild(ul);        
+
+    } //makeUnorderedList()
+
+    
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle
+    while (currentIndex !== 0) {
+        // Pick a remaining element
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // Swap it with the current element
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}    
+    
+    
+    
+  let li1= document.getElementById("li2");
+  let li2= document.getElementById("li3");
+
+    //how to get li! and li2 with eventlistener?
+  function swapListItems(li1, li2) {
+    let innerHTML1 = li1.innerHTML;
+    let innerHTML2 = li2.innerHTML;
+    li2.innerHTML = innerHTML1;
+    li1.innerHTML = innerHTML2;
+  } //swapListItems
+
+    let firstSelectedItem = null;
+    
+  function handleListItemClick(event) {
+    const clickedListItem = event.target;
+
+    // Check if the clicked element is an li with the class "liItem"
+    if (clickedListItem.classList.contains("liItem")) {
+      if (firstSelectedItem === null) {
+        // First click
+        firstSelectedItem = clickedListItem;
+        firstSelectedItem.style.backgroundColor = "lightgray"; // Highlight the first selection
+      } else {
+        // Second click
+        const secondSelectedItem = clickedListItem;
+        swapListItems(firstSelectedItem, secondSelectedItem);
+        firstSelectedItem.style.backgroundColor = ""; // Remove highlight from the first item
+        firstSelectedItem = null; // Reset the first selection for the next pair
+      }
+    }
+  } //end handlListItemClick
+
+  document.getElementById("listDiv").addEventListener("click", handleListItemClick);
+
+</script>
+      
+      <script>
+         /*       
+                // Add an event listener to each list item
+        const listItems = document.querySelectorAll('#ul' + listCounter + ' li');
+        listItems.forEach(listItem => {
+          listItem.addEventListener('click', function() {
+            // Reduce the opacity of all list items
+            listItems.forEach(listItem => {
+              listItem.style.opacity = 1;
+            });
+
+            // Set the opacity of the clicked item to 1
+            this.style.opacity = 0.5;
+          });
+        });
+        */      
+      </script>      
+
+      
+      
+      
+      
+      
+<!--  =============== DETAILED version ========================================================= -->
+<!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display: block;">Edit Mode</button>     
+      
+        <button style="margin: 2ex 0px 0px; display: none;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+                 
+    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+      
+    
+      
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+      
+      <script>
+      function toggleEditOff(){
+          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("editOff").style.display="none";
+            document.getElementById("editOn").style.display="block";   
+            
+           // document.getElementById("styleEditor").style.display="none";
+            
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function toggleEditOn(){
+          
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("editOff").style.display="block";
+            document.getElementById("editOn").style.display="none";     
+            
+        //    document.getElementById("styleEditor").style.display="block";
+              
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      }
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        toggleEditOff();
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+ <!--  ===============  / Detailed!! SAVE THE DOM as FILE ==================== -->
+
+
+
+
+<p style="margin:35px"> ... end. </p>
+  
+  
+  
+
+</body></html>
