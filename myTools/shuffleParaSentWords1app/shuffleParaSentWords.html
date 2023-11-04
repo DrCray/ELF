@@ -190,7 +190,7 @@
 
 
         
-      <div id="styleEditor" class="styleEditor">
+      <div id="styleEditor" class="styleEditor editOff">
                 
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
@@ -228,7 +228,7 @@
                 </div>       
       </div>         
       
-      <div class="editMode">Edit Mode ------ Edit Mode</div>
+      <div class="editMode editOff">Edit Mode ------ Edit Mode</div>
       
       
            <script>
@@ -511,7 +511,15 @@ for (const detailsElement of detailsElements) {
     let itemCounter = 1;
     function makeList() {
         let items = document.getElementById("textboxInput").textContent;
-        let itemsAns = items.replaceAll('^^',' ');
+        let whichShuffleValue = document.getElementById('whichShuffle').value;       
+        let itemsAns;
+        if (whichShuffleValue==='paragraph'){            
+        itemsAns = items.replaceAll('^^','<br>'); 
+        } else {
+        itemsAns = items.replaceAll('^^',' ');             
+        }
+    
+    
         items = items.trim().split("^^").map(item => item.trim().replace('^^', '')); 
         let listDiv = document.getElementById("listDiv");
         
@@ -553,7 +561,7 @@ for (const detailsElement of detailsElements) {
              if (whichShuffleValue === 'paragraph') {  
                 li.style.display = 'block';
              } else if (whichShuffleValue === 'sentence') {
-                li.style.display = 'inline';
+                li.style.display = 'inline-block';
              }            
             ul.appendChild(li);
         });
