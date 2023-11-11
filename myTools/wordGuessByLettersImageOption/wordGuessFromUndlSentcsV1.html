@@ -32,6 +32,7 @@
         
         
         
+
         /* CSS begin style editor*/
         .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
             padding: 8px; display:inline-block;  
@@ -58,7 +59,8 @@
             padding:5rem 0 1rem 2rem;
             background-color: darkblue;   
           }            
-        /* end style editor*/        
+        /* end style editor*/      
+        
         
         
         
@@ -94,7 +96,7 @@
          .answer {
             display:block;
             background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
+            border-color: blue; width:fit-content;
             padding:2ex; border-radius: 10px; 
          }
          
@@ -125,14 +127,18 @@
             margin: 1ex 0 1ex 0;
             padding:1ex;
             font-weight: bold; font-size:85%;
-        }            
+        }          
+        
+        #id { margin-bottom: 1rem;}
     </style>  
     
   </head>
   
   <body>
       
-  <div id="styleEditor" class="styleEditor editOff">
+      
+      
+      <div id="styleEditor" class="styleEditor editOff">
                 
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
@@ -235,11 +241,13 @@
 <!--==========================================================
 ================  //end STYLE EDITOR  ===========================
 =================================================================
-==================================================================-->    
+==================================================================-->        
       
       
       
-      <div id="wordID" style="display:none;">1</div>
+      
+      
+      <div id="wordID" style="display:none">1</div>
           <img
             class="center"
             src="topImage.jpg"
@@ -276,7 +284,7 @@
 
  <details class="editOn" style="display:none; font-weight:bold; margin-bottom: 1rem"><summary>How to play</summary><div style="background-color: floralwhite; width:fit-content; padding:.6rem; font-weight:normal"> Begin typing letters to see if they are in the word. When correct, the letter will appear.<br>For two or more words answers, please use a dash between words.<br> (no spaces allowed in the quess-word) For example "head-chef" NOT "head chef" </div></details>  
 
- <details class="editOff" style="font-weight:bold; margin-bottom: 1rem"><summary>Note: no spaces in guesses [more...]</summary><div style="background-color: floralwhite; width:fit-content; padding:.6rem; font-weight:normal">For two or more words answers, please use a dash between words.<br> (no spaces allowed in the quess-word) For example "head-chef" NOT "head chef" "over-the-counter" not "over the counter"</div></details>     
+ <details class="editOff" style="font-weight:bold; margin-bottom: 1rem"><summary>Note: no spaces in guesses [more...]</summary><div style="background-color: floralwhite; width:fit-content; padding:.6rem; font-weight:normal">For two or more words answers, please use a dash between words.<br> (no spaces allowed in the quess-word) For example "head-chef" NOT "head chef" "over-the-counter" not "over the counter"</div></details>   
       
 
 <!-- ====== Name ID Toggle and input ================= -->
@@ -312,11 +320,21 @@ document.onreadystatechange = () => {
       
       
 <div id="wordListDiv"></div>
-      
-<textarea id="wordList" cols="30" rows="5" style="margin: 1ex 0 1ex 0">apple, banana, orange, pear</textarea><div id="dragCorner">(drag corner to expand box size)</div>
+
+
+<div id="sentences" class="answer" contentEditable="true">Person responsible for the kitchen, recipes and menus: <u>chef</u>^^<br>A small restaurant, serves small meals and sandwiches: <u>cafe</u>^^<br> Incorrect or <u>messed</u> up orders. ^^<br>
+Slow service or long wait times for food and <u>beverages</u>.^^<br>
+Cold or <u>undercooked</u> food.^^<br>
+Overcooked or <u>burnt</u> food.^^
+<u>Unpleasant</u> or unfriendly staff behavior.^^
+Dirty or unclean tables, <u>utensils</u>, or restrooms.^^
+Noisy or uncomfortable seating <u>arrangements</u>.^^
+Inadequate <u>portion</u> sizes for the price.</div>
 <br>
 <button id="addWordList" onclick="getWordList()">add word list</button>      
 <br>
+      
+          
 <script>
   // ===== Resizes images =====
   function fnResizeImg(zsizeValue, zzimage){
@@ -328,18 +346,76 @@ document.onreadystatechange = () => {
 </script>
       
 <script>
+function getUndlWords() {   
+    // get the undl elements and put in a comma delimited string
+    
+  // Get the contenteditable div
+  let sentencesDiv = document.getElementById("sentences");
+
+  // Get all <u> elements within the div
+  let underlinedElements = sentencesDiv.querySelectorAll("u");
+
+  // Extract the text content of each underlined element
+  let underlinedWords = Array.from(underlinedElements).map(function(element) {
+    return element.textContent;
+  });
+
+  // Create a comma-delimited string
+  let commaDelString = underlinedWords.join(", ");
+
+  // Display the result
+  return commaDelString;
+}
+
+// Call the function when needed, for example, on a button click
+getUndlWords();
+</script>      
+      
+<script>
     let wordID= document.getElementById('wordID').innerHTML;
     
     function getWordList(){
-            
+          // get the undl elements and put in a comma delimited string
+
+          // Get the contenteditable div
+          let sentencesDiv = document.getElementById("sentences");
+
+            // Check if there are any underlined elements
+            let undlElems = sentencesDiv.querySelectorAll("u");
+
+            if (undlElems.length === 0) {
+                // No underlined elements found, show alert and exit the function
+                alert("Must underline at least one word");
+                return;
+            }
+        
+        
+          // Get all <u> elements within the div
+          let underlinedElements = sentencesDiv.querySelectorAll("u");
+
+          // Extract the text content of each underlined element
+          let underlinedWords = Array.from(underlinedElements).map(function(element) {
+            return element.textContent;
+          });
+        
+          // Create a comma-delimited string
+          let commaDelString = underlinedWords.join(",");        
+        
+          // Replace the outerHTML of each <u> element with six underscores
+          underlinedElements.forEach(function(element) {
+              element.outerHTML = '_____';
+            });  
+        
+                
+      
             //ztitleInstructions =   document.getElementById("titleInstructions").value; 
            // ztitleInstructions.trim();
             
-            wordListCheck =   document.getElementById("wordList").value; 
-            wordListDeXtraCommas = wordListCheck.replace(/,/g, " ");
-            wordListDeSpaces = wordListDeXtraCommas.replace(/\s+/g, ' ');
-            wordListTrim = wordListDeSpaces.trim();                     
-            wordList = wordListTrim.toLowerCase();
+            //wordListCheck =   document.getElementById("wordList").value; 
+         let   wordListDeXtraCommas = commaDelString.replace(/,/g, " ");
+         let   wordListDeSpaces = wordListDeXtraCommas.replace(/\s+/g, ' ');
+         let   wordListTrim = wordListDeSpaces.trim();                     
+         let   wordList = wordListTrim.toLowerCase();
                                // console.log("<br><br>" + wordList);
             
         
@@ -418,8 +494,9 @@ document.onreadystatechange = () => {
         zhint = document.createElement("div");
         zhintID = "hint" + wordID;
         zhint.id = zhintID;
+        zhint.className="hint";
         zhint.innerText = "Type your hint here:";
-        zhint.setAttribute("style", "font-size:130%;");
+        zhint.setAttribute("style", "font-size:125%;");
         zhint.setAttribute('contenteditable', "true");
         //zhintB = document.getElementById("zhintID");
         wordDivWborder.insertBefore(zhint, wordDiv);
@@ -452,6 +529,24 @@ document.onreadystatechange = () => {
         
     wordID++;
     }
+        
+        let sentencesArr = document.getElementById("sentences").textContent.split("^^");
+        
+        // Get all elements with the class name "hint"
+        const hintElements = document.querySelectorAll('.hint');
+
+        // Iterate through each hint element and assign the corresponding sentence
+        hintElements.forEach((hintElement, index) => {
+          // Check if the index is within the bounds of sentencesArr
+          if (index < sentencesArr.length) {
+            // Assign the sentence as textContent
+            hintElement.textContent = sentencesArr[index];
+          } else {
+            // Handle the case where there are more hint elements than sentences
+            hintElement.textContent = "No more sentences available";
+          }
+        });        
+        
 
     } //end fn getWordList 
     
@@ -644,6 +739,7 @@ function saveDom(){
     
     
     toggleEditOff(); 
+    
  
         document.getElementById("editOn").style.display="none";
         document.getElementById("editOff").style.display="none";
@@ -698,8 +794,6 @@ function saveDom(){
                 editOn.style.display="block";
             }           
          
-            
-         
          
     let contEdbls = document.querySelectorAll("[contenteditable=true]");
     let delBtns = document.getElementsByTagName("button");
@@ -717,7 +811,7 @@ function saveDom(){
             imagFile.style.display = "none";
         }   
     
-        document.getElementById("wordList").style.display="none";
+        document.getElementById("sentences").style.display="none";
         document.getElementById("saveDom").style.display="none";
          
         // toggle And override general button deletes
@@ -730,7 +824,7 @@ function saveDom(){
             document.getElementById("toggleShowHideNameID").style.display  = "none";          
             document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";  
          
-            document.getElementById("dragCorner").style.display="none";
+           // document.getElementById("dragCorner").style.display="none";
 
          
     // end remove all editables ************************      
@@ -739,7 +833,6 @@ function saveDom(){
     function toggleEditOn(){
             // restore editables ***************************
         
-         
           let editOffs = document.querySelectorAll('.editOff');
             for (const editOff of editOffs) {
                 editOff.style.display="block";
@@ -749,10 +842,7 @@ function saveDom(){
             for (const editOn of editOns) {
                 editOn.style.display="none";
             }           
-         
-           
         
-
         
     let contEdbls = document.querySelectorAll("[contenteditable=true]");
     let delBtns = document.getElementsByTagName("button");
@@ -770,7 +860,7 @@ function saveDom(){
             imagFile.style.display = "block";
         } 
     
-        document.getElementById("wordList").style.display="block";
+        document.getElementById("sentences").style.display="block";
         document.getElementById("saveDom").style.display="block";
         
         document.getElementById("editOn").style.display="none";
@@ -781,7 +871,7 @@ function saveDom(){
             document.getElementById("toggleShowHideNameID").style.display  = "initial";          
             document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";     
         
-        document.getElementById("dragCorner").style.display="initial";
+        //document.getElementById("dragCorner").style.display="initial";
         
         
     //end restore editabels **********************
