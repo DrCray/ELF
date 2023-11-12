@@ -140,11 +140,12 @@
         </strong> 
     </section>   
 </header>
+<p class="answer editOn" style="display:none">Click/Touch a word to move it left</p>
 
 
 <details id="instructions" style="background:white;margin: .5rem .3rem 1rem .3rem; width: fit-content; padding:.3rem;">
     <summary>Instructions:</summary>
-    <p>You can enter sentences one at a time and click <button>scramble</button> (each has it's own section), or you can enter a sentence list and do them all at one time (all in one section). To enter a sentence list, simply type the markup "qwz" between each sentence to separate them, then hit <button>scramble</button>.</p>
+    <p>You can enter sentences one at a time and click <button>scramble</button> (each has it's own section), or you can enter a sentence list and do them all at one time (all in one section). To enter a sentence list, simply type the markup "^^" between each sentence to separate them, then hit <button>scramble</button>.</p>
     <p>If you don't want to give a hint or instructions for each sentence, simply click <button>delete info/instructins</button> before you save the file.</p></details>
       
       
@@ -188,7 +189,7 @@ document.onreadystatechange = () => {
          <br>
          <br>
          </label>
-         <textarea id="zList"  style="width: 40%; min-width:30ex" rows = "5">  The dog barked and scared Mark. qwz He began running as fast as he could. qwz He climbed a tree. 
+         <textarea id="zList"  style="width: 40%; min-width:30ex" rows = "5">  The dog barked and scared Mark. ^^ He began running as fast as he could. ^^ He climbed a tree. 
          </textarea> <br>             
              (drag corner to make input box bigger)
      </div> 
@@ -237,9 +238,9 @@ document.onreadystatechange = () => {
          
          let listCheck =   document.getElementById("zList").value.trim(); console.log("listCheck:" +listCheck);
          let listDeSpaces = listCheck.replace(/\s+/g, ' ');
-            let listDeqwz = listDeSpaces.replace(/^qwz|qwz$/gi, "").trim(); console.log("dequz;" + listDeqwz);
-            let listQwz2Lcase = listDeqwz.replace(/qwz/gi, "qwz"); console.log("qwz2lcase;" + listQwz2Lcase);            
-         let getInput2arr = listQwz2Lcase.split('qwz'); console.log("inpArr;" + getInput2arr);
+            let listDeqwz = listDeSpaces.replace(/^\^\^|\^\^$/gi, "").trim(); console.log("dequz;" + listDeqwz);
+            let listQwz2Lcase = listDeqwz.replace(/\^\^/gi, "^^"); console.log("qwz2lcase;" + listQwz2Lcase);            
+         let getInput2arr = listQwz2Lcase.split('^^'); console.log("inpArr;" + getInput2arr);
          
          
          
@@ -416,6 +417,18 @@ document.onreadystatechange = () => {
           
       function toggleEditOff(){
         // remove all editables ***********************************
+          
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }             
+          
+          
         let contEdbls = document.querySelectorAll("[contenteditable=true]");
         let hlBtns = document.querySelectorAll(".hlBtn");
 
@@ -451,7 +464,17 @@ document.onreadystatechange = () => {
       }
           
       function toggleEditOn(){
-    // restore editables ***************************
+    // restore editables ***************************          
+          
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }             
           
         let contEdbls = document.querySelectorAll("[contenteditable=false]");
         let hlBtns = document.querySelectorAll(".hlBtn");
