@@ -338,7 +338,7 @@
     </section>   
 </header>
 
-
+<details class="editOff"><summary>Instructions</summary>As in the examples below, always place the answers first (zz.ans, zz.also)<br> followed by the incorrect (zz.not).<br> The app will randomly shuffle the choices.</details>
 
 
   
@@ -349,18 +349,25 @@
 
             <div id="textbox" class="inputBox" contenteditable="true">
                 Type or paste <em>unformatted</em> text here. (ctl + shift + v) <br><br>
-                zz.qu Which one below is a fruit? <br>
+                zz.qu Which ones below are fruit? <br>
                 zz.ans banana <br>
-                zz.also bear <br>
-                zz.not deer <br>
-                zz.not tiger <br>
+                zz.also apple <br>
+                zz.also pear <br>
+                zz.not tiger <br>              
                 zz.end <br><br>
-                zz.qu Which one below is an animal?<br>
-                zz.ans banana <br>
-                zz.not bear <br>
-                zz.not deer <br>
+                zz.qu Which ones below are animals?<br>
+                zz.ans monkey <br>
                 zz.also tiger <br>
+                zz.not apple <br>
+                zz.not banana <br>
                 zz.end <br>
+                zz.qu Which ones below are animals?<br>
+                zz.ans monkey <br>
+                zz.also tiger <br>
+                zz.also fox <br>
+                zz.also meerkat <br>
+                zz.also cow <br>
+                zz.end <br>                
             </div>
         </div>
         
@@ -638,7 +645,7 @@ function getScore() {
     }
 
     // Calculate the average
-    average = totalCorrect > 0 ? (selectedCorrect / totalCorrect) * 100 : 0;
+    average = totalCorrect > 0 ? Math.round((selectedCorrect / totalCorrect) * 100) : 0;
     
     document.getElementById("score").textContent = average;
     // Output the results
@@ -717,6 +724,16 @@ function fn_tbox4students(buttonThis) {
       <script>
       function toggleEditOff(){
           
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }  
+          
             document.getElementById("styleEditor").style.display="none";          
             document.getElementById("saveDom").style.display="none";
             document.getElementById("editOff").style.display="none";
@@ -752,6 +769,16 @@ function fn_tbox4students(buttonThis) {
       } //end toggleEditOFf
           
       function toggleEditOn(){
+          
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }            
        
             document.getElementById("styleEditor").style.display="block";                    
             document.getElementById("saveDom").style.display="block";
