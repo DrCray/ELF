@@ -135,7 +135,7 @@
         </strong> 
     </section>   
 </header>
-      
+<p class="answer editOn" style="display:none">Click/Touch a sentence to move it up one place</p>
 <!-- ====== Name ID Toggle and input ================= -->
 <script>
 document.onreadystatechange = () => {
@@ -175,12 +175,12 @@ document.onreadystatechange = () => {
      <div class="quStyle"><label for="wordList">Type/paste your sentence list in the correct order. 
         
          <br>
-             <code>Put qwz at the end of each sentence.</code>
+             <code>Put ^^ at the end of each sentence.</code>
          <br>
          </label>
-         <textarea id="zList"  style="width: 40%; min-width:30ex" rows = "5">The dog barked and scared Mark. qWz He began running as fast as he could.qwz He climbed a tree.  qwz 
+         <textarea id="zList"  style="width: 40%; min-width:30ex" rows = "5">The dog barked and scared Mark. ^^ He began running as fast as he could.^^ He climbed a tree.  ^^ 
          </textarea> <br>             
-             (drag corner to make input box bigger)
+             <span style="color:darkblue; background-color:gainsboro">(drag corner to make text area bigger)</span>
      </div>
     
         <label id="noShowAnsPeekLbl" for="noShowAnsPeek" style="display:block">
@@ -228,9 +228,9 @@ document.onreadystatechange = () => {
          let i = 0;
          
          listCheck =   document.getElementById("zList").value.trim(); //console.log(listCheck);
-         listDeqwz = listCheck.replace(/^qwz|qwz$/gi, "").trim(); //console.log(listDeqwz);
-         listQwz2Lcase = listDeqwz.replace(/qwz/gi, "qwz"); //console.log(listQwz2Lcase);
-         let listArrz = listQwz2Lcase.split('qwz'); //console.log(listArrz);
+         listDeqwz = listCheck.replace(/^\^\^|\^\^$/gi, "").trim(); //console.log(listDeqwz);
+         listQwz2Lcase = listDeqwz.replace(/\^\^/gi, "^^"); //console.log(listQwz2Lcase);
+         let listArrz = listQwz2Lcase.split('^^'); //console.log(listArrz);
          for (const listArr of listArrz){
              listArrB[i] = listArr.trim(); i++;
          }
@@ -367,6 +367,17 @@ document.onreadystatechange = () => {
       <script>
       function toggleEditOff(){
             // remove all editables ***********************************
+          
+              let editOffs = document.querySelectorAll('.editOff');
+                for (const editOff of editOffs) {
+                    editOff.style.display="none";
+                }          
+
+              let editOns = document.querySelectorAll('.editOn');
+                for (const editOn of editOns) {
+                    editOn.style.display="block";
+                }             
+          
             let contEdbls = document.querySelectorAll("[contenteditable=true]");
             let hlBtns = document.querySelectorAll(".hlBtn");
 
@@ -384,7 +395,7 @@ document.onreadystatechange = () => {
             document.getElementById("editOn").style.display="initial";   
           
             document.getElementById("printOptions").style.display="block";
-            document.getElementById("printFullView").style.display="block";
+            document.getElementById("printFullView").style.display="block";block
 
             document.getElementById("noShowAnsPeekLbl").style.display="none";
           
@@ -400,6 +411,18 @@ document.onreadystatechange = () => {
       }
           
       function toggleEditOn(){
+          
+              let editOffs = document.querySelectorAll('.editOff');
+                for (const editOff of editOffs) {
+                    editOff.style.display="block";
+                }          
+
+              let editOns = document.querySelectorAll('.editOn');
+                for (const editOn of editOns) {
+                    editOn.style.display="on";
+                }             
+          
+          
             let contEdbls = document.querySelectorAll("[contenteditable=false]");
             let hlBtns = document.querySelectorAll(".hlBtn");
             // restore editables ***************************
