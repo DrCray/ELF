@@ -522,7 +522,22 @@ checkbox.addEventListener('change', function() {
 
 // !!!!  a more complete example ]]]]]]]]]]]
 function fn_makeMCQ() {
-  let parsed = document.getElementById("textbox").textContent
+    let textBoxContent = document.getElementById("textbox").textContent;
+
+      // Count occurrences of "zz.qu" and "zz.end"
+      let quCount = (textBoxContent.match(/zz\.qu/g) || []).length;
+      let endCount = (textBoxContent.match(/zz\.end/g) || []).length;
+
+      // Check if the total count is odd
+      if ((quCount + endCount) % 2 === 1) {
+        // If odd, show alert message and return
+        alert("You seem to be missing a zz.end markup.");
+        return;
+      }
+    
+    
+    
+  let parsed = textBoxContent
     .replace(/zz\.qu/gi, '<div class="delThisQuSet"><p id="unset" class="question"><span class="num"></span>')
     .replace(/zz\.ans/gi, '</p>	<div id="unset" class="allLabelsInputs"><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="correct"><label for="unset" id="unset" class="ansLbl">')
     .replace(/zz\.not/gi, '</label></div><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="incorrect"><label for="unset" id="unset" class="ansLbl">')
