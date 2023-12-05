@@ -1868,19 +1868,24 @@ You too!</font></font></p>
     
     
 function toggleText(id2toggle) {
-    if (toggleTextStatus === "on"){
-        let showAnswer = document.getElementById(id2toggle); 
+    event.preventDefault(); // or use return false; at the end
+
+    if (toggleTextStatus === "on") {
+        let showAnswer = document.getElementById(id2toggle);
         if (showAnswer.style.display === "block") {
             showAnswer.style.display = "none";
         } else {
             let hideAllButX = document.querySelectorAll(".answer");
-            for (const hideAllBut of hideAllButX){
+            for (const hideAllBut of hideAllButX) {
                 hideAllBut.style.display = "none";
             }
-                showAnswer.style.display = "block";
-            } //end if...else
+            showAnswer.style.display = "block";
+
+            // Scroll to the top of the opened answer element
+showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+        } //end if...else
     } //end if toggleTextStatus
-} //end toggleText() 
+} //end toggleText()
 </script>
 
 </div>
