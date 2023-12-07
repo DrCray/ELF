@@ -307,6 +307,8 @@
 =================================================================
 ==================================================================-->
   
+<div id="flagEditState" style="display:block;">0</div>
+      
   <header id="zzpageHeader">
     <section id="zztitle" contenteditable="true">
     
@@ -423,7 +425,7 @@
             <div id="MCsection"></div>
             <br>
         <button id="getScore" onclick="getScore();">get score</button><div id="score" class="score">00</div>
-        <div style="margin:.2rem 0 0 0">Correct answers will <span style="background:#DEF8D0; padding: .1rem 0 0 0; border:thin solid darkgreen;"> &nbsp;highlight</span> in green </div>
+        <div id="correctAnsShowGreen" style="margin:.2rem 0 0 0">Correct answers will <span style="background:#DEF8D0; padding: .1rem 0 0 0; border:thin solid darkgreen;"> &nbsp;highlight&nbsp;</span> in green </div>
     <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
              
       <!-- !!!! turn button on with display:block toggleEditOn  -->      
@@ -519,8 +521,14 @@ checkbox.addEventListener('change', function() {
 
      if (checkbox.checked) {
         getScoreBtn.style.display = 'none';
+        document.getElementById("flagEditState").textContent ="1";
+        document.getElementById("correctAnsShowGreen").style.display="none";
+        
   } else {
         getScoreBtn.style.display = 'inline-block';
+        document.getElementById("flagEditState").textContent ="0";  
+        document.getElementById("correctAnsShowGreen").style.display="block";
+        
   }
 });
 </script>
@@ -677,6 +685,8 @@ allLabelsInputs.forEach((thisLabelsInputs) => {
 let average;    
     
 function getScore() {
+  let editState = document.getElementById("flagEditState").textContent;
+    
   // Get all checkboxes with the name "answer"
   let checkboxes = document.querySelectorAll('input[type="checkbox"][name^="answer"]');
 
@@ -688,11 +698,13 @@ function getScore() {
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].value === 'correct') {
         
+        if (editState==="0"){
         // Highlight correct answer
         checkboxes[i].parentNode.style.backgroundColor = '#DEF8D0';
         //checkboxes[i].parentNode.style.color = '#002700';
         checkboxes[i].parentNode.style.width = 'fit-content';
         checkboxes[i].parentNode.style.border = 'thin solid darkgreen';
+        }
         
       totalCorrect++;
       if (checkboxes[i].checked) {

@@ -311,6 +311,8 @@
 =================================================================
 ==================================================================-->
   
+<div id="flagEditState" style="display:none">0</div>      
+      
   <header id="zzpageHeader">
     <section id="zztitle" contenteditable="true">
     
@@ -419,7 +421,7 @@
             <div id="MCsection"></div>
             <br>
         <button id="getScore" onclick="getScore();">get score</button><div id="score" class="score">00</div>
-        
+        <div id="correctAnsShowGreen" style="margin:.2rem 0 0 0">Correct answers will <span style="background:#fbfddb; padding: .1rem 0 0 0; color:#003100"> &nbsp;highlight&nbsp;</span> in green </div>        
     <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
              
       <!-- !!!! turn button on with display:block toggleEditOn  -->      
@@ -434,6 +436,7 @@
     // Here we get the score, encode it, and make a file name
     //    for the gradebook app
         average = 0;
+            
             getScore();
         
         let NameA =  document.getElementById("name").value.replace(/[^a-zA-Z0-9 -]/g, "").trim();
@@ -515,8 +518,14 @@ checkbox.addEventListener('change', function() {
 
      if (checkbox.checked) {
         getScoreBtn.style.display = 'none';
+        document.getElementById("flagEditState").textContent ="1";
+        document.getElementById("correctAnsShowGreen").style.display="none";
+        
   } else {
         getScoreBtn.style.display = 'inline-block';
+        document.getElementById("flagEditState").textContent ="0";  
+        document.getElementById("correctAnsShowGreen").style.display="block";
+        
   }
 });
 </script>
@@ -671,6 +680,7 @@ allLabelsInputs.forEach((thisLabelsInputs) => {
 let average;    
     
 function getScore() {
+    let editState = document.getElementById("flagEditState").textContent;
     // Get all radio buttons with the name "answer"
     // !!! notice the name^= ... which finds all name values that start with answer of answer1, answer1, et..
     let radioButtons = document.querySelectorAll('input[type="radio"][name^="answer"]');
@@ -683,10 +693,11 @@ function getScore() {
     for (let i = 0; i < radioButtons.length; i++) {
       if (radioButtons[i].value === 'correct') {
         totalCorrect++;
-
-          // Set background and text colors for the correct answer
-          radioButtons[i].nextElementSibling.style.backgroundColor = '#FBFDDB';
-          radioButtons[i].nextElementSibling.style.color = '#003100';          
+          if (editState==="0"){
+              // Set background and text colors for the correct answer
+              radioButtons[i].nextElementSibling.style.backgroundColor = '#FBFDDB';
+              radioButtons[i].nextElementSibling.style.color = '#003100';    
+          }
           
         if (radioButtons[i].checked) {
           selectedCorrect++;
@@ -774,6 +785,20 @@ function fn_tbox4students(buttonThis) {
       <script>
       function toggleEditOff(){
           
+<!-- ==============  use for class editOff/OntoggleEditOff (/on) =========== -->
+<!-- ======= don't forget to switch display valuse for toggleEditOn ======= -->
+
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }   
+<!-- ====  End Class editOff/On  =====++++++++++++++++++++++++++++++== -->
+          
             document.getElementById("styleEditor").style.display="none";          
             document.getElementById("saveDom").style.display="none";
             document.getElementById("editOff").style.display="none";
@@ -809,6 +834,21 @@ function fn_tbox4students(buttonThis) {
       } //end toggleEditOFf
           
       function toggleEditOn(){
+          
+<!-- ==============  use for class editOff/OntoggleEditOff (/on) =========== -->
+<!-- ======= don't forget to switch display valuse for toggleEditOn ======= -->
+
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }   
+<!-- ====  End Class editOff/On  =====++++++++++++++++++++++++++++++== -->          
+          
        
             document.getElementById("styleEditor").style.display="block";                    
             document.getElementById("saveDom").style.display="block";
