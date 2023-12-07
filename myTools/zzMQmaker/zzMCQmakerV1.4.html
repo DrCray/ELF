@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>zzMCQmaker</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+/* CSS begin style editor*/
+.styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+    padding: 8px; display:inline-block;  
+    position: fixed;
+    top: 0;
+    left: 1rem;
+    right: 0;
+    z-index: 999; width:fit-content;
+}
+
+    .styleBtn {
+        display:inline-block; box-shadow: 3px 3px 5px darkred;
+        background-color: #D4E6F1; border-radius: 3px;
+    } 
+
+      .fsSmall{ font-size:small; }
+      .fsMedium{ font-size:medium; }
+      .fsLarge{ font-size:large; }
+      .fsXlarge{ font-size:x-large; }
+      .fsXxlarge{ font-size:xx-large; }
+
+  .editMode{ 
+    font-size:2.2rem; color: orange; 
+    padding:3rem 0 1rem 2rem;
+    background-color: darkblue;   
+  }
+/* end style editor*/           
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quSet {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:3ex; 
+            border-radius: 10px;
+         }
+        
+        .delThisQuSet{
+            border: thin solid darkblue;
+            border-radius: 7px; box-shadow: 2px 2px 2px gray;
+            margin: .5rem 0 0 0; padding: 0 0 0 1rem;
+            background-color:#D7EDF0; 
+        }
+        
+        .allLabelsInputs{
+            margin:0 0 1rem 0;
+        }
+         
+        .question {
+            border-radius: 7px; box-shadow: 2px 2px 2px #C9C9CA;
+            width: fit-content; margin: 2rem 0 1rem 0; padding:.3rem 1rem .3rem 1rem;
+            background-color:#E9E9E9; 
+
+        }
+         
+
+         .answer {
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:0; border-radius: 10px; 
+         }  
+        
+         .subDetails {
+            display:block; width:fit-content; 
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:.3rem; border-radius: 10px; 
+         }               
+        
+        .inputBox {
+            background-color:#F5F5F5; display: block;
+            border-style: solid; border-width:medium; border-color:slateblue;
+            border-radius: 8px;
+            padding: .5rem; margin:.75rem; width:fit-content;
+        }          
+                
+        .infoBox {
+            background-color:#F5F5F5; display: block;
+            border-style: solid; border-width:medium; border-color:slateblue;
+            border-radius: 8px;
+            padding: .5rem; margin:.75rem; width:fit-content;
+        }  
+        
+        .tbox4students {
+            background-color:beige; display: block;
+            border-style: double; border-width:thick; border-color:darkgreen;
+            padding: .5rem; margin:.75rem; width:fit-content;
+        }         
+        
+        .textLabel {
+          margin: 1rem 0 1rem 0; background-color:#fff8dc;
+          border-width:thin; border-style:solid;
+          border-color: blue; border-radius: 7px;
+          box-shadow: 3px 3px;
+          padding:1ex;
+        }         
+         
+        .fakeButton/*NO hover*/{
+            
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+        }        
+         
+        .fake-button/*for hover*/{  
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        .addTextbox{
+            border-radius:5px; margin: 1rem 0 0 0; 
+            background-color:#E2FFEB;            
+        }
+        
+        .addTextbox:hover {
+            background-color:#D8DEDA;  border-radius: 5px;
+        }        
+        
+        /*  for <button> class="hltBtn"  */
+        .delBtn2 {
+            border-radius:5px; margin: 1rem 0 0 0; 
+            background-color:#FFEDFC;
+        }
+
+        .delBtn2:hover {
+            background-color:#EED9EB;  border-radius: 5px;
+        }
+        
+        #score {
+            display:inline;
+            margin: 0 1rem 0 0;
+            border-radius:5px; margin: 0 0 0 .5rem; 
+            border:thin solid darkblue;
+            padding: .2rem;
+            background-color:#E2FFEB;    
+            width:fit-content;
+            font-size: .85rem;
+        }
+        input {
+            color: #355279;
+        }
+    </style>  
+    
+  </head>
+  
+  <body>﻿
+      
+      <!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+        
+      <div id="styleEditor" class="styleEditor">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>         
+      </div>   
+      
+      <div id="editMode" class="editMode">Edit Mode ------ Edit Mode</div>
+
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+    
+    
+    
+    
+    
+    
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        Summer 2022, <br>
+        Professional English <br> 
+        Course 101, Student  Exercise, Chapter 3 
+        <br>
+        <br>
+        <strong>
+        Exercise Quiz, Chapter 3
+        </strong>
+        <br>
+        <strong>
+        Article: Raining Money
+        </strong> 
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->               
+        
+        
+        
+        
+        
+    </section>   
+</header>
+
+
+<details class="editOff"><summary>Instructions</summary><div class="subDetails">As in the examples below, always place the correct answer first (zz.ans)<br> followed by the incorrects (zz.not).<br> The app will randomly shuffle the choices.<br>You may have as many incorrect choices as you like.</div></details>
+
+
+  
+<!--  1   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<!--     **************************   A Card   *************************-->
+    <section id="textareaGroup" class="zztextAreaLabel"  style="display:block;">
+        <div id="textarea1" class = "textarea">
+
+            <div id="textbox" class="inputBox" contenteditable="true">
+                Type or paste <em>unformatted</em> text here. (ctl + shift + v) <br><br>
+                zz.qu Which one below is a fruit? <br>
+                zz.ans banana <br>
+                zz.not bear <br>
+                zz.not tiger <br>
+                zz.end <br><br>
+                zz.qu Which one below is an animal?<br>
+                zz.ans tiger <br>
+                zz.not apple <br>
+                zz.not peach <br>
+                zz.end <br>
+            </div>
+        </div>
+        
+<!-- ===============  Togle with Checkbox By Class =========================================== -->
+<div id="examModeLblInput">
+<input id="autoNumbering" type="checkbox">
+    <label for="autoNumbering" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Auto Numbering</label><br><br>
+    
+<input id="toggleScore" type="checkbox">
+    <label for="toggle" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Exam Mode (score won't show)</label> <br></div>
+
+
+          <div id="showHideName" onclick="toglDisplay('nameAndID')" 
+               style= "margin:1rem .2rem .2rem .2rem; padding: .2rem;
+               font-size: .8rem; border: thin solid darkblue;
+               color:darkblue; background-color:lightcyan; 
+               width:fit-content;">
+               
+                  show/hide Name and ID
+            </div>
+
+            <div id="nameAndID">
+              <input id="name" type="text" value="name">
+              <input id="id" type="text" value="id#">
+            </div>  
+            <div>
+                <div id="quizID" class="inputBox" contentEditable>Quiz ID/Title</div>
+            </div>
+        
+        
+            <script>    
+                //this is just here in the first script section; not related to toglDisplay                
+                document.getElementById("toggleScore").checked = false;
+                
+            function toglDisplay(zElmt) {
+                let zshow = document.getElementById(zElmt);
+                 if (zshow.style.display === "none")
+                     {zshow.style.display = "block";}
+                 else {zshow.style.display = "none";}
+            }
+            </script>             
+      <!-- END show name and ID and Javascript ==================-->        
+            
+            <button id="makeMCQ" onclick="fn_makeMCQ()" style="margin: 1.3rem 0 0 0;">Convert</button>
+            
+            <div id="MCsection"></div>
+            <br>
+        <button id="getScore" onclick="getScore();">get score</button><div id="score" class="score">00</div>
+        
+    <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
+             
+      <!-- !!!! turn button on with display:block toggleEditOn  -->      
+     
+        <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:none; margin: .5rem;"> Print/Save as PDF </button>   
+      
+      <script>
+        function checkThenPrint(){
+
+    
+    
+    // Here we get the score, encode it, and make a file name
+    //    for the gradebook app
+        average = 0;
+            getScore();
+        
+        let NameA =  document.getElementById("name").value.replace(/[^a-zA-Z0-9 -]/g, "").trim();
+        let IDa = document.getElementById("id").value.replace(/[^a-zA-Z0-9 -]/g, "").trim();
+        let quizID = document.getElementById("quizID").textContent.replace(/[^a-zA-Z0-9 -]/g, "").trim();
+    
+        let ranNumb = Math.floor(Math.random() * 10);
+        let ranNumb2 = Math.floor(Math.random() * 10);
+        let codedScore = String(average +  357);    
+        let encodedScore = ranNumb + codedScore +  ranNumb2;    
+       // let zzDecodeScore = Number(encodedScore.slice(1,4)) - 357;
+       // console.log (zzDecodeScore);  
+      
+        let newTitle = `${IDa}_${NameA}_${quizID}_${encodedScore}`;
+        document.title = newTitle.replace(/\s/g, "").trim();
+        //console.log("zzzzzzzzzzzz" + average);
+        //console.log(`filename=${fileName}`);
+        
+    
+              
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+    
+        
+    </section>
+
+<script>
+
+<!-- ==========  Toggle getScore ========== -->
+// you may reverse the "block" and "none" values depending on whether you 
+// want to start as checked or unchecked.
+
+// Step 1: Select the input checkbox element
+const checkbox = document.querySelector('#toggleScore');
+
+// Step 2: Add an event listener for the "change" event
+checkbox.addEventListener('change', function() {
+    
+    
+  // Step 3: Select the element(s) you want to toggle
+  const elementsToToggle = document.querySelectorAll('.score');
+
+  // Step 4: Check the "checked" property of the checkbox
+  if (checkbox.checked) {
+    // Step 5: Set the "display" property to "block"
+    elementsToToggle.forEach(element => {
+      element.style.display = 'none';
+    });
+  } else {
+    // Step 5: Set the "display" property to "none"
+    elementsToToggle.forEach(element => {
+      element.style.display = 'inline-block';
+    });
+  }
+    
+ 
+    ///////// toggle the button as well
+    const getScoreBtn = document.getElementById("getScore");
+
+     if (checkbox.checked) {
+        getScoreBtn.style.display = 'none';
+  } else {
+        getScoreBtn.style.display = 'inline-block';
+  }
+});
+</script>
+<!-- ==================================================================================-->          
+    
+<script>
+
+    
+ function numberAndReplace(text) {
+    // Regular expression to match "zz.qu"
+    var regex = /zz\.qu/g;
+
+    // Counter to keep track of occurrences
+    var counter = 1;
+
+    // Replace each occurrence with the numbered version
+    var result = text.replace(regex, function(match) {
+        return match + ' ' + counter++ + '. ';
+    });
+
+    return result;
+}   
+    
+// !!!!  a more complete example ]]]]]]]]]]]
+function fn_makeMCQ() {
+    let textBoxContentz = document.getElementById("textbox").textContent;
+    let autonumbering = document.getElementById("autoNumbering");
+    let textBoxContent;
+    
+    if (autonumbering.checked){
+        textBoxContent = numberAndReplace(textBoxContentz);
+    } else {
+        textBoxContent = textBoxContentz;
+    }
+    
+      // Count occurrences of "zz.qu" and "zz.end"
+      let quCount = (textBoxContent.match(/zz\.qu/g) || []).length;
+      let endCount = (textBoxContent.match(/zz\.end/g) || []).length;
+
+      // Check if the total count is odd
+      if ((quCount + endCount) % 2 === 1) {
+        // If odd, show alert message and return
+        alert("You seem to be missing a zz.end markup.");
+        return;
+      }
+    
+    
+    
+  let parsed = textBoxContent
+    .replace(/zz\.qu/gi, '<div class="delThis"><button id="addTextbox" class="addTextbox" onclick ="fn_addTextbox(this)">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="unset" class="question"><span class="num"></span>')
+    .replace(/zz\.ans/gi, '</p>	<div id="unset" class="allLabelsInputs"><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="correct"><label for="unset" id="unset" class="ansLbl">')
+    .replace(/zz\.not/gi, '</label></div><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="incorrect"><label for="unset" id="unset" class="ansLbl">')
+    .replace(/zz\.end/gi, '</label></div></div> <button id="delTextareaBtn1" class="delBtn2" style="display:block;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>');
+  let parsedMarkup = '<div id="unset" class="quSet">' + parsed  + '     <div class="delThis"><button id="addTextbox" class="addTextbox" onclick ="fn_tbox4students(this)">add Essay Box here</button><button id="delTextareaBtn1" class="delBtn2" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox</button> </div>        <button id="delTextareaBtn1" class="delBtn2" style="display:block;" onclick="this.parentElement.remove()"> delete this section </button></div>'
+    
+  document.getElementById("MCsection").innerHTML += parsedMarkup;
+
+    
+// Get all elements with the class "question" and "ans"
+const quSetElements = document.querySelectorAll('.quSet');
+const questionElements = document.querySelectorAll('.question');
+const inputElements = document.getElementsByName('answer');
+const labelElements = document.querySelectorAll('.ansLbl');
+const textboxElements = document.querySelectorAll('.addTextbox');
+const allLabelsInputs = document.querySelectorAll('.allLabelsInputs');
+const lblAndInputs = document.querySelectorAll('.lblAndInput');
+    
+// Iterate through the quSet elements and assign unique IDs
+quSetElements.forEach((element, index) => {
+  element.id = 'quSet' + index;
+});    
+    
+// Iterate through the textbox class elements and assign unique IDs
+textboxElements.forEach((element, index) => {
+  element.id = 'addTextbox' + index;
+});    
+        
+// Iterate through the question elements and assign unique IDs
+questionElements.forEach((element, index) => {
+  element.id = 'question' + index;
+});
+
+    
+// Iterate through the input elements and assign unique IDs
+inputElements.forEach((element, index) => {
+  element.id = 'radioBtn' + index;
+}); 
+
+// Iterate through the answer elements and assign unique IDs
+labelElements.forEach((element, index) => {
+  element.id = 'ansLbl' + index;
+  element.htmlFor = 'radioBtn' + index;  
+});    
+
+// Iterate through the allLabelsInputs elements and assign unique IDs
+allLabelsInputs.forEach((element, index) => {
+  element.id = 'allLabelsInputs' + index;
+});     
+    
+// Iterate through the allLabelsInputs elements and assign unique IDs
+lblAndInputs.forEach((element, index) => {
+  element.id = 'lblAndInput' + index;
+}); 
+    
+    
+// *Setting the Input Group Names*  -----------------  
+// Get all divisions with class="delThisQuSet"
+const delThisQuSetDivs = document.querySelectorAll('.delThisQuSet');
+
+// Iterate over each division
+delThisQuSetDivs.forEach((div, i) => {
+  // Get all input elements within the division
+  const zinputElements = div.querySelectorAll('input[type="radio"]');
+
+  // Reset the name attribute of each input element to a unique value within the division
+  zinputElements.forEach((input) => {
+    input.name = `answer${i}`;
+  }); //end zinputElements.foreach
+    
+});  //end delThisQuSet.foreach   
+    
+
+function shuffleRadioInputs(division) {
+  // Get all of the input/label containers in the division
+  const lblAndInputs = Array.from(division.querySelectorAll('.lblAndInput'));
+
+  // Shuffle the input/label containers
+  const shuffledLblAndInputs = lblAndInputs.slice();
+
+  for (let i = shuffledLblAndInputs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledLblAndInputs[i], shuffledLblAndInputs[j]] = [shuffledLblAndInputs[j], shuffledLblAndInputs[i]];
+  }
+
+  // Append the shuffled input/label containers back to the division in the new random order
+  shuffledLblAndInputs.forEach(lblAndInput => {
+    division.appendChild(lblAndInput);
+  });
+}
+
+// redeclaration below, so sook out.    
+//const allLabelsInputs = document.querySelectorAll('.allLabelsInputs');
+
+allLabelsInputs.forEach((thisLabelsInputs) => {
+  // Shuffle the radio input/label containers in the quAnsSet
+  shuffleRadioInputs(thisLabelsInputs);
+});
+
+    
+} //end fnMakeMCQ
+
+let average;    
+    
+function getScore() {
+    // Get all radio buttons with the name "answer"
+    // !!! notice the name^= ... which finds all name values that start with answer of answer1, answer1, et..
+    let radioButtons = document.querySelectorAll('input[type="radio"][name^="answer"]');
+
+    // Initialize variables to keep track of the counts
+    let totalCorrect = 0;
+    let selectedCorrect = 0;
+
+    // Loop through each radio button and count "correct" values
+    for (let i = 0; i < radioButtons.length; i++) {
+      if (radioButtons[i].value === 'correct') {
+        totalCorrect++;
+
+          // Set background and text colors for the correct answer
+          radioButtons[i].nextElementSibling.style.backgroundColor = '#FBFDDB';
+          radioButtons[i].nextElementSibling.style.color = '#003100';          
+          
+        if (radioButtons[i].checked) {
+          selectedCorrect++;
+        }
+      }
+    }
+
+    // Calculate the average
+    average = totalCorrect > 0 ? Math.round((selectedCorrect / totalCorrect) * 100) : 0;
+    
+    document.getElementById("score").textContent = average;
+    // Output the results
+    console.log("Total Correct: " + totalCorrect);
+    console.log("Selected Correct: " + selectedCorrect);
+    console.log("Average: " + average + "%");    
+    return average;
+}    
+    
+/* Use this to do question Numbers at the end. (don't forget to reset after each quSet)
+    const spanQuNums = document.querySelectorAll('.num');
+    // Iterate through the span/question# and set textContent
+    spanQuNums.forEach((element, index) => {
+      element.textContent = index + 1 + ". ";
+    }); */
+</script>    
+      
+<script>
+function fn_addTextbox(buttonThis) {
+  // Create a new <div> element
+  const divElement = document.createElement('div');
+  divElement.className = 'infoBox';
+  divElement.textContent = "Type something here, add as many text boxes as you need";
+  divElement.contentEditable = true;
+  // Insert the new <div> element right after the button
+  buttonThis.insertAdjacentElement('afterend', divElement);
+}
+    
+function fn_tbox4students(buttonThis) {
+    
+  // Create a new <div> element
+  const divElement2 = document.createElement('div');
+  divElement2.className = 'tbox4students';
+  divElement2.textContent = "Students type answer here.";
+  divElement2.contentEditable = true;    
+  // Insert the new <div> element right after the button
+  buttonThis.insertAdjacentElement('afterend', divElement2);
+    
+  // create infoBox
+  const divElement3 = document.createElement('div');
+  divElement3.className = 'infoBox';
+  divElement3.textContent = "instructions or other info here";
+  divElement3.contentEditable = true;
+  // Insert the new <div> element right after the button
+  buttonThis.insertAdjacentElement('afterend', divElement3);    
+    
+
+}    
+</script>    
+
+<!--     **********************::::   END Card   ***********************-->
+<!--     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->  
+
+ 
+<!--  =============== DETAILED version ========================================================= -->
+<!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>     
+      
+        <button style="margin: 2ex 0 0 0; display:block;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+                 
+    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+      
+      <script>
+      function toggleEditOff(){
+          
+            document.getElementById("styleEditor").style.display="none";          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("editOff").style.display="none";
+            document.getElementById("editOn").style.display="block";   
+            document.getElementById("printFullView").style.display="block";   
+            document.getElementById("quizID").style.display="none";
+            document.getElementById("examModeLblInput").style.display="none";
+            document.getElementById("showHideName").style.display="none";
+            document.getElementById("makeMCQ").style.display="none";
+            document.getElementById("textbox").style.display="none";
+            document.getElementById("editMode").style.display="none";
+          
+          
+          
+
+            //document.getElementById("styleEditor").style.display="none";
+            
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+          
+          let delBtn2s = document.querySelectorAll('.delBtn2');
+            for (const delBtn2 of delBtn2s) {
+                delBtn2.style.display="none";
+            }          
+
+          let addTextboxs = document.querySelectorAll('.addTextbox');
+            for (const addTextbox of addTextboxs) {
+                addTextbox.style.display="none";
+            }              
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function toggleEditOn(){
+       
+            document.getElementById("styleEditor").style.display="block";                    
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("editOff").style.display="block";
+            document.getElementById("editOn").style.display="none";     
+            document.getElementById("printFullView").style.display="none";   
+            document.getElementById("quizID").style.display="block";
+            document.getElementById("examModeLblInput").style.display="block";
+            document.getElementById("showHideName").style.display="block";
+            document.getElementById("makeMCQ").style.display="block";
+            document.getElementById("textbox").style.display="block";
+            document.getElementById("editMode").style.display="block";
+          
+          
+
+            //document.getElementById("styleEditor").style.display="block";
+              
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+          let delBtn2s = document.querySelectorAll('.delBtn2');
+            for (const delBtn2 of delBtn2s) {
+                delBtn2.style.display="block";
+            }          
+
+          let addTextboxs = document.querySelectorAll('.addTextbox');
+            for (const addTextbox of addTextboxs) {
+                addTextbox.style.display="block";
+            }             
+          
+            //end restore editabels **********************
+      }
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+
+        let fileName = document.getElementById("fileName").value;
+        let oldTitle = document.title; //console.log("oldTitle: " + oldTitle);
+        //document.title  = fileName; //console.log(document.title);
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        toggleEditOff();
+        document.getElementById("editOn").style.display="none";     
+
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+ <!--  ===============  / Detailed!! SAVE THE DOM as FILE ==================== -->
+
+
+
+
+<p style="margin:35px"> ... end. </p>
+  </body>
+</html>  
+  
+
