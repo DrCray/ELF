@@ -240,7 +240,7 @@ document.onreadystatechange = () => {
 <!-- hidden elements -->
       
       
-      <details id="instrcs" class=instrcs style="border:thin solid black; padding: 1rem;"><summary>Basic Instructions</summary>
+      <details id="instrcs" class="instrcs editMode" style="border:thin solid black; padding: 1rem;"><summary>Basic Instructions</summary>
 <div style="margin: 0 2rem 0 2rem;"><br>
           Type/Paste in the text area below that reads "Replace the content in this area ..." Then underline the words/answers you want to blank-out. (see the example) 
           <br><br>There are two approaches: <br><br>
@@ -271,11 +271,11 @@ document.onreadystatechange = () => {
 
       <label id="ansChoicesListLbl" for="ansChoicesList"  style="display:none; margin:1ex 0 0 0;" ><input id="ansChoicesList" type ="checkbox">include answer choices list</label>      
       
-      <label id="allowShowHideAnsLbl" for="allowShowHideAns">
+      <label id="allowShowHideAnsLbl" class="editMode" for="allowShowHideAns">
         <input id="allowShowHideAns" type="checkbox">include an option to open all answer peeks on the page with a single click
       </label>
-      <br>
-      <label id="noShowCorrectAnsLbl" for="noShowCorrectAns">
+      
+      <label id="noShowCorrectAnsLbl" class="editMode" style="display:block" for="noShowCorrectAns">
         <input id="noShowCorrectAns" type="checkbox">don't highlight correct/incorrect answers
       </label>
       
@@ -293,9 +293,10 @@ document.onreadystatechange = () => {
       
       
       
-<!-- show name and ID and Javascript ==================-->      
+<!-- show name and ID and Javascript ==================-->
+      <label id="toggleShowHideNameIDLbl" for="toggle" class="editMode">
 <input  id="toggleShowHideNameID" type="checkbox" >
-<label id="toggleShowHideNameIDLbl" for="toggle">Show Name and ID</label>
+Show Name and ID</label>
 <br>
 <input id="name" type="text" value="name">
 <input id="id" type="text" value="id#">
@@ -326,7 +327,7 @@ document.onreadystatechange = () => {
       
       
       
-      <div id="styleEditor" class="styleEditor">
+      <div id="styleEditor" class="styleEditor editMode">
                 
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
@@ -367,11 +368,11 @@ document.onreadystatechange = () => {
   
       
       <!-- replace inputPara contenteditable (no arguments)-->    
-      <div id="inputPara" class="inputPara" onclick='document.getElementById("noUndl").style.display="none";' contenteditable>
+      <div id="inputPara" class="inputPara editMode" onclick='document.getElementById("noUndl").style.display="none";' contenteditable>
                 Replace the content in this area with your own (example below).<br /><p>Big tech <u>firms</u> saw their sales jump in the pandemic as locked-down  consumers and workers came to rely more on their technology. <u>fortunes</u> <u>bleaker</u> <u>climate</u>. </p>           
           </div>
   <div id="showHideAnsBtns"> <!-- / added title option button too  --> 
-      <label id="includeTitleLbl" for="includeTitle"  style="display:block; margin:1ex 0 0 0;" ><input id="includeTitle" type ="checkbox">include Title</label>
+      <label id="includeTitleLbl" class="editMode" for="includeTitle"  style="display:block; margin:1ex 0 0 0;" ><input id="includeTitle" type ="checkbox">include Title</label>
       <p><button id="showAll" onclick="showAll('details')" style="display:none;">
           Show all Answers </button></p>
       <p><button id="closeAll" onclick="closeAll('details')" style="display:none;">
@@ -401,16 +402,16 @@ document.onreadystatechange = () => {
           } // end closeAll
       </script>
       
-<div id="convDiv" class="convDiv">  
+<div id="convDiv" class="convDiv editMode">  
           <!--input id="ansPeak2" type="checkbox">
          <label id="lblAnsPeak2" for="ansPeak2">&nbsp; turn off answer peak for this exercise only<code> </code>&nbsp;
          </label--> 
-      <button id="convert" onclick="getCloneAndAlter()" style="display:block">convert
+      <button id="convert" class="editMode" onclick="getCloneAndAlter()" style="display:block">convert
         </button>  
      <div id="noUndl" style="display:none; background-color:#fff8dc; color:darkred;"> Must Underline something</div>
 </div> 
       
-    <div id="printOptions" style="display: none;">
+    <div id="printOptions" class="previewMode" style="display: none;">
         Print (save as PDF) <br>
       <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>           <br>
          <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
@@ -443,25 +444,22 @@ document.onreadystatechange = () => {
          </script>               
       
   <br><br>
-        <button id="editOff" onclick="toggleEditOff()">Preview</button>
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>
+        <button id="editOff" class="editMode" onclick="previewMode()">Preview</button>
+        <button id="editOn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>
       <br><br>
       
-<div id="saveDiv" class="saveDiv">     
+<div id="saveDiv" class="saveDiv editMode">     
       <!--input id="ansPeak" type="checkbox">
          <label id="lblAnsPeak" for="ansPeak">&nbsp; turn off answer peak for All exercises<code> (takes effect after saving) </code>&nbsp;
          </label-->
-            <button id="editOff" onclick="toggleEditOff()">Preview</button>
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button><br>
+         
     
-     <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beutify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="background-color: blue; border:thin solid orange; color:orange; display:none">done</span>
+     <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="background-color: blue; border:thin solid orange; color:orange; display:none">done</span>
     <br>
             <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
         </label><br>  
-      <button id="saveDownload" onclick="saveDom()">Save/Download</button>
-    <br>
-    
+      <button id="saveDownload" class="editMode" onclick="saveDom()">Save/Download</button>  
 </div> 
       
       
@@ -579,16 +577,43 @@ document.onreadystatechange = () => {
         thePara.id = theParaID; //console.log(thePara);
         thePara.className ="thePara";
         
-        if (document.getElementById("includeTitle").checked){          
+        if (document.getElementById("includeTitle").checked) {
+            // Create the titleDiv
             const titleDiv = document.createElement("div");
-                titleDiv.classList.add("titleDiv");
-                titleDiv.contentEditable = true;
-                titleDiv.textContent="Title Here";
-                allParags.appendChild(titleDiv);   
-                allParags.insertAdjacentHTML("beforeend","\n");
+            titleDiv.classList.add("titleDiv");
+            titleDiv.contentEditable = true;
+            titleDiv.textContent = "Title Here";
+
+            // Create a button element
+            const button = document.createElement("button");
+            button.textContent = "delete forever"; // Set the button text
+            button.classList.add("delBtn");
+            button.addEventListener("click", function() {
+                // Add your button click functionality here
+                this.parentElement.remove();
+            });
+
+            // Append the button to the titleDiv
+            titleDiv.appendChild(button);
+
+            // Append the titleDiv to allParags
+            allParags.appendChild(titleDiv);
+
+            // Add a newline after appending titleDiv
+            allParags.insertAdjacentHTML("beforeend", "\n");
+        }
+       
                 
-        }        
-                
+const element = document.querySelector('.nonexistent-class');
+
+if (element !== null) {
+    // The class was found, you can now safely work with the element
+    element.textContent = 'Element with the class found!';
+} else {
+    // The class was not found
+    console.log('Element with the class does not exist.');
+}
+        
         
         allParags.append(thePara);      
         allParags.insertAdjacentHTML("beforeend","\n");
@@ -766,10 +791,19 @@ tempDiv.remove();
       
       
 <script>
-    function toggleEditOff(){
+    function previewMode(){
                 // remove all editables ***********************************
+        
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }           
     
-        //fileNameEl.style.display="none";
     
     if (document.getElementById("allowShowHideAns").checked){
         document.getElementById("closeAll").style.cssText="display: none";
@@ -783,11 +817,6 @@ tempDiv.remove();
         document.getElementById("showAll2").style.cssText="display: none";
     }
   
-        document.getElementById("allowShowHideAnsLbl").style.cssText="display: none";
-        document.getElementById("noShowCorrectAnsLbl").style.cssText="display: none";
-       // document.getElementById("ansChoicesListLbl").style.cssText="display: none";        
-        
-        //document.getElementById("noteA").style.display="none";
 
 
     
@@ -803,41 +832,31 @@ tempDiv.remove();
         }
     
     
-        document.getElementById("inputPara").style.display="none";
-        document.getElementById("saveDiv").style.display="none";
-        document.getElementById("saveDownload").style.display="none";
-        document.getElementById("instrcs").style.display="none";
-        document.getElementById("styleEditor").style.display="none";
-        document.getElementById("convDiv").style.display="none";
-        document.getElementById("convert").style.display="none";
-        
-        document.getElementById("includeTitle").style.display  = "none"; 
-        document.getElementById("includeTitleLbl").style.display  = "none";
-        
-        document.getElementById("toggleShowHideNameID").style.display  = "none";          
-        document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";          
-    
-        //document.getElementById("ansPeak").style.display="none";
-        //document.getElementById("lblAnsPeak").style.display="none";
 
-    
           let closeDetails = document.getElementsByTagName("details");
             for (closeDetail of closeDetails){
                 closeDetail.open=false; 
             }    
         
-        document.getElementById("editOff").style.display="none";
-        document.getElementById("editOn").style.display="initial";  
-        
-        document.getElementById("printOptions").style.display="inline-block";
-    }  //endtoggleEditOff
+    }  //endpreviewMode
     
     
     
-    function toggleEditOn(){        
+    function editMode(){        
           // restore editables ***************************
+
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }           
+            
         
-        //fileNameEl.style.display="block";
+        
     let contEdbls = document.querySelectorAll("[contenteditable]"); console.log(contEdbls);
     let delBtns = document.querySelectorAll(".delBtn");
     
@@ -850,27 +869,11 @@ tempDiv.remove();
         }
         
     
-        document.getElementById("inputPara").style.display="block";
-        document.getElementById("saveDiv").style.display="block";
-        document.getElementById("saveDownload").style.display="block";
-        document.getElementById("instrcs").style.display="block";
-        document.getElementById("styleEditor").style.display="block";
-        document.getElementById("convDiv").style.display="block";
-        document.getElementById("convert").style.display="block";
-        //document.getElementById("ansPeak").style.display="initial";
-        //document.getElementById("lblAnsPeak").style.display="initial";
+       
         document.getElementById("delThis").style.display="none";
         document.getElementById("delAnsBox").style.display="none";
-        document.getElementById("allowShowHideAnsLbl").style.cssText="display: block";
-        document.getElementById("noShowCorrectAnsLbl").style.cssText="display: block";
-       // document.getElementById("ansChoicesListLbl").style.cssText="display: block";                
-        //document.getElementById("noteA").style.display="block";
-        
-        document.getElementById("includeTitle").style.display  = "inline-block"; 
-        document.getElementById("includeTitleLbl").style.display  = "inline-block";  
-        
-        document.getElementById("toggleShowHideNameID").style.display  = "initial";          
-        document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";        
+
+       
         
          let closeDetails = document.getElementsByTagName("details")
 
@@ -878,16 +881,14 @@ tempDiv.remove();
             for (closeDetail of closeDetails){
                 closeDetail.open=true; 
             }
+        
        document.getElementById("instrcs").open=false;
 
-        document.getElementById("editOff").style.display="initial";
-        document.getElementById("editOn").style.display="none";    
-        
-        document.getElementById("printOptions").style.display="none";
+
         
         
     //end restore editabels **********************
-    } //end toggleEditOn
+    } //end editMode
 
 </script>
 
@@ -945,7 +946,7 @@ function saveDom(){
         //end save theDom
         
     
-        toggleEditOff(); //preview   
+        previewMode(); //preview   
     
         document.getElementById("editOff").style.display="none";
         document.getElementById("editOn").style.display="none";       
@@ -993,7 +994,7 @@ function saveDom(){
     
   
     
-        toggleEditOn();
+        editMode();
     
         document.getElementById("editOff").style.display="block";
         document.getElementById("editOn").style.display="none";  
