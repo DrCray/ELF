@@ -165,7 +165,7 @@
             display:inline-block; box-shadow: 3px 3px 5px darkred;
         }
 
-        .editMode {
+        .editModeBox {
             display:block; background-color:darkblue; color:white;
             border-style:solid; border-width:thin; border-radius: 7px;
             padding: 8em; 
@@ -704,7 +704,7 @@ function zztop(){
     </script>
 
 
-   <div id="editMode" class="editMode">
+   <div id="editModeBox" class="editModeBox">
         <span class="editModeInner">[ ... Edit Mode ... ]</span>
         <br>
        <div class = "editModeCtlZ"> 
@@ -756,8 +756,8 @@ function zztop(){
     </header>
   
     
-        <button id="editOff" onclick="toggleEditOff()" style="display:block">Preview</button>
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>
+        <!--button id="editOff" onclick="toggleEditOff()" style="display:block">Preview</button>
+        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button -->
        
     <button id="showAnswers" class="toggleAllAnsBtn" style="display:none;" onclick="showAnswers()">
                 &nbsp;Show All Articles&nbsp;</button>
@@ -840,8 +840,10 @@ function zztop(){
         }
         
     </script>
+  
+
     
-<button id="addCard" class="addCard" onclick ="addCard()">add article</button>
+<button id="addCard" class="addCard" onclick ="addCard()">add article</button><br>
     <textarea id="fakeTextarea" type="text" rows=2 cols="30" style="display:block;" disabled>click on "add article" to get an active editing area</textarea>
     
     
@@ -937,7 +939,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 </div>
 
 	   
-        <button id="addCard2" class="addCard" onclick ="addCard()">add article</button><br>
+        <button id="addCard2" class="addCard" onclick ="addCard()">add article</button>
         <button id="showAnswers2" class="toggleAllAnsBtn" style="display:none;" onclick="showAnswers()">
                 &nbsp;Show All Articles&nbsp;</button>
         <button id="hideAnswers2" class="toggleAllAnsBtn"  onclick="hideAnswers()">
@@ -1045,9 +1047,12 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
     <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
         
              <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="border:thin solid orange; color:orange; display:none">done</span>
-                
-        
-               <br><br> 
+              <br><br>  
+ <div class="editMode">
+	<p>::::::::::</p> 
+	<input type="checkbox" id="toggleArticle"><label for="toggleArticle" id="toggleArticleLbl" style="background-color:lightYellow; width:fit-content;"> Full Display (don't toggle articles)</label>    
+</div>         
+               <br>
         <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
         </label><br><br>
@@ -1099,8 +1104,27 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 // here we are setting up for the save as study mode
            
+  toggleEditOff(); //preview
+ 
+ 
+  let toggleCheckbox = document.getElementById('toggleArticle');
         
-    toggleEditOff(); //preview
+    // Check if the checkbox is checked
+    if (toggleCheckbox.checked) {
+		
+		showAnswers();		
+		
+        // Select all elements with class 'question'
+        let questionElements = document.querySelectorAll('.question');
+
+        // Loop through the selected elements and remove the 'onclick' attribute
+        questionElements.forEach(function(element) {
+            element.removeAttribute('onclick');
+        });
+    } 
+ 
+        
+   
     document.getElementById("toggleTextStatus").innerHTML = "on";
     toggleTextStatus = "on"; console.log(toggleTextStatus);
 
@@ -1109,8 +1133,8 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         document.getElementById("warnLeavePage").textContent="off";
            
            
-        document.getElementById("editOn").style.display="none";
-        document.getElementById("editOff").style.display="none";
+        //document.getElementById("editOn").style.display="none";
+        //document.getElementById("editOff").style.display="none";
         document.getElementById("editOnDup").style.display="none";
         document.getElementById("editOffDup").style.display="none";           
 
@@ -1257,6 +1281,16 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 <script>
     
     function toggleEditOff(){  //preview
+		
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }  		
         
         const changeBkgd = document.getElementById("changeBackground");
         changeBkgd.style.display="none";
@@ -1314,16 +1348,16 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         
 
         // display none
-        const editMode = document.getElementById("editMode");
-        editMode.style.display="none";
+        const editModeBox = document.getElementById("editModeBox");
+        editModeBox.style.display="none";
 
         let delBtns = document.querySelectorAll('button[class="delBtnz"]');
         for (const delBtn of delBtns) {
           delBtn.style.display = "none";
           }
         
-        document.getElementById("editOn").style.display="block";
-        document.getElementById("editOff").style.display="none";
+        //document.getElementById("editOn").style.display="block";
+        //document.getElementById("editOff").style.display="none";
         document.getElementById("editOnDup").style.display="block";
         document.getElementById("editOffDup").style.display="none";   
         
@@ -1337,6 +1371,18 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
     
     function toggleEditOn(){  
        //get editmode elements ******** 
+       
+                 let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }  
+       
+       
        const changeBkgd = document.getElementById("changeBackground");
 
        tgltxt="toggleText()";
@@ -1351,7 +1397,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
         const doneBtn = document.getElementById("saveDom");
         
-        const editMode = document.getElementById("editMode");
+        const editModeBox = document.getElementById("editModeBox");
 
         
         let answerzs = document.querySelectorAll('div[class="answer"]');
@@ -1365,7 +1411,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         
         //document.getElementById("viewPrint").style.display="none";
         changeBkgd.style.display="none";
-        editMode.style.display="block";
+        editModeBox.style.display="block";
         addBtn.style.display="initial";
         addBtn2.style.display="initial";
         doneBtn.style.display="block";
@@ -1412,8 +1458,8 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
           question.setAttribute("contenteditable", "true");
           }
         
-        document.getElementById("editOn").style.display="none";
-        document.getElementById("editOff").style.display="block";
+        //document.getElementById("editOn").style.display="none";
+        //document.getElementById("editOff").style.display="block";
         document.getElementById("editOnDup").style.display="none";
         document.getElementById("editOffDup").style.display="block";    
         
