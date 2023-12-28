@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>RemoveParaWordsFromVocabList</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+
+       
+     <style>
+body{
+    font-family: sans-serif;
+    background-color:  #d4e6f1  ;
+    margin: 0 3em 0 3em;
+    padding: 1ex 2ex 1ex 2ex;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0; }
+   
+   
+	.fakeButton/*NO hover*/{
+		
+		background-color: #E9E9ED; 
+		border-style:solid; border-width:thin; border-radius: 5px;
+		box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+	}        
+	 
+	.fake-button/*for hover*/{  
+       background-color: #E9E9ED; 
+       border-style:solid; border-width:thin; border-radius: 5px;
+       box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+   }
+
+  .fake-button:hover {
+       background-color: lightblue;
+        border-radius: 5px; box-shadow: 3px 3px gray;
+
+   }
+   
+   /*  for <button> class="hltBtn"  */
+   .hlBtn {border-radius:5px;}
+
+   .hlBtn:hover {
+       background-color:lightblue;  border-radius: 5px;
+   }
+
+	h1   {
+	   color: maroon;
+	   margin-left: 40px;
+	   }
+               
+	.textBox{
+		margin: 1rem 1rem 1rem 0; 
+		background-color: #FAFCF0; border: thin solid black;
+		padding: 1.2rem; width: fit-content;
+	}
+
+	.wordCount{
+		margin: .5rem 1rem .5rem 0; 
+		background-color: #FAFCF0; border: thin solid black;
+		padding: .2rem; width: fit-content;
+	}         
+     </style>
+</head>
+  
+<body>
+
+  <label for="vocabList">Vocabulary List:</label>  
+  <br>
+  <textarea cols="45" rows="8" id="vocabList"></textarea>
+  <p id="wordCount" class="wordCount">Word count: 0</p>
+  <br><br>
+
+  <label for="paragraph">Paragraph:</label><br>
+  <textarea cols="45" rows="8" id="paragraph"></textarea>
+
+  <br><br>
+
+  <button onclick="removeFromVocabList()">Remove from Vocab List</button>
+  <br><br>
+ <label for="result">New List:</label><br>
+  <textarea cols="45" rows="8" id="result" readonly></textarea>
+  <p id="newListWordCount" class="wordCount">Word count: 0</p>
+ 
+  <div id="highlightedParagraph" class="textBox" contenteditable>Result: highlighted Paragraph after remove vocabulary</div>
+  
+  <br>
+  <p>Remove parentheses and content, remove double spaces and spaces around punctuation:</p>
+  <div id="contentEditableDiv" class="textBox" contenteditable="true">paste parenthetic/ugly text</div> 
+  
+  <button onclick="removeParentheses()">Remove Parentheses</button>
+
+
+
+  <script>
+
+    function wordCount(inputText) {
+      // Remove leading and trailing whitespaces
+      var trimmedText = inputText.trim();
+      
+      // Count words by splitting the string by whitespaces
+      var words = trimmedText.split(/\s+/);
+      
+      // Return the word count
+      return words.length;
+    }
+
+    // Example usage:
+
+ 
+      
+function formatOpenParentheses(arr) {
+  const formattedArray = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const currentElement = arr[i];
+
+    if (i > 0) {
+      const previousElement = arr[i - 1];
+
+      if (currentElement.includes('(')) {
+        // Format the previous item with bold and underline
+        const formattedPrevious = `<b><u>${previousElement}</u></b>`;
+        formattedArray.push(formattedPrevious);
+      } else {
+        formattedArray.push(previousElement);
+      }
+    }
+
+    if (i === arr.length - 1) {
+      // Handle the last element
+      formattedArray.push(currentElement);
+    }
+  }
+
+  return formattedArray;
+}
+
+/* Example usage:
+const unformattedArray = ["item1", "item2(", "item3", "item4("];
+const result = formatOpenParentheses(unformattedArray);
+console.log(result);*/
+      
+      
+      
+      
+function removeFromVocabList() {
+    
+  //wordCount    
+  let vocabList4WordCount = document.getElementById('vocabList').value;    
+  let wordCountResult = wordCount(vocabList4WordCount);
+  document.getElementById('wordCount').textContent = 'Word count: ' + wordCountResult;
+    
+  // Get the values from the textareas    
+  let vocabList = document.getElementById('vocabList').value.split(/\s+|\b/);
+  let paragraphA = document.getElementById('paragraph').value.split(/\s+|\b/);
+
+  // Remove words from vocabList that are also in the paragraphA
+  let result = vocabList.filter(word => !paragraphA.includes(word));
+
+  // Display the result in the third textarea
+  document.getElementById('result').value = result.join('\n');
+
+  // Highlight common words in the paragraphA
+  //let highlightedparagraphA = paragraphA.map(word => vocabList.includes(word) ? `<u><b>${word}</b></u>` : word);
+
+    let paragraph = formatOpenParentheses(paragraphA);
+    
+    
+    
+  // Remove left spaces next to punctuation marks or special characters
+  let cleanedParagraphA = paragraph.join(' ').replace(/(['(])\s+|\s*([.,;?!')])/g, '$1$2');
+  let cleanedParagraphB = cleanedParagraphA.replace(/'\s+/g, "'");
+  let cleanedParagraphC = cleanedParagraphB.replace(/(\w)'(\w{2})/g, "$1' $2");
+  let cleanedParagraph = cleanedParagraphC.replace(/(\w)'<(\w)/g, "$1' <$2");
+    
+   
+  // Update the innerHTML of the div with the cleaned result
+  document.getElementById('highlightedParagraph').innerHTML = cleanedParagraph;
+    
+  //wordCount    
+  let newList4WordCount = document.getElementById('result').value;    
+  let newListWordCountResult = wordCount(newList4WordCount);
+  document.getElementById('newListWordCount').textContent = 'Word count: ' + newListWordCountResult;    
+}
+//end functions
+      
+      
+      
+function removeParentheses() {
+  let contentEditableDiv = document.getElementById('contentEditableDiv');
+  let content = contentEditableDiv.innerHTML;
+  let contentWithoutParentheses = content.replace(/\([^)]*\)/g, '');
+  // Remove double spaces
+  let contentWithoutDoubleSpaces = contentWithoutParentheses.replace(/ +/g, ' '); 
+  let contentWithoutExtraPunctuationSpaces = contentWithoutDoubleSpaces.replace(/(['(])\s+|\s*([.,;?!')])/g, '$1$2');
+  let contentWithoutSpaceAfteApostrophe = contentWithoutExtraPunctuationSpaces.replace(/'\s+/g, "'");
+  let insertBreaks = contentWithoutSpaceAfteApostrophe.replace(/\./g, ".</p><br><p>");
+
+  contentEditableDiv.innerHTML = insertBreaks;
+}
+//end function
+
+  </script>
+
+<footer style="margin:35px">     
+      <p> ... end. </p>
+</footer>
+          
+</body>
+</html>  
+  
+
