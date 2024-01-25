@@ -273,7 +273,10 @@
         <!--  ------ Don’t type Title content past this line ---  -->   
     </section>   
 </header>
-
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
 
  <details class="editOn" style="display:none; font-weight:bold; margin-bottom: 1rem"><summary>How to play</summary><div style="background-color: floralwhite; width:fit-content; padding:.6rem; font-weight:normal"> Begin typing letters to see if they are in the word. When correct, the letter will appear.<br>For two or more words answers, please use a dash between words.<br> (no spaces allowed in the guess-word) For example "head-chef" NOT "head chef" </div></details>  
 
@@ -597,7 +600,17 @@ document.onreadystatechange = () => {
       <script>
 function saveDom(){
     
-    
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }    
             // ========  Unusual entry for SAVEDOM
             if (!document.getElementById("toggleShowHideNameID").checked){
               document.getElementById("name").setAttribute("value", "zzzz");
