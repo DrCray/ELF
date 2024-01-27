@@ -30,6 +30,7 @@ body{
     background-color:  #d4e6f1  ;
     margin: 0 3em 0 3em;
     padding: 1ex 2ex 1ex 2ex;
+    max-width:55rem; margin:auto;
 }
 
 :focus {outline:none;}
@@ -82,15 +83,24 @@ body{
 </head>
   
 <body>
-
-  <label for="vocabList">Vocabulary List:</label>  
+<p style="background-color:lightyellow; padding:.5rem; width:fit-content;">This is a tool I use when making sentences from a long list of vocabulary words.
+<br> This will pull out the words I have used from the original vocabulary list.
+<br> Also, sometimes I use sentences that have the root word in parenthesis next to the form being used. <br> I need to pull those out as well
+</p>
+  <label for="vocabList">Vocabulary List (columnar or space delimited):</label>  
   <br>
-  <textarea cols="45" rows="8" id="vocabList"></textarea>
+  <textarea cols="45" rows="8" id="vocabList">peach
+baanana
+apple
+pear
+grape</textarea>
   <p id="wordCount" class="wordCount">Word count: 0</p>
   <br><br>
 
   <label for="paragraph">Paragraph:</label><br>
-  <textarea cols="45" rows="8" id="paragraph"></textarea>
+  <textarea cols="45" rows="8" id="paragraph">We ate the bananas (banana). 
+We ate the pears (pear). 
+We ate the grapes (grape)</textarea>
 
   <br><br>
 
@@ -100,13 +110,11 @@ body{
   <textarea cols="45" rows="8" id="result" readonly></textarea>
   <p id="newListWordCount" class="wordCount">Word count: 0</p>
  
-  <div id="highlightedParagraph" class="textBox" contenteditable>Result: highlighted Paragraph after remove vocabulary</div>
+  <div id="highlightedParagraph" class="textBox" contenteditable>Result: underlined/bold vocab in Paragraph</div>
+
+  <div id="contentEditableDiv" class="textBox" contenteditable="true">Result: remove parenthetic words; add linebreaks</div> 
   
-  <br>
-  <p>Remove parentheses and content, remove double spaces and spaces around punctuation:</p>
-  <div id="contentEditableDiv" class="textBox" contenteditable="true">paste parenthetic/ugly text</div> 
-  
-  <button onclick="removeParentheses()">Remove Parentheses</button>
+
 
 
 
@@ -192,9 +200,12 @@ function removeFromVocabList() {
   let cleanedParagraphC = cleanedParagraphB.replace(/(\w)'(\w{2})/g, "$1' $2");
   let cleanedParagraph = cleanedParagraphC.replace(/(\w)'<(\w)/g, "$1' <$2");
     
-   
-  // Update the innerHTML of the div with the cleaned result
   document.getElementById('highlightedParagraph').innerHTML = cleanedParagraph;
+
+    
+  let cleanedPara = removeParentheses(cleanedParagraph);
+  // Update the innerHTML of the div with the cleaned result
+  document.getElementById('contentEditableDiv').innerHTML = cleanedPara;
     
   //wordCount    
   let newList4WordCount = document.getElementById('result').value;    
@@ -205,17 +216,18 @@ function removeFromVocabList() {
       
       
       
-function removeParentheses() {
-  let contentEditableDiv = document.getElementById('contentEditableDiv');
-  let content = contentEditableDiv.innerHTML;
+function removeParentheses(content) {
+  //let contentEditableDiv = document.getElementById('contentEditableDiv');
+  //let content = contentEditableDiv.innerHTML;
   let contentWithoutParentheses = content.replace(/\([^)]*\)/g, '');
   // Remove double spaces
   let contentWithoutDoubleSpaces = contentWithoutParentheses.replace(/ +/g, ' '); 
   let contentWithoutExtraPunctuationSpaces = contentWithoutDoubleSpaces.replace(/(['(])\s+|\s*([.,;?!')])/g, '$1$2');
   let contentWithoutSpaceAfteApostrophe = contentWithoutExtraPunctuationSpaces.replace(/'\s+/g, "'");
-  let insertBreaks = contentWithoutSpaceAfteApostrophe.replace(/\./g, ".</p><br><p>");
+  let insertBreaks = contentWithoutSpaceAfteApostrophe.replace(/\./g, ".<br><br>");
 
-  contentEditableDiv.innerHTML = insertBreaks;
+  //contentEditableDiv.innerHTML = insertBreaks;
+  return (insertBreaks);
 }
 //end function
 
