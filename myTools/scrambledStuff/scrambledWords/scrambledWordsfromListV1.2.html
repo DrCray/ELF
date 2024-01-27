@@ -26,6 +26,7 @@
         body {
             background-color: #d4e6f1; cursor:text; 
             font-family: helvetica, arial, sans-serif;
+            max-width:55rem; margin:auto;
         }  
         
         :focus {outline:none;}
@@ -65,7 +66,7 @@
          .answer {
             display:inline-block; margin:0 0 0 3px; min-width: 1.2em;
             background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue; text-align: center;
+            border-color: blue; text-align: center; font-weight:bold;
             padding:5px; border-radius: 5px; width: fit-content;
          }
          
@@ -115,7 +116,7 @@
   
   <body>
       
-      <div id="ii">1</div>
+      <div id="ii" style="display:none;">1</div>
         <img
             class="center"
             src="topImage.jpg"
@@ -140,7 +141,15 @@
         </strong> 
     </section>   
 </header>
-      
+<!-- ================= check if header was updated ============ -->
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+
+ <p class="answer editOn" style="display:none">Click/Touch a letter to move it left</p>
+     
 <!-- ====== Name ID Toggle and input ================= -->
 <script>
 document.onreadystatechange = () => {
@@ -191,7 +200,7 @@ document.onreadystatechange = () => {
             <input id="noShowAnsPeek" type="checkbox">no answer-peeks
         </label>
     
-        <button class="hlBtn" onclick="getzList()">Input List</button>
+        <button class="hlBtn" onclick="getzList()">scramble</button>
     
     
 </section>  
@@ -407,6 +416,18 @@ document.onreadystatechange = () => {
           function toggleEditOff(){
                   
             // remove all editables ***********************************
+              
+         let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }  
+              
+              
             let contEdbls = document.querySelectorAll("[contenteditable=true]");
             let hlBtns = document.querySelectorAll(".hlBtn");
 
@@ -441,6 +462,17 @@ document.onreadystatechange = () => {
           
           function toggleEditOn(){
               
+         let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }                
+              
+              
             let contEdbls = document.querySelectorAll("[contenteditable=false]");
             let hlBtns = document.querySelectorAll(".hlBtn");
               
@@ -470,6 +502,20 @@ document.onreadystatechange = () => {
       
       <script>
 function saveDom(){
+
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }    
+    
+    
     
             // ========  Unusual entry for SAVEDOM
             if (!document.getElementById("toggleShowHideNameID").checked){
