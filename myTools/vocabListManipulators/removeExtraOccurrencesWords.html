@@ -74,10 +74,10 @@ body{
 <body>
 <p></p>
 <h1>Remove extra occurences of repeated words from a list</h1>
-<details><summary><b>Instructions</b></summary>Paste a comma delimited set of words into the text box. Click the button to remove the extra occurences. Repeat the process at least one more time with the new list. If desired you can move any phrases down to the bottom of the list with the second button.</details>
+<details><summary><b>Instructions</b></summary>Paste a comma delimited set of words into the text box. Click the button to remove the extra occurences. If desired you can move any phrases down to the bottom of the list with the second button.</details>
 <p></p>
 
-  <textarea id="wordInput" rows="5" cols="50"></textarea>
+  <textarea id="wordInput" rows="5" cols="50">banana, apple, banana, pear, banana, peach, fuzzy peach, banana, green apple, pear, fuzzy peach, peach, green apple, pear, raspberry, apple, green apple</textarea>
   <br>
   <button onclick="removeExtraOccurrences()">Remove Extra Occurrences</button>
   <br><br>
@@ -88,23 +88,16 @@ body{
   <textarea id="finalResultTextArea" rows="5" cols="50" readonly></textarea>
 
   <script>
-    function removeExtraOccurrences() {
-      const inputTextArea = document.getElementById('wordInput');
-      const inputText = inputTextArea.value.trim();
-      const words = inputText.split(',');
+function removeExtraOccurrences() {
+  const inputTextArea = document.getElementById('wordInput');
+  const inputText = inputTextArea.value.trim();
+  const words = inputText.split(',').map(word => word.trim());
 
-      const seenWords = new Set();
-      const uniqueWords = words.filter(word => {
-        if (!seenWords.has(word)) {
-          seenWords.add(word);
-          return true;
-        }
-        return false;
-      });
+  const uniqueWords = Array.from(new Set(words));
 
-      const resultTextArea = document.getElementById('resultTextArea');
-      resultTextArea.value = uniqueWords.join(',');
-    }
+  const resultTextArea = document.getElementById('resultTextArea');
+  resultTextArea.value = uniqueWords.join(', ');
+}
 
     function moveMultiWordPhrases() {
       const resultTextArea = document.getElementById('resultTextArea');
