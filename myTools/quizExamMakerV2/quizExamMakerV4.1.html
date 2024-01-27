@@ -26,6 +26,7 @@
 	        font-family: sans-serif;
 	        background-color:  #d4e6f1  ;
 	        padding: 1ex 2ex 1ex 2ex;
+	        max-width:55rem; margin:auto;
         }
 
         :focus {outline:none;}
@@ -283,7 +284,7 @@
             padding: 0 5px 0 5px;
         }
         
-        .ans22zz {
+        .ansTextbox {
             background-color:beige; display: block;
             border-style: double; border-width:thick; border-color:darkgreen;
             padding: .1rem; margin:.75rem; width:fit-content;
@@ -981,6 +982,16 @@
 
 </header>
 
+<div id="highlightAnswers" style="display:none;">true</div>
+
+
+<!-- ================= check if header was updated ============ -->
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+
     <script>
         // ****************** style functions ***********
               function bold(){
@@ -1180,7 +1191,7 @@
             
             <p id="textareaQu1" class="textLabel" contenteditable="true"> Explain why you think you are smarter than the teacher today.</p>
 
-            <div id="textbox1" class="ans22zz" contenteditable="true">Type answer here (this box will expand as you type):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br></div>
+            <div id="textbox1" class="ansTextbox" contenteditable="true">Type answer here (this box will expand as you type):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br><br><br></div>
             
         
             <button id="delTextareaBtn1" class="delBtn2" style="display:none;" onclick="this.parentElement.remove()"> delete this text box <br> forever </button>
@@ -1243,8 +1254,28 @@
 
     <section class="scoreAndPrint">
 		<script>
+				function changeBackgroundColor() {
+					// Get all input elements with value="correct"
+					var correctInputs = document.querySelectorAll('input[value="correct"]');
+
+					// Change the background color of the next sibling (label) for each input
+					correctInputs.forEach(function(input) {
+						var label = input.nextElementSibling; // Get the next sibling (label)
+					   
+							label.style.backgroundColor = 'lightyellow';
+						
+					});
+				}
+		</script>		
+		
+		
+		<script>
 
 		    function zzscore(zprint) {
+				
+ if ( document.getElementById('highlightAnswers').textContent==="true" ) {	changeBackgroundColor();}			
+				
+				
 		    const totalCorrect = document.getElementsByClassName("question").length;
             const totalCorrects = totalCorrect;
 		    let iicorrect=0;
@@ -1497,6 +1528,7 @@ if (!(document.getElementById("name-id-form").style.display === "none")) { //con
                 document.getElementById("editOn").style.display="initial"; 
                 
            if ( document.getElementById('exam').checked === true ) {
+			   document.getElementById("highlightAnswers").textContent = "false";
     /*late addition*/ document.getElementById("name-id-form").style.display="block";                      
     /*late addition*/ document.getElementById("fileNameWarning").style.display="block";
            } else {
@@ -1643,6 +1675,21 @@ if (!(document.getElementById("name-id-form").style.display === "none")) { //con
     <script>
     // save edit mode then remove all editing elements and attributes 4 student version
     function saveDom() {  
+		
+
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }
+							
+		
         oldTitle = document.title;
         let fileName = document.getElementById("fileName").value;
         document.title = fileName;
