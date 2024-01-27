@@ -26,6 +26,7 @@
         body {
             background-color: #d4e6f1; cursor:text; 
             font-family: helvetica, arial, sans-serif;
+            max-width:55rem; margin:auto;
         }  
         
         :focus {outline:none;}
@@ -135,6 +136,12 @@
         </strong> 
     </section>   
 </header>
+<!-- ================= check if header was updated ============ -->
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
 <p class="answer editOn" style="display:none">Click/Touch a sentence to move it up one place</p>
 <!-- ====== Name ID Toggle and input ================= -->
 <script>
@@ -455,7 +462,17 @@ document.onreadystatechange = () => {
       <script>
 function saveDom(){
     
-    
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }    
             // ========  Unusual entry for SAVEDOM
             if (!document.getElementById("toggleShowHideNameID").checked){
               document.getElementById("name").setAttribute("value", "zzzz");
