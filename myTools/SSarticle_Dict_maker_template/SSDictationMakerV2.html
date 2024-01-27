@@ -30,6 +30,7 @@ body{
     background-color:  #d4e6f1  ;
     margin: 0 3em 0 3em;
     padding: 1ex 2ex 1ex 2ex;
+    max-width:55rem; margin:auto;
 }
 
 :focus {outline:none;}
@@ -70,9 +71,17 @@ body{
 <body>
 
 
-<p><b contenteditable="true">xxxTitlexxx</b></p>
+<p id="zztitle"><b contenteditable="true">Title</b></p>
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
 <div id="dict" style="background-color:#fff; padding:1ex;"  contenteditable="true">
-Paste unformatted! Paste the sentences with a period at the end of each (required). Then click [make List]. Then hit return after every period to finish the list. Save it as it's own file. Or copy and paste it into another HTML editor.
+Type/Paste your !unformatted! dictation sentences here. ^^
+<br>Separate each sentence with double carats. ^^ 
+<br>You can click "make list" now to see how it works.^^ 
+<br> This is sample sentence 1.^^ This is sample sentence 2.^^ This is sample sentence 3.
 </div>
  
 <button id="text2list" style="margin:0 0 1em 0;" onclick="textToList()" style="display:block;">make List</button>    
@@ -84,8 +93,8 @@ function textToList(){
     //------- dict text to List----------------    
   const div = document.getElementById('dict');
     
-  const text = div.innerHTML;
-  const listItems = text.split("<br>");
+  const text = div.textContent;
+  const listItems = text.split("^^");
     
   const ol = document.createElement('ol');
     
@@ -144,6 +153,18 @@ function textToList(){
 
 <script>
 function saveDom(){
+
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }
     
         oldTitle = document.title;
         let fileName = document.getElementById("fileName").value;
