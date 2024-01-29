@@ -99,6 +99,10 @@
             margin:0 0 2ex 0; background-color:lavender; width:fit-content;
         }
         
+        #cardInfo {
+			border:thin solid darkblue; padding:.5rem; background-color:#EDFFE7; 
+		}
+        
         #flashcards {
             background-color: lavender; padding:1ex;
         }
@@ -174,9 +178,9 @@
 
 
 
-<details id="instructions1" style="background-color:#FFF8DC;"><summary>Instructions</summary>There is an example in the text area. Overwrite it with your own text. As in the example, the format is <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition ^^ word2^^definition ^^ word3^^definition</code><br>
+<details id="instructions1" class="editMode" style="background-color:#FFF8DC;"><summary>Instructions</summary>There is an example in the text area. Overwrite it with your own text. As in the example, the format is <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition^^word2^^definition2^^word3^^definition3</code><br>
     Everything is separated with double carets (^^). Spaces are irrelevant.
-    <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition^^word2^^ &nbsp; &nbsp; def   ^^ word3 &nbsp; &nbsp; ^^def</code><p>Of course, you are not limited to vocabulary/definition sets, you can use this for any other kind of paired sets.</p><p> ========</p><p>"When you save your work, there will be two versions of your file saved in the browser's default download folder. For example:</p> <ul><li>fileName.html</li><li>fileNameEditMode.html</li></ul><p>With the study version (e.g. fileName.html), you can rearrange or delete your cards, then save as a NEW file at the bottom. You can not add more items</p><p>The edit mode file is for adding, changing, or updating the original cards. The edit mode save file option ALWAYS creates a new file in the download folder. Once saved, open the EditMode verstion if  you need to add items.</p></details>
+    <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition^^ word2^^ &nbsp; &nbsp; definition2   ^^ word3 &nbsp; &nbsp; ^^definition3</code><p>Of course, you are not limited to vocabulary/definition sets, you can use this for any other kind of paired sets.</p><p> ========</p><p>"When you save your work, there will be two versions of your file saved in the browser's default download folder. For example:</p> <ul><li>fileName.html</li><li>fileNameEditMode.html</li></ul><p>With the study version (e.g. fileName.html), you can rearrange or delete your cards, then save as a NEW file at the bottom. You can not add more items</p><p>The edit mode file is for adding, changing, or updating the original cards. The edit mode save file option ALWAYS creates a new file in the download folder. Once saved, open the EditMode verstion if  you need to add items.</p></details>
       
 <div id="storeIndex" style="display:none">1</div>      
       
@@ -196,8 +200,10 @@
 </div>       
       
  <br><br>  
- <details id="pasteHere"><summary><span class="fake-button"> Add card/s text</span></summary>
-     <p id="cardInfoLbl"><span style="text-decoration:underline">Paste</span> or <i>type</i> <b>here</b> </p>
+ <details id="pasteHere" class="editMode">
+	 <summary><span class="fake-button"> Add card/s text</span>
+		</summary>
+     <p id="cardInfoLbl"><span style="text-decoration:underline">Paste</span> or <i>type</i> <b>below</b> </p>
         <div id="cardInfo" contenteditable="true">airport^^a place where airplanes take off and land ^^ baggage ^^ the suitcases and bags that a <b>person</b> takes on a trip ^^boarding pass^^a piece of paper or <b>electronic</b> document that shows you have the right to board a plane^^ <b>Itinerary</b> ^^ plan or schedule for a trip or vacation</div>
         
      <br>
@@ -334,9 +340,9 @@ function move2top(zchild){
 //<!-- //end +++++====== Move one Child up/over   ============ -->           
 </script>      
 
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>     
+        <button id="editModeBtn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>     
       
-               <button style="margin: 2ex 0 0 0; display:block;" id="editOff" onclick="toggleEditOff()">Preview</button>
+               <button  id="previewModeBtn" class="editMode" style="margin: 2ex 0 0 0; display:block;" onclick="previewMode()">Preview</button>
 
       
 
@@ -383,19 +389,30 @@ detailsElements.forEach(function(detailElement, index){
 
       
       <script>
-      function toggleEditOff(){
+      function previewMode(){
+		  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+          		  
           
             //document.getElementById("saveDom").style.display="none";
           
-            document.getElementById("editOff").style.display="none";
-            document.getElementById("editOn").style.display="block";    
+            //document.getElementById("editOff").style.display="none";
+            //document.getElementById("editOn").style.display="block";    
           
-            document.getElementById("printOptions").style.display="block";
+            //document.getElementById("printOptions").style.display="block";
           
             //document.getElementById("cardInfoLbl").style.display  = "none";
             //document.getElementById("convert").style.display  = "none";
-            document.getElementById('pasteHere').style.display="none";
-            document.getElementById('instructions1').style.display="none";
+            //document.getElementById('pasteHere').style.display="none";
+            //document.getElementById('instructions1').style.display="none";
           
           
           let contEdbls = document.querySelectorAll('[contentEditable="true"]');
@@ -410,24 +427,32 @@ detailsElements.forEach(function(detailElement, index){
         // end remove all editables ************************
       } //end toggleEditOFf
           
-      function toggleEditOn(){
+      function editMode(){
           
-      
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }        
            // document.getElementById("saveDom").style.display="block";
           
-            document.getElementById("editOff").style.display="block";
-            document.getElementById("editOn").style.display="none";  
+            //document.getElementById("editOff").style.display="block";
+            //document.getElementById("editOn").style.display="none";  
           
-            document.getElementById("printOptions").style.display="none";
+            //document.getElementById("printOptions").style.display="none";
           
-            document.getElementById("cardInfoLbl").style.display  = "block";
+            //document.getElementById("cardInfoLbl").style.display  = "block";
             //document.getElementById("convert").style.display  = "block";        
-            document.getElementById('pasteHere').style.display="block";
-            document.getElementById('instructions1').style.display="block";
+            //document.getElementById('pasteHere').style.display="block";
+            //document.getElementById('instructions1').style.display="block";
           
     
           let contEdbls = document.querySelectorAll('[contentEditable="false"]');
-          let btnContnrs = document.querySelectorAll('.btnContnr');
+          //let btnContnrs = document.querySelectorAll('.btnContnr');
           
             for (const contEdbl of contEdbls) {
                 contEdbl.contentEditable=true;
@@ -463,6 +488,8 @@ function saveDom(){
 		  } 
 		}    
 	}
+	
+			studyMode.textContent="on";
     
     document.getElementById('storeIndex').innerHTML= ii;    
     let closeAllDetails = document.getElementsByTagName('details');
@@ -497,14 +524,14 @@ function saveDom(){
         window.URL.revokeObjectURL(url);
         //end save theDom editMode
     
-        toggleEditOff();
+        previewMode();
           //  document.getElementById("editOff").style.display="none";
-            document.getElementById("editOn").style.display="none";  
+          //  document.getElementById("editModeBtn").style.display="none";  
         
         //turnn off leave page warning
             document.getElementById("warnLeavePage").textContent="off";
 
-		studyMode.textContent="on";
+
            //  theDOM study mode
         let theDom2 = document.documentElement.innerHTML;
         const docHtml2 = '<!DOCTYPE html><html lang="en">';
@@ -535,7 +562,7 @@ function saveDom(){
     
         document.title = oldTitle;    
         
-        toggleEditOn();    
+        editMode();    
 
 }      
 </script>
@@ -556,7 +583,7 @@ function saveDom(){
       
 
     <!-- ********************************** Print PDF ********************-->
-    <div id="printOptions">
+    <div id="printOptions" class="previewMode">
         Print (save as PDF) <br>
          <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>
         <br>
