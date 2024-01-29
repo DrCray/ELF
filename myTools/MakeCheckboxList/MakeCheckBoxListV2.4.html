@@ -166,22 +166,22 @@ Checklist  Maker        </strong>
     </section>   
 </header>
 
-<details id="note"><summary>note: <span class="fake-button" style="text-decoration: underline; color:blue;">show/hide</span></summary><p>You may use this for any type of activity where you need students to click on items--use your imagination.<br><br>The selected, level, and percentage may not be important for you. In that case, uncheck "show: selected, level, percentage" at the bottom. <br><br>The percentage will reflect the percent of selected items.<br><br>The levels are based on 20 percentage increments from 1 to 5. </p><p>I initially used this as an assessment tool to rank my students level of vocabulary proficiency <br>based on the number of words they recognized from a leveled list I created.</p></details>
+<details id="note" class="editMode"><summary>note: <span class="fake-button" style="text-decoration: underline; color:blue;">show/hide</span></summary><p>You may use this for any type of activity where you need students to click on items--use your imagination.<br><br>The selected, level, and percentage may not be important for you. In that case, uncheck "show: selected, level, percentage" at the bottom. <br><br>The percentage will reflect the percent of selected items.<br><br>The levels are based on 20 percentage increments from 1 to 5. </p><p>I initially used this as an assessment tool to rank my students level of vocabulary proficiency <br>based on the number of words they recognized from a leveled list I created.</p></details>
 
 <p></p>
   
 <!--  1   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
 <!--     **************************   A Card   *************************-->
-      <p id="noteScrollToSee" style="background:#FFF1FE; width:fit-content;"> Each new list is appended to the end of existing lists.<br>After <span class="fakeButton">&nbsp;Make Select List </span>&nbsp;, scroll down if you want to see it. </p>
-<textarea id="list" rows="6" style="width:95%; max-width:25rem;">Please, paste, comma-delimited, list, here., Click, "Make Select List", button, below, to give it, a try.</textarea>
+      <p id="noteScrollToSee" class="editMode" style="background:#FFF1FE; width:fit-content;"> Each new list is appended to the end of existing lists.<br>After <span class="fakeButton">&nbsp;Make Select List </span>&nbsp;, scroll down if you want to see it. </p>
+<textarea id="list" class="editMode" rows="6" style="width:95%; max-width:25rem;">Please, paste, comma-delimited, list, here., Click, "Make Select List", button, below, to give it, a try.</textarea>
   <div style="margin: .7rem 0 0 0;"> </div>  
-<button id="makeSelectButton" onclick="createCheckboxList()">Make Select List</button>
-    <p id="showCountLevel"> 
+<button id="makeSelectButton" class="editMode" onclick="createCheckboxList()">Make Select List</button>
+    <p id="showCountLevel" class="editMode"> 
         <input type="checkbox" id="includeCount" checked>
         <label for="includeCount">show: selected, level, percentage</label> 
     </p> 
 <p></p><p></p>
-    <div id="showHideNameID" onclick="toglDisplay('nameAndID')" 
+    <div id="showHideNameID" class="editMode" onclick="toglDisplay('nameAndID')" 
        style= "margin: .3rem; padding: .3rem;
        color:darkblue; background-color:lightcyan; 
        text-decoration:underline; width:fit-content;">
@@ -347,7 +347,7 @@ includeCountCheckbox.addEventListener("change", function() {
       
       
       
-     <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:none"> Print/Save as PDF </button>   
+     <button id="printFullView" class="hlBtn previewMode" onclick="checkThenPrint();" style="display:none"> Print/Save as PDF </button>   
       
       <script>
         function checkThenPrint(){
@@ -386,15 +386,15 @@ includeCountCheckbox.addEventListener("change", function() {
  
 <!--  =============== DETAILED version ========================================================= -->
 <!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
-<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editMode/Off buttons   ==================== -->
 
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>     
+        <button id="editBtn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>     
       
-        <button style="margin: 2ex 0 0 0; display:block;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        <button id="previewBtn" class="editMode" style="margin: 2ex 0 0 0; display:block;" onclick="previewMode()">Preview</button>
         
                  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
                  
-    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+    <div id="saveDom" class="editMode" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
                 
         <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
@@ -406,24 +406,36 @@ includeCountCheckbox.addEventListener("change", function() {
                  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
       
       <script>
-      function toggleEditOff(){
+      function previewMode(){
+		  
 
-            document.getElementById("makeSelectButton").style.display="none";  
-            document.getElementById("showCountLevel").style.display="none";                    
-            document.getElementById("noteScrollToSee").style.display="none";  
-            document.getElementById("showHideNameID").style.display="none";  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+          		  
+
+            //document.getElementById("makeSelectButton").style.display="none";  
+            //document.getElementById("showCountLevel").style.display="none";                    
+            //document.getElementById("noteScrollToSee").style.display="none";  
+            //document.getElementById("showHideNameID").style.display="none";  
 
           
 
                         
-            document.getElementById("printFullView").style.display="block"; //opposite of Editor items                 
+            //document.getElementById("printFullView").style.display="block"; //opposite of Editor items                 
 
           
-            document.getElementById("list").style.display="none";          
-            document.getElementById("saveDom").style.display="none";
-            document.getElementById("editOff").style.display="none";
-            document.getElementById("editOn").style.display="block";   
-            document.getElementById("note").style.display="none";
+            //document.getElementById("list").style.display="none";          
+            //document.getElementById("saveDom").style.display="none";
+            //document.getElementById("previewMode").style.display="none";
+            //document.getElementById("editMode").style.display="block";   
+            //document.getElementById("note").style.display="none";
             
            // document.getElementById("styleEditor").style.display="none";
             
@@ -433,24 +445,36 @@ includeCountCheckbox.addEventListener("change", function() {
             }
 
         // end remove all editables ************************
-      } //end toggleEditOFf
+      } //end previewMode
           
-      function toggleEditOn(){
+      function editMode(){
+
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }   
+                
       
-            document.getElementById("makeSelectButton").style.display="block";    
-            document.getElementById("showCountLevel").style.display="block";    
-            document.getElementById("noteScrollToSee").style.display="block";      
-            document.getElementById("showHideNameID").style.display="block";  
+      
+            //document.getElementById("makeSelectButton").style.display="block";    
+            //document.getElementById("showCountLevel").style.display="block";    
+            //document.getElementById("noteScrollToSee").style.display="block";      
+            //document.getElementById("showHideNameID").style.display="block";  
             
           
-            document.getElementById("printFullView").style.display="none"; //opposite of Editor items
+            //document.getElementById("printFullView").style.display="none"; //opposite of Editor items
           
           
-            document.getElementById("list").style.display="block";                    
-            document.getElementById("saveDom").style.display="block";
-            document.getElementById("editOff").style.display="block";
-            document.getElementById("editOn").style.display="none";     
-            document.getElementById("note").style.display="block";
+            //document.getElementById("list").style.display="block";                    
+            //document.getElementById("saveDom").style.display="block";
+            //document.getElementById("previewMode").style.display="block";
+            //document.getElementById("editMode").style.display="none";     
+            //document.getElementById("note").style.display="block";
             
             
             //document.getElementById("styleEditor").style.display="block";
@@ -496,8 +520,8 @@ function saveDom(){
         window.URL.revokeObjectURL(url);
         //end save theDom editMode
     
-        toggleEditOff();
-        document.getElementById("editOn").style.display="none";     
+        previewMode();
+        document.getElementById("editBtn").style.display="none";     
             
                  
            //  theDOM study mode
@@ -523,7 +547,7 @@ function saveDom(){
         
         alert("Check the browser's \n default download folder");
         
-        toggleEditOn();
+        editMode();
         document.title = oldTitle;        
 
 }      
