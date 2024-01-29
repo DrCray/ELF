@@ -99,7 +99,7 @@
         .fake-button-no-hover {
                 background-color: #E9E9ED; 
                 border-style:solid; border-width:thin; border-radius: 5px;
-                box-shadow: 1ppx 1px; margin: 0 1ex 0 1ex; padding: 0 1ex 0 1ex; font-size: 0.80em;
+                box-shadow: 1px 1px; margin: 0 1ex 0 1ex; padding: 0 1ex 0 1ex; font-size: 0.80em;
 
         }
 
@@ -265,9 +265,9 @@
     
     <div id="toggleTextStatus" style="display:none">off</div>
 
- <div id="styling" class="btnStyleEditor">
+ <div id="styling" class="btnStyleEditor editMode">
 
-     <details class ="styling-details">
+     <details id="styling-details" class ="styling-details">
             <summary><span class ="fake-button" style="font-size:1em;"> Style Template </span></summary>
             <details class="styleNotes"><summary>  note !! </summary><div style="border: thin solid blue; padding:1em; border-radius:5px; margin: 0 2em 0 2em; background-color: aliceblue; color:darkblue;"><p>The Style Template editor allows for changing the background and text color of the page and the sections below, as well as inserting links, images, and styled Lists. However, Bold, Italic,..., xl, xxL etc. do <em>not</em> have the UNDO function. However, instead of undo, you can highlight the text, cut, paste as unformatted text and redo the styling</p><p>For more involved editing, use a word processor or wysiwyg html editor. Style and design as you like; copy from the editor and paste the content into any editable section of this document.</p> <p>Images can't be copied from editors. Insert them separately</p></div></details>
 <!-- =====  set posts display order  =========  -->  
@@ -704,7 +704,7 @@ function zztop(){
     </script>
 
 
-   <div id="editModeBox" class="editModeBox">
+   <div id="editModeBox" class="editModeBox editMode">
         <span class="editModeInner">[ ... Edit Mode ... ]</span>
         <br>
        <div class = "editModeCtlZ"> 
@@ -849,7 +849,7 @@ function zztop(){
   
 
     
-<button id="addCard" class="addCard" onclick ="addCard()">add article</button><br>
+<button id="addCard" class="addCard editMode" onclick ="addCard()">add article</button><br>
     <textarea id="fakeTextarea" type="text" rows=2 cols="30" style="display:block;" disabled>click on "add article" to get an active editing area</textarea>
     
     
@@ -945,14 +945,14 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 </div>
 
 	   
-        <button id="addCard2" class="addCard" onclick ="addCard()">add article</button>
+        <button id="addCard2" class="addCard editMode" onclick ="addCard()">add article</button>
         <button id="showAnswers2" class="toggleAllAnsBtn" style="display:none;" onclick="showAnswers()">
                 &nbsp;Show All Articles&nbsp;</button>
         <button id="hideAnswers2" class="toggleAllAnsBtn"  onclick="hideAnswers()">
                 &nbsp;Hide All Articles&nbsp;</button> 
 
-        <button id="editOffDup" onclick="toggleEditOff()" style="display:block; margin:1ex 0 0 0;">Preview</button>
-        <button id="editOnDup" onclick="toggleEditOn()" style="display:none; margin:1ex 0 0 0;">Edit Mode</button>
+        <button id="previewBtn" onclick="previewMode()" style="display:block; margin:1ex 0 0 0;">Preview</button>
+        <button id="editBtn" onclick="editMode()" style="display:none; margin:1ex 0 0 0;">Edit Mode</button>
 
 
     <script>
@@ -1050,7 +1050,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
     
     
     <!--  =============== HTML SAVE THE DOM as FILE ==================== -->
-    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
+    <div id="saveDom" class="editMode" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
         
              <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="border:thin solid orange; color:orange; display:none">done</span>
               <br><br>  
@@ -1094,6 +1094,9 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         if (zztopz){
             setzztopzX.setAttribute("data-setzztopz", "on");
         }
+        
+        
+        document.getElementById("styling-details").open = false;
            
            
       document.getElementById("iIndex").innerHTML=i;
@@ -1124,7 +1127,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 // here we are setting up for the save as study mode
            
-  toggleEditOff(); //preview
+  previewMode(); //preview
  
  
   let toggleCheckbox = document.getElementById('toggleArticle');
@@ -1155,8 +1158,8 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
            
         //document.getElementById("editOn").style.display="none";
         //document.getElementById("editOff").style.display="none";
-        document.getElementById("editOnDup").style.display="none";
-        document.getElementById("editOffDup").style.display="none";           
+        document.getElementById("editBtn").style.display="none";
+        document.getElementById("previewBtn").style.display="none";           
 
        //  theDOM study mode
         let theDom2 = document.documentElement.innerHTML;
@@ -1181,11 +1184,12 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 
         // put back the Edit Mode elements   
-        toggleEditOn();
+        editMode();
            toggleTextStatus = "off";
             document.getElementById("toggleTextStatus").innerHTML = "off"; console.log("end" + toggleTextStatus);
            
-           document.title = oldTitle;
+           document.title = oldTitle;           
+       
            
        //turn on leave page warning
         document.getElementById("warnLeavePage").textContent="on";          
@@ -1300,7 +1304,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 <script>
     
-    function toggleEditOff(){  //preview
+    function previewMode(){  //preview
 		
           let editModes = document.querySelectorAll('.editMode');
             for (const editMode of editModes) {
@@ -1312,30 +1316,30 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
                 previewMode.style.display="block";
             }  		
         
-        const changeBkgd = document.getElementById("changeBackground");
-        changeBkgd.style.display="none";
+       // const changeBkgd = document.getElementById("changeBackground");
+       // changeBkgd.style.display="none";
            
        tgltxt="toggleText()";
         
         let toggleQu1 = document.getElementById("question1");
         toggleQu1.setAttribute("onclick", tgltxt);
 
-        const styling = document.getElementById("styling");
-        styling.style.display="none";
+        //const styling = document.getElementById("styling");
+        //styling.style.display="none";
 
-        const addBtn = document.getElementById("addCard");
-        addBtn.style.display="none";
+       // const addBtn = document.getElementById("addCard");
+       // addBtn.style.display="none";
 
-        const addBtn2 = document.getElementById("addCard2");
-        addBtn2.style.display="none";
+      //  const addBtn2 = document.getElementById("addCard2");
+      //  addBtn2.style.display="none";
            
-        const doneBtn = document.getElementById("saveDom");
-        doneBtn.style.display="none";
+      //  const doneBtn = document.getElementById("saveDom");
+       // doneBtn.style.display="none";
 
         let answerzs = document.querySelectorAll('div[class="answer"]');
         let questions = document.querySelectorAll('div[class="question"]');
         let titlez = document.getElementById("zztitle");
-        let styleEditors = document.querySelectorAll(".styleEditor");
+        //let styleEditors = document.querySelectorAll(".styleEditor");
         let biuCodes = document.querySelectorAll(".biuCode");
         
             let moveUpBtns = document.querySelectorAll('.moveUpBtn');
@@ -1351,10 +1355,10 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
           moveDownBtn.style.display="none";
           }        
         
-        for (const styleEditor of styleEditors) {
+      /*  for (const styleEditor of styleEditors) {
           styleEditor.style.display="none";
           }
-
+	  */
 
         for (const answerz of answerzs) {
           answerz.style.display="none";
@@ -1368,8 +1372,8 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         
 
         // display none
-        const editModeBox = document.getElementById("editModeBox");
-        editModeBox.style.display="none";
+        //const editModeBox = document.getElementById("editModeBox");
+        //editModeBox.style.display="none";
 
         let delBtns = document.querySelectorAll('button[class="delBtnz"]');
         for (const delBtn of delBtns) {
@@ -1378,18 +1382,18 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         
         //document.getElementById("editOn").style.display="block";
         //document.getElementById("editOff").style.display="none";
-        document.getElementById("editOnDup").style.display="block";
-        document.getElementById("editOffDup").style.display="none";   
+        document.getElementById("editBtn").style.display="block";
+        document.getElementById("previewBtn").style.display="none";   
         
         document.getElementById("hideAnswers").style.display="none";
         document.getElementById("showAnswers").style.display="block";
         document.getElementById("hideAnswers2").style.display="none";
         document.getElementById("showAnswers2").style.display="block"; 
         
-    }  //end toggleEditOff
+    }  //end previewMode
     
     
-    function toggleEditOn(){  
+    function editMode(){  
        //get editmode elements ******** 
        
                  let editModes = document.querySelectorAll('.editMode');
@@ -1403,38 +1407,38 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
             }  
        
        
-       const changeBkgd = document.getElementById("changeBackground");
+      // const changeBkgd = document.getElementById("changeBackground");
 
        tgltxt="toggleText()";
 
         let toggleQu1 = document.getElementById("question1");
 
-        const styling = document.getElementById("styling");
+        //const styling = document.getElementById("styling");
 
-        const addBtn = document.getElementById("addCard");
+       // const addBtn = document.getElementById("addCard");
 
-        const addBtn2 = document.getElementById("addCard2");
+       // const addBtn2 = document.getElementById("addCard2");
 
-        const doneBtn = document.getElementById("saveDom");
+       // const doneBtn = document.getElementById("saveDom");
         
-        const editModeBox = document.getElementById("editModeBox");
+        //const editModeBox = document.getElementById("editModeBox");
 
         
         let answerzs = document.querySelectorAll('div[class="answer"]');
         let questions = document.querySelectorAll('div[class="question"]');
         let titlez = document.getElementById("zztitle");
-        let styleEditors = document.querySelectorAll(".styleEditor");
+        //let styleEditors = document.querySelectorAll(".styleEditor");
         let biuCodes = document.querySelectorAll(".biuCode");  
         let delBtns = document.querySelectorAll('button[class="delBtnz"]');
 
         //end get editmode elements ********
         
         //document.getElementById("viewPrint").style.display="none";
-        changeBkgd.style.display="none";
-        editModeBox.style.display="block";
-        addBtn.style.display="initial";
-        addBtn2.style.display="initial";
-        doneBtn.style.display="block";
+        //changeBkgd.style.display="none";
+        //editModeBox.style.display="block";
+       // addBtn.style.display="initial";
+       // addBtn2.style.display="initial";
+       // doneBtn.style.display="block";
         
         tgltxt="toggleTextFake)";
         toggleQu1.setAttribute("onclick", tgltxt);
@@ -1443,7 +1447,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
         titlez.setAttribute("contenteditable", "true");
 
-        styling.style.display="initial";
+        //styling.style.display="initial";
 
             let moveUpBtns = document.querySelectorAll('.moveUpBtn');
             let moveDownBtns = document.querySelectorAll('.moveDownBtn');
@@ -1457,10 +1461,10 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
           }  
         
 
-        for (const styleEditor of styleEditors) {
+        /*for (const styleEditor of styleEditors) {
           styleEditor.style.display="inline-block";
           }
-           
+        */   
            
            
         for (const delBtn of delBtns) {
@@ -1480,15 +1484,16 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         
         //document.getElementById("editOn").style.display="none";
         //document.getElementById("editOff").style.display="block";
-        document.getElementById("editOnDup").style.display="none";
-        document.getElementById("editOffDup").style.display="block";    
+        document.getElementById("editBtn").style.display="none";
+        document.getElementById("previewBtn").style.display="block";    
         
         document.getElementById("hideAnswers").style.display="inline-block";
         document.getElementById("showAnswers").style.display="none";
         document.getElementById("hideAnswers2").style.display="block";
         document.getElementById("showAnswers2").style.display="none"; 
         
-    }  //end toggleEditOn
+        
+    }  //end editMode
 </script>
     
 <script>
