@@ -118,8 +118,8 @@
     <section id="zztitle" contenteditable="true">
         <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
         <!--************************ Type title here ******************-->
-        Just click here and type.<br><br>
-        e.g. <br>
+        Replace the text in this section with your own.<br>
+        e.g. :<br>
         Dr Ray  <br>
         Summer 2022, <br>
         Professional English <br> 
@@ -163,7 +163,7 @@ document.onreadystatechange = () => {
 <input id="name" type="text" value="name">
 <input id="id" type="text" value="id#">
       
-        <div id="playHow" style="padding: 3px; width:fit-content; margin:1ex; background-color:#C4EFD7; color:darkred; display:none;">
+        <div id="playHow" class="previewMode" style="padding: 3px; width:fit-content; margin:1ex; background-color:#C4EFD7; color:darkred; display:none;">
             <ul>
                 <li>Click on a square to get a letter hint.</li>
                 <li>Type your guess then hit Enter (or <button> try </button> )</li>
@@ -193,7 +193,7 @@ document.onreadystatechange = () => {
     
 </section>
  
-<section id="inputList" class="card" id="wordGame">
+<section id="inputList" class="card editMode" id="wordGame">
      <div class="quStyle"> 
          
        <div style="border: thin solid gray; width: fit-content; margin: 0 0 1rem 0; padding: .2rem 1rem .2rem 1rem;">
@@ -312,7 +312,7 @@ document.onreadystatechange = () => {
                     // Create the delete button
                     const deleteButton = document.createElement("button");
                     deleteButton.id = `$delThis$delIDnumb`; delIDnumb++
-                    deleteButton.classList.add("delBtn", "editOff");
+                    deleteButton.classList.add("delBtn", "editMode");
                     //deleteButton.style.display = "none";
                     deleteButton.textContent = "delete this";
 
@@ -482,7 +482,7 @@ document.onreadystatechange = () => {
                 
                     const delWord = document.createElement("button");
                         delWord.innerHTML="del word";
-                        delWord.className="delWord";
+                        delWord.className="delWord editMode";
                         delWord.style.margin=".5ex 0 2ex 0";
                         delWord.style.display="block";
                         delWord.setAttribute("onclick", "this.parentElement.remove()");
@@ -503,7 +503,8 @@ document.onreadystatechange = () => {
                         showAllBtn.innerHTML="Show All Answers for this section";
                         showAllFn = "showAll('" + zsplitWordID + "')";
                         showAllBtn.setAttribute("onclick", showAllFn);
-                        showAllBtn.classList.add("btnShowz");
+                        showAllBtn.classList.add("btnShowz", "previewMode");
+                        /*technically, the above would work with .className="btnShowz previewMode"; (no commas). That would replace any pre-existing classes with the new ones. But for learning purposes, I want to use .classList.add("btnShowz", "previewMode"); This method adds new classes alongside pre-existing ones. */
                         showAllBtn.style.display="none";
                         showAllBtn.style.margin="1em 0 0 0";
 
@@ -516,7 +517,7 @@ document.onreadystatechange = () => {
                         hideAllBtn.innerHTML="Hide All Answers for this section";
                         hideAllFn = "hideAll('" + zsplitWordID + "')";
                         hideAllBtn.setAttribute("onclick", hideAllFn);
-                        hideAllBtn.classList.add("btnHidez");
+                        hideAllBtn.className="btnHidez previewMode";
                     
                         hideAllBtn.style.display="none";
                         hideAllBtn.style.margin="0 0 0 0";
@@ -528,7 +529,7 @@ document.onreadystatechange = () => {
                 } //end if hideAllAnsBtns not checked
                     
             
-                        zsplitWord.insertAdjacentHTML("beforeend","<button class='delBtn' onclick='this.parentElement.remove()'> delete full list </button>");      
+                        zsplitWord.insertAdjacentHTML("beforeend","<button class='delBtn editMode' onclick='this.parentElement.remove()'> delete full list </button>");      
             
         if (document.getElementById("hideAllAnsBtns").checked){            
               document.getElementById("showAllAnsThisPage").style.display="none";
@@ -592,7 +593,7 @@ document.onreadystatechange = () => {
         
         
     </script>
-      <div id="btnShowHideAnsOnPage" style="display:none;">
+      <div id="btnShowHideAnsOnPage" class="previewMode" style="display:none;">
           <div style="border-top: thin solid darkblue; margin: 1ex 0 0 0; padding: 1ex 0 0 0;"><button id="showAllAnsThisPage" onclick="showAll('allLists')">Show all Answers for this page</button>
           </div>
           <div><button id="hideAllAnsThisPage" onclick="hideAll('allLists')">Hide all Answers for this page</button>
@@ -652,7 +653,7 @@ document.onreadystatechange = () => {
          } // end checkThenPrint()
      </script>     
 
-    <div id="printOptions">
+    <div id="printOptions" class="previewMode">
         Print (save as PDF) <br>
          <button id="printFullView" class="hlBtn" onclick="checkThenPrint()"> Print </button>
         <br>
@@ -660,11 +661,11 @@ document.onreadystatechange = () => {
     </div>      
       
       
-        <button id="editOff" onclick="toggleEditOff()">Preview</button>
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>      
+        <button id="previewBtn" class="editMode" onclick="previewMode()">Preview</button>
+        <button id="editBtn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>      
       
 <!--  ===============  SAVE THE DOM as FILE ==================== -->
-    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
+    <div id="saveDom" class="editMode" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 1em 0 0 1em; padding: 1ex;">
         
 <br>    <!--place this in the save Dom buttons division if applicable -->
   <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> 
@@ -681,7 +682,22 @@ document.onreadystatechange = () => {
     </div> 
       
       <script>
-          function toggleEditOff(){
+          function previewMode(){
+			  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+            
+            	
+            document.getElementById("toggleShowHideNameID").style.display  = "none";          
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";   
+                        			  
               
               hideAll('allLists'); 
               //close all "guesses: " and "great job!"
@@ -692,51 +708,70 @@ document.onreadystatechange = () => {
               
                 // remove all editables ***********************************
                 let contEdbls = document.querySelectorAll("[contenteditable=true]");
-                let delBtns = document.querySelectorAll(".delBtn");
-                let delzWords = document.querySelectorAll(".delWord");  
-                let btnShowzs = document.querySelectorAll(".btnShowz");  
-                let btnHidezs = document.querySelectorAll(".btnHidez");  
-              
-
-                for (const contEdbl of contEdbls ){
+                
+                                for (const contEdbl of contEdbls ){
                     contEdbl.contentEditable = "false";
                 }
+                
+                
+                //let delBtns = document.querySelectorAll(".delBtn");
+                //let delzWords = document.querySelectorAll(".delWord");  
+                //let btnShowzs = document.querySelectorAll(".btnShowz");  
+                //let btnHidezs = document.querySelectorAll(".btnHidez");  
+              
 
-                for (const delBtn of delBtns ){                                        
+
+
+              /*  for (const delBtn of delBtns ){                                        
                     delBtn.style.display = "none";
                 }
-
+			  
+			  
                 for (const delzWord of delzWords ){                                        
                     delzWord.style.display = "none";
                 }
               
+              
                 for (const btnShowz of btnShowzs ){                                        
                     btnShowz.style.display = "block";
                 }
-              
+             
                 for (const btnHidez of btnHidezs ){                                        
                     btnHidez.style.display = "block";
-                }              
+                } 
+               */             
 
-                document.getElementById("inputList").style.display="none";
-                document.getElementById("saveDom").style.display="none";  
+                //document.getElementById("inputList").style.display="none";
+                //document.getElementById("saveDom").style.display="none";  
               
-                document.getElementById("editOff").style.display="none";
-                document.getElementById("editOn").style.display="initial";  
+                //document.getElementById("previewBtn").style.display="none";
+                //document.getElementById("editBtn").style.display="initial";  
               
-                document.getElementById("printOptions").style.display="block";
-              
-            document.getElementById("toggleShowHideNameID").style.display  = "none";          
-            document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";                
+                //document.getElementById("printOptions").style.display="block";               
 
-            document.getElementById("btnShowHideAnsOnPage").style.display  = "block";  
-            document.getElementById("playHow").style.display  = "block";                
+            //document.getElementById("btnShowHideAnsOnPage").style.display  = "block";  
+            //document.getElementById("playHow").style.display  = "block";                
               
               
                 // end remove all editables ************************
           }
           
-          function toggleEditOn(){
+          function editMode(){
+			  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }  
+            
+              
+            document.getElementById("toggleShowHideNameID").style.display  = "initial";          
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";               
+             
               
               hideAll('allLists'); 
               //close all "guesses: " and "great job!"
@@ -747,44 +782,46 @@ document.onreadystatechange = () => {
                             
                 // restore editables ***************************
                 let contEdbls = document.querySelectorAll("[contenteditable=false]");
-                let delBtns = document.querySelectorAll(".delBtn");
-                let delzWords = document.querySelectorAll(".delWord");  
-                let btnShowzs = document.querySelectorAll(".btnShowz");  
-                let btnHidezs = document.querySelectorAll(".btnHidez");  
+                
+                for (const contEdbl of contEdbls ){
+                    contEdbl.contentEditable = "true";
+                }                
+                
+                
+                //let delBtns = document.querySelectorAll(".delBtn");
+                //let delzWords = document.querySelectorAll(".delWord");  
+                //let btnShowzs = document.querySelectorAll(".btnShowz");  
+                //let btnHidezs = document.querySelectorAll(".btnHidez");  
               
-                for (const btnShowz of btnShowzs ){                                        
+               /* for (const btnShowz of btnShowzs ){                                        
                     btnShowz.style.display = "none";
                 }
+              
               
                 for (const btnHidez of btnHidezs ){                                        
                     btnHidez.style.display = "none";
                 }                
-              
-                for (const contEdbl of contEdbls ){
-                    contEdbl.contentEditable = "true";
-                }
 
                 for (const delBtn of delBtns ){                                        
                     delBtn.style.display = "block";
                 }
-
+			   
+			   
                 for (const delzWord of delzWords ){                                        
                     delzWord.style.display = "block";
                 }
+              */
 
-                document.getElementById("inputList").style.display="block";
-                document.getElementById("saveDom").style.display="block";
+                //document.getElementById("inputList").style.display="block";
+                //document.getElementById("saveDom").style.display="block";
               
-                document.getElementById("editOff").style.display="initial";
-                document.getElementById("editOn").style.display="none";  
+                //document.getElementById("previewBtn").style.display="initial";
+                //document.getElementById("editBtn").style.display="none";  
               
-                document.getElementById("printOptions").style.display="none";
+                //document.getElementById("printOptions").style.display="none";
               
-            document.getElementById("toggleShowHideNameID").style.display  = "initial";          
-            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";   
-              
-            document.getElementById("btnShowHideAnsOnPage").style.display  = "none";                
-            document.getElementById("playHow").style.display  = "none";                
+            //document.getElementById("btnShowHideAnsOnPage").style.display  = "none";                
+            //document.getElementById("playHow").style.display  = "none";                
               
                 //end restore editabels **********************              
           }
@@ -846,9 +883,9 @@ function saveDom(){
         window.URL.revokeObjectURL(url);
         //end save theDom editMode
     
-        toggleEditOff();
-                document.getElementById("editOff").style.display="none";
-                document.getElementById("editOn").style.display="none";      
+        previewMode();
+              //  document.getElementById("previewBtn").style.display="none";
+              document.getElementById("editBtn").style.display="none";      
         
         let resetGuesses = document.querySelectorAll(".guesses");
                 for (const resetGuess of resetGuesses ){                                        
@@ -878,7 +915,7 @@ function saveDom(){
         
         alert("Check the browser's \n default download folder");
     
-        toggleEditOn();    
+        editMode();    
         document.title = oldTitle;
 }
 
