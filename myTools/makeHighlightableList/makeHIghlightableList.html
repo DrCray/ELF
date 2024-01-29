@@ -84,6 +84,10 @@
     .hideBtn{
         margin:0.2rem; border: thin solid darkblue; border-radius: 5px;  padding: 0.2rem; font-size: 60%;  color: darkblue; background-color: #E8F2F8; width: fit-content;       
     }
+    
+    textarea {
+		display:block;
+	}
 </style>
 </head>
 <body>
@@ -92,14 +96,14 @@
 
 
 
-<textarea id="listTitle" rows="1" cols="40">Click on all the fruits below.</textarea><br>
+<textarea id="listTitle" class="editMode" rows="1" cols="40">Click on all the fruits below.</textarea>
 
-<textarea id="wordListInput" rows="4">wood, apple, deer, banana, peach</textarea> <br>
-<button id="generateWL" onclick="generateWordList()">Generate List</button>
+<textarea id="wordListInput" class="editMode" rows="4">wood, apple, deer, banana, peach</textarea> 
+<button id="generateWL" class="editMode" onclick="generateWordList()">Generate List</button>
 
     <!-- show/hide name and ID **!compatible with Print/Save PDF!** (below) -->
       <!-- show name and ID and Javascript ==================-->      
-           <div id="showHideName" onclick="toglDisplay('nameAndID')" 
+           <div id="showHideName" class="editMode" onclick="toglDisplay('nameAndID')" 
                style= "margin:1rem .2rem .2rem .2rem; padding: .2rem;
                font-size: .7rem; border: thin solid darkblue;
                color:darkblue; background-color:lightcyan; 
@@ -110,7 +114,7 @@
 
             <div id="nameAndID">
               <input id="name" type="text" value="name">
-              <input id="id" type="text" value="id#"><br><br>
+              <input id="id" type="text" value="id#">
             </div>  
             
             <script>    
@@ -236,7 +240,7 @@ for (let i = 0; i < listTitles.length; i++) {
 
 <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
     
-     <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:none"> Print/Save as PDF </button>   
+     <button id="printFullView" class="hlBtn previewMode" onclick="checkThenPrint();" style="display:none"> Print/Save as PDF </button>   
       
       <script>
         function checkThenPrint(){
@@ -268,15 +272,15 @@ for (let i = 0; i < listTitles.length; i++) {
 
 <!--  =============== DETAILED version ========================================================= -->
 <!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
-<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editBtn/Off buttons   ==================== -->
 
-        <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button>     
+        <button id="editBtn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>     
       
-        <button style="margin: 2ex 0 0 0; display:block;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        <button style="margin: 2ex 0 0 0; display:block;" id="previewBtn" class="editMode" onclick="previewMode()">Preview</button>
         
                  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
                  
-    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+    <div id="saveDom" class="editMode" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
                 
         <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
@@ -288,22 +292,21 @@ for (let i = 0; i < listTitles.length; i++) {
                  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
       
       <script>
-      function toggleEditOff(){
+      function previewMode(){
+
+
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+          		  
           
-            document.getElementById("saveDom").style.display="none";
-            document.getElementById("editOff").style.display="none";
-            document.getElementById("editOn").style.display="block";   
-            
-            document.getElementById("showHideName").style.display="none";   
-            document.getElementById("generateWL").style.display="none";                
-            document.getElementById("printFullView").style.display="block";                
-            
-                        
-            document.getElementById("listTitle").style.display="none";  
-            document.getElementById("wordListInput").style.display="none"; 
-         //   document.getElementById("wordListSection").style.display="none";                                                                  
-           // document.getElementById("styleEditor").style.display="none";
-           
+                    
           let btnDelThisz = document.querySelectorAll('.btnDelThis');
             for (const btnDelThis of btnDelThisz) {
                 btnDelThis.style.display="none";
@@ -316,26 +319,22 @@ for (let i = 0; i < listTitles.length; i++) {
             }
 
         // end remove all editables ************************
-      } //end toggleEditOFf
+      } //end previewMode
           
-      function toggleEditOn(){
-          
-            document.getElementById("saveDom").style.display="block";
-            document.getElementById("editOff").style.display="block";
-            document.getElementById("editOn").style.display="none";     
-            
-            document.getElementById("showHideName").style.display="block";   
-            document.getElementById("generateWL").style.display="block";                
-            document.getElementById("printFullView").style.display="none";                
-            
-            
-            document.getElementById("listTitle").style.display="block";  
-            document.getElementById("wordListInput").style.display="block"; 
-     //       document.getElementById("wordListSection").style.display="block";  
-            
-      //      document.getElementById("styleEditor").style.display="block";
+      function editMode(){
 
-      
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }   
+          		  
+          
+     
           let btnDelThisz = document.querySelectorAll('.btnDelThis');
             for (const btnDelThis of btnDelThisz) {
                 btnDelThis.style.display="block";
@@ -395,7 +394,7 @@ function saveDom(){
         window.URL.revokeObjectURL(url);
         //end save theDom editMode
     
-        toggleEditOff();
+        previewMode();
            let btnsAll = document.querySelectorAll('button');
             for (const btn of btnsAll) {
                 btn.style.display="none";
@@ -431,7 +430,7 @@ function saveDom(){
         
         alert("Check the browser's \n default download folder");
         
-        toggleEditOn();
+        editMode();
             //let btnsAll = document.querySelectorAll('button');
             for (const btn of btnsAll) {
                 btn.style.display="block";
