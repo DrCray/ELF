@@ -2432,16 +2432,108 @@ function addNewlinesAfterElements() {
 		}
 
 
+function showLoadingCountdown(seconds, callback) {
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.zIndex = '1000';
+    
+    // Create alert box
+    const alertBox = document.createElement('div');
+    alertBox.style.backgroundColor = 'white';
+    alertBox.style.padding = '20px';
+    alertBox.style.borderRadius = '5px';
+    alertBox.style.textAlign = 'center';
+    
+    // Create message and countdown text
+    const message = document.createElement('p');
+    message.textContent = 'Loading... ';
+    
+    const countdownSpan = document.createElement('span');
+    countdownSpan.textContent = seconds;
+    message.appendChild(countdownSpan);
+    
+    alertBox.appendChild(message);
+    overlay.appendChild(alertBox);
+    document.body.appendChild(overlay);
+    
+    // Start countdown
+    let timeLeft = seconds;
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        countdownSpan.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            document.body.removeChild(overlay);
+            if (callback) callback();
+        }
+    }, 1000);
+}
+
+
+
+function showBeginMessage(seconds) {
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.zIndex = '1000';
+    
+    // Create alert box
+    const alertBox = document.createElement('div');
+    alertBox.style.backgroundColor = 'white';
+    alertBox.style.padding = '20px';
+    alertBox.style.borderRadius = '5px';
+    alertBox.style.textAlign = 'center';
+    
+    // Create message
+    const message = document.createElement('p');
+    message.textContent = 'Begin';
+    message.style.fontSize = '24px';
+    message.style.fontWeight = 'bold';
+    message.style.color="darkgreen";
+    
+    alertBox.appendChild(message);
+    overlay.appendChild(alertBox);
+    document.body.appendChild(overlay);
+    
+    // Automatically remove after specified seconds
+    setTimeout(() => {
+        document.body.removeChild(overlay);
+    }, seconds * 1000);
+}
+
+
 
 
         document.getElementById("startButton").addEventListener("click", function () {
 			  if (checkInputFields()) {
 				return; // This exits the event listener function
-			  }				
+			  }			
 			deselectRadios(); // Deselects all radio buttons
             enableRadios();
-            startTimer(510); // 10 minutes = 600 seconds
+            startTimer(403); // 10 minutes = 600 seconds
             this.disabled = true; // Disable the start button after clicking
+    // Show loading alert with countdown, then show Begin message
+    showLoadingCountdown(10, function() {
+        showBeginMessage(1);
+    });
         });
 
         // Disable all radios on page load
