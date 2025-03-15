@@ -506,9 +506,9 @@ zz.end zz.qu What has resulted from this change in media consumption? zz.ans Mor
 
 
             <div id="nameAndID">
-              <input id="name" type="text" value="name">
+              <input id="name" type="text" value="Name">
 
-              <input id="id" type="text" value="id#">
+              <input id="id" type="text" value="ID#">
 
             </div>
   
@@ -1454,9 +1454,27 @@ function addNewlinesAfterElements() {
         }
         
 
+		function checkInputFields() {
+		  const nameInput = document.getElementById("name");
+		  const idInput = document.getElementById("id");
+		  
+		  // If either input is unchanged, show alert and return true
+		  if (nameInput.value === "Name" || idInput.value === "ID#") {
+			alert("Enter your Name and ID");
+			return true; // Indicates we should exit the event listener
+		  }
+		  
+		  // Both inputs are changed
+		  return false; // Indicates we should continue with countdown
+		}
+
+
 
 
         document.getElementById("startButton").addEventListener("click", function () {
+			  if (checkInputFields()) {
+				return; // This exits the event listener function
+			  }			
 			deselectRadios(); // Deselects all radio buttons
             enableRadios();
             startTimer(390); // 10 minutes = 600 seconds
