@@ -1,0 +1,835 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method">		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+ 		
+		<title>murderNextDoorScrSentn</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+            max-width:55rem; margin:auto;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:1ex; margin: 0 0 1ex 1em;
+            border-radius: 10px; width: fit-content;
+         }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+         
+
+         .answer {
+            display: inline-block; margin:0 0 0 3px; min-width: 1.2em;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue; text-align: center;
+            padding:5px; border-radius: 5px; width: fit-content;
+         }
+         
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+        
+        .instrcs{
+            border: thin solid darkgreen; border-radius: 5px; 
+            margin: 1.3em 0 1ex 1em; background-color: #EEF9FF;
+            padding: 1ex; width: fit-content; color: #080865;
+        }
+        
+        .instrcs2{
+            border: thin solid darkgreen; border-radius: 5px; 
+            margin: 1.3em 0 1ex 1em; background-color: #EEF9FF;
+            padding: 1ex; width: fit-content; color: #080865;
+        }
+        
+        #printOptions {
+            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
+            border-radius: 5px;
+            box-shadow: 3px 3px darkgreen;
+            margin: 1ex 0 1ex 0;
+            padding:1ex;
+            font-weight: bold; font-size:85%;
+        }         
+    </style>  
+    
+  </head>
+  
+  <body>
+      <div id="ii" style="display:none">129</div>
+        <img class="center" src="topImage.jpg" alt="" width="100%">      
+      
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="false">            
+        Dr Ray  <br>English Lesson<br>
+        <br>
+        <div><strong>
+        Murder Next Door</strong></div><div><strong>Scrambled Sentences</strong><strong>
+        <br></strong> 
+    </div></section>   
+</header>
+<!-- ================= check if header was updated ============ -->
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+
+<p class="answer editOn" style="display: block;">Click/Touch a word to move it left</p>
+
+
+<details id="instructions" style="background: white; margin: 0.5rem 0.3rem 1rem; width: fit-content; padding: 0.3rem; display: none;">
+    <summary>Instructions:</summary>
+    <p>You can enter sentences one at a time and click <button>scramble</button> (each has it's own section), or you can enter a sentence list and do them all at one time (all in one section). To enter a sentence list, simply type the markup "^^" between each sentence to separate them, then hit <button>scramble</button>.</p>
+    <p>If you don't want to give a hint or instructions for each sentence, simply click <button>delete info/instructins</button> before you save the file.</p></details>
+      
+      
+<!-- ====== Name ID Toggle and input ================= -->
+<script>
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    document.getElementById("toggleShowHideNameID").checked=1;
+  }
+};
+</script>
+
+<input id="toggleShowHideNameID" type="checkbox" style="display: none;">
+<label id="toggleShowHideNameIDLbl" for="toggle" style="display: none;">Show Name and ID</label>
+<br>
+<input id="name" type="text" value="name">
+<input id="id" type="text" value="id#">
+
+<script>
+  const toggleShowHideNameID = document.getElementById('toggleShowHideNameID');
+  const nameInput = document.getElementById('name');
+  const idInput = document.getElementById('id');
+  
+  toggleShowHideNameID.addEventListener('change', event => {
+    const checked = event.target.checked;
+    if (checked){
+    nameInput.style.display="inline-block";
+    idInput.style.display="inline-block";}
+    else {
+    nameInput.style.display="none";
+    idInput.style.display="none";}
+  });
+</script>    
+      
+<div id="canvas" style="display: block;">
+
+
+
+<div id="instrcs65" contenteditable="false" class="instrcs">Put the words in the correct order to make a sentence.</div>
+<button class="hlBtn" onclick="this.previousElementSibling.remove(); this.remove();" style="display: none;"> del info/instructions </button>
+
+<div id="allSorts65" class="quStyle">
+
+
+<div id="allSortsSect65"><div id="thisSort65" style="margin: 1em 0px 0px;">
+
+<span id="sentc67" class="answer" onclick="zmove('thisSort65','sentc67')">body.</span>
+<span id="sentc68" class="answer" onclick="zmove('thisSort65','sentc68')">had</span>
+<span id="sentc69" class="answer" onclick="zmove('thisSort65','sentc69')">Two</span>
+<span id="sentc70" class="answer" onclick="zmove('thisSort65','sentc70')">someone’s</span>
+<span id="sentc71" class="answer" onclick="zmove('thisSort65','sentc71')">neighbors</span>
+<span id="sentc72" class="answer" onclick="zmove('thisSort65','sentc72')">house</span>
+<span id="sentc73" class="answer" onclick="zmove('thisSort65','sentc73')">been</span>
+<span id="sentc74" class="answer" onclick="zmove('thisSort65','sentc74')">and</span>
+<span id="sentc75" class="answer" onclick="zmove('thisSort65','sentc75')">noticed</span>
+<span id="sentc76" class="answer" onclick="zmove('thisSort65','sentc76')">appeared</span>
+<span id="sentc77" class="answer" onclick="zmove('thisSort65','sentc77')">what</span>
+<span id="sentc78" class="answer" onclick="zmove('thisSort65','sentc78')">to</span>
+<span id="sentc79" class="answer" onclick="zmove('thisSort65','sentc79')">be</span>
+<span id="sentc80" class="answer" onclick="zmove('thisSort65','sentc80')">a</span>
+<span id="sentc81" class="answer" onclick="zmove('thisSort65','sentc81')">dead</span>
+<span id="sentc65" class="answer" onclick="zmove('thisSort65','sentc65')">by</span><span id="sentc66" class="answer" onclick="zmove('thisSort65','sentc66')">jogging</span></div><details id="ansbox82" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;">Two neighbors had been jogging by someone’s house and noticed what appeared to be a dead body.<summary>Answer</summary></details>
+
+<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del phrase/sentence </button>
+</div>
+
+
+<div id="allSortsSect82"><div id="thisSort82" style="margin: 1em 0px 0px;"><span id="sentc82" class="answer" onclick="zmove('thisSort82','sentc82')">was</span>
+<span id="sentc83" class="answer" onclick="zmove('thisSort82','sentc83')">garage</span>
+<span id="sentc84" class="answer" onclick="zmove('thisSort82','sentc84')">to</span>
+<span id="sentc85" class="answer" onclick="zmove('thisSort82','sentc85')">the</span>
+<span id="sentc86" class="answer" onclick="zmove('thisSort82','sentc86')">door,</span>
+<span id="sentc87" class="answer" onclick="zmove('thisSort82','sentc87')">wrapped</span>
+<span id="sentc88" class="answer" onclick="zmove('thisSort82','sentc88')">It</span>
+<span id="sentc89" class="answer" onclick="zmove('thisSort82','sentc89')">in</span>
+<span id="sentc90" class="answer" onclick="zmove('thisSort82','sentc90')">garbage</span>
+<span id="sentc91" class="answer" onclick="zmove('thisSort82','sentc91')">leaning</span>
+<span id="sentc92" class="answer" onclick="zmove('thisSort82','sentc92')">black</span>
+<span id="sentc93" class="answer" onclick="zmove('thisSort82','sentc93')">against</span>
+<span id="sentc94" class="answer" onclick="zmove('thisSort82','sentc94')">wall</span>
+<span id="sentc95" class="answer" onclick="zmove('thisSort82','sentc95')">the</span>
+<span id="sentc96" class="answer" onclick="zmove('thisSort82','sentc96')">next</span>
+<span id="sentc97" class="answer" onclick="zmove('thisSort82','sentc97')">right</span>
+<span id="sentc98" class="answer" onclick="zmove('thisSort82','sentc98')">tightly</span>
+<span id="sentc99" class="answer" onclick="zmove('thisSort82','sentc99')">bags,</span>
+<span id="sentc100" class="answer" onclick="zmove('thisSort82','sentc100')">wound</span>
+<span id="sentc101" class="answer" onclick="zmove('thisSort82','sentc101')">and</span>
+<span id="sentc102" class="answer" onclick="zmove('thisSort82','sentc102')">duct</span>
+<span id="sentc103" class="answer" onclick="zmove('thisSort82','sentc103')">tape.</span>
+<span id="sentc104" class="answer" onclick="zmove('thisSort82','sentc104')">with</span>
+<span id="sentc105" class="answer" onclick="zmove('thisSort82','sentc105')">gray</span>
+</div><details id="ansbox106" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;"> It was leaning against the wall right next to the garage door, wrapped in black garbage bags, and tightly wound with gray duct tape.<summary>Answer</summary></details>
+
+<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del phrase/sentence </button>
+</div>
+
+
+<div id="allSortsSect106"><div id="thisSort106" style="margin: 1em 0px 0px;"><span id="sentc106" class="answer" onclick="zmove('thisSort106','sentc106')">arriving</span>
+<span id="sentc107" class="answer" onclick="zmove('thisSort106','sentc107')">noticed</span>
+<span id="sentc108" class="answer" onclick="zmove('thisSort106','sentc108')">was</span>
+<span id="sentc109" class="answer" onclick="zmove('thisSort106','sentc109')">earlier</span>
+<span id="sentc110" class="answer" onclick="zmove('thisSort106','sentc110')">her</span>
+<span id="sentc111" class="answer" onclick="zmove('thisSort106','sentc111')">house</span>
+<span id="sentc112" class="answer" onclick="zmove('thisSort106','sentc112')">surrounded</span>
+<span id="sentc113" class="answer" onclick="zmove('thisSort106','sentc113')">by</span>
+<span id="sentc114" class="answer" onclick="zmove('thisSort106','sentc114')">Potts</span>
+<span id="sentc115" class="answer" onclick="zmove('thisSort106','sentc115')">police.</span>
+<span id="sentc116" class="answer" onclick="zmove('thisSort106','sentc116')">Flora</span>
+<span id="sentc117" class="answer" onclick="zmove('thisSort106','sentc117')">had</span>
+<span id="sentc118" class="answer" onclick="zmove('thisSort106','sentc118')">dropped</span>
+<span id="sentc119" class="answer" onclick="zmove('thisSort106','sentc119')">and</span>
+<span id="sentc120" class="answer" onclick="zmove('thisSort106','sentc120')">off</span>
+<span id="sentc121" class="answer" onclick="zmove('thisSort106','sentc121')">when</span>
+<span id="sentc122" class="answer" onclick="zmove('thisSort106','sentc122')">she</span>
+<span id="sentc123" class="answer" onclick="zmove('thisSort106','sentc123')">her</span>
+<span id="sentc124" class="answer" onclick="zmove('thisSort106','sentc124')">home</span>
+<span id="sentc125" class="answer" onclick="zmove('thisSort106','sentc125')">at</span>
+<span id="sentc126" class="answer" onclick="zmove('thisSort106','sentc126')">kids</span>
+<span id="sentc127" class="answer" onclick="zmove('thisSort106','sentc127')">school</span>
+<span id="sentc128" class="answer" onclick="zmove('thisSort106','sentc128')">was</span>
+</div><details id="ansbox129" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;"> Flora Potts had dropped her kids off at school earlier and was arriving home when she noticed her house was surrounded by police.<summary>Answer</summary></details>
+
+<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del phrase/sentence </button>
+</div><button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button></div>
+</div>
+      
+      
+<section id="inputList" class="card" style="display: none;">
+     <div class="quStyle"><label for="wordList">Type/paste the correct sentence. 
+        
+         <br>
+         <br>
+         </label>
+         <textarea id="zList" style="width: 40%; min-width:30ex" rows="5">  The dog barked and scared Mark. ^^ He began running as fast as he could. ^^ He climbed a tree. 
+         </textarea> <br>             
+             (drag corner to make input box bigger)
+     </div> 
+    
+        <label id="noShowAnsPeekLbl" for="noShowAnsPeek" style="display:block">
+            <input id="noShowAnsPeek" type="checkbox">no answer-peeks
+        </label>
+    
+        <button class="hlBtn" onclick="getzList()" style="display: none;">scramble</button>    
+    
+</section>  
+      
+      
+<script>
+     let ii = document.getElementById('ii').innerHTML;
+    
+     function getzList(){
+         
+         let canvas = document.getElementById("canvas");
+         canvas.style.display="block";
+         
+         let instrcs = document.createElement("div");
+         instrucsID= "instrcs" + ii;
+         instrcs.id=instrucsID;
+         instrcs.innerHTML = "Type your instructions or other information here";
+         instrcs.contentEditable = "true";
+         instrcs.className="instrcs";
+         canvas.appendChild(instrcs);
+         canvas.insertAdjacentHTML("beforeend","\n");
+         canvas.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.previousElementSibling.remove(); this.remove();'> del info/instructions </button>");
+         canvas.insertAdjacentHTML("beforeend","\n");
+         canvas.insertAdjacentHTML("beforeend","\n");
+         
+         let allSorts = document.createElement("div");
+         allSortsID= "allSorts"+ii;
+         allSorts.id=allSortsID;
+         allSorts.className = "quStyle";
+         canvas.appendChild(allSorts);
+         canvas.insertAdjacentHTML("beforeend","\n");
+
+         
+         
+         
+         let listArrB = [];
+         let i = 0;
+         
+         let listCheck =   document.getElementById("zList").value.trim(); console.log("listCheck:" +listCheck);
+         let listDeSpaces = listCheck.replace(/\s+/g, ' ');
+            let listDeqwz = listDeSpaces.replace(/^\^\^|\^\^$/gi, "").trim(); console.log("dequz;" + listDeqwz);
+            let listQwz2Lcase = listDeqwz.replace(/\^\^/gi, "^^"); console.log("qwz2lcase;" + listQwz2Lcase);            
+         let getInput2arr = listQwz2Lcase.split('^^'); console.log("inpArr;" + getInput2arr);
+         
+         
+         
+         
+         
+         
+         for (const gotInput2arr of getInput2arr){   //console.log(gotInput2arr);
+         
+            let listDeSpacz = gotInput2arr.replace(/\s+/g, ' ').trim();
+
+             
+            let listArrz = listDeSpacz.split(' ');
+         
+             let listArrB = [];
+
+         
+         
+         for (const listArr of listArrz){     //console.log("afterGot"+listArrz); 
+             listArrB[i] = listArr.trim(); i++;
+         } //end for listArrz 
+        i=0;
+                       // console.log("original" + listArrB); 
+         
+         let listArrBcopy = [...listArrB];
+                           // console.log("copy" + listArrBcopy);   
+         
+         while (JSON.stringify(listArrB)==JSON.stringify(listArrBcopy)){
+             listArrBcopy.sort(function () {
+                    return Math.random() - 0.5;
+             });
+               // console.log("shuffled" + listArrBcopy);      
+         } //endWhile
+
+                                                  
+                                                  
+         let instrcs2 = document.createElement("div");
+         instrucsID= "instrcs2" + ii;
+         instrcs2.id=instrucsID;
+         instrcs2.innerHTML = "Type your instructions or other information here";
+         instrcs2.contentEditable = "true";
+         instrcs2.className="instrcs2";
+         allSorts.appendChild(instrcs2);
+         allSorts.insertAdjacentHTML("beforeend","\n");
+         allSorts.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.previousElementSibling.remove(); this.remove();'> del info/instructions </button>");
+         allSorts.insertAdjacentHTML("beforeend","\n");
+         allSorts.insertAdjacentHTML("beforeend","\n");        
+                                                  
+    let allSortsSect = document.createElement("div");
+         allSortsSectID= "allSortsSect" + ii;
+         allSortsSect.id=allSortsSectID;                                        
+         allSorts.appendChild(allSortsSect);
+                                                  
+                                                  
+        let thisSort = document.createElement("div");
+        let thisSortID = "thisSort" + ii; // console.log("ii zz " + ii);
+        thisSort.id = thisSortID;
+        thisSort.style.margin = "1em 0 0 0";
+        allSortsSect.appendChild(thisSort);
+        // thisSort.id = thisSortID;
+        for (const addSentc of listArrBcopy){
+            let sentc = document.createElement("span");
+            let sentcID = "sentc" + ii; ii++;
+            sentc.id = sentcID;
+            sentc.innerHTML=addSentc;
+            sentc.className ="answer";
+            zmoveFn = "zmove('" + thisSortID + "','" + sentcID + "')";
+            sentc.setAttribute("onclick", zmoveFn);
+            thisSort.appendChild(sentc);
+         thisSort.insertAdjacentHTML("beforeend","\n");
+
+        } // end for addSentc
+                                                  
+                                                  
+                                                  
+    if(!document.getElementById("noShowAnsPeek").checked){        
+         let ansBox = document.createElement("details");
+         let ansBoxID="ansbox"+ii;
+         ansBox.id = ansBoxID;
+         ansBox.style.backgroundColor="#C5F8E0";
+         ansBox.style.color="#0E237E";
+         ansBox.style.padding="1ex";
+         ansBox.style.margin="1.3em 0 1.3em 0";
+         ansBox.style.borderRadius="4px";
+         ansBox.insertAdjacentHTML("beforeend", gotInput2arr);        
+         allSortsSect.appendChild(ansBox);
+         allSortsSect.insertAdjacentHTML("beforeend","\n");
+
+         
+         let ansBoxSmry = document.createElement("summary");
+         ansBoxSmryID= "ansBoxSmry" + ii;
+         ansBoxSmry.innerHTML = "Answer";
+         ansBox.appendChild(ansBoxSmry);
+    }//end if hide/show answers
+          
+         allSortsSect.insertAdjacentHTML("beforeend","\n");
+         allSortsSect.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.parentElement.remove()'> del phrase/sentence </button>");
+         allSortsSect.insertAdjacentHTML("beforeend","\n");
+
+             
+             
+             
+         } // end get/gotInput2arr
+         
+        allSorts.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.parentElement.remove()'> del list </button>");
+
+         
+     }   // end getzList ********* 
+    
+
+    
+    
+    
+    function zmove(zparent,zchild){ 
+        let zthis = document.getElementById(zchild);
+        //let zthat = document.getElementById(zparent);
+          zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
+        //zchild.insertAdjacentHTML("afterend"", "<br>)
+    }
+</script>
+      
+      <script>
+        function checkThenPrint(){
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("name").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================   
+
+            if (
+                (Name==="name" || ID==="id\#" || Name==="" || ID==="")
+                ){
+                alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
+                }
+            else{
+                let closeDetails = document.getElementsByTagName("details");
+                for (closeDetail of closeDetails){
+                    closeDetail.open=true; 
+                }                 
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>     
+      
+      <br>
+     <div id="printOptions" style="display: block;">
+        Print (save as PDF) <br>
+         <button id="printFullView" class="hlBtn" onclick="checkThenPrint()" style="display: block;"> Print </button>
+        <br>
+         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
+    </div>  
+      
+        <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
+        <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>      
+      <!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 1em 0px 0px 1em; padding: 1ex; display: none;">
+        
+       
+        <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()" style="display: none;">beautify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="border:thin solid orange; color:orange; display:none">done</span>
+        <br>        
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()" style="display: none;">Save/Download</button>
+    </div> 
+     
+      <script>
+          
+      function toggleEditOff(){
+        // remove all editables ***********************************
+          
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }             
+          
+          
+        let contEdbls = document.querySelectorAll("[contenteditable=true]");
+        let hlBtns = document.querySelectorAll(".hlBtn");
+
+            for (const contEdbl of contEdbls ){
+                contEdbl.contentEditable = "false";
+            }
+
+            for (const hlBtn of hlBtns ){                                        
+                hlBtn.style.display = "none";
+            }
+
+
+            document.getElementById("inputList").style.display="none";
+            document.getElementById("saveDom").style.display="none";
+          
+        document.getElementById("editOff").style.display="none";
+        document.getElementById("editOn").style.display="initial";   
+          
+            document.getElementById("printOptions").style.display="block";
+            document.getElementById("printFullView").style.display="block";   
+          
+            document.getElementById("toggleShowHideNameID").style.display  = "none";          
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";             
+            document.getElementById("instructions").style.display  = "none";             
+          
+
+        let closeDetails = document.getElementsByTagName("details")
+                for (closeDetail of closeDetails){
+                    closeDetail.open=false; 
+                }
+    
+    // end remove all editables ************************
+      }
+          
+      function toggleEditOn(){
+    // restore editables ***************************          
+          
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }             
+          
+        let contEdbls = document.querySelectorAll("[contenteditable=false]");
+        let hlBtns = document.querySelectorAll(".hlBtn");
+          
+        for (const contEdbl of contEdbls ){
+            contEdbl.contentEditable = "true";
+        }
+    
+        for (const hlBtn of hlBtns ){                                        
+            hlBtn.style.display = "block";
+        }
+    
+    
+        document.getElementById("inputList").style.display="block";
+        document.getElementById("saveDom").style.display="block";
+          
+        document.getElementById("editOff").style.display="initial";
+        document.getElementById("editOn").style.display="none";     
+          
+            document.getElementById("printOptions").style.display="none";
+          
+            document.getElementById("toggleShowHideNameID").style.display  = "initial";
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";
+            document.getElementById("instructions").style.display  = "block";             
+            
+    //end restore editabels **********************          
+      }
+          
+      </script>
+      
+      
+      
+      <script>
+function saveDom(){
+    
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }
+
+    
+            // ========  Unusual entry for SAVEDOM
+            if (!document.getElementById("toggleShowHideNameID").checked){
+              document.getElementById("name").setAttribute("value", "zzzz");
+              document.getElementById("id").setAttribute("value", "yyyy");
+                      console.log (document.getElementById("name").value);
+                      console.log (document.getElementById("id").value);                    
+                }   
+            //========= end unusual entry       
+    
+    
+    
+     document.getElementById('ii').innerHTML= ii;
+    
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title = fileName;
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+    
+        toggleEditOff();
+        document.getElementById("editOff").style.display="none";
+        document.getElementById("editOn").style.display="none";
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        document.title = oldTitle;
+    
+        alert("Check the browser's \n default download folder");
+    
+        toggleEditOn();
+    
+}
+          
+          
+          
+          
+</script>
+      <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
+      
+      
+<!--  =====++++++========== beautify code    ========================= -->
+
+<script>
+
+function replaceFontElms() {
+ // Select all font elements
+const fonts = document.querySelectorAll("font");
+
+// Loop through each font and replace with a span
+fonts.forEach((font) => {
+  const span = document.createElement("span");
+
+  // Add the style attribute with the appropriate font styles
+  let style = "";
+  if (font.face) style += `font-family: ${font.face}; `;
+    if (font.size) {
+      const fontSize = Math.round(font.size * 3.7) + 'pt';
+      style += `font-size: ${fontSize}; `;
+    }
+  if (font.color) style += `color: ${font.color}; `;
+  if (typeof font.style === "string") style += `font-style: ${font.style}; `;
+  if (style) span.setAttribute("style", style.trim());
+
+  // Copy any child elements to the new span
+  while (font.firstChild) {
+    span.appendChild(font.firstChild);
+  }
+
+  // Replace the font element with the new span
+  font.parentNode.replaceChild(span, font);
+});
+   
+    
+ const spanDone = document.getElementById("doneFontElmReplace");
+
+  // Toggle display style
+  if (spanDone.style.display === "none") {
+    spanDone.style.display = "inline-block";
+  } 
+
+  // Toggle border color and text color
+  if (spanDone.style.borderColor === "orange") {
+    spanDone.style.borderColor = "yellow";
+    spanDone.style.color = "yellow";
+  } else {
+    spanDone.style.borderColor = "orange";
+    spanDone.style.color = "orange";
+  }
+     // document.documentElement.style.pointerEvents = 'none';
+      setTimeout(replaceNlines, 100);    
+      setTimeout(addNewlines, 100);
+
+      setTimeout(addSpaces, 100);
+    
+}
+
+</script>    
+    
+    
+
+    <script>
+        function addNewlines() {
+            // Select all the elements: div, section, p, and span
+            const elements = document.querySelectorAll('div, section, p, span');
+
+            // Loop through each element and add a newline character before it
+            elements.forEach(element => {
+                switch (element.tagName.toLowerCase()) {
+                    case 'span':
+                        // Add '\n' only after <span>
+                        element.insertAdjacentHTML('beforebegin', '\r');
+                        //element.insertAdjacentHTML('afterend', '\n');
+                        break;
+                    default:
+                        // Add '\n' before all elements (including <span>), except <span>
+                        element.insertAdjacentHTML('beforebegin', '\r');
+                        element.insertAdjacentHTML('beforeend', '\r');
+                        break;
+                }
+            });
+            
+            //setTimeout(addSpaces, 300);
+          
+        }
+        
+        
+        function addSpaces() {
+            const elements = document.querySelectorAll('div, p, span');
+
+            elements.forEach(element => {                
+                
+                // Determine the number of spaces based on the element type
+                let numSpaces = 0;
+                switch (element.tagName.toLowerCase()) {
+                    case 'div':
+                        numSpaces = 3;
+                        break;
+                    case 'p':
+                        numSpaces = 7;
+                        break;
+                    case 'span':
+                        numSpaces = 10;
+                        break;
+                }
+
+                // Create the source code spaces using the repeat() method
+                const spaces = ' '.repeat(numSpaces);
+
+                // Add the spaces before the element's innerHTML
+                element.insertAdjacentHTML('beforebegin', spaces);
+            });
+            
+        setTimeout(dummy, 100);            
+        document.documentElement.style.pointerEvents = 'auto';              
+        }        
+    </script>   
+    
+<script>
+    
+    // this is currently turned off
+    // it may work in other apps that aren't as complicated as flatCMS
+    // if so we should convert this to REMOVE ALL WHITESPACES
+function replaceNlines() {
+  const allElements = document.querySelectorAll('div, p');
+  allElements.forEach(element => {
+    const originalText = element.innerHTML;
+    const updatedText = originalText.replace(/(\r\n|\r|\n)+/g, '\r');
+    element.innerHTML = updatedText;
+  });
+}
+</script>    
+    
+    
+    
+    <script>
+        function dummy(){ console.log("dummyFunction activated");}    
+    </script>
+<!-- +===+++=== / beautify code  =================++++++============ -->      
+      
+      
+      
+<p style="margin:35px"> ... end. </p>
+  
+  
+  
+
+</body></html>
