@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+<!-- The company has experienced {{declining, decreasing, growing, analyzing}} sales in their traditional products after their competitor introduced a more affordable and innovative alternative.
+
+There is strong {{competition, rivalry, cooperation, preference}} among students for the university's scholarship program.
+
+Our team formed a {{strategic partnership, collaboration, disagreement, contractual obligation}} with a local business to improve our community outreach efforts.
+
+Getting enough sleep plays a {{crucial role, vital part, minor function, separate issue}} in maintaining good health.
+
+The government implemented new policies aimed at {{stabilizing, steadying, disrupting, evaluating}} housing prices.
+
+The politician lost all {{credibility, trustworthiness, dishonesty, appearance}} after it was revealed that he had lied about his qualifications.
+
+Despite being {{fierce rivals, intense competitors, close allies, casual acquaintances}} on the basketball court, the two players are close friends off the court.
+
+The neighbor kept {{accusing, blaming, defending, admiring}} my dog of digging holes in her garden, but it was actually caused by rabbits.
+
+The company {{purchased, bought, sold, examined}} an old factory building to convert it into modern office spaces.
+
+The {{non-voting, limited-benefits, voting, inexperienced}} members can attend meetings but can't vote on policy.
+
+Consumer spending was up this month, giving a {{much-needed, necessary, unnecessary, previously mentioned}} boost to the economy.
+
+The hospital is currently {{developing, creating, abandoning, distributing}} new treatment protocols for common respiratory conditions.
+
+The company added extra staff to {{ensure, guarantee, prevent, recognize}} that all customers were served quickly during the holiday season.
+
+English is now the {{default, standard, alternative, optional}} language used in international business meetings across Europe.
+
+The company plans to {{expand, grow, shrink, maintain}} its operations to three new countries by the end of next year.
+
+The launch of their new athletic shoe helped the company increase its {{market share, sales, customer dissatisfaction, production cost}} by attracting younger customers.
+
+Both parties dropped their {{lawsuits, legal claims, complements, contracts}} and agreed to resolve the conflict through mediation.
+
+A true and open dialogue can prevent unnecessary {{disputes, disagreements, agreements, celebrations}} between countries.
+
+The local theater was {{struggling, declining, thriving, relocating}} financially until they started offering special discounts on Tuesday and Thursday nights.
+
+That fashion designer has {{dominated, controlled, yielded to, invested in}} the industry since introducing her sustainable clothing line.
+
+Collaborating with your main {{competitor, rival, ally, supplier}} can sometimes lead to unexpected benefits for both businesses.
+
+The new safety measures have {{reassured, comforted, alarmed, notified}} parents about letting their children walk to school.
+
+The teacher {{framed, presented, concealed, invented}} the difficult assignment as an opportunity rather than a challenge.
+
+It's more {{practical, sensible, idealistic, complicated}} to take the train to work than to drive in heavy traffic every day.
+
+The project failed due to mismanagement {{rather than, instead of, in addition to, similar to}} lack of funding.
+
+The {{notion, idea, fact, achievement}} that learning a language requires special talent is incorrect - it mainly requires consistent practice.
+
+The creation of the light bulb {{paved the way, set the stage, blocked progress, required permission}} for a world of electricity in every home.
+
+After twenty years of performing, the artist decided to {{refocus, redirect, maintain, complete}} her career on teaching.
+
+Social media has become an important {{platform, medium, hindrance, expense}} for sharing environmental awareness messages.
+
+The meeting was {{prolonged, extended, shortened, evaluated}} by an unexpected debate over the proposed product line.
+
+A {{battle, conflict, peace, celebration}} over water resources has emerged between the neighboring towns due to the drought.
+
+While aggressive cost-cutting may bring {{short-term, immediate, long-lasting, uncertain}} profits, it will harm your business in the long run if it undermines employee satisfaction.-->	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr. Ray</div><div>English Lesson <br></div><div><b>Collaborating with Microsoft</b></div><div><b>Synonym Select</b></div></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><ol class="_">
+		<li>The company has experienced 
+                        <select id="select-1747119565988-0-0" class="default" data-correct="decreasing"><option value="declining">declining</option><option value="decreasing">decreasing</option><option value="growing">growing</option><option value="analyzing">analyzing</option></select>
+                     sales in their traditional products after their competitor introduced a more affordable and innovative alternative.</li><br><li>There is strong 
+                        <select id="select-1747119565988-1-0" class="default" data-correct="rivalry"><option value="competition">competition</option><option value="preference">preference</option><option value="rivalry">rivalry</option><option value="cooperation">cooperation</option></select>
+                     among students for the university's scholarship program.</li><br><li>Our team formed a 
+                        <select id="select-1747119565988-2-0" class="default" data-correct="collaboration"><option value="strategic partnership">strategic partnership</option><option value="collaboration">collaboration</option><option value="disagreement">disagreement</option><option value="contractual obligation">contractual obligation</option></select>
+                     with a local business to improve our community outreach efforts.</li><br><li>Getting enough sleep plays a 
+                        <select id="select-1747119565988-3-0" class="default" data-correct="vital part"><option value="crucial role">crucial role</option><option value="minor function">minor function</option><option value="vital part">vital part</option><option value="separate issue">separate issue</option></select>
+                     in maintaining good health.</li><br><li>The government implemented new policies aimed at 
+                        <select id="select-1747119565989-4-0" class="default" data-correct="steadying"><option value="stabilizing">stabilizing</option><option value="disrupting">disrupting</option><option value="evaluating">evaluating</option><option value="steadying">steadying</option></select>
+                     housing prices.</li><br><li>The politician lost all 
+                        <select id="select-1747119565989-5-0" class="default" data-correct="trustworthiness"><option value="credibility">credibility</option><option value="dishonesty">dishonesty</option><option value="appearance">appearance</option><option value="trustworthiness">trustworthiness</option></select>
+                     after it was revealed that he had lied about his qualifications.</li><br><li>Despite being 
+                        <select id="select-1747119565989-6-0" class="default" data-correct="intense competitors"><option value="fierce rivals">fierce rivals</option><option value="intense competitors">intense competitors</option><option value="close allies">close allies</option><option value="casual acquaintances">casual acquaintances</option></select>
+                     on the basketball court, the two players are close friends off the court.</li><br><li>The neighbor kept 
+                        <select id="select-1747119565989-7-0" class="default" data-correct="blaming"><option value="accusing">accusing</option><option value="admiring">admiring</option><option value="defending">defending</option><option value="blaming">blaming</option></select>
+                     my dog of digging holes in her garden, but it was actually caused by rabbits.</li><br><li>The company 
+                        <select id="select-1747119565989-8-0" class="default" data-correct="bought"><option value="purchased">purchased</option><option value="bought">bought</option><option value="sold">sold</option><option value="examined">examined</option></select>
+                     an old factory building to convert it into modern office spaces.</li><br><li>The 
+                        <select id="select-1747119565989-9-0" class="default" data-correct="limited-benefits"><option value="non-voting">non-voting</option><option value="voting">voting</option><option value="limited-benefits">limited-benefits</option><option value="inexperienced">inexperienced</option></select>
+                     members can attend meetings but can't vote on policy.</li><br><li>Consumer spending was up this month, giving a 
+                        <select id="select-1747119565989-10-0" class="default" data-correct="necessary"><option value="much-needed">much-needed</option><option value="necessary">necessary</option><option value="previously mentioned">previously mentioned</option><option value="unnecessary">unnecessary</option></select>
+                     boost to the economy.</li><br><li>The hospital is currently 
+                        <select id="select-1747119565989-11-0" class="default" data-correct="creating"><option value="developing">developing</option><option value="creating">creating</option><option value="abandoning">abandoning</option><option value="distributing">distributing</option></select>
+                     new treatment protocols for common respiratory conditions.</li><br><li>The company added extra staff to 
+                        <select id="select-1747119565989-12-0" class="default" data-correct="guarantee"><option value="ensure">ensure</option><option value="prevent">prevent</option><option value="guarantee">guarantee</option><option value="recognize">recognize</option></select>
+                     that all customers were served quickly during the holiday season.</li><br><li>English is now the 
+                        <select id="select-1747119565989-13-0" class="default" data-correct="standard"><option value="default">default</option><option value="alternative">alternative</option><option value="optional">optional</option><option value="standard">standard</option></select>
+                     language used in international business meetings across Europe.</li><br><li>The company plans to 
+                        <select id="select-1747119565989-14-0" class="default" data-correct="grow"><option value="expand">expand</option><option value="grow">grow</option><option value="maintain">maintain</option><option value="shrink">shrink</option></select>
+                     its operations to three new countries by the end of next year.</li><br><li>The launch of their new athletic shoe helped the company increase its 
+                        <select id="select-1747119565990-15-0" class="default" data-correct="sales"><option value="market share">market share</option><option value="production cost">production cost</option><option value="sales">sales</option><option value="customer dissatisfaction">customer dissatisfaction</option></select>
+                     by attracting younger customers.</li><br><li>Both parties dropped their 
+                        <select id="select-1747119565990-16-0" class="default" data-correct="legal claims"><option value="lawsuits">lawsuits</option><option value="complements">complements</option><option value="legal claims">legal claims</option><option value="contracts">contracts</option></select>
+                     and agreed to resolve the conflict through mediation.</li><br><li>A true and open dialogue can prevent unnecessary 
+                        <select id="select-1747119565990-17-0" class="default" data-correct="disagreements"><option value="disputes">disputes</option><option value="disagreements">disagreements</option><option value="celebrations">celebrations</option><option value="agreements">agreements</option></select>
+                     between countries.</li><br><li>The local theater was 
+                        <select id="select-1747119565990-18-0" class="default" data-correct="declining"><option value="struggling">struggling</option><option value="declining">declining</option><option value="thriving">thriving</option><option value="relocating">relocating</option></select>
+                     financially until they started offering special discounts on Tuesday and Thursday nights.</li><br><li>That fashion designer has 
+                        <select id="select-1747119565990-19-0" class="default" data-correct="controlled"><option value="dominated">dominated</option><option value="controlled">controlled</option><option value="yielded to">yielded to</option><option value="invested in">invested in</option></select>
+                     the industry since introducing her sustainable clothing line.</li><br><li>Collaborating with your main 
+                        <select id="select-1747119565990-20-0" class="default" data-correct="rival"><option value="competitor">competitor</option><option value="ally">ally</option><option value="rival">rival</option><option value="supplier">supplier</option></select>
+                     can sometimes lead to unexpected benefits for both businesses.</li><br><li>The new safety measures have 
+                        <select id="select-1747119565990-21-0" class="default" data-correct="comforted"><option value="reassured">reassured</option><option value="alarmed">alarmed</option><option value="comforted">comforted</option><option value="notified">notified</option></select>
+                     parents about letting their children walk to school.</li><br><li>The teacher 
+                        <select id="select-1747119565990-22-0" class="default" data-correct="presented"><option value="framed">framed</option><option value="concealed">concealed</option><option value="presented">presented</option><option value="invented">invented</option></select>
+                     the difficult assignment as an opportunity rather than a challenge.</li><br><li>It's more 
+                        <select id="select-1747119565990-23-0" class="default" data-correct="sensible"><option value="practical">practical</option><option value="idealistic">idealistic</option><option value="complicated">complicated</option><option value="sensible">sensible</option></select>
+                     to take the train to work than to drive in heavy traffic every day.</li><br><li>The project failed due to mismanagement 
+                        <select id="select-1747119565990-24-0" class="default" data-correct="instead of"><option value="rather than">rather than</option><option value="in addition to">in addition to</option><option value="similar to">similar to</option><option value="instead of">instead of</option></select>
+                     lack of funding.</li><br><li>The 
+                        <select id="select-1747119565990-25-0" class="default" data-correct="idea"><option value="notion">notion</option><option value="fact">fact</option><option value="idea">idea</option><option value="achievement">achievement</option></select>
+                     that learning a language requires special talent is incorrect - it mainly requires consistent practice.</li><br><li>The creation of the light bulb 
+                        <select id="select-1747119565990-26-0" class="default" data-correct="set the stage"><option value="paved the way">paved the way</option><option value="set the stage">set the stage</option><option value="blocked progress">blocked progress</option><option value="required permission">required permission</option></select>
+                     for a world of electricity in every home.</li><br><li>After twenty years of performing, the artist decided to 
+                        <select id="select-1747119565990-27-0" class="default" data-correct="redirect"><option value="refocus">refocus</option><option value="maintain">maintain</option><option value="complete">complete</option><option value="redirect">redirect</option></select>
+                     her career on teaching.</li><br><li>Social media has become an important 
+                        <select id="select-1747119565990-28-0" class="default" data-correct="medium"><option value="platform">platform</option><option value="hindrance">hindrance</option><option value="medium">medium</option><option value="expense">expense</option></select>
+                     for sharing environmental awareness messages.</li><br><li>The meeting was 
+                        <select id="select-1747119565990-29-0" class="default" data-correct="extended"><option value="prolonged">prolonged</option><option value="shortened">shortened</option><option value="evaluated">evaluated</option><option value="extended">extended</option></select>
+                     by an unexpected debate over the proposed product line.</li><br><li>A 
+                        <select id="select-1747119565990-30-0" class="default" data-correct="conflict"><option value="battle">battle</option><option value="peace">peace</option><option value="conflict">conflict</option><option value="celebration">celebration</option></select>
+                     over water resources has emerged between the neighboring towns due to the drought.</li><br><li>While aggressive cost-cutting may bring 
+                        <select id="select-1747119565990-31-0" class="default" data-correct="immediate"><option value="short-term">short-term</option><option value="immediate">immediate</option><option value="uncertain">uncertain</option><option value="long-lasting">long-lasting</option></select>
+                     profits, it will harm your business in the long run if it undermines employee satisfaction.</li><br></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
