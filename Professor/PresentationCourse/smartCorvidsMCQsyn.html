@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr. Ray</div><div>English Lesson</div><div><br></div><b>Smart Corvids, Synonym Select</b></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Crows, ravens, rooks, and jays—members of the corvid bird family—are actually some of the smartest animals on our planet. These birds can solve 
+                        <select id="select-1747192181130-0-0" class="default" data-correct="intricate"><option value="complex">complex</option><option value="abstract">abstract</option><option value="intricate">intricate</option><option value="simple">simple</option></select>
+                     problems that even some 
+                        <select id="select-1747192181130-0-1" class="default" data-correct="apes"><option value="primates">primates</option><option value="mammals">mammals</option><option value="experts">experts</option><option value="apes">apes</option></select>
+                     struggle with. They are considered to be as 
+                        <select id="select-1747192181130-0-2" class="default" data-correct="clever"><option value="intelligent">intelligent</option><option value="clever">clever</option><option value="trained">trained</option><option value="dull">dull</option></select>
+                     as dolphins and chimpanzees. Today, I'd like to share with you why these feathered 
+                        <select id="select-1747192181130-0-3" class="default" data-correct="prodigies"><option value="geniuses">geniuses</option><option value="prodigies">prodigies</option><option value="creatures">creatures</option><option value="fools">fools</option></select>
+                     deserve our attention and respect.  </p><p>First, corvids have 
+                        <select id="select-1747192181130-1-0" class="default" data-correct="remarkable"><option value="impressive">impressive</option><option value="unremarkable">unremarkable</option><option value="remarkable">remarkable</option><option value="instructive">instructive</option></select>
+                     tool-making abilities. Crows craft special hooks from twigs to pull insects out of tree holes. They don't just use what they find—they actually shape these tools for specific 
+                        <select id="select-1747192181130-1-1" class="default" data-correct="jobs"><option value="tasks">tasks</option><option value="idleness">idleness</option><option value="hunts">hunts</option><option value="jobs">jobs</option></select>
+                    . Scientists have 
+                        <select id="select-1747192181130-1-2" class="default" data-correct="watched"><option value="observed">observed</option><option value="captured">captured</option><option value="ignored">ignored</option><option value="watched">watched</option></select>
+                     these birds carefully selecting 
+                        <select id="select-1747192181130-1-3" class="default" data-correct="sticks"><option value="branches">branches</option><option value="sticks">sticks</option><option value="flower">flower</option><option value="trunks">trunks</option></select>
+                    , removing unwanted parts, and even 
+                        <select id="select-1747192181130-1-4" class="default" data-correct="shaping"><option value="bending">bending</option><option value="shaping">shaping</option><option value="slighting">slighting</option><option value="straightening">straightening</option></select>
+                     them into 
+                        <select id="select-1747192181130-1-5" class="default" data-correct="hooks"><option value="hooks">hooks</option><option value="hooks">hooks</option></select>
+                    . This kind of tool creation was once thought to be 
+                        <select id="select-1747192181130-1-6" class="default" data-correct="distinctive"><option value="unique">unique</option><option value="common">common</option><option value="distinctive">distinctive</option><option value="obtuse">obtuse</option></select>
+                     to humans and a few apes, but these birds prove otherwise.  </p><p>Next, these birds have amazing 
+                        <select id="select-1747192181131-2-0" class="default" data-correct="recollections"><option value="memories">memories</option><option value="recollections">recollections</option><option value="adaptations">adaptations</option><option value="forgetfulness">forgetfulness</option></select>
+                    . Ravens can remember people who have treated them badly, 
+                        <select id="select-1747192181131-2-1" class="default" data-correct="swooping at"><option value="dive bombing">dive bombing</option><option value="forgetting">forgetting</option><option value="retreating">retreating</option><option value="swooping at">swooping at</option></select>
+                     them every time they pass by. Crows form lasting 
+                        <select id="select-1747192181131-2-2" class="default" data-correct="connections"><option value="bonds">bonds</option><option value="connections">connections</option><option value="separations">separations</option><option value="behaviors">behaviors</option></select>
+                     with kind humans who feed them, often bringing small gifts like 
+                        <select id="select-1747192181131-2-3" class="default" data-correct="gleaming"><option value="shiny">shiny</option><option value="dull">dull</option><option value="gleaming">gleaming</option><option value="strange">strange</option></select>
+                     objects as 
+                        <select id="select-1747192181131-2-4" class="default" data-correct="symbols"><option value="tokens">tokens</option><option value="nonrepresentations">nonrepresentations</option><option value="symbols">symbols</option><option value="evidence">evidence</option></select>
+                     of gratitude. Corvids can also remember where they have hidden 
+                        <select id="select-1747192181131-2-5" class="default" data-correct="actually"><option value="literally">literally</option><option value="safely">safely</option><option value="figuratively">figuratively</option><option value="actually">actually</option></select>
+                     thousands of seeds and nuts, returning to these 
+                        <select id="select-1747192181131-2-6" class="default" data-correct="hidden"><option value="secret">secret</option><option value="distant">distant</option><option value="obvious">obvious</option><option value="hidden">hidden</option></select>
+                     spots months later when food is 
+                        <select id="select-1747192181131-2-7" class="default" data-correct="limited"><option value="scarce">scarce</option><option value="limited">limited</option><option value="abundant">abundant</option><option value="plentiful">plentiful</option></select>
+                    .  </p><p>Corvids are exceptional 
+                        <select id="select-1747192181131-3-0" class="default" data-correct="troubleshooters"><option value="problem solvers">problem solvers</option><option value="problem creators">problem creators</option><option value="strategists">strategists</option><option value="troubleshooters">troubleshooters</option></select>
+                    , using their intelligence to 
+                        <select id="select-1747192181131-3-1" class="default" data-correct="conquer"><option value="overcome">overcome</option><option value="conquer">conquer</option><option value="succumb to">succumb to</option><option value="identify">identify</option></select>
+                     challenges in creative ways. Ravens have shown their understanding of 
+                        <select id="select-1747192181131-3-2" class="default" data-correct="causality"><option value="cause and effect">cause and effect</option><option value="randomness">randomness</option><option value="causality">causality</option><option value="patterns">patterns</option></select>
+                     by pulling up food that was 
+                        <select id="select-1747192181131-3-3" class="default" data-correct="hanging"><option value="dangling">dangling</option><option value="steady">steady</option><option value="hanging">hanging</option><option value="tangled">tangled</option></select>
+                     on a string, using their feet and beak. They also use 
+                        <select id="select-1747192181131-3-4" class="default" data-correct="trickery"><option value="deception">deception</option><option value="wood">wood</option><option value="honesty">honesty</option><option value="trickery">trickery</option></select>
+                     to protect their food 
+                        <select id="select-1747192181131-3-5" class="default" data-correct="stores"><option value="caches">caches</option><option value="exposures">exposures</option><option value="stores">stores</option><option value="baskets">baskets</option></select>
+                    ; if other birds are watching, they 
+                        <select id="select-1747192181131-3-6" class="default" data-correct="feign"><option value="pretend">pretend</option><option value="dug">dug</option><option value="reveal">reveal</option><option value="feign">feign</option></select>
+                     to hide food in one spot but 
+                        <select id="select-1747192181131-3-7" class="default" data-correct="covertly"><option value="secretly">secretly</option><option value="covertly">covertly</option><option value="carefully">carefully</option><option value="openly">openly</option></select>
+                     place it elsewhere. These behaviors 
+                        <select id="select-1747192181131-3-8" class="default" data-correct="show"><option value="demonstrate">demonstrate</option><option value="reinforce">reinforce</option><option value="conceal">conceal</option><option value="show">show</option></select>
+                     their ability to 
+                        <select id="select-1747192181131-3-9" class="default" data-correct="plan"><option value="think ahead">think ahead</option><option value="plan">plan</option><option value="improvise">improvise</option><option value="spontaneous">spontaneous</option></select>
+                     and 
+                        <select id="select-1747192181131-3-10" class="default" data-correct="adjust"><option value="adapt">adapt</option><option value="adjust">adjust</option><option value="resist">resist</option><option value="run">run</option></select>
+                     to situations.  </p><p>The 
+                        <select id="select-1747192181131-4-0" class="default" data-correct="intellect"><option value="intelligence">intelligence</option><option value="complexity">complexity</option><option value="intellect">intellect</option><option value="stupidity">stupidity</option></select>
+                     of corvids reminds us that 
+                        <select id="select-1747192181131-4-1" class="default" data-correct="cognition"><option value="brainpower">brainpower</option><option value="cognition">cognition</option><option value="ignorance">ignorance</option><option value="evolution">evolution</option></select>
+                     comes in many forms and sizes. These birds, with their tiny brains, challenge our understanding of animal intelligence. Next time you see a crow or raven, take a moment to appreciate the complex mind behind those watchful little eyes. These birds aren't just flying around 
+                        <select id="select-1747192181131-4-2" class="default" data-correct="thoughtlessly"><option value="mindlessly">mindlessly</option><option value="deliberately">deliberately</option><option value="thoughtlessly">thoughtlessly</option><option value="instinctively">instinctively</option></select>
+                    —they're 
+                        <select id="select-1747192181131-4-3" class="default" data-correct="watching"><option value="observing">observing</option><option value="floundering">floundering</option><option value="ignoring">ignoring</option><option value="watching">watching</option></select>
+                    , 
+                        <select id="select-1747192181131-4-4" class="default" data-correct="evaluating"><option value="assessing">assessing</option><option value="evaluating">evaluating</option><option value="neglecting">neglecting</option><option value="confiding">confiding</option></select>
+                    , and learning. But be on your best 
+                        <select id="select-1747192181131-4-5" class="default" data-correct="conduct"><option value="behavior">behavior</option><option value="misbehavior">misbehavior</option><option value="conduct">conduct</option><option value="guardrail">guardrail</option></select>
+                    ; they're watching you, and remembering who you are.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
