@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false">Type your desired heading here</div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>When you go to the movies, what's the first 
+                        <select id="select-1748247354027-0-0" class="default" data-correct="treat"><option value="snack">snack</option><option value="meal">meal</option><option value="ticket">ticket</option><option value="treat">treat</option></select>
+                     that comes to mind? Popcorn, of course! But have you ever 
+                        <select id="select-1748247354027-0-1" class="default" data-correct="pondered"><option value="wondered">wondered</option><option value="pondered">pondered</option><option value="ignored">ignored</option><option value="calculated">calculated</option></select>
+                     why this fluffy, crunchy 
+                        <select id="select-1748247354027-0-2" class="default" data-correct="delight"><option value="treat">treat</option><option value="delight">delight</option><option value="fabric">fabric</option><option value="punishment">punishment</option></select>
+                     became the official snack of 
+                        <select id="select-1748247354027-0-3" class="default" data-correct="theater"><option value="cinema">cinema</option><option value="furniture">furniture</option><option value="theater">theater</option><option value="agriculture">agriculture</option></select>
+                    ? The story of how popcorn and movies became 
+                        <select id="select-1748247354028-0-4" class="default" data-correct="matched"><option value="paired">paired</option><option value="matched">matched</option><option value="adored">adored</option><option value="separated">separated</option></select>
+                     is actually quite 
+                        <select id="select-1748247354028-0-5" class="default" data-correct="captivating"><option value="fascinating">fascinating</option><option value="expensive">expensive</option><option value="boring">boring</option><option value="captivating">captivating</option></select>
+                    . It began in the late 1800s, continued through the Great Depression, and since then, the 
+                        <select id="select-1748247354028-0-6" class="default" data-correct="perceptual"><option value="sensory">sensory</option><option value="nonsensical">nonsensical</option><option value="perceptual">perceptual</option><option value="financial">financial</option></select>
+                     connection between the two has created a  
+                        <select id="select-1748247354028-0-7" class="default" data-correct="worldwide"><option value="global">global</option><option value="building">building</option><option value="local">local</option><option value="worldwide">worldwide</option></select>
+                     cultural phenomenon.</p><p>Popcorn and movies began their cinematic 
+                        <select id="select-1748247354028-1-0" class="default" data-correct="partnership"><option value="union">union</option><option value="partnership">partnership</option><option value="divorce">divorce</option><option value="lawsuit">lawsuit</option></select>
+                     in the late 1800s and early 1900s when 
+                        <select id="select-1748247354028-1-1" class="default" data-correct="food stands"><option value="street vendors">street vendors</option><option value="food stands">food stands</option><option value="customers">customers</option><option value="architects">architects</option></select>
+                     started selling popcorn outside of theaters. Many theaters at the time didn't allow food inside, so people snacked and 
+                        <select id="select-1748247354028-1-2" class="default" data-correct="mingled"><option value="socialized">socialized</option><option value="isolated">isolated</option><option value="mingled">mingled</option><option value="calculated">calculated</option></select>
+                     while waiting in line to buy movie tickets. The hard economic times of the 1930s, however, forced theaters to look for additional sources of 
+                        <select id="select-1748247354028-1-3" class="default" data-correct="income"><option value="revenue">revenue</option><option value="weather">weather</option><option value="debt">debt</option><option value="income">income</option></select>
+                    . Popcorn was 
+                        <select id="select-1748247354028-1-4" class="default" data-correct="inexpensive"><option value="cheap">cheap</option><option value="costly">costly</option><option value="smelly">smelly</option><option value="inexpensive">inexpensive</option></select>
+                     and the profit margin was high, so popcorn vendors were finally welcomed into theater 
+                        <select id="select-1748247354028-1-5" class="default" data-correct="foyers"><option value="lobbies">lobbies</option><option value="foyers">foyers</option><option value="basements">basements</option><option value="gardens">gardens</option></select>
+                    . By the 1940s, the union between popcorn and movie theaters was 
+                        <select id="select-1748247354028-1-6" class="default" data-correct="solidly"><option value="firmly">firmly</option><option value="quietly">quietly</option><option value="loosely">loosely</option><option value="solidly">solidly</option></select>
+                     established.</p><p>Today, popcorn and a movie at the theaters offers a 
+                        <select id="select-1748247354028-2-0" class="default" data-correct="total"><option value="complete">complete</option><option value="purple">purple</option><option value="total">total</option><option value="incomplete">incomplete</option></select>
+                     sensory experience. As you 
+                        <select id="select-1748247354029-2-1" class="default" data-correct="near"><option value="approach">approach</option><option value="purchase">purchase</option><option value="near">near</option><option value="retreat">retreat</option></select>
+                     the theater, the 
+                        <select id="select-1748247354029-2-2" class="default" data-correct="scent"><option value="aroma">aroma</option><option value="color">color</option><option value="scent">scent</option><option value="stench">stench</option></select>
+                     of buttery popcorn fills the air. Your mouth begins watering even before you have the 
+                        <select id="select-1748247354029-2-3" class="default" data-correct="opportunity"><option value="chance">chance</option><option value="opportunity">opportunity</option><option value="audacity">audacity</option><option value="certainty">certainty</option></select>
+                     to buy your own bucket. As you watch the movie, both the smell and taste of the popcorn 
+                        <select id="select-1748247354029-2-4" class="default" data-correct="strengthen"><option value="enhance">enhance</option><option value="strengthen">strengthen</option><option value="measure">measure</option><option value="diminish">diminish</option></select>
+                     that sensory 
+                        <select id="select-1748247354029-2-5" class="default" data-correct="link"><option value="connection">connection</option><option value="television">television</option><option value="disconnection">disconnection</option><option value="link">link</option></select>
+                    . 
+                        <select id="select-1748247354029-2-6" class="default" data-correct="Intermingled"><option value="Combined">Combined</option><option value="Intermingled">Intermingled</option><option value="Separated">Separated</option><option value="Triangulated">Triangulated</option></select>
+                     with the sights and sounds of the film, your senses are fully 
+                        <select id="select-1748247354029-2-7" class="default" data-correct="engaged"><option value="immersed">immersed</option><option value="engaged">engaged</option><option value="withdrawn">withdrawn</option><option value="folded">folded</option></select>
+                    . Because of this sensory experience, now when you think of popcorn, you think of movies, and 
+                        <select id="select-1748247354029-2-8" class="default" data-correct="the other way around"><option value="vice-versa">vice-versa</option><option value="never">never</option><option value="the other way around">the other way around</option><option value="sideways">sideways</option></select>
+                    . Freshly popped popcorn has become 
+                        <select id="select-1748247354029-2-9" class="default" data-correct="equivalent"><option value="synonymous">synonymous</option><option value="opposite">opposite</option><option value="equivalent">equivalent</option><option value="diagonal">diagonal</option></select>
+                     with "movie."</p><p>With modern home entertainment systems, date nights no longer 
+                        <select id="select-1748247354029-3-0" class="default" data-correct="need"><option value="require">require</option><option value="forbid">forbid</option><option value="remember">remember</option><option value="need">need</option></select>
+                     popcorn and a movie only at theaters. The big-screen TV and surround sound system, combined with streaming services, have made "popcorn and a movie" a common 
+                        <select id="select-1748247354029-3-1" class="default" data-correct="occasion"><option value="event">event</option><option value="occasion">occasion</option><option value="impossibility">impossibility</option><option value="sandwich">sandwich</option></select>
+                     at home. Microwave a bag of popcorn, and that familiar aroma 
+                        <select id="select-1748247354029-3-2" class="default" data-correct="saturates"><option value="fills">fills</option><option value="empties">empties</option><option value="saturates">saturates</option><option value="organizes">organizes</option></select>
+                     the house. The popcorn and movie 
+                        <select id="select-1748247354029-3-3" class="default" data-correct="partnership"><option value="union">union</option><option value="partnership">partnership</option><option value="separation">separation</option><option value="triangle">triangle</option></select>
+                     has 
+                        <select id="select-1748247354029-3-4" class="default" data-correct="grown"><option value="expanded">expanded</option><option value="grown">grown</option><option value="contracted">contracted</option><option value="melted">melted</option></select>
+                     from a shared, public experience to a private and personal 
+                        <select id="select-1748247354029-3-5" class="default" data-correct="ceremony"><option value="ritual">ritual</option><option value="accident">accident</option><option value="vehicle">vehicle</option><option value="ceremony">ceremony</option></select>
+                    .</p><p>Whether at a theater or at home, the popcorn and movie 
+                        <select id="select-1748247354030-4-0" class="default" data-correct="connection"><option value="association">association</option><option value="dissociation">dissociation</option><option value="connection">connection</option><option value="mathematics">mathematics</option></select>
+                     is here to stay. It's been 
+                        <select id="select-1748247354030-4-1" class="default" data-correct="handed down"><option value="passed down">passed down</option><option value="handed down">handed down</option><option value="withheld">withheld</option><option value="painted">painted</option></select>
+                     through generations, creating new popcorn 
+                        <select id="select-1748247354030-4-2" class="default" data-correct="fans"><option value="enthusiasts">enthusiasts</option><option value="fans">fans</option><option value="critics">critics</option><option value="vegetables">vegetables</option></select>
+                     who continue the tradition. From the street vendors to the home theaters of today, the sensory connection 
+                        <select id="select-1748247354030-4-3" class="default" data-correct="persists"><option value="remains">remains</option><option value="persists">persists</option><option value="disappears">disappears</option><option value="jumps">jumps</option></select>
+                     unbroken, and "popcorn and a movie" continues to be the 
+                        <select id="select-1748247354030-4-4" class="default" data-correct="preferred"><option value="go-to">go-to</option><option value="preferred">preferred</option><option value="avoided">avoided</option><option value="rectangular">rectangular</option></select>
+                     choice for a night out or a 
+                        <select id="select-1748247354030-4-5" class="default" data-correct="cozy"><option value="relaxing">relaxing</option><option value="tense">tense</option><option value="comical">comical</option><option value="cozy">cozy</option></select>
+                     evening at home.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            
+            
+            
+            
+            
+			// Create the div element
+			const hiddenDiv = document.createElement('div');
+			
+			// Set the content from input
+			hiddenDiv.textContent = input;
+			
+			// Hide the div
+			hiddenDiv.style.display = 'none';
+			
+			// Append to body (or you can append to any other parent element)
+			document.body.appendChild(hiddenDiv);
+            
+            
+            
+            
+            
+            
+            
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("Check your browser's \ndefault download folder \n\nThe inputText is stored \nin a hidden division of your saved file");
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<div style="display: none;">When you go to the movies, what's the first {{snack, treat, meal, ticket}} that comes to mind? Popcorn, of course! But have you ever {{wondered, pondered, ignored, calculated}} why this fluffy, crunchy {{treat, delight, punishment, fabric}} became the official snack of {{cinema, theater, agriculture, furniture}}? The story of how popcorn and movies became {{paired, matched, separated, adored}} is actually quite {{fascinating, captivating, boring, expensive}}. It began in the late 1800s, continued through the Great Depression, and since then, the {{sensory, perceptual, nonsensical, financial}} connection between the two has created a  {{global, worldwide, local, building}} cultural phenomenon.
+Popcorn and movies began their cinematic {{union, partnership, divorce, lawsuit}} in the late 1800s and early 1900s when {{street vendors, food stands, customers, architects}} started selling popcorn outside of theaters. Many theaters at the time didn't allow food inside, so people snacked and {{socialized, mingled, isolated, calculated}} while waiting in line to buy movie tickets. The hard economic times of the 1930s, however, forced theaters to look for additional sources of {{revenue, income, debt, weather}}. Popcorn was {{cheap, inexpensive, costly, smelly}} and the profit margin was high, so popcorn vendors were finally welcomed into theater {{lobbies, foyers, basements, gardens}}. By the 1940s, the union between popcorn and movie theaters was {{firmly, solidly, loosely, quietly}} established.
+Today, popcorn and a movie at the theaters offers a {{complete, total, incomplete, purple}} sensory experience. As you {{approach, near, retreat, purchase}} the theater, the {{aroma, scent, stench, color}} of buttery popcorn fills the air. Your mouth begins watering even before you have the {{chance, opportunity, certainty, audacity}} to buy your own bucket. As you watch the movie, both the smell and taste of the popcorn {{enhance, strengthen, diminish, measure}} that sensory {{connection, link, disconnection, television}}. {{Combined, Intermingled, Separated, Triangulated}} with the sights and sounds of the film, your senses are fully {{immersed, engaged, withdrawn, folded}}. Because of this sensory experience, now when you think of popcorn, you think of movies, and {{vice-versa, the other way around, never, sideways}}. Freshly popped popcorn has become {{synonymous, equivalent, opposite, diagonal}} with "movie."
+With modern home entertainment systems, date nights no longer {{require, need, forbid, remember}} popcorn and a movie only at theaters. The big-screen TV and surround sound system, combined with streaming services, have made "popcorn and a movie" a common {{event, occasion, impossibility, sandwich}} at home. Microwave a bag of popcorn, and that familiar aroma {{fills, saturates, empties, organizes}} the house. The popcorn and movie {{union, partnership, separation, triangle}} has {{expanded, grown, contracted, melted}} from a shared, public experience to a private and personal {{ritual, ceremony, accident, vehicle}}.
+Whether at a theater or at home, the popcorn and movie {{association, connection, dissociation, mathematics}} is here to stay. It's been {{passed down, handed down, withheld, painted}} through generations, creating new popcorn {{enthusiasts, fans, critics, vegetables}} who continue the tradition. From the street vendors to the home theaters of today, the sensory connection {{remains, persists, disappears, jumps}} unbroken, and "popcorn and a movie" continues to be the {{go-to, preferred, avoided, rectangular}} choice for a night out or a {{relaxing, cozy, tense, comical}} evening at home.</div><script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
