@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr. Ray</div><div>English Lesson</div><div><b><span class="fsLarge">Taylor Swift - Mega Star, Best Friend</span></b></div><div><i><span class="fsLarge">Choose the Synonym </span></i><br></div></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Taylor Swift has become much more than just a pop star; for millions of fans she feels like a 
+                        <select id="select-1748401455419-0-0" class="default" data-correct="intimate"><option value="close">close</option><option value="intimate">intimate</option><option value="distant">distant</option><option value="casual">casual</option></select>
+                     friend. Her journey from a country music singer to a 
+                        <select id="select-1748401455419-0-1" class="default" data-correct="worldwide"><option value="global">global</option><option value="local">local</option><option value="digital">digital</option><option value="worldwide">worldwide</option></select>
+                     phenomenon is truly 
+                        <select id="select-1748401455419-0-2" class="default" data-correct="extraordinary"><option value="remarkable">remarkable</option><option value="colorful">colorful</option><option value="extraordinary">extraordinary</option><option value="ordinary">ordinary</option></select>
+                    . Swift has the ability to connect with her audience, make personal experiences feel 
+                        <select id="select-1748401455419-0-3" class="default" data-correct="common"><option value="universal">universal</option><option value="emotional">emotional</option><option value="specific">specific</option><option value="common">common</option></select>
+                    , and turn her talents into a money-making machine, exemplified by her record-breaking tours.</p><p>One key to Taylor Swift's 
+                        <select id="select-1748401455419-1-0" class="default" data-correct="enormous"><option value="immense">immense</option><option value="enormous">enormous</option><option value="tiny">tiny</option><option value="recent">recent</option></select>
+                     popularity is her 
+                        <select id="select-1748401455419-1-1" class="default" data-correct="heartfelt"><option value="relatable">relatable</option><option value="musical">musical</option><option value="alienating">alienating</option><option value="heartfelt">heartfelt</option></select>
+                     songwriting. She has a 
+                        <select id="select-1748401455419-1-2" class="default" data-correct="distinctive"><option value="unique">unique</option><option value="distinctive">distinctive</option><option value="common">common</option><option value="creative">creative</option></select>
+                     talent for transforming her own experiences—from first loves and heartbreaks to facing 
+                        <select id="select-1748401455419-1-3" class="default" data-correct="open"><option value="public">public</option><option value="private">private</option><option value="open">open</option><option value="hidden">hidden</option></select>
+                     scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing 
+                        <select id="select-1748401455420-1-4" class="default" data-correct="extreme"><option value="intense">intense</option><option value="mild">mild</option><option value="extreme">extreme</option><option value="happy">happy</option></select>
+                     emotions and 
+                        <select id="select-1748401455420-1-5" class="default" data-correct="important"><option value="significant">significant</option><option value="important">important</option><option value="minor">minor</option><option value="personal">personal</option></select>
+                     life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the 
+                        <select id="select-1748401455420-1-6" class="default" data-correct="intricacies"><option value="complexities">complexities</option><option value="realities">realities</option><option value="simplicities">simplicities</option><option value="intricacies">intricacies</option></select>
+                     of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.</p><p>Beyond her lyrical genius, Swift has developed a 
+                        <select id="select-1748401455420-2-0" class="default" data-correct="strong"><option value="powerful">powerful</option><option value="weak">weak</option><option value="popular">popular</option><option value="strong">strong</option></select>
+                     sense of community among her fans, known as "Swifties." She 
+                        <select id="select-1748401455420-2-1" class="default" data-correct="energetically"><option value="actively">actively</option><option value="passively">passively</option><option value="energetically">energetically</option><option value="frequently">frequently</option></select>
+                     engages with her audience through social media. She sometimes surprises her fans with 
+                        <select id="select-1748401455420-2-2" class="default" data-correct="individual"><option value="personal">personal</option><option value="impersonal">impersonal</option><option value="expensive">expensive</option><option value="individual">individual</option></select>
+                     gifts and has invited selected fans to her 
+                        <select id="select-1748401455420-2-3" class="default" data-correct="real"><option value="actual">actual</option><option value="beautiful">beautiful</option><option value="real">real</option><option value="fake">fake</option></select>
+                     home for 
+                        <select id="select-1748401455420-2-4" class="default" data-correct="exclusive"><option value="private">private</option><option value="exclusive">exclusive</option><option value="public">public</option><option value="loud">loud</option></select>
+                     listening parties called "Secret Sessions." This 
+                        <select id="select-1748401455420-2-5" class="default" data-correct="straight"><option value="direct">direct</option><option value="straight">straight</option><option value="indirect">indirect</option><option value="slanted">slanted</option></select>
+                     connection fosters a feeling of 
+                        <select id="select-1748401455420-2-6" class="default" data-correct="authentic"><option value="genuine">genuine</option><option value="false">false</option><option value="fake">fake</option><option value="authentic">authentic</option></select>
+                     friendship and loyalty, where fans feel part of something bigger. This 
+                        <select id="select-1748401455420-2-7" class="default" data-correct="solid"><option value="strong">strong</option><option value="solid">solid</option><option value="broken">broken</option><option value="weak">weak</option></select>
+                     bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.</p><p>Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the 
+                        <select id="select-1748401455421-3-0" class="default" data-correct="top-earning"><option value="highest-grossing">highest-grossing</option><option value="lowest-grossing">lowest-grossing</option><option value="top-earning">top-earning</option><option value="most-attended">most-attended</option></select>
+                     tour of all time. This 
+                        <select id="select-1748401455421-3-1" class="default" data-correct="huge"><option value="immense">immense</option><option value="financial">financial</option><option value="small">small</option><option value="huge">huge</option></select>
+                     success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is 
+                        <select id="select-1748401455421-3-2" class="default" data-correct="impactful"><option value="powerful">powerful</option><option value="weak">weak</option><option value="memorable">memorable</option><option value="impactful">impactful</option></select>
+                     shared experience, uniting fans from all over the world in a 
+                        <select id="select-1748401455421-3-3" class="default" data-correct="shared"><option value="collective">collective</option><option value="individual">individual</option><option value="overnight">overnight</option><option value="shared">shared</option></select>
+                     celebration of her music.</p><p>In conclusion, Taylor Swift's 
+                        <select id="select-1748401455421-4-0" class="default" data-correct="huge"><option value="significant">significant</option><option value="insignificant">insignificant</option><option value="huge">huge</option><option value="short-lived">short-lived</option></select>
+                     success comes from her talent for combining relatable storytelling with 
+                        <select id="select-1748401455421-4-1" class="default" data-correct="purposeful"><option value="meaningful">meaningful</option><option value="meaningless">meaningless</option><option value="purposeful">purposeful</option><option value="artistic">artistic</option></select>
+                     fan connections and 
+                        <select id="select-1748401455421-4-2" class="default" data-correct="firm"><option value="strong">strong</option><option value="firm">firm</option><option value="weak">weak</option><option value="business">business</option></select>
+                     ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying 
+                        <select id="select-1748401455421-4-3" class="default" data-correct="faithful"><option value="true">true</option><option value="faithless">faithless</option><option value="false">false</option><option value="faithful">faithful</option></select>
+                     to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            
+            
+            
+            
+            
+			// Create the div element
+			const hiddenDiv = document.createElement('div');
+			
+			// Set the content from input
+			hiddenDiv.textContent = input;
+			
+			// Hide the div
+			hiddenDiv.style.display = 'none';
+			
+			// Append to body (or you can append to any other parent element)
+			document.body.appendChild(hiddenDiv);
+            
+            
+            
+            
+            
+            
+            
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("Check your browser's \ndefault download folder \n\nThe inputText is stored \nin a hidden division of your saved file");
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<div style="display: none;">Here is the original article with the special markup applied:
+
+Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, accessible, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, media}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, special}} listening parties called "Secret Sessions." This {{direct, immediate, indirect, friendly}} connection fosters a feeling of {{genuine, authentic, fake, special}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, lasting}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, joyful}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, important, insignificant, commercial}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, committed}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><div style="display: none;">Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, accessible, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, media}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, special}} listening parties called "Secret Sessions." This {{direct, immediate, indirect, friendly}} connection fosters a feeling of {{genuine, authentic, fake, special}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, lasting}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, joyful}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, important, insignificant, commercial}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, committed}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><div style="display: none;">Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, heartfelt, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, hidden}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, loud}} listening parties called "Secret Sessions." This {{direct, straight, indirect, slanted}} connection fosters a feeling of {{genuine, authentic, fake, false}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, broken}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, overnight}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, huge, insignificant, short-lived}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, faithless}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
