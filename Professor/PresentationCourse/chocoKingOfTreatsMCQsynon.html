@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr. Ray</div><div>English Lesson</div><div><b><span class="fsLarge">Chocolate: King of Treats</span></b></div><div><i><span class="fsLarge">Choose the Synonym </span></i><br></div></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Chocolate is often celebrated as the "king of treats," and for 
+                        <select id="select-1748405311074-0-0" class="default" data-correct="excellent"><option value="good">good</option><option value="excellent">excellent</option><option value="bad">bad</option><option value="sweet">sweet</option></select>
+                     reason. 
+                        <select id="select-1748405311074-0-1" class="default" data-correct="adored"><option value="Loved">Loved</option><option value="adored">adored</option><option value="known">known</option><option value="hated">hated</option></select>
+                     by people of all ages and cultures, chocolate brings 
+                        <select id="select-1748405311074-0-2" class="default" data-correct="happiness"><option value="joy">joy</option><option value="happiness">happiness</option><option value="energy">energy</option><option value="sorrow">sorrow</option></select>
+                     and comfort with every bite. Its 
+                        <select id="select-1748405311075-0-3" class="default" data-correct="abundant"><option value="rich">rich</option><option value="dark">dark</option><option value="abundant">abundant</option><option value="poor">poor</option></select>
+                     history, mood-enhancing qualities, versatility and cultural importance make it a truly indulgence. Today we'll explore why chocolate continues to hold a 
+                        <select id="select-1748405311075-0-4" class="default" data-correct="unique"><option value="special">special</option><option value="unique">unique</option><option value="ordinary">ordinary</option><option value="dull">dull</option></select>
+                     place in the hearts of over 7 billion chocolate lovers worldwide.</p><p>Chocolate's history is as 
+                        <select id="select-1748405311075-1-0" class="default" data-correct="captivating"><option value="fascinating">fascinating</option><option value="boring">boring</option><option value="captivating">captivating</option><option value="complex">complex</option></select>
+                     as its taste. It originated thousands of years ago in Mesoamerica, where 
+                        <select id="select-1748405311075-1-1" class="default" data-correct="old"><option value="ancient">ancient</option><option value="modern">modern</option><option value="old">old</option><option value="powerful">powerful</option></select>
+                     civilizations like the Mayans and Aztecs revered it as a 
+                        <select id="select-1748405311075-1-2" class="default" data-correct="holy"><option value="sacred">sacred</option><option value="profane">profane</option><option value="holy">holy</option><option value="unworthy">unworthy</option></select>
+                     gift from the gods. Back then, chocolate was consumed as a 
+                        <select id="select-1748405311075-1-3" class="default" data-correct="strong"><option value="bitter">bitter</option><option value="strong">strong</option><option value="sweet">sweet</option><option value="salty">salty</option></select>
+                     drink mixed with spices. When European explorers brought cacao to Europe in the 16th century, sugar was added, transforming it into the 
+                        <select id="select-1748405311075-1-4" class="default" data-correct="sugary"><option value="sweet">sweet</option><option value="sugary">sugary</option><option value="dark">dark</option><option value="bitter">bitter</option></select>
+                     treat we know today. Over the centuries, chocolate has become a 
+                        <select id="select-1748405311075-1-5" class="default" data-correct="worldwide"><option value="global">global</option><option value="commercial">commercial</option><option value="worldwide">worldwide</option><option value="local">local</option></select>
+                     sensation, evolving into an industry worth over $100 billion annually.</p><p>One of chocolate's most 
+                        <select id="select-1748405311075-2-0" class="default" data-correct="extraordinary"><option value="remarkable">remarkable</option><option value="extraordinary">extraordinary</option><option value="settled">settled</option><option value="unremarkable">unremarkable</option></select>
+                     qualities is its ability to 
+                        <select id="select-1748405311075-2-1" class="default" data-correct="improve"><option value="enhance">enhance</option><option value="set">set</option><option value="diminish">diminish</option><option value="improve">improve</option></select>
+                     our mood and senses. Scientifically, chocolate contains chemical compounds that stimulate the brain and release feel-good chemicals such as serotonin. This is why eating chocolate can make us feel 
+                        <select id="select-1748405311075-2-2" class="default" data-correct="joyful"><option value="happier">happier</option><option value="sadder">sadder</option><option value="joyful">joyful</option><option value="angry">angry</option></select>
+                     and more 
+                        <select id="select-1748405311076-2-3" class="default" data-correct="calm"><option value="relaxed">relaxed</option><option value="sore">sore</option><option value="tense">tense</option><option value="calm">calm</option></select>
+                    . Additionally, its 
+                        <select id="select-1748405311076-2-4" class="default" data-correct="silky"><option value="smooth">smooth</option><option value="silky">silky</option><option value="rough">rough</option><option value="feathery">feathery</option></select>
+                     texture and 
+                        <select id="select-1748405311076-2-5" class="default" data-correct="deep"><option value="rich">rich</option><option value="shallow">shallow</option><option value="bland">bland</option><option value="deep">deep</option></select>
+                     aroma create a 
+                        <select id="select-1748405311076-2-6" class="default" data-correct="lavish"><option value="luxurious">luxurious</option><option value="delicious">delicious</option><option value="lavish">lavish</option><option value="cheap">cheap</option></select>
+                     sensory experience that few other foods can match. A single bite of chocolate has the power to turn an 
+                        <select id="select-1748405311076-2-7" class="default" data-correct="normal"><option value="ordinary">ordinary</option><option value="tense">tense</option><option value="extraordinary">extraordinary</option><option value="normal">normal</option></select>
+                     moment into something 
+                        <select id="select-1748405311076-2-8" class="default" data-correct="unique"><option value="special">special</option><option value="unique">unique</option><option value="ordinary">ordinary</option><option value="missing">missing</option></select>
+                    .</p><p>Another reason for chocolate's 
+                        <select id="select-1748405311076-3-0" class="default" data-correct="lasting"><option value="enduring">enduring</option><option value="lasting">lasting</option><option value="longing">longing</option><option value="temporary">temporary</option></select>
+                     appeal is its 
+                        <select id="select-1748405311076-3-1" class="default" data-correct="amazing"><option value="incredible">incredible</option><option value="amazing">amazing</option><option value="unimpressive">unimpressive</option><option value="sensible">sensible</option></select>
+                     versatility and cultural significance. Chocolate comes in many forms—milk, dark, white—and is used in everything from 
+                        <select id="select-1748405311076-3-2" class="default" data-correct="basic"><option value="simple">simple</option><option value="basic">basic</option><option value="complex">complex</option><option value="popular">popular</option></select>
+                     chocolate bars to 
+                        <select id="select-1748405311076-3-3" class="default" data-correct="fancy"><option value="elaborate">elaborate</option><option value="simple">simple</option><option value="fancy">fancy</option><option value="beautiful">beautiful</option></select>
+                     desserts like cakes, truffles, and mousses. It plays a 
+                        <select id="select-1748405311076-3-4" class="default" data-correct="key"><option value="central">central</option><option value="peripheral">peripheral</option><option value="key">key</option><option value="minor">minor</option></select>
+                     role in celebrations worldwide: heart-shaped chocolates for Valentine's Day, chocolate eggs for Easter, and chocolate stocking stuffers for Christmas. In countries like Belgium and Switzerland, chocolate-making is a 
+                        <select id="select-1748405311076-3-5" class="default" data-correct="honored"><option value="proud">proud</option><option value="honored">honored</option><option value="shameful">shameful</option><option value="off-set">off-set</option></select>
+                     tradition and is considered an art form.</p><p>In conclusion, chocolate's combination of history, sensory appeal, variety and cultural relevance makes it truly deserving of its title as the king of treats. Whether you're enjoying a 
+                        <select id="select-1748405311076-4-0" class="default" data-correct="little"><option value="small">small</option><option value="large">large</option><option value="perfect">perfect</option><option value="little">little</option></select>
+                     piece after a 
+                        <select id="select-1748405311076-4-1" class="default" data-correct="extended"><option value="long">long</option><option value="extended">extended</option><option value="short">short</option><option value="scorched">scorched</option></select>
+                     day or during a festive occasion, chocolate has a way of making life 
+                        <select id="select-1748405311076-4-2" class="default" data-correct="better"><option value="sweeter">sweeter</option><option value="better">better</option><option value="gnarled">gnarled</option><option value="bitter">bitter</option></select>
+                    . Its 
+                        <select id="select-1748405311076-4-3" class="default" data-correct="widespread"><option value="universal">universal</option><option value="ancient">ancient</option><option value="limited">limited</option><option value="widespread">widespread</option></select>
+                     appeal connects people across cultures and generations, reminding us that one of the 
+                        <select id="select-1748405311076-4-4" class="default" data-correct="greatest"><option value="best">best</option><option value="greatest">greatest</option><option value="worst">worst</option><option value="least">least</option></select>
+                     pleasures in life is simply — chocolate.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            
+            
+            
+            
+            
+			// Create the div element
+			const hiddenDiv = document.createElement('div');
+			
+			// Set the content from input
+			hiddenDiv.textContent = input;
+			
+			// Hide the div
+			hiddenDiv.style.display = 'none';
+			
+			// Append to body (or you can append to any other parent element)
+			document.body.appendChild(hiddenDiv);
+            
+            
+            
+            
+            
+            
+            
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("Check your browser's \ndefault download folder \n\nThe inputText is stored \nin a hidden division of your saved file");
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<div style="display: none;">Here is the original article with the special markup applied:
+
+Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, accessible, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, media}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, special}} listening parties called "Secret Sessions." This {{direct, immediate, indirect, friendly}} connection fosters a feeling of {{genuine, authentic, fake, special}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, lasting}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, joyful}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, important, insignificant, commercial}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, committed}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><div style="display: none;">Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, accessible, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, media}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, special}} listening parties called "Secret Sessions." This {{direct, immediate, indirect, friendly}} connection fosters a feeling of {{genuine, authentic, fake, special}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, lasting}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, joyful}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, important, insignificant, commercial}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, committed}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><div style="display: none;">Taylor Swift has become much more than just a pop star; for millions of fans she feels like a {{close, intimate, distant, casual}} friend. Her journey from a country music singer to a {{global, worldwide, local, digital}} phenomenon is truly {{remarkable, extraordinary, ordinary, colorful}}. Swift has the ability to connect with her audience, make personal experiences feel {{universal, common, specific, emotional}}, and turn her talents into a money-making machine, exemplified by her record-breaking tours.
+
+One key to Taylor Swift's {{immense, enormous, tiny, recent}} popularity is her {{relatable, heartfelt, alienating, musical}} songwriting. She has a {{unique, distinctive, common, creative}} talent for transforming her own experiences—from first loves and heartbreaks to facing {{public, open, private, hidden}} scrutiny and personal growth—into lyrics that listeners can relate to. For fans, who are often experiencing {{intense, extreme, mild, happy}} emotions and {{significant, important, minor, personal}} life changes themselves, Swift's songs offer a sense of understanding and validation. She sings about insecurities, friendships, and the {{complexities, intricacies, simplicities, realities}} of relationships in a way that makes fans feel seen and understood, as if she is speaking about their own thoughts and feelings.
+
+Beyond her lyrical genius, Swift has developed a {{powerful, strong, weak, popular}} sense of community among her fans, known as "Swifties." She {{actively, energetically, passively, frequently}} engages with her audience through social media. She sometimes surprises her fans with {{personal, individual, impersonal, expensive}} gifts and has invited selected fans to her {{actual, real, fake, beautiful}} home for {{private, exclusive, public, loud}} listening parties called "Secret Sessions." This {{direct, straight, indirect, slanted}} connection fosters a feeling of {{genuine, authentic, fake, false}} friendship and loyalty, where fans feel part of something bigger. This {{strong, solid, weak, broken}} bond goes beyond just enjoying music; it builds a community where people can share their experiences and connect with others who understand them.
+
+Showcasing her power as a global entertainer and businesswoman, her "Eras Tour" generated over $2 billion in revenue, making it the {{highest-grossing, top-earning, lowest-grossing, most-attended}} tour of all time. This {{immense, huge, small, financial}} success is not just about numbers; it represents millions of people coming together to celebrate her music and the stories she tells. The tour is {{powerful, impactful, weak, memorable}} shared experience, uniting fans from all over the world in a {{collective, shared, individual, overnight}} celebration of her music.
+
+In conclusion, Taylor Swift's {{significant, huge, insignificant, short-lived}} success comes from her talent for combining relatable storytelling with {{meaningful, purposeful, meaningless, artistic}} fan connections and {{strong, firm, weak, business}} ambition. She shares her personal experiences through songs which help people to feel understood. Her ability to grow as an artist while staying {{true, faithful, false, faithless}} to herself and her fans shows why she's not just a mega star, but a friend to millions of people worldwide.</div><div style="display: none;">Chocolate is often celebrated as the "king of treats," and for {{good, excellent, bad, sweet}} reason. {{Loved, adored, hated, known}} by people of all ages and cultures, chocolate brings {{joy, happiness, sorrow, energy}} and comfort with every bite. Its {{rich, abundant, poor, dark}} history, mood-enhancing qualities, versatility and cultural importance make it a truly indulgence. Today we'll explore why chocolate continues to hold a {{special, unique, ordinary, dull}} place in the hearts of over 7 billion chocolate lovers worldwide.
+Chocolate's history is as {{fascinating, captivating, boring, complex}} as its taste. It originated thousands of years ago in Mesoamerica, where {{ancient, old, modern, powerful}} civilizations like the Mayans and Aztecs revered it as a {{sacred, holy, profane, unworthy}} gift from the gods. Back then, chocolate was consumed as a {{bitter, strong, sweet, salty}} drink mixed with spices. When European explorers brought cacao to Europe in the 16th century, sugar was added, transforming it into the {{sweet, sugary, bitter, dark}} treat we know today. Over the centuries, chocolate has become a {{global, worldwide, local, commercial}} sensation, evolving into an industry worth over $100 billion annually.
+One of chocolate's most {{remarkable, extraordinary, unremarkable, settled}} qualities is its ability to {{enhance, improve, diminish, set}} our mood and senses. Scientifically, chocolate contains chemical compounds that stimulate the brain and release feel-good chemicals such as serotonin. This is why eating chocolate can make us feel {{happier, joyful, sadder, angry}} and more {{relaxed, calm, tense, sore}}. Additionally, its {{smooth, silky, rough, feathery}} texture and {{rich, deep, bland, shallow}} aroma create a {{luxurious, lavish, cheap, delicious}} sensory experience that few other foods can match. A single bite of chocolate has the power to turn an {{ordinary, normal, extraordinary, tense}} moment into something {{special, unique, ordinary, missing}}.
+Another reason for chocolate's {{enduring, lasting, temporary, longing}} appeal is its {{incredible, amazing, unimpressive, sensible}} versatility and cultural significance. Chocolate comes in many forms—milk, dark, white—and is used in everything from {{simple, basic, complex, popular}} chocolate bars to {{elaborate, fancy, simple, beautiful}} desserts like cakes, truffles, and mousses. It plays a {{central, key, peripheral, minor}} role in celebrations worldwide: heart-shaped chocolates for Valentine's Day, chocolate eggs for Easter, and chocolate stocking stuffers for Christmas. In countries like Belgium and Switzerland, chocolate-making is a {{proud, honored, shameful, off-set}} tradition and is considered an art form.
+In conclusion, chocolate's combination of history, sensory appeal, variety and cultural relevance makes it truly deserving of its title as the king of treats. Whether you're enjoying a {{small, little, large, perfect}} piece after a {{long, extended, short, scorched}} day or during a festive occasion, chocolate has a way of making life {{sweeter, better, bitter, gnarled}}. Its {{universal, widespread, limited, ancient}} appeal connects people across cultures and generations, reminding us that one of the {{best, greatest, worst, least}} pleasures in life is simply — chocolate.</div><script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
