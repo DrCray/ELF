@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr. Ray</div><div>English Lesson</div><div><b>Jobs: Shaping Workplace Culture&nbsp;</b></div><div><b><span style="font-weight: initial; font-size: initial; font-style: initial; text-decoration: revert;"><br></span></b></div><div><i><i><b><span style="font-weight: initial; font-size: initial; font-style: initial; text-decoration: revert;"><i>Choose the correct answer from the choices, according to the article</i>.</span></b></i></i></div></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Steve Jobs didn't just build Apple into a successful tech company; he 
+                        <select id="select-1748678321285-0-0" class="default" data-correct="transformed"><option value="choices">choices</option><option value="calculated">calculated</option><option value="preserved">preserved</option><option value="transformed">transformed</option><option value="imagined">imagined</option></select>
+                     workplace culture, creating an environment that broke traditional corporate rules. While companies like IBM followed formal 
+                        <select id="select-1748678321285-0-1" class="default" data-correct="hierarchies"><option value="choices">choices</option><option value="equality">equality</option><option value="levels">levels</option><option value="ladders">ladders</option><option value="hierarchies">hierarchies</option></select>
+                     with 
+                        <select id="select-1748678321285-0-2" class="default" data-correct="top-down"><option value="choices">choices</option><option value="vertical">vertical</option><option value="bottom-up">bottom-up</option><option value="top-down">top-down</option><option value="forced">forced</option></select>
+                     management, Jobs created a flat corporate structure, casual atmosphere, and constant innovation. His leadership at Apple provides valuable 
+                        <select id="select-1748678321285-0-3" class="default" data-correct="insights"><option value="choices">choices</option><option value="models">models</option><option value="insights">insights</option><option value="confusion">confusion</option><option value="stuff">stuff</option></select>
+                     for today's changing business world.</p><p><h3> Breaking Dress Code Traditions</h3><p>In the 1970s, IBM offices were filled with employees wearing suits and ties, a 
+                        <select id="select-1748678321285-2-0" class="default" data-correct="dress code"><option value="choices">choices</option><option value="freedom">freedom</option><option value="dress code">dress code</option><option value="settlement">settlement</option><option value="guideline">guideline</option></select>
+                     that showed authority and 
+                        <select id="select-1748678321285-2-1" class="default" data-correct="conformity"><option value="choices">choices</option><option value="conformity">conformity</option><option value="rebellion">rebellion</option><option value="reliability">reliability</option><option value="coordination">coordination</option></select>
+                    . Jobs, however, was known for his 
+                        <select id="select-1748678321285-2-2" class="default" data-correct="signature"><option value="choices">choices</option><option value="signature">signature</option><option value="uniform">uniform</option><option value="routine">routine</option><option value="generic">generic</option></select>
+                     turtleneck and jeans. At Apple, 
+                        <select id="select-1748678321285-2-3" class="default" data-correct="casual attire"><option value="choices">choices</option><option value="dress uniform">dress uniform</option><option value="formal wear">formal wear</option><option value="top fashion">top fashion</option><option value="casual attire">casual attire</option></select>
+                     became a symbol of creativity, creating equality so that ideas mattered more than job titles. This change 
+                        <select id="select-1748678321285-2-4" class="default" data-correct="empowered"><option value="choices">choices</option><option value="restricted">restricted</option><option value="put down">put down</option><option value="empowered">empowered</option><option value="set up">set up</option></select>
+                     employees to focus on innovation instead of 
+                        <select id="select-1748678321285-2-5" class="default" data-correct="protocol"><option value="choices">choices</option><option value="protocol">protocol</option><option value="creativity">creativity</option><option value="disruption">disruption</option><option value="procedure">procedure</option></select>
+                    .</p><p><h3> Flattening the Organization</h3><p>Jobs disliked 
+                        <select id="select-1748678321286-4-0" class="default" data-correct="bureaucratic"><option value="choices">choices</option><option value="efficient">efficient</option><option value="loose">loose</option><option value="bureaucratic">bureaucratic</option><option value="orderly">orderly</option></select>
+                     hierarchies. For him, 
+                        <select id="select-1748678321286-4-1" class="default" data-correct="bureaucracy"><option value="choices">choices</option><option value="formality">formality</option><option value="bureaucracy">bureaucracy</option><option value="paperwork">paperwork</option><option value="simplicity">simplicity</option></select>
+                     slowed 
+                        <select id="select-1748678321286-4-2" class="default" data-correct="progress"><option value="choices">choices</option><option value="failure">failure</option><option value="delay">delay</option><option value="progress">progress</option><option value="competition">competition</option></select>
+                     and 
+                        <select id="select-1748678321286-4-3" class="default" data-correct="stood in the way"><option value="choices">choices</option><option value="stood in the way">stood in the way</option><option value="cleared the path">cleared the path</option><option value="overlooked">overlooked</option><option value="paved the road">paved the road</option></select>
+                     of innovation. Jobs replaced top-down decision-making with 
+                        <select id="select-1748678321286-4-4" class="default" data-correct="cross-functional"><option value="choices">choices</option><option value="cross-functional">cross-functional</option><option value="isolated">isolated</option><option value="grouped">grouped</option><option value="blended">blended</option></select>
+                     teams made up of engineers, designers, and marketers. These teams used 
+                        <select id="select-1748678321286-4-5" class="default" data-correct="bottom-up"><option value="choices">choices</option><option value="bottom-up">bottom-up</option><option value="top-down">top-down</option><option value="reversed">reversed</option><option value="upside-down">upside-down</option></select>
+                     innovation, working quickly to create products like the iPhone. This 
+                        <select id="select-1748678321286-4-6" class="default" data-correct="flexibility"><option value="choices">choices</option><option value="rigidity">rigidity</option><option value="flexibility">flexibility</option><option value="versatility">versatility</option><option value="viability">viability</option></select>
+                     made Apple's processes different from IBM's slower processes. 
+                        <select id="select-1748678321286-4-7" class="default" data-correct="Mastering"><option value="choices">choices</option><option value="Neglecting">Neglecting</option><option value="Mastering">Mastering</option><option value="Discovering">Discovering</option><option value="Committing">Committing</option></select>
+                     collaboration across departments became 
+                        <select id="select-1748678321286-4-8" class="default" data-correct="essential"><option value="choices">choices</option><option value="supportive">supportive</option><option value="optional">optional</option><option value="frequent">frequent</option><option value="essential">essential</option></select>
+                     for success in this new corporate structure.</p><p><h3> Re-imagining the Physical Space</h3><p>Apple's 
+                        <select id="select-1748678321286-6-0" class="default" data-correct="headquarters"><option value="choices">choices</option><option value="studio">studio</option><option value="annex">annex</option><option value="branch">branch</option><option value="headquarters">headquarters</option></select>
+                     was called a 
+                        <select id="select-1748678321286-6-1" class="default" data-correct="campus"><option value="choices">choices</option><option value="tower">tower</option><option value="campus">campus</option><option value="base">base</option><option value="building">building</option></select>
+                    , and this was a 
+                        <select id="select-1748678321286-6-2" class="default" data-correct="strategic"><option value="choices">choices</option><option value="logistical">logistical</option><option value="accidental">accidental</option><option value="strategic">strategic</option><option value="timed">timed</option></select>
+                     choice. Unlike IBM's offices filled with 
+                        <select id="select-1748678321286-6-3" class="default" data-correct="cubicles"><option value="choices">choices</option><option value="cubicles">cubicles</option><option value="open rooms">open rooms</option><option value="lounges">lounges</option><option value="parks">parks</option></select>
+                    , Apple featured an 
+                        <select id="select-1748678321286-6-4" class="default" data-correct="open layout"><option value="choices">choices</option><option value="closed setting">closed setting</option><option value="open layout">open layout</option><option value="distributed plan">distributed plan</option><option value="tight design">tight design</option></select>
+                     with glass-walled rooms and 
+                        <select id="select-1748678321286-6-5" class="default" data-correct="communal"><option value="choices">choices</option><option value="communal">communal</option><option value="reserved">reserved</option><option value="personal">personal</option><option value="private">private</option></select>
+                     spaces, encouraging spontaneous teamwork. Jobs believed this environment increased creativity and helped teams understand his vision.</p><p><h3> Demanding Excellence</h3><p>At Apple, excellence was 
+                        <select id="select-1748678321287-8-0" class="default" data-correct="non-negotiable"><option value="choices">choices</option><option value="avoidable">avoidable</option><option value="flexible">flexible</option><option value="non-negotiable">non-negotiable</option><option value="defined">defined</option></select>
+                    . Jobs established a 
+                        <select id="select-1748678321287-8-1" class="default" data-correct="performance-driven"><option value="choices">choices</option><option value="relaxed">relaxed</option><option value="leisure-based">leisure-based</option><option value="performance-driven">performance-driven</option><option value="work-at-home">work-at-home</option></select>
+                     culture, demanding products that were intuitive and visually attractive, from the iPod's sleek design to the iPhone's revolutionary interface. This focus on customer experience rather than 
+                        <select id="select-1748678321287-8-2" class="default" data-correct="short-term"><option value="choices">choices</option><option value="endless">endless</option><option value="unstable">unstable</option><option value="short-term">short-term</option><option value="long-term">long-term</option></select>
+                     profits changed business 
+                        <select id="select-1748678321287-8-3" class="default" data-correct="priorities"><option value="choices">choices</option><option value="challenges">challenges</option><option value="priorities">priorities</option><option value="community">community</option><option value="distractions">distractions</option></select>
+                    . Jobs promoted a results-oriented 
+                        <select id="select-1748678321287-8-4" class="default" data-correct="mindset"><option value="choices">choices</option><option value="unstable">unstable</option><option value="mindset">mindset</option><option value="outset">outset</option><option value="mindmap">mindmap</option></select>
+                     where delivering exceptional quality became the standard.</p><p><h3> Leading with Vision</h3><p>Jobs' leadership style was both inspiring and 
+                        <select id="select-1748678321287-10-0" class="default" data-correct="demanding"><option value="choices">choices</option><option value="demanding">demanding</option><option value="forgiving">forgiving</option><option value="generous">generous</option><option value="soft">soft</option></select>
+                    . He motivated teams to "put a dent in the universe," 
+                        <select id="select-1748678321287-10-1" class="default" data-correct="boosting"><option value="choices">choices</option><option value="boosting">boosting</option><option value="lowering">lowering</option><option value="rousting">rousting</option><option value="roosting">roosting</option></select>
+                     motivation and attracting top 
+                        <select id="select-1748678321287-10-2" class="default" data-correct="talent"><option value="choices">choices</option><option value="talent">talent</option><option value="incometents">incometents</option><option value="laziness">laziness</option><option value="measures">measures</option></select>
+                    . His 
+                        <select id="select-1748678321287-10-3" class="default" data-correct="intensity"><option value="choices">choices</option><option value="charity">charity</option><option value="intensity">intensity</option><option value="calmness">calmness</option><option value="kindness">kindness</option></select>
+                     pushed employees to their limits, with late nights and canceled projects being common. This challenging environment wasn't for everyone, but it was this 
+                        <select id="select-1748678321287-10-4" class="default" data-correct="high-stakes"><option value="choices">choices</option><option value="low-pressure">low-pressure</option><option value="upside">upside</option><option value="high-stakes">high-stakes</option><option value="outside">outside</option></select>
+                     mentality of "changing the world" that 
+                        <select id="select-1748678321287-10-5" class="default" data-correct="fostered"><option value="choices">choices</option><option value="weakened">weakened</option><option value="fostered">fostered</option><option value="hindered">hindered</option><option value="faltered">faltered</option></select>
+                     innovation.</p><p><h3> Creating an Innovation Hub</h3><p>The Apple campus combined casual attire, open spaces, and strong ambition. Working for Jobs meant 
+                        <select id="select-1748678321287-12-0" class="default" data-correct="challenging"><option value="choices">choices</option><option value="easy">easy</option><option value="challenging">challenging</option><option value="slow">slow</option><option value="happy">happy</option></select>
+                     hours but also making a meaningful impact---employees knew they were shaping the future. This 
+                        <select id="select-1748678321287-12-1" class="default" data-correct="dynamic"><option value="choices">choices</option><option value="stable">stable</option><option value="torrential">torrential</option><option value="adverse">adverse</option><option value="dynamic">dynamic</option></select>
+                     culture contrasted sharply with IBM's 
+                        <select id="select-1748678321287-12-2" class="default" data-correct="stable"><option value="choices">choices</option><option value="burned">burned</option><option value="stable">stable</option><option value="shifting">shifting</option><option value="disorganized">disorganized</option></select>
+                    , predictable offices, highlighting Jobs' ability to balance creativity with 
+                        <select id="select-1748678321287-12-3" class="default" data-correct="productivity"><option value="choices">choices</option><option value="design">design</option><option value="productivity">productivity</option><option value="downtime">downtime</option><option value="chaos">chaos</option></select>
+                    . The workplace became a center of innovation where taking risks was 
+                        <select id="select-1748678321287-12-4" class="default" data-correct="encouraged"><option value="choices">choices</option><option value="overlooked">overlooked</option><option value="discouraged">discouraged</option><option value="dangerous">dangerous</option><option value="encouraged">encouraged</option></select>
+                    .</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            
+            
+            
+            
+            
+			// Create the div element
+			const hiddenDiv = document.createElement('div');
+			
+			// Set the content from input
+			hiddenDiv.textContent = input;
+			
+			// Hide the div
+			hiddenDiv.style.display = 'none';
+			
+			// Append to body (or you can append to any other parent element)
+			document.body.appendChild(hiddenDiv);
+            
+            
+            
+            
+            
+            
+            
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("Check your browser's \ndefault download folder \n\nThe inputText is stored \nin a hidden division of your saved file");
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<div style="display: none;">
+Steve Jobs didn't just build Apple into a successful tech company; he {{choices, transformed, preserved, imagined, calculated, listed}} workplace culture, creating an environment that broke traditional corporate rules. While companies like IBM followed formal {{choices, hierarchies, equality, ladders, procedures, levels}} with {{choices, top-down, bottom-up, vertical, forced, outlined}} management, Jobs created a flat corporate structure, casual atmosphere, and constant innovation. His leadership at Apple provides valuable {{choices, insights, confusion, suggestions, models, approaches}} for today's changing business world.
+
+### Breaking Dress Code Traditions
+
+In the 1970s, IBM offices were filled with employees wearing suits and ties, a {{choices, dress code, freedom, attire, guideline, requirement}} that showed authority and {{choices, conformity, rebellion, obedience, reliability, coordination}}. Jobs, however, was known for his {{choices, signature, generic, uniform, memorable, routine}} turtleneck and jeans. At Apple, {{choices, casual attire, formal wear, comfortable clothes, dress uniform, relaxed fashion}} became a symbol of creativity, creating equality so that ideas mattered more than job titles. This change {{choices, empowered, restricted, enabled, liberated, influenced}} employees to focus on innovation instead of {{choices, protocol, creativity, disruption, routine, procedure}}.
+
+### Flattening the Organization
+
+Jobs disliked {{choices, bureaucratic, efficient, structured, orderly, professional}} hierarchies. For him, {{choices, bureaucracy, simplicity, formality, regulation, paperwork}} slowed {{choices, progress, failure, delay, momentum, growth}} and {{choices, stood in the way, cleared the path, paved the road, paused, overlooked}} of innovation. Jobs replaced top-down decision-making with {{choices, cross-functional, isolated, specialized, grouped, blended}} teams made up of engineers, designers, and marketers. These teams used {{choices, bottom-up, top-down, coordinated, reversed, upside-down}} innovation, working quickly to create products like the iPhone. This {{choices, flexibility, rigidity, versatility, variability, looseness}} made Apple's processes different from IBM's slower processes. {{choices, Mastering, Neglecting, Learning, Discovering, Committing}} collaboration across departments became {{choices, essential, optional, supportive, valuable, frequent}} for success in this new corporate structure.
+
+### Re-imagining the Physical Space
+
+Apple's {{choices, headquarters, branch, annex, studio, office}} was called a {{choices, campus, tower, building, complex, base}}, and this was a {{choices, strategic, accidental, logistical, organized, timed}} choice. Unlike IBM's offices filled with {{choices, cubicles, lounges, desks, workstations, booths}}, Apple featured an {{choices, open layout, closed setting, neat design, distributed floorplan, structured plan}} with glass-walled rooms and {{choices, communal, private, reserved, personal, open}} spaces, encouraging spontaneous teamwork. Jobs believed this environment increased creativity and helped teams understand his vision.
+
+### Demanding Excellence
+
+At Apple, excellence was {{choices, non-negotiable, flexible, avoidable, exceptional, defined}}. Jobs established a {{choices, performance-driven, leisure-based, relaxed, result-minded, work-heavy}} culture, demanding products that were intuitive and visually attractive, from the iPod's sleek design to the iPhone's revolutionary interface. This focus on customer experience rather than {{choices, short-term, long-term, endless, future, stable}} profits changed business {{choices, priorities, distractions, challenges, opportunities, goals}}. Jobs promoted a *results-oriented* {{choices, mindset, outlook, pattern, drive, mission}} where delivering exceptional quality became the standard.
+
+### Leading with Vision
+
+Jobs' leadership style was both inspiring and {{choices, demanding, forgiving, generous, rigid, structured}}. He motivated teams to "put a dent in the universe," {{choices, boosting, lowering, sparking, increasing, enhancing}} motivation and attracting top {{choices, talent, staff, workers, effort, minds}}. His {{choices, intensity, calmness, boldness, strength, pressure}} pushed employees to their limits, with late nights and canceled projects being common. This challenging environment wasn't for everyone, but it was this {{choices, high-stakes, low-pressure, risky, crucial, tense}} mentality of "changing the world" that {{choices, fostered, weakened, created, launched, fueled}} innovation.
+
+### Creating an Innovation Hub
+
+The Apple campus combined casual attire, open spaces, and strong ambition. Working for Jobs meant {{choices, challenging, easy, slow, long, demanding}} hours but also making a meaningful impact---employees knew they were shaping the future. This {{choices, dynamic, stable, intense, changing, rapid}} culture contrasted sharply with IBM's {{choices, stable, shifting, disorganized, static, slow}}, predictable offices, highlighting Jobs' ability to balance creativity with {{choices, productivity, downtime, chaos, design, reliability}}. The workplace became a center of innovation where taking risks was {{choices, encouraged, discouraged, overlooked, accepted, expected}}.
+</div><div style="display: none;">
+Steve Jobs didn't just build Apple into a successful tech company; he {{__________choices, transformed, preserved, imagined, calculated}} workplace culture, creating an environment that broke traditional corporate rules. While companies like IBM followed formal {{__________choices, hierarchies, equality, ladders, levels}} with {{__________choices, top-down, bottom-up, vertical, forced}} management, Jobs created a flat corporate structure, casual atmosphere, and constant innovation. His leadership at Apple provides valuable {{__________choices, insights, confusion, models, stuff}} for today's changing business world.
+
+### Breaking Dress Code Traditions
+
+In the 1970s, IBM offices were filled with employees wearing suits and ties, a {{__________choices, dress code, freedom, guideline, settlement}} that showed authority and {{__________choices, conformity, rebellion, reliability, coordination}}. Jobs, however, was known for his {{__________choices, signature, generic, uniform, routine}} turtleneck and jeans. At Apple, {{__________choices, casual attire, formal wear, dress uniform, top fashion}} became a symbol of creativity, creating equality so that ideas mattered more than job titles. This change {{__________choices, empowered, restricted, set up, put down}} employees to focus on innovation instead of {{__________choices, protocol, creativity, disruption, procedure}}.
+
+### Flattening the Organization
+
+Jobs disliked {{__________choices, bureaucratic, efficient, loose, orderly}} hierarchies. For him, {{__________choices, bureaucracy, simplicity, formality, paperwork}} slowed {{__________choices, progress, failure, delay, competition}} and {{__________choices, stood in the way, cleared the path, paved the road, overlooked}} of innovation. Jobs replaced top-down decision-making with {{__________choices, cross-functional, isolated, grouped, blended}} teams made up of engineers, designers, and marketers. These teams used {{__________choices, bottom-up, top-down, reversed, upside-down}} innovation, working quickly to create products like the iPhone. This {{__________choices, flexibility, rigidity, versatility, viability}} made Apple's processes different from IBM's slower processes. {{__________choices, Mastering, Neglecting, Discovering, Committing}} collaboration across departments became {{__________choices, essential, optional, supportive, frequent}} for success in this new corporate structure.
+
+### Re-imagining the Physical Space
+
+Apple's {{__________choices, headquarters, branch, annex, studio}} was called a {{__________choices, campus, tower, building, base}}, and this was a {{__________choices, strategic, accidental, logistical, timed}} choice. Unlike IBM's offices filled with {{__________choices, cubicles, lounges, open rooms, parks}}, Apple featured an {{__________choices, open layout, closed setting, tight design, distributed plan}} with glass-walled rooms and {{__________choices, communal, private, reserved, personal}} spaces, encouraging spontaneous teamwork. Jobs believed this environment increased creativity and helped teams understand his vision.
+
+### Demanding Excellence
+
+At Apple, excellence was {{__________choices, non-negotiable, flexible, avoidable, defined}}. Jobs established a {{__________choices, performance-driven, leisure-based, relaxed, work-at-home}} culture, demanding products that were intuitive and visually attractive, from the iPod's sleek design to the iPhone's revolutionary interface. This focus on customer experience rather than {{__________choices, short-term, long-term, endless, unstable}} profits changed business {{__________choices, priorities, distractions, challenges, community}}. Jobs promoted a results-oriented {{__________choices, mindset, unstable, outset, mindmap}} where delivering exceptional quality became the standard.
+
+### Leading with Vision
+
+Jobs' leadership style was both inspiring and {{__________choices, demanding, forgiving, generous, soft}}. He motivated teams to "put a dent in the universe," {{__________choices, boosting, lowering, roosting, rousting}} motivation and attracting top {{__________choices, talent, incometents, laziness, measures}}. His {{__________choices, intensity, calmness, kindness, charity}} pushed employees to their limits, with late nights and canceled projects being common. This challenging environment wasn't for everyone, but it was this {{__________choices, high-stakes, low-pressure, outside, upside}} mentality of "changing the world" that {{__________choices, fostered, weakened, hindered, faltered}} innovation.
+
+### Creating an Innovation Hub
+
+The Apple campus combined casual attire, open spaces, and strong ambition. Working for Jobs meant {{__________choices, challenging, easy, slow, happy}} hours but also making a meaningful impact---employees knew they were shaping the future. This {{__________choices, dynamic, stable, torrential, adverse}} culture contrasted sharply with IBM's {{__________choices, stable, shifting, disorganized, burned}}, predictable offices, highlighting Jobs' ability to balance creativity with {{__________choices, productivity, downtime, chaos, design}}. The workplace became a center of innovation where taking risks was {{__________choices, encouraged, discouraged, overlooked, dangerous}}.</div><div style="display: none;">
+Steve Jobs didn't just build Apple into a successful tech company; he {{choices, transformed, preserved, imagined, calculated}} workplace culture, creating an environment that broke traditional corporate rules. While companies like IBM followed formal {{choices, hierarchies, equality, ladders, levels}} with {{choices, top-down, bottom-up, vertical, forced}} management, Jobs created a flat corporate structure, casual atmosphere, and constant innovation. His leadership at Apple provides valuable {{choices, insights, confusion, models, stuff}} for today's changing business world.
+
+### Breaking Dress Code Traditions
+
+In the 1970s, IBM offices were filled with employees wearing suits and ties, a {{choices, dress code, freedom, guideline, settlement}} that showed authority and {{choices, conformity, rebellion, reliability, coordination}}. Jobs, however, was known for his {{choices, signature, generic, uniform, routine}} turtleneck and jeans. At Apple, {{choices, casual attire, formal wear, dress uniform, top fashion}} became a symbol of creativity, creating equality so that ideas mattered more than job titles. This change {{choices, empowered, restricted, set up, put down}} employees to focus on innovation instead of {{choices, protocol, creativity, disruption, procedure}}.
+
+### Flattening the Organization
+
+Jobs disliked {{choices, bureaucratic, efficient, loose, orderly}} hierarchies. For him, {{choices, bureaucracy, simplicity, formality, paperwork}} slowed {{choices, progress, failure, delay, competition}} and {{choices, stood in the way, cleared the path, paved the road, overlooked}} of innovation. Jobs replaced top-down decision-making with {{choices, cross-functional, isolated, grouped, blended}} teams made up of engineers, designers, and marketers. These teams used {{choices, bottom-up, top-down, reversed, upside-down}} innovation, working quickly to create products like the iPhone. This {{choices, flexibility, rigidity, versatility, viability}} made Apple's processes different from IBM's slower processes. {{choices, Mastering, Neglecting, Discovering, Committing}} collaboration across departments became {{choices, essential, optional, supportive, frequent}} for success in this new corporate structure.
+
+### Re-imagining the Physical Space
+
+Apple's {{choices, headquarters, branch, annex, studio}} was called a {{choices, campus, tower, building, base}}, and this was a {{choices, strategic, accidental, logistical, timed}} choice. Unlike IBM's offices filled with {{choices, cubicles, lounges, open rooms, parks}}, Apple featured an {{choices, open layout, closed setting, tight design, distributed plan}} with glass-walled rooms and {{choices, communal, private, reserved, personal}} spaces, encouraging spontaneous teamwork. Jobs believed this environment increased creativity and helped teams understand his vision.
+
+### Demanding Excellence
+
+At Apple, excellence was {{choices, non-negotiable, flexible, avoidable, defined}}. Jobs established a {{choices, performance-driven, leisure-based, relaxed, work-at-home}} culture, demanding products that were intuitive and visually attractive, from the iPod's sleek design to the iPhone's revolutionary interface. This focus on customer experience rather than {{choices, short-term, long-term, endless, unstable}} profits changed business {{choices, priorities, distractions, challenges, community}}. Jobs promoted a results-oriented {{choices, mindset, unstable, outset, mindmap}} where delivering exceptional quality became the standard.
+
+### Leading with Vision
+
+Jobs' leadership style was both inspiring and {{choices, demanding, forgiving, generous, soft}}. He motivated teams to "put a dent in the universe," {{choices, boosting, lowering, roosting, rousting}} motivation and attracting top {{choices, talent, incometents, laziness, measures}}. His {{choices, intensity, calmness, kindness, charity}} pushed employees to their limits, with late nights and canceled projects being common. This challenging environment wasn't for everyone, but it was this {{choices, high-stakes, low-pressure, outside, upside}} mentality of "changing the world" that {{choices, fostered, weakened, hindered, faltered}} innovation.
+
+### Creating an Innovation Hub
+
+The Apple campus combined casual attire, open spaces, and strong ambition. Working for Jobs meant {{choices, challenging, easy, slow, happy}} hours but also making a meaningful impact---employees knew they were shaping the future. This {{choices, dynamic, stable, torrential, adverse}} culture contrasted sharply with IBM's {{choices, stable, shifting, disorganized, burned}}, predictable offices, highlighting Jobs' ability to balance creativity with {{choices, productivity, downtime, chaos, design}}. The workplace became a center of innovation where taking risks was {{choices, encouraged, discouraged, overlooked, dangerous}}.</div><script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
