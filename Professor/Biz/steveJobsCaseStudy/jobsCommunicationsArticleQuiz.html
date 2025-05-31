@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><p>Dr. Ray<br>English Lesson</p>
+		<h3>Jobs' Communication Style</h3>
+		<h3>Article Quiz</h3>
+		
+		<i>Choose the correct answer from the choices list.</i></li></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Steve Jobs transformed not only technology but also how business leaders communicate. His presentation style and communication 
+                        <select id="select-1748660219106-0-0" class="default" data-correct="strategies"><option value="choices">choices</option><option value="strategies">strategies</option><option value="disorganization">disorganization</option><option value="emotions">emotions</option></select>
+                     offer valuable lessons for modern professionals seeking to improve their communication and presentation skills.</p><p><b>The Power of Simplicity</b></p><p>Jobs believed in keeping messages simple and clear. He avoided technical 
+                        <select id="select-1748660219106-2-0" class="default" data-correct="jargon"><option value="choices">choices</option><option value="clarity">clarity</option><option value="jargon">jargon</option><option value="poetry">poetry</option></select>
+                     when speaking to general audiences. Instead, he used everyday language that the general audience could understand. For example, he described the iPhone as "three revolutionary products in one" rather than listing complex technical 
+                        <select id="select-1748660219106-2-1" class="default" data-correct="specifications"><option value="choices">choices</option><option value="specifications">specifications</option><option value="generalizations">generalizations</option><option value="suggestions">suggestions</option></select>
+                    . This approach demonstrates how effective communication requires 
+                        <select id="select-1748660219106-2-2" class="default" data-correct="adapting"><option value="choices">choices</option><option value="resisting">resisting</option><option value="adapting">adapting</option><option value="decorating">decorating</option></select>
+                     your language to your audience.</p><p><b>Storytelling as a Business Tool</b></p><p>Every Jobs presentation told a story with a clear beginning, middle, and end. He would start by identifying a problem, explain how existing solutions were 
+                        <select id="select-1748660219106-4-0" class="default" data-correct="inadequate"><option value="choices">choices</option><option value="informative">informative</option><option value="sufficient">sufficient</option><option value="inadequate">inadequate</option></select>
+                    , then reveal Apple's 
+                        <select id="select-1748660219106-4-1" class="default" data-correct="breakthrough"><option value="choices">choices</option><option value="overview">overview</option><option value="breakthrough">breakthrough</option><option value="setback">setback</option></select>
+                     solution. This narrative structure kept audiences 
+                        <select id="select-1748660219107-4-2" class="default" data-correct="engaged"><option value="choices">choices</option><option value="bored">bored</option><option value="engaged">engaged</option><option value="dismissed">dismissed</option></select>
+                     and made complex products seem logical and necessary. Modern business professionals can apply this storytelling framework to 
+                        <select id="select-1748660219107-4-3" class="default" data-correct="product pitches"><option value="choices">choices</option><option value="slogans">slogans</option><option value="vacation plans">vacation plans</option><option value="product pitches">product pitches</option></select>
+                    , project 
+                        <select id="select-1748660219107-4-4" class="default" data-correct="proposals"><option value="choices">choices</option><option value="rejections">rejections</option><option value="proposals">proposals</option><option value="fantasies">fantasies</option></select>
+                    , and team presentations.</p><p><b>Building Anticipation and Managing Expectations</b></p><p>Jobs 
+                        <select id="select-1748660219107-6-0" class="default" data-correct="mastered"><option value="choices">choices</option><option value="mastered">mastered</option><option value="fumbled">fumbled</option><option value="prepared">prepared</option></select>
+                     the art of creating excitement through strategic communication. At the end of his product presentations, just when the audience thought the event was over, he would pause and say "one more thing" before revealing an additional surprise product or feature. This simple phrase became his 
+                        <select id="select-1748660219107-6-1" class="default" data-correct="signature move"><option value="choices">choices</option><option value="forgettable gesture">forgettable gesture</option><option value="signature move">signature move</option><option value="lucky guess">lucky guess</option></select>
+                    , keeping audiences *on the edge of their seats* throughout his presentations because they never knew when the next surprise would come. He understood that how you deliver information is as important as the information itself. For example, instead of announcing five new features at once, he would 
+                        <select id="select-1748660219107-6-2" class="default" data-correct="reveal"><option value="choices">choices</option><option value="conceal">conceal</option><option value="reveal">reveal</option><option value="summarize">summarize</option></select>
+                     them one by one, building excitement with each announcement. This technique translates directly to business situations where 
+                        <select id="select-1748660219107-6-3" class="default" data-correct="timing"><option value="choices">choices</option><option value="delay">delay</option><option value="enthusiasm">enthusiasm</option><option value="timing">timing</option></select>
+                     and delivery can make the difference between a successful presentation and a forgotten one.</p><p><b>Direct and Confident Language</b></p><p>In meetings and negotiations, Jobs used direct, confident language without being 
+                        <select id="select-1748660219107-8-0" class="default" data-correct="aggressive"><option value="choices">choices</option><option value="technical">technical</option><option value="aggressive">aggressive</option><option value="passive">passive</option></select>
+                    . He made clear statements like "This is what we're going to do" rather than 
+                        <select id="select-1748660219107-8-1" class="default" data-correct="tentative"><option value="choices">choices</option><option value="tentative">tentative</option><option value="assertive">assertive</option><option value="elaborate">elaborate</option></select>
+                     phrases like "We hope to do this." His communication style showed 
+                        <select id="select-1748660219107-8-2" class="default" data-correct="decisiveness"><option value="choices">choices</option><option value="decisiveness">decisiveness</option><option value="hesitation">hesitation</option><option value="speed">speed</option></select>
+                     and leadership.</p><p><b>Visual Communication Excellence</b></p><p>Jobs revolutionized business presentations by 
+                        <select id="select-1748660219107-10-0" class="default" data-correct="minimizing"><option value="choices">choices</option><option value="increasing">increasing</option><option value="minimizing">minimizing</option><option value="summarizing">summarizing</option></select>
+                     text and 
+                        <select id="select-1748660219107-10-1" class="default" data-correct="maximizing"><option value="choices">choices</option><option value="reducing">reducing</option><option value="maximizing">maximizing</option><option value="dramatizing">dramatizing</option></select>
+                     visual impact. His slides contained just a few words or a single powerful image, forcing him to explain 
+                        <select id="select-1748660219107-10-2" class="default" data-correct="concepts"><option value="choices">choices</option><option value="concepts">concepts</option><option value="decorations">decorations</option><option value="scripts">scripts</option></select>
+                     verbally. This approach improved audience engagement and demonstrated his deep understanding of the material.</p><p><b>Handling Difficult Questions</b></p><p>When faced with 
+                        <select id="select-1748660219107-12-0" class="default" data-correct="challenging"><option value="choices">choices</option><option value="challenging">challenging</option><option value="political">political</option><option value="easy">easy</option></select>
+                     questions from journalists or investors, Jobs remained calm and used several strategies: he would pause to think, 
+                        <select id="select-1748660219107-12-1" class="default" data-correct="reframe"><option value="choices">choices</option><option value="reframe">reframe</option><option value="distort">distort</option><option value="delay">delay</option></select>
+                     negative questions positively, or 
+                        <select id="select-1748660219107-12-2" class="default" data-correct="redirect"><option value="choices">choices</option><option value="magnify">magnify</option><option value="redirect">redirect</option><option value="ignore">ignore</option></select>
+                     conversations toward Apple's strengths. These techniques are 
+                        <select id="select-1748660219107-12-3" class="default" data-correct="invaluable"><option value="choices">choices</option><option value="useless">useless</option><option value="decorative">decorative</option><option value="invaluable">invaluable</option></select>
+                     for business professionals dealing with 
+                        <select id="select-1748660219107-12-4" class="default" data-correct="client"><option value="choices">choices</option><option value="stranger">stranger</option><option value="client">client</option><option value="boss">boss</option></select>
+                     concerns, investor meetings, or 
+                        <select id="select-1748660219107-12-5" class="default" data-correct="crisis"><option value="choices">choices</option><option value="celebration">celebration</option><option value="crisis">crisis</option><option value="strategy">strategy</option></select>
+                     communications.</p><p><b>The Legacy for Business Communication</b></p><p>Jobs' communication principles continue to influence business leaders worldwide. His emphasis on 
+                        <select id="select-1748660219107-14-0" class="default" data-correct="clarity"><option value="choices">choices</option><option value="confusion">confusion</option><option value="volume">volume</option><option value="clarity">clarity</option></select>
+                    , storytelling, and audience engagement has become the 
+                        <select id="select-1748660219107-14-1" class="default" data-correct="standard"><option value="choices">choices</option><option value="exception">exception</option><option value="formality">formality</option><option value="standard">standard</option></select>
+                     for effective corporate communication.</p><p>Jobs demonstrated that great ideas need great communication to succeed. His techniques---simplicity, storytelling, confidence, and visual impact---remain essential tools for effective business communications.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+            
+            
+            
+            
+            
+			// Create the div element
+			const hiddenDiv = document.createElement('div');
+			
+			// Set the content from input
+			hiddenDiv.textContent = input;
+			
+			// Hide the div
+			hiddenDiv.style.display = 'none';
+			
+			// Append to body (or you can append to any other parent element)
+			document.body.appendChild(hiddenDiv);
+            
+            
+            
+            
+            
+            
+            
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("Check your browser's \ndefault download folder \n\nThe inputText is stored \nin a hidden division of your saved file");
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<div style="display: none;">
+Steve Jobs transformed not only technology but also how business leaders communicate. His presentation style and communication {{choices, strategies, disorganization, emotions}} offer valuable lessons for modern professionals seeking to improve their communication and presentation skills.
+
+The Power of Simplicity
+
+Jobs believed in keeping messages simple and clear. He avoided technical {{choices, jargon, clarity, poetry}} when speaking to general audiences. Instead, he used everyday language that the general audience could understand. For example, he described the iPhone as "three revolutionary products in one" rather than listing complex technical {{choices, specifications, generalizations, suggestions}}. This approach demonstrates how effective communication requires {{choices, adapting, resisting, decorating}} your language to your audience.
+
+Storytelling as a Business Tool
+
+Every Jobs presentation told a story with a clear beginning, middle, and end. He would start by identifying a problem, explain how existing solutions were {{choices, inadequate, sufficient, informative}}, then reveal Apple's {{choices, breakthrough, setback, overview}} solution. This narrative structure kept audiences {{choices, engaged, bored, dismissed}} and made complex products seem logical and necessary. Modern business professionals can apply this storytelling framework to {{choices, product pitches, vacation plans, slogans}}, project {{choices, proposals, rejections, fantasies}}, and team presentations.
+
+Building Anticipation and Managing Expectations
+
+Jobs {{choices, mastered, fumbled, prepared}} the art of creating excitement through strategic communication. At the end of his product presentations, just when the audience thought the event was over, he would pause and say "one more thing" before revealing an additional surprise product or feature. This simple phrase became his {{choices, signature move, forgettable gesture, lucky guess}}, keeping audiences *on the edge of their seats* throughout his presentations because they never knew when the next surprise would come. He understood that how you deliver information is as important as the information itself. For example, instead of announcing five new features at once, he would {{choices, reveal, conceal, summarize}} them one by one, building excitement with each announcement. This technique translates directly to business situations where {{choices, timing, delay, enthusiasm}} and delivery can make the difference between a successful presentation and a forgotten one.
+
+Direct and Confident Language
+
+In meetings and negotiations, Jobs used direct, confident language without being {{choices, aggressive, passive, technical}}. He made clear statements like "This is what we're going to do" rather than {{choices, tentative, assertive, elaborate}} phrases like "We hope to do this." His communication style showed {{choices, decisiveness, hesitation, speed}} and leadership.
+
+Visual Communication Excellence
+
+Jobs revolutionized business presentations by {{choices, minimizing, increasing, summarizing}} text and {{choices, maximizing, reducing, dramatizing}} visual impact. His slides contained just a few words or a single powerful image, forcing him to explain {{choices, concepts, decorations, scripts}} verbally. This approach improved audience engagement and demonstrated his deep understanding of the material.
+
+Handling Difficult Questions
+
+When faced with {{choices, challenging, easy, political}} questions from journalists or investors, Jobs remained calm and used several strategies: he would pause to think, {{choices, reframe, distort, delay}} negative questions positively, or {{choices, redirect, ignore, magnify}} conversations toward Apple's strengths. These techniques are {{choices, invaluable, useless, decorative}} for business professionals dealing with {{choices, client, stranger, boss}} concerns, investor meetings, or {{choices, crisis, celebration, strategy}} communications.
+
+The Legacy for Business Communication
+
+Jobs' communication principles continue to influence business leaders worldwide. His emphasis on {{choices, clarity, confusion, volume}}, storytelling, and audience engagement has become the {{choices, standard, exception, formality}} for effective corporate communication.
+
+Jobs demonstrated that great ideas need great communication to succeed. His techniques---simplicity, storytelling, confidence, and visual impact---remain essential tools for effective business communications.
+
+</div><script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
