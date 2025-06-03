@@ -281,7 +281,7 @@ Business 102        </strong>
 <br>
    
       <h2>Steve Jobs Case Study</h2>
-        <button id="toggleButton">Show all items</button>
+   <button class="toggleButton" onclick="toggleDetails(this)" style="margin: 0 0 1.5rem;">Show All</button>    
       <ol style="text-align: left; background-color:#FEFAEA; border-radius:5px;">
         <li style="font-weight:bold;">The Smartphone&nbsp;</li>
         <details class="showHideItems"><summary>show/hide</summary>
@@ -625,7 +625,9 @@ Business 102        </strong>
 			
 		</ul>
             <br>
-            		
+   
+     <button class="toggleButton" onclick="toggleDetails(this)" style="margin: 0 0 1.5rem;">Show All</button>    
+          		
 
 	<p style="marrgin:5rem">____________________<br>...end</p>  
 		
@@ -634,6 +636,28 @@ Business 102        </strong>
 	
 	
 	</div>
+	
+	    <script>
+        function toggleDetails(button) {
+            const detailsElements = document.querySelectorAll('details');
+
+            if (button.textContent === 'Show All') {
+                detailsElements.forEach(details => {
+                    details.open = true;
+                });
+                document.querySelectorAll('.toggleButton').forEach(btn => {
+                    btn.textContent = 'Hide All';
+                });
+            } else {
+                detailsElements.forEach(details => {
+                    details.open = false;
+                });
+                document.querySelectorAll('.toggleButton').forEach(btn => {
+                    btn.textContent = 'Show All';
+                });
+            }
+        }
+    </script>
 
 <!--  =============== DETAILED version ========================================================= -->
 <!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
@@ -792,28 +816,7 @@ function saveDom(){
 
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('toggleButton');
-            const detailsElements = document.querySelectorAll('details.showHideItems');
-            
-            // Initial state is "Show all items"
-            let showingAll = false;
-            
-            toggleButton.addEventListener('click', function() {
-                // Toggle the state
-                showingAll = !showingAll;
-                
-                // Update all details elements based on the current state
-                detailsElements.forEach(function(details) {
-                    details.open = showingAll;
-                });
-                
-                // Update button text
-                toggleButton.textContent = showingAll ? 'Hide all items' : 'Show all items';
-            });
-        });
-    </script>
+   
 
 
 
