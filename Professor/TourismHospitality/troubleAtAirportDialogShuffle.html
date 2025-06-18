@@ -306,30 +306,8 @@
         <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
         <!--************************ Type title here ******************-->
             
-        Dr Ray  <br>
-        Summer 2022, <br>
-        Professional English <br> 
-        Course 101, Student  Exercise, Chapter 3 
-        <br>
-        <br>
-        <strong>
-        Exercise Quiz, Chapter 3
-        </strong>
-        <br>
-        <strong>
-        Article: Raining Money
-        </strong> 
-
-        <!--     ***************** End title ****************************-->
-        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
-
-        <!--  ------ Don’t type Title content past this line ---  -->               
-        
-        
-        
-        
-        
-    </section>   
+        Dr Ray  <br>Tourism <br>
+        <br><strong>Trouble at the Aiport, Dialog</strong></section>   
 </header>
 
 
@@ -612,26 +590,33 @@ function shuffle(array) {
     li1.innerHTML = innerHTML2;
   } //swapListItems
 
-    let firstSelectedItem = null;
-    
-  function handleListItemClick(event) {
-    const clickedListItem = event.target;
+let firstSelectedItem = null;
+let firstSelectedParent = null; // <<<< ADD
 
-    // Check if the clicked element is an li with the class "liItem"
-    if (clickedListItem.classList.contains("liItem")) {
-      if (firstSelectedItem === null) {
-        // First click
-        firstSelectedItem = clickedListItem;
-        firstSelectedItem.style.backgroundColor = "lightgray"; // Highlight the first selection
-      } else {
-        // Second click
-        const secondSelectedItem = clickedListItem;
-        swapListItems(firstSelectedItem, secondSelectedItem);
-        firstSelectedItem.style.backgroundColor = ""; // Remove highlight from the first item
-        firstSelectedItem = null; // Reset the first selection for the next pair
-      }
+function handleListItemClick(event) {
+  const clickedListItem = event.target;
+
+  if (clickedListItem.classList.contains("liItem")) {
+    const parentList = clickedListItem.parentElement; // <<<< ADD
+
+    if (firstSelectedItem === null) {
+      // First click: store both the item and its parent list
+      firstSelectedItem = clickedListItem;
+      firstSelectedParent = parentList; // <<<< ADD
+      firstSelectedItem.style.backgroundColor = "lightgray";
+    } else {
+      // Second click: check if both items are in the same list
+      if (parentList === firstSelectedParent) { // <<<< ADD
+        swapListItems(firstSelectedItem, clickedListItem);
+      } // <<<< END ADD
+      // Remove highlight and reset selection regardless
+      firstSelectedItem.style.backgroundColor = "";
+      firstSelectedItem = null;
+      firstSelectedParent = null; // <<<< ADD
     }
-  } //end handlListItemClick
+  }
+}
+//end handlListItemClick
 
   document.getElementById("listDiv").addEventListener("click", handleListItemClick);
 
@@ -808,5 +793,6 @@ function saveDom(){
   
   
   
+
 
 </body></html>
