@@ -784,7 +784,7 @@ function zztop(){
     </header>
   
     <br>  
-<details style="border: thin solid black; padding:.5rem; width:fit-content;"><summary>Instructions</summary><br> NOTE: Tested with LibreOffice Writer, should work from any word processor or wysiwyg editor.<br> This app will hide all paragraph items. In their place will be an [+] Icon that on click will "show" the hidden paragraph item.<br><br> To achieve this just type and style your content as you normally would in your word processor or editor. Click on [add article] and copy and paste your content into the new box. Clicking on [Hide Details] will hide all paragraphs. Any text you do NOT want hidden, MUST be in header form e.g. H1, H2, H3, H4. <br><br> Look at the sample below then click the [Hide Details] button below to see how it works. <br><br>Click the [+] icon to view any hidden line. Click directly on any place in the line of text to hide it again. <br><br>
+<details class="editMode" style="border: thin solid black; padding:.5rem; width:fit-content;"><summary>Instructions</summary><br> NOTE: Tested with LibreOffice Writer, should work from any word processor or wysiwyg editor.<br> This app will hide all paragraph items. In their place will be an &bull; Icon that on click will "show" the hidden paragraph item.<br><br> To achieve this just type and style your content as you normally would in your word processor or editor. Click on [add article] and copy and paste your content into the new box. Clicking on [Hide Details] will hide all paragraphs. Any text you do NOT want hidden, MUST be in header form e.g. H1, H2, H3, H4. <br><br> Look at the sample below then click the [Hide Details] button below to see how it works. <br><br>Click the &bull; icon to view any hidden line. Click directly on any place in the line of text to hide it again. <br><br>
 <div style="border:thin solid green; padding:1rem;"> Sample content:<br> <h4>This was  styled as a header 4 in my processor, so it should not "hide"</h4><p>This is the <u>first</u> paragraph </p> <p>This is the <b>second</b>  paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p><p>This is the <span style="color:red;">third</span> paragraph </p><p>This is the <span style="background-color:yellow">fourth</span> paragraph</p></details>
 <br>
 
@@ -1698,7 +1698,7 @@ function createRevealableParagraphs() {
     
     // Create the toggle element
     const toggleElement = document.createElement('span');
-    toggleElement.textContent = '[+]';
+    toggleElement.innerHTML = '<span style="font-weight:bold;">+</span>';
     toggleElement.style.cursor = 'pointer';
     toggleElement.classList.add('content-toggle');
     
@@ -1713,7 +1713,7 @@ function createRevealableParagraphs() {
         // If content is visible, hide it
         paragraph.innerHTML = '';
         const newToggle = document.createElement('span');
-        newToggle.textContent = '[+]';
+        newToggle.innerHTML = '<span style="font-weight:bold;">+</span>';
         newToggle.style.cursor = 'pointer';
         newToggle.classList.add('content-toggle');
         paragraph.appendChild(newToggle);
@@ -1721,7 +1721,7 @@ function createRevealableParagraphs() {
         paragraph.classList.add('detailsHidden');
       } else {
         // If content is hidden, show it
-        paragraph.innerHTML = paragraph.dataset.originalContent;
+        paragraph.innerHTML = '<div style="margin: 0 .5rem .5rem .5rem;">&bull;&nbsp;&nbsp' + paragraph.dataset.originalContent + "</div>";
         paragraph.classList.remove('detailsHidden');
         paragraph.classList.add('content-revealed');
         paragraph.style.cursor = 'pointer';
@@ -1784,7 +1784,11 @@ const zzshowDetailsBtn = document.getElementById('showDetails');
 }
 </script>
     
-    
+<script>
+	document.addEventListener('DOMContentLoaded', (event) => {
+		createRevealableParagraphs();
+});
+</script>
     
     
 <footer style="margin:4em; display: block;">     
