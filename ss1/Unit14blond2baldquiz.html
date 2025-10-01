@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +7,23 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
             background-color: #f5f5f5;
         }
         .header {
             background-color: #2c3e50;
             color: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .student-info {
             background-color: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .student-info input {
             width: 100%;
@@ -33,10 +33,21 @@
             border-radius: 4px;
             font-size: 16px;
         }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
         .section {
             background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -44,41 +55,42 @@
             color: #2c3e50;
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
+            font-size:1.1rem
         }
         .sentence {
-            margin: 15px 0;
-            font-size: 18px;
-            line-height: 1.8;
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
         }
         select {
-            padding: 5px 10px;
-            font-size: 16px;
+            
+            font-size: .8rem;
             border: 2px solid #ddd;
             border-radius: 4px;
             background-color: white;
             cursor: pointer;
-            min-width: 150px;
+            min-width: 4rem;
         }
         select.correct {
-            background-color: #2ecc71;
-            color: white;
+            background-color: #CFFFE2;
+            color: #0404D0;
             border-color: #27ae60;
         }
         select.incorrect {
-            background-color: #e74c3c;
-            color: white;
-            border-color: #c0392b;
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
         }
         .print-section {
             text-align: center;
-            margin-top: 30px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 10px;
             background-color: white;
             border-radius: 8px;
         }
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: .33rem;
+            font-size: 1rem;
             background-color: #3498db;
             color: white;
             border: none;
@@ -97,6 +109,9 @@
             font-weight: bold;
             margin-top: 10px;
         }
+        
+  
+        
         @media print {
             .print-section {
                 display: none;
@@ -105,13 +120,15 @@
                 background-color: white;
             }
         }
+        
+        
         footer { margin-top: 15rem; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Blond2bald Article - Vocabulary Quiz</h1>
-        <p>B1 English Level - Complete the sentences by selecting the correct word</p>
+        <h1>Blond To Bald Article - Vocabulary Quiz</h1>
+        <p>Complete the sentences by selecting the correct word</p>
     </div>
 
     <div class="student-info">
@@ -121,7 +138,7 @@
         <label for="studentID"><strong>Student ID:</strong></label>
         <input type="text" id="studentID" placeholder="Enter your student ID number">
     </div>
-
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
     <div class="section">
         <h3>Section 1</h3>
         <div class="sentence">
@@ -388,6 +405,44 @@
             errorMessage.style.display = 'none';
             window.print();
         }
+        
+        
+// Force hard refresh on any page reload
+window.addEventListener('beforeunload', function() {
+    // Clear form data
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+/*    document.querySelectorAll('input').forEach(input => {
+        input.value = '';
+    });*/
+});        
+        
+        
+// Toggle show/hide answers
+let answersVisible = false;
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    const button = document.getElementById('toggleAnswersBtn');
+    
+    document.querySelectorAll('select').forEach(select => {
+        if (answersVisible) {
+            // Show correct answer
+            const correctAnswer = select.getAttribute('data-answer');
+            select.value = correctAnswer;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Hide answers - reset to default
+            select.selectedIndex = 0;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+    
+    // Update button text
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}        
     </script>
     
     <footer>...</footer>
