@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blond2baldVocabQuiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        /* Mobile phones - portrait */
+@media (max-width: 480px) {
+    body {
+        max-width: 100%;
+        margin: 5px auto;
+        padding: 5px;
+    }
+    
+    .header {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .header p {
+        font-size: 0.85rem;
+    }
+    
+    .student-info, .section, .print-section {
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .section h3 {
+        font-size: 1rem;
+        padding-bottom: 8px;
+    }
+    
+    .sentence {
+        font-size: 0.8rem;
+        margin: 8px 0;
+    }
+    
+    select {
+        font-size: 0.75rem;
+        min-width: 3rem;
+        display: block;
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    button {
+        font-size: 0.9rem;
+        padding: 0.4rem;
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* Tablets - portrait */
+@media (min-width: 481px) and (max-width: 768px) {
+    body {
+        max-width: 95%;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+    body {
+        max-width: 50rem;
+    }
+}
+        
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        
+        footer { margin-top: 15rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Blond To Bald Article - Vocabulary Quiz</h1>
+        <p>Complete the sentences by selecting the correct word</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. Mary works in a <select data-answer="crime lab">
+                <option value="">-- Select --</option>
+                <option value="crime lab">crime lab</option>
+                <option value="doubles">doubles</option>
+                <option value="colleagues">colleagues</option>
+                <option value="appointment">appointment</option>
+                <option value="hair stylist">hair stylist</option>
+            </select> where they analyze evidence for criminal investigations.
+        </div>
+        <div class="sentence">
+            2. She <select data-answer="doubles">
+                <option value="">-- Select --</option>
+                <option value="appointment">appointment</option>
+                <option value="doubles">doubles</option>
+                <option value="crime lab">crime lab</option>
+                <option value="hair stylist">hair stylist</option>
+                <option value="colleagues">colleagues</option>
+            </select> as a forensic advisor, meaning she serves two roles at the same time.
+        </div>
+        <div class="sentence">
+            3. Her <select data-answer="colleagues">
+                <option value="">-- Select --</option>
+                <option value="hair stylist">hair stylist</option>
+                <option value="colleagues">colleagues</option>
+                <option value="doubles">doubles</option>
+                <option value="appointment">appointment</option>
+                <option value="crime lab">crime lab</option>
+            </select> are the people she works with at the office.
+        </div>
+        <div class="sentence">
+            4. Mary made an <select data-answer="appointment">
+                <option value="">-- Select --</option>
+                <option value="colleagues">colleagues</option>
+                <option value="crime lab">crime lab</option>
+                <option value="appointment">appointment</option>
+                <option value="hair stylist">hair stylist</option>
+                <option value="doubles">doubles</option>
+            </select> at the beauty salon, which means she scheduled a time to visit.
+        </div>
+        <div class="sentence">
+            5. The <select data-answer="hair stylist">
+                <option value="">-- Select --</option>
+                <option value="doubles">doubles</option>
+                <option value="hair stylist">hair stylist</option>
+                <option value="colleagues">colleagues</option>
+                <option value="crime lab">crime lab</option>
+                <option value="appointment">appointment</option>
+            </select> is a professional who cuts and colors hair.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            6. The stylist applied a coloring <select data-answer="solution">
+                <option value="">-- Select --</option>
+                <option value="solution">solution</option>
+                <option value="set">set</option>
+                <option value="lack">lack</option>
+                <option value="insisted">insisted</option>
+                <option value="clumps">clumps</option>
+            </select>, which is a liquid mixture used to change hair color.
+        </div>
+        <div class="sentence">
+            7. The solution needed to <select data-answer="set">
+                <option value="">-- Select --</option>
+                <option value="insisted">insisted</option>
+                <option value="set">set</option>
+                <option value="clumps">clumps</option>
+                <option value="solution">solution</option>
+                <option value="lack">lack</option>
+            </select> for a few minutes, meaning it had to remain in place for a period of time.
+        </div>
+        <div class="sentence">
+            8. The water was turned off because of <select data-answer="lack">
+                <option value="">-- Select --</option>
+                <option value="clumps">clumps</option>
+                <option value="lack">lack</option>
+                <option value="set">set</option>
+                <option value="insisted">insisted</option>
+                <option value="solution">solution</option>
+            </select> of payment, meaning the absence of payment.
+        </div>
+        <div class="sentence">
+            9. The stylist <select data-answer="insisted">
+                <option value="">-- Select --</option>
+                <option value="lack">lack</option>
+                <option value="solution">solution</option>
+                <option value="insisted">insisted</option>
+                <option value="set">set</option>
+                <option value="clumps">clumps</option>
+            </select> she had paid her bills, which means she stated firmly and persistently.
+        </div>
+        <div class="sentence">
+            10. Mary was left with only a few <select data-answer="clumps">
+                <option value="">-- Select --</option>
+                <option value="set">set</option>
+                <option value="clumps">clumps</option>
+                <option value="lack">lack</option>
+                <option value="solution">solution</option>
+                <option value="insisted">insisted</option>
+            </select> of hair, meaning small grouped masses.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            11. The chemical solution <select data-answer="remained">
+                <option value="">-- Select --</option>
+                <option value="remained">remained</option>
+                <option value="solution">solution</option>
+                <option value="remaining">remaining</option>
+                <option value="bald">bald</option>
+                <option value="wig">wig</option>
+            </select> in her hair for too long, meaning it stayed there.
+        </div>
+        <div class="sentence">
+            12. The only <select data-answer="solution">
+                <option value="">-- Select --</option>
+                <option value="wig">wig</option>
+                <option value="solution">solution</option>
+                <option value="bald">bald</option>
+                <option value="remaining">remaining</option>
+                <option value="remained">remained</option>
+            </select> was to shave her head, meaning this was the answer to the problem.
+        </div>
+        <div class="sentence">
+            13. They shaved off the little bit of <select data-answer="remaining">
+                <option value="">-- Select --</option>
+                <option value="bald">bald</option>
+                <option value="remaining">remaining</option>
+                <option value="solution">solution</option>
+                <option value="wig">wig</option>
+                <option value="remained">remained</option>
+            </select> hair, which means the hair that was left over.
+        </div>
+        <div class="sentence">
+            14. Mary became <select data-answer="bald">
+                <option value="">-- Select --</option>
+                <option value="remained">remained</option>
+                <option value="bald">bald</option>
+                <option value="wig">wig</option>
+                <option value="remaining">remaining</option>
+                <option value="solution">solution</option>
+            </select>, meaning she had no hair on her head.
+        </div>
+        <div class="sentence">
+            15. The water company bought Mary a brunette <select data-answer="wig">
+                <option value="">-- Select --</option>
+                <option value="solution">solution</option>
+                <option value="wig">wig</option>
+                <option value="remaining">remaining</option>
+                <option value="remained">remained</option>
+                <option value="bald">bald</option>
+            </select>, which is artificial hair worn on the head.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            16. Mary and the stylist are <select data-answer="suing">
+                <option value="">-- Select --</option>
+                <option value="suing">suing</option>
+                <option value="intelligent">intelligent</option>
+                <option value="natural">natural</option>
+                <option value="forensic">forensic</option>
+                <option value="applied">applied</option>
+            </select> the water company, which means they are taking legal action against them in court.
+        </div>
+        <div class="sentence">
+            17. Mary is an <select data-answer="intelligent">
+                <option value="">-- Select --</option>
+                <option value="applied">applied</option>
+                <option value="intelligent">intelligent</option>
+                <option value="suing">suing</option>
+                <option value="forensic">forensic</option>
+                <option value="natural">natural</option>
+            </select> woman, which means she is very smart and has strong mental abilities.
+        </div>
+        <div class="sentence">
+            18. Blonde is her <select data-answer="natural">
+                <option value="">-- Select --</option>
+                <option value="forensic">forensic</option>
+                <option value="natural">natural</option>
+                <option value="intelligent">intelligent</option>
+                <option value="suing">suing</option>
+                <option value="applied">applied</option>
+            </select> hair color, meaning it is the color she was born with.
+        </div>
+        <div class="sentence">
+            19. She has a doctoral degree in <select data-answer="forensic">
+                <option value="">-- Select --</option>
+                <option value="natural">natural</option>
+                <option value="forensic">forensic</option>
+                <option value="applied">applied</option>
+                <option value="intelligent">intelligent</option>
+                <option value="suing">suing</option>
+            </select> science, which is the study of scientific methods used to solve crimes.
+        </div>
+        <div class="sentence">
+            20. The water company <select data-answer="applied">
+                <option value="">-- Select --</option>
+                <option value="suing">suing</option>
+                <option value="applied">applied</option>
+                <option value="natural">natural</option>
+                <option value="forensic">forensic</option>
+                <option value="intelligent">intelligent</option>
+            </select> the stylist's payments to the wrong account, meaning they assigned or directed the payments incorrectly.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+   <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem.">     Instructions:  <br>
+1. Save as PDF file<br>
+2. Upload to the E-class<br>
+    </div>
+
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check if name is missing or unchanged
+            if (studentName === '' || studentName === 'Enter your full name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Check if ID is missing or unchanged
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // If both are filled, hide error and print
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+        
+        
+// Force hard refresh on any page reload
+window.addEventListener('beforeunload', function() {
+    // Clear form data
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+/*    document.querySelectorAll('input').forEach(input => {
+        input.value = '';
+    });*/
+});        
+        
+        
+// Toggle show/hide answers
+let answersVisible = false;
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    const button = document.getElementById('toggleAnswersBtn');
+    
+    document.querySelectorAll('select').forEach(select => {
+        if (answersVisible) {
+            // Show correct answer
+            const correctAnswer = select.getAttribute('data-answer');
+            select.value = correctAnswer;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Hide answers - reset to default
+            select.selectedIndex = 0;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+    
+    // Update button text
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}        
+    </script>
+    
+    <footer>...</footer>
+</body>
+</html>
