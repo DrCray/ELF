@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="en"><head>
+        <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method">		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>pardigmShiftDict</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+
+       
+     <style>
+body{
+    font-family: sans-serif;
+    background-color:  #d4e6f1  ;
+    margin: 0 3em 0 3em;
+    padding: 1ex 2ex 1ex 2ex;
+    max-width:55rem; margin:auto;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0; }
+   
+   
+   .fake-button {
+       background-color: #E9E9ED; 
+       border-style:solid; border-width:thin; border-radius: 5px;
+       box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+   }
+
+  .fake-button:hover {
+       background-color: lightblue;
+        border-radius: 5px; box-shadow: 3px 3px gray;
+
+   }
+   
+   /*  for <button> class="hltBtn"  */
+   .hlBtn {border-radius:5px;}
+
+   .hlBtn:hover {
+       background-color:lightblue;  border-radius: 5px;
+   }
+
+          h1   {
+               color: maroon;
+               margin-left: 40px;
+               }
+    li {
+        margin:0 0 1ex 0;
+    }         
+     </style>
+
+</head>
+  
+<body>
+
+
+<p id="zztitle"><b contenteditable="false">Paradigm Shift</b></p>
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+<div id="dict" style="background-color:#fff; padding:1ex;" contenteditable="false"><ol><li>
+
+
+	
+	
+	
+	
+
+
+A paradigm is a shared way of understanding how things work and why
+outcomes happen.&nbsp;</li><li>When people reject
+an old perspective because of new evidence or beliefs, it is called a
+paradigm shift.&nbsp;</li><li>One major shift
+occurred when radio changed how people received news and
+entertainment.&nbsp;</li><li>Before radio,
+distance meant isolation, and information traveled only as fast as
+physical objects.&nbsp;</li><li>Radio created shared
+experiences, instant access to news, and a sense of a smaller,
+connected world.&nbsp;</li><li>Another shift
+happened in medicine when cancer treatment moved away from a
+“one-size-fits-all” approach.&nbsp;</li><li>Genetic research and
+immunotherapy showed that cancer is many diseases, requiring
+personalized treatments.</li></ol></div>
+ 
+<button id="text2list" style="margin: 0px 0px 1em; display: none;" onclick="textToList()">make List</button>    
+    
+
+<script>
+
+function textToList(){   
+    //------- dict text to List----------------    
+  const div = document.getElementById('dict');
+    
+  const text = div.textContent;
+  const listItems = text.split("^^");
+    
+  const ol = document.createElement('ol');
+    
+  for (const li of listItems) {   
+    const liElement = document.createElement("li");
+    liElement.textContent = li;
+    div.appendChild(ol);
+    ol.appendChild(liElement);
+  }
+      div.innerHTML = ol.outerHTML;
+ // ------ end comppQs make List ----------------------   
+} //endt textToList()
+</script>    
+    
+<!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+
+      
+      <script>
+      function toggleEditOff(){
+          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("text2list").style.display="none";
+
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function toggleEditOn(){
+          
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("text2list").style.display="block";
+              
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      }
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+
+//add this to beginning of save file section
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+    
+    /*
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    */
+        toggleEditOff();
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+  
+            
+<footer style="margin:35px">     
+      <p> ... end. </p>
+</footer>
+          
+
+  
+  
+
+</body></html>
