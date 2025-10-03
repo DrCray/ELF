@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        button {
+            padding: 5px 5px;
+        }
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px;
+        }
+        .answer-shown {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 1.5rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+        code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%;            
+        }
+        .quasi-code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%; 
+            width: fit-content;
+        }
+        .copy-popup {
+          position: absolute;
+          background: #333;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 9999;
+        }
+        .copy-popup.show {
+          opacity: 1;
+        }
+        
+        /* Save status styles */
+        .save-status {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .save-status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .save-status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .save-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Student info styling */
+        #verifyYou { 
+            display:none; 
+            background-color: #fff8dc;
+            color: darkgreen;
+            border-radius: 5px;
+            margin: .33rem 0 0 0;
+            padding: .5rem;
+            font-weight: bold;              
+         }
+         #verifyYou:hover { 
+            background-color: #D4CDB3;
+            color: green;
+         }         
+         #verifyYou:active { 
+            background-color: darkgray;
+            color: white;
+         }
+         footer {
+            margin-top:15rem;
+         }
+    </style>
+</head>
+<body>
+    
+    
+<div>
+<nav class="editMode" style="background: rgb(238, 238, 238); padding: 1em; margin-bottom: 1em; font-family: Arial; display: none;">
+    <a href="/drRayLMS/dashboard.php" style="margin-right:15px;">Dashboard</a><br>
+<a href="/drRayLMS/users/drray/listAll.html" target="_blank" style="margin-right:15px;">View Public Page</a><br>
+    <a href="/drRayLMS/logout.php" style="color:red;">Logout</a><br>
+</nav>
+<style>
+nav {
+	width: fit-content;
+	line-height: 115%;
+	}
+	
+</style>
+</div>
+    
+    <h1>Cloze Exercise Generator</h1>
+    
+    <!-- Student Info Section -->
+    <input id="name" type="text" value="name">
+    <input id="id" type="text" value="id#">
+    <!--
+    input id="passCode" type="text" value="passcode">
+    <button id="verifyYou" onclick="verifyStudent()" style="display: block;">Verify Your Name, ID, Passcode</button
+    -->
+    
+    <details class="editMode" open="" style="display: none;"><summary>Instructions</summary>
+        <div style="margin-bottom: 15px; font-family: Arial, sans-serif; font-size: 14px;">
+        <h4>Creating the Cloze/select sentences</h4>
+         <p> Use the standard bold markdown <code>**bold text**</code> for the cloze words in the quiz section.</p><p>Use<code>^^</code>as a delimiter(divider) to show which sentences will share the same answer choices</p> <p>Use ^br to start a new line.</p> There is an example already in the text box<p></p> 
+                    
+            <h4>Add optional info above the select sentences</h4>
+            <p>If you want to put instructions, reading material, or other things above the quiz selection sentences, follow these intructions</p>
+            <p>This is app-specific markdown, NOT traditional markdown.</p>
+        <p>Enter optional information within division markdown tags <br> <code><sup>^</sup>dv ... dv<sup>^</sup></code> Only ONE div allowed <br>(see example below)  
+            </p><p> Headings markdown (only 3 levels):<br> <code><sup>^</sup>h1 ... h1<sup>^</sup></code>, <code><sup>^</sup>h2 ... h2<sup>^</sup></code>, <code><sup>^</sup>h3 ... h3<sup>^</sup></code></p>
+            <p>Other markdown:<br> <code><sup>^</sup>bb bold bb<sup>^</sup></code>, <code><sup>^</sup>ii italic ii<sup>^</sup></code>, <code><sup>^</sup>uu underline uu<sup>^</sup></code></p>
+            <p> line breaks: <code><sup>^</sup>br</code></p> 
+
+
+            
+            Copy and paste this example to see how it renders:<br>
+            (only one division is allowed, so replace the current example division)<br><br>
+            <div class="quasi-code" style="margin: 0 0 0 2rem;">
+^dv  <br>
+&nbsp; &nbsp; &nbsp; ^h1 Cloze Instructions h1^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h2 Details h2^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; Complete the sentences below.^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h3 Note h3^<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; : Choose carefully<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ^bb bold bb^, with ^ii italic ii^ and ^uu underline uu^!<br>
+dv^<br>
+  <button class="button2" onclick="copyParent(this)">Copy</button>
+
+            </div>
+        </div>
+    </details>
+
+    <div id="output" style="pointer-events: auto;"><div id="cloze-div-1759473165626" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1759473165626')">Show Answers</button><div style="margin-bottom: 20px;"><b> B2 Level Vocabulary </b></div><div class="sentence-div">1. The politician asked a <span style="font-size: 70%;">1</span><select data-correct="rhetorical" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="acutely aware">acutely aware</option><option value="unambiguous">unambiguous</option><option value="context dependent">context dependent</option><option value="rhetorical">rhetorical</option><option value="connotations">connotations</option>
+            </select> question, "Do we really want to accept failure?" knowing the crowd would never say yes. 
+2. The word "cheap" has negative <span style="font-size: 70%;">2</span><select data-correct="connotations" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="acutely aware">acutely aware</option><option value="unambiguous">unambiguous</option><option value="context dependent">context dependent</option><option value="rhetorical">rhetorical</option><option value="connotations">connotations</option>
+            </select> of poor quality, while "affordable" sounds much more positive. <br>
+3. The traffic light gives <span style="font-size: 70%;">3</span><select data-correct="unambiguous" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="acutely aware">acutely aware</option><option value="unambiguous">unambiguous</option><option value="context dependent">context dependent</option><option value="rhetorical">rhetorical</option><option value="connotations">connotations</option>
+            </select> signals: red means stop, green means go. <br>
+4. A smile is <span style="font-size: 70%;">4</span><select data-correct="context dependent" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="acutely aware">acutely aware</option><option value="unambiguous">unambiguous</option><option value="context dependent">context dependent</option><option value="rhetorical">rhetorical</option><option value="connotations">connotations</option>
+            </select>---it can show happiness at a wedding or nervousness during an exam. <br>
+5. After the food poisoning incident, the restaurant manager became <span style="font-size: 70%;">5</span><select data-correct="acutely aware" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="acutely aware">acutely aware</option><option value="unambiguous">unambiguous</option><option value="context dependent">context dependent</option><option value="rhetorical">rhetorical</option><option value="connotations">connotations</option>
+            </select> of kitchen hygiene.</div><div class="sentence-div">6. The flight delay was caused by <span style="font-size: 70%;">6</span><select data-correct="miscommunication" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="proceeded">proceeded</option><option value="clueless">clueless</option><option value="genuinely">genuinely</option><option value="vented">vented</option><option value="miscommunication">miscommunication</option>
+            </select> between the pilot and air traffic control. <br>
+7. My grandfather is completely <span style="font-size: 70%;">7</span><select data-correct="clueless" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="proceeded">proceeded</option><option value="clueless">clueless</option><option value="genuinely">genuinely</option><option value="vented">vented</option><option value="miscommunication">miscommunication</option>
+            </select> about social media and still thinks Instagram is a weight measurement. <br>
+8. She was <span style="font-size: 70%;">8</span><select data-correct="genuinely" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="proceeded">proceeded</option><option value="clueless">clueless</option><option value="genuinely">genuinely</option><option value="vented">vented</option><option value="miscommunication">miscommunication</option>
+            </select> surprised when her colleagues threw her a retirement party. <br>
+9. After checking his passport, the border guard <span style="font-size: 70%;">9</span><select data-correct="proceeded" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="proceeded">proceeded</option><option value="clueless">clueless</option><option value="genuinely">genuinely</option><option value="vented">vented</option><option value="miscommunication">miscommunication</option>
+            </select> to stamp it and wave him through. <br>
+10. After the terrible customer service experience, she <span style="font-size: 70%;">10</span><select data-correct="vented" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="proceeded">proceeded</option><option value="clueless">clueless</option><option value="genuinely">genuinely</option><option value="vented">vented</option><option value="miscommunication">miscommunication</option>
+            </select> her anger on social media.</div><div class="sentence-div">11. His <span style="font-size: 70%;">11</span><select data-correct="frustration" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="sarcastic">sarcastic</option><option value="implying">implying</option><option value="begrudging">begrudging</option><option value="frustration">frustration</option><option value="snarky">snarky</option>
+            </select> grew as the computer crashed for the third time that morning. <br>
+12. Her <span style="font-size: 70%;">12</span><select data-correct="snarky" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="sarcastic">sarcastic</option><option value="implying">implying</option><option value="begrudging">begrudging</option><option value="frustration">frustration</option><option value="snarky">snarky</option>
+            </select> comment about his cooking skills made everyone laugh, but hurt his feelings. <br>
+13. When his friend arrived two hours late, he said, "Oh great, perfect timing!" in a <span style="font-size: 70%;">13</span><select data-correct="sarcastic" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="sarcastic">sarcastic</option><option value="implying">implying</option><option value="begrudging">begrudging</option><option value="frustration">frustration</option><option value="snarky">snarky</option>
+            </select> tone. <br>
+14. By mentioning the mess in the kitchen, she was <span style="font-size: 70%;">14</span><select data-correct="implying" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="sarcastic">sarcastic</option><option value="implying">implying</option><option value="begrudging">begrudging</option><option value="frustration">frustration</option><option value="snarky">snarky</option>
+            </select> that her roommate should clean up. <br>
+15. He gave <span style="font-size: 70%;">15</span><select data-correct="begrudging" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="sarcastic">sarcastic</option><option value="implying">implying</option><option value="begrudging">begrudging</option><option value="frustration">frustration</option><option value="snarky">snarky</option>
+            </select> approval to his daughter's tattoo, clearly wishing she hadn't gotten it.</div><div class="sentence-div">16. It's a <span style="font-size: 70%;">16</span><select data-correct="paradox" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intercultural">intercultural</option><option value="paradox">paradox</option><option value="ultimately">ultimately</option><option value="encode and decode">encode and decode</option><option value="pre-existing concepts">pre-existing concepts</option>
+            </select> that the busiest people often have the most time to help others. <br>
+17. The <span style="font-size: 70%;">17</span><select data-correct="intercultural" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intercultural">intercultural</option><option value="paradox">paradox</option><option value="ultimately">ultimately</option><option value="encode and decode">encode and decode</option><option value="pre-existing concepts">pre-existing concepts</option>
+            </select> marriage celebration included traditions from both families' backgrounds. <br>
+18. Computers <span style="font-size: 70%;">18</span><select data-correct="encode and decode" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intercultural">intercultural</option><option value="paradox">paradox</option><option value="ultimately">ultimately</option><option value="encode and decode">encode and decode</option><option value="pre-existing concepts">pre-existing concepts</option>
+            </select> text into binary numbers, then decode it back into readable words. <br>
+19. Her <span style="font-size: 70%;">19</span><select data-correct="pre-existing concepts" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intercultural">intercultural</option><option value="paradox">paradox</option><option value="ultimately">ultimately</option><option value="encode and decode">encode and decode</option><option value="pre-existing concepts">pre-existing concepts</option>
+            </select> about vegetarian food prevented her from trying the delicious plant-based burger. <br>
+20. After months of debate, the city council <span style="font-size: 70%;">20</span><select data-correct="ultimately" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intercultural">intercultural</option><option value="paradox">paradox</option><option value="ultimately">ultimately</option><option value="encode and decode">encode and decode</option><option value="pre-existing concepts">pre-existing concepts</option>
+            </select> decided to build the new park.</div><div class="sentence-div">21. Each twin has a <span style="font-size: 70%;">21</span><select data-correct="distinct" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="mounts">mounts</option><option value="distinct">distinct</option><option value="filtered">filtered</option><option value="reconstruct">reconstruct</option><option value="distorted">distorted</option>
+            </select> personality despite looking identical. <br>
+22. The news was <span style="font-size: 70%;">22</span><select data-correct="filtered" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="mounts">mounts</option><option value="distinct">distinct</option><option value="filtered">filtered</option><option value="reconstruct">reconstruct</option><option value="distorted">distorted</option>
+            </select> through several sources before reaching the public, losing some accuracy. <br>
+23. Archaeologists tried to <span style="font-size: 70%;">23</span><select data-correct="reconstruct" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="mounts">mounts</option><option value="distinct">distinct</option><option value="filtered">filtered</option><option value="reconstruct">reconstruct</option><option value="distorted">distorted</option>
+            </select> the ancient vase from the pottery fragments they found. <br>
+24. The funhouse mirror <span style="font-size: 70%;">24</span><select data-correct="distorted" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="mounts">mounts</option><option value="distinct">distinct</option><option value="filtered">filtered</option><option value="reconstruct">reconstruct</option><option value="distorted">distorted</option>
+            </select> her reflection, making her look impossibly tall and thin. <br>
+25. As the deadline approaches, pressure <span style="font-size: 70%;">25</span><select data-correct="mounts" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="mounts">mounts</option><option value="distinct">distinct</option><option value="filtered">filtered</option><option value="reconstruct">reconstruct</option><option value="distorted">distorted</option>
+            </select> on the students to finish their projects.</div><div class="sentence-div">26. The trade <span style="font-size: 70%;">26</span><select data-correct="delegation" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="displays of hierarchy">displays of hierarchy</option><option value="reconsidering">reconsidering</option><option value="delegation">delegation</option><option value="humiliated">humiliated</option><option value="hierarchy">hierarchy</option>
+            </select> from Japan visited three factories during their business trip. <br>
+27. In the hospital <span style="font-size: 70%;">27</span><select data-correct="hierarchy" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="displays of hierarchy">displays of hierarchy</option><option value="reconsidering">reconsidering</option><option value="delegation">delegation</option><option value="humiliated">humiliated</option><option value="hierarchy">hierarchy</option>
+            </select>, surgeons rank higher than nurses, who rank higher than orderlies. <br>
+28. She felt <span style="font-size: 70%;">28</span><select data-correct="humiliated" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="displays of hierarchy">displays of hierarchy</option><option value="reconsidering">reconsidering</option><option value="delegation">delegation</option><option value="humiliated">humiliated</option><option value="hierarchy">hierarchy</option>
+            </select> when she tripped and spilled coffee on herself during the job interview. <br>
+29. After reading the negative reviews, he's <span style="font-size: 70%;">29</span><select data-correct="reconsidering" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="displays of hierarchy">displays of hierarchy</option><option value="reconsidering">reconsidering</option><option value="delegation">delegation</option><option value="humiliated">humiliated</option><option value="hierarchy">hierarchy</option>
+            </select> his choice of vacation hotel. <br>
+30. Bowing in Japanese culture is one of many <span style="font-size: 70%;">30</span><select data-correct="displays of hierarchy" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="displays of hierarchy">displays of hierarchy</option><option value="reconsidering">reconsidering</option><option value="delegation">delegation</option><option value="humiliated">humiliated</option><option value="hierarchy">hierarchy</option>
+            </select> that show respect for authority.</div><div class="sentence-div">31. Americans are <span style="font-size: 70%;">31</span><select data-correct="culturally comfortable" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="controllables">controllables</option><option value="overcome her bias">overcome her bias</option><option value="myriad">myriad</option><option value="culturally comfortable">culturally comfortable</option><option value="add insult to injury">add insult to injury</option>
+            </select> with casual greetings, while some cultures prefer formal introductions. <br>
+32. First they fired him without warning, then to <span style="font-size: 70%;">32</span><select data-correct="add insult to injury" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="controllables">controllables</option><option value="overcome her bias">overcome her bias</option><option value="myriad">myriad</option><option value="culturally comfortable">culturally comfortable</option><option value="add insult to injury">add insult to injury</option>
+            </select>, they asked him to train his replacement. <br>
+33. The judge had to <span style="font-size: 70%;">33</span><select data-correct="overcome her bias" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="controllables">controllables</option><option value="overcome her bias">overcome her bias</option><option value="myriad">myriad</option><option value="culturally comfortable">culturally comfortable</option><option value="add insult to injury">add insult to injury</option>
+            </select> against young defendants to make a fair decision. <br>
+34. In sports psychology, athletes focus on <span style="font-size: 70%;">34</span><select data-correct="controllables" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="controllables">controllables</option><option value="overcome her bias">overcome her bias</option><option value="myriad">myriad</option><option value="culturally comfortable">culturally comfortable</option><option value="add insult to injury">add insult to injury</option>
+            </select> like their effort and attitude, not the weather. <br>
+35. The museum offered <span style="font-size: 70%;">35</span><select data-correct="myriad" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="controllables">controllables</option><option value="overcome her bias">overcome her bias</option><option value="myriad">myriad</option><option value="culturally comfortable">culturally comfortable</option><option value="add insult to injury">add insult to injury</option>
+            </select> activities for children, from art workshops to science experiments.</div><div class="sentence-div">36. Without <span style="font-size: 70%;">36</span><select data-correct="vital background information" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vital background information">vital background information</option><option value="implications">implications</option><option value="suggestive">suggestive</option><option value="considerably">considerably</option><option value="dismissive">dismissive</option>
+            </select> about the conflict, the peace negotiations made no sense. <br>
+37. The <span style="font-size: 70%;">37</span><select data-correct="implications" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vital background information">vital background information</option><option value="implications">implications</option><option value="suggestive">suggestive</option><option value="considerably">considerably</option><option value="dismissive">dismissive</option>
+            </select> of the new tax law could affect every small business owner in the country. <br>
+38. His <span style="font-size: 70%;">38</span><select data-correct="dismissive" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vital background information">vital background information</option><option value="implications">implications</option><option value="suggestive">suggestive</option><option value="considerably">considerably</option><option value="dismissive">dismissive</option>
+            </select> attitude toward her suggestions made her feel unvalued at work. <br>
+39. The comedian's <span style="font-size: 70%;">39</span><select data-correct="suggestive" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vital background information">vital background information</option><option value="implications">implications</option><option value="suggestive">suggestive</option><option value="considerably">considerably</option><option value="dismissive">dismissive</option>
+            </select> jokes made some audience members uncomfortable. <br>
+40. House prices have risen <span style="font-size: 70%;">40</span><select data-correct="considerably" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vital background information">vital background information</option><option value="implications">implications</option><option value="suggestive">suggestive</option><option value="considerably">considerably</option><option value="dismissive">dismissive</option>
+            </select> in the past five years.</div><div class="sentence-div">41. His attitude of <span style="font-size: 70%;">41</span><select data-correct="superiority" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="superiority">superiority</option><option value="subconscious">subconscious</option><option value="boil down to">boil down to</option><option value="emphasizing">emphasizing</option><option value="multifaceted">multifaceted</option>
+            </select> made him unpopular with his coworkers. <br>
+42. The teacher kept <span style="font-size: 70%;">42</span><select data-correct="emphasizing" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="superiority">superiority</option><option value="subconscious">subconscious</option><option value="boil down to">boil down to</option><option value="emphasizing">emphasizing</option><option value="multifaceted">multifaceted</option>
+            </select> the importance of citing sources in research papers. <br>
+43. All his relationship problems <span style="font-size: 70%;">43</span><select data-correct="boil down to" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="superiority">superiority</option><option value="subconscious">subconscious</option><option value="boil down to">boil down to</option><option value="emphasizing">emphasizing</option><option value="multifaceted">multifaceted</option>
+            </select> his inability to communicate his feelings. <br>
+44. Climate change is a <span style="font-size: 70%;">44</span><select data-correct="multifaceted" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="superiority">superiority</option><option value="subconscious">subconscious</option><option value="boil down to">boil down to</option><option value="emphasizing">emphasizing</option><option value="multifaceted">multifaceted</option>
+            </select> problem requiring solutions in energy, transportation, and agriculture. <br>
+45. Her <span style="font-size: 70%;">45</span><select data-correct="subconscious" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="superiority">superiority</option><option value="subconscious">subconscious</option><option value="boil down to">boil down to</option><option value="emphasizing">emphasizing</option><option value="multifaceted">multifaceted</option>
+            </select> fear of flying made her feel nervous even before reaching the airport.</div><div class="sentence-div">46. His <span style="font-size: 70%;">46</span><select data-correct="preconceptions" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="preconceptions">preconceptions</option><option value="discriminate">discriminate</option><option value="marginalize">marginalize</option>
+            </select> about country music changed completely after attending the concert. <br>
+47. The new policy would <span style="font-size: 70%;">47</span><select data-correct="marginalize" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="preconceptions">preconceptions</option><option value="discriminate">discriminate</option><option value="marginalize">marginalize</option>
+            </select> low-income families by making healthcare less accessible. <br>
+48. It's illegal for employers to <span style="font-size: 70%;">48</span><select data-correct="discriminate" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="preconceptions">preconceptions</option><option value="discriminate">discriminate</option><option value="marginalize">marginalize</option>
+            </select> against job candidates because of their age.</div><button class="deleteThisSectionBtn" onclick="this.parentElement.remove()" style="display: none;">Delete This Section</button></div></div>
+    <textarea id="inputText" class="editMode" style="white-space: pre-wrap; display: none;" rows="10" cols="80" placeholder="Enter optional info in ^dv dv^, headings in ^h1 h1^, ^h2 h2^, ^h3 h3^, followed by sentences with **bold** words, separated by ^^">^dv
+  Choose the correct answers
+dv^
+        
+The mirror image appeared **opposite** to the original ^br^br 
+object's **orientation**. ^br
+The laser **sliced** through the **metal** sheet with **precision** cutting technology. ^br ^^
+The **motor** completed a **half turn** before the safety **sensor** triggered the **stop**. ^br
+The **circuit** was ^br**overloaded** due to excessive **current**. ^br^^
+The **signal** was **amplified** for better **transmission**. ^br 
+The **gear** shifted with a **click**. ^br^^
+
+
+
+    </textarea>
+    <button class="editMode" onclick="generateCloze()" style="display: none;">Generate Cloze</button>
+        <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>   
+      
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+              
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+    <!-- 
+    Submit Assignment Button 
+    <button id="submitAssignment" style="display:block; margin-top: 20px;" disabled="">Submit Assignment</button>
+    -->
+    
+    <!-- Save System -->
+    <button id="save2server" class="editMode" onclick="document.getElementById('output').style.pointerEvents = 'none'; saveBothVersions()" style="display: none;">Save To Server</button>
+    <div id="adminSaveStatus" class="save-status success" style="display: none;">Admin PHP version saved successfully!</div>
+    <div id="publicSaveStatus" class="save-status editMode" style="display: none;"></div> 
+    
+    <button id="viewStudentVersion" class="editMode" onclick="redirectToHtml()" style="display: none;">View Student Version</button>
+
+<script>
+function copyParent(button) {
+  const parent = button.parentElement;
+
+  // Temporarily hide button
+  const oldDisplay = button.style.display;
+  button.style.display = "none";
+  const text = parent.innerText.trim();
+  button.style.display = oldDisplay;
+
+  // Copy
+  navigator.clipboard.writeText(text).then(() => {
+    showPopup(button, "Copied");
+  });
+}
+
+function showPopup(button, message) {
+  const popup = document.createElement("div");
+  popup.className = "copy-popup show";
+  popup.textContent = message;
+  document.body.appendChild(popup);
+
+  // Position near the button
+  const rect = button.getBoundingClientRect();
+  popup.style.left = rect.left + window.scrollX + "px";
+  popup.style.top = rect.top + window.scrollY - 30 + "px"; // 30px above button
+
+  // Fade out and remove
+  setTimeout(() => popup.classList.remove("show"), 1200);
+  setTimeout(() => popup.remove(), 1600);
+}
+</script>
+
+<script>
+let selectCounter = 0; // Counter for select element numbering        
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+    
+    if (button.textContent === 'Show Answers') {
+        // Show all answers
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        // Hide all answers
+        selects.forEach(select => {
+            select.value = '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+        });
+        button.textContent = 'Show Answers';
+    }
+}
+
+function generateCloze() {
+    selectCounter = 0; // Reset select numbering for new cloze exercise
+    const input = document.getElementById('inputText').value;
+    const outputDiv = document.getElementById('output');
+
+    // Create container for this cloze exercise
+    const clozeContainer = document.createElement('div');
+
+    const uniqueId = Date.now();
+    clozeContainer.id = `cloze-div-${uniqueId}`;
+    
+    clozeContainer.className = 'cloze-container';
+
+    // Add toggle button at the top
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toggle-button';
+    toggleButton.textContent = 'Show Answers';
+    toggleButton.setAttribute('onclick', `toggleAnswers('cloze-div-${uniqueId}')`);   clozeContainer.appendChild(toggleButton);
+
+    // Check for information section with ^dv dv^
+    const dvOpenCount = (input.split('^dv').length - 1);
+    const dvCloseCount = (input.split('dv^').length - 1);
+    console.log(`^dv count: ${dvOpenCount}, dv^ count: ${dvCloseCount}`);
+    if (dvOpenCount !== dvCloseCount) {
+        alert(`Tag mismatch: Found ${dvOpenCount} ^dv tags but ${dvCloseCount} dv^ tags. Please ensure each ^dv has a matching dv^.`);
+        return;
+    }
+    if (dvOpenCount + dvCloseCount > 2) {
+        alert(`only one ^dv...dv^ set allowed.`);
+        return;
+    }            
+
+    // Check heading tags
+    const headings = [
+        { open: '^h1', close: 'h1^', openTag: '<h1>', closeTag: '</h1>' },
+        { open: '^h2', close: 'h2^', openTag: '<h2>', closeTag: '</h2>' },
+        { open: '^h3', close: 'h3^', openTag: '<h3>', closeTag: '</h3>' }
+    ];
+    for (const heading of headings) {
+        const openCount = (input.split(heading.open).length - 1);
+        const closeCount = (input.split(heading.close).length - 1);
+        console.log(`${heading.open} count: ${openCount}, ${heading.close} count: ${closeCount}`);
+        if (openCount !== closeCount) {
+            alert(`Tag mismatch: Found ${openCount} ${heading.open} tags but ${closeCount} ${heading.close} tags. Please ensure each ${heading.open} has a matching ${heading.close}.`);
+            return;
+        }
+    }
+
+    // Process information section if present
+    let infoSection = '';
+    let sentencesInput = input;
+    const infoMatch = input.match(/\^dv([\s\S]*?)dv\^/);
+    if (infoMatch) {
+        infoSection = infoMatch[1].trim();
+        sentencesInput = input.replace(/\^dv[\s\S]*?dv\^/, '').trim();
+        console.log('Raw infoSection:', infoSection);
+
+        // Replace heading tags with simple string replacement
+        let processedInfo = infoSection;
+        headings.forEach(heading => {
+            console.log(`Replacing ${heading.open} with ${heading.openTag} and ${heading.close} with ${heading.closeTag}`);
+            processedInfo = processedInfo.replaceAll(heading.open, heading.openTag).replaceAll(heading.close, heading.closeTag);
+            console.log(`After ${heading.openTag} replacement:`, processedInfo);
+        });
+
+        
+// Validate bold, italic, underline tags
+const textStyles = [
+    { open: '^bb', close: 'bb^', name: 'bold' },
+    { open: '^ii', close: 'ii^', name: 'italic' },
+    { open: '^uu', close: 'uu^', name: 'underline' }
+];
+for (const style of textStyles) {
+    const openCount = (input.split(style.open).length - 1);
+    const closeCount = (input.split(style.close).length - 1);
+    console.log(`${style.open} count: ${openCount}, ${style.close} count: ${closeCount}`);
+    if (openCount !== closeCount) {
+        alert(`Tag mismatch: Found ${openCount} ${style.open} tags but ${closeCount} ${style.close} tags. Please ensure each ${style.open} has a matching ${style.close}.`);
+        return;
+    }
+}
+
+// Replace ^br and text style tags
+processedInfo = processedInfo.replaceAll('^br', '<br>')
+    .replaceAll('^bb', '<b>')
+    .replaceAll('bb^', '</b>')
+    .replaceAll('^ii', '<i>')
+    .replaceAll('ii^', '</i>')
+    .replaceAll('^uu', '<u>')
+    .replaceAll('uu^', '</u>');
+console.log('After ^br and text style replacement:', processedInfo);                
+        
+        
+        infoSection = processedInfo;
+        const infoDiv = document.createElement('div');
+        infoDiv.innerHTML = infoSection;
+        infoDiv.style.marginBottom = '20px';
+        clozeContainer.appendChild(infoDiv);
+    }
+
+const caretCount = (sentencesInput.match(/\^\^/g) || []).length;
+if (caretCount < 2) {
+    if (!confirm('Normally, two or more sets of ^^ should be present.\n Do you really want to continue?\n\n CANCEL = back to input; \n\n OK = make the quiz anyway. ')) {
+        return;
+    }
+}
+
+    // Split remaining input into groups by ^^ (each group can contain multiple sentences)
+    const groups = sentencesInput.split('^^').map(s => s.trim()).filter(s => s);
+
+    // Process each group
+    groups.forEach((group, groupIndex) => {
+        // Extract unique bold words for this group
+        const boldWords = [];
+        const matches = group.match(/\*\*([^\*]+)\*\*/g) || [];
+        matches.forEach(match => {
+            const word = match.replace(/\*\*/g, '').trim();
+            if (word && !boldWords.includes(word)) {
+                boldWords.push(word);
+            }
+        });
+
+        // Shuffle bold words once for this group
+        const shuffledWords = shuffleArray([...boldWords]);
+
+        // Generate HTML for the group
+        let clozeGroup = group;
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
+        
+        // Replace each bold word with a select element
+        boldWords.forEach(word => {
+            const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
+            selectCounter++; // Increment counter for this select
+            const selectHtml = `<span style="font-size: 70%;">${selectCounter}</span><select data-correct="${word}" data-group="${groupIndex}" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                ${shuffledWords.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>`;
+            clozeGroup = clozeGroup.replace(regex, selectHtml);
+        });
+
+        // Create group container
+        const sentenceDiv = document.createElement('div');
+        sentenceDiv.className = 'sentence-div'; // Apply the CSS class
+        sentenceDiv.innerHTML = clozeGroup;
+        clozeContainer.appendChild(sentenceDiv);
+    });
+    
+    const deleteThisSectionBtn = document.createElement('button');
+    deleteThisSectionBtn.className='deleteThisSectionBtn';
+    deleteThisSectionBtn.textContent = 'Delete This Section';
+    deleteThisSectionBtn.setAttribute('onclick', 'this.parentElement.remove()');
+    clozeContainer.appendChild(deleteThisSectionBtn);
+
+    // Append to output
+    outputDiv.appendChild(clozeContainer);
+}
+
+function checkAnswer(select) {
+    // Don't provide feedback if answers are being shown
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+    
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+<!-- Student Verification Script -->
+<script>
+async function verifyStudent() {
+    const name = document.getElementById("name").value.trim();
+    const id = document.getElementById("id").value.trim();
+    const passCode = document.getElementById("passCode").value.trim();
+    
+    if (!name || !id || !passCode) {
+        alert("Please fill in all fields first!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('id', id);
+    formData.append('passCode', passCode);
+    
+    try {
+        const response = await fetch('./verify_student.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
+        
+        if (result === 'SUCCESS') {
+          document.getElementById('output').style.pointerEvents = 'auto';  
+          document.getElementById('submitAssignment').disabled = false;
+        }
+        
+    } catch (error) {
+        alert("Verification error. Try again!");
+    }
+}
+
+// Show verification button initially
+//document.getElementById('verifyYou').style.display = "block";
+</script>
+
+<!-- Save System Scripts -->
+<script>
+function redirectToHtml() {
+  // Get the current page's URL
+  let currentUrl = window.location.href;
+  // Replace .php with .html
+  let newUrl = currentUrl.replace(/\.php$/, '.html');
+  // Open the new URL in a new tab
+  window.open(newUrl, '_blank');
+}
+
+async function saveBothVersions() {
+    // Get the current file's pathname
+    const filePath = window.location.pathname;
+    let pathParts = filePath.split('/');
+
+    // Extract just the filename from the path
+    const fileNM = pathParts.pop() || 'lesson.php'; // Fallback if empty
+    const fileNameHtml = fileNM.replace(/\.php$/, ".html") || 'lesson.html';
+
+    console.log("1. Current filename:", fileNM);
+    console.log("2. New file name:", fileNameHtml);
+
+    // Validate filenames
+    if (!fileNM || typeof fileNM !== 'string') {
+        console.error('Error: fileNM is invalid:', fileNM);
+        return;
+    }
+    if (!fileNameHtml || typeof fileNameHtml !== 'string') {
+        console.error('Error: fileNameHtml is invalid:', fileNameHtml);
+        return;
+    }
+
+    // Set serverLocation to the desired directory
+    const serverLocation = './';
+    console.log('serverLocation:', serverLocation); // Debug: verify the path
+
+    // Run admin save first
+    await saveAdminVersion(fileNM, serverLocation);
+    // Then run public save
+    await savePublicVersion(fileNameHtml, serverLocation);
+}
+
+async function saveAdminVersion(fileNM, serverLocation) {
+    const saveStatus = document.getElementById('adminSaveStatus');
+    
+    document.getElementById('output').style.pointerEvents = 'auto'; 
+    document.getElementById("backToHub").style.display = "block";     
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    try {
+        // Capture the HTML content
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const htmlContent = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Wrap HTML content with basic PHP authentication (no auth_check yet)
+        const phpWrappedContent = `${htmlContent}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving admin version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', phpWrappedContent);
+        formData.append('filename', fileNM);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // File saved successfully, now inject auth_check.php
+            const injectFormData = new FormData();
+            injectFormData.append('filename', fileNM);
+            
+            const injectResponse = await fetch('./inject_auth.php', {
+                method: 'POST',
+                body: injectFormData
+            });
+            
+            if (injectResponse.ok) {
+                saveStatus.className = 'save-status success';
+                saveStatus.textContent = 'Admin PHP version saved successfully!';
+            } else {
+                saveStatus.className = 'save-status warning';
+                saveStatus.textContent = 'File saved but auth injection may have failed';
+            }
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Admin Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Admin Error: ${error.message}`;
+    }
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+
+async function savePublicVersion(fileNameHtml, serverLocation) {
+    
+    const deleteButtons = document.querySelectorAll('.deleteThisSectionBtn');
+    deleteButtons.forEach(button => {
+        button.style.display = 'none';
+    });
+    
+    document.getElementById('output').style.pointerEvents = 'none';
+    document.getElementById("backToHub").style.display = "none";     
+    document.getElementById("adminSaveStatus").style.display = "none";     
+
+    
+    const saveStatus = document.getElementById('publicSaveStatus');
+    
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    try {
+        // Capture DOCTYPE and full HTML
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const fullHtml = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving public version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', fullHtml);
+        formData.append('filename', fileNameHtml);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            saveStatus.className = 'save-status success';
+            saveStatus.textContent = 'Public version saved successfully!';
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Public Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Public Error: ${error.message}`;
+    }
+    
+    
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";  
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+</script>
+
+<!-- Include the submission system -->
+<script src="/drRayLMS/components/geniMore.js"></script>
+
+
+<p><a id="backToHub" href="testinghub.php" style="display: none;">← Back to Course Hub</a></p>
+
+<footer>...</footer>
+</body></html>
