@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        footer { margin-top: 15rem; }
+        
+        .toggle-button {
+            padding: 5px 10px;
+            font-size: .8rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            word-wrap: break-word;
+            text-align:left;
+        }
+        .output.column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .output.column span {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+   
+        #theWordList {
+            display: none;
+        }
+        .show-hide-button {
+            margin: 0 0 1rem 0;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .show-hide-button:hover {
+            background-color: #218838;
+        } 
+        #subtitle {
+            font-size: 120%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Vocabulary Quiz</h1>
+        <p id="subtitle">16 Sentences - 4 Sections</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+    
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+    
+    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
+    
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. The manager <select data-answer="seldom">
+                <option value="">-- Select --</option>
+                <option value="stumbled">stumbled</option>
+                <option value="commotion">commotion</option>
+                <option value="seldom">seldom</option>
+                <option value="attempted">attempted</option>
+            </select> arrives at the office before 9 AM because he lives far from the city center.
+        </div>
+        <div class="sentence">
+            2. Sarah <select data-answer="attempted">
+                <option value="">-- Select --</option>
+                <option value="stumbled">stumbled</option>
+                <option value="commotion">commotion</option>
+                <option value="seldom">seldom</option>
+                <option value="attempted">attempted</option>
+            </select> to climb the mountain three times before she finally reached the summit.
+        </div>
+        <div class="sentence">
+            3. John <select data-answer="stumbled">
+                <option value="">-- Select --</option>
+                <option value="stumbled">stumbled</option>
+                <option value="commotion">commotion</option>
+                <option value="seldom">seldom</option>
+                <option value="attempted">attempted</option>
+            </select> over a rock on the path and almost dropped his phone.
+        </div>
+        <div class="sentence">
+            4. The loud <select data-answer="commotion">
+                <option value="">-- Select --</option>
+                <option value="stumbled">stumbled</option>
+                <option value="commotion">commotion</option>
+                <option value="seldom">seldom</option>
+                <option value="attempted">attempted</option>
+            </select> in the street made it impossible for anyone to sleep last night.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            5. Firefighters arrived quickly to <select data-answer="rescue">
+                <option value="">-- Select --</option>
+                <option value="regretted">regretted</option>
+                <option value="useless">useless</option>
+                <option value="rescue">rescue</option>
+                <option value="on the contrary">on the contrary</option>
+            </select> the family from the burning building.
+        </div>
+        <div class="sentence">
+            6. Maria <select data-answer="regretted">
+                <option value="">-- Select --</option>
+                <option value="regretted">regretted</option>
+                <option value="useless">useless</option>
+                <option value="rescue">rescue</option>
+                <option value="on the contrary">on the contrary</option>
+            </select> not studying harder when she saw her exam results.
+        </div>
+        <div class="sentence">
+            7. This old computer has become <select data-answer="useless">
+                <option value="">-- Select --</option>
+                <option value="regretted">regretted</option>
+                <option value="useless">useless</option>
+                <option value="rescue">rescue</option>
+                <option value="on the contrary">on the contrary</option>
+            </select> because it cannot run modern software programs.
+        </div>
+        <div class="sentence">
+            8. <select data-answer="on the contrary">
+                <option value="">-- Select --</option>
+                <option value="regretted">regretted</option>
+                <option value="useless">useless</option>
+                <option value="rescue">rescue</option>
+                <option value="on the contrary">on the contrary</option>
+            </select>, the weather forecast was wrong—it turned out to be a beautiful sunny day.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            9. After years of <select data-answer="hard life">
+                <option value="">-- Select --</option>
+                <option value="carry">carry</option>
+                <option value="all day long">all day long</option>
+                <option value="hard life">hard life</option>
+                <option value="easy life">easy life</option>
+            </select> in the countryside, they finally moved to a better neighborhood in town.
+        </div>
+        <div class="sentence">
+            10. Many people dream of an <select data-answer="easy life">
+                <option value="">-- Select --</option>
+                <option value="carry">carry</option>
+                <option value="all day long">all day long</option>
+                <option value="hard life">hard life</option>
+                <option value="easy life">easy life</option>
+            </select> without stress or financial worries.
+        </div>
+        <div class="sentence">
+            11. The children played video games <select data-answer="all day long">
+                <option value="">-- Select --</option>
+                <option value="carry">carry</option>
+                <option value="all day long">all day long</option>
+                <option value="hard life">hard life</option>
+                <option value="easy life">easy life</option>
+            </select> instead of doing their homework.
+        </div>
+        <div class="sentence">
+            12. The workers need to <select data-answer="carry">
+                <option value="">-- Select --</option>
+                <option value="carry">carry</option>
+                <option value="all day long">all day long</option>
+                <option value="hard life">hard life</option>
+                <option value="easy life">easy life</option>
+            </select> heavy boxes from the truck to the warehouse.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            13. My dog knows several <select data-answer="tricks">
+                <option value="">-- Select --</option>
+                <option value="dishes">dishes</option>
+                <option value="farmer">farmer</option>
+                <option value="stable">stable</option>
+                <option value="tricks">tricks</option>
+            </select> like sitting, rolling over, and shaking hands.
+        </div>
+        <div class="sentence">
+            14. The <select data-answer="farmer">
+                <option value="">-- Select --</option>
+                <option value="dishes">dishes</option>
+                <option value="farmer">farmer</option>
+                <option value="stable">stable</option>
+                <option value="tricks">tricks</option>
+            </select> wakes up early every morning to feed the animals on his land.
+        </div>
+        <div class="sentence">
+            15. We keep our bicycles in the <select data-answer="stable">
+                <option value="">-- Select --</option>
+                <option value="dishes">dishes</option>
+                <option value="farmer">farmer</option>
+                <option value="stable">stable</option>
+                <option value="tricks">tricks</option>
+            </select> behind the house where we used to keep horses.
+        </div>
+        <div class="sentence">
+            16. The restaurant <select data-answer="dishes">
+                <option value="">-- Select --</option>
+                <option value="dishes">dishes</option>
+                <option value="farmer">farmer</option>
+                <option value="stable">stable</option>
+                <option value="tricks">tricks</option>
+            </select> were so expensive that we decided to eat somewhere else.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem;">
+            Instructions:<br>
+            1. Save as PDF file<br>
+            2. Upload to the E-class<br>
+        </div>
+    </div>
+
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (studentName === '' || studentName === 'Enter your name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+        
+        // Force hard refresh on any page reload
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });        
+        
+        // Toggle show/hide answers
+        let answersVisible = false;
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            
+            document.querySelectorAll('select').forEach(select => {
+                if (answersVisible) {
+                    const correctAnswer = select.getAttribute('data-answer');
+                    select.value = correctAnswer;
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                } else {
+                    select.selectedIndex = 0;
+                    select.classList.remove('correct', 'incorrect');
+                }
+            });
+            
+            button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+        }        
+    </script>
+
+    <script>
+        function updateOutput() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            const output = document.getElementById('output');
+            const isColumnView = output.classList.contains('column');
+            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+            
+            // Scramble the word list
+            const scrambledAnswers = [...answers].sort(() => Math.random() - 0.5);
+
+            if (isColumnView) {
+                output.innerHTML = scrambledAnswers.map(answer => `<span>${answer}</span>`).join('');
+            } else {
+                output.innerHTML = scrambledAnswers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column') 
+                ? 'Close Column View' 
+                : 'View as Column';
+            updateOutput();
+        }
+
+        // Initial render
+        updateOutput();
+    </script>   
+  
+    <script>
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const showHideButton = document.querySelector('.show-hide-button');
+            if (wordList.style.display === 'none' || wordList.style.display === '') {
+                wordList.style.display = 'block';
+                showHideButton.textContent = 'Hide Word List';
+            } else {
+                wordList.style.display = 'none';
+                showHideButton.textContent = 'Show Word List';
+            }
+        }
+    </script>
+    
+    <footer>...</footer>
+</body>
+</html>
