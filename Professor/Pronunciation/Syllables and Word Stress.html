@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllables and Word Stress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .syllable-examples {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+        }
+
+        .syllable-row {
+            border: thin solid #ddd;
+            hyphens: auto;
+            margin-bottom: 5px;
+        }
+
+        .syllable-word {
+            width: 8rem;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .syllable-separated {
+            width: 8rem;
+            display: inline-block;
+            text-align: right;
+            margin-left: 2rem;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .word-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .stressed {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .listening-exercise {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .listening-exercise ul {
+            list-style-position: inside;
+            margin-top: 10px;
+        }
+
+        .listening-exercise li {
+            padding: 5px 0;
+        }
+
+        .word-family-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .word-family-table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .word-family-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .word-family-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .noun-verb-section {
+            margin: 30px 0;
+        }
+
+        .noun-verb-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .noun-verb-grid div {
+            text-align: center;
+        }
+
+        .noun-verb-header {
+            font-weight: bold;
+            font-style: italic;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 4px;
+        }
+
+        .noun-verb-item {
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .word-group-section {
+            margin: 30px 0;
+        }
+
+        .word-groups {
+            display: grid;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .word-group-item {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px 50px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .word-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Syllables and Word Stress</h1>
+
+        <div class="syllable-examples">
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">fantastic</div>
+                <div class="syllable-separated">fan-tas-tic</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">publish</div>
+                <div class="syllable-separated">pub-lish</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">particular</div>
+                <div class="syllable-separated">par-tic-u-lar</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">piano</div>
+                <div class="syllable-separated">pi-an-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">personnel</div>
+                <div class="syllable-separated">per-son-nel</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">understanding</div>
+                <div class="syllable-separated">un-der-stand-ing</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">reunion</div>
+                <div class="syllable-separated">re-u-nion</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">radiator</div>
+                <div class="syllable-separated">ra-di-a-tor</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">volcano</div>
+                <div class="syllable-separated">vol-ca-no</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">vocabulary</div>
+                <div class="syllable-separated">vo-cab-u-lar-y</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">appreciate</div>
+                <div class="syllable-separated">ap-pre-ci-ate</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">populate</div>
+                <div class="syllable-separated">pop-u-late</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">portfolio</div>
+                <div class="syllable-separated">port-fo-li-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">radio</div>
+                <div class="syllable-separated">ra-di-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">activity</div>
+                <div class="syllable-separated">ac-tiv-i-ty</div>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <strong>Example:</strong> <span class="stressed">det</span> -- er -- min OR d ə -- <span class="stressed">ter</span> -- min ?
+        </div>
+
+        <h2>Intro Syllabic Stress</h2>
+
+        <div class="word-list">
+            <div class="word-item">per son nal</div>
+            <div class="word-item">per son <span class="stressed">nel</span></div>
+            <div class="word-item"><span class="stressed">to</span> tal ly</div>
+            <div class="word-item">to <span class="stressed">tal</span> i ty</div>
+            <div class="word-item"><span class="stressed">in</span> dus try</div>
+            <div class="word-item">in <span class="stressed">dus</span> tri al</div>
+            <div class="word-item">fan <span class="stressed">tas</span> tic</div>
+            <div class="word-item"><span class="stressed">fan</span> ta sy</div>
+            <div class="word-item">com mon</div>
+            <div class="word-item">re peat</div>
+            <div class="word-item">to ma to</div>
+            <div class="word-item">fan tas tic</div>
+            <div class="word-item">no is i ly</div>
+            <div class="word-item"><span class="stressed">gi</span> ant</div>
+            <div class="word-item"><span class="stressed">pic</span> ture</div>
+            <div class="word-item"><span class="stressed">hea</span> ting</div>
+            <div class="word-item">to <span class="stressed">day</span></div>
+            <div class="word-item">a <span class="stressed">head</span></div>
+            <div class="word-item">a <span class="stressed">llow</span></div>
+            <div class="word-item"><span class="stressed">en</span> er gy</div>
+            <div class="word-item"><span class="stressed">op</span> e rate</div>
+            <div class="word-item"><span class="stressed">or</span> ga nize</div>
+            <div class="word-item">me <span class="stressed">mor</span> i al</div>
+            <div class="word-item">a <span class="stressed">ssump</span> tion</div>
+            <div class="word-item">in <span class="stressed">ven</span> tion</div>
+            <div class="word-item">em plo <span class="stressed">yee</span></div>
+            <div class="word-item">jap a <span class="stressed">nese</span></div>
+            <div class="word-item">vol un <span class="stressed">teer</span></div>
+            <div class="word-item">psy <span class="stressed">chol</span> o gy</div>
+            <div class="word-item">e <span class="stressed">vap</span> o rate</div>
+            <div class="word-item">cer <span class="stressed">ti</span> fi cate</div>
+            <div class="word-item">po li <span class="stressed">ti</span> cian</div>
+            <div class="word-item">ind i <span class="stressed">vi</span> du al</div>
+            <div class="word-item">rep u <span class="stressed">ta</span> tion</div>
+        </div>
+
+        <div class="listening-exercise">
+            <strong>Listen, write the number of syllables:</strong>
+            <ul>
+                <li>environment</li>
+                <li>church</li>
+                <li>walked</li>
+                <li>probability</li>
+                <li>economy</li>
+                <li>probable</li>
+                <li>able</li>
+                <li>coughed</li>
+                <li>productive</li>
+                <li>interfaces</li>
+                <li>secondary</li>
+                <li>protect</li>
+                <li>subtract</li>
+                <li>enthusiastic</li>
+                <li>purchased</li>
+            </ul>
+        </div>
+
+        <div class="listening-exercise">
+            <strong>Listen again to the above. Mark the stressed syllable.</strong>
+        </div>
+
+        <div class="listening-exercise">
+            <strong>Listen again to the above. Mark any schwa sounds.</strong>
+        </div>
+
+        <h2>Section C - Syllabic Pronunciation Practice</h2>
+        <p style="color: #666; font-style: italic; margin-bottom: 15px;">(TOEFL, TOEIC level words)</p>
+
+        <table class="word-family-table">
+            <thead>
+                <tr>
+                    <th>adj.</th>
+                    <th>noun</th>
+                    <th>verb</th>
+                    <th>noun</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>civil</td>
+                    <td>civility</td>
+                    <td>civilize</td>
+                    <td>civilization</td>
+                </tr>
+                <tr>
+                    <td>equal</td>
+                    <td>equality</td>
+                    <td>equalize</td>
+                    <td>equalization</td>
+                </tr>
+                <tr>
+                    <td>fertile</td>
+                    <td>fertility</td>
+                    <td>fertilize</td>
+                    <td>fertilization</td>
+                </tr>
+                <tr>
+                    <td>final</td>
+                    <td>finality</td>
+                    <td>finalize</td>
+                    <td>finalization</td>
+                </tr>
+                <tr>
+                    <td>general</td>
+                    <td>generality</td>
+                    <td>generalize</td>
+                    <td>generalization</td>
+                </tr>
+                <tr>
+                    <td>hospital</td>
+                    <td>hospitality</td>
+                    <td>hospitalize</td>
+                    <td>hospitalization</td>
+                </tr>
+                <tr>
+                    <td>legal</td>
+                    <td>legality</td>
+                    <td>legalize</td>
+                    <td>legalization</td>
+                </tr>
+                <tr>
+                    <td>mobile</td>
+                    <td>mobility</td>
+                    <td>mobilize</td>
+                    <td>mobilization</td>
+                </tr>
+                <tr>
+                    <td>national</td>
+                    <td>nationality</td>
+                    <td>nationalize</td>
+                    <td>nationalization</td>
+                </tr>
+                <tr>
+                    <td>neutral</td>
+                    <td>neutrality</td>
+                    <td>neutralize</td>
+                    <td>neutralization</td>
+                </tr>
+                <tr>
+                    <td>personal</td>
+                    <td>personality</td>
+                    <td>personalize</td>
+                    <td>personalization</td>
+                </tr>
+                <tr>
+                    <td>real</td>
+                    <td>reality</td>
+                    <td>realize</td>
+                    <td>realization</td>
+                </tr>
+                <tr>
+                    <td>stable</td>
+                    <td>stability</td>
+                    <td>stabilize</td>
+                    <td>stabilization</td>
+                </tr>
+                <tr>
+                    <td>sterile</td>
+                    <td>sterility</td>
+                    <td>sterilize</td>
+                    <td>sterilization</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Section D - Nouns vs. Verbs</h2>
+        
+        <div class="info-box">
+            The stress is placed on the <em>first syllable</em> of a <strong>noun</strong> and the <em>second</em> syllable of a <strong>verb</strong> (usually with a ə in the first syllable).
+        </div>
+
+        <div class="noun-verb-section">
+            <div class="noun-verb-grid">
+                <div class="noun-verb-header">Noun</div>
+                <div class="noun-verb-header">Verb</div>
+                
+                <div class="noun-verb-item"><span class="stressed">con</span>flict</div>
+                <div class="noun-verb-item">con<span class="stressed">flict</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">con</span>tract</div>
+                <div class="noun-verb-item">con<span class="stressed">tract</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">de</span>fect</div>
+                <div class="noun-verb-item">de<span class="stressed">fect</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">di</span>gest</div>
+                <div class="noun-verb-item">di<span class="stressed">gest</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">ex</span>port</div>
+                <div class="noun-verb-item">ex<span class="stressed">port</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">ex</span>tract</div>
+                <div class="noun-verb-item">ex<span class="stressed">tract</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">im</span>port</div>
+                <div class="noun-verb-item">im<span class="stressed">port</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">ob</span>ject</div>
+                <div class="noun-verb-item">ob<span class="stressed">ject</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">pe</span>rmit</div>
+                <div class="noun-verb-item">per<span class="stressed">mit</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">pro</span>test</div>
+                <div class="noun-verb-item">pro<span class="stressed">test</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">pre</span>sent</div>
+                <div class="noun-verb-item">pre<span class="stressed">sent</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">pro</span>duce</div>
+                <div class="noun-verb-item">pro<span class="stressed">duce</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">pro</span>ject</div>
+                <div class="noun-verb-item">pro<span class="stressed">ject</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">re</span>cord</div>
+                <div class="noun-verb-item">re<span class="stressed">cord</span></div>
+                
+                <div class="noun-verb-item"><span class="stressed">re</span>fuse</div>
+                <div class="noun-verb-item">re<span class="stressed">fuse</span></div>
+            </div>
+        </div>
+
+        <h3>Special Considerations for alternate pronunciations</h3>
+        <p style="color: #666; margin-bottom: 15px;">noun/adj vs. verb</p>
+
+        <div class="word-groups">
+            <div class="word-group-item">advocate / advocate</div>
+            <div class="word-group-item">appropriate / appropriate</div>
+            <div class="word-group-item">approximate / approximate</div>
+            <div class="word-group-item">associate / associate</div>
+            <div class="word-group-item">degenerate / degenerate</div>
+            <div class="word-group-item">delegate / delegate</div>
+            <div class="word-group-item">deliberate (adj) / deliberate</div>
+            <div class="word-group-item">duplicate / duplicate</div>
+            <div class="word-group-item">elaborate (adj) / elaborate</div>
+            <div class="word-group-item">estimate / estimate</div>
+            <div class="word-group-item">graduate / graduate</div>
+            <div class="word-group-item">moderate (adj) / moderate</div>
+            <div class="word-group-item">subordinate / subordinate</div>
+        </div>
+
+        <h2>Word Groups - Syllabic Stress Shifts</h2>
+
+        <div class="word-group-section">
+            <div class="word-groups">
+                <div class="word-group-item">1. <span class="stressed">in</span>dustry / in<span class="stressed">dus</span>trial</div>
+                <div class="word-group-item">2. e<span class="stressed">con</span>omy / eco<span class="stressed">nom</span>ic</div>
+                <div class="word-group-item">3. <span class="stressed">fan</span>tasy / fan<span class="stressed">tas</span>tic</div>
+                <div class="word-group-item">4. <span class="stressed">par</span>ticle / par<span class="stressed">tic</span>ular</div>
+                <div class="word-group-item">5. <span class="stressed">pho</span>tograph / pho<span class="stressed">tog</span>raphy / photo<span class="stressed">graph</span>ic</div>
+                <div class="word-group-item">6. <span class="stressed">his</span>tory / his<span class="stressed">tor</span>ic</div>
+                <div class="word-group-item">7. de<span class="stressed">moc</span>racy / demo<span class="stressed">crat</span>ic</div>
+                <div class="word-group-item">8. <span class="stressed">pol</span>itics / po<span class="stressed">lit</span>ical / poli<span class="stressed">ti</span>cian</div>
+                <div class="word-group-item">9. <span class="stressed">sym</span>bol / sym<span class="stressed">bol</span>ic</div>
+                <div class="word-group-item">10. <span class="stressed">ath</span>lete / ath<span class="stressed">let</span>ic</div>
+                <div class="word-group-item">11. <span class="stressed">strat</span>egy / stra<span class="stressed">te</span>gic</div>
+                <div class="word-group-item">12. a<span class="stressed">cad</span>emy / aca<span class="stressed">dem</span>ic</div>
+                <div class="word-group-item">14. tech<span class="stressed">nol</span>ogy / techno<span class="stressed">log</span>ical</div>
+                <div class="word-group-item">15. bi<span class="stressed">ol</span>ogy / bio<span class="stressed">log</span>ical / bi<span class="stressed">ol</span>ogist</div>
+            </div>
+        </div>
+
+        <div class="word-group-section">
+            <div class="word-groups">
+                <div class="word-group-item">1. <span class="stressed">an</span>alyze / a<span class="stressed">nal</span>ysis / ana<span class="stressed">lyt</span>ic</div>
+                <div class="word-group-item">2. <span class="stressed">en</span>ergy / ener<span class="stressed">get</span>ic</div>
+                <div class="word-group-item">3. <span class="stressed">met</span>al / me<span class="stressed">tal</span>lic</div>
+                <div class="word-group-item">4. <span class="stressed">i</span>rony / i<span class="stressed">ron</span>ic</div>
+                <div class="word-group-item">5. <span class="stressed">har</span>mony / har<span class="stressed">mon</span>ic / har<span class="stressed">mo</span>nious</div>
+                <div class="word-group-item">7. <span class="stressed">or</span>igin / o<span class="stressed">rig</span>inal / origi<span class="stressed">nal</span>ity</div>
+                <div class="word-group-item">8. <span class="stressed">ma</span>jor / ma<span class="stressed">jor</span>ity</div>
+                <div class="word-group-item">9. <span class="stressed">mi</span>nor / mi<span class="stressed">nor</span>ity</div>
+                <div class="word-group-item">10. <span class="stressed">hab</span>it / ha<span class="stressed">bit</span>ual</div>
+                <div class="word-group-item">12. ge<span class="stressed">om</span>etry / geo<span class="stressed">met</span>ric</div>
+                <div class="word-group-item">13. as<span class="stressed">tron</span>omy / astro<span class="stressed">nom</span>ical</div>
+                <div class="word-group-item">14. phi<span class="stressed">los</span>ophy / philo<span class="stressed">soph</span>ical</div>
+                <div class="word-group-item">15. psy<span class="stressed">chol</span>ogy / psycho<span class="stressed">log</span>ical</div>
+            </div>
+        </div>
+
+        <h2>Science &amp; Technology - Syllabic Stress Shifts</h2>
+
+        <div class="word-group-section">
+            <div class="word-groups">
+                <div class="word-group-item">1. <span class="stressed">da</span>ta / <span class="stressed">da</span>tabase</div>
+                <div class="word-group-item">3. <span class="stressed">mol</span>ecule / mo<span class="stressed">lec</span>ular</div>
+                <div class="word-group-item">5. <span class="stressed">chem</span>istry / <span class="stressed">chem</span>ically</div>
+                <div class="word-group-item">7. <span class="stressed">car</span>bon / carbon<span class="stressed">a</span>tion</div>
+                <div class="word-group-item">8. e<span class="stressed">lec</span>tron / elec<span class="stressed">tron</span>ic</div>
+                <div class="word-group-item">9. me<span class="stressed">chan</span>ics / me<span class="stressed">chan</span>ical</div>
+                <div class="word-group-item">10. <span class="stressed">phys</span>ics / <span class="stressed">phys</span>ical / phy<span class="stressed">si</span>cian</div>
+                <div class="word-group-item">11. sta<span class="stressed">tis</span>tic / statisti<span class="stressed">cian</span></div>
+                <div class="word-group-item">12. <span class="stressed">meth</span>od / metho<span class="stressed">dol</span>ogy / metho<span class="stressed">do</span>logical</div>
+                <div class="word-group-item">13. <span class="stressed">the</span>ory / theo<span class="stressed">ret</span>ical / theoreti<span class="stressed">cian</span></div>
+                <div class="word-group-item">14. <span class="stressed">nu</span>meral / nu<span class="stressed">mer</span>ic / nu<span class="stressed">mer</span>ical</div>
+                <div class="word-group-item">17. <span class="stressed">mag</span>net / mag<span class="stressed">net</span>ic</div>
+                <div class="word-group-item">19. <span class="stressed">mi</span>croscope / micro<span class="stressed">scop</span>ic</div>
+                <div class="word-group-item">20. <span class="stressed">tech</span>nical / tech<span class="stressed">nique</span> / techni<span class="stressed">cian</span></div>
+                <div class="word-group-item">configure / configu<span class="stressed">ra</span>tion</div>
+                <div class="word-group-item"><span class="stressed">ac</span>cess / acce<span class="stressed">ssi</span>ble / accessi<span class="stressed">bil</span>ity</div>
+            </div>
+        </div>
+
+        <h2>Industrial Engineering - Syllabic Stress Shifts</h2>
+
+        <div class="word-group-section">
+            <div class="word-groups">
+                <div class="word-group-item">2. <span class="stressed">prod</span>uct / pro<span class="stressed">duc</span>tion / produc<span class="stressed">tiv</span>ity</div>
+                <div class="word-group-item">4. <span class="stressed">op</span>erate / oper<span class="stressed">a</span>tion</div>
+                <div class="word-group-item">6. <span class="stressed">in</span>dustry / in<span class="stressed">dus</span>trial</div>
+                <div class="word-group-item">7. ma<span class="stressed">chine</span> / ma<span class="stressed">chin</span>ery</div>
+                <div class="word-group-item">8. engi<span class="stressed">neer</span> / engi<span class="stressed">neer</span>ing</div>
+                <div class="word-group-item">10. <span class="stressed">sys</span>tem / syste<span class="stressed">mat</span>ic / sys<span class="stressed">tem</span>ic</div>
+                <div class="word-group-item">12. <span class="stressed">an</span>alyze / a<span class="stressed">nal</span>ysis / ana<span class="stressed">lyt</span>ic</div>
+                <div class="word-group-item">18. main<span class="stressed">tain</span> / <span class="stressed">main</span>tenance / maintaina<span class="stressed">bil</span>ity</div>
+            </div>
+        </div>
+
+        <h2>Mechanical Engineering - Syllabic Stress Shifts</h2>
+
+        <div class="word-group-section">
+            <div class="word-groups">
+                <div class="word-group-item">4. me<span class="stressed">chan</span>ic / <span class="stressed">mech</span>anism</div>
+                <div class="word-group-item">8. <span class="stressed">ro</span>tate / ro<span class="stressed">ta</span>tion</div>
+                </div></div></div></body></html>
