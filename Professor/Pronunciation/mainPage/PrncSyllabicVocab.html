@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" content="Dr Ray EFL ESL, English learning" />
+
+        <!-- content attribute is for search engines -->
+        <meta name="quizMaker" content="English Learning Management Method" />
+
+        <!-- Mobile responsiveness -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- xxxx  NO Cache  xxx   -->
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+
+        <title>Pronunciation Practice with audio</title>
+
+        <style>
+              body {
+                      width:100%;
+                      max-width:45rem;
+                      margin: auto;
+                      background-color: #d4e6f1;
+                      font-family: helvetica, arial, sans-serif; /*padding: 1ex 2ex 1ex 2ex;*/
+                  }
+
+                  :focus {outline:none;}
+                  ::-moz-focus-inner {border:0; }
+
+            /* ======== begin styling-template css =====  */
+               #pageTitle {
+                 background-color:#fff8dc;
+                 border-style:solid;  border-width: medium;
+                 border-color:darkslategray; border-radius: 7px;
+                 padding:2ex;  overflow:auto;
+             }
+
+              #listTitle{
+                    margin: 2rem 0 .5rem 0.5rem;
+              }
+
+              #wordListInput{
+                    margin: .7rem 0 .5rem 0.5rem;
+              }
+
+              .listTitle{
+                    font-size: 1.8rem; font-weight: Bold; 
+                    margin: 1.3rem 0 .5rem 0.3rem;
+                    padding: .3rem;
+                    background-color:#F0FDFF; width:fit-content;
+                    border-radius: 7px;
+                    box-shadow: 3px 3px 6px gray, -.1em -.1rem 0.4em white;
+
+                    overflow:auto;
+                    
+              }
+
+              .list{
+                display: block;
+                border-radius: 7px;
+                background-color: #F8F5EC;
+                width:100%;
+                font-size: 1.5rem;
+                margin: 0 0 .5rem 0.2rem;
+                overflow:auto;
+              }
+              .aWord {
+                display: inline-block;
+                width: fit-content;
+                height: fit-content;
+                background-color: #fff;
+                margin: 0rem 1.7rem 0rem 0rem;
+                padding: 0.2rem;
+                background-color: #F8F5EC;
+                cursor: pointer;
+              }
+
+              .aWord:hover {
+                background-color: lightgray;
+              }
+
+              .aWord.clicked {
+                background-color: #F9F999;
+              }
+
+               .btnDelThis{
+                    display:block;
+               }
+        </style>
+    </head>
+    <body>
+        <div id="pageTitle" contenteditable="false">
+        <img class="center" src="topImage.jpg" alt="" width="100%">
+            <h2>Pronunciation Practice<br /></h2>
+            <p>Dr. Ray<br>Professional English 121<br></p>     
+        </div>
+        <textarea id="listTitle" rows="1" cols="40" placeholder="List Title" style="display: none; "></textarea><br />
+
+        <textarea id="wordListInput" rows="4" placeholder="Type Paste Word list here" style="display: none;"></textarea> <br />
+        <button id="generate" onclick="generateWordList()" style="display: none;">Generate List</button>
+        <section id="wordListSection">
+            <div class="listTitle" contenteditable="false">Vocab.1 -ial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">aerial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">burial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">racial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">social<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">trivial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">glacial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">partial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">special<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">crucial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">judicial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">financial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 1 (stress on 1st of 3 syllables)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">dignity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">increment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">animal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">diligent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cruelty<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">annual<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">industry<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">decency<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accident<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">instrument<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">arrogant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">embassy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">interest<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fluency<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">benefit<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">justify<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">enemy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">calender<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cabinet<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">poetry<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">faculty<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">capital<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">factory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">literal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">family<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">luxury<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">citizen<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">festival<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">clarify<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">secrecy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">classical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">scrutiny<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">gallery<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">medical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">currency<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">melody<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cylinder<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">general<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">memory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">vacancy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">happiness<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mineral<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">different<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">minister<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">difficult<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 2 -ion -ior -ian -iar (yən/yər)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">onion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">union<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">opinion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">dominion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">billion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">million<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">trillion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">rebellion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">battalion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">senior<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">savior<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">junior<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">indian<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">christian<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">valiant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">brilliant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">peculiar<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">familiar<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">billiards<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 2 stress on 2nd of 3 syllables<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">apparent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">agreement<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">arrival<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">confinement<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">amazement<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">decipher<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">affected<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">encampment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">denial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">amendment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">establish<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">assassin<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">enrollment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">assembly<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">attachment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">attendant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">heroic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">beginning<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">illegal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">invalid<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">opponent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">consider<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">deliver<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">prohibit<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">subscriber<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">protector<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">astonish<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">survivor<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">diminish<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">refreshment<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">transparent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">distinguish<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">reluctant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">remember<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">volcano<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">domestic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">unequal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">dramatic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">abandon<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">specific<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">surrender<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">impostor<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accomplish<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">improper<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 3 -ow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">shadow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">meadow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">widow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">window<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">bellow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">yellow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">shallow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fellow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">follow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mellow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">wallow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">gallows<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">swallow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sparrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">borrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">morrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sorrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">furrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">narrow<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 3 stress on 3nd of 3 syllables (weak on 1st)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">indirect<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">overtake<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">misbehave<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">incorrect<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">refugee<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">intermix<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">disagree<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">supersede<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">overturn<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">domineer<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">overrun<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">immature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">volunteer<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">recollect<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">importune<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">undermine<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">recommend<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">reprehend<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">intercede<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">apprehend<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">introduce<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">condescend<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">understand<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">misapply<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">contradict<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">undersell<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 4 -ient (yənt)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">quotient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">patient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ancient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">transient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">lenient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">deficient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">efficient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">proficient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sufficient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">obedient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">expedient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">recipient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">convenient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ingredient<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 4 stress on 1st of 4 syllables (weak on 3rd)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">ceremony<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">customary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">momentary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">adversary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">delicacy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">alimony<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">difficulty<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">allegory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">epilepsy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accuracy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">emissary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">purgatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">commentary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">intimacy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">salutary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">commissary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sanctuary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">controversy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">inventory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">secretary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">monastery<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mandatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sedentary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">matrimony<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">promissory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sumptuary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">military<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">territory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">voluntary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">patrimony<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">testimony<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">planetary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">tributary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mercenary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 5 -tion (shun)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">nation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">station<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">lotion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">motion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">notion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">potion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">portion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cessation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">collation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">creation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">dictation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">donation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">duration<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">formation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">frustration<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">deviation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">desperation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">liberation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mediation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">moderation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">numeration<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">operation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">toleration<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">trepidation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">valuation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 5 stress on 2nd of 4 syllables <button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">grammarian<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">variety<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">historian<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">activity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">centurion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">librarian<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">material<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accessory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">communicate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">maturity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">community<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">memorial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">adversity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">analogy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">anatomy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">security<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">antagonist<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">formality<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">brutality<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">grammatical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">habitual<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">significant<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">coincident<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">identity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">comparison<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">competitor<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">conspiracy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">validity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">vicinity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">morality<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">apology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">necessity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">astrology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">astronomy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">biography<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">electrical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">particular<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">democracy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">political<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">equivalent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">economy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">geometry<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">monopoly<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 6 -sure (zhur)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">measure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">pleasure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">treasure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">leisure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">disclosure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">composure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">exposure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">enclosure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 6 stress on 3rd of 4 syllables (weak on 1st)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">antecedent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">manifesto<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">apparatus<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">memorandum<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">oriental<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ornamental<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">scientific<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accidental<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">systematic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">aromatic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">correspondent<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">detrimental<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">horizontal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">energetic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fundamental<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">universal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">innuendo<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 7 -sion (zhyun)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">allusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">illusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">conclusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">confusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">intrusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">exclusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">delusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">diffusion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">occasion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">evasion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">corrosion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">explosion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">abrasion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">vision<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">collision<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">derision<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">precision<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">provision<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cohesion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 7 stress on 2nd of 5 syllables (weak on 4th)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">contemporary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">prohibitory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">declamatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">defamatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">vocabulary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">exclamatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">consolatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">explanatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">depository<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">extemporary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">derogatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">hereditary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">involuntary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">incendiary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">repository<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">inflammatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">preliminary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">observatory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 8 -t/cious -ssion -nsion -cian (shyus/shyun)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">cautious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">gracious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">spacious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">specious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">precious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">concussion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">passion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">admission<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">compression<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">expression<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">impression<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">oppression<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">succession<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">transgression<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mansion<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">pension<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">tension<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">pretension<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ocean<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">logician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">magician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">musician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">tactician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">optician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">patrician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">physician<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 8 stress on 3rd of 5 syllables (weak on 1st)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">ambiguity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">contradictory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">credibility<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">dictatorial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">epicurean<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">elementary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">importunity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">notoriety<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">opportunity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fallibility<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">perpetuity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">genealogy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">perspicuity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">hospitality<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">illegitimate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">imperceptible<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">intellectual<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">testimonial<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">introductory<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">irresistible<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">magnanimity<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">alphabetical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">metaphysical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">analytical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">monosyllable<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">argumentative<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">plausibility<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 9 -ture (chur)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">future<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">nature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">suture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">capture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">culture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">feature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fixture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">gesture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">lecture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">nurture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">pasture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">picture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">rupture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">texture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">torture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">venture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">creature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">fracture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">juncture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">moisture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">scripture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sculpture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">structure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">adventure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">departure<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">recapture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">conjecture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">manufacture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">furniture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">miniature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">forfeiture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">literature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">acupuncture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">architecture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">signature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">legislature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">temperature<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">agriculture<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Syllabic. List 9 stress on 4th of 5 syllables (weak on 1st)<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">administration<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">association<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">abbreviation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">appreciation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">organization<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">determination<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">edification<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">accommodation<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">amplification<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">qualification<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">multiplication<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">modification<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 10 -ology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">analogy<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">biology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ecology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">geology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">zoology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ideology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">oncology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">theology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cosmology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mythology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">radiology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sociology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">archeology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">cardiology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">immunology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">psychology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">seismology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">technology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">meteorology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">anthropology<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 11 -ate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">amalgamate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">assassinate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">capacitate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">coagulate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">concatenate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">confabulate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">congratulate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">contaminate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">decapitate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">elaborate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">emancipate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">eradicate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">evacuate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">infatuate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">invalidate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">procrastinate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">retaliate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">evaporate<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 12 -ious -eous -uous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">harmonious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">precarious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">vicarious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">illustrious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">laborious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">industrious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">victorious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">mysterious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">notorious<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">spontaneous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">erroneous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">ambiguous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">conspicuous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">contiguous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">impetuous<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 13 -al <button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">additional<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">exceptional<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">medical<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">national<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">occasional<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">personal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">seasonal<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">sensational<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 14 -ic <button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">acidic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">allergic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">analytic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">dramatic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">energetic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">horrific<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">scientific<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">terrific<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">photographic<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+            <div class="listTitle" contenteditable="false">Vocab. List 15 -ary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete (title only)</button></div>
+            <div class="list" style="display: none;">
+                <div class="aWord" contenteditable="false">dictionary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">missionary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">necessary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">revolutionary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+                <div class="aWord" contenteditable="false">stationary<button class="btnDelThis" onclick="this.parentElement.remove()" style="display: none;">Delete</button></div>
+            </div>
+        </section>
+
+        <script>
+            function generateWordList() {
+                let listTitleRaw = document.getElementById("listTitle").value;
+
+                let wordListInput = document.getElementById("wordListInput").value;
+                let wordList = wordListInput
+                    .replace(/[,\r\n]+/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .toLowerCase()
+                    .split(" ");
+
+                let wordListSection = document.getElementById("wordListSection");
+                let wordListDiv = document.createElement("div");
+                wordListDiv.classList.add("list");
+
+                for (let word of wordList) {
+                    let aWord;
+
+                    // Create the div
+                    aWord = document.createElement("div");
+                    aWord.classList.add("aWord");
+                    aWord.textContent = word;
+                    aWord.contentEditable = true;
+
+                    // Create the delete button
+                    let button = document.createElement("button");
+                    button.innerHTML = "Delete";
+                    button.classList.add("btnDelThis");
+                    button.setAttribute("onclick", "this.parentElement.remove()");
+
+                    // Append the button to the div
+                    aWord.appendChild(button);
+
+                    // Append the div to the list
+                    wordListDiv.appendChild(aWord);
+                }
+
+                let listTitleDiv = document.createElement("div");
+                listTitleDiv.classList.add("listTitle");
+                listTitleDiv.textContent = listTitleRaw;
+                listTitleDiv.contentEditable = true;
+
+                let deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Delete (title only)";
+                deleteButton.classList.add("btnDelThis");
+                deleteButton.setAttribute("onclick", "this.parentElement.remove()");
+
+                listTitleDiv.appendChild(deleteButton);
+
+                wordListSection.appendChild(listTitleDiv);
+                wordListSection.appendChild(wordListDiv);
+
+                // Attach event listeners to the newly generated word aWords
+                let aWords = wordListDiv.querySelectorAll(".aWord");
+                for (let i = 0; i < aWords.length; i++) {
+                    aWords[i].addEventListener("click", function () {
+                        this.classList.toggle("clicked");
+                    });
+                }
+            }
+        </script>
+
+<script>
+    let listTitles = document.querySelectorAll(".listTitle");
+
+    function toggleList() {
+    let list = this.nextElementSibling;		
+		if (list.style.display === "block") {
+            list.style.display = "none";
+        } 
+		
+		else {		//elseA
+			let hideAllButX = document.querySelectorAll(".list");
+				for (const hideAllBut of hideAllButX) {
+					hideAllBut.style.display = "none";
+				}
+
+			if (list.style.display === "none") {
+				list.style.display = "block";
+			} else { //elseB
+				list.style.display = "none";
+			} //end elseB
+		} //end elseA
+        // Scroll to the top of the associated list
+        list.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+    } // fn toggleList
+
+    for (let i = 0; i < listTitles.length; i++) {
+        listTitles[i].addEventListener("click", toggleList);
+    }
+</script>
+        <!--  =============== DETAILED version ========================================================= -->
+        <!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+        <!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
+
+        <button style="margin: 2ex 0px 0px; display: none;" id="editOff" onclick="toggleEditOff()">Preview</button>
+
+        <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+        <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+            <label style="background-color: antiquewhite;">
+                name the file before saving &nbsp;
+                <input id="fileName" type="text" size="30" value="fileName" />
+            </label>
+            <br />
+
+            <button id="saveDownload" class="hlBtn" onclick="saveDom()" style="display: block;">Save/Download</button>
+        </div>
+
+        <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+
+        <script>
+            function toggleEditOff() {
+                document.getElementById("saveDom").style.display = "none";
+                document.getElementById("editOff").style.display = "none";
+                document.getElementById("editOn").style.display = "block";
+
+                document.getElementById("listTitle").style.display = "none";
+                document.getElementById("wordListInput").style.display = "none";
+                document.getElementById("genList").style.display = "none";                
+                //   document.getElementById("wordListSection").style.display="none";
+                // document.getElementById("styleEditor").style.display="none";
+
+                let btnDelThisz = document.querySelectorAll(".btnDelThis");
+                for (const btnDelThis of btnDelThisz) {
+                    btnDelThis.style.display = "none";
+                }
+
+                let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+                for (const contEdbl of contEdbls) {
+                    contEdbl.contentEditable = false;
+                }
+
+                // end remove all editables ************************
+            } //end toggleEditOFf
+
+            function toggleEditOn() {
+                document.getElementById("saveDom").style.display = "block";
+                document.getElementById("editOff").style.display = "block";
+                document.getElementById("editOn").style.display = "block";
+
+                document.getElementById("listTitle").style.display = "block";
+                document.getElementById("wordListInput").style.display = "block";
+                document.getElementById("genList").style.display = "block";                
+                //       document.getElementById("wordListSection").style.display="block";
+
+                //      document.getElementById("styleEditor").style.display="block";
+
+                let btnDelThisz = document.querySelectorAll(".btnDelThis");
+                for (const btnDelThis of btnDelThisz) {
+                    btnDelThis.style.display = "block";
+                }
+
+                let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+                for (const contEdbl of contEdbls) {
+                    contEdbl.contentEditable = true;
+                }
+
+                //end restore editabels **********************
+            }
+        </script>
+
+        <script>
+            let aWords = document.querySelectorAll(".aWord");
+
+            for (let i = 0; i < aWords.length; i++) {
+                aWords[i].addEventListener("click", function () {
+                    this.classList.toggle("clicked");
+                });
+            }
+        </script>
+
+        <script>
+            function saveDom() {
+                oldTitle = document.title;
+                let fileName = document.getElementById("fileName").value;
+                document.title = fileName;
+
+                //save theDom  editMode *************************
+                let theDom = document.documentElement.innerHTML;
+                //console.log(theDom);
+                const docHtml = '<!DOCTYPE html><html lang="en">';
+                const endHtml = "</html>";
+                const fullHtmlDoc = docHtml + theDom + endHtml;
+
+                // here we use Blob to set up a download link
+
+                // (A) CREATE BLOB OBJECT
+                const myBlob = new Blob([fullHtmlDoc], { type: "text/html" });
+
+                // (B) CREATE DOWNLOAD LINK
+                const url = window.URL.createObjectURL(myBlob);
+                const anchor = document.createElement("a");
+                anchor.href = url;
+                anchor.download = fileName + "EditMode.html";
+
+                anchor.click();
+                window.URL.revokeObjectURL(url);
+                //end save theDom editMode
+
+                toggleEditOff();
+                let btnsAll = document.querySelectorAll("button");
+                for (const btn of btnsAll) {
+                    btn.style.display = "none";
+                }
+
+                let listHides = document.querySelectorAll(".list");
+                for (const listHide of listHides) {
+                    listHide.style.display = "none";
+                }
+
+                //  theDOM study mode
+                let theDom2 = document.documentElement.innerHTML;
+                const docHtml2 = '<!DOCTYPE html><html lang="en">';
+                const endHtml2 = "</html>";
+                const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+                // EditMode save .. here we use Blob to set up a download link
+
+                // (A) CREATE BLOB OBJECT
+                const myBlob2 = new Blob([fullHtmlDoc2], { type: "text/html" });
+
+                // (B) CREATE DOWNLOAD LINK
+                const url2 = window.URL.createObjectURL(myBlob2);
+                const anchor2 = document.createElement("a");
+                anchor2.href = url2;
+                anchor2.download = fileName + ".html";
+
+                anchor2.click();
+                window.URL.revokeObjectURL(url2);
+                //end the BLOB stuff and save
+
+                alert("Check the browser's \n default download folder");
+
+                toggleEditOn();
+                //let btnsAll = document.querySelectorAll('button');
+                for (const btn of btnsAll) {
+                    btn.style.display = "block";
+                }
+                // let listHides = document.querySelectorAll('.list');
+                for (const listHide of listHides) {
+                    listHide.style.display = "block";
+                }
+                document.title = oldTitle;
+            }
+        </script>
+        <!--  ===============  / Detailed!! SAVE THE DOM as FILE ==================== -->
+        
+        
+       <div style="margin:7rem;">...end</div>
+    </body>
+</html>
