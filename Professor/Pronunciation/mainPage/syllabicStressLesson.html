@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllables and Word Stress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 10px 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #34495e;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+
+        .syllable-examples {
+          width:fit-content;
+          max-width:40rem;
+          margin:auto;
+            background: #EEF1F5;
+            color:blue;
+            padding: .5rem;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-family: sans-serif;
+            font-size: 15px;
+        }
+
+        .syllable-row {
+            hyphens: auto;
+            margin-bottom: 5px;
+        }
+
+        .syllable-word { 
+            width: 8rem;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .syllable-separated { 
+            width: 8rem;
+            display: inline-block;
+            text-align: right;
+            margin-left: 1rem;
+        }
+
+        .word-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .word-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .stressed {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .example-box {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .listening-exercise {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .listening-exercise ul {
+            list-style-position: inside;
+            margin-top: 10px;
+        }
+
+        .listening-exercise li {
+            padding: 5px 0;
+        }
+
+        .word-family-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .word-family-table th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .word-family-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .word-family-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .noun-verb-section {
+            margin: 30px 0;
+        }
+
+        .noun-verb-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .noun-verb-grid div {
+            text-align: center;
+        }
+
+        .noun-verb-header {
+            font-weight: bold;
+            font-style: italic;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 4px;
+        }
+
+        .noun-verb-item {
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .word-group-section {
+            margin: 30px 0;
+        }
+
+        .word-groups {
+            display: grid;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .word-group-item {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        
+        
+        
+        .word-family-list {
+          width:fit-content;
+          max-width:40rem;
+          margin:auto;
+    margin: 10px 0;
+}
+
+.word-family-item { display:inline-block;
+    margin-bottom: 10px;
+    padding: .5rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.word-family-item strong {
+    font-size: 18px;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.word-family-item ul {
+    list-style-type: disc;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.word-family-item li {
+    padding: 3px 0;
+    color: #0066cc;
+}
+        
+        
+        
+
+.word-pattern-section {
+          width:fit-content;
+          max-width:40rem;
+          margin:auto;
+    padding: .5rem;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    font-family: monospace;
+    font-size: 15px;
+}
+
+.pattern-green {
+    background: #f4fffb;
+}
+
+.pattern-purple {
+    background: #fcf9ff;
+}
+
+.pattern-row {
+    border: thin solid #ddd;
+    hyphens: auto;
+    margin-bottom: 5px;
+}
+
+.pattern-green .pattern-row {
+    color: #036344;
+}
+
+.pattern-purple .pattern-row {
+    color: #6d28d9;
+}
+
+.pattern-left {
+    width: 8rem;
+    display: inline-block;
+    text-align: left;
+}
+
+.pattern-right {
+    width: 8rem;
+    display: inline-block;
+    text-align: right;
+    margin-left: 2rem;
+}
+
+
+
+
+
+.pattern-blue {
+    background: #eff6ff;
+}
+
+.pattern-blue .pattern-row {
+    color: #1e40af;
+}
+
+        
+
+
+
+
+
+h2 {
+    font-size: 22px;
+    color: #34495e;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 4px solid #3498db;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
+}
+
+h2:hover {
+    background-color: #f0f0f0;
+}
+
+h2.active {
+    background-color: #e8f4f8;
+}
+
+h2::after {
+    content: ' ▼';
+    font-size: 14px;
+    float: right;
+    transition: transform 0.3s;
+}
+
+h2.active::after {
+    transform: rotate(-180deg);
+}
+
+
+
+
+
+
+        
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px 50px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .word-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Syllables and Word Stress</h1>
+<h2>Syllables</h2>
+        <div class="syllable-examples">
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">fantastic</div>
+                <div class="syllable-separated">fan-tas-tic</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">publish</div>
+                <div class="syllable-separated">pub-lish</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">particular</div>
+                <div class="syllable-separated">par-tic-u-lar</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">piano</div>
+                <div class="syllable-separated">pi-an-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">personnel</div>
+                <div class="syllable-separated">per-son-nel</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">understanding</div>
+                <div class="syllable-separated">un-der-stand-ing</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">reunion</div>
+                <div class="syllable-separated">re-u-nion</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">radiator</div>
+                <div class="syllable-separated">ra-di-a-tor</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">volcano</div>
+                <div class="syllable-separated">vol-ca-no</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">vocabulary</div>
+                <div class="syllable-separated">vo-cab-u-lar-y</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">appreciate</div>
+                <div class="syllable-separated">ap-pre-ci-ate</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">populate</div>
+                <div class="syllable-separated">pop-u-late</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">portfolio</div>
+                <div class="syllable-separated">port-fo-li-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">radio</div>
+                <div class="syllable-separated">ra-di-o</div>
+            </div>
+            <div class="syllable-row" lang="en">
+                <div class="syllable-word">activity</div>
+                <div class="syllable-separated">ac-tiv-i-ty</div>
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        
+<h2>Intro Syllabic Stress</h2>
+
+<div class="syllable-examples">
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">per</span> so nal</div>
+        <div class="syllable-separated">per son <span class="stressed">nel</span></div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">to</span> tal ly</div>
+        <div class="syllable-separated">to <span class="stressed">tal</span> i ty</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">in</span> dus try</div>
+        <div class="syllable-separated">in <span class="stressed">dus</span> tri al</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">fan <span class="stressed">tas</span> tic</div>
+        <div class="syllable-separated"><span class="stressed">fan</span> ta sy</div>
+    </div>
+ 
+
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><hr></div>
+        <div class="syllable-separated"><hr></div>
+    </div>
+
+
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">com</span> mon</div>
+        <div class="syllable-separated">re <span class="stressed">peat</span></div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">to <span class="stressed">ma</span> to</div>
+        <div class="syllable-separated">a va <span class="stressed">ca</span> do</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">no</span> is i ly</div>
+        <div class="syllable-separated"><span class="stressed">gi</span> ant</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">pic</span> ture</div>
+        <div class="syllable-separated"><span class="stressed">hea</span> ting</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">to <span class="stressed">day</span></div>
+        <div class="syllable-separated">a <span class="stressed">head</span></div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">a <span class="stressed">llow</span></div>
+        <div class="syllable-separated"><span class="stressed">en</span> er gy</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word"><span class="stressed">op</span> e rate</div>
+        <div class="syllable-separated"><span class="stressed">or</span> ga nize</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">me <span class="stressed">mor</span> i al</div>
+        <div class="syllable-separated">a <span class="stressed">ssump</span> tion</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">in <span class="stressed">ven</span> tion</div>
+        <div class="syllable-separated">em plo <span class="stressed">yee</span></div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">jap a <span class="stressed">nese</span></div>
+        <div class="syllable-separated">vol un <span class="stressed">teer</span></div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">psy <span class="stressed">chol</span> o gy</div>
+        <div class="syllable-separated">e <span class="stressed">vap</span> o rate</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">cer <span class="stressed">ti</span> fi cate</div>
+        <div class="syllable-separated">po li <span class="stressed">ti</span> cian</div>
+    </div>
+    <div class="syllable-row" lang="en">
+        <div class="syllable-word">ind i <span class="stressed">vi</span> du al</div>
+        <div class="syllable-separated">rep u <span class="stressed">ta</span> tion</div>
+    </div>
+</div>        
+        
+
+
+
+
+<h3>Exercise. Listen to the teacher (or audio)</h3>
+ <div class="listening-exercise">
+            <strong>Listen for the number of syllables:</strong>
+            <ul>
+                <li>environment</li>
+                <li>church</li>
+                <li>walked</li>
+                <li>probability</li>
+                <li>economy</li>
+                <li>probable</li>
+                <li>able</li>
+                <li>coughed</li>
+                <li>productive</li>
+                <li>interfaces</li>
+                <li>secondary</li>
+                <li>protect</li>
+                <li>subtract</li>
+                <li>enthusiastic</li>
+                <li>purchased</li>
+            </ul>
+        </div>
+
+        <div class="listening-exercise">
+            <strong>Listen again to the above. Which syllable is the stressed.</strong>
+        </div>
+
+        <div class="listening-exercise">
+            <strong>Listen again to the above. Do you hear a schwa?</strong>
+        </div>
+
+
+
+
+
+<h2>Section C - Syllabic Pronunciation Practice, part 1</h2>
+<p style="color: #666; font-style: italic; margin-bottom: 15px;">(TOEFL, TOEIC level words)</p>
+
+<h3>Adjective | Noun</h3>
+<h4>listed by syllabic patterns</h4>
+<div class="word-pattern-section pattern-green">
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">civil</div>
+        <div class="pattern-right">civility</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">equal</div>
+        <div class="pattern-right">equality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">fertile</div>
+        <div class="pattern-right">fertility</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">final</div>
+        <div class="pattern-right">finality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">general</div>
+        <div class="pattern-right">generality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">hospital</div>
+        <div class="pattern-right">hospitality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">legal</div>
+        <div class="pattern-right">legality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">mobile</div>
+        <div class="pattern-right">mobility</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">national</div>
+        <div class="pattern-right">nationality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">neutral</div>
+        <div class="pattern-right">neutrality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">personal</div>
+        <div class="pattern-right">personality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">real</div>
+        <div class="pattern-right">reality</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">stable</div>
+        <div class="pattern-right">stability</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">sterile</div>
+        <div class="pattern-right">sterility</div>
+    </div>
+</div>
+
+<h3>Verb | Noun (-tion)</h3>
+<div class="word-pattern-section pattern-purple">
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">civilize</div>
+        <div class="pattern-right">civilization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">equalize</div>
+        <div class="pattern-right">equalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">fertilize</div>
+        <div class="pattern-right">fertilization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">finalize</div>
+        <div class="pattern-right">finalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">generalize</div>
+        <div class="pattern-right">generalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">hospitalize</div>
+        <div class="pattern-right">hospitalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">legalize</div>
+        <div class="pattern-right">legalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">mobilize</div>
+        <div class="pattern-right">mobilization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">nationalize</div>
+        <div class="pattern-right">nationalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">neutralize</div>
+        <div class="pattern-right">neutralization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">personalize</div>
+        <div class="pattern-right">personalization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">realize</div>
+        <div class="pattern-right">realization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">stabilize</div>
+        <div class="pattern-right">stabilization</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">sterilize</div>
+        <div class="pattern-right">sterilization</div>
+    </div>
+</div>
+
+
+
+
+
+
+<h2>Section C - Syllabic Pronunciation Practice, part 2</h2>
+<h3>continued</h3>
+<h4>listed by word family</h4>
+<p style="color: #666; font-style: italic; margin-bottom: 15px;">(TOEFL, TOEIC level words)</p>
+
+<div class="word-family-list">
+    <div class="word-family-item">
+        <strong>civil</strong>
+        <ul>
+            <li>civility</li>
+            <li>civilize</li>
+            <li>civilization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>equal</strong>
+        <ul>
+            <li>equality</li>
+            <li>equalize</li>
+            <li>equalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>fertile</strong>
+        <ul>
+            <li>fertility</li>
+            <li>fertilize</li>
+            <li>fertilization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>final</strong>
+        <ul>
+            <li>finality</li>
+            <li>finalize</li>
+            <li>finalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>general</strong>
+        <ul>
+            <li>generality</li>
+            <li>generalize</li>
+            <li>generalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>hospital</strong>
+        <ul>
+            <li>hospitality</li>
+            <li>hospitalize</li>
+            <li>hospitalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>legal</strong>
+        <ul>
+            <li>legality</li>
+            <li>legalize</li>
+            <li>legalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>mobile</strong>
+        <ul>
+            <li>mobility</li>
+            <li>mobilize</li>
+            <li>mobilization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>national</strong>
+        <ul>
+            <li>nationality</li>
+            <li>nationalize</li>
+            <li>nationalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>neutral</strong>
+        <ul>
+            <li>neutrality</li>
+            <li>neutralize</li>
+            <li>neutralization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>personal</strong>
+        <ul>
+            <li>personality</li>
+            <li>personalize</li>
+            <li>personalization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>real</strong>
+        <ul>
+            <li>reality</li>
+            <li>realize</li>
+            <li>realization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>stable</strong>
+        <ul>
+            <li>stability</li>
+            <li>stabilize</li>
+            <li>stabilization</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>sterile</strong>
+        <ul>
+            <li>sterility</li>
+            <li>sterilize</li>
+            <li>sterilization</li>
+        </ul>
+    </div>
+</div>        
+
+
+
+
+
+<h2>Section D - Nouns vs. Verbs</h2>
+
+<div class="info-box">
+    The stress is placed on the <em>first syllable</em> of a <strong>noun</strong> and the <em>second</em> syllable of a <strong>verb</strong> (usually with a ə in the first syllable).
+</div>
+
+<div class="word-pattern-section pattern-blue">
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">con</span>flict</div>
+        <div class="pattern-right">con<span class="stressed">flict</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">con</span>tract</div>
+        <div class="pattern-right">con<span class="stressed">tract</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">de</span>fect</div>
+        <div class="pattern-right">de<span class="stressed">fect</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">di</span>gest</div>
+        <div class="pattern-right">di<span class="stressed">gest</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">ex</span>port</div>
+        <div class="pattern-right">ex<span class="stressed">port</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">ex</span>tract</div>
+        <div class="pattern-right">ex<span class="stressed">tract</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">im</span>port</div>
+        <div class="pattern-right">im<span class="stressed">port</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">ob</span>ject</div>
+        <div class="pattern-right">ob<span class="stressed">ject</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">pe</span>rmit</div>
+        <div class="pattern-right">per<span class="stressed">mit</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">pro</span>test</div>
+        <div class="pattern-right">pro<span class="stressed">test</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">pre</span>sent</div>
+        <div class="pattern-right">pre<span class="stressed">sent</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">pro</span>duce</div>
+        <div class="pattern-right">pro<span class="stressed">duce</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">pro</span>ject</div>
+        <div class="pattern-right">pro<span class="stressed">ject</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">re</span>cord</div>
+        <div class="pattern-right">re<span class="stressed">cord</span></div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left"><span class="stressed">re</span>fuse</div>
+        <div class="pattern-right">re<span class="stressed">fuse</span></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<h3>Special Considerations for alternate pronunciations</h3>
+<p style="color: #666; margin-bottom: 15px;">noun/adj vs. verb</p>
+
+<div class="word-family-list">
+    <div class="word-family-item">
+        <strong>advocate</strong>
+        <ul>
+            <li><span class="stressed">AD</span>-və-kət (noun/adj)</li>
+            <li><span class="stressed">AD</span>-və-keɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>appropriate</strong>
+        <ul>
+            <li>ə-<span class="stressed">PRO</span>-pri-ət (adj)</li>
+            <li>ə-<span class="stressed">PRO</span>-pri-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>approximate</strong>
+        <ul>
+            <li>ə-<span class="stressed">PROK</span>-sə-mət (adj)</li>
+            <li>ə-<span class="stressed">PROK</span>-sə-meɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>associate</strong>
+        <ul>
+            <li>ə-<span class="stressed">SO</span>-si-ət (noun/adj)</li>
+            <li>ə-<span class="stressed">SO</span>-si-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>degenerate</strong>
+        <ul>
+            <li>di-<span class="stressed">JEN</span>-ər-ət (adj)</li>
+            <li>di-<span class="stressed">JEN</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>delegate</strong>
+        <ul>
+            <li><span class="stressed">DEL</span>-ə-gət (noun)</li>
+            <li><span class="stressed">DEL</span>-ə-geɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>deliberate</strong>
+        <ul>
+            <li>di-<span class="stressed">LIB</span>-ər-ət (adj)</li>
+            <li>di-<span class="stressed">LIB</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>duplicate</strong>
+        <ul>
+            <li><span class="stressed">DU</span>-pli-kət (noun/adj)</li>
+            <li><span class="stressed">DU</span>-pli-keɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>elaborate</strong>
+        <ul>
+            <li>i-<span class="stressed">LAB</span>-ər-ət (adj)</li>
+            <li>i-<span class="stressed">LAB</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>estimate</strong>
+        <ul>
+            <li><span class="stressed">ES</span>-tə-mət (noun)</li>
+            <li><span class="stressed">ES</span>-tə-meɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>graduate</strong>
+        <ul>
+            <li><span class="stressed">GRAD</span>-u-ət (noun)</li>
+            <li><span class="stressed">GRAD</span>-u-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>moderate</strong>
+        <ul>
+            <li><span class="stressed">MOD</span>-ər-ət (adj)</li>
+            <li><span class="stressed">MOD</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>subordinate</strong>
+        <ul>
+            <li>sə-<span class="stressed">BOR</span>-di-nət (noun/adj)</li>
+            <li>sə-<span class="stressed">BOR</span>-di-neɪt (verb)</li>
+        </ul>
+    </div>
+</div>
+
+
+<h4>Note the ending sound of the followin words.</h4>
+<p style="color: #666; margin-bottom: 15px;">noun/adj vs. verb</p>
+
+<div class="word-family-list">
+    <div class="word-family-item">
+        <strong>advocate</strong>
+        <ul>
+            <li><span class="stressed">AD</span>-və-kət (noun/adj)</li>
+            <li><span class="stressed">AD</span>-və-keɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>appropriate</strong>
+        <ul>
+            <li>ə-<span class="stressed">PRO</span>-pri-ət (adj)</li>
+            <li>ə-<span class="stressed">PRO</span>-pri-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>approximate</strong>
+        <ul>
+            <li>ə-<span class="stressed">PROK</span>-sə-mət (adj)</li>
+            <li>ə-<span class="stressed">PROK</span>-sə-meɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>associate</strong>
+        <ul>
+            <li>ə-<span class="stressed">SO</span>-si-ət (noun/adj)</li>
+            <li>ə-<span class="stressed">SO</span>-si-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>degenerate</strong>
+        <ul>
+            <li>di-<span class="stressed">JEN</span>-ər-ət (adj)</li>
+            <li>di-<span class="stressed">JEN</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>delegate</strong>
+        <ul>
+            <li><span class="stressed">DEL</span>-ə-gət (noun)</li>
+            <li><span class="stressed">DEL</span>-ə-geɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>deliberate</strong>
+        <ul>
+            <li>di-<span class="stressed">LIB</span>-ər-ət (adj)</li>
+            <li>di-<span class="stressed">LIB</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>duplicate</strong>
+        <ul>
+            <li><span class="stressed">DU</span>-pli-kət (noun/adj)</li>
+            <li><span class="stressed">DU</span>-pli-keɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>elaborate</strong>
+        <ul>
+            <li>i-<span class="stressed">LAB</span>-ər-ət (adj)</li>
+            <li>i-<span class="stressed">LAB</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>estimate</strong>
+        <ul>
+            <li><span class="stressed">ES</span>-tə-mət (noun)</li>
+            <li><span class="stressed">ES</span>-tə-meɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>graduate</strong>
+        <ul>
+            <li><span class="stressed">GRAD</span>-u-ət (noun)</li>
+            <li><span class="stressed">GRAD</span>-u-eɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>moderate</strong>
+        <ul>
+            <li><span class="stressed">MOD</span>-ər-ət (adj)</li>
+            <li><span class="stressed">MOD</span>-ə-reɪt (verb)</li>
+        </ul>
+    </div>
+    
+    <div class="word-family-item">
+        <strong>subordinate</strong>
+        <ul>
+            <li>sə-<span class="stressed">BOR</span>-di-nət (noun/adj)</li>
+            <li>sə-<span class="stressed">BOR</span>-di-neɪt (verb)</li>
+        </ul>
+    </div>
+</div>
+
+
+
+<h3>Exercise for Special Considerations</h3>
+<h4>Listen to the teacher (or audio) and repeat</h4>
+<p style="color: #666; margin-bottom: 15px;">noun/adj vs. verb</p>
+
+<div class="word-pattern-section pattern-blue">
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">advocate</div>
+        <div class="pattern-right">advocate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">appropriate</div>
+        <div class="pattern-right">appropriate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">approximate</div>
+        <div class="pattern-right">approximate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">associate</div>
+        <div class="pattern-right">associate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">degenerate</div>
+        <div class="pattern-right">degenerate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">delegate</div>
+        <div class="pattern-right">delegate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">deliberate (adj)</div>
+        <div class="pattern-right">deliberate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">duplicate</div>
+        <div class="pattern-right">duplicate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">elaborate (adj)</div>
+        <div class="pattern-right">elaborate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">estimate</div>
+        <div class="pattern-right">estimate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">graduate</div>
+        <div class="pattern-right">graduate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">moderate (adj)</div>
+        <div class="pattern-right">moderate</div>
+    </div>
+    <div class="pattern-row" lang="en">
+        <div class="pattern-left">subordinate</div>
+        <div class="pattern-right">subordinate</div>
+    </div>
+</div>
+
+
+
+
+<h2>Section E: Extended Practice on Word-Families</h2>
+<h3>with differentiating stress patterns</h3>
+
+<p style="margin-bottom: 20px;">Some word-families carry the same syllabic stress across all its members. For example:</p>
+
+<div class="word-family-list">
+    <div class="word-family-item">
+        <ul style="margin-left: 0; list-style-type: none;">
+            <li>manufacturer | manufacturing | manufacturable</li>
+            <li>efficient | efficiency | efficiently</li> 
+        </ul>
+    </div>
+</div>
+
+<p style="margin-bottom: 20px;">However, this is not the case with many word families.</p>
+
+<h3>Word-families with differentiating stress</h3>
+
+<div class="word-family-list">
+    <div class="word-family-item">
+        <ul style="margin-left: 0;">
+            <li>industry | industrial</li>
+            <li>economy | economic</li>
+            <li>fantasy | fantastic</li>
+            <li>particle | particular</li>
+            <li>photograph | photography | photographic</li>
+            <li>history | historic</li>
+            <li>democracy | democratic</li>
+            <li>politics | political | politician</li>
+            <li>symbol | symbolic</li>
+            <li>athlete | athletic</li>
+            <li>strategy | strategic</li>
+            <li>academy | academic</li>
+            <li>technology | technological</li>
+            <li>biology | biological | biologist</li>
+            <li>analyze | analysis | analytic</li>
+            <li>energy | energetic</li>
+            <li>metal | metallic</li>
+            <li>irony | ironic</li>
+            <li>harmony | harmonic | harmonious</li>
+            <li>origin | original | originality</li>
+            <li>major | majority</li>
+            <li>minor | minority</li>
+            <li>habit | habitual</li>
+            <li>geometry | geometric</li>
+            <li>astronomy | astronomical</li>
+            <li>philosophy | philosophical</li>
+            <li>psychology | psychological</li>
+            <li>molecule | molecular</li>
+            <li>carbon | carbonation</li>
+            <li>electron | electronic</li>
+            <li>mechanics | mechanical</li>
+            <li>physics | physical | physician</li>
+            <li>statistic | statistician</li>
+            <li>method | methodology | methodological</li>
+            <li>theory | theoretical | theoretician</li>
+            <li>numeral | numeric | numerical</li>
+            <li>magnet | magnetic</li>
+            <li>microscope | microscopic</li>
+            <li>technical | technique | technician</li>
+            <li>configure | configuration</li>
+            <li>access | accessible | accessibility</li>
+            <li>product | production | productivity</li>
+            <li>operate | operation</li>
+            <li>industry | industrial</li>
+            <li>machine | machinery</li>
+            <li>engineer | engineering</li>
+            <li>system | systemic | systematic</li>
+            <li>analyze | analysis | analytic</li>
+            <li>maintain | maintenance | maintainability</li>
+            <li>mechanic | mechanism</li>
+            <li>rotate | rotation</li>
+            <li>engine | engineer</li>
+            <li>metal | metallic</li>
+        </ul>
+    </div>
+</div>
+
+</div> 
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all h2 elements
+    const headers = document.querySelectorAll('h2');
+    
+    // Add collapsible-header class and make them clickable
+    headers.forEach(header => {
+        header.classList.add('collapsible-header');
+        
+        // Hide all content after each h2 initially
+        let nextElement = header.nextElementSibling;
+        while (nextElement && nextElement.tagName !== 'H2') {
+            nextElement.style.display = 'none';
+            nextElement = nextElement.nextElementSibling;
+        }
+        
+        // Add click event
+        header.addEventListener('click', function() {
+            const isActive = this.classList.contains('active');
+            
+            // Close all sections
+            headers.forEach(h => {
+                h.classList.remove('active');
+                let elem = h.nextElementSibling;
+                while (elem && elem.tagName !== 'H2') {
+                    elem.style.display = 'none';
+                    elem = elem.nextElementSibling;
+                }
+            });
+            
+            // If clicked header wasn't active, open it
+            if (!isActive) {
+                this.classList.add('active');
+                let elem = this.nextElementSibling;
+                while (elem && elem.tagName !== 'H2') {
+                    elem.style.display = 'block';
+                    elem = elem.nextElementSibling;
+                }
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+        
+</body>
+</html>
