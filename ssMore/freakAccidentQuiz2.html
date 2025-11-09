@@ -1,0 +1,964 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        button {
+            padding: 5px 5px;
+        }
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px;
+        }
+        .answer-shown {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 1.5rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+        code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%;            
+        }
+        .quasi-code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%; 
+            width: fit-content;
+        }
+        .copy-popup {
+          position: absolute;
+          background: #333;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 9999;
+        }
+        .copy-popup.show {
+          opacity: 1;
+        }
+        
+        /* Save status styles */
+        .save-status {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .save-status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .save-status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .save-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Student info styling */
+        #verifyYou { 
+            display:none; 
+            background-color: #fff8dc;
+            color: darkgreen;
+            border-radius: 5px;
+            margin: .33rem 0 0 0;
+            padding: .5rem;
+            font-weight: bold;              
+         }
+         #verifyYou:hover { 
+            background-color: #D4CDB3;
+            color: green;
+         }         
+         #verifyYou:active { 
+            background-color: darkgray;
+            color: white;
+         }
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+    </style>
+</head>
+<body>
+    
+<div id="topHeading"><h2>Quiz 2</h2>
+    <h3>Article: Freak Accident</h3><p>Select the correct answers.</p>
+</div>
+    <!-- Student Info Section -->
+
+    <input id="name" type="text" value="name">
+    <input id="id" type="text" value="id#">
+    <hr>
+    <input id="passCode" type="text" value="passcode" style="display:none;" "="">
+    <button id="verifyYou" onclick="verifyStudent()" style="display:none;">Verify Your Name, ID, Passcode</button>
+    
+    <details class="editMode" style="display: none;"><summary>Instructions</summary>
+        <div style="margin-bottom: 15px; font-family: Arial, sans-serif; font-size: 14px;">
+        <h4>Creating the Cloze/select sentences</h4>
+         <p> Use the standard bold markdown <code>**bold text**</code> for the cloze words in the quiz section.</p><p>Use<code>^^</code>as a delimiter(divider) to show which sentences will share the same answer choices</p> <p>Use ^br to start a new line.</p> <p> There is an example already in the text box</p>
+                    
+            <h4>Add optional info above the select sentences</h4>
+            <p>If you want to put instructions, reading material, or other things above the quiz selection sentences, follow these intructions</p>
+            <p>This is app-specific markdown, NOT traditional markdown.</p>
+        <p>Enter optional information within division markdown tags <br> <code><sup>^</sup>dv ... dv<sup>^</sup></code> Only ONE div allowed <br>(see example below)</p>
+            <p> Headings markdown (only 3 levels):<br> <code><sup>^</sup>h1 ... h1<sup>^</sup></code>, <code><sup>^</sup>h2 ... h2<sup>^</sup></code>, <code><sup>^</sup>h3 ... h3<sup>^</sup></code></p>
+            <p>Other markdown:<br> <code><sup>^</sup>bb bold bb<sup>^</sup></code>, <code><sup>^</sup>ii italic ii<sup>^</sup></code>, <code><sup>^</sup>uu underline uu<sup>^</sup></code></p>
+            <p> line breaks: <code><sup>^</sup>br</code></p> 
+
+
+            
+            Copy and paste this example to see how it renders:<br>
+            (only one division is allowed, so replace the current example division)<br><br>
+            <div class="quasi-code" style="margin: 0 0 0 2rem;">
+^dv  <br>
+&nbsp; &nbsp; &nbsp; ^h1 Cloze Instructions h1^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h2 Details h2^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; Complete the sentences below.^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h3 Note h3^<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; : Choose carefully<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ^bb bold bb^, with ^ii italic ii^ and ^uu underline uu^!<br>
+dv^<br>
+  <button class="button2" onclick="copyParent(this)">Copy</button>
+
+            </div>
+        </div>
+    </details>
+
+    <div id="output"><div id="cloze-div-1762672257155" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1762672257155')">Show Answers</button><div class="sentence-div">1. The <span style="font-size: 70%;">1</span><select data-correct="patient" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="patient">patient</option><option value="felt">felt</option><option value="recovered">recovered</option><option value="screaming">screaming</option>
+            </select> <span style="font-size: 70%;">2</span><select data-correct="recovered" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="patient">patient</option><option value="felt">felt</option><option value="recovered">recovered</option><option value="screaming">screaming</option>
+            </select> fully after three months of physical therapy.
+
+<br><br>2. She heard loud <span style="font-size: 70%;">3</span><select data-correct="screaming" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="patient">patient</option><option value="felt">felt</option><option value="recovered">recovered</option><option value="screaming">screaming</option>
+            </select> and <span style="font-size: 70%;">4</span><select data-correct="felt" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="patient">patient</option><option value="felt">felt</option><option value="recovered">recovered</option><option value="screaming">screaming</option>
+            </select> a sudden rush of fear.</div><div class="sentence-div">3. The <span style="font-size: 70%;">5</span><select data-correct="helicopter" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="helicopter">helicopter</option><option value="oak tree">oak tree</option><option value="alley">alley</option><option value="traveling">traveling</option>
+            </select> was <span style="font-size: 70%;">6</span><select data-correct="traveling" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="helicopter">helicopter</option><option value="oak tree">oak tree</option><option value="alley">alley</option><option value="traveling">traveling</option>
+            </select> low over the mountains during the rescue mission.
+
+<br><br>4. The old <span style="font-size: 70%;">7</span><select data-correct="oak tree" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="helicopter">helicopter</option><option value="oak tree">oak tree</option><option value="alley">alley</option><option value="traveling">traveling</option>
+            </select> in the <span style="font-size: 70%;">8</span><select data-correct="alley" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="helicopter">helicopter</option><option value="oak tree">oak tree</option><option value="alley">alley</option><option value="traveling">traveling</option>
+            </select> provided shade for the children playing below.</div><div class="sentence-div">5. He was <span style="font-size: 70%;">9</span><select data-correct="shooting" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shooting">shooting</option><option value="bow">bow</option><option value="surgery">surgery</option><option value="successful">successful</option>
+            </select> targets with his new <span style="font-size: 70%;">10</span><select data-correct="bow" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shooting">shooting</option><option value="bow">bow</option><option value="surgery">surgery</option><option value="successful">successful</option>
+            </select> in the field.
+
+<br><br>6. The <span style="font-size: 70%;">11</span><select data-correct="surgery" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shooting">shooting</option><option value="bow">bow</option><option value="surgery">surgery</option><option value="successful">successful</option>
+            </select> was <span style="font-size: 70%;">12</span><select data-correct="successful" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shooting">shooting</option><option value="bow">bow</option><option value="surgery">surgery</option><option value="successful">successful</option>
+            </select>, and the family breathed a sigh of relief.</div><div class="sentence-div">7. The report <span style="font-size: 70%;">13</span><select data-correct="shows" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="happened">happened</option><option value="anomalies">anomalies</option><option value="shows">shows</option><option value="found">found</option>
+            </select> what <span style="font-size: 70%;">14</span><select data-correct="happened" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="happened">happened</option><option value="anomalies">anomalies</option><option value="shows">shows</option><option value="found">found</option>
+            </select> during the power outage last Tuesday.
+
+<br><br>8. The rare <span style="font-size: 70%;">15</span><select data-correct="anomalies" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="happened">happened</option><option value="anomalies">anomalies</option><option value="shows">shows</option><option value="found">found</option>
+            </select> that were <span style="font-size: 70%;">16</span><select data-correct="found" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="happened">happened</option><option value="anomalies">anomalies</option><option value="shows">shows</option><option value="found">found</option>
+            </select> in the test results required further investigation.</div><div class="sentence-div">9. The <span style="font-size: 70%;">17</span><select data-correct="patient" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="blisters">blisters</option><option value="needed">needed</option><option value="patient">patient</option><option value="covered">covered</option>
+            </select> <span style="font-size: 70%;">18</span><select data-correct="needed" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="blisters">blisters</option><option value="needed">needed</option><option value="patient">patient</option><option value="covered">covered</option>
+            </select> constant care from the nursing staff.
+
+<br><br>10. His hands were <span style="font-size: 70%;">19</span><select data-correct="covered" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="blisters">blisters</option><option value="needed">needed</option><option value="patient">patient</option><option value="covered">covered</option>
+            </select> with <span style="font-size: 70%;">20</span><select data-correct="blisters" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="blisters">blisters</option><option value="needed">needed</option><option value="patient">patient</option><option value="covered">covered</option>
+            </select> from rowing all day.</div><div class="sentence-div">11. The <span style="font-size: 70%;">21</span><select data-correct="practice arrow" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="practice arrow">practice arrow</option><option value="located">located</option><option value="fortunate">fortunate</option><option value="rounded">rounded</option>
+            </select> had a <span style="font-size: 70%;">22</span><select data-correct="rounded" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="practice arrow">practice arrow</option><option value="located">located</option><option value="fortunate">fortunate</option><option value="rounded">rounded</option>
+            </select> tip to prevent injuries.
+
+<br><br>12. The hiker was <span style="font-size: 70%;">23</span><select data-correct="fortunate" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="practice arrow">practice arrow</option><option value="located">located</option><option value="fortunate">fortunate</option><option value="rounded">rounded</option>
+            </select> to be <span style="font-size: 70%;">24</span><select data-correct="located" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="practice arrow">practice arrow</option><option value="located">located</option><option value="fortunate">fortunate</option><option value="rounded">rounded</option>
+            </select> before nightfall.</div><div class="sentence-div">13. The burglar <span style="font-size: 70%;">25</span><select data-correct="disguised himself" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="disguised himself">disguised himself</option><option value="performing">performing</option><option value="medical">medical</option>
+            </select>, wearing a ski mask.
+
+<br><br>14. The <span style="font-size: 70%;">26</span><select data-correct="medical" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="disguised himself">disguised himself</option><option value="performing">performing</option><option value="medical">medical</option>
+            </select> team began <span style="font-size: 70%;">27</span><select data-correct="performing" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="disguised himself">disguised himself</option><option value="performing">performing</option><option value="medical">medical</option>
+            </select> tests immediately.</div><div class="sentence-div">15. The treasure was <span style="font-size: 70%;">28</span><select data-correct="hidden" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="hidden">hidden</option><option value="hanging baskets">hanging baskets</option><option value="monitor">monitor</option><option value="patient">patient</option>
+            </select> in the <span style="font-size: 70%;">29</span><select data-correct="hanging baskets" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="hidden">hidden</option><option value="hanging baskets">hanging baskets</option><option value="monitor">monitor</option><option value="patient">patient</option>
+            </select> on the porch.
+
+<br><br>16. The doctors will <span style="font-size: 70%;">30</span><select data-correct="monitor" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="hidden">hidden</option><option value="hanging baskets">hanging baskets</option><option value="monitor">monitor</option><option value="patient">patient</option>
+            </select> the <span style="font-size: 70%;">31</span><select data-correct="patient" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="hidden">hidden</option><option value="hanging baskets">hanging baskets</option><option value="monitor">monitor</option><option value="patient">patient</option>
+            </select> closely for the next 48 hours.</div><div class="sentence-div">17. Her <span style="font-size: 70%;">32</span><select data-correct="neck" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="neck">neck</option><option value="shot">shot</option><option value="felt">felt</option><option value="hidden">hidden</option>
+            </select> <span style="font-size: 70%;">33</span><select data-correct="felt" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="neck">neck</option><option value="shot">shot</option><option value="felt">felt</option><option value="hidden">hidden</option>
+            </select> stiff after sleeping in an awkward position.
+
+<br><br>18. The victim was <span style="font-size: 70%;">34</span><select data-correct="shot" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="neck">neck</option><option value="shot">shot</option><option value="felt">felt</option><option value="hidden">hidden</option>
+            </select> by someone <span style="font-size: 70%;">35</span><select data-correct="hidden" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="neck">neck</option><option value="shot">shot</option><option value="felt">felt</option><option value="hidden">hidden</option>
+            </select> in the bushes.</div><div class="sentence-div">19. The surgeon carefully stitched the damaged <span style="font-size: 70%;">36</span><select data-correct="artery" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vein">vein</option><option value="artery">artery</option><option value="carotid artery">carotid artery</option>
+            </select> to restore blood flow to the leg.
+<br><br>20. The nurse searched for a <span style="font-size: 70%;">37</span><select data-correct="vein" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vein">vein</option><option value="artery">artery</option><option value="carotid artery">carotid artery</option>
+            </select> in his arm to insert the IV needle.
+<br><br>21. The doctor pressed gently on his <span style="font-size: 70%;">38</span><select data-correct="carotid artery" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="vein">vein</option><option value="artery">artery</option><option value="carotid artery">carotid artery</option>
+            </select> to check his pulse.</div><div class="sentence-div">22. The veterinarian examined the horse's <span style="font-size: 70%;">39</span><select data-correct="jugular vein" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="jugular vein">jugular vein</option><option value="trauma">trauma</option><option value="midline">midline</option>
+            </select> before administering the medication.
+<br><br>23. The physical therapist asked him to stand with his feet at the <span style="font-size: 70%;">40</span><select data-correct="midline" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="jugular vein">jugular vein</option><option value="trauma">trauma</option><option value="midline">midline</option>
+            </select> of his body.
+<br><br>24. The therapist specialized in helping children recover from emotional <span style="font-size: 70%;">41</span><select data-correct="trauma" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="jugular vein">jugular vein</option><option value="trauma">trauma</option><option value="midline">midline</option>
+            </select>.</div><div class="sentence-div">25. She planted several flowering <span style="font-size: 70%;">42</span><select data-correct="shrubs" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="touch">touch</option><option value="take">take</option><option value="shrubs">shrubs</option>
+            </select> along the front of the house.
+<br><br>26. Don't <span style="font-size: 70%;">43</span><select data-correct="touch" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="touch">touch</option><option value="take">take</option><option value="shrubs">shrubs</option>
+            </select> the paint – it's still wet!
+<br><br>27. It will <span style="font-size: 70%;">44</span><select data-correct="take" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="touch">touch</option><option value="take">take</option><option value="shrubs">shrubs</option>
+            </select> about an hour to drive to the beach.</div><div class="sentence-div">28. By the time I arrived at the bakery, all the fresh bread was already <span style="font-size: 70%;">45</span><select data-correct="gone" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="died">died</option><option value="cross">cross</option><option value="gone">gone</option>
+            </select>.
+<br><br>29. Look both ways before you <span style="font-size: 70%;">46</span><select data-correct="cross" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="died">died</option><option value="cross">cross</option><option value="gone">gone</option>
+            </select> the street.
+<br><br>30. The flowers <span style="font-size: 70%;">47</span><select data-correct="died" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="died">died</option><option value="cross">cross</option><option value="gone">gone</option>
+            </select> because nobody watered them during the vacation.</div><div class="sentence-div">31. This hallway is <span style="font-size: 70%;">48</span><select data-correct="leading" data-group="13" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="routine">routine</option><option value="dangerous">dangerous</option><option value="leading">leading</option>
+            </select> us toward the main entrance.
+<br><br>32. Swimming alone in the ocean at night is extremely <span style="font-size: 70%;">49</span><select data-correct="dangerous" data-group="13" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="routine">routine</option><option value="dangerous">dangerous</option><option value="leading">leading</option>
+            </select>.
+<br><br>33. Brushing your teeth should be part of your daily <span style="font-size: 70%;">50</span><select data-correct="routine" data-group="13" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="routine">routine</option><option value="dangerous">dangerous</option><option value="leading">leading</option>
+            </select>.</div><div class="sentence-div">34. The pianist gave an <span style="font-size: 70%;">51</span><select data-correct="extraordinary" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shot">shot</option><option value="extraordinary">extraordinary</option>
+            </select> performance that brought the audience to tears.
+<br><br>35. The documentary was <span style="font-size: 70%;">52</span><select data-correct="shot" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="shot">shot</option><option value="extraordinary">extraordinary</option>
+            </select> entirely in black and white.</div><button class="deleteThisSectionBtn editMode" onclick="this.parentElement.remove();alert(&quot;section deleted&quot;);" style="display: none;">Delete This Section</button></div></div>
+    <textarea id="inputText" class="editMode" style="white-space: pre-wrap; display: none;" rows="10" cols="80" placeholder="Enter optional info in ^dv dv^, headings in ^h1 h1^, ^h2 h2^, ^h3 h3^, followed by sentences with **bold** words, separated by ^^">^dv
+  Choose the correct answers
+dv^
+        
+The mirror image appeared **opposite** to the original ^br^br 
+object's **orientation**. ^br
+The laser **sliced** through the **metal** sheet with **precision** cutting technology. ^br ^^
+The **motor** completed a **half turn** before the safety **sensor** triggered the **stop**. ^br
+The **circuit** was ^br**overloaded** due to excessive **current**. ^br^^
+The **signal** was **amplified** for better **transmission**. ^br 
+The **gear** shifted with a **click**. ^br^^
+
+
+
+    </textarea>
+    <button class="editMode" onclick="generateCloze()" style="display: none;">Generate Cloze</button>
+    
+    <!-- Submit Assignment Button -->
+    <button id="submitAssignment" style="display:none; margin-top: 20px;" disabled="">Submit Assignment</button>
+    
+    <!-- Save System -->
+    <!--
+    <button id="save2server" class="editMode" onclick="document.getElementById('output').style.pointerEvents = 'none'; saveBothVersions()" style="display:none">Save To Server</button>
+    <div id="adminSaveStatus" class="save-status editMode"></div>
+    <div id="publicSaveStatus" class="save-status editMode"></div>
+    
+    <button id="viewStudentVersion" class="editMode" onclick="redirectToHtml()" style="display:none;">View Student Version</button>
+    -->
+
+<script>
+function copyParent(button) {
+  const parent = button.parentElement;
+
+  // Temporarily hide button
+  const oldDisplay = button.style.display;
+  button.style.display = "none";
+  const text = parent.innerText.trim();
+  button.style.display = oldDisplay;
+
+  // Copy
+  navigator.clipboard.writeText(text).then(() => {
+    showPopup(button, "Copied");
+  });
+}
+
+function showPopup(button, message) {
+  const popup = document.createElement("div");
+  popup.className = "copy-popup show";
+  popup.textContent = message;
+  document.body.appendChild(popup);
+
+  // Position near the button
+  const rect = button.getBoundingClientRect();
+  popup.style.left = rect.left + window.scrollX + "px";
+  popup.style.top = rect.top + window.scrollY - 30 + "px"; // 30px above button
+
+  // Fade out and remove
+  setTimeout(() => popup.classList.remove("show"), 1200);
+  setTimeout(() => popup.remove(), 1600);
+}
+</script>
+
+<script>
+let selectCounter = 0; // Counter for select element numbering        
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+    
+    if (button.textContent === 'Show Answers') {
+        // Show all answers
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        // Hide all answers
+        selects.forEach(select => {
+            select.value = '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+        });
+        button.textContent = 'Show Answers';
+    }
+}
+
+function generateCloze() {
+    selectCounter = 0; // Reset select numbering for new cloze exercise
+    const input = document.getElementById('inputText').value;
+    const outputDiv = document.getElementById('output');
+
+    // Create container for this cloze exercise
+    const clozeContainer = document.createElement('div');
+
+    const uniqueId = Date.now();
+    clozeContainer.id = `cloze-div-${uniqueId}`;
+    
+    clozeContainer.className = 'cloze-container';
+
+    // Add toggle button at the top
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toggle-button';
+    toggleButton.textContent = 'Show Answers';
+    toggleButton.setAttribute('onclick', `toggleAnswers('cloze-div-${uniqueId}')`);   clozeContainer.appendChild(toggleButton);
+
+    // Check for information section with ^dv dv^
+    const dvOpenCount = (input.split('^dv').length - 1);
+    const dvCloseCount = (input.split('dv^').length - 1);
+    console.log(`^dv count: ${dvOpenCount}, dv^ count: ${dvCloseCount}`);
+    if (dvOpenCount !== dvCloseCount) {
+        alert(`Tag mismatch: Found ${dvOpenCount} ^dv tags but ${dvCloseCount} dv^ tags. Please ensure each ^dv has a matching dv^.`);
+        return;
+    }
+    if (dvOpenCount + dvCloseCount > 2) {
+        alert(`only one ^dv...dv^ set allowed.`);
+        return;
+    }            
+
+    // Check heading tags
+    const headings = [
+        { open: '^h1', close: 'h1^', openTag: '<h1>', closeTag: '</h1>' },
+        { open: '^h2', close: 'h2^', openTag: '<h2>', closeTag: '</h2>' },
+        { open: '^h3', close: 'h3^', openTag: '<h3>', closeTag: '</h3>' }
+    ];
+    for (const heading of headings) {
+        const openCount = (input.split(heading.open).length - 1);
+        const closeCount = (input.split(heading.close).length - 1);
+        console.log(`${heading.open} count: ${openCount}, ${heading.close} count: ${closeCount}`);
+        if (openCount !== closeCount) {
+            alert(`Tag mismatch: Found ${openCount} ${heading.open} tags but ${closeCount} ${heading.close} tags. Please ensure each ${heading.open} has a matching ${heading.close}.`);
+            return;
+        }
+    }
+
+    // Process information section if present
+    let infoSection = '';
+    let sentencesInput = input;
+    const infoMatch = input.match(/\^dv([\s\S]*?)dv\^/);
+    if (infoMatch) {
+        infoSection = infoMatch[1].trim();
+        sentencesInput = input.replace(/\^dv[\s\S]*?dv\^/, '').trim();
+        console.log('Raw infoSection:', infoSection);
+
+        // Replace heading tags with simple string replacement
+        let processedInfo = infoSection;
+        headings.forEach(heading => {
+            console.log(`Replacing ${heading.open} with ${heading.openTag} and ${heading.close} with ${heading.closeTag}`);
+            processedInfo = processedInfo.replaceAll(heading.open, heading.openTag).replaceAll(heading.close, heading.closeTag);
+            console.log(`After ${heading.openTag} replacement:`, processedInfo);
+        });
+
+        
+// Validate bold, italic, underline tags
+const textStyles = [
+    { open: '^bb', close: 'bb^', name: 'bold' },
+    { open: '^ii', close: 'ii^', name: 'italic' },
+    { open: '^uu', close: 'uu^', name: 'underline' }
+];
+for (const style of textStyles) {
+    const openCount = (input.split(style.open).length - 1);
+    const closeCount = (input.split(style.close).length - 1);
+    console.log(`${style.open} count: ${openCount}, ${style.close} count: ${closeCount}`);
+    if (openCount !== closeCount) {
+        alert(`Tag mismatch: Found ${openCount} ${style.open} tags but ${closeCount} ${style.close} tags. Please ensure each ${style.open} has a matching ${style.close}.`);
+        return;
+    }
+}
+
+// Replace ^br and text style tags
+processedInfo = processedInfo.replaceAll('^br', '<br>')
+    .replaceAll('^bb', '<b>')
+    .replaceAll('bb^', '</b>')
+    .replaceAll('^ii', '<i>')
+    .replaceAll('ii^', '</i>')
+    .replaceAll('^uu', '<u>')
+    .replaceAll('uu^', '</u>');
+console.log('After ^br and text style replacement:', processedInfo);                
+        
+        
+        infoSection = processedInfo;
+        const infoDiv = document.createElement('div');
+        infoDiv.innerHTML = infoSection;
+        infoDiv.style.marginBottom = '20px';
+        clozeContainer.appendChild(infoDiv);
+    }
+
+const caretCount = (sentencesInput.match(/\^\^/g) || []).length;
+if (caretCount < 2) {
+    if (!confirm('Normally, two or more sets of ^^ should be present.\n Do you really want to continue?\n\n CANCEL = back to input; \n\n OK = make the quiz anyway. ')) {
+        return;
+    }
+}
+
+    // Split remaining input into groups by ^^ (each group can contain multiple sentences)
+    const groups = sentencesInput.split('^^').map(s => s.trim()).filter(s => s);
+
+    // Process each group
+    groups.forEach((group, groupIndex) => {
+        // Extract unique bold words for this group
+        const boldWords = [];
+        const matches = group.match(/\*\*([^\*]+)\*\*/g) || [];
+        matches.forEach(match => {
+            const word = match.replace(/\*\*/g, '').trim();
+            if (word && !boldWords.includes(word)) {
+                boldWords.push(word);
+            }
+        });
+
+        // Shuffle bold words once for this group
+        const shuffledWords = shuffleArray([...boldWords]);
+
+        // Generate HTML for the group
+        let clozeGroup = group;
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
+        
+        // Replace each bold word with a select element
+        boldWords.forEach(word => {
+            const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
+            selectCounter++; // Increment counter for this select
+            const selectHtml = `<span style="font-size: 70%;">${selectCounter}</span><select data-correct="${word}" data-group="${groupIndex}" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                ${shuffledWords.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>`;
+            clozeGroup = clozeGroup.replace(regex, selectHtml);
+        });
+
+        // Create group container
+        const sentenceDiv = document.createElement('div');
+        sentenceDiv.className = 'sentence-div'; // Apply the CSS class
+        sentenceDiv.innerHTML = clozeGroup;
+        clozeContainer.appendChild(sentenceDiv);
+    });
+    
+    const deleteThisSectionBtn = document.createElement('button');
+    deleteThisSectionBtn.className='deleteThisSectionBtn editMode';
+    deleteThisSectionBtn.textContent = 'Delete This Section';
+    deleteThisSectionBtn.setAttribute('onclick', 'this.parentElement.remove();alert("section deleted");');
+    clozeContainer.appendChild(deleteThisSectionBtn);
+
+    // Append to output
+    outputDiv.appendChild(clozeContainer);
+}
+
+function checkAnswer(select) {
+    // Don't provide feedback if answers are being shown
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+    
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+<!-- Student Verification Script -->
+<script>
+async function verifyStudent() {
+    const name = document.getElementById("name").value.trim();
+    const id = document.getElementById("id").value.trim();
+    const passCode = document.getElementById("passCode").value.trim();
+    
+    if (!name || !id || !passCode) {
+        alert("Please fill in all fields first!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('id', id);
+    formData.append('passCode', passCode);
+    
+    try {
+        const response = await fetch('./verify_student.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
+        
+        if (result === 'SUCCESS') {
+          document.getElementById('output').style.pointerEvents = 'auto';  
+          document.getElementById('submitAssignment').disabled = false;
+        }
+        
+    } catch (error) {
+        alert("Verification error. Try again!");
+    }
+}
+
+// Show verification button initially
+//document.getElementById('verifyYou').style.display = "block";
+</script>
+
+<!-- Save System Scripts -->
+<script>
+function redirectToHtml() {
+  // Get the current page's URL
+  let currentUrl = window.location.href;
+  // Replace .php with .html
+  let newUrl = currentUrl.replace(/\.php$/, '.html');
+  // Open the new URL in a new tab
+  window.open(newUrl, '_blank');
+}
+
+async function saveBothVersions() {
+    // Get the current file's pathname
+    const filePath = window.location.pathname;
+    let pathParts = filePath.split('/');
+
+    // Extract just the filename from the path
+    const fileNM = pathParts.pop() || 'lesson.php'; // Fallback if empty
+    const fileNameHtml = fileNM.replace(/\.php$/, ".html") || 'lesson.html';
+
+    console.log("1. Current filename:", fileNM);
+    console.log("2. New file name:", fileNameHtml);
+
+    // Validate filenames
+    if (!fileNM || typeof fileNM !== 'string') {
+        console.error('Error: fileNM is invalid:', fileNM);
+        return;
+    }
+    if (!fileNameHtml || typeof fileNameHtml !== 'string') {
+        console.error('Error: fileNameHtml is invalid:', fileNameHtml);
+        return;
+    }
+
+    // Set serverLocation to the desired directory
+    const serverLocation = './';
+    console.log('serverLocation:', serverLocation); // Debug: verify the path
+
+    // Run admin save first
+    await saveAdminVersion(fileNM, serverLocation);
+    // Then run public save
+    await savePublicVersion(fileNameHtml, serverLocation);
+}
+
+async function saveAdminVersion(fileNM, serverLocation) {
+    const saveStatus = document.getElementById('adminSaveStatus');
+    
+    document.getElementById('output').style.pointerEvents = 'auto'; 
+    document.getElementById("backToHub").style.display = "block";     
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    try {
+        // Capture the HTML content
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const htmlContent = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Wrap HTML content with basic PHP authentication (no auth_check yet)
+        const phpWrappedContent = `${htmlContent}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving admin version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', phpWrappedContent);
+        formData.append('filename', fileNM);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // File saved successfully, now inject auth_check.php
+            const injectFormData = new FormData();
+            injectFormData.append('filename', fileNM);
+            
+            const injectResponse = await fetch('./inject_auth.php', {
+                method: 'POST',
+                body: injectFormData
+            });
+            
+            if (injectResponse.ok) {
+                saveStatus.className = 'save-status success';
+                saveStatus.textContent = 'Admin PHP version saved successfully!';
+            } else {
+                saveStatus.className = 'save-status warning';
+                saveStatus.textContent = 'File saved but auth injection may have failed';
+            }
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Admin Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Admin Error: ${error.message}`;
+    }
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+
+async function savePublicVersion(fileNameHtml, serverLocation) {
+    
+    const deleteButtons = document.querySelectorAll('.deleteThisSectionBtn');
+    deleteButtons.forEach(button => {
+        button.style.display = 'none';
+    });
+    
+    document.getElementById('output').style.pointerEvents = 'none';
+    document.getElementById("backToHub").style.display = "none";     
+    document.getElementById("adminSaveStatus").style.display = "none";     
+
+    
+    const saveStatus = document.getElementById('publicSaveStatus');
+    
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    try {
+        // Capture DOCTYPE and full HTML
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const fullHtml = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving public version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', fullHtml);
+        formData.append('filename', fileNameHtml);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            saveStatus.className = 'save-status success';
+            saveStatus.textContent = 'Public version saved successfully!';
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Public Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Public Error: ${error.message}`;
+    }
+    
+    
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";  
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+</script>
+
+<!-- Include the submission system -->
+<script src="/drRayLMS/components/geniMore.js"></script>
+
+<!--========================================================
+edit HTML; save as DOM
+-------------------------
+Change a web page without coding!
+1. Set document to contenteditable.
+2. Then save the dom with code below
+------------------------- -->
+<div>
+<button id="saveDomButton" class="editMode" style="margin-top: 0.7rem; display: none;">Save DOM as File</button>
+<a id="downloadLink" style="display: none;"></a>
+</div>
+<script>
+document.getElementById('saveDomButton').addEventListener('click', function() {
+
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+
+  // Capture the current DOM state as HTML
+  const domState = document.documentElement.outerHTML;
+
+  // Create a Blob with the DOM state
+  const blob = new Blob([domState], { type: 'text/html' });
+
+  // Create a URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Set the download link's href and download attributes
+  const downloadLink = document.getElementById('downloadLink');
+  downloadLink.href = url;
+  downloadLink.download = 'dom_state.html';
+
+  // Trigger the download
+  downloadLink.click();
+
+  // Clean up the URL object
+  URL.revokeObjectURL(url);
+
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+  alert("Check Your Browser's Default Download Folder");
+
+});
+</script>
+<!--///// end edit HTML save as DOM =======================
+========================================================-->
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
+
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
+
+</body></html>
