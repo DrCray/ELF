@@ -143,15 +143,25 @@
             background-color: darkgray;
             color: white;
          }
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
     </style>
 </head>
 <body>
     
-
-    <h1 class="editMode">Cloze Exercise Generator</h1>
-
+<div id="topHeading" contenteditable="true">
+    <h1 class="editMode">Type Text or Delete</h1>
+    <h2>Type Text or Delete</h2>
+    <h3>Type Text or Delete</h3>
+    <h4>Type Text or Delete</h4>
+    <p>Type Text or Delete</p>
+</div>
     <!-- Student Info Section -->
-    <hr>
+
     <input id="name" type="text" value="name">
     <input id="id" type="text" value="id#">
     <hr>
@@ -705,19 +715,22 @@ Change a web page without coding!
 1. Set document to contenteditable.
 2. Then save the dom with code below
 ------------------------- -->
-<div>
-<button id="saveDomButton" class="editMode" style="margin-top:0.7rem;">Save DOM as File</button>
+<div class=EditMode>
+<p>Save as: <input id="domFileName" type="text" value="File Name"></p>
+
+<button id="saveDomButton" class="editMode">Save DOM as File</button>
 <a id="downloadLink" style="display: none;"></a>
 </div>
 <script>
 document.getElementById('saveDomButton').addEventListener('click', function() {
-
+const domFileName = document.getElementById('domFileName').value;
     // Hide all editMode elements before saving
     const editModeElements = document.querySelectorAll('.editMode');
     editModeElements.forEach(element => {
         element.style.display = 'none';
     });
 
+    document.getElementById('topHeading').removeAttribute('contenteditable');
   // Capture the current DOM state as HTML
   const domState = document.documentElement.outerHTML;
 
@@ -730,7 +743,7 @@ document.getElementById('saveDomButton').addEventListener('click', function() {
   // Set the download link's href and download attributes
   const downloadLink = document.getElementById('downloadLink');
   downloadLink.href = url;
-  downloadLink.download = 'dom_state.html';
+  downloadLink.download = domFileName;
 
   // Trigger the download
   downloadLink.click();
@@ -772,5 +785,6 @@ document.getElementById('saveDomButton').addEventListener('click', function() {
          } // end checkThenPrint()
      </script>
      <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+     <footer style="margin-top:6rem;">...</footer>
 </body>
 </html>
