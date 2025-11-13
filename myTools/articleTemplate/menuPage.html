@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Ray's Technology Lectures</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .topSection {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .topSection h2 {
+            color: #2980b9;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+
+        
+        .lecture-link {
+            display: block;
+            margin: 0px 0;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .lecture-link:hover {
+            background: #ffeaa7;
+            transform: translateX(5px);
+        }
+        
+        .duration {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .mainSection {
+            margin-top: 30px;
+        }
+        
+        .mainSection h2 {
+            color: #27ae60;
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .generalInfo {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .linksGrid {
+            display: grid;
+            gap: 12px;
+            counter-reset: itemCounter; /* Initialize/reset counter */
+        }
+        
+        .aLink {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #6c5ce7;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .aLink::before {
+  counter-increment: itemCounter; /* Increment counter */
+  content: counter(itemCounter) ". "; /* Display counter before each item */
+  /*font-weight: bold;*/
+  color: blue;
+}
+        
+        .aLink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-link {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .video-link:hover {
+            color: #5f3dc4;
+            text-decoration: underline;
+        }
+        
+        .video-title {
+            color: #2d3436;
+            font-size: 0.95em;
+        }
+        
+        .ted-ed-link {
+            display: inline-block;
+            background: #e17055;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .ted-ed-link:hover {
+            background: #d63031;
+        }
+        
+        button {
+            display: block;
+            margin: 0 0 .7rem 0;
+        }
+
+        img {
+            display:block;
+            max-width:100%;
+            height:auto;
+            border-radius:8px;
+        }
+
+        .editor-panel{
+            position:fixed;top:10px;right:10px;
+            background:rgba(255,255,255,.97);
+            padding:14px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,.15);
+            z-index:9999;
+            font-family:'Poppins',sans-serif;
+            font-size:.85rem;
+            min-width:10rem;
+            max-width:15rem;
+            }
+        .editor-panel input,.editor-panel button{
+            width:100%;
+            margin:6px 0;
+            padding:8px 10px;
+            font-size:.85rem;
+            border:1px solid #ddd;
+            border-radius:6px
+        }
+        .editor-panel button{
+            background:#ff6b6b;
+            color:white;
+            font-weight:600;
+            cursor:pointer;
+            transition:background .3s
+        }
+        .editor-panel button:hover{
+            background:#4ecdc4
+        }
+        .editor-panel input{
+            max-width:90%;
+        }
+
+        .left_arrow{
+            font-size: 150%;
+        }
+
+
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+        .typeTextBelow{
+            pointer-events:none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 contenteditable>SciTech English</h1>
+        <div class="subtitle" contenteditable>on science and technology</div>
+        
+        <div id="topSection" class="topSection" contenteditable>
+            <h2>Dr. Ray's Technology Lectures</h2>
+<span class="typeTextBelow">[optional: type/paste plain/formatted below]<br><br></span>
+            <div>
+            <a href="https://youtu.be/K1eThy3Qo5M" class="lecture-link">Dr. Ray on Bitcoin <span class="duration">(1 hour)</span></a> <span class="typeTextBelow">[optional: type/paste plain/formatted below]<br><br></span>
+                <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                    Delete
+                </button>
+           </div>
+
+            <div>
+                <a href="https://youtu.be/XOMUgBUNBxE" class="lecture-link"  target="_blank">Dr. Ray on Machine Learning / AI <span class="duration">(1 hour)</span></a><span class="typeTextBelow">[optional: type/paste plain/formatted below]<br><br></span>
+                <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                    Delete
+                </button>
+           </div>
+
+        </div>
+        
+        <div class="mainSection">
+            <h2 contenteditable>TED-Ed Video Collection</h2>
+            
+            <div class="generalInfo" contenteditable>
+                <strong>Videos:</strong> There are 17 videos <br>
+                 <strong>Format:</strong> Each video is &approx; 5 minutes
+            </div>
+
+
+           <div id="redLinkDiv">
+            <a id="redlink" href="https://ed.ted.com/" class="ted-ed-link" target="_blank">Visit TED Ed →</a>
+                <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                    Delete
+                </button>
+           </div>
+
+
+            <div class="linksGrid">
+
+                <div class="aLink" contenteditable>
+                    <a href="https://drcray.github.io/ELF/Professor/SciTech/leaningTowerOfPisa.html" target="_blank">Tower of Pisa</a><span class="typeTextBelow"><br>[optional: type/paste plain/formatted below]<br><br></span>
+                        <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                            Delete
+                        </button>
+               </div>
+
+                
+                <div class="aLink" contenteditable>
+                    <a href="https://drcray.github.io/ELF/Professor/SciTech/goldenGatBridgeTexEd.html">Building Bridges</a><span class="typeTextBelow"><br>[optional: type/paste plain/formatted below]<br><br></span>
+                        <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                            Delete
+                        </button>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- EDITOR PANEL -->
+  <div class="editor-panel editMode">
+    <strong>Editor Tools</strong>
+    <hr style="margin:8px 0;border:none;border-top:1px solid #eee">
+
+
+    <label>Link Text<br><input id="linkText" placeholder="e.g. Watch on YouTube"></label>
+    <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
+
+    <button id="btnUpdateRedLinkURL"><span class="left_arrow">&larr;</span>&nbsp; Red Link</button>
+    <button id="btnAddLinkTop"><span class="left_arrow">&larr;</span>&nbsp; Top Section</button>
+    <button id="btnAddLinkMain"><span class="left_arrow">&larr;</span>&nbsp; Main Body</button>
+
+<hr>
+
+<hr>
+    <label>Save As<br><input id="filenameInput" value="myPage.html"></label>
+    <button id="btnSave">Save as Local File</button>
+
+  </div>
+
+
+<!-- link templates -->
+<template id="top_link_template">
+            <div>
+                <a href="url" class="lecture-link" target="_blank">link label<span class="duration">side note</span></a>
+                <span class="typeTextBelow">[optional: type/paste plain/formatted below]<br><br></span>
+                    <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                        Delete
+                    </button>
+           </div>
+</template>
+
+<template id="link_template" contenteditable="true"> <!-- appends to id="topSection" -->
+        <div class="aLink">
+            <a href="url" target="_blank">link label</a><span class="typeTextBelow"><br>[optional: type/paste plain/formatted below]<br><br></span>
+                <button class="editMode" onclick="if(confirm('Are you sure?')) this.parentElement.remove()">
+                    Delete
+                </button>
+        </div>
+</template>
+
+
+
+<script>
+// === 1. UPDATE RED LINK (unchanged, works) ===
+document.getElementById('btnUpdateRedLinkURL').onclick = function () {
+    const linkText = document.getElementById('linkText').value.trim();
+    const linkUrl = document.getElementById('linkUrl').value.trim();
+
+    if (!linkText || !linkUrl) {
+        alert('Please enter both link text and URL.');
+        return;
+    }
+    if (!isValidUrl(linkUrl)) {
+        alert('Please enter a valid URL (http or https).');
+        return;
+    }
+
+    const redLink = document.getElementById('redlink');
+    redLink.textContent = linkText + ' →';
+    redLink.href = linkUrl;
+};
+
+// === 2. ADD TO TOP SECTION (template has delete button) ===
+document.getElementById('btnAddLinkTop').onclick = function () {
+    const linkText = document.getElementById('linkText').value.trim();
+    const linkUrl = document.getElementById('linkUrl').value.trim();
+
+    if (!linkText || !linkUrl) {
+        alert('Please enter both link text and URL.');
+        return;
+    }
+    if (!isValidUrl(linkUrl)) {
+        alert('Please enter a valid URL (http or https).');
+        return;
+    }
+
+    const template = document.getElementById('top_link_template');
+    const clone = template.content.cloneNode(true);
+
+    const a = clone.querySelector('a');
+    a.href = linkUrl;
+    a.innerHTML = linkText + ' <span class="duration"></span>';
+
+    // Append directly — delete button is already in template
+    document.getElementById('topSection').appendChild(clone);
+};
+
+// === 3. ADD TO MAIN BODY (FIX: contenteditable lost on clone) ===
+document.getElementById('btnAddLinkMain').onclick = function () {
+    const linkText = document.getElementById('linkText').value.trim();
+    const linkUrl = document.getElementById('linkUrl').value.trim();
+
+    if (!linkText || !linkUrl) {
+        alert('Please enter both link text and URL.');
+        return;
+    }
+    if (!isValidUrl(linkUrl)) {
+        alert('Please enter a valid URL (http or https).');
+        return;
+    }
+
+    const template = document.getElementById('link_template');
+    const clone = template.content.cloneNode(true);
+
+    const a = clone.querySelector('a');
+    a.href = linkUrl;
+    a.textContent = linkText;
+
+    // FIX: Restore contenteditable on the .aLink div
+    const aLinkDiv = clone.querySelector('.aLink');
+    aLinkDiv.setAttribute('contenteditable', 'true');
+
+    // Optional: Also make the <a> tag editable if you want inline text edit
+    // a.setAttribute('contenteditable', 'true');
+
+    // Append
+    document.querySelector('.linksGrid').appendChild(clone);
+
+    // Clear inputs
+    document.getElementById('linkText').value = '';
+    document.getElementById('linkUrl').value = '';
+};
+
+
+
+// URL validation function
+function isValidUrl(string) {
+    try {
+        const url = new URL(string);
+        // Check if protocol is http or https
+        return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch (err) {
+        return false;
+    }
+}
+
+
+
+//SAVE dom as fle
+document.getElementById('btnSave').onclick = () => {
+    //consol.log('Save button clicked');
+
+
+    // === SAVE EDITABLE VERSION FIRST ===
+    let saveEditableVersion = confirm("Save an editable version?");
+    //consol.log('1Save editable version:', saveEditableVersion);
+
+    if (saveEditableVersion) {
+        const baseName = document.getElementById('filenameInput').value.trim();
+        //consol.log('2Base name:', baseName);
+
+        const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        //consol.log('3Edit HTML length:', editHTML.length);
+
+        const editBlob = new Blob([editHTML], { type: 'text/html' });
+        const editUrl = URL.createObjectURL(editBlob);
+        const editA = document.createElement('a');
+        const editName = baseName.replace(/\.html$/, '') + '_EditMode.html';
+        //consol.log('4Edit filename:', editName);
+
+        editA.href = editUrl;
+        editA.download = editName;
+        document.body.appendChild(editA);
+        editA.click();
+        //consol.log('5Edit version click triggered');
+        document.body.removeChild(editA);
+        URL.revokeObjectURL(editUrl);
+
+    }
+
+    // === NOW CREATE PUBLIC VERSION ===
+    //consol.log('6Starting public version');
+
+    // HIDE editMode elements
+    const editElements = document.querySelectorAll('.editMode');
+    editElements.forEach(el => el.style.display = 'none');
+
+    // HIDE typeTextBelow elements
+    const typeTextBelowEls = document.querySelectorAll('.typeTextBelow');
+    typeTextBelowEls.forEach(el => el.style.display = 'none');
+
+    // DISABLE all contenteditable
+    const editables = document.querySelectorAll('[contenteditable]');
+    editables.forEach(el => el.setAttribute('contenteditable', 'false'));
+
+    // Capture publishable HTML
+    const publicHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    // RESTORE all contenteditable to true
+    editables.forEach(el => el.setAttribute('contenteditable', 'true'));
+
+    // RESTORE editMode visibility
+    editElements.forEach(el => el.style.display = 'block');
+
+    // RESTORE typeTextBelow visibility
+    typeTextBelowEls.forEach(el => el.style.display = 'block');
+
+    // Download public version
+    const blob = new Blob([publicHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const fileName = document.getElementById('filenameInput').value.trim();
+
+    a.href = url;
+    a.download = fileName.replace(/\.html$/, '') + '.html';
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+   if (saveEditableVersion) {
+
+        alert("Editable and Public versions saved to default download folder");
+    } else {
+        alert("Only Public version saved to default download folder");
+    }
+};
+  </script>
+
+</body>
+</html>
