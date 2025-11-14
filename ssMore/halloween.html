@@ -25,6 +25,7 @@
 body{
     font-family: sans-serif; 
     padding: 1rem;  max-width:40rem; margin:auto;
+    box-shadow: 0px 0px 21px 6px #808080;
 }
 
 :focus {outline:none;}
@@ -167,8 +168,18 @@ body{
     }     
     
     .zimage{
-		 display:block; margin:auto;
-	}      
+		 display:block; margin:1rem auto 1rem auto;
+		 border-radius:20px;
+		 -webkit-box-shadow: 0px 0px 10px 10px #BC5100;
+          box-shadow: 0px 0px 10px 10px #BC5100;
+	}
+    img {
+        max-width: 80%;
+		 display:block; margin:1rem auto 1rem auto;
+		 border-radius:20px;
+		 -webkit-box-shadow: 0px 0px 10px 10px #BC5100;
+          box-shadow: 0px 0px 10px 10px #BC5100;
+	}
 </style>
 </head>
   
@@ -283,7 +294,7 @@ body{
      
 
 <div id="container">
-    <div id="column1" class="column1" contenteditable="false"><div><img id="zimage" src="https://drcray.github.io/ELF/ssImages/halloweenHouseDecorations.webp" class="zimage" alt="an Image" style="width: 74%;"></div><div><br></div><div>Halloween is an exciting and colorful celebration in America. Every year on October 31st, people of all ages <i>dress up</i> in <b>costumes</b>, <b>decorate</b> their homes, and enjoy spooky <b>festivities</b>. <br></div><div><br></div><div><b>The History</b></div><p>Halloween
+    <div id="column1" class="column1" contenteditable="false"><button id="readerToggle" type="button" aria-pressed="false" aria-label="Reader Mode (hide images)">Reader Mode (hide images)</button><br><br><div><img id="zimage" src="https://drcray.github.io/ELF/ssImages/halloweenHouseDecorations.webp" class="zimage" alt="an Image" style="width: 74%;"></div><div><br></div><div>Halloween is an exciting and colorful celebration in America. Every year on October 31st, people of all ages <i>dress up</i> in <b>costumes</b>, <b>decorate</b> their homes, and enjoy spooky <b>festivities</b>. <br></div><div><br></div><div><b>The History</b></div><p>Halloween
 is a holiday whose <b>roots</b> goes back 2,000 years to a Celtic tradition
 called Samhain. It was a festival that <b>celebrated</b> the end
 of the <b>harvest</b> season and the start of winter. It was traditionally
@@ -330,6 +341,39 @@ and black streamers.</div><div><br></div><div><img id="zimage" src="https://drcr
     </div> 
       
 <script>
+
+
+
+      (function () {
+            const btn = document.getElementById('readerToggle');
+            if (!btn) return;
+
+            let imagesVisible = true;
+
+            function updateButtonLabel() {
+                btn.textContent = imagesVisible ?
+                    'Reader Mode (hide images)' :
+                    'Show Images';
+                btn.setAttribute('aria-pressed', String(!imagesVisible));
+            }
+
+            function setImagesDisplay(display) {
+                document.querySelectorAll('img').forEach(img => {
+                    img.style.display = display;
+                });
+            }
+
+            btn.addEventListener('click', () => {
+                imagesVisible = !imagesVisible;
+                setImagesDisplay(imagesVisible ? '' : 'none');
+                updateButtonLabel();
+            });
+
+            updateButtonLabel();
+        })();
+
+
+
     
 function textToList() {
     
@@ -565,5 +609,6 @@ function saveDom(){
 
   
   
+
 
 </body></html>
