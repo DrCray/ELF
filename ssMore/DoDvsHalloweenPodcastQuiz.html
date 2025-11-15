@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Halloween vs. Día de los Muertos – Vocabulary Practice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts: Elegant & Readable -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #1a5d57;     /* Deep teal */
+      --accent: #e67e22;      /* Warm orange */
+      --text: #2c3e50;
+      --light: #f8f9fa;
+      --border: #e0e0e0;
+      --blue-correct: #1e40af;
+      --orange-correct: #ea580c;
+      --incorrect: #d946ef;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', serif;
+      line-height: 1.7;
+      color: var(--text);
+      background: #F6E9F5;
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      width:80%;
+      margin: 2rem auto 2rem auto;
+      padding-bottom: 1.5rem;
+      border-bottom: 3px solid var(--primary);
+    }
+
+    #headerTopInside {
+      background: white; border-radius: 10px 10px 0 0 ; border-bottom: medium solid #FC5F32;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    h4 {
+      font-size: 1.5rem;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 16px;
+      margin: 1.5rem auto;
+      display: block;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      border: 1px solid #eee;
+    }
+
+    .content {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 14px 25px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      text-align: justify;
+      font-size: 1.05rem;
+    }
+
+    strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    hr {
+
+      width:70%; margin:0 auto 1rem auto; color:blue;
+    }
+
+    /* Dropdown Styling */
+    select {
+      font-family: inherit;
+      padding:3px 0 3px 1rem;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      min-width: 140px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      max-height: 1.7rem;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 93, 87, 0.15);
+    }
+
+    /* Answer Feedback */
+    .correct-bold {
+        color: #1A5D57; font-weight: bold;
+        background-color:#EAF3F2;
+     }
+    .correct-italic {
+        color: #1A5D57;
+        background-color:#EAF3F2;
+     } /* deep orange */
+    .incorrect { color: red; font-weight:bold; background-color:#FAFADA; } /* hot pink */
+    select { min-width: 130px; }
+
+    /* Toggle Button */
+    #toggleAnswers {
+      display: block;
+      margin: 1.5rem auto;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: var(--primary);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(26, 93, 87, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #toggleAnswers:hover {
+      background: #134a44;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(26, 93, 87, 0.4);
+    }
+
+
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      color: #95a5a6;
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+    }
+
+    @media (max-width: 600px) {
+      h2 { font-size: 2rem; }
+      select { min-width: 120px; font-size: 0.9rem; }
+      .content { padding: 1.5rem; }
+    }
+
+
+  </style>
+
+  <script>
+    function checkAnswer(select, correct, type) {
+      const val = select.value;
+      select.className = "";
+      if (val === correct) {
+        select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
+      } else if (val !== '') {
+        select.className = 'incorrect';
+      }
+    }
+
+    // Toggle Show/Hide All Answers
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggleBtn = document.getElementById('toggleAnswers');
+      if (!toggleBtn) return;
+
+      toggleBtn.addEventListener('click', function () {
+        const selects = document.querySelectorAll('select');
+        const isShowing = this.textContent.includes('Show');
+
+        selects.forEach(select => {
+          // Find correct option (first non-blank value)
+          const correctOption = Array.from(select.options).find(opt => opt.value && opt.value !== '');
+          const correctValue = correctOption ? correctOption.value : '';
+
+          if (isShowing) {
+            select.value = correctValue;
+            const type = select.getAttribute('onchange').includes('bold') ? 'bold' : 'italic';
+            select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
+          } else {
+            select.value = '';
+            select.className = '';
+          }
+        });
+
+        this.textContent = isShowing ? 'Hide all answers' : 'Show all answers';
+      });
+    });
+  </script>
+</head>
+<body>
+
+<header>
+<div id="headerTopInside">
+  <h2>Day of the Dead vs. Halloween</h2>
+  <h3>Vocabulary in Context Practice</h3>
+  </div>
+  <img src="https://i.postimg.cc/4dmkf3sf/Do-Dvs-Halloween.jpg" alt="Halloween and Día de los Muertos celebration">
+  <h4>Dr. Ray’s Cultural Awareness Course</h4>
+</header>
+
+<div class="content">
+  <button id="toggleAnswers">Show all answers</button>
+
+  <p>
+    Halloween and Dia de Los Muertos (Day of the Dead) are two fall holidays with
+    <select onchange="checkAnswer(this,'distinct','bold')">
+      <option value="">—</option>
+      <option value="distinct">distinct</option>
+      <option value="similar">similar</option>
+      <option value="identical">identical</option>
+    </select>
+    traditions. Halloween, rooted in Ireland, focuses on costumes, trick-or-treating, and spooky fun. In
+    <select onchange="checkAnswer(this,'contrast','bold')">
+      <option value="">—</option>
+      <option value="contrast">contrast</option>
+      <option value="addition">addition</option>
+      <option value="harmony">harmony</option>
+    </select>
+    , Dia de Los Muertos, celebrated in Mexico and parts of the US, honors
+    <select onchange="checkAnswer(this,'deceased','bold')">
+      <option value="">—</option>
+      <option value="deceased">deceased</option>
+      <option value="living">living</option>
+      <option value="future">future</option>
+    </select>
+    loved ones with altars, marigolds, and joyful family
+    <select onchange="checkAnswer(this,'gatherings','bold')">
+      <option value="">—</option>
+      <option value="gatherings">gatherings</option>
+      <option value="parties">parties</option>
+      <option value="competitions">competitions</option>
+    </select>
+    . While Halloween is
+    <select onchange="checkAnswer(this,'eerie','bold')">
+      <option value="">—</option>
+      <option value="eerie">eerie</option>
+      <option value="cheerful">cheerful</option>
+      <option value="quiet">quiet</option>
+    </select>
+    and playful, Day of the Dead is
+    <select onchange="checkAnswer(this,'vibrant','bold')">
+      <option value="">—</option>
+      <option value="vibrant">vibrant</option>
+      <option value="muted">muted</option>
+      <option value="dark">dark</option>
+    </select>
+    and celebratory, emphasizing remembrance and connection with the past.
+  </p>
+
+ <hr>
+
+  <p><strong>Host:</strong> It's funny how October and November give us this
+    <select onchange="checkAnswer(this,'back-to-back','italic')">
+      <option value="">—</option>
+      <option value="back-to-back">back-to-back</option>
+      <option value="side-by-side">side-by-side</option>
+      <option value="far-apart">far-apart</option>
+    </select>
+    double feature: Halloween first, then Day of the Dead—both with their own flavors, even though they're just days apart. Have you noticed how people sometimes
+    <select onchange="checkAnswer(this,'mix them up','italic')">
+      <option value="">—</option>
+      <option value="mix them up">mix them up</option>
+      <option value="keep them separate">keep them separate</option>
+      <option value="ignore one">ignore one</option>
+    </select>
+    just because of the timing?
+  </p>
+
+  <p><strong>Guest:</strong> You're so right! The calendar
+    <select onchange="checkAnswer(this,'overlap','bold')">
+      <option value="">—</option>
+      <option value="overlap">overlap</option>
+      <option value="gap">gap</option>
+      <option value="sequence">sequence</option>
+    </select>
+    definitely causes confusion, even though the
+    <select onchange="checkAnswer(this,'vibe','bold')">
+      <option value="">—</option>
+      <option value="vibe">vibe</option>
+      <option value="theme">theme</option>
+      <option value="origin">origin</option>
+    </select>
+    of each holiday couldn't be more different. Halloween's all about costumes, haunted houses, and that
+    <select onchange="checkAnswer(this,'sugar rush','italic')">
+      <option value="">—</option>
+      <option value="sugar rush">sugar rush</option>
+      <option value="scary walk">scary walk</option>
+      <option value="candy hunt">candy hunt</option>
+    </select>
+    from trick-or-treating, but Day of the Dead feels so much more connected to family and memories.
+  </p>
+
+  <p><strong>Host:</strong> Exactly! Halloween has that whole thrill of being spooked, with ghost stories and skeletons everywhere—it's fun, but not what I'd call spiritual. I love that Day of the Dead, or Dia de los Muertos, is really about honoring people who've
+    <select onchange="checkAnswer(this,'passed away','bold')">
+      <option value="">—</option>
+      <option value="passed away">passed away</option>
+      <option value="moved on">moved on</option>
+      <option value="returned">returned</option>
+    </select>
+    , not trying to scare anyone.
+  </p>
+
+  <p><strong>Guest:</strong> What
+    <select onchange="checkAnswer(this,'stands out','bold')">
+      <option value="">—</option>
+      <option value="stands out">stands out</option>
+      <option value="fades away">fades away</option>
+      <option value="blends in">blends in</option>
+    </select>
+    to me is the mood shift—Halloween
+    <select onchange="checkAnswer(this,'leans into','italic')">
+      <option value="">—</option>
+      <option value="leans into">leans into</option>
+      <option value="steps back from">steps back from</option>
+      <option value="runs toward">runs toward</option>
+    </select>
+    the eerie, while Day of the Dead is vibrant and almost celebratory. It's like a
+    <select onchange="checkAnswer(this,'reunion','bold')">
+      <option value="">—</option>
+      <option value="reunion">reunion</option>
+      <option value="farewell">farewell</option>
+      <option value="competition">competition</option>
+    </select>
+    where the family gets together, including the ones who aren't physically here anymore. There's something beautiful about that.
+  </p>
+
+  <p><strong>Host:</strong>
+    <select onchange="checkAnswer(this,'Speaking of','italic')">
+      <option value="">—</option>
+      <option value="Speaking of">Speaking of</option>
+      <option value="Moving on from">Moving on from</option>
+      <option value="Ignoring">Ignoring</option>
+    </select>
+    that, I was totally
+    <select onchange="checkAnswer(this,'fascinated','bold')">
+      <option value="">—</option>
+      <option value="fascinated">fascinated</option>
+      <option value="bored">bored</option>
+      <option value="confused">confused</option>
+    </select>
+    learning about the ofrendas people build at home. There's so much intention behind it—the photos, the foods, the marigolds. It's a
+    <select onchange="checkAnswer(this,'sensory','bold')">
+      <option value="">—</option>
+      <option value="sensory">sensory</option>
+      <option value="silent">silent</option>
+      <option value="visual">visual</option>
+    </select>
+    way of inviting memories back for a visit.
+  </p>
+
+  <p><strong>Guest:</strong> Absolutely, and those marigolds are such a key detail—they aren't just for decoration! Their bright orange color is supposed to guide spirits home, and the
+    <select onchange="checkAnswer(this,'scent','bold')">
+      <option value="">—</option>
+      <option value="scent">scent</option>
+      <option value="sound">sound</option>
+      <option value="taste">taste</option>
+    </select>
+    is almost like a calling card. Plus, papel picado and all the treats make the altar feel festive, not
+    <select onchange="checkAnswer(this,'somber','bold')">
+      <option value="">—</option>
+      <option value="somber">somber</option>
+      <option value="noisy">noisy</option>
+      <option value="empty">empty</option>
+    </select>
+    .
+  </p>
+
+  <p><strong>Host:</strong> The sugar skulls, too—I used to think they were creepy, but now I get that they're part of the joyful side. It's a way of saying, 'Hey, we remember you—and we're glad you're here.'</p>
+
+  <p><strong>Guest:</strong> Exactly, it's this gentle macabre, not meant to frighten at all. I even saw someone include photos of their pets on an ofrenda, which honestly made me tear up. It's about celebrating every life that touched us, not just
+    <select onchange="checkAnswer(this,'mourning','bold')">
+      <option value="">—</option>
+      <option value="mourning">mourning</option>
+      <option value="forgetting">forgetting</option>
+      <option value="ignoring">ignoring</option>
+    </select>
+    the loss.
+  </p>
+
+  <p><strong>Host:</strong> That actually reminds me—events like the one at Pan Am Park really
+    <select onchange="checkAnswer(this,'bring','italic')">
+      <option value="">—</option>
+      <option value="bring">bring</option>
+      <option value="hide">hide</option>
+      <option value="cancel">cancel</option>
+    </select>
+    these traditions
+    <select onchange="checkAnswer(this,'to life','italic')">
+      <option value="">—</option>
+      <option value="to life">to life</option>
+      <option value="to an end">to an end</option>
+      <option value="into darkness">into darkness</option>
+    </select>
+    for everyone. Live music, art installations, food trucks, and those
+    <select onchange="checkAnswer(this,'elaborate','bold')">
+      <option value="">—</option>
+      <option value="elaborate">elaborate</option>
+      <option value="simple">simple</option>
+      <option value="plain">plain</option>
+    </select>
+    face paintings—it becomes this huge, colorful gathering.
+  </p>
+
+  <p><strong>Guest:</strong> What I love is how open those celebrations are. You see families, friends, kids with calavera face paint and even people who are just learning about the holiday for the first time. It's welcoming—like, 'Come celebrate with us, no matter your background.'</p>
+
+  <p><strong>Host:</strong> Totally. And I think even
+    <select onchange="checkAnswer(this,'little touches','italic')">
+      <option value="">—</option>
+      <option value="little touches">little touches</option>
+      <option value="big changes">big changes</option>
+      <option value="strict rules">strict rules</option>
+    </select>
+    —like putting together a small ofrenda at home, or adding your pet's photo—can make the season feel more connected. It's a reminder that joy and remembrance can go hand in hand.
+  </p>
+
+  <p><strong>Guest:</strong> Couldn't agree more. Whether you're carving pumpkins or sharing pan dulce, it's a special time to honor our stories—both the
+    <select onchange="checkAnswer(this,'spooky','bold')">
+      <option value="">—</option>
+      <option value="spooky">spooky</option>
+      <option value="peaceful">peaceful</option>
+      <option value="serious">serious</option>
+    </select>
+    and the sweet. I think that's what makes this season so
+    <select onchange="checkAnswer(this,'unique','bold')">
+      <option value="">—</option>
+      <option value="unique">unique</option>
+      <option value="ordinary">ordinary</option>
+      <option value="common">common</option>
+    </select>
+    .
+  </p>
+</div>
+
+<footer>
+  <p>Cultural Awareness Series</p>
+</footer>
+
+</body>
+</html>
