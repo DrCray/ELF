@@ -20,47 +20,104 @@
 
 		<!-- <script src="script.js"></script -->
 
+
 	<style>
         body {
             background-color: #d4e6f1; cursor:text;
             font-family: helvetica, arial, sans-serif; /*padding: 1ex 2ex 1ex 2ex;*/
+            max-width:50rem;
+            margin:auto;
         }
 
         :focus {outline:none;}
         ::-moz-focus-inner {border:0; }
 
+
+/* =========== Loading... Spinner ================== */
+/* ---- Spinner overlay ---- */
+    #xmas-loader {
+      position: fixed;
+      inset: 0;                     /* full-screen overlay */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,.93);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      font-family: system-ui, sans-serif;
+      transition: opacity .4s ease;
+    }
+    #xmas-loader.hidden { opacity:0; pointer-events:none; }
+
+    .spinner {
+      width: 56px; height: 56px;
+      border: 7px solid #f0f0f0;
+      border-top-color: #c41f2b;      /* Christmas red */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: .8rem;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    #xmas-loader h2 { margin:0 0 .6rem; font-size:1.3rem; color:#1a1a1a; }
+    #xmas-loader button {
+      margin-top:.8rem;
+      padding:.5rem 1rem;
+      background:#c41f2b; color:#fff;
+      border:none; border-radius:6px;
+      cursor:pointer; font-weight:600;
+    }
+    #xmas-loader button:hover { background:#a11722; }
+
+    /* ---- Optional: make the spinner take ~50% of the viewport ---- */
+    #xmas-loader .box {
+      width: min(50vw, 420px);
+      height: min(50vh, 320px);
+      background: rgba(255,255,255,.96);
+      border-radius: 18px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.15);
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      padding:1.5rem; box-sizing:border-box;
+    }
+
+
+
+
   /* ======== begin styling-template css =====  */
-        
-        .btnStyleEditor { 
-            position:fixed; top: 2ex; left: 2ex;            
+
+        .btnStyleEditor {
+            position:fixed; top: 2ex; left: 2ex;
         }
-        
-        .styling-details { 
-            box-shadow: 3px 3px #84ADEA;   
-            background-color: #fff8dc; padding:1ex; 
-            border-style:solid; border-color:darkslategray; 
+
+        .styling-details {
+            box-shadow: 3px 3px #84ADEA;
+            background-color: #fff8dc; padding:1ex;
+            border-style:solid; border-color:darkslategray;
             border-width:medium; border-radius: 5px; min-width:15ex;
+            width:100% !important;
         }
-        
+
         .showHdBkgrText {
             border-style: solid; border-width:thin;
             border-radius: 7px;
             display:inline-block;
-            width:fit-content; padding:1ex; 
+            width:fit-content; padding:1ex;
             margin: .2rem .2rem .5rem .2rem;
         }
-        
+
         .fontFamEditor{
             border-style:solid; border-width:thin; border-radius: 5px; padding:1ex;
         }
-        
+
         .cprEditor {
-            margin-left:1ex; 
-            background-color:lightgreen; 
+            margin-left:1ex;
+            background-color:lightgreen;
             font-weight:bold;
         }
-        
-                
+
+
           .fsSmall{ font-size:small; }
           .fsMedium{ font-size:medium; }
           .fsLarge{ font-size:large; }
@@ -79,7 +136,7 @@
         } /*originally for quizExamMaker instuctions section */
 
        .fake-button {
-            background-color: #E9E9ED; 
+            background-color: #E9E9ED;
             border-style:solid; border-width:thin; border-radius: 5px;
             box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
 
@@ -92,7 +149,7 @@
         }
 
         .fake-button-no-hover {
-                background-color: #E9E9ED; 
+                background-color: #E9E9ED;
                 border-style:solid; border-width:thin; border-radius: 5px;
                 box-shadow: 1ppx 1px; margin: 0 1ex 0 1ex; padding: 0 1ex 0 1ex; font-size: 0.80em;
 
@@ -124,7 +181,7 @@
         #bullet {
             display:none;
         }
-        
+
         .hlBtn {border-radius:5px;}
 
         .hlBtn:hover {
@@ -137,25 +194,33 @@
             /*box-shadow: 0 3px 3px 0; */
             padding:3px; margin: 1ex 0 0 0
         }
-        
-        .zimage { 
-            margin: 1ex;
-            width:15%; max-width: 100%; min-width: 16rem;
+
+        .zimage {
+            display:block;
+            margin: 1rem auto 1rem auto;
+            max-width: 95%; <p>
+            height:auto;
             border-style: solid; border-width:medium;
             border-color: slategray;
-            border-radius:7px; 
+            border-radius:7px;
             /*box-shadow: 5px 5px 8px lightgray ; */
         }
-        
+        details{
+            margin: auto;
+            max-width: 90%; <p>
+
+            /*box-shadow: 5px 5px 8px lightgray ; */
+        }
+
         .links1 {
-            display:inline; margin: 1ex 0 0 0; 
+            display:inline; margin: 1ex 0 0 0;
         }
   /* ======  end styling-template css  ========== */
-        
+
         .styleEditor { background-color: #D1A7A7; margin:0 0 1em 0; border-radius: 3px;
-            padding: 8px; display:inline-block;            
+            padding: 8px; display:inline-block;
         }
-        
+
         .styleBtn {
             display:inline-block; box-shadow: 3px 3px 5px darkred;
         }
@@ -163,20 +228,20 @@
         .editMode {
             display:block; background-color:darkblue; color:white;
             border-style:solid; border-width:thin; border-radius: 7px;
-            padding: 8em; 
+            padding: 8em;
             margin: 4ex 0 3ex 0; text-align: center;
         }
 
         .editModeInner {
-            display:inline-block; padding: 1ex 0 0 3ex; 
+            display:inline-block; padding: 1ex 0 0 3ex;
             font-weight: bold; font-size: 2em;
         }
-        
+
         .editModeCtlZ {
-            display:inline-block; 
+            display:inline-block;
             margin:3ex; padding:1ex;
-            color: yellow; background-color:darkred; 
-            max-width:10em; 
+            color: yellow; background-color:darkred;
+            max-width:10em;
             font-weight:bold; font-size: 1.2em;
         }
 
@@ -199,16 +264,22 @@
             border-width:thin; border-style:solid;
             border-color:darkslategray; border-radius: 10px;
             box-shadow: 0 3px 3px 0;
-            padding:.75ex; margin: .3ex 0 0 0;overflow:auto;
+
+            overflow:auto;
+
+         }
+
+         .allcards{
 
          }
 
         .question {
             cursor: pointer; padding: 3ex 0 3ex 0;
              width: fit-content; min-width: 3em;overflow:auto;
-        } 
+        }
 
          .answer {
+
             display:block;
             background-color:#fff8dc;
             border-width:thin; border-style:solid;
@@ -223,11 +294,11 @@
          .addCard:hover {
             background-color:lightblue; border-radius: 5px;
          }
-        
+
         #done:hover {
             background-color:lightblue; border-radius: 5px;
          }
-         
+
         #printOptions {
             /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
             border-radius: 5px;
@@ -235,76 +306,81 @@
             padding:1ex;
             font-weight: bold; font-size:85%;
         }
-            
+
         .styleNotes {
             background-color:beige; margin:.5ex; padding:1ex;
         }
-        
+
         .labelx {
             background-color: lightblue; color:darkblue;
         }
-        
+
         .toggleAllAnsBtn {
-            background-color:lightgray; color:darkblue; 
+            background-color:lightgray; color:darkblue;
             border-style:none; border-width:0;
             margin: 0.5ex 0 0 0;
-            width: fit-content; 
-             
+            width: fit-content;
+
         }
+        #answer2 p {
+            max-width:100%;
+            margin:0.7rem auto 0.7rem auto;
+            padding:1rem;
+            background-color:white;
+            border-radius: 7px;
+        }
+
 	</style>
 </head>
 
 <body id="zbody" onload="ztopFalse()">
-    
-    
+
+
    <div id="warnLeavePage" style="display:none">off</div>
-    
-    
+
+
    <div id="toggleTextStatus" style="display:none">on</div>
 
- 
+
    <div id="styling" class="btnStyleEditor" style="display: none;">
      <details class="styling-details">
             <summary>
-          <span class="fake-button" style="font-size:1em;"> Style Te
-          <span class="fsXlarge"></span>m
-          <span style="font-weight: bold;"></span>p
-<span style="font-weight: initial; font-size: initial; font-style: initial;"> &gt;&lt; </span>          <span style="font-weight: initial; font-size: initial; font-style: initial;"> &gt;&lt; </span>late </span></summary>
+          <span class="fake-button" style="font-size:1em;"> Style Template </span></summary>
             <details class="styleNotes"><summary>  note !! </summary>
    <div style="border: thin solid blue; padding:1em; border-radius:5px; margin: 0 2em 0 2em; background-color: aliceblue; color:darkblue;">
        <p>The Style Template editor allows for changing the background and text color of the page and the sections below, as well as inserting links, images, and styled Lists. However, Bold, Italic,..., xl, xxL etc. do <em>not</em> have the UNDO function. However, instead of undo, you can highlight the text, cut, paste as unformatted text and redo the styling
 </p>
        <p>For more involved editing, use a word processor or wysiwyg html editor. Style and design as you like; copy from the editor and paste the content into any editable section of this document.
-</p> 
+</p>
        <p>Images can't be copied from editors. Insert them separately
 </p>
 </div></details>
-<!-- =====  set posts display order  =========  -->  
-          
-   <div>  
+<!-- =====  set posts display order  =========  -->
+
+   <div>
               <input type="checkbox" id="ztop" oninput="zztop()">
-              <label for="ztop">newest post on top (default is bottom)</label>   
-         
+              <label for="ztop">newest post on top (default is bottom)</label>
+
 </div>
-<!--**=====end  set posts dispaly oder ========= --> 
-         
- <!-- =====  begin change Backgrounds and text  ========= -->    
-    
+<!--**=====end  set posts dispaly oder ========= -->
+
+ <!-- =====  begin change Backgrounds and text  ========= -->
+
    <div class="showHdBkgrText">
      Page Areas <br>
-        <!-- Buttons show/hide =========   -->           
+        <!-- Buttons show/hide =========   -->
         <button class="hlBtn" onclick="toglDisplayLLI('changeBackground')">
-              background <br> colors 
+              background <br> colors
         </button>
         <button class="hlBtn" onclick="toglDisplayLLI('zcolors')">
-              font: <br> 
-            family/color 
-        </button> 
+              font: <br>
+            family/color
+        </button>
         <!-- //end show/hide buttons ===== -->
-        
-        
-<!-- begin change backgrounds colors ============-->             
-   
+
+
+<!-- begin change backgrounds colors ============-->
+
    <div id="changeBackground" class="toggleLLI" style="margin:1ex 0 0 0; display:none;">
     <br> <br>
             <input type="color" id="pgBkg" value="#D4E6F1" oninput="fnBkgColor(this.value, 'pgBkg')">
@@ -315,36 +391,36 @@
         <br> <br>
             <!--input type="color" id="qusetBkg" value="#FFF8DC" oninput="fnBkgColor(this.value, 'qusetBkg')">
             <label for="qusetBkg">Qu. Set bkg</label-->
-  		
+
             <input type="color" id="quBkg" value="#B0E0E6" oninput="fnBkgColor(this.value, 'quBkg')">
             <label for="quBkg">Title bkg</label>
         <br> <br>
             <input type="color" id="ansBkg" value="#FFF8DC" oninput="fnBkgColor(this.value, 'ansBkg')">
-            <label for="ansBkg">Article bkg</label>       
-          
+            <label for="ansBkg">Article bkg</label>
+
             <!--input type="color" id="nameIdBkg" value="#FFF8DC" oninput="fnBkgColor(this.value, 'nameIdBkg')">
             <label for="nameIdBkg">Name/ID bkg</label-->
-  
-    
+
+
 </div> <!-- //End background colors ======== -->
- 
-    
+
+
     <!-- begin change serif and color ======== -->
-    
+
    <div id="zcolors" class="toggleLLI" style="margin:1ex 0 0 0; display:none;">
      <br>
-             
+
    <div class="fontFamEditor">
-             
+
        <p>Choose the font family for this page.
 </p>
              <input id="zsansSerif" type="radio" name="fontFam" value="arial, sans-serif" onclick="fnFontFam(this.value)">
              <label for="zsansSerif" style="font-family: arial, sans-serif"> ARIAL/sans-serif</label><br>
              <input id="zserif" type="radio" name="fontFam" value="Times, serif" onclick="fnFontFam(this.value)">
              <label for="zserif" style="font-family: Times, serif"> SERIF/serif </label>
-             
+
 </div>
-             
+
        <p>Choose text-color for the areas below:
 </p>
             <input type="color" id="pgColor" value="#D4E6F1" oninput="fnColor(this.value, 'pgColor')">
@@ -355,66 +431,66 @@
         <br> <br>
             <!--input type="color" id="qusetColor" value="#FFF8DC" oninput="fnColor(this.value, 'qusetColor')">
             <label for="qusetColor">Qu. Set text</label>
-    <br> <br-->   		
+    <br> <br-->
             <input type="color" id="quColor" value="#B0E0E6" oninput="fnColor(this.value, 'quColor')">
             <label for="quColor">Title text</label>
         <br> <br>
             <input type="color" id="ansColor" value="#FFF8DC" oninput="fnColor(this.value, 'ansColor')">
             <label for="ansColor">Article text</label>
-       
+
                <!--br> <br>
             <input type="color" id="nameIdColor" value="#FFF8DC" oninput="fnColor(this.value, 'nameIdColor')">
             <label for="nameIdColor">Name/ID text</label>
     <br> <br-->
-        
+
 </div> <!-- // End serif and color ========  -->
-    
-</div>         
+
+</div>
     <!-- // End backgrounds and text ===================== -->
-         
-    
-   <div class="showHdBkgrText">  
-        
+
+
+   <div class="showHdBkgrText">
+
    <div style="margin: 1ex 0 0 1ex ;">
             <button class="hlBtn" onclick="toglDisplayLLI('bullet')">
                       Lists
             </button>
             <button class="hlBtn" onclick="toglDisplayLLI('insLink')">
-                  Link  
+                  Link
             </button>
             <button class="hlBtn" onclick="toglDisplayLLI('insZimage')">
-                  Image 
+                  Image
             </button>
-           
-       
+
+
 </div>
-     
+
    <div id="bullet" class="toggleLLI" style="display:none;">
          <strong>Lists</strong>
          <br>Examples: copy, paste, and overwrite<br>
          <ul>
-             <li>apples</li> <li>bananas</li>
+             <p>apples</p> <p>bananas</p>
          </ul>
-         
+
          <ol>
-             <li>apples</li> <li>bananas</li>
+             <p>apples</p> <p>bananas</p>
          </ol>
-         
+
          <dl>
           <dt>Parkour n.</dt>
-            <dd>The art of running and jumping while navigating obstacles</dd> 
+            <dd>The art of running and jumping while navigating obstacles</dd>
           <dt>Football n.</dt>
           <dd>The art of running and jumping while navigating people.</dd>
-        </dl> 
-     
+        </dl>
+
 </div>
 <hr><!--*********** horizontal rule *****************-->
-     
+
    <div id="insLink" class="toggleLLI" style="display:none; margin: 1ex 0 0 0;">
          <strong>make a hyperlink</strong><br>
         <input id="insLinkInputEl" type="url" name="url" style="margin: 0 0 0 1ex;" value="http://example.site/example.html">
        <label id="insLinkLabelEl" for="insLinkInputEl" class="labelx">URL</label>
-         
+
                   <br>
         <input id="openNewTab" type="checkbox" name="openNewTab" style="margin: 0 0 0 1ex;">
         <label id="openNewTabLabel" for="openNewTab">to open in new tab (optional)</label>
@@ -423,17 +499,17 @@
         <label id="displayTextLabel" for="displayText" class="labelx">Display Text</label>
          <br><br>
          <button class="hlBtn" onclick="makeLink()">make Link</button>
-         
-         
-   <div id="linkz" contenteditable="true">             
-         
+
+
+   <div id="linkz" contenteditable="true">
+
 </div>
                   <code>copy and paste the link </code>
-     
+
 </div>
 <hr><!--*********** horizontal rule *****************-->
-     
-   <div id="insZimage" class="toggleLLI" style="display: block; margin: 1ex 0px 0px;">
+
+   <div id="insZimage" class="toggleLLI" style="display: none; margin: 1ex 0px 0px;">
          <strong>make image</strong>
          <details><summary>note</summary>
              <dl>
@@ -456,7 +532,7 @@
                  <dd>•select and delete the image </dd>
                  <dd>•make image again, copy, paste</dd>
              </dl>
-         </details>  
+         </details>
         <input id="insZimageInput" type="url" name="urlImg" style="margin: 0 0 0 1ex;" value="http://example.site/image.jpg">
        <label id="insZimageLabel" for="insZimageInput" class="labelx">URL</label>
              <br>
@@ -464,147 +540,147 @@
           <label for="floatRight">image on right Text wrap (default: left, no wrap)</label><br>
          <button class="hlBtn" onclick="btnMakeImage()">make Image</button>
          <br>
-         
-         <input id="sliderScaleImg" type="range" min="15" max="100" value="100" oninput="fnResizeImg(this.value, 'zimage')" contenteditable="true">        
-         
-         
-   <div id="imageDiv" contenteditable="true" style="display: block;"><img id="zimage" src="https://i.imgur.com/2xL6B46.jpg" class="zimage" alt="an Image" style="width: 48%;"></div>
-     
-</div>     
+
+         <input id="sliderScaleImg" type="range" min="15" max="100" value="100" oninput="fnResizeImg(this.value, 'zimage')" contenteditable="true">
+
+
+   <div id="imageDiv" contenteditable="true" style="display: block;"><img id="zimage" src="https://i.imgur.com/2xL6B46.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 48%;"></div>
+
+</div>
 
 </div>     <!--end bullets/images*******************************-->
-         
-         
-                <!--************ text and hilite color************************************* -->    
-         
+
+
+                <!--************ text and hilite color************************************* -->
+
    <div style="margin: .2rem .2rem .3rem .2rem;">
          <label><input type="color" oninput="hilite(this.value)"> highlight </label>
          <label><input type="color" oninput="textColor(this.value)"> text color </label>
-         
+
 </div>
-                      <!--************ Style Editor************************************* -->    
-             
-   <div class="styleEditor" style="display: none;">                
-                
+                      <!--************ Style Editor************************************* -->
+
+   <div class="styleEditor" style="display: none;">
+
    <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
-                
+
 </div>
-                
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
-                
+
 </div>
-                
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
-                
+
 </div>
-                 
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="smAbc()">
           <span class="fsSmall"> SM</span></button>
-                
-</div>    
-                 
-                
+
+</div>
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="medAbc()">
           <span class="fsMedium"> Md </span></button>
-                
+
 </div>
-                                  
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()">
           <span class="fsLarge"> Lg</span></button>
-                
+
 </div>
-                                  
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()">
           <span class="fsLarge"> xL </span></button>
-                
+
 </div>
-                                  
-                
+
+
    <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()">
           <span class="fsLarge"> xxL </span></button>
-                
+
 </div>
                  <br>
-                
+
    <div class="styleBtn">
                  <br>   <button id="btnQuUndl" class="hlBtn" onclick="insPlainText()">
           <span> insert plain text </span></button>
-                
-</div>  
-            
+
 </div>
-            <!--************ Style Editor************************************* -->  
-         
+
+</div>
+            <!--************ Style Editor************************************* -->
+
      </details><!--end hidden style editor-->
-     
+
 </div>
 <!--  =========== end styling ===============-->
-    
-    
+
+
    <div id="setzztopz" style="display:none" data-setzztopz="off">setzztopz
 </div>
 
 
 <script>
-        
+
         let toggleTextStatus = document.getElementById("toggleTextStatus").innerHTML; console.log("1: " + toggleTextStatus);
-        
- 
-       
-        
-let zztopz = false; 
+
+
+
+
+let zztopz = false;
 let setzztopzX = document.getElementById("setzztopz");
 
-// sets the order for posts. also resets serif to null        
-function ztopFalse() { 
-    
+// sets the order for posts. also resets serif to null
+function ztopFalse() {
+
     // turn off sans/serif ******
     document.getElementById("zsansSerif").checked = false;
     document.getElementById("zserif").checked = false;
-    
-    
+
+
     let setzztopz = setzztopzX.getAttribute("data-setzztopz");
-    
+
                         console.log("setztop " + setzztopz);
-    
+
     if (setzztopz==="off"){
-    zztopz=false;     
+    zztopz=false;
     document.getElementById("ztop").checked = false;
     } else {
             zztopz=true;
             document.getElementById("ztop").checked = true;
 
     }
-        
+
                         console.log("zztopz = " +zztopz);
 }
-        
+
 function zztop(){
         zztopz = document.getElementById("ztop").checked;
         //console.log(zztopz);
 }
-            
+
  function toglDisplay(zElmt) {let zshow = document.getElementById(zElmt);
          if (zshow.style.display === "block")
              {zshow.style.display = "none";}
          else {zshow.style.display = "block";}
 }
 
-    
-// ======= toggle the links lists images buttons ======    
+
+// ======= toggle the links lists images buttons ======
     function toglDisplayLLI(zElmt) {
       const zshow = document.getElementById(zElmt);
       const allElements = document.getElementsByClassName('toggleLLI');
@@ -622,58 +698,58 @@ function zztop(){
       } else {
         zshow.style.display = 'block';
       }
-}    
-//===========end togle links lists images ================                
-        
-    
-            
+}
+//===========end togle links lists images ================
+
+
+
   function makeLink() {
-       let urlz = document.getElementById("insLinkInputEl").value; 
+       let urlz = document.getElementById("insLinkInputEl").value;
       console.log(urlz);
        let displayText = document.getElementById("displayText").value;
-       let zOpen2NewTab = document.getElementById("openNewTab").checked; 
+       let zOpen2NewTab = document.getElementById("openNewTab").checked;
       console.log(zOpen2NewTab);
-      
+
        let ahrefz = displayText.link( urlz);
        document.getElementById("linkz").insertAdjacentHTML("beforeend", ahrefz);
        let zx =document.getElementById("linkz").lastElementChild;
-       zx.setAttribute("class", "links1");        
-      
+       zx.setAttribute("class", "links1");
+
        if (zOpen2NewTab){
-       zx.setAttribute("target", "_blank");    
+       zx.setAttribute("target", "_blank");
        }
       //document.getElementById("linkz").insertAdjacentHTML("afterbegin", "<br>");
        //document.getElementById("linkz").insertAdjacentHTML("beforeend", "<br><br>");
   }
-            
-                    
+
+
   function btnMakeImage() {
-       let urlimageZx = document.getElementById("insZimageInput").value; 
+       let urlimageZx = document.getElementById("insZimageInput").value;
       console.log(urlimageZx);
         let floatRight = document.getElementById("floatRight").checked;
         //console.log("zzzzzzzzzzzz" + floatRight);
         let insImageCode;
         if (floatRight===true){
                 insImageCode = "<img id='zimage' src='" + urlimageZx + "' class='zimage' alt='an Image' style='float:right;'>";
-               // console.log(insImageCode); 
+               // console.log(insImageCode);
                 } else {
                 insImageCode = "<img id='zimage' src='" + urlimageZx + "' class='zimage' alt='an Image'>";
-               // console.log(insImageCode); 
+               // console.log(insImageCode);
                 }
       let imageDivEl = document.getElementById("imageDiv");
       imageDivEl.innerHTML= insImageCode;
       imageDivEl.style.display = "block";
   } // end fn btnMakeImage
-            
+
   // ===== Resizes images =====
   function fnResizeImg(zsizeValue, zzimage){
     let zsize = (zsizeValue + "%");
     let imageEl = document.getElementById(zzimage);
 					//console.log (imageEl);
      imageEl.style.width = zsize;
-   }   
+   }
 
-    
+
       // ===== Change Backgrounds =====
   function fnBkgColor(colorValue, thisBkg){
 		switch (thisBkg) {
@@ -685,19 +761,19 @@ function zztop(){
 		break;
 	  case "quBkg":
 	   	     document.getElementById("quSet1").style.backgroundColor=colorValue;
-	   	     document.getElementById("quSet2").style.backgroundColor=colorValue;  
+	   	     document.getElementById("quSet2").style.backgroundColor=colorValue;
         break;
 	  case "ansBkg":
 	   	     document.getElementById("answer1").style.backgroundColor=colorValue;
-  	   	     document.getElementById("answer2").style.backgroundColor=colorValue; 
+  	   	     document.getElementById("answer2").style.backgroundColor=colorValue;
 		break;
 
       }
-   }    // ===== End change backgroiunds  =====            
+   }    // ===== End change backgroiunds  =====
 
-            
 
-  // ===== Change Color (text) ==============            
+
+  // ===== Change Color (text) ==============
    function fnColor(zcolor, thisEl){
 		switch (thisEl) {
 	  case "pgColor":
@@ -708,32 +784,32 @@ function zztop(){
 		break;
 	  case "quColor":
 	   	     document.getElementById("quSet1").style.color=zcolor;
-	   	     document.getElementById("quSet2").style.color=zcolor;  
+	   	     document.getElementById("quSet2").style.color=zcolor;
         break;
 	  case "ansColor":
 	   	     document.getElementById("answer1").style.color=zcolor;
-  	   	     document.getElementById("answer2").style.color=zcolor; 
+  	   	     document.getElementById("answer2").style.color=zcolor;
 		break;
 
       }
    }  // ======= End Change color (text) ========
-        
-   
-    // ===== switch to serif ==============            
+
+
+    // ===== switch to serif ==============
    function fnFontFam(fontFamIs){
 	document.getElementById("zbody").style.fontFamily = fontFamIs;
-      }  
+      }
   // ======= End Change color (text) ========
-     
 
-  </script>    
+
+  </script>
 <!-- ======  //End change Background, colors, SERIF ======= -->
 <!-- ====== // End Styling ================================ -->
 
-    
-    
 
-    
+
+
+
    <div id="iIndex" style="display:none">2</div>
     <script>
     let abc=0;
@@ -744,112 +820,106 @@ function zztop(){
     </script>
 
 
-   
+
    <div id="editMode" class="editMode" style="display: none;">
-        
+
           <span class="editModeInner">[ ... Edit Mode ... ]</span>
         <br>
-       
-   <div class="editModeCtlZ"> 
-            
-          <span> Ctl&nbsp;+&nbsp;z [undo] </span> <br> 
-            
+
+   <div class="editModeCtlZ">
+
+          <span> Ctl&nbsp;+&nbsp;z [undo] </span> <br>
+
           <span> Ctl&nbsp;+&nbsp;y [redo] </span>
-       
-</div>
-    
+
 </div>
 
+</div>
 
 
 
-    <header id="zzpageHeader"> 
+
+    <header id="zzpageHeader">
         <img class="center" src="topImage.jpg" alt="" width="100%">
-        
-        
+
+
 <section id="zztitle" contenteditable="false">
             <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
             <!--************************ Type title here ******************-->
-            
-        
-            
+
+
+
    <div id="zheaderTitle">Dr Ray  <br>Christmas&nbsp;
 </div>
    <div><br>
 </div>
-   <div>
-          <span class="fsXlarge">
-          <span style="font-weight: bold;">Christmas </span></span><br>
+   <div>&nbsp;<span class="fsXxlarge"><span style="font-weight: bold;">Christmas</span></span>&nbsp;
 </div>
 
-            
+
             <!--     ***************** End title ****************************-->
             <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
             <!--     ------ Don’t type Title content past this line ---  -->
-            
-        
+
+
 </section>
     </header>
-  
-    
+
+
         <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
         <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
-       
-    <button id="showAnswers" class="toggleAllAnsBtn" style="display: block;" onclick="showAnswers()">
-                &nbsp;Show All Articles&nbsp;</button>
-    <button id="hideAnswers" class="toggleAllAnsBtn" onclick="hideAnswers()" style="display: none;">
-                &nbsp;Hide All Articles&nbsp;</button>
-    
+
+
     <script>
       // ****************** style functions ***********
               function bold(){
                   let bold = document.createElement("span");
                   bold.style.fontWeight="bold";
-                  window.getSelection().getRangeAt(0).surroundContents(bold); 
+                  window.getSelection().getRangeAt(0).surroundContents(bold);
               } //  end fn bold
-              
+
               function italic(){
                   let italic = document.createElement("span");
                   italic.style.fontStyle="italic";
-                  window.getSelection().getRangeAt(0).surroundContents(italic); 
+                  window.getSelection().getRangeAt(0).surroundContents(italic);
               } //  end fn italic
-              
+
               function undln(){
                   let undln = document.createElement("span");
                   undln.style.textDecoration="underline";
-                  window.getSelection().getRangeAt(0).surroundContents(undln); 
-              } //  end fn undln               
-  
+                  window.getSelection().getRangeAt(0).surroundContents(undln);
+              } //  end fn undln
+
               function smAbc(){
                   let smallAbc = document.createElement("span");
                   smallAbc.className="fsSmall";
-                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
-              } //  end fn smAbc 
-        
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc);
+              } //  end fn smAbc
+
               function medAbc(){
                   let medAbc = document.createElement("span");
                   medAbc.className="fsMedium";
-                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
-              } //  end fn medAbc 
-        
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc);
+              } //  end fn medAbc
+
               function lgAbc(){
                   let lgAbc = document.createElement("span");
                   lgAbc.className="fsLarge";
-                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
-              } //  end fn lgAbc 
-        
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc);
+              } //  end fn lgAbc
+
               function xlAbc(){
                   let xlAbc = document.createElement("span");
                   xlAbc.className="fsXlarge";
-                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
-              } //  end fn xlAbc 
-        
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc);
+              } //  end fn xlAbc
+
               function xxlAbc(){
                   let xxlAbc = document.createElement("span");
                   xxlAbc.className="fsXxlarge";
-                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
-              } //  end fn xxlAbc 
-        
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc);
+              } //  end fn xxlAbc
+
               function insPlainText(){
                   let  spanPlain = document.createElement("span");
                   spanPlain.innerHTML=" >< ";
@@ -859,96 +929,92 @@ function zztop(){
                   spanPlain.style.textDecoration="revert !important";
 
                   //let plainText = document.createTextNode(" --plain-- ");
-                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
-              } //  end fn plain text    
-        
-        
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain);
+              } //  end fn plain text
+
+
         function hilite(colorIs){
         let hilite = document.createElement("span");
             hilite.style.backgroundColor=colorIs;
         window.getSelection().getRangeAt(0).surroundContents(hilite);
         }
-        
+
         function textColor(textColorIs){
         let textColor = document.createElement("span");
             textColor.style.color=textColorIs;
         window.getSelection().getRangeAt(0).surroundContents(textColor);
         }
-        
+
     </script>
-    
+
 <button id="addCard" class="addCard" onclick="addCard()" style="display: none;">add article</button>
     <textarea id="fakeTextarea" type="text" rows="2" cols="30" style="display: none;" disabled="">click on "add article" to get an active editing area</textarea>
-    
-    
+
+
 
    <div id="allCards">
-    
-	
+
+
    <div id="quSet1" class="quSet" style="display:none;">
         <button id="moveUp1" class="moveUpBtn" onclick="zmoveUp('quSet1')" style="display: none;"> Move Up </button>
         <button id="moveDown1" class="moveDownBtn" onclick="zmoveDown('quSet1')" style="display: none;"> Move Down </button>
-	    
+
    <div id="question1" class="question" onclick="toggleText()" contenteditable="false">
-		  
-<section>  Title  
+
+<section>  Title
 </section>
-		
+
 </div>
- 
-		
-   <div id="answer1" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   
-<section> Article 
+
+
+   <div id="answer1" class="answer" data-idx="1" contenteditable="false" style="display: block;">
+
+<section> Article
 </section>
-		
+
 </div>
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
         </div-->
-        
+
 		<button class="delBtn" style="display:none;" onclick="this.parentElement.remove()"> delete this article <br> forever </button>
-    
+
 </div> <!-- End quSet -->
-    
+
 
    <div id="quSet2" class="quSet" style="display: block;">
         <button id="moveUp2" class="moveUpBtn" onclick="zmoveUp('quSet2')" style="display: none;"> Move Up </button>
         <button id="moveDown2" class="moveDownBtn" onclick="zmoveDown('quSet2')" style="display: none;"> Move Down </button>
-	    
+
    <div id="question2" class="question" onclick="toggleText('answer2')" contenteditable="false">
-		  
+
 <section>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsXlarge">
-          <span style="font-weight: bold;">&nbsp;Christmas Traditions in the USA</span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/1OAAtBc.jpg" class="zimage" alt="an Image" style="width: 100%;">
+
+       <p><img id="zimage" src="https://i.imgur.com/1OAAtBc.jpg" class="zimage" alt="an image" style="min-width:99%">
 </p>
 </section>
-		
+
 </div>
- 
-		
-   <div id="answer2" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-   <div><br>
-</div>
-   <div>Christmas is December 25th. It is a
+
+
+<div id="answer2" class="answer" data-idx="1" contenteditable="false" style="display: block;">
+      <p>
+          <span class="fsXlarge">
+          <span style="font-weight: bold;">Christmas Traditions in the USA</span></span>
+</p>
+
+   <div><p>Christmas is December 25th. It is a
 famous holiday celebrated by people from all over the world. In the
 USA, The holiday season, which includes Christmas, typically begins in late November, from Thanksgiving through to New Years's Day. Let's
 explore the various traditions and customs that make Christmas
-special in the USA.
+special in the USA.</p>
 
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <p>
           <span class="fsLarge">
           <span style="font-weight: bold;">Decorations</span></span>
 </p>
 
-       <p style="line-height: 100%; margin-bottom: 0in">One of the first
+       <p>One of the first
 signs of the holiday season is the decoration of homes and public
 spaces. Americans often adorn their houses with Christmas lights,
 wreaths, and ornaments. Many families have a Christmas tree, usually
@@ -956,74 +1022,45 @@ a fir or pine, which is decorated with lights, tinsel, and ornaments.
 In addition to homes, city streets and public places are often
 illuminated with colorful lights and festive decorations.
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <p>
           <span class="fsLarge">
-          <span style="font-weight: bold;">Traditional Colors</span></span><br>
+          <span style="font-weight: bold;">Traditional Colors</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in">The traditional colors of Christmas&nbsp; are primarily Red and Green. This follows the colors of the holly bush which is native to most of North America. Holly was used in many kinds of ways to add a festive color to holiday decorations. They were strung along fireplaces, doors and walls, and placed around candles and table centerpieces.</p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">Holly decorations<br></p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/K8Olj4s.jpg" class="zimage" alt="an Image" style="width: 42%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">Holly Bush</p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/AXiqFk1.jpg" class="zimage" alt="an Image" style="width: 35%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">The secondary colors are white, silver, and gold. White for snow, silver for shiny things like stars, and gold for wealth.<br>
+       <p>The traditional colors of Christmas&nbsp; are primarily Red and Green. This follows the colors of the holly bush which is native to most of North America. Holly was used in many kinds of ways to add a festive color to holiday decorations. They were strung along fireplaces, doors and walls, and placed around candles and table centerpieces.</p>
+       <p><span class="fsXlarge"><span style="font-weight: bold;">Holly decorations</span></span></p>
+       <img id="zimage" src="https://i.postimg.cc/Y9LZmHf0/holly.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+       <p><span class="fsXlarge"><span style="font-weight: bold;">Holly Bush</span></span></p>
+       <img id="zimage" src="https://i.imgur.com/AXiqFk1.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 35%;">
+       <p>The secondary colors are white, silver, and gold. White for snow, silver for shiny things like stars, and gold for wealth.</p>
+       <img id="zimage" src="https://i.imgur.com/MB9yoXM.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 40%;">
+       <p>But you DON"T have to stick with traditional colors.&nbsp; Pastels and other soft colors are also popular.</p>
+       <img id="zimage" src="https://i.imgur.com/KEPudaX.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 32%;"><img id="zimage" src="https://i.imgur.com/QHLQZQv.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 32%;"><br></div><div><p><span class="fsXxlarge"><span style="font-weight: bold;">Lights Everywhere</span></span></p><p><span class="fsXlarge"><span style="font-weight: bold;">&nbsp;Downtown Lights</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/MB9yoXM.jpg" class="zimage" alt="an Image" style="width: 40%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">But you DON"T have to stick with traditional colors.&nbsp; Pastels and other soft colors are also popular.</p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/KEPudaX.jpg" class="zimage" alt="an Image" style="width: 32%;"></p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/QHLQZQv.jpg" class="zimage" alt="an Image" style="width: 32%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsXlarge">
-          <span style="font-weight: bold;">&nbsp;Downtown Lights</span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/RYIDijF.jpg" class="zimage" alt="an Image" style="width: 45%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
+       <img id="zimage" src="https://i.imgur.com/RYIDijF.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 45%;">
 
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <p>
           <span class="fsXlarge">
           <span style="font-weight: bold;">
           <span style="font-weight: bold;">&nbsp;Home Decor</span></span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/lGneMa4.jpg" class="zimage" alt="an Image" style="width: 51%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p><img id="zimage" src="https://i.imgur.com/3GurDgE.jpg" class="zimage" alt="an Image" style="width: 42%;">
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/lGneMa4.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 51%;">
+<img id="zimage" src="https://i.imgur.com/3GurDgE.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+       <p>
           <span class="fsXlarge">
           <span style="font-weight: bold;">&nbsp;House Lights</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/QTPul8U.jpg" class="zimage" alt="an Image" style="width: 52%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/QTPul8U.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 52%;">
+       <p>
           <span class="fsXlarge">
           <span style="font-weight: bold;">&nbsp;Neighborhood Lights</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/DYdVOvO.jpg" class="zimage" alt="an Image" style="width: 52%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/DYdVOvO.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 52%;">
+       <p>
           <span class="fsXlarge">
           <span style="font-weight: bold;">Shopping Area lights</span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/W1vKmvo.jpg" class="zimage" alt="an Image" style="width: 48%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
+</p><img id="zimage" src="https://i.imgur.com/W1vKmvo.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 48%;"><br></div><div><p><span class="fsXxlarge"><span style="font-weight: bold;">&nbsp;Santa Claus&nbsp;</span></span></p>
 
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;">Santa Claus</span></span>
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in">Santa Claus is a
+       <p>Santa Claus is a
 famous Christmas Icon. He is also known as Kriss Kringle, Saint Nick,
 and Father Christmas. Santa Clause plays a central role in American
 Christmas celebrations. Children eagerly await his arrival on the
@@ -1034,207 +1071,113 @@ Many families take their children to meet Santa at shopping malls or
 community events, where they can share their Christmas wishes.
 </p>
 
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/oqDYIIA.jpg" class="zimage" alt="an Image" style="width: 46%;">
+       <img id="zimage" src="https://i.imgur.com/oqDYIIA.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 46%;">
 
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <p>
           <span class="fsLarge">
           <span style="font-weight: bold;">
-          <span style="font-weight: initial; font-size: initial; font-style: initial;"> Santa is based on a real man whose Name was Saint Nick. He was a rich man who decided to give away all his wealth. So he went around giving secrets gifts and money to those in need. This all happened more than a thousand years ago, and people have been celebrating his kindness ever since. But He&nbsp; was celebrated by many different peoples and cultures in many different ways before Santa became the Icon that we know of today. In fact, there were always a variety of depictions of Santa until the Coca Cola company began using him in their ad campaigns in the 1920s. By the 1930s, Coca Cola settled on a depiction of Santa that remains with us until today.&nbsp; Here is a look at some of the Santa depictions before the modern Santa. </span><br></span></span>
+          <span style="font-weight: initial; font-size: initial; font-style: initial;"> Santa is based on a real man whose Name was Saint Nick. He was a rich man who decided to give away all his wealth. So he went around giving secrets gifts and money to those in need. This all happened more than a thousand years ago, and people have been celebrating his kindness ever since. But He&nbsp; was celebrated by many different peoples and cultures in many different ways before Santa became the Icon that we know of today. In fact, there were always a variety of depictions of Santa until the Coca Cola company began using him in their ad campaigns in the 1920s. By the 1930s, Coca Cola settled on a depiction of Santa that remains with us until today.&nbsp; Here is a look at some of the Santa depictions before the modern Santa. </span></span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/sMT70Qp.jpg" class="zimage" alt="an Image" style="width: 34%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/T4ZzcYx.jpg" class="zimage" alt="an Image" style="width: 46%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
+       <img id="zimage" src="https://i.imgur.com/sMT70Qp.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 34%;">
+       <img id="zimage" src="https://i.imgur.com/T4ZzcYx.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 46%;">
 <details><summary style="font-size:1.3em;"><code style="background-color:lightgray; color:darkblue; border: thin solid darkblue;"> show </code>&nbsp; 8 more depictions of early Santa</summary>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/4JHPHlg.jpg" class="zimage" alt="an Image" style="width: 43%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/41qhqnq.jpg" class="zimage" alt="an Image" style="width: 61%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/k8NI2Z5.jpg" class="zimage" alt="an Image" style="width: 45%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><br>
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/sfQkCS6.jpg" class="zimage" alt="an Image" style="width: 49%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/GMAp9rn.jpg" class="zimage" alt="an Image" style="width: 42%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/Jsex9TT.jpg" class="zimage" alt="an Image" style="width: 42%;">
-	</p>
-		   <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/9cfsw80.jpg" class="zimage" alt="an Image" style="width: 42%;">
-	</p><br>
+		   <img id="zimage" src="https://i.imgur.com/4JHPHlg.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;">
+		   <img id="zimage" src="https://i.imgur.com/41qhqnq.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 61%;">
+		   <img id="zimage" src="https://i.imgur.com/k8NI2Z5.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 45%;">
+		   <img id="zimage" src="https://i.imgur.com/sfQkCS6.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 49%;">
+		   <img id="zimage" src="https://i.imgur.com/GMAp9rn.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+		   <img id="zimage" src="https://i.imgur.com/Jsex9TT.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+		   <img id="zimage" src="https://i.imgur.com/9cfsw80.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
 </details>
 </div>
-   <div><br>
+   <div><p><strong><span class="fsXlarge"><span style="font-weight: bold;"><br></span></span></strong></p><p><strong><span class="fsXlarge"><span style="font-weight: bold;">A Visit from St. Nicholas&nbsp; (1823, poem)</span></span>&nbsp;</strong></p>
 </div>
-   <div><strong><br></strong></div><div><strong><br></strong></div><div><strong>A Visit from St. Nicholas&nbsp; (1823, poem) <br></strong>
-</div>
-   <div><strong><br></strong>
-</div>
-   <div>Coca Cola wasn't the first to make Santa a Jolly fat man in a Red Suit. Here are Two pictures from before the 1930s Coca Cola ad campaigns.
-</div><div>These first depictions of our current idea of Santa is due in large part to the popularity of a famous American poem.&nbsp;</div><div>Called "A Visit from St. Nicholas", this author described his version of what Santa looked like.&nbsp;</div><div>This was the same description that Coca Cola picked up on later and settled into the American minds with their ad campaigns.</div><div><br></div><div>As well, this poem, late known as "Twas the Night before Christmas", is the story that introduces us to Santa's sleigh and flying reindeer.<br></div>
-   <div><br><img id="zimage" src="https://i.imgur.com/lDh16nA.jpg" class="zimage" alt="an Image" style="width: 35%;"><br></div><div><br></div><div><img id="zimage" src="https://i.imgur.com/YNgMCp7.jpg" class="zimage" alt="an Image" style="width: 41%;"></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;">The Coca Cola Ad Campaigns 
-          <span style="font-weight: initial; font-size: initial; font-style: initial;">(began 1930s) </span><br></span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/GnNzpe7.jpg" class="zimage" alt="an Image" style="width: 44%;">
-</p>
+   <div><p>Coca Cola wasn't the first to make Santa a Jolly fat man in a Red Suit. Here are Two pictures from before the 1930s Coca Cola ad campaigns.</p><p>
+These first depictions of our current idea of Santa is due in large part to the popularity of a famous American poem.&nbsp;</p><p>Called "A Visit from St. Nicholas", this author described his version of what Santa looked like.&nbsp;</p><p>This was the same description that Coca Cola picked up on later and settled into the American minds with their ad campaigns.</p><p>As well, this poem, later known as "Twas the Night before Christmas", is the story that introduces us to Santa's sleigh and flying reindeer.</p>
+   <div><img id="zimage" src="https://i.imgur.com/lDh16nA.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 35%;"></div><div><img id="zimage" src="https://i.imgur.com/YNgMCp7.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 41%;"></div><div>
+       <p><span class="fsXlarge"><span style="font-weight: bold;">The Coca Cola Ad Campaigns</span></span> (began 1930s)&nbsp;</p>
+       <img id="zimage" src="https://i.imgur.com/GnNzpe7.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 44%;">
 
-<details open=""><summary style="font-size:1.3em;"><code style="background-color:lightgray; color:darkblue; border: thin solid darkblue;"> show </code>&nbsp; 4 more depictions of Coca Cola's Santa</summary>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/AGpPxOO.jpg" class="zimage" alt="an Image" style="width: 42%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/YVKCAV2.jpg" class="zimage" alt="an Image" style="width: 43%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/arYRmBs.jpg" class="zimage" alt="an Image" style="width: 40%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/mMGKIJM.jpg" class="zimage" alt="an Image" style="width: 43%;">
-</p>
+<details><summary style="font-size:1.3em;"><code style="background-color:lightgray; color:darkblue; border: thin solid darkblue;"> show </code>&nbsp; 4 more depictions of Coca Cola's Santa</summary>
+       <img id="zimage" src="https://i.imgur.com/AGpPxOO.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+       <img id="zimage" src="https://i.imgur.com/YVKCAV2.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;">
+       <img id="zimage" src="https://i.imgur.com/arYRmBs.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 40%;">
+       <img id="zimage" src="https://i.imgur.com/mMGKIJM.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;">
 </details>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;">Gift Giving</span></span>
-</p>
 
-       <p style="line-height: 100%; margin-bottom: 0in">Exchanging gifts is
+       <p><span class="fsXlarge"><span style="font-weight: bold;"><br></span></span></p><p><span class="fsXlarge"><span style="font-weight: bold;">Gift Giving</span></span></p>
+
+       <p>Exchanging gifts is
 a significant part of the Christmas tradition in the USA. Families
 and friends exchange presents as a symbol of love and generosity.
 Many Americans participate in a tradition called "Secret Santa,"
 where individuals draw names and anonymously give gifts to the person
 they've selected. In addition to personal gift-giving, many people
 also contribute to charitable causes during the holiday season.
-</p><img id="zimage" src="https://i.imgur.com/sCqt8vO.jpg" class="zimage" alt="an Image" style="width: 46%;">
-</div>
-   <div><br>
+</p><img id="zimage" src="https://i.imgur.com/sCqt8vO.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 46%;">
 </div>
    <div>
           <span class="fsLarge">
-          <span style="font-weight: bold;">&nbsp;Presents under the tree</span></span><br>
+          <p><span style="font-weight: bold;">&nbsp;Presents under the tree</span></p></span>
 </div>
-   <div><img id="zimage" src="https://i.imgur.com/moeppQ9.jpg" class="zimage" alt="an Image" style="width: 27%;">
-</div>
+   <div><img id="zimage" src="https://i.imgur.com/moeppQ9.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 27%;"><br></div><div><br></div>
    <div>
           <span class="fsLarge">
           <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span></span>
+          <p><span class="fsXlarge"><span style="font-weight: bold;">Christmas Caroling</span></span></p></span></span>
 </div>
+<p>Christmas songs are also called
+          <span style="font-style: italic;">carols. People go door-to-door singing Christmas songs.</span></p>
+   <div><img id="zimage" src="https://i.imgur.com/ro4FkIG.png" class="zimage" alt="an Image" loading="lazy" data-fake="fake 44%;"><br></div><div><br></div>
    <div>
-          <span class="fsLarge">
-          <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span></span>
-</div>
-   <div>
-          <span class="fsLarge">
-          <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span></span>
-</div>
-   <div>
-          <span class="fsLarge">
-          <span class="fsLarge">
-          <span style="font-weight: bold;">Christmas Caroling</span></span></span>
-</div>
-   <div><br>
-</div>Christmas songs are also called 
-          <span style="font-style: italic;">carols. People go door-to-door singing Christmas songs.</span><br>
-   <div><br>
-</div>
-   <div><img id="zimage" src="https://i.imgur.com/ro4FkIG.png" class="zimage" alt="an Image" style="width: 44%;">
-</div>
-   <div><br>
-</div>
-   <div>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;"><br></span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsLarge">
-          <span style="font-weight: bold;">Parades and Events</span></span>
-</p>
+       <p><span class="fsXxlarge"><span style="font-weight: bold;">Parades and Events</span></span></p>
 
-       <p style="line-height: 100%; margin-bottom: 0in">Many cities across
+       <p>Many cities across
 the USA host Christmas parades and events. The Macy's Thanksgiving
 Day Parade in New York City, for example, is famous for its giant
 balloons and festive floats. In addition to parades, communities
 organize tree lighting ceremonies, holiday markets, and festive
 performances to bring people together in the spirit of the season.
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <p>
           <span class="fsXlarge">
-          <span style="font-weight: bold;">&nbsp;Parades</span></span><br>
+          <span style="font-weight: bold;">&nbsp;Parades</span></span>
 </p>
 
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/Zz75olz.jpg" class="zimage" alt="an Image" style="width: 46%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/Zz75olz.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 46%;">
+       <p>
           <span class="fsXlarge">
-          <span style="font-weight: bold;">&nbsp;A float </span></span><br>
+          <span style="font-weight: bold;">&nbsp;A float </span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/r0W8OeU.jpg" class="zimage" alt="an Image" style="width: 48%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/r0W8OeU.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 48%;">
+       <p>
           <span class="fsXlarge">
-          <span style="font-weight: bold;">&nbsp;A marching band</span></span><br>
+          <span style="font-weight: bold;">&nbsp;A marching band</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/KTF0wpy.jpg" class="zimage" alt="an Image" style="width: 47%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/KTF0wpy.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 47%;">
+       <p>
           <span class="fsXlarge">
-          <span style="font-weight: bold;">The last float is always Santa Claus</span></span><br>
+          <span style="font-weight: bold;">The last float is always Santa Claus</span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/jRxFgAK.jpg" class="zimage" alt="an Image" style="width: 60%;">
+       <img id="zimage" src="https://i.imgur.com/jRxFgAK.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 60%;">
+       <p><span class="fsXlarge"><span style="font-weight: bold;">Performances</span></span></p>
+       <p><span class="fsXlarge"><span style="font-weight: bold;"><span style="font-weight: initial; font-size: initial; font-style: initial;"><span style="font-weight: bold;">A play called "A Christmas Carol" </span></span></span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
-          <span class="fsXlarge">
-          <span style="font-weight: bold;"><br></span></span></p><p style="line-height: 100%; margin-bottom: 0in"><span class="fsXlarge"><span style="font-weight: bold;">Performances</span></span></p><p style="line-height: 100%; margin-bottom: 0in"><span class="fsXlarge"><span style="font-weight: bold;"><br></span></span></p><p style="line-height: 100%; margin-bottom: 0in"><span class="fsXlarge"><span style="font-weight: bold;"><span style="font-weight: initial; font-size: initial; font-style: initial;">A play called "A Christmas Carol" </span><br></span></span>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/FXmuP4k.jpg" class="zimage" alt="an Image" style="width: 53%;"></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">&nbsp;A Christmas Orchestra<br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/zutyzz1.jpg" class="zimage" alt="an Image" style="width: 43%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">A Christmas Choir</p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/4UMozL5.jpg" class="zimage" alt="an Image" style="width: 37%;">
-          <span style="font-weight: bold;"></span></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in"><br>
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in">
+       <img id="zimage" src="https://i.imgur.com/FXmuP4k.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 53%;">
+       <p>&nbsp;<span style="font-weight: bold;">A Christmas Orchestra</span></p>
+       <img id="zimage" src="https://i.imgur.com/zutyzz1.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;">
+       <p><span style="font-weight: bold;">A Christmas Choir</span></p>
+       <p><img id="zimage" src="https://i.imgur.com/4UMozL5.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 37%;">
+          <span style="font-weight: bold;"></span></p>
+       <p>
           <span class="fsLarge">
           <span class="fsLarge">
           <span style="font-weight: bold;">The Nutcracker Ballet (or on Ice)</span></span></span>
 </p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/o4YPbvg.jpg" class="zimage" alt="an Image" style="width: 46%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/hUIV95M.jpg" class="zimage" alt="an Image" style="width: 45%;">
-</p>
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/iX9i8OH.jpg" class="zimage" alt="an Image" style="width: 42%;">
-</p></div><div><br></div><div><br><p>
-          <span class="fsLarge">
-          <span style="font-weight: bold;">Tree ornaments</span></span>
-</p>
+       <img id="zimage" src="https://i.imgur.com/o4YPbvg.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 46%;">
+       <img id="zimage" src="https://i.imgur.com/hUIV95M.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 45%;"><img id="zimage" src="https://i.imgur.com/iX9i8OH.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;"><br></div><div><br></div><div><p><span class="fsXxlarge"><span style="font-weight: bold;">Tree ornaments</span></span></p>
 
-       <p>Christmas ornaments are decorative items used to adorn Christmas
+       <p><span style="font-weight: bold;">Christmas ornaments</span> are decorative items used to adorn Christmas
 trees during the holiday season. These ornaments come in various
 shapes, sizes, and materials, adding a festive touch to the tree and
 the overall Christmas decorations. The tradition of using ornaments
@@ -1256,22 +1199,14 @@ from bright red and green to soft pastels. </span></strong><strong>
 balls are covered in glitter. They also come in various
 sizes—softball size, baseball size, and golf ball size.</span></strong>
 </p>
-       <p><img id="zimage" src="https://i.imgur.com/WIL3IT3.jpg" class="zimage" alt="an Image" style="width: 44%;">
-</p>
-       <p><br><strong>
-          <span style="font-weight: normal"></span></strong>
-</p>
+       <img id="zimage" src="https://i.imgur.com/WIL3IT3.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 44%;">
        <p><strong>
           <span style="font-weight: normal">
           <span class="fsLarge">
-          <span style="font-weight: bold;">Tree-Toppers (Star or Angel)</span></span><br></span></strong>
+          <span style="font-weight: bold;">Tree-Toppers (Star or Angel)</span></span></span></strong>
 </p>
-       <p><img id="zimage" src="https://i.imgur.com/0MZ7q83.jpg" class="zimage" alt="an Image" style="width: 42%;">
-</p>
-       <p><img id="zimage" src="https://i.imgur.com/AO1DZVG.jpg" class="zimage" alt="an Image" style="width: 44%;">
-</p>
-       <p><br>
-</p>
+       <img id="zimage" src="https://i.imgur.com/0MZ7q83.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;">
+       <img id="zimage" src="https://i.imgur.com/AO1DZVG.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 44%;">
        <p><strong>
           <span style="font-weight: normal">
           <span style="font-weight: bold;">Stars, Snowflakes,</span> and Stars that look like snowflakes</span></strong><strong><b>:
@@ -1282,119 +1217,95 @@ ornaments</span></strong><strong><b> </b></strong><strong>
 be found everywhere. </span></strong><strong>
           <span style="font-weight: normal">They
 are white, silver, or gold and are placed on the trees and throughout
-the house. <br></span></strong>
+the house. </span></strong>
 </p>
-       <p><img id="zimage" src="https://i.imgur.com/wtU2BJu.jpg" class="zimage" alt="an Image" style="width: 47%;">
-</p>
-       <p><img id="zimage" src="https://i.imgur.com/Pre9z6n.jpg" class="zimage" alt="an Image" style="width: 52%;">
-</p>
-       <p><br>
-
-</p>
+       <img id="zimage" src="https://i.imgur.com/wtU2BJu.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 47%;">
+       <img id="zimage" src="https://i.imgur.com/Pre9z6n.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 52%;">
 
        <p><strong>String of </strong><strong>Lights:</strong> While not
 traditional ornaments, Christmas lights are essential decorations for
 trees. Strings of lights with colorful bulbs or clear lights make the
-tree really shine. <br></p><p><img id="zimage" src="https://i.imgur.com/W1jX1hs.jpg" class="zimage" alt="an Image"></p><p><img id="zimage" src="https://i.imgur.com/gnMqmVL.jpg" class="zimage" alt="an Image"></p><p><br></p>
+tree really shine. </p><img id="zimage" src="https://i.imgur.com/W1jX1hs.jpg" class="zimage" alt="an Image"><img id="zimage" src="https://i.imgur.com/gnMqmVL.jpg" class="zimage" alt="an Image">
 
        <p><strong>Figurines:</strong> Some ornaments take the form of small
 figurines or statuettes, often representing Christmas characters like
 Santa Claus, reindeer, angels, or snowmen. These figurines may be
-made of various materials, including wood, ceramic, or resin. <br></p><p>Santa, elves and reindeer<br></p><p><img id="zimage" src="https://i.imgur.com/RluNZ89.jpg" class="zimage" alt="an Image" style="width: 39%;"></p><p>Snowman ornament<br></p><p><img id="zimage" src="https://i.imgur.com/kg8K9I1.jpg" class="zimage" alt="an Image" style="width: 33%;"></p><p>Angel ornaments<br></p><p><img id="zimage" src="https://i.imgur.com/fw6LJMa.jpg" class="zimage" alt="an Image" style="width: 28%;"></p><p><br></p>
+made of various materials, including wood, ceramic, or resin. </p><p><span style="font-weight: bold;">Santa, elves and reindeer</span></p><img id="zimage" src="https://i.imgur.com/RluNZ89.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 39%;"><p><span style="font-weight: bold;">Snowman ornament</span></p><img id="zimage" src="https://i.imgur.com/kg8K9I1.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 33%;"><p><span style="font-weight: bold;">Angel ornaments</span></p><img id="zimage" src="https://i.imgur.com/fw6LJMa.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 28%;">
 
        <p><strong>Handmade Ornaments:</strong> Many people cherish the
 tradition of creating their own ornaments. Handmade ornaments can be
 made from almost anything. Children love making them, and keeping
-them gives parents a cherished memory <br></p><p><img id="zimage" src="https://i.imgur.com/zbW9Kcw.jpg" class="zimage" alt="an Image" style="width: 33%;"></p><p><img id="zimage" src="https://i.imgur.com/U0JvkSE.jpg" class="zimage" alt="an Image" style="width: 25%;"></p><p><img id="zimage" src="https://i.imgur.com/wZH4NCB.jpg" class="zimage" alt="an Image" style="width: 30%;"></p>
+them gives parents a cherished memory </p><img id="zimage" src="https://i.imgur.com/zbW9Kcw.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 33%;"><img id="zimage" src="https://i.imgur.com/U0JvkSE.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 25%;"><img id="zimage" src="https://i.imgur.com/wZH4NCB.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 30%;">
 
-       
-
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in"><strong>Ribbons and
+       <p><strong>Ribbons and
 Bows:</strong> Ribbons and bows are not just for gift boxes. They are
 used to create a finishing touch on the tree. They can be tied to
 branches, or strung around the tree. Lace ribbons look especially
-nice wrapped around the tree. <br></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><p style="line-height: 100%; margin-bottom: 0in">Ribbon wrapped around a tree.<br></p>
+nice wrapped around the tree. </p>
 
-       <p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/fbZM3yh.jpg" class="zimage" alt="an Image" style="width: 32%;"></p><p style="line-height: 100%; margin-bottom: 0in">Bow tied to a tree<br></p><p style="line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/3nbSgI6.jpg" class="zimage" alt="an Image" style="width: 28%;">
+       <p><span style="font-weight: bold;">Ribbon</span> wrapped around a tree.</p>
 
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in"><b>Home decorations</b>
-</p>
+       <img id="zimage" src="https://i.imgur.com/fbZM3yh.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 32%;"><p><span style="font-weight: bold;">Bow</span> tied to a tree</p><img id="zimage" src="https://i.imgur.com/3nbSgI6.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 28%;"><br></div><div><p><b><span class="fsXxlarge"><span style="font-weight: bold;">Home decorations</span></span></b></p>
 
        <p style="font-weight: normal">Christmas decorations make homes look
-festive and happy. Let's talk about some favorites: <br></p><p style="font-weight: normal"><br></p>
+festive and happy. Let's talk about some favorites: </p>
 
        <p><strong>Wreaths </strong>
 
 </p>
-<ul><li>
        <p>Wreaths are round decorations made from green branches, pine
 	cones, holly and a big colorful bow. People usually hang them on the
 	front door to say, "Welcome!" The round shape means
 	togetherness and hope, even when it's cold outside.
-</p></li></ul><div><img id="zimage" src="https://i.imgur.com/f6XSYQw.jpg" class="zimage" alt="an Image" style="width: 42%;"></div><div>
+</p><div><img id="zimage" src="https://i.imgur.com/f6XSYQw.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;"></div><div>
 
-       <p><strong><br></strong></p><p><strong>Garlands</strong>
+       <p><strong>Garlands</strong>
 
 </p>
-<ul><li>
-       <div>Garlands are long strands of decorations that can be made from
+      <p>Garlands are long strands of decorations that can be made from
 materials such as beads, popcorn, or paper. The most popular garland
 is dark green, the color of fir trees. Garland can also be wrapped
-around stair posts and other places around the house.</div></li></ul></div><div><img id="zimage" src="https://i.imgur.com/tlOdUPE.jpg" class="zimage" alt="an Image" style="width: 26%;"></div><div><br>&nbsp;<img id="zimage" src="https://i.imgur.com/bUmHXI8.jpg" class="zimage" alt="an Image" style="width: 48%;"></div><div><br></div>
+around stair posts and other places around the house.</p></div><div><img id="zimage" src="https://i.imgur.com/tlOdUPE.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 26%;"></div><div>&nbsp;<img id="zimage" src="https://i.imgur.com/bUmHXI8.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 48%;"></div>
 
        <p><strong>Nativity Scenes </strong>
 
 </p>
-<ul><li>
        <p>Nativity scenes are small scenes that show the birth of
 	Jesus. You might see Mary, Joseph, baby Jesus, shepherds, and
 	angels. People put them on tables or shelves. They remind us about
 	the special story of Christmas and the idea of being kind and
-	giving. Nativity scenes usually consist Mary, Joseph, baby Jesus, shepherds, and three wise men. The three wise men seem to have been rich travellers, as there gifts to young Jesus were hard to come by and expensive.<br></p></li></ul><div><img id="zimage" src="https://i.imgur.com/w5nbRng.jpg" class="zimage" alt="an Image" style="width: 43%;"></div><div><br></div><div><br></div>
+	giving. Nativity scenes usually consist Mary, Joseph, baby Jesus, shepherds, and three wise men. The three wise men seem to have been rich travellers, as there gifts to young Jesus were hard to come by and expensive.</p><div><img id="zimage" src="https://i.imgur.com/w5nbRng.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;"></div>
 
        <p><strong>Christmas Villages </strong>
 
 </p>
-<ul><li>
        <p>Imagine a tiny winter village with small houses, people, and
 	lights. That's a Christmas village! People like them because they
 	make a small, cozy world that feels happy and nostalgic. They bring
-	back memories of simple joys during the holiday season.</p></li></ul><div><img id="zimage" src="https://i.imgur.com/fbCioC2.jpg" class="zimage" alt="an Image" style="width: 42%;"></div><div><img id="zimage" src="https://i.imgur.com/9aWHB8H.jpg" class="zimage" alt="an Image" style="width: 35%;"></div><div><br></div><div><img id="zimage" src="https://i.imgur.com/ras2LgY.png" class="zimage" alt="an Image" style="width: 37%;"></div><div><br></div><div><br></div>
+	back memories of simple joys during the holiday season.</p><div><img id="zimage" src="https://i.imgur.com/fbCioC2.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 42%;"></div><div><img id="zimage" src="https://i.imgur.com/9aWHB8H.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 35%;"></div><div><img id="zimage" src="https://i.imgur.com/ras2LgY.png" class="zimage" alt="an Image" loading="lazy" data-fake="fake 37%;"></div>
 
        <p><strong>Candles and Candle Holders </strong>
 
 </p>
-<ul><li>
        <p>Candles are like little lights that make a room feel warm.
 	They come in Christmas colors and shapes. Candles are special
 	because they show hope and light during the dark, cold winter. They
 	make homes feel calm and peaceful.
-</p></li></ul><div><img id="zimage" src="https://i.imgur.com/H3jp3fM.jpg" class="zimage" alt="an Image" style="width: 40%;"></div><div><br></div><div><br></div>
+</p><div><img id="zimage" src="https://i.imgur.com/H3jp3fM.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 40%;"></div>
 
        <p><strong>Stockings </strong>
 
 </p>
-<ul><li>
        <p>Stockings are like big socks that people hang near the
 	fireplace. Children love them because they're filled with surprises
 	and treats on Christmas morning. This tradition is a bit mysterious
 	and adds excitement to the holiday season.
-</p></li></ul><div><img id="zimage" src="https://i.imgur.com/OyMW3xv.png" class="zimage" alt="an Image" style="width: 37%;"></div><div><img id="zimage" src="https://i.imgur.com/pYi4piv.jpg" class="zimage" alt="an Image" style="width: 43%;"></div><div><br></div><div><br></div><div><br></div>
+</p><div><img id="zimage" src="https://i.imgur.com/OyMW3xv.png" class="zimage" alt="an Image" loading="lazy" data-fake="fake 37%;"></div><div><img id="zimage" src="https://i.imgur.com/pYi4piv.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 43%;"></div>
 
        <p><strong>Gingerbread Houses</strong><strong> </strong>
 
 </p>
-<ul><li>
+
        <p>Gingerbread houses are sweet, edible houses made from
 	gingerbread cookies and decorated with icing, candies, and other
 	delicious treats. They have frosting roofs, candy cane fences, and
@@ -1404,17 +1315,11 @@ around stair posts and other places around the house.</div></li></ul></div><div>
 	baking it yourself. You can also by pre-made gingerbread houses from
 	the bakery. As well, you can just buy a fake gingerbread house
 	because they are just too cute.
-</p></li></ul><div><img id="zimage" src="https://i.imgur.com/ukQUsgI.jpg" class="zimage" alt="an Image" style="width: 40%;"></div>
+</p><div><img id="zimage" src="https://i.imgur.com/ukQUsgI.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 40%;"></div>
 
-       
+       <p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/3Ox72SJ.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 41%;"><br></p><p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><br></p>
 
-       <p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><img id="zimage" src="https://i.imgur.com/3Ox72SJ.jpg" class="zimage" alt="an Image" style="width: 41%;">
-</p><p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><br></p><p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-
-       <p style="line-height: 100%; margin-bottom: 0in"><b>Christmas Dinner</b>
-</p>
+       <p><span class="fsXxlarge"><span style="font-weight: bold;"><b>Christmas Dinner</b></span></span></p>
 
        <p style="font-weight: normal; line-height: 100%; margin-bottom: 0in">
 Christmas Dinner can be on either Christmas Eve or Christmas day.
@@ -1430,70 +1335,70 @@ cookies, frosted sugar cookies, and sugar-powdered cookies with nuts.
 </p>
 
        <p style="font-weight: normal; line-height: 100%; margin-bottom: 0in">
-<img id="zimage" src="https://i.imgur.com/JGFmgii.jpg" class="zimage" alt="an Image" style="width: 57%;"></p><p style="font-weight: normal; line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
+<img id="zimage" src="https://i.imgur.com/JGFmgii.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 57%;"></p>
 
        <p style="font-weight: normal; line-height: 100%; margin-bottom: 0in">
-Turkey! Just one turkey can&nbsp; feed a really large family.<br>
+<span style="font-weight: bold;">Turkey</span>! Just one turkey can&nbsp; feed a really large family.
 
 </p>
 <style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }strong { font-weight: bold }</style>
 </div>
-   <div><img id="zimage" src="https://i.imgur.com/SGvuwLj.jpg" class="zimage" alt="an Image" style="width: 49%;"></div><div><br></div><div><br></div><div>If you don't work turkey again so soon after Thanksgiving, then bring out the ham! <br></div><div><img id="zimage" src="https://i.imgur.com/rWdupvm.jpg" class="zimage" alt="an Image" style="width: 49%;"></div><div><br></div><div><br></div><div>There will be a lot more than just the food below. However, these are the staple dishes for most Christmas dinners: green beans, mashed potatoes and gravy, corn, cranberry sauce, and stuffing. Stuffing are bread crumbs that have been heavily seasoned and baked with the turkey drippings. <br></div><div><img id="zimage" src="https://i.imgur.com/SzJ7AXX.jpg" class="zimage" alt="an Image" style="width: 49%;"></div><div><br></div><div><br></div><div>Again, there will be a huge variety of dessert choices, but here are the the three most popular pies:&nbsp; Pumpkin pie , Pecan pie, and Apple pie. <br></div><div><img id="zimage" src="https://i.imgur.com/2xL6B46.jpg" class="zimage" alt="an Image" style="width: 48%;"></div><div><br></div><div><br>
-</div>
+   <div><img id="zimage" src="https://i.imgur.com/SGvuwLj.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 49%;"></div>
+   <div><p>If you don't want turkey again so soon after Thanksgiving, then bring out the ham! </p></div><div><img id="zimage" src="https://i.imgur.com/rWdupvm.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 49%;"></div>
+   <div><p>There will be a lot more than just the food below. However, these are the staple dishes for most Christmas dinners: green beans, mashed potatoes and gravy, corn, cranberry sauce, and stuffing. Stuffing are bread crumbs that have been heavily seasoned and baked with the turkey drippings. </p></div><div><img id="zimage" src="https://i.imgur.com/SzJ7AXX.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 49%;"></div>
+   <div><p>Again, there will be a huge variety of dessert choices, but here are the the three most popular pies:&nbsp; Pumpkin pie , Pecan pie, and Apple pie. </p></div><div><img id="zimage" src="https://i.imgur.com/2xL6B46.jpg" class="zimage" alt="an Image" loading="lazy" data-fake="fake 48%;"></div>
 </div>
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
         </div-->
-        
-		<button class="delBtnz" style="display: none;" onclick="this.parentElement.remove()"> delete this article <br> forever </button>
-    
+
+		<button class="delBtnz" style="display: none;" onclick="this.parentElement.remove()"> delete this article forever </button>
+
 </div>
-</div> <!--End allCards -->
+</div></div> <!--End allCards -->
 
 
 
    <div id="codeStrx">
 <script>
-    
-    
-    function zmoveUp(zchild){ 
+
+
+    function zmoveUp(zchild){
         let zthis = document.getElementById(zchild);
-        
+
         // This was my solution but it had an occasional click-twice problem
         /*if (zthis.parentNode.firstElementChild !== zthis) {
           zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
-          }*/  
-        
+          }*/
+
         // this is the solution from you.com
-       /* if (zthis.previousElementSibling && zthis.previousElementSibling !== zthis.parentNode.firstElementChild) 
+       /* if (zthis.previousElementSibling && zthis.previousElementSibling !== zthis.parentNode.firstElementChild)
         {
             zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
         }*/
-        
-        // seeming redundant I changed to this 
-       if (zthis && zthis.previousElementSibling !== zthis.parentNode.firstElementChild) 
+
+        // seeming redundant I changed to this
+       if (zthis && zthis.previousElementSibling !== zthis.parentNode.firstElementChild)
         {
             zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
-        }       
-        
-    }   
-    
-    function zmoveDown(zchild){ 
+        }
+
+    }
+
+    function zmoveDown(zchild){
         let zthis = document.getElementById(zchild);
         let nextChild = zthis.nextElementSibling;
         // the second part of the if statement might be redundant, but I was trying to prevent
         // "click twice for move" and this works, so I just left it
         if ((nextChild !== undefined && nextChild !== null) && (zthis !== zthis.parentNode.lastElementChild)){
-          nextChild.parentNode.insertBefore(nextChild, zthis);      
+          nextChild.parentNode.insertBefore(nextChild, zthis);
         }
-    } 
-//<!-- //end +++++====== Move one Child up/over   ============ -->   
-    
-    
-    
-    
+    }
+//<!-- //end +++++====== Move one Child up/over   ============ -->
+
+
+
+
 function toggleText(id2toggle) {
     event.preventDefault(); // or use return false; at the end
     if (toggleTextStatus === "on") {
@@ -1515,12 +1420,9 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 </div>
 
-	   
+
         <button id="addCard2" class="addCard" onclick="addCard()" style="display: none;">add article</button><br>
-        <button id="showAnswers2" class="toggleAllAnsBtn" style="display: block;" onclick="showAnswers()">
-                &nbsp;Show All Articles&nbsp;</button>
-        <button id="hideAnswers2" class="toggleAllAnsBtn" onclick="hideAnswers()" style="display: none;">
-                &nbsp;Hide All Articles&nbsp;</button> 
+
 
         <button id="editOffDup" onclick="toggleEditOff()" style="display: none; margin: 1ex 0px 0px;">Preview</button>
         <button id="editOnDup" onclick="toggleEditOn()" style="display: none; margin: 1ex 0px 0px;">Edit Mode</button>
@@ -1562,14 +1464,14 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
               //zclone.setAttribute("onclick", toggleText);
                 //console.log (zclone);
               zclone.style.display="block";
-            
+
 
 	      //APPEND APPEND APPEND
-            
+
             if (zztopz){
                 allCards.prepend(zclone);
             }
-            else { 
+            else {
                 allCards.appendChild(zclone);
             }
 
@@ -1580,20 +1482,20 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
               let zdelBtn = zclone.querySelector(".delBtn");
               zdelBtn.style.display = "block";
               zdelBtn.setAttribute("class", "delBtnz");
-            
-            
-            
-  
-            
-            
-            
-            
+
+
+
+
+
+
+
+
             let zclonedQuestion = zclone.querySelector('.question');
             let zclonedAnswer =  zclone.querySelector('.answer');
-            
+
             let zclonedMoveUp = zclone.querySelector('.moveUpBtn');
             let zclonedMoveDown = zclone.querySelector('.moveDownBtn');
-            
+
             let codeStrx = document.getElementById("codeStrx");
 
                       //console.log(codeStrx);
@@ -1607,9 +1509,9 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
             zclonedMoveUp.id = ("moveUp" + i);
             zclonedMoveDown.id = ("moveDown" + i);
                 zmoveUpFn = "zmoveUp('" + newID + "')";           // onclick="zmoveUp('quSet2')
-            zclonedMoveUp.setAttribute("onclick", zmoveUpFn);  
+            zclonedMoveUp.setAttribute("onclick", zmoveUpFn);
                 zmoveDownFn = "zmoveDown('" + newID + "')";           // onclick="zmoveUp('quSet2')
-            zclonedMoveDown.setAttribute("onclick", zmoveDownFn);             
+            zclonedMoveDown.setAttribute("onclick", zmoveDownFn);
                     //console.log(zclonedQuestion);
                     //console.log(zclonedAnswer);
 
@@ -1618,24 +1520,24 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
                    //console.log(theDom);
         }
     </script>
-    
-    
+
+
     <!--  =============== HTML SAVE THE DOM as FILE ==================== -->
-    
+
    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 1em 0px 0px 1em; padding: 1ex; display: none;">
-        
+
              <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> &nbsp;&nbsp;
           <span id="doneFontElmReplace" style="border: thin solid yellow; color: yellow; display: inline-block;">done</span>
-                
-        
-               <br><br> 
+
+
+               <br><br>
         <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
         </label><br><br>
-        
+
       <button id="done" class="hlBtn" onclick="done()">Save/Download</button>
-    
-</div> 
+
+</div>
     <!-- end HTML save dom ====================== -->
         <br>
     <!-- button id="done" onclick="done()">Save/Download</button -->
@@ -1645,14 +1547,14 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
        function done(){  //saveDom save the DOM
         oldTitle = document.title;
         let fileName = document.getElementById("fileName").value;
-         document.title = fileName;  
+         document.title = fileName;
         //document.getElementById("viewPrint").style.display="none";
-           
+
         if (zztopz){
             setzztopzX.setAttribute("data-setzztopz", "on");
         }
-           
-           
+
+
       document.getElementById("iIndex").innerHTML=i;
        console.log(i);
               // here we get and set the full HTML markup
@@ -1680,8 +1582,8 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 
 // here we are setting up for the save as study mode
-           
-        
+
+
     toggleEditOff(); //preview
     document.getElementById("toggleTextStatus").innerHTML = "on";
     toggleTextStatus = "on"; console.log(toggleTextStatus);
@@ -1689,12 +1591,16 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
        //turn off leave page warning
         document.getElementById("warnLeavePage").textContent="off";
-           
-           
+
+
         document.getElementById("editOn").style.display="none";
         document.getElementById("editOff").style.display="none";
         document.getElementById("editOnDup").style.display="none";
-        document.getElementById("editOffDup").style.display="none";           
+        document.getElementById("editOffDup").style.display="none";
+
+
+        document.getElementById('xmas-loader').classList.remove('hidden');
+
 
        //  theDOM study mode
         let theDom2 = document.documentElement.innerHTML;
@@ -1718,22 +1624,22 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         //end the BLOB stuff and save
 
 
-        // put back the Edit Mode elements   
+        // put back the Edit Mode elements
         toggleEditOn();
            toggleTextStatus = "off";
             document.getElementById("toggleTextStatus").innerHTML = "off"; console.log("end" + toggleTextStatus);
-           
+
            document.title = oldTitle;
-           
+
        //turn on leave page warning
-        document.getElementById("warnLeavePage").textContent="on";          
-           
+        document.getElementById("warnLeavePage").textContent="on";
+
         alert("Check the browser's \n default download folder");
         }
   </script>
-    
+
     <script>
-    
+
     if (document.getElementById("warnLeavePage").textContent==="on"){
       function warning()
       {
@@ -1741,55 +1647,55 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
       }
       window.onbeforeunload = warning;
     }
-        
-    </script>   
-    
-    
-    
+
+    </script>
+
+
+
       <script>
 	    function noStyle() {
             document.querySelectorAll('style,link[rel="stylesheet"]')
               .forEach(element => element.remove()); window.print();
             alert ("refresh to cancel simple view");
         }  //end noStyle
-        
+
       function showAnswers(){
         let showAnswers = document.querySelectorAll(".answer");
           for (const showAnswer of showAnswers){
                         console.log(showAnswer);
 
               showAnswer.style.display="block";
-          }  
+          }
         document.getElementById("hideAnswers").style.display="inline-block";
         document.getElementById("showAnswers").style.display="none";
         document.getElementById("hideAnswers2").style.display="inline-block";
-        document.getElementById("showAnswers2").style.display="none";          
+        document.getElementById("showAnswers2").style.display="none";
 
-      }  //end showAnswers   
-      
+      }  //end showAnswers
+
       function hideAnswers(){
         let hideAnswers = document.querySelectorAll(".answer");
           for (const hideAnswer of hideAnswers){
               hideAnswer.style.display="none";
-          }  
+          }
         document.getElementById("hideAnswers").style.display="none";
         document.getElementById("showAnswers").style.display="inline-block";
         document.getElementById("hideAnswers2").style.display="none";
         document.getElementById("showAnswers2").style.display="inline-block";
-      }  //end hideAnswers  
+      }  //end hideAnswers
 	</script>
-    
-    
 
-    
+
+
+
 <!--div id="viewPrint" style="display:none;">
-    <div id="printOptions" style="display: inline-block; margin: 0 0 7px 0; padding: 1ex; 0"> 
-        View  
+    <div id="printOptions" style="display: inline-block; margin: 0 0 7px 0; padding: 1ex; 0">
+        View
         <br>
             <button id="showAnswers" class="hlBtn" onclick="showAnswers()">
                 Show/Hide All Items</button>
             <button id="hideAnswers" class="hlBtn" style="display:none;" onclick="hideAnswers()">
-                Show/Hide All Items</button>       
+                Show/Hide All Items</button>
     </div>
     <div style="display:inline-block; margin: 5px 3px 0 0;">
     </div>
@@ -1807,44 +1713,44 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
         for (const answerz of answerzs) {
                     answerz.style.display = "block";
-          }    
+          }
     } //end toggleALAnsOn()
-    
+
     function toggleAllAnsOff(){
        let answerzs = document.querySelectorAll('div[class="answer"]');
 
         for (const answerz of answerzs) {
                     answerz.style.display = "none";
-          }    
+          }
     } //end toggleAllAnsOff()
-    
-    
+
+
 {
-    let showAnswer = document.getElementById("answer1"); 
+    let showAnswer = document.getElementById("answer1");
     if (showAnswer.style.display === "block") {
         showAnswer.style.display = "none";
     } else {
             showAnswer.style.display = "block";
         }
-}     
-    
-    
-    
-    
-    
-    
-    
+}
+
+
+
+
+
+
+
 </script>
 
 <script>
-    
+
     function toggleEditOff(){  //preview
-        
+
         const changeBkgd = document.getElementById("changeBackground");
         changeBkgd.style.display="none";
-           
+
        tgltxt="toggleText()";
-        
+
         let toggleQu1 = document.getElementById("question1");
         toggleQu1.setAttribute("onclick", tgltxt);
 
@@ -1856,7 +1762,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
         const addBtn2 = document.getElementById("addCard2");
         addBtn2.style.display="none";
-           
+
         const doneBtn = document.getElementById("saveDom");
         doneBtn.style.display="none";
 
@@ -1865,27 +1771,27 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         let titlez = document.getElementById("zztitle");
         let styleEditors = document.querySelectorAll(".styleEditor");
         let biuCodes = document.querySelectorAll(".biuCode");
-        
+
             let moveUpBtns = document.querySelectorAll('.moveUpBtn');
             let moveDownBtns = document.querySelectorAll('.moveDownBtn');
 
         titlez.setAttribute("contenteditable", "false");
-        
+
         for (const moveUpBtn of moveUpBtns ){
           moveUpBtn.style.display="none";
           }
-        
+
         for (const moveDownBtn of moveDownBtns ){
           moveDownBtn.style.display="none";
-          }        
-        
+          }
+
         for (const styleEditor of styleEditors) {
           styleEditor.style.display="none";
           }
 
 
         for (const answerz of answerzs) {
-          answerz.style.display="none";
+          answerz.style.display="block";
           answerz.setAttribute("contenteditable", "false");
           }
 
@@ -1893,7 +1799,7 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
           question.setAttribute("contenteditable", "false");
           }
 
-        
+
 
         // display none
         const editMode = document.getElementById("editMode");
@@ -1903,22 +1809,17 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         for (const delBtn of delBtns) {
           delBtn.style.display = "none";
           }
-        
+
         document.getElementById("editOn").style.display="block";
         document.getElementById("editOff").style.display="none";
         document.getElementById("editOnDup").style.display="block";
-        document.getElementById("editOffDup").style.display="none";   
-        
-        document.getElementById("hideAnswers").style.display="none";
-        document.getElementById("showAnswers").style.display="block";
-        document.getElementById("hideAnswers2").style.display="none";
-        document.getElementById("showAnswers2").style.display="block"; 
-        
+        document.getElementById("editOffDup").style.display="none";
+
     }  //end toggleEditOff
-    
-    
-    function toggleEditOn(){  
-       //get editmode elements ******** 
+
+
+    function toggleEditOn(){
+       //get editmode elements ********
        const changeBkgd = document.getElementById("changeBackground");
 
        tgltxt="toggleText()";
@@ -1932,26 +1833,26 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         const addBtn2 = document.getElementById("addCard2");
 
         const doneBtn = document.getElementById("saveDom");
-        
+
         const editMode = document.getElementById("editMode");
 
-        
+
         let answerzs = document.querySelectorAll('div[class="answer"]');
         let questions = document.querySelectorAll('div[class="question"]');
         let titlez = document.getElementById("zztitle");
         let styleEditors = document.querySelectorAll(".styleEditor");
-        let biuCodes = document.querySelectorAll(".biuCode");  
+        let biuCodes = document.querySelectorAll(".biuCode");
         let delBtns = document.querySelectorAll('button[class="delBtnz"]');
 
         //end get editmode elements ********
-        
+
         //document.getElementById("viewPrint").style.display="none";
         changeBkgd.style.display="none";
         editMode.style.display="block";
         addBtn.style.display="initial";
         addBtn2.style.display="initial";
         doneBtn.style.display="block";
-        
+
         tgltxt="toggleTextFake)";
         toggleQu1.setAttribute("onclick", tgltxt);
 
@@ -1963,26 +1864,26 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
             let moveUpBtns = document.querySelectorAll('.moveUpBtn');
             let moveDownBtns = document.querySelectorAll('.moveDownBtn');
-    
+
         for (const moveUpBtn of moveUpBtns ){
           moveUpBtn.style.display="initial";
           }
-        
+
         for (const moveDownBtn of moveDownBtns ){
           moveDownBtn.style.display="initial";
-          }  
-        
+          }
+
 
         for (const styleEditor of styleEditors) {
           styleEditor.style.display="inline-block";
           }
-           
-           
-           
+
+
+
         for (const delBtn of delBtns) {
           delBtn.style.display = "block";
           }
-           
+
 
 
         for (answerz of answerzs) {
@@ -1993,20 +1894,15 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         for (question of questions) {
           question.setAttribute("contenteditable", "true");
           }
-        
+
         document.getElementById("editOn").style.display="none";
         document.getElementById("editOff").style.display="block";
         document.getElementById("editOnDup").style.display="none";
-        document.getElementById("editOffDup").style.display="block";    
-        
-        document.getElementById("hideAnswers").style.display="inline-block";
-        document.getElementById("showAnswers").style.display="none";
-        document.getElementById("hideAnswers2").style.display="block";
-        document.getElementById("showAnswers2").style.display="none"; 
-        
+        document.getElementById("editOffDup").style.display="block";
+
     }  //end toggleEditOn
 </script>
-    
+
 <script>
 
 function replaceFontElms() {
@@ -2036,14 +1932,14 @@ fonts.forEach((font) => {
   // Replace the font element with the new span
   font.parentNode.replaceChild(span, font);
 });
-   
-    
+
+
  const spanDone = document.getElementById("doneFontElmReplace");
 
   // Toggle display style
   if (spanDone.style.display === "none") {
     spanDone.style.display = "inline-block";
-  } 
+  }
 
   // Toggle border color and text color
   if (spanDone.style.borderColor === "orange") {
@@ -2054,16 +1950,16 @@ fonts.forEach((font) => {
     spanDone.style.color = "orange";
   }
      // document.documentElement.style.pointerEvents = 'none';
-      setTimeout(replaceNlines, 100);    
+      setTimeout(replaceNlines, 100);
       setTimeout(addNewlines, 100);
 
       setTimeout(addSpaces, 100);
-    
+
 }
 
-</script>    
-    
-    
+</script>
+
+
 
     <script>
         function addNewlines() {
@@ -2085,17 +1981,17 @@ fonts.forEach((font) => {
                         break;
                 }
             });
-            
+
             //setTimeout(addSpaces, 300);
-          
+
         }
-        
-        
+
+
         function addSpaces() {
             const elements = document.querySelectorAll('div, p, span');
 
-            elements.forEach(element => {                
-                
+            elements.forEach(element => {
+
                 // Determine the number of spaces based on the element type
                 let numSpaces = 0;
                 switch (element.tagName.toLowerCase()) {
@@ -2116,14 +2012,14 @@ fonts.forEach((font) => {
                 // Add the spaces before the element's innerHTML
                 element.insertAdjacentHTML('beforebegin', spaces);
             });
-            
-        setTimeout(dummy, 100);            
-        document.documentElement.style.pointerEvents = 'auto';              
-        }        
-    </script>   
-    
+
+        setTimeout(dummy, 100);
+        document.documentElement.style.pointerEvents = 'auto';
+        }
+    </script>
+
 <script>
-    
+
     // this is currently turned off
     // it may work in other apps that aren't as complicated as flatCMS
     // if so we should convert this to REMOVE ALL WHITESPACES
@@ -2135,27 +2031,83 @@ function replaceNlines() {
     element.innerHTML = updatedText;
   });
 }
-</script>    
-    
-    
-    
+</script>
+
+
+
     <script>
-        function dummy(){ console.log("dummyFunction activated");}    
+        function dummy(){ console.log("dummyFunction activated");}
     </script>
-    
 
 
-    
-    
-    
-    
-<footer style="margin:4em; display: block;">     
-      
-       <p> ... end. 
+
+<!-- ==== SPINNER MARKUP ==== -->
+  <div id="xmas-loader" class="">
+    <div class="box">
+      <div class="spinner"></div>
+      <h2>Tons of Christmas Images loading…</h2>
+      <button id="close-loader">Got it! Close this spinner.</button>
+    </div>
+  </div>
+
+ <!-- ==== SCRIPT (place at end of body) ==== -->
+  <script>
+    // ----- 1. Grab elements -----
+    const loader   = document.getElementById('xmas-loader');
+    const closeBtn = document.getElementById('close-loader');
+    let manuallyClosed = false;
+
+    // ----- 2. Manual close -----
+    closeBtn.addEventListener('click', () => {
+      manuallyClosed = true;
+      loader.classList.add('hidden');
+    });
+
+    // ----- 3. Observe *all* .zimage elements (present now + added later) -----
+    const observer = new MutationObserver(checkImages);
+    observer.observe(document.body, { childList:true, subtree:true });
+
+    // Initial check (in case images already exist)
+    checkImages();
+
+    function checkImages() {
+      if (manuallyClosed) return;
+
+      const imgs = document.querySelectorAll('img.zimage');
+      const total = imgs.length;
+
+      if (total === 0) { hideLoader(); return; }
+
+      let loaded = 0;
+      const onLoad = () => {
+        loaded++;
+        if (loaded >= total) setTimeout(hideLoader, 400);
+      };
+
+      imgs.forEach(img => {
+        // Already cached?
+        if (img.complete) { onLoad(); return; }
+
+        // Listen to load / error (errors count as “done”)
+        img.addEventListener('load',  onLoad, {once:true});
+        img.addEventListener('error', onLoad, {once:true});
+      });
+    }
+
+    function hideLoader() {
+      loader.classList.add('hidden');
+      observer.disconnect();   // no more work needed
+    }
+  </script>
+
+<footer style="margin:4em; display: block;">
+
+       <p> ... end.
 </p>
 </footer>
-    
-    
+
+
+
 
 
 
