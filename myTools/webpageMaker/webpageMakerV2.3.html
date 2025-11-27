@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webpageMaker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Poppins',sans-serif;line-height:1.4;color:#1a1a1a;background:#f0f4f8;margin:0;padding:0}
+    .header{padding:.8rem .8rem .8rem 1.8rem;font-weight:600;font-size:1.3rem;color:white;border-radius:3px;
+            background:linear-gradient(135deg,#ff6b6b,#4ecdc4);box-shadow:0 3px 6px gray}
+    .container{width:100%;max-width:35rem;margin:0 auto;padding:1.5rem 1rem;background:#F7EDF4;
+               border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.05);box-sizing:border-box}
+    h2{font-size:2rem;color:#2c3e50;margin-bottom:1.3rem;font-weight:700;border-bottom:3px solid #ff6b6b;
+       padding-bottom:.5rem;transition:color .3s}h2:hover{color:#FB6D6D}
+    h3{font-size:1rem;color:#52C2B9;font-weight:600}
+    p,ul{font-size:.8rem;color:#4a4a4a;margin-bottom:.8rem}
+    ul{padding-left:1rem;list-style:none}
+    ol{padding-left:1rem;}
+    ul>li{margin-bottom:.8rem;position:relative;padding-left:.8rem}
+    ul>li:before{content:'•';color:#ff6b6b;position:absolute;left:0;top:.2rem}
+    audio{width:100%;margin:1.2rem 0;border-radius:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+    a{color:#ff6b6b;text-decoration:none;transition:color .3s}a:hover{color:#4ecdc4;text-decoration:underline}
+    .section{border:thin solid #F6C1E6;background:#f9f9f9;padding:1rem;border-radius:8px;
+             margin-bottom:1.1rem;transition:transform .3s,box-shadow .3s;position:relative}
+    .section:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(0,0,0,.1)}
+    .sectionTop{border:thin solid #F6C1E6;background:#f9f9f9;padding:1rem;border-radius:8px;margin-bottom:1.1rem}
+    #sectionTemplate{display:none}
+    .editor-panel{position:fixed;top:10px;right:10px;background:rgba(255,255,255,.97);padding:14px;
+                  border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:9999;
+                  font-family:'Poppins',sans-serif;font-size:.85rem;min-width:10rem;max-width:15rem;}
+    .editor-panel input,.editor-panel button{width:100%;margin:6px 0;padding:8px 10px;
+                  font-size:.85rem;border:1px solid #ddd;border-radius:6px}
+    .editor-panel button{background:#ff6b6b;color:white;font-weight:600;cursor:pointer;
+                        transition:background .3s}
+    .editor-panel button:hover{background:#4ecdc4}
+    .delBtn,.link-del{background:#ff6b6b;color:white;border:none;padding:2px 6px;
+                      font-size:.65rem;cursor:pointer;border-radius:3px;margin-left:8px}
+    .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
+    .editMode{display:block}
+    #pseudoAudioPlayerWithLink { display: none; }
+    #audioPlayer { margin: 0.3rem 0 !important; }                  /* was 1.5rem+ */
+    #audioWrapper { margin: 0.3rem 0 !important; }  /* Tightens outer wrapper */
+#audioPlayer, #pseudoAudioPlayerWithLink {
+  margin: 0 !important; padding: 0 0 !important;  /* Zeroes player margins, tiny inner pad */
+}
+#audioPlayer audio, #pseudoAudioPlayerWithLink audio {
+  margin: 0 !important;  /* Targets the actual <audio> tag */
+}
+
+#btnSave{
+  background-color:blue; font-size:1rem;
+}
+  </style>
+</head>
+<body>
+  <!-- EDITOR PANEL -->
+  <div class="editor-panel editMode">
+    <div style="margin-bottom:1.2rem;"><strong>Editor Tools</strong></div>
+
+    <label style="display: inline; cursor: pointer;">
+        <input type="checkbox" id="olCheckbox" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;"> Check for OL (default is UL)<br>Use ^^ for delimiter.
+</label>
+<button id="formatBtn">Make List</button>
+<hr>
+
+
+    <label>Display Text<br><input id="linkText" placeholder="e.g. Watch on YouTube"></label>
+    <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
+<label for="pseudoToggle" style="display: inline; cursor: pointer;">
+  <input type="checkbox" id="pseudoToggle" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;"/>
+  <span style="display: inline-block; vertical-align: middle;">pseudo Player <br>(links out to youtube)</span>
+</label>
+    <button id="btnAddLink">+ Add Link</button>
+    <hr>
+    <label id="inputAudioFile">Audi-only File<br><input id="audioInput" placeholder="podcast.webm"></label>
+    <button id="btnRestoreAudio">+ Restore Audio</button>
+    <hr>
+     <button id="btnAdd">+ Add Section</button>
+     <hr>
+    <label>Save As<br><input id="filenameInput" value="myPodcastPage.html"></label>
+    <button id="btnSave">Save as Local File</button>
+  </div>
+  <div class="container">
+    <div class="header" contenteditable="true">Dr. Ray's English Lessons</div><br>
+    <div class="sectionTop" contenteditable="true">
+      <h2 id="articleTitle" style="color:#52C2B9;">Top Header/Title Goes Here</h2>
+      <p>An overview or summary goes here ... [or anything else you like]</p>
+      <div id="linksSection" style="text-align:right;width:100%"></div>
+    </div><br>
+    <!-- AUDIO BLOCK -->
+    <div id="audioWrapper">
+      <div style="text-align:center;font-weight:600;margin-bottom:.3rem">
+        Listen to the Podcast
+        <button id="delAudioPlayer" class="link-del editMode" style="font-size:.7rem"
+                onclick="document.getElementById('audioWrapper').remove()">Delete Audio</button>
+      </div>
+
+
+
+<div id="pseudoAudioPlayerWithLink" style="position: relative;">
+  <audio controls style="width: 100%; height: 100%;">
+    <source src="" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <a id="pseudoLinkOut" href="https://youtu.be/REqSGbrLa1A"
+     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            text-indent: -9999px; background: rgba(0,0,0,0); z-index: 10;"
+            target="blank"></a>
+</div>
+
+<div id="audioPlayer" style="text-align:center">
+        <audio controls style="width:98%;margin:0 auto" id="pageAudio">
+          <source src="culturalAwarenessPodcast.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+</div><br>
+
+
+
+
+    <!-- TEMPLATE -->
+    <div id="sectionTemplate">
+      <h3>New Section</h3>
+        <div>  [Type or past text here] </div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()">delete section</button>
+    </div>
+
+
+    <!-- SECTION 1 -->
+    <div class="section" contenteditable="true">
+      <h3>Some Subtitle Goes Here</h3>
+        <div>  [Type or past text here] </div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()">delete section</button>
+    </div>
+    <div class="edit-spacer editMode" contenteditable="false"></div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = s => document.querySelector(s);
+  const linkText = $('#linkText');
+  const linkUrl = $('#linkUrl');
+  const audioIn = $('#audioInput');
+  const fileIn = $('#filenameInput');
+  const linksSec = $('#linksSection');
+  const container = $('.container');
+
+  // Init audio field
+  const srcEl = $('#pageAudio source');
+  if (srcEl) audioIn.value = srcEl.src.split('/').pop();
+
+  // ADD LINK (FIXED: separate link + delete button)
+  $('#btnAddLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    // Update pseudo player overlay link when pseudo mode is active
+const pseudoLink = document.getElementById('pseudoLinkOut');
+if (pseudoLink) pseudoLink.href = url;
+    if (!text || !url) return alert('Fill both fields');
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.textContent = text;
+    link.style = 'font-size:85%; display:block; text-align:right;';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'link-del editMode';
+    del.style = 'margin-left:8px; font-size:0.7rem;';
+    del.onclick = () => { link.remove(); del.remove(); };
+
+    linksSec.appendChild(link);
+    linksSec.appendChild(del);
+
+    linkText.value = linkUrl.value = '';
+    linkText.focus();
+  };
+
+  // RESTORE AUDIO (FIXED: only delete button has editMode)
+  $('#btnRestoreAudio').onclick = () => {
+    if ($('#audioWrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.id = 'audioWrapper';
+    wrapper.style.margin = '1.5rem 0';
+    wrapper.innerHTML = `
+      <div style="text-align:center; font-weight:600; margin-bottom:.3rem">
+        Listen to the Podcast
+        <button class="link-del editMode" style="font-size:.7rem; margin-left:8px;"
+                onclick="this.parentElement.parentElement.remove()">Delete Audio</button>
+      </div>
+      <div style="text-align:center">
+        <audio controls style="width:98%; margin:0 auto" id="pageAudio">
+          <source src="" type="audio/mpeg">
+        </audio>
+      </div>
+    `;
+    document.querySelector('.sectionTop').insertAdjacentElement('afterend', wrapper);
+    audioIn.value = '';
+  };
+
+  // ADD SECTION (FIXED: add editMode to delBtn and spacer)
+  $('#btnAdd').onclick = () => {
+    const clone = $('#sectionTemplate').cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.className = 'section';
+    clone.contentEditable = 'true';
+
+    const delBtn = clone.querySelector('.delBtn');
+    delBtn.classList.add('editMode');
+    delBtn.onclick = () => clone.remove();
+
+    container.appendChild(clone);
+
+    const sp = document.createElement('div');
+    sp.className = 'edit-spacer editMode';
+    sp.contentEditable = 'false';
+    container.appendChild(sp);
+  };
+
+  // SAVE (WORKS: hides only editMode, restores, saves clean)
+$('#btnSave').onclick = () => {
+  // 1. Update <title>
+  const h2 = document.getElementById('articleTitle');
+  const title = document.querySelector('title');
+  if (h2 && title) title.textContent = h2.textContent.trim();
+
+  // 2. Update audio
+  const audioInput = audioIn.value.trim();
+  const audioSource = document.querySelector('#pageAudio source');
+  if (audioSource && audioInput) audioSource.src = audioInput;
+
+  // 3. HIDE editMode elements
+  const editElements = document.querySelectorAll('.editMode');
+  editElements.forEach(el => el.style.display = 'none');
+
+  // 4. DISABLE contenteditable
+  const editableEls = document.querySelectorAll('[contenteditable]');
+  const wasEditable = [];
+  editableEls.forEach(el => {
+    wasEditable.push(el);
+    el.removeAttribute('contenteditable');
+  });
+
+  // 5. Capture clean HTML
+  const cleanHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // 6. RESTORE contenteditable
+  wasEditable.forEach(el => el.setAttribute('contenteditable', 'true'));
+
+  // 7. RESTORE visibility
+  editElements.forEach(el => el.style.display = 'block');
+
+  // 8. Download
+  const blob = new Blob([cleanHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileIn.value.trim() || 'podcast.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+title.textContent="webpageMaker";
+
+  // 9. Alert and confirm save editable version
+let saveEditableVersion = confirm("Saved to default download folder.\nSave an editable version?");
+
+if (!saveEditableVersion) return;  // Exit function if Cancel
+
+  // === 10. SAVE EDITABLE VERSION ===
+const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+const editBlob = new Blob([editHTML], { type: 'text/html' });
+const editUrl = URL.createObjectURL(editBlob);
+const editA = document.createElement('a');
+const baseName = fileIn.value.trim() || 'podcast.html';
+const editName = baseName.replace(/\.html$/, '') + 'EditMode.html';
+editA.href = editUrl;
+editA.download = editName;
+document.body.appendChild(editA);
+editA.click();
+document.body.removeChild(editA);
+URL.revokeObjectURL(editUrl);
+title.textContent="webpageMaker";
+};
+
+  // Enter = Add Link
+  linkText.onkeypress = linkUrl.onkeypress = e => {
+    if (e.key === 'Enter') $('#btnAddLink').click();
+  };
+
+$('#pseudoToggle').onchange = () => {
+  const pseudo = $('#pseudoToggle').checked;
+  $('#audioPlayer').style.display = pseudo ? 'none' : 'block';
+  $('#delAudioPlayer').style.display = pseudo ? 'none' : 'block';
+  $('#inputAudioFile').style.display = pseudo ? 'none' : 'block';
+  $('#btnRestoreAudio').style.display = pseudo ? 'none' : 'block';
+  $('#pseudoAudioPlayerWithLink').style.display = pseudo ? 'block' : 'none';
+  if (!pseudo) $('#audioWrapper').style.display = 'block';
+};
+
+});
+
+
+//Code for Making Lists
+document.getElementById('formatBtn').addEventListener('click', function() {
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount || selection.toString().trim() === '') {
+        alert('Please select some text first');
+        return;
+    }
+
+    // Check if OL is selected
+    const useOL = document.getElementById('olCheckbox').checked;
+    const listTag = useOL ? 'ol' : 'ul';
+
+    // Get the range and extract the contents (preserves formatting)
+    const range = selection.getRangeAt(0);
+    const selectedFragment = range.cloneContents();
+
+    // Create a temporary container to work with the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(selectedFragment);
+
+    // Get the HTML with formatting preserved
+    let selectedHTML = tempDiv.innerHTML.trim();
+
+    // Remove all <br> tags (including <br/> and <br />)
+    selectedHTML = selectedHTML.replace(/<br\s*\/?>/gi, '');
+
+    // Remove leading ^^ (checking both plain and within tags)
+    selectedHTML = selectedHTML.replace(/^\^\^/, '').trim();
+
+    // Remove trailing ^^
+    selectedHTML = selectedHTML.replace(/\^\^$/, '').trim();
+
+    // Create the list structure with the chosen list type
+    let newTextList = '<' + listTag + '><li>' + selectedHTML + '</li></' + listTag + '>';
+
+    // Replace ^^ with list item breaks
+    let finalTextList = newTextList.replace(/\^\^/g, '</li><li>');
+
+    // Remove whitespace after <li> and before </li>
+    finalTextList = finalTextList.replace(/<li>\s+/g, '<li>');
+    finalTextList = finalTextList.replace(/\s+<\/li>/g, '</li>');
+
+    // Replace the selected text with the formatted list
+    range.deleteContents();
+
+    const newTempDiv = document.createElement('div');
+    newTempDiv.innerHTML = finalTextList;
+    const fragment = document.createDocumentFragment();
+    while (newTempDiv.firstChild) {
+        fragment.appendChild(newTempDiv.firstChild);
+    }
+
+    range.insertNode(fragment);
+});
+
+</script>
+</body>
+</html>
