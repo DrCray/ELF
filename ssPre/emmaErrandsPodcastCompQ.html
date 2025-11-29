@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast Study Questions - “Emma Runs Errands”</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+      border:thin solid darkblue;
+      box-shadow: 
+    0 8px 32px darkblue,
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    h1 { text-align: center; color: #2c3e50; }
+    .student-info {
+      background: #fff;
+      padding: 2px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 1rem;
+      text-align: left;
+    }
+    .student-info label { display: inline; width: 120px; font-weight: bold; }
+    .student-info input {
+      padding: 4px;
+      width: 220px;
+      margin: 4px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .warning { color: #c0392b; font-size: 0.9em; margin-top: 10px; display: none; }
+    details {
+      margin-bottom: 6px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 4px 7px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.1em;
+      color: #2c3e50;
+    }
+    summary:hover { color: #2980b9; }
+    h1 {background-color:#FFF5FD;}
+    p {
+      margin: 12px 0 0;
+      padding: 10px;
+      border-left: 4px solid #3498db;
+      background-color: #f5faff;
+      border-radius: 4px;
+    }
+    .print-btn {
+      display: block;
+      width: 240px;
+      margin: 40px auto;
+      padding: 14px;
+      font-size: 1.2em;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: not-allowed;
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+    .print-btn.enabled {
+      background-color: #27ae60;
+      opacity: 1;
+      cursor: pointer;
+    }
+    .print-btn.enabled:hover { background-color: #219653; }
+
+    @media print {
+      body { background: white; margin: 10mm; }
+      .student-info, .print-btn { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .print-btn, .warning { display: none !important; }
+      .student-info { margin-bottom: 20px; border: 2px solid #2c3e50; }
+    }
+    
+    #questionsZ { 
+    background-color:#f5faff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Podcast Study Questions<br>“Emma Runs Errands”</h1>
+<p>This is a study tool. Try to guess the answer before looking.</p>
+<p>You can close and hide the answers one at a time, or view them all at once by clicking the "Show/Hide All Answers" button.</p>
+  <div class="student-info">
+    <div>
+      <label for="studentName">Name:</label>
+      <input type="text" id="studentName" placeholder="Enter your name" autocomplete="name">
+
+      <label for="studentID">ID#:</label>
+      <input type="text" id="studentID" placeholder="Enter your student ID" autocomplete="off">
+    </div>
+    <div class="warning" id="warning">⚠️ Please fill in both your name and ID before printing.</div>
+
+    <div style="margin-top: 20px; font-size: 1.4em; font-weight: bold; color: #2c3e50;" id="displayName"></div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questionsZ">
+<button id="toggleAnswers">Show All Answers</button>
+  <details><summary>1. What happens to Emma at the supermarket?</summary><p>She knocks over a carton of eggs.</p></details>
+  <details><summary>2. Where does Emma go after the supermarket?</summary><p>To the post office</p></details>
+  <details><summary>3. Why does Emma have to go back to her car after waiting in line at the post office?</summary><p>Because she left the package in her car.</p></details>
+  <details><summary>4. What problem does Emma have with her car after leaving the post office?</summary><p>She locks her keys inside the car.</p></details>
+  <details><summary>5. Where does Emma go after the post office?</summary><p>To the bank</p></details>
+  <details><summary>6. What happens to Emma on the way to the bank?</summary><p>She trips on the sidewalk.</p></details>
+  <details><summary>7. What important item does Emma lose at the bank?</summary><p>Her check (from her purse)</p></details>
+  <details><summary>8. Does Emma find her lost check?</summary><p>Yes, she finds it by retracing her steps.</p></details>
+  <details><summary>9. Why does Emma go to the pharmacy?</summary><p>To pick up medicine for her grandma.</p></details>
+  <details><summary>10. Is the medicine ready at the pharmacy?</summary><p>No, it’s not ready.</p></details>
+  <details><summary>11. What does Emma spill at the coffee shop?</summary><p>Her coffee</p></details>
+  <details><summary>12. What does Emma spill her coffee on?</summary><p>Her book</p></details>
+  <details><summary>13. What mistake does Emma make with her clothes at the dry cleaners?</summary><p>She drops off her donation clothes instead of her work clothes.</p></details>
+  
+  </div>
+<button id="toggleAnswers2">Show All Answers</button>
+
+<script>
+  let allOpen = false;
+  const toggleBtn = document.getElementById('toggleAnswers');
+  const toggleBtn2 = document.getElementById('toggleAnswers2');
+  const detailsElements = document.querySelectorAll('details');
+
+  toggleBtn.addEventListener('click', () => {
+    allOpen = !allOpen;
+    detailsElements.forEach(detail => {
+      detail.open = allOpen;
+    });
+    toggleBtn.textContent = allOpen ? 'Hide All Answers' : 'Show All Answers';
+    toggleBtn2.textContent = allOpen ? 'Hide All Answers' : 'Show All Answers';    
+  });
+  
+    toggleBtn2.addEventListener('click', () => {
+    allOpen = !allOpen;
+    detailsElements.forEach(detail => {
+      detail.open = allOpen;
+    });
+    toggleBtn.textContent = allOpen ? 'Hide All Answers' : 'Show All Answers';
+    toggleBtn2.textContent = allOpen ? 'Hide All Answers' : 'Show All Answers';    
+  });
+</script>
+
+<p>Please click "Show All Answers" before printing and sending to your professor.</p>
+<p>Your name and ID must be entered for print/save as PDF</p>
+  <button id="printButton" class="print-btn" disabled onclick="window.print()">
+    🖨️ Print / Save as PDF
+  </button>
+
+  <script>
+    const nameInput = document.getElementById('studentName');
+    const idInput   = document.getElementById('studentID');
+    const printBtn  = document.getElementById('printButton');
+    const warning   = document.getElementById('warning');
+    const display   = document.getElementById('displayName');
+
+    function checkFields() {
+      const name = nameInput.value.trim();
+      const id   = idInput.value.trim();
+
+      if (name && id) {
+        printBtn.disabled = false;
+        printBtn.classList.add('enabled');
+        warning.style.display = 'none';
+        display.textContent = `${name} (ID: ${id})`;
+      } else {
+        printBtn.disabled = true;
+        printBtn.classList.remove('enabled');
+        warning.style.display = name || id ? 'none' : 'block';
+        display.textContent = '';
+      }
+    }
+
+    nameInput.addEventListener('input', checkFields);
+    idInput.addEventListener('input', checkFields);
+  </script>
+</body>
+</html>
