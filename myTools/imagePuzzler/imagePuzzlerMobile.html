@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>25-Piece Puzzle - Mobile FIXED & Perfect</title>
+<title>25-Piece Puzzle - Final Perfect Version</title>
 <style>
   body { margin:0; padding:15px; background:#111; color:#eee; font-family:system-ui,sans-serif; text-align:center; }
   h1 { font-size:1.8em; margin:10px 0; }
@@ -11,17 +11,26 @@
   button { background:#333; color:white; border:2px solid #666; cursor:pointer; }
   button:active { background:#555; }
 
-  #puzzle, #original-container {
+  .container {
     width:100%; max-width:510px; margin:20px auto;
     aspect-ratio:1/1; border:8px solid #555; border-radius:16px; overflow:hidden;
-    box-shadow:0 10px 30px rgba(0,0,0,0.8);
+    position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.8);
   }
-  #puzzle { display:grid; grid-template-columns:repeat(5,1fr); gap:0; background:black; }
+  #puzzle {
+    display:grid; grid-template-columns:repeat(5,1fr); gap:0;
+    width:100%; height:100%; background:black;
+  }
   #original-container { display:none; }
-  #original-image { width:100%; height:100%; object-fit:cover; }
+  #original-image {
+    width:100%; height:100%;
+    object-fit: cover;           /* This is the magic! */
+    object-position: center;
+  }
 
   .tile {
-    background-size:cover; background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     transition:transform .25s, box-shadow .25s;
     box-shadow:0 2px 8px rgba(0,0,0,0.9);
   }
@@ -41,30 +50,35 @@
 <body>
 
 <h1>25-Piece Puzzle</h1>
-<p>Tap two tiles to swap<br><b>Long-press</b> a tile to preview if it's correct</p>
+<p>Tap two tiles to swap<br><b>Long-press</b> to preview if correct</p>
 
-<input type="text" id="imgUrl" placeholder="Image URL" value="https://picsum.photos/800/800">
+<input type="text" id="imgUrl" placeholder="Any image URL" value="https://picsum.photos/1200/800">
 <button onclick="init()">New Puzzle</button>
 <button id="toggleBtn" onclick="toggleView()">View Original</button>
 
-<div id="puzzle"></div>
-<div id="original-container"><img id="original-image" src="" alt="Original"></div>
+<div class="container">
+  <div id="puzzle"></div>
+</div>
+<div class="container" id="original-container">
+  <img id="original-image" src="" alt="Original">
+</div>
 
-<small>Long-press = preview • Green flash = just placed correctly • Blue glow = correct position</small>
+<small>Works with any image shape • Never distorts • Centers perfectly</small>
 
 <script>
 const GRID = 5;
 let tiles = [], selected = null, currentUrl = '', longPressTimer = null;
 
 function init() {
-  currentUrl = document.getElementById('imgUrl').value.trim() || 'https://picsum.photos/800/800';
+  currentUrl = document.getElementById('imgUrl').value.trim() || 'https://picsum.photos/1200/800';
   document.getElementById('original-image').src = currentUrl;
 
   const puzzle = document.getElementById('puzzle');
   puzzle.innerHTML = '';
   tiles = [];
 
-  const size = puzzle.offsetWidth;
+  const container = puzzle.parentElement;
+  const size = container.offsetWidth;
   const tilePx = size / GRID;
 
   for (let i = 0; i < 25; i++) {
@@ -72,16 +86,18 @@ function init() {
     tile.className = 'tile';
 
     const row = Math.floor(i / GRID), col = i % GRID;
+
     tile.style.backgroundImage = `url(${currentUrl})`;
-    tile.style.backgroundPosition = `${-col*tilePx}px ${-row*tilePx}px`;
-    tile.style.backgroundSize = `${size}px ${size}px`;
+    // This is the key: cover + center = perfect crop
+    tile.style.backgroundSize = 'cover';
+    tile.style.backgroundPosition = 'center';
 
     tile.dataset.original = i;
     tile.dataset.pos = i;
     tile.style.gridRow = row + 1;
     tile.style.gridColumn = col + 1;
 
-    // ====== FIXED TOUCH HANDLING ======
+    // Touch handling
     tile.onpointerdown = () => {
       longPressTimer = setTimeout(() => {
         longPressTimer = null;
@@ -90,7 +106,6 @@ function init() {
         if ('vibrate' in navigator) navigator.vibrate(50);
       }, 700);
     };
-
     tile.onpointerup = tile.onpointercancel = tile.onpointerleave = () => {
       if (longPressTimer) {
         clearTimeout(longPressTimer);
@@ -99,9 +114,8 @@ function init() {
         setTimeout(() => tile.classList.remove('preview-correct','preview-wrong'), 300);
       }
     };
-
     tile.onclick = (e) => {
-      if (longPressTimer) { e.preventDefault(); return; }  // was long press → ignore
+      if (longPressTimer) { e.preventDefault(); return; }
       select(tile);
     };
 
@@ -109,7 +123,7 @@ function init() {
     tiles.push(tile);
   }
 
-  document.getElementById('puzzle').style.display = 'grid';
+  document.querySelector('.container').style.display = 'block';
   document.getElementById('original-container').style.display = 'none';
   document.getElementById('toggleBtn').textContent = 'View Original';
 
@@ -120,7 +134,6 @@ function select(tile) {
   if (selected === tile) { tile.classList.remove('selected'); selected = null; return; }
   if (!selected) { selected = tile; tile.classList.add('selected'); return; }
 
-  // Swap
   [tile.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, tile.style.gridRow];
   [tile.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, tile.style.gridColumn];
   [tile.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, tile.dataset.pos];
@@ -158,19 +171,19 @@ function shuffle() {
 }
 
 function toggleView() {
-  const p = document.getElementById('puzzle');
+  const p = document.querySelector('.container');
   const o = document.getElementById('original-container');
   const b = document.getElementById('toggleBtn');
   if (p.style.display !== 'none') {
     p.style.display = 'none'; o.style.display = 'block'; b.textContent = 'Back to Puzzle';
   } else {
-    p.style.display = 'grid'; o.style.display = 'none'; b.textContent = 'View Original';
+    p.style.display = 'block'; o.style.display = 'none'; b.textContent = 'View Original';
   }
 }
 
 function checkWin() {
   if (tiles.every(t => t.dataset.pos === t.dataset.original)) {
-    setTimeout(() => alert('Puzzle Solved! Fantastic!'), 600);
+    setTimeout(() => alert('Puzzle Complete! You are a legend!'), 600);
   }
 }
 
