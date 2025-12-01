@@ -3,191 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>25-Piece Puzzle - Final Perfect Version</title>
+<title>25-Piece Puzzle — FINAL WORKING</title>
 <style>
-  body { margin:0; padding:15px; background:#111; color:#eee; font-family:system-ui,sans-serif; text-align:center; }
+  body { margin:0; padding:20px; background:#111; color:#eee; font-family:system-ui; text-align:center; }
   h1 { font-size:1.8em; margin:10px 0; }
   input, button { margin:8px; padding:12px; font-size:16px; border-radius:8px; }
   button { background:#333; color:white; border:2px solid #666; cursor:pointer; }
-  button:active { background:#555; }
 
-  .container {
-    width:100%; max-width:510px; margin:20px auto;
+  .box {
+    width:100%; max-width:520px; margin:30px auto;
     aspect-ratio:1/1; border:8px solid #555; border-radius:16px; overflow:hidden;
-    position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.8);
+    box-shadow:0 15px 40px rgba(0,0,0,0.8);
   }
-  #puzzle {
-    display:grid; grid-template-columns:repeat(5,1fr); gap:0;
-    width:100%; height:100%; background:black;
-  }
-  #original-container { display:none; }
-  #original-image {
-    width:100%; height:100%;
-    object-fit: cover;           /* This is the magic! */
-    object-position: center;
-  }
-
-  .tile {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition:transform .25s, box-shadow .25s;
-    box-shadow:0 2px 8px rgba(0,0,0,0.9);
-  }
-  .tile:active { transform:scale(0.94); }
-
-  .preview-wrong { box-shadow:0 0 35px 8px yellow !important; transform:scale(0.97); }
-  .preview-correct { box-shadow:0 0 40px 10px #00ddff !important; transform:scale(0.97); }
-  .selected { outline:6px solid yellow; transform:scale(0.90) !important; z-index:10; }
-  .correct-flash { animation:correctPulse 1s ease-out; }
-  @keyframes correctPulse {
-    0%   { transform:scale(0.90); box-shadow:0 0 40px lime; }
-    50%  { transform:scale(1.06); box-shadow:0 0 70px lime; }
-    100% { transform:scale(1); }
-  }
+  #puzzle { display:grid; grid-template-columns:repeat(5,1fr); gap:0; }
+  canvas { display:block; width:100%; height:100%; }
+  canvas:active { transform:scale(0.94); }
+  canvas.preview-wrong { box-shadow:0 0 40px 8px yellow !important; }
+  canvas.preview-correct { box-shadow:0 0 40px 8px #00ddff !important; }
+  canvas.selected { outline:6px solid yellow; transform:scale(0.88) !important; z-index:10; }
+  canvas.correct-flash { animation:glow 1s; }
+  @keyframes glow { 0%,100% { box-shadow:0 0 40px lime; } 50% { box-shadow:0 0 80px lime; transform:scale(1.1); } }
 </style>
 </head>
 <body>
 
 <h1>25-Piece Puzzle</h1>
-<p>Tap two tiles to swap<br><b>Long-press</b> to preview if correct</p>
-
-<input type="text" id="imgUrl" placeholder="Any image URL" value="https://picsum.photos/1200/800">
+<p>Tap two pieces • Long-press = preview</p>
+<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;">
 <button onclick="init()">New Puzzle</button>
 <button id="toggleBtn" onclick="toggleView()">View Original</button>
 
-<div class="container">
+<!-- PUZZLE BOX -->
+<div class="box" id="puzzleBox">
   <div id="puzzle"></div>
 </div>
-<div class="container" id="original-container">
-  <img id="original-image" src="" alt="Original">
-</div>
 
-<small>Works with any image shape • Never distorts • Centers perfectly</small>
+<!-- ORIGINAL IMAGE BOX -->
+<div class="box" id="originalBox" style="display:none;">
+  <img id="originalImg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+</div>
 
 <script>
 const GRID = 5;
-let tiles = [], selected = null, currentUrl = '', longPressTimer = null;
+let tiles = [], selected = null;
+const img = new Image();
+img.crossOrigin = "anonymous";
 
 function init() {
-  currentUrl = document.getElementById('imgUrl').value.trim() || 'https://picsum.photos/1200/800';
-  document.getElementById('original-image').src = currentUrl;
+  const url = document.getElementById('url').value.trim() || 'https://picsum.photos/seed/tiger/900/1400';
+  img.src = url + '?t=' + Date.now();
 
-  const puzzle = document.getElementById('puzzle');
-  puzzle.innerHTML = '';
-  tiles = [];
+  // Update original view
+  document.getElementById('originalImg').src = url;
 
-  const container = puzzle.parentElement;
-  const size = container.offsetWidth;
-  const tilePx = size / GRID;
+  img.onload = () => {
+    const puzzle = document.getElementById('puzzle');
+    puzzle.innerHTML = ''; tiles = [];
 
-  for (let i = 0; i < 25; i++) {
-    const tile = document.createElement('div');
-    tile.className = 'tile';
+    const size = puzzle.offsetWidth || 500;
+    const tileSize = size / GRID;
 
-    const row = Math.floor(i / GRID), col = i % GRID;
+    // Center-crop to square
+    const crop = document.createElement('canvas');
+    crop.width = crop.height = size;
+    const ctx = crop.getContext('2d');
+    const scale = Math.max(size / img.width, size / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    ctx.drawImage(img, (size - w)/2, (size - h)/2, w, h);
 
-    tile.style.backgroundImage = `url(${currentUrl})`;
-    // This is the key: cover + center = perfect crop
-    tile.style.backgroundSize = 'cover';
-    tile.style.backgroundPosition = 'center';
+    // Create 25 perfect tiles
+    for (let i = 0; i < 25; i++) {
+      const row = Math.floor(i / GRID), col = i % GRID;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = tileSize;
+      const c = canvas.getContext('2d');
+      c.drawImage(crop, col*tileSize, row*tileSize, tileSize, tileSize, 0, 0, tileSize, tileSize);
 
-    tile.dataset.original = i;
-    tile.dataset.pos = i;
-    tile.style.gridRow = row + 1;
-    tile.style.gridColumn = col + 1;
+      canvas.dataset.orig = i;
+      canvas.dataset.pos = i;
 
-    // Touch handling
-    tile.onpointerdown = () => {
-      longPressTimer = setTimeout(() => {
-        longPressTimer = null;
-        const correct = tile.dataset.pos === tile.dataset.original;
-        tile.classList.add(correct ? 'preview-correct' : 'preview-wrong');
-        if ('vibrate' in navigator) navigator.vibrate(50);
-      }, 700);
-    };
-    tile.onpointerup = tile.onpointercancel = tile.onpointerleave = () => {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-      } else {
-        setTimeout(() => tile.classList.remove('preview-correct','preview-wrong'), 300);
-      }
-    };
-    tile.onclick = (e) => {
-      if (longPressTimer) { e.preventDefault(); return; }
-      select(tile);
-    };
+      let timer = null;
+      canvas.onpointerdown = () => {
+        timer = setTimeout(() => {
+          timer = null;
+          const ok = canvas.dataset.pos == canvas.dataset.orig;
+          canvas.classList.add(ok ? 'preview-correct' : 'preview-wrong');
+          navigator.vibrate?.(50);
+        }, 650);
+      };
+      canvas.onpointerup = canvas.onpointercancel = canvas.onpointerleave = () => {
+        if (timer) clearTimeout(timer);
+        else setTimeout(() => canvas.classList.remove('preview-correct','preview-wrong'), 300);
+        timer = null;
+      };
+      canvas.onclick = e => { if (timer) { e.preventDefault(); return; } select(canvas); };
 
-    puzzle.appendChild(tile);
-    tiles.push(tile);
-  }
+      puzzle.appendChild(canvas);
+      tiles.push(canvas);
+    }
 
-  document.querySelector('.container').style.display = 'block';
-  document.getElementById('original-container').style.display = 'none';
-  document.getElementById('toggleBtn').textContent = 'View Original';
+    // Always show puzzle first
+    document.getElementById('puzzleBox').style.display = 'block';
+    document.getElementById('originalBox').style.display = 'none';
+    document.getElementById('toggleBtn').textContent = 'View Original';
 
-  shuffle();
+    shuffle();
+  };
 }
 
-function select(tile) {
-  if (selected === tile) { tile.classList.remove('selected'); selected = null; return; }
-  if (!selected) { selected = tile; tile.classList.add('selected'); return; }
+function select(el) {
+  if (selected === el) { el.classList.remove('selected'); selected = null; return; }
+  if (!selected) { selected = el; el.classList.add('selected'); return; }
 
-  [tile.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, tile.style.gridRow];
-  [tile.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, tile.style.gridColumn];
-  [tile.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, tile.dataset.pos];
-
-  updateCorrectState(selected);
-  updateCorrectState(tile);
-
-  selected.classList.remove('selected');
-  selected = null;
+  [el.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, el.style.gridRow];
+  [el.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, el.style.gridColumn];
+  [el.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, el.dataset.pos];
+  [el, selected].forEach(update);
+  selected.classList.remove('selected'); selected = null;
   checkWin();
 }
 
-function updateCorrectState(tile) {
-  const correct = tile.dataset.pos === tile.dataset.original;
-  if (correct && !tile.classList.contains('just-corrected')) {
-    tile.classList.add('correct-flash','just-corrected');
-    if ('vibrate' in navigator) navigator.vibrate([100,50,100]);
-    setTimeout(() => tile.classList.remove('correct-flash','just-corrected'), 1000);
+function update(el) {
+  if (el.dataset.pos == el.dataset.orig && !el.classList.contains('done')) {
+    el.classList.add('correct-flash','done');
+    navigator.vibrate?.([100,50,100]);
+    setTimeout(() => el.classList.remove('correct-flash','done'), 1000);
   }
 }
 
 function shuffle() {
   const pos = Array.from({length:25},(_,i)=>i);
-  for (let i=pos.length-1; i>0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [pos[i],pos[j]] = [pos[j],pos[i]];
+  for (let i = pos.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pos[i], pos[j]] = [pos[j], pos[i]];
   }
-  tiles.forEach((t,idx) => {
-    const p = pos[idx];
-    t.style.gridRow = Math.floor(p/5)+1;
-    t.style.gridColumn = (p%5)+1;
+  tiles.forEach((t, i) => {
+    const p = pos[i];
+    t.style.gridRow = Math.floor(p/5) + 1;
+    t.style.gridColumn = (p%5) + 1;
     t.dataset.pos = p;
-    updateCorrectState(t);
+    update(t);
   });
 }
 
-function toggleView() {
-  const p = document.querySelector('.container');
-  const o = document.getElementById('original-container');
-  const b = document.getElementById('toggleBtn');
-  if (p.style.display !== 'none') {
-    p.style.display = 'none'; o.style.display = 'block'; b.textContent = 'Back to Puzzle';
-  } else {
-    p.style.display = 'block'; o.style.display = 'none'; b.textContent = 'View Original';
+function checkWin() {
+  if (tiles.every(t => +t.dataset.pos === +t.dataset.orig)) {
+    alert('Puzzle Solved — Perfect!');
   }
 }
 
-function checkWin() {
-  if (tiles.every(t => t.dataset.pos === t.dataset.original)) {
-    setTimeout(() => alert('Puzzle Complete! You are a legend!'), 600);
+// SIMPLEST TOGGLE IN THE WORLD
+function toggleView() {
+  const p = document.getElementById('puzzleBox');
+  const o = document.getElementById('originalBox');
+  const b = document.getElementById('toggleBtn');
+
+  if (p.style.display !== 'none') {
+    p.style.display = 'none';
+    o.style.display = 'block';
+    b.textContent = 'Back to Puzzle';
+  } else {
+    p.style.display = 'block';
+    o.style.display = 'none';
+    b.textContent = 'View Original';
   }
 }
 
 window.onload = init;
+window.onresize = init;
 </script>
 </body>
 </html>
