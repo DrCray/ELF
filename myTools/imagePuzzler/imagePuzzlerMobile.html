@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>25-Piece Puzzle - Mobile Perfect</title>
+<style>
+  body { 
+    margin: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #111; 
+    color: #eee; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 15px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1 { font-size: 1.8em; margin: 10px 0; }
+  input { width: 90%; max-width: 500px; padding: 12px; margin: 10px 0; font-size: 16px; }
+  button { padding: 14px 28px; font-size: 18px; margin: 10px; }
+
+  #puzzle { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    width: 100%; 
+    max-width: 510px;
+    aspect-ratio: 1 / 1;
+    background: black;
+    gap: 0;
+    padding: 0;
+    border: 8px solid #555;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  }
+  #original-container {
+    display: none;
+    width: 100%;
+    max-width: 510px;
+    aspect-ratio: 1 / 1;
+    border: 8px solid #555;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0, 150, 255, 0.6);
+  }
+  #original-image { width: 100%; height: 100%; object-fit: cover; }
+
+  .tile { 
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    position: relative;
+  }
+  .tile:active { transform: scale(0.94); }
+
+  /* Long-press preview glow (mobile replacement for hover) */
+  .tile.preview-wrong { box-shadow: 0 0 35px 8px yellow !important; transform: scale(0.97); }
+  .tile.preview-correct { box-shadow: 0 0 40px 10px #00ddff !important; transform: scale(0.97); }
+
+  .selected { 
+    outline: 6px solid yellow !important; 
+    transform: scale(0.90) !important;
+    z-index: 10;
+  }
+  .correct-flash {
+    animation: correctPulse 1s ease-out;
+  }
+  @keyframes correctPulse {
+    0%   { transform: scale(0.90); box-shadow: 0 0 40px lime; }
+    50%  { transform: scale(1.06); box-shadow: 0 0 70px lime; }
+    100% { transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<h1>25-Piece Puzzle</h1>
+<p style="margin:10px; text-align:center; font-size:1.1em;">
+  Tap two tiles to swap<br>
+  <strong>Long-press</strong> a tile to see if it's correct!
+</p>
+
+<input type="text" id="imgUrl" placeholder="Image URL" value="https://picsum.photos/800/800">
+<button onclick="init()">New Puzzle</button>
+<button id="toggleBtn" onclick="toggleView()">View Original</button>
+
+<div id="puzzle"></div>
+<div id="original-container"><img id="original-image" src="" alt="Original"></div>
+
+<small style="margin-top:15px; opacity:0.9;">
+  Long-press = preview • Green flash = correct • Blue glow = correct position
+</small>
+
+<script>
+const GRID = 5;
+let tiles = [];
+let selected = null;
+let currentUrl = '';
+let longPressTimer = null;
+
+function init() {
+  currentUrl = document.getElementById('imgUrl').value.trim() || 'https://picsum.photos/800/800';
+  document.getElementById('original-image').src = currentUrl;
+
+  const puzzle = document.getElementById('puzzle');
+  puzzle.innerHTML = '';
+  tiles = [];
+
+  const containerSize = puzzle.offsetWidth;
+  const tileSize = containerSize / GRID;
+
+  for (let i = 0; i < GRID * GRID; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+
+    const row = Math.floor(i / GRID);
+    const col = i % GRID;
+
+    tile.style.backgroundImage = `url(${currentUrl})`;
+    tile.style.backgroundPosition = `${-col * tileSize}px ${-row * tileSize}px`;
+    tile.style.backgroundSize = `${containerSize}px ${containerSize}px`;
+
+    tile.dataset.original = i;
+    tile.dataset.pos = i;
+    tile.style.gridRow = row + 1;
+    tile.style.gridColumn = col + 1;
+
+    // Touch & mouse events
+    tile.addEventListener('touchstart', e => handleStart(e, tile));
+    tile.addEventListener('touchend', e => handleEnd(e, tile));
+    tile.addEventListener('mousedown', e => handleStart(e, tile));
+    tile.addEventListener('mouseup', e => handleEnd(e, tile));
+    tile.addEventListener('click', e => {
+      if (longPressTimer) {
+        e.preventDefault(); // prevent swap if it was a long press
+      } else {
+        select(tile);
+      }
+    });
+
+    puzzle.appendChild(tile);
+    tiles.push(tile);
+  }
+
+  // Show puzzle, hide original
+  puzzle.style.display = 'grid';
+  document.getElementById('original-container').style.display = 'none';
+  document.getElementById('toggleBtn').textContent = 'View Original';
+
+  shuffle();
+}
+
+function handleStart(e, tile) {
+  e.preventDefault();
+  longPressTimer = setTimeout(() => {
+    longPressTimer = null;
+    const isCorrect = tile.dataset.pos === tile.dataset.original;
+    tile.classList.add(isCorrect ? 'preview-correct' : 'preview-wrong');
+    if ('vibrate' in navigator) navigator.vibrate(50);
+  }, 700);
+}
+
+function handleEnd(e, tile) {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  } else {
+    // Was a long press — remove preview
+    setTimeout(() => {
+      tile.classList.remove('preview-correct', 'preview-wrong');
+    }, 300);
+  }
+}
+
+function select(tile) {
+  if (selected === tile) {
+    tile.classList.remove('selected');
+    selected = null;
+    return;
+  }
+  if (!selected) {
+    selected = tile;
+    tile.classList.add('selected');
+    return;
+  }
+
+  // Swap
+  [tile.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, tile.style.gridRow];
+  [tile.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, tile.style.gridColumn];
+  [tile.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, tile.dataset.pos];
+
+  updateCorrectState(selected);
+  updateCorrectState(tile);
+
+  selected.classList.remove('selected');
+  selected = null;
+  checkWin();
+}
+
+function updateCorrectState(tile) {
+  const isCorrect = tile.dataset.pos === tile.dataset.original;
+  if (isCorrect && !tile.classList.contains('just-corrected')) {
+    tile.classList.add('correct-flash', 'just-corrected');
+    if ('vibrate' in navigator) navigator.vibrate([100, 50, 100]);
+    setTimeout(() => tile.classList.remove('correct-flash', 'just-corrected'), 1000);
+  }
+}
+
+function shuffle() {
+  const pos = Array.from({length: GRID*GRID}, (_,i) => i);
+  for (let i = pos.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pos[i], pos[j]] = [pos[j], pos[i]];
+  }
+  tiles.forEach((tile, idx) => {
+    const p = pos[idx];
+    tile.style.gridRow = Math.floor(p / GRID) + 1;
+    tile.style.gridColumn = (p % GRID) + 1;
+    tile.dataset.pos = p;
+    updateCorrectState(tile);
+  });
+}
+
+function toggleView() {
+  const puzzle = document.getElementById('puzzle');
+  const original = document.getElementById('original-container');
+  const btn = document.getElementById('toggleBtn');
+  if (puzzle.style.display !== 'none') {
+    puzzle.style.display = 'none';
+    original.style.display = 'block';
+    btn.textContent = 'Back to Puzzle';
+  } else {
+    puzzle.style.display = 'grid';
+    original.style.display = 'none';
+    btn.textContent = 'View Original';
+  }
+}
+
+function checkWin() {
+  if (tiles.every(t => t.dataset.pos === t.dataset.original)) {
+    setTimeout(() => alert('Puzzle Complete! Amazing work!'), 600);
+  }
+}
+
+window.onload = init;
+window.onresize = () => { if (tiles.length) init(); }; // responsive resize
+</script>
+</body>
+</html>

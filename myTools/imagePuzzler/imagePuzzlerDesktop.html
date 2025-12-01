@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>25-Piece Puzzle - With Original Image Toggle</title>
+<style>
+  body { 
+    margin: 0; 
+    font-family: Arial, sans-serif; 
+    background: #111; 
+    color: #eee; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 20px;
+    min-height: 100vh;
+  }
+  #puzzle { 
+    display: grid; 
+    grid-template-columns: repeat(5, 102px);
+    grid-template-rows: repeat(5, 102px);
+    width: 510px; 
+    height: 510px; 
+    background: black;
+    gap: 0;
+    padding: 0;
+    border: 8px solid #555;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  #original-container {
+    display: none;                     /* hidden by default */
+    width: 510px;
+    height: 510px;
+    border: 8px solid #555;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+  }
+  #original-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .tile { 
+    background-size: 510px 510px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  }
+  .tile:hover { 
+    transform: scale(0.96);
+    box-shadow: 0 0 28px 6px yellow;
+    z-index: 5;
+  }
+  .tile.correct-position:hover {
+    box-shadow: 0 0 32px 8px #00ddff !important;
+  }
+  .selected { 
+    outline: 5px solid yellow; 
+    transform: scale(0.92) !important;
+    z-index: 10;
+  }
+  .correct-flash {
+    animation: correctPulse 1s ease-out;
+  }
+  @keyframes correctPulse {
+    0%   { transform: scale(0.92); box-shadow: 0 0 30px lime; }
+    50%  { transform: scale(1.05); box-shadow: 0 0 60px lime; }
+    100% { transform: scale(1); }
+  }
+
+  button {
+    margin: 15px 0;
+    padding: 12px 24px;
+    font-size: 16px;
+    background: #333;
+    color: white;
+    border: 2px solid #666;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #555;
+    border-color: #0af;
+    box-shadow: 0 0 15px #0af;
+  }
+</style>
+</head>
+<body>
+
+<h1>25-Piece Image Puzzle</h1>
+<p style="margin:8px 0 15px;">
+  Incorrect → <span style="color:yellow;">yellow hover</span> • 
+  Correct → <span style="color:#00ddff;font-weight:bold;">blue hover</span> + green flash
+</p>
+
+<input type="text" id="imgUrl" placeholder="Enter image URL" size="60" 
+       value="https://picsum.photos/800/800">
+<button onclick="init()">New Puzzle & Shuffle</button>
+
+<br>
+
+<!-- Toggle Button -->
+<button id="toggleBtn" onclick="toggleView()">View Original</button>
+
+<br>
+
+<!-- Puzzle View -->
+<div id="puzzle"></div>
+
+<!-- Original Image View (hidden by default) -->
+<div id="original-container">
+  <img id="original-image" src="" alt="Original Image">
+</div>
+
+<br>
+<small id="info">Zero gaps • Click two tiles to swap • Blue hover = correct position</small>
+
+<script>
+const GRID = 5;
+const SIZE = 510;
+const TILE = SIZE / GRID;
+let tiles = [];
+let selected = null;
+let currentUrl = '';
+
+function init() {
+  currentUrl = document.getElementById('imgUrl').value.trim() || 'https://picsum.photos/800/800';
+  
+  // Update original image
+  document.getElementById('original-image').src = currentUrl;
+
+  // Reset views
+  document.getElementById('puzzle').style.display = 'grid';
+  document.getElementById('original-container').style.display = 'none';
+  document.getElementById('toggleBtn').textContent = 'View Original';
+  
+  const puzzle = document.getElementById('puzzle');
+  puzzle.innerHTML = '';
+  tiles = [];
+
+  for (let i = 0; i < GRID * GRID; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+
+    const row = Math.floor(i / GRID);
+    const col = i % GRID;
+
+    tile.style.backgroundImage = `url(${currentUrl})`;
+    tile.style.backgroundPosition = `${-col * TILE}px ${-row * TILE}px`;
+
+    tile.dataset.original = i;
+    tile.dataset.pos = i;
+
+    tile.style.gridRow = row + 1;
+    tile.style.gridColumn = col + 1;
+
+    tile.onclick = () => select(tile);
+    puzzle.appendChild(tile);
+    tiles.push(tile);
+  }
+
+  shuffle();
+  selected = null;
+}
+
+function shuffle() {
+  const pos = Array.from({length: GRID*GRID}, (_,i) => i);
+  for (let i = pos.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pos[i], pos[j]] = [pos[j], pos[i]];
+  }
+
+  tiles.forEach((tile, idx) => {
+    const p = pos[idx];
+    const r = Math.floor(p / GRID) + 1;
+    const c = p % GRID + 1;
+    tile.style.gridRow = r;
+    tile.style.gridColumn = c;
+    tile.dataset.pos = p;
+    updateCorrectState(tile);
+  });
+}
+
+function select(tile) {
+  if (selected === tile) {
+    tile.classList.remove('selected');
+    selected = null;
+    return;
+  }
+  if (!selected) {
+    selected = tile;
+    tile.classList.add('selected');
+    return;
+  }
+
+  // Swap
+  [tile.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, tile.style.gridRow];
+  [tile.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, tile.style.gridColumn];
+  [tile.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, tile.dataset.pos];
+
+  updateCorrectState(selected);
+  updateCorrectState(tile);
+
+  selected.classList.remove('selected');
+  selected = null;
+  checkWin();
+}
+
+function updateCorrectState(tile) {
+  const isCorrect = tile.dataset.pos === tile.dataset.original;
+
+  if (isCorrect) {
+    tile.classList.add('correct-position');
+    if (!tile.classList.contains('just-corrected')) {
+      tile.classList.add('just-corrected', 'correct-flash');
+      setTimeout(() => tile.classList.remove('correct-flash', 'just-corrected'), 1000);
+    }
+  } else {
+    tile.classList.remove('correct-position');
+  }
+}
+
+function checkWin() {
+  if (tiles.every(t => t.dataset.pos === t.dataset.original)) {
+    setTimeout(() => alert('Puzzle Solved! Brilliant!'), 600);
+  }
+}
+
+// Toggle between puzzle and original image
+function toggleView() {
+  const puzzle = document.getElementById('puzzle');
+  const original = document.getElementById('original-container');
+  const btn = document.getElementById('toggleBtn');
+
+  if (puzzle.style.display !== 'none') {
+    puzzle.style.display = 'none';
+    original.style.display = 'block';
+    btn.textContent = 'Back to Puzzle';
+    document.getElementById('info').textContent = 'Original Image — Click button to return';
+  } else {
+    puzzle.style.display = 'grid';
+    original.style.display = 'none';
+    btn.textContent = 'View Original';
+    document.getElementById('info').textContent = 'Zero gaps • Click two tiles to swap • Blue hover = correct position';
+  }
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
