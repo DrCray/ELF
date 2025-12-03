@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Gallery Editor</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    #imgContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    #imgContainer img {
+      max-width: 200px;
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .drop-area {
+      border: 2px dashed #aaa;
+      padding: 20px;
+      text-align: center;
+      margin: 10px 0;
+      background: #f9f9f9;
+    }
+    .drop-area.dragover {
+      border-color: #007bff;
+      background: #e9f7fe;
+    }
+    .editMode {
+      /* Will be hidden in public version */
+    }
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="imgContainer">
+    <!-- Selected images will appear here -->
+  </div>
+
+  <!-- Editing UI (will be hidden in public version) -->
+  <div class="editMode">
+    <div class="drop-area" id="dropArea">
+      <p>Drag & drop images here or click to select</p>
+      <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
+      <button id="selectBtn">Select Images</button>
+    </div>
+
+    <div class="editMode" style="margin: 10px 0;">
+      <label for="fileName">File name (without extension):</label>
+      <input type="text" id="fileName" placeholder="e.g., myGallery" />
+      <button id="saveBtn">Save Gallery</button>
+    </div>
+  </div>
+
+  <script>
+    // DOM references
+    const imgContainer = document.getElementById('imgContainer');
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const selectBtn = document.getElementById('selectBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const fileNameInput = document.getElementById('fileName');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight() {
+      dropArea.classList.add('dragover');
+    }
+
+    function unhighlight() {
+      dropArea.classList.remove('dragover');
+    }
+
+    // Handle dropped files
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      handleFiles(files);
+    }
+
+    selectBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+      [...files].forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        // Since file is local and in same folder, we use just the name
+        const img = document.createElement('img');
+        img.src = file.name; // assumes file is in same directory
+        img.alt = file.name;
+        imgContainer.appendChild(img);
+      });
+    }
+
+    // Save functionality
+    saveBtn.addEventListener('click', saveGalleries);
+
+    function saveGalleries() {
+
+let baseName = fileNameInput.value.trim();
+if (!baseName) {
+  baseName = 'myImageGallery';
+}
+
+      const editableFileName = baseName + 'EditMode.html';
+      const publicFileName = baseName + '.html';
+
+      // 1. Save editable version
+      const editableBlob = new Blob([document.documentElement.outerHTML], {
+        type: 'text/html;charset=utf-8'
+      });
+      downloadBlob(editableBlob, editableFileName);
+
+      // 2. Prepare public version
+      const editModeElements = document.querySelectorAll('.editMode');
+      const contentEditables = document.querySelectorAll('[contenteditable]');
+
+      // Store original states
+      const originalDisplay = [];
+      const originalContentEditable = [];
+
+      editModeElements.forEach((el, i) => {
+        originalDisplay[i] = el.style.display;
+        el.classList.add('hidden'); // hide via class to avoid inline style issues
+      });
+
+      contentEditables.forEach((el, i) => {
+        originalContentEditable[i] = el.contentEditable;
+        el.contentEditable = false;
+      });
+
+      // Capture public DOM
+      const publicBlob = new Blob([document.documentElement.outerHTML], {
+        type: 'text/html;charset=utf-8'
+      });
+      downloadBlob(publicBlob, publicFileName);
+
+      // 3. Restore editable UI
+      editModeElements.forEach((el, i) => {
+        el.classList.remove('hidden');
+      });
+
+      contentEditables.forEach((el, i) => {
+        el.contentEditable = originalContentEditable[i];
+      });
+
+      alert(`Saved to default download folder:\n- ${editableFileName}\n- ${publicFileName}`);
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
