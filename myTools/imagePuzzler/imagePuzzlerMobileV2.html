@@ -205,19 +205,16 @@ function toggleView() {
 }
 
 function resizePuzzle() {
+  if (!window._puzzleCrop || !tiles || tiles.length === 0) return;
+
   const puzzle = document.getElementById('puzzle');
   const size = puzzle.offsetWidth;
   const tileSize = size / GRID;
 
   tiles.forEach(tile => {
-    const wrapper = tile.parentElement;
-
-    // Resize wrapper grid cell
-    wrapper.style.width = tileSize + "px";
-    wrapper.style.height = tileSize + "px";
-
-    // Resize canvas element
-    tile.width = tile.height = tileSize;
+    // Resize canvas element (visual CSS and pixel buffer)
+    tile.style.width = tile.style.height = (tileSize + "px");
+    tile.width = tile.height = Math.round(tileSize);
 
     // Redraw tile image from stored crop
     const origIndex = +tile.dataset.orig;
@@ -225,16 +222,16 @@ function resizePuzzle() {
     const col = origIndex % GRID;
 
     const ctx = tile.getContext("2d");
-    ctx.clearRect(0,0,tileSize,tileSize);
+    ctx.clearRect(0,0,tile.width,tile.height);
 
     ctx.drawImage(
-      window._puzzleCrop,                      // reference to the cropped square image
-      col * window._cropTileSize,             // source x
-      row * window._cropTileSize,             // source y
+      window._puzzleCrop,
+      col * window._cropTileSize,
+      row * window._cropTileSize,
       window._cropTileSize,
       window._cropTileSize,
       0, 0,
-      tileSize, tileSize                      // scaled draw
+      tile.width, tile.height
     );
   });
 }
