@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>25-Piece Puzzle — FINAL WORKING</title>
+<style>
+  body { margin:0; padding:20px; background:#111; color:#eee; font-family:system-ui; text-align:center; }
+  h1 { font-size:1.8em; margin:10px 0; }
+  input, button { margin:8px; padding:12px; font-size:16px; border-radius:8px; }
+  button { background:#333; color:white; border:2px solid #666; cursor:pointer; }
+
+  .box {
+    width:100%; max-width:520px; margin:30px auto;
+    aspect-ratio:1/1; border:8px solid #555; border-radius:16px; overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.8);
+  }
+  #puzzle { display:grid; grid-template-columns:repeat(5,1fr); gap:0; }
+  canvas { display:block; width:100%; height:100%; }
+  canvas:active { transform:scale(0.94); }
+  canvas.preview-wrong { box-shadow:0 0 40px 8px yellow !important; }
+  canvas.preview-correct { box-shadow:0 0 40px 8px #00ddff !important; }
+  canvas.selected { outline:6px solid yellow; transform:scale(0.88) !important; z-index:10; }
+  canvas.correct-flash { animation:glow 1s; }
+  @keyframes glow { 0%,100% { box-shadow:0 0 40px lime; } 50% { box-shadow:0 0 80px lime; transform:scale(1.1); } }
+ul {
+  list-style-type: none;
+}
+  </style>
+</head>
+<body>
+
+<h1>25-Piece Puzzle</h1>
+<details style="max-width:520px; margin:20px auto; text-align:left; background:#222; padding:15px; border-radius:8px;">
+  <summary style="cursor:pointer; font-weight:bold; font-size:1.1em; margin-bottom:10px;">📋 How to Use the Image Puzzle</summary>
+
+  <p><strong>Simple version:</strong><br>
+  To use this puzzle, you need an image from a website that allows sharing.</p>
+
+   <p><strong>How to get the image URL:</strong></p>
+  <ol>
+    <li>Find an image you like</li>
+    <li>Right-click the image</li>
+    <li>Choose "Copy image address" or "Copy image link" <br>(NOT "Copy" or "Copy Image"!)</li>
+    <li>Paste it into the puzzle</li>
+  </ol>
+
+  <p><strong>If an image doesn't work:</strong><br>
+  Some websites don't allow their images to be used in puzzles. If you see the original image but the puzzle doesn't create, try a different image source.</p>
+
+  <p><strong>Tips:</strong></p>
+  <ul>
+    <li>Works best with square images</li>
+    <li>Portrait or Landscape images will be cropped to a square</li>
+    <li>Larger images give better quality</li>
+  </ul>
+</details>
+
+<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;">
+<button onclick="init()">New Puzzle</button>
+<button id="toggleBtn" onclick="toggleView()">View Original</button>
+<ul><li>&bull; &nbsp;Tap two tiles to exchange them </li>
+<li>&bull; &nbsp;A correctly placed tile will breifly highlight in green <br>(mobile phones will vibrate) </li>
+<li>&bull; &nbsp;You can long press any tile and it will turn blue if placed correctly<br>(yellow if placed incorrectly)</li><li></ul>
+<!-- PUZZLE BOX -->
+<div class="box" id="puzzleBox">
+  <div id="puzzle"></div>
+</div>
+
+<!-- ORIGINAL IMAGE BOX -->
+<div class="box" id="originalBox" style="display:none;">
+  <img id="originalImg" style="width:100%; height:100%; object-fit:cover; object-position:center;">
+</div>
+
+<script>
+const GRID = 5;
+let tiles = [], selected = null;
+const img = new Image();
+img.crossOrigin = "anonymous";
+
+function init() {
+  const url = document.getElementById('url').value.trim() || 'https://picsum.photos/seed/tiger/900/1400';
+  img.src = url + '?t=' + Date.now();
+
+  // Update original view
+  document.getElementById('originalImg').src = url;
+
+  img.onload = () => {
+    const puzzle = document.getElementById('puzzle');
+    puzzle.innerHTML = ''; tiles = [];
+
+    const size = puzzle.offsetWidth || 500;
+    const tileSize = size / GRID;
+
+// Center-crop to square
+const crop = document.createElement('canvas');
+crop.width = crop.height = size;
+const ctx = crop.getContext('2d');
+const scale = Math.max(size / img.width, size / img.height);
+const w = img.width * scale, h = img.height * scale;
+ctx.drawImage(img, (size - w)/2, (size - h)/2, w, h);
+
+// Store the cropped square for resizing
+window._puzzleCrop = crop;
+
+// Store the SOURCE tile size (inside the crop), NOT the on-screen size
+window._cropTileSize = crop.width / GRID;
+
+    // Create 25 perfect tiles
+    for (let i = 0; i < 25; i++) {
+      const row = Math.floor(i / GRID), col = i % GRID;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = tileSize;
+      const c = canvas.getContext('2d');
+      c.drawImage(crop, col*tileSize, row*tileSize, tileSize, tileSize, 0, 0, tileSize, tileSize);
+
+      canvas.dataset.orig = i;
+      canvas.dataset.pos = i;
+
+      let timer = null;
+      canvas.onpointerdown = () => {
+        timer = setTimeout(() => {
+          timer = null;
+          const ok = canvas.dataset.pos == canvas.dataset.orig;
+          canvas.classList.add(ok ? 'preview-correct' : 'preview-wrong');
+          navigator.vibrate?.(50);
+        }, 650);
+      };
+      canvas.onpointerup = canvas.onpointercancel = canvas.onpointerleave = () => {
+        if (timer) clearTimeout(timer);
+        else setTimeout(() => canvas.classList.remove('preview-correct','preview-wrong'), 300);
+        timer = null;
+      };
+      canvas.onclick = e => { if (timer) { e.preventDefault(); return; } select(canvas); };
+
+      puzzle.appendChild(canvas);
+      tiles.push(canvas);
+    }
+
+    // Always show puzzle first
+    document.getElementById('puzzleBox').style.display = 'block';
+    document.getElementById('originalBox').style.display = 'none';
+    document.getElementById('toggleBtn').textContent = 'View Original';
+
+    shuffle();
+  };
+}
+
+function select(el) {
+  if (selected === el) { el.classList.remove('selected'); selected = null; return; }
+  if (!selected) { selected = el; el.classList.add('selected'); return; }
+
+  [el.style.gridRow, selected.style.gridRow] = [selected.style.gridRow, el.style.gridRow];
+  [el.style.gridColumn, selected.style.gridColumn] = [selected.style.gridColumn, el.style.gridColumn];
+  [el.dataset.pos, selected.dataset.pos] = [selected.dataset.pos, el.dataset.pos];
+  [el, selected].forEach(update);
+  selected.classList.remove('selected'); selected = null;
+  checkWin();
+}
+
+function update(el) {
+  if (el.dataset.pos == el.dataset.orig && !el.classList.contains('done')) {
+    el.classList.add('correct-flash','done');
+    navigator.vibrate?.([100,50,100]);
+    setTimeout(() => el.classList.remove('correct-flash','done'), 1000);
+  }
+}
+
+function shuffle() {
+  const pos = Array.from({length:25},(_,i)=>i);
+  for (let i = pos.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pos[i], pos[j]] = [pos[j], pos[i]];
+  }
+  tiles.forEach((t, i) => {
+    const p = pos[i];
+    t.style.gridRow = Math.floor(p/5) + 1;
+    t.style.gridColumn = (p%5) + 1;
+    t.dataset.pos = p;
+    update(t);
+  });
+}
+
+function checkWin() {
+  if (tiles.every(t => +t.dataset.pos === +t.dataset.orig)) {
+    alert('Puzzle Solved — Perfect!');
+  }
+}
+
+// SIMPLEST TOGGLE IN THE WORLD
+function toggleView() {
+  const p = document.getElementById('puzzleBox');
+  const o = document.getElementById('originalBox');
+  const b = document.getElementById('toggleBtn');
+
+  if (p.style.display !== 'none') {
+    p.style.display = 'none';
+    o.style.display = 'block';
+    b.textContent = 'Back to Puzzle';
+  } else {
+    p.style.display = 'block';
+    o.style.display = 'none';
+    b.textContent = 'View Original';
+  }
+}
+
+function resizePuzzle() {
+  const puzzle = document.getElementById('puzzle');
+  const size = puzzle.offsetWidth;
+  const tileSize = size / GRID;
+
+  tiles.forEach(tile => {
+    const wrapper = tile.parentElement;
+
+    // Resize wrapper grid cell
+    wrapper.style.width = tileSize + "px";
+    wrapper.style.height = tileSize + "px";
+
+    // Resize canvas element
+    tile.width = tile.height = tileSize;
+
+    // Redraw tile image from stored crop
+    const origIndex = +tile.dataset.orig;
+    const row = Math.floor(origIndex / GRID);
+    const col = origIndex % GRID;
+
+    const ctx = tile.getContext("2d");
+    ctx.clearRect(0,0,tileSize,tileSize);
+
+    ctx.drawImage(
+      window._puzzleCrop,                      // reference to the cropped square image
+      col * window._cropTileSize,             // source x
+      row * window._cropTileSize,             // source y
+      window._cropTileSize,
+      window._cropTileSize,
+      0, 0,
+      tileSize, tileSize                      // scaled draw
+    );
+  });
+}
+
+
+window.onload = init;
+window.onresize = resizePuzzle;
+
+</script>
+</body>
+</html>
