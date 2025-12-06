@@ -19,9 +19,9 @@
   .tile-wrapper { position:relative; display:block; }
   canvas { display:block; width:100%; height:100%; }
   canvas:active { transform:scale(0.94); }
-  canvas.preview-wrong { box-shadow:0 0 40px 8px yellow !important; }
-  canvas.preview-correct { box-shadow:0 0 40px 8px #00ddff !important; }
-  canvas.selected { outline:6px solid yellow; transform:scale(0.88) !important; z-index:10; }
+  canvas.preview-wrong { box-shadow:0 0 40px 18px yellow !important; }
+  canvas.preview-correct { box-shadow:0 0 40px 18px #00ddff !important; }
+  canvas.selected { outline:6px solid orange; transform:scale(0.88) !important; z-index:10; }
   canvas.correct-flash { animation:glow 1s; }
   @keyframes glow { 0%,100% { box-shadow:0 0 40px lime; } 50% { box-shadow:0 0 80px lime; transform:scale(1.1); } }
   
@@ -46,8 +46,36 @@
 <body>
 
 <h1>25-Piece Puzzle</h1>
-<p>Tap two pieces • Long-press = preview</p>
-<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;">
+<details style="max-width:520px; margin:20px auto; text-align:left; background:#222; padding:15px; border-radius:8px;">
+  <summary style="cursor:pointer; font-weight:bold; font-size:1.1em; margin-bottom:10px;">📋 How to Use the Image Puzzle</summary>
+
+  <p>
+  To use this puzzle, you need an image from a website that allows sharing.</p>
+
+   <p><strong>How to get the image URL:</strong></p>
+  <ol>
+    <li>Find an image you like</li>
+    <li>Right-click the image</li>
+    <li>Choose "Copy image address" or "Copy image link" <br>(NOT "Copy" or "Copy Image"!)</li>
+    <li>Paste it into the puzzle</li>
+  </ol>
+
+  <p><strong>If an image doesn't work:</strong><br>
+  Some websites don't allow their images to be used in puzzles. If you see the original image but the puzzle doesn't create, try a different image source.</p>
+
+  <p><strong>Tips:</strong></p>
+  <ul>
+    <li>Works best with square images</li>
+    <li>Portrait or Landscape images will be cropped to a square</li>
+    <li>Larger images give better quality</li>
+  </ul>
+<p><strong>How to play:</strong></p>
+  <ul><li>Tap two tiles to exchange them </li>
+<li><span style="color:lightgreen; font-size:1.5rem;">✔</span> A correctly placed tile will breifly glow in green with a green check mark<br>(mobile phones will vibrate) </li>
+<li>Selected squares show with a thick <span style="color:orange;">orange</span> border and are ready to be moved  (even if it's correctly placed)
+<br></li><li>On long press, incorrect placements will have a soft <span style="color:yellow;">yellow</span> glow</li></ul>
+</details>
+<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;"><br>
 <button onclick="init()">New Puzzle</button>
 <button id="toggleBtn" onclick="toggleView()">View Original</button>
 
@@ -247,6 +275,15 @@ function resizePuzzle() {
   });
 }
 
+
+    // Close details when clicking outside
+    document.addEventListener('click', (event) => {
+      document.querySelectorAll('details').forEach(details => {
+        if (details.open && !details.contains(event.target)) {
+          details.open = false;
+        }
+      });
+    });
 
 window.onload = init;
 window.onresize = resizePuzzle;

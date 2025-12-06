@@ -20,7 +20,7 @@
   canvas:active { transform:scale(0.94); }
   canvas.preview-wrong { box-shadow:0 0 40px 8px yellow !important; }
   canvas.preview-correct { box-shadow:0 0 40px 8px #00ddff !important; }
-  canvas.selected { outline:6px solid yellow; transform:scale(0.88) !important; z-index:10; }
+  canvas.selected { outline:6px solid orange; transform:scale(0.88) !important; z-index:10; }
   canvas.correct-flash { animation:glow 1s; }
   @keyframes glow { 0%,100% { box-shadow:0 0 40px lime; } 50% { box-shadow:0 0 80px lime; transform:scale(1.1); } }
 ul {
@@ -34,7 +34,7 @@ ul {
 <details style="max-width:520px; margin:20px auto; text-align:left; background:#222; padding:15px; border-radius:8px;">
   <summary style="cursor:pointer; font-weight:bold; font-size:1.1em; margin-bottom:10px;">📋 How to Use the Image Puzzle</summary>
 
-  <p><strong>Simple version:</strong><br>
+  <p>
   To use this puzzle, you need an image from a website that allows sharing.</p>
 
    <p><strong>How to get the image URL:</strong></p>
@@ -54,14 +54,16 @@ ul {
     <li>Portrait or Landscape images will be cropped to a square</li>
     <li>Larger images give better quality</li>
   </ul>
+<p><strong>How to play:</strong></p>
+  <ul><li>&bull; &nbsp;Tap two tiles to exchange them </li>
+<li>&bull; &nbsp;A correctly placed tile will breifly glow in <span style="color:lightgreen">green </span><br>(mobile phones will vibrate) </li>
+<li>&bull; &nbsp;You can long press any tile and it will turn <span style="color:lightblue"> blue</span> if placed correctly<br>(<span style="color:yellow">yellow</span> if placed incorrectly)</li><li>Selected tiles show with thick <span style="color:orange">orange</span> borders. This means they are ready to be moved (even correctly placed tiles)</li></ul>
 </details>
 
-<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;">
+<input type="text" id="url" placeholder="Any image URL" value="https://picsum.photos/seed/tiger/900/1400" style="width:90%;"><br>
 <button onclick="init()">New Puzzle</button>
 <button id="toggleBtn" onclick="toggleView()">View Original</button>
-<ul><li>&bull; &nbsp;Tap two tiles to exchange them </li>
-<li>&bull; &nbsp;A correctly placed tile will breifly highlight in green <br>(mobile phones will vibrate) </li>
-<li>&bull; &nbsp;You can long press any tile and it will turn blue if placed correctly<br>(yellow if placed incorrectly)</li><li></ul>
+
 <!-- PUZZLE BOX -->
 <div class="box" id="puzzleBox">
   <div id="puzzle"></div>
@@ -235,6 +237,16 @@ function resizePuzzle() {
     );
   });
 }
+
+
+    // Close details when clicking outside
+    document.addEventListener('click', (event) => {
+      document.querySelectorAll('details').forEach(details => {
+        if (details.open && !details.contains(event.target)) {
+          details.open = false;
+        }
+      });
+    });
 
 
 window.onload = init;
