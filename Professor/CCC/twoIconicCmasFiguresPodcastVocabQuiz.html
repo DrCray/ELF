@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz | English Learning Magazine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f2ff 0%, #e6e9ff 100%);
+            color: #2c3e50;
+            line-height: 1.5;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #7a6ece;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .user-info input {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.6rem 0.8rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .user-info input:focus {
+            outline: none;
+            border-color: #7a6ece;
+            box-shadow: 0 0 0 2px rgba(122, 110, 206, 0.15);
+        }
+
+        .quiz-section {
+            margin-bottom: 2rem;
+        }
+
+        .sentence-group {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .sentence-group h2 {
+            margin-bottom: 1rem;
+            color: #4a5568;
+            font-size: 1.1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+        }
+
+        .sentence-item {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(to top, #f5f0ff 0%, #f0f7ff 100%);
+            border: 1px solid #e6e0ff;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+
+        .sentence-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .sentence-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .vocab-select {
+            padding: 0.4rem 0.6rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: white;
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .vocab-select:focus {
+            outline: none;
+            border-color: #7a6ece;
+        }
+
+        .vocab-select.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .vocab-select.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+
+        .print-section {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        #printBtn {
+            background: linear-gradient(135deg, #7a6ece 0%, #8a77d1 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(122, 110, 206, 0.3);
+        }
+
+        #printBtn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(122, 110, 206, 0.4);
+        }
+
+        #printBtn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .user-info {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .sentence-item {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .sentence-text {
+                white-space: normal;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.75rem;
+            }
+            
+            .sentence-text {
+                font-size: 0.9rem;
+            }
+            
+            .vocab-select {
+                min-width: 100px;
+                font-size: 0.85rem;
+                padding: 0.35rem 0.5rem;
+            }
+            
+            .sentence-group {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vocabulary Quiz</h1>
+            <p class="subtitle">English Learning Magazine • CEFR B1 Level</p>
+        </header>
+
+        <div class="user-info">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="idInput" placeholder="Enter your ID">
+        </div>
+
+        <div class="quiz-section" id="quizSection">
+            <!-- Quiz content will be generated by JavaScript -->
+        </div>
+
+        <div class="print-section">
+            <button id="printBtn" disabled>Print/Save to PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Full sentence list with vocabulary words
+        const sentences = [
+            "She filed a **complaint** about the noisy neighbors.",
+            "Many people think holidays have become too **commercialized** with all the advertising.",
+            "The rain **ruined** our picnic plans.",
+            "I’m in the “pineapple on pizza” **camp**—I think it’s delicious!",
+            "The **commercialization** of music festivals has made ticket prices very high.",
+            "The mayor resigned after evidence of **corruption** was found.",
+            "Flexibility is **baked into** the design of this software.",
+            "Advertisers sometimes **manipulate** emotions to sell products.",
+            "She drives an electric **vehicle**.",
+            "Social media can be a **vehicle** for change.",
+            "This tradition **has roots in** ancient celebrations of spring.",
+            "The photo filter **distorted** her face so she didn’t recognize herself.",
+            "The new law was **neutral**—it didn’t really change anything.",
+            "His **intention** was to surprise her with flowers.",
+            "The classroom was **decorated** with student artwork.",
+            "He’s very **manipulative**—he always gets his way by making others feel guilty.",
+            "Traveling gave her a new **perspective** on life.",
+            "He’s in constant **pursuit** of the perfect cup of coffee.",
+            "They threw an **extravagant** party with live music and a chocolate fountain.",
+            "The hotel offered a **lavish** breakfast with fresh pastries and tropical fruit.",
+            "The school follows a **secular** curriculum, so it doesn’t teach religious beliefs.",
+            "Voting is a **mechanism** for choosing leaders in a democracy.",
+            "The city center is full of shops and other **commercial activity**.",
+            "This app **enables** users to learn a new language at their own pace.",
+            "Online **commerce** has grown quickly in the last ten years.",
+            "Being a teacher **entails** a lot of patience and preparation.",
+            "Adding plants can **enhance** the look of your living room.",
+            "The colorful festival **attracted** visitors from all over the country.",
+            "The seasons follow a natural **cycle**: spring, summer, autumn, winter.",
+            "Change is **inevitable** in life—nothing stays the same forever.",
+            "Good communication is **crucial** for a strong friendship.",
+            "The online **transaction** was completed in seconds.",
+            "After months of work, she finally had **tangible** results to show her boss.",
+            "Learning to fix her own car was an **empowering** experience.",
+            "The city is investing in green **infrastructure** like bike lanes and solar panels.",
+            "She’s an **aspiring** chef who practices new recipes every weekend.",
+            "The nurse showed great **compassion** to her patients.",
+            "Online **purchasing** has become very common during holidays.",
+            "The internet has **democratized** access to education.",
+            "Our goals are **aligned**—we both want the project to succeed.",
+            "She gave me **practical** advice about managing my time.",
+            "The **takeaway** from the meeting was: communication is key.",
+            "We made a **budget** so we wouldn’t overspend on vacation.",
+            "Her **internal** motivation helped her finish the marathon.",
+            "The company is facing **external** pressure from new competitors.",
+            "His **intentions** were good, but he accidentally hurt her feelings.",
+            "It’s hard to **focus** when your phone keeps making noise.",
+            "After graduation, he **drifted** from job to job for a while.",
+            "The teacher tried to **engage with** students with fun group activities.",
+            "Let’s do a quick **wrap-up** before we leave: what did we learn today?"
+        ];
+
+        // Extract vocabulary words from sentences
+        function extractVocab(sentence) {
+            const match = sentence.match(/\*\*(.*?)\*\*/);
+            return match ? match[1] : '';
+        }
+
+        // Split sentences into groups of 5
+        function chunkArray(array, size) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += size) {
+                chunks.push(array.slice(i, i + size));
+            }
+            return chunks;
+        }
+
+        // Shuffle array using Fisher-Yates algorithm
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Generate quiz HTML with actual select elements replacing bolded words
+        function generateQuiz() {
+            const quizSection = document.getElementById('quizSection');
+            const sentenceGroups = chunkArray(sentences, 5);
+            
+            sentenceGroups.forEach((group, groupIndex) => {
+                // Extract vocabulary words for this group
+                const vocabWords = group.map(sentence => extractVocab(sentence));
+                const shuffledOptions = shuffleArray(vocabWords);
+                
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'sentence-group';
+                groupDiv.innerHTML = `<h2>Sentences ${groupIndex * 5 + 1} - ${Math.min((groupIndex + 1) * 5, sentences.length)}</h2>`;
+                
+                group.forEach((sentence, sentenceIndex) => {
+                    const correctAnswer = extractVocab(sentence);
+                    // Split the sentence into parts before and after the vocabulary word
+                    const parts = sentence.split(/\*\*(.*?)\*\*/);
+                    const beforeText = parts[0];
+                    const afterText = parts[2] || '';
+                    
+                    const sentenceItem = document.createElement('div');
+                    sentenceItem.className = 'sentence-item';
+                    
+                    // Create select options
+                    let selectOptions = '<option value="">Select...</option>';
+                    shuffledOptions.forEach(option => {
+                        selectOptions += `<option value="${option}">${option}</option>`;
+                    });
+                    
+                    // Build the sentence with select element in place of the bolded word
+                    sentenceItem.innerHTML = `
+                        <span class="sentence-text">${beforeText}</span>
+                        <select class="vocab-select" data-correct="${correctAnswer}" data-group="${groupIndex}" data-sentence="${sentenceIndex}">
+                            ${selectOptions}
+                        </select>
+                        <span class="sentence-text">${afterText}</span>
+                    `;
+                    
+                    // Add event listener for immediate feedback
+                    const selectElement = sentenceItem.querySelector('select');
+                    selectElement.addEventListener('change', function() {
+                        const selectedValue = this.value;
+                        const correctValue = this.dataset.correct;
+                        
+                        // Remove previous classes
+                        this.classList.remove('correct', 'incorrect');
+                        
+                        if (selectedValue === '') {
+                            // No selection, keep default styling
+                        } else if (selectedValue === correctValue) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                    
+                    groupDiv.appendChild(sentenceItem);
+                });
+                
+                quizSection.appendChild(groupDiv);
+            });
+        }
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', () => {
+    generateQuiz();
+    const nameInput = document.getElementById('nameInput');
+    const idInput = document.getElementById('idInput');
+    const printBtn = document.getElementById('printBtn');
+
+    // ALWAYS enable the print button
+    printBtn.disabled = false;
+
+    // Print/Save functionality
+    printBtn.addEventListener('click', () => {
+        if (nameInput.value.trim() === '' || idInput.value.trim() === '') {
+            alert('Name and ID required');
+            return;
+        }
+        window.print();
+    });
+});
+    </script>
+</body>
+</html>
+
+
