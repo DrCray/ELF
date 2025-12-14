@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz | English Learning Magazine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f2ff 0%, #e6e9ff 100%);
+            color: #2c3e50;
+            line-height: 1.5;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #7a6ece;
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #718096;
+            font-weight: 400;
+        }
+        .user-info {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .user-info input {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.6rem 0.8rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+        .user-info input:focus {
+            outline: none;
+            border-color: #7a6ece;
+            box-shadow: 0 0 0 2px rgba(122, 110, 206, 0.15);
+        }
+        .authoring-panel {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .authoring-panel textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.95rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            resize: vertical;
+        }
+        .authoring-panel button {
+            background: #7a6ece;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .authoring-panel button:hover {
+            background: #6a5cd0;
+        }
+        .quiz-section {
+            margin-bottom: 2rem;
+        }
+        .sentence-group {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .sentence-group h2 {
+            margin-bottom: 1rem;
+            color: #4a5568;
+            font-size: 1.1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+        }
+        .sentence-item {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(to top, #f5f0ff 0%, #f0f7ff 100%);
+            border: 1px solid #e6e0ff;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .sentence-item:last-child {
+            margin-bottom: 0;
+        }
+        .sentence-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+        .vocab-select {
+            padding: 0.4rem 0.6rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: white;
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .vocab-select:focus {
+            outline: none;
+            border-color: #7a6ece;
+        }
+        .vocab-select.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+        .vocab-select.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        #printBtn {
+            background: linear-gradient(135deg, #7a6ece 0%, #8a77d1 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(122, 110, 206, 0.3);
+        }
+        #printBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(122, 110, 206, 0.4);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .user-info {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .sentence-item {
+                flex-direction: row;
+                align-items: center;
+            }
+            .sentence-text {
+                white-space: normal;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 0.75rem;
+            }
+            .sentence-text {
+                font-size: 0.9rem;
+            }
+            .vocab-select {
+                min-width: 100px;
+                font-size: 0.85rem;
+                padding: 0.35rem 0.5rem;
+            }
+            .sentence-group {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vocabulary Quiz</h1>
+            <p class="subtitle">English Learning Magazine • CEFR B1 Level</p>
+        </header>
+<div class="authoring-panel" id="authoringPanel">
+    <textarea id="sentenceInput" placeholder='Enter sentences like:
+"She filed a **complaint** about the noisy neighbors.",
+"Many people think holidays have become too **commercialized**...",'></textarea>
+    <input type="text" id="fileNameInput" placeholder="Name Your File" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 0.95rem;">
+    <button id="makeBtn">Make Quiz</button>
+    <div id="saveMessage" style="display: none; margin-top: 0.75rem; padding: 0.5rem; border: 2px solid #3182ce; color: #2f855a; font-weight: 600; border-radius: 4px; background: #ebf8ff;">
+        Saved to your browser's default download folder.
+    </div>
+</div>
+        <div class="user-info">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="idInput" placeholder="Enter your ID">
+        </div>
+        <div class="quiz-section" id="quizSection">
+            <!-- Quiz will be generated here -->
+        </div>
+        <div class="print-section">
+            <button id="printBtn">Print/Save to PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions (same as before)
+        function extractVocab(sentence) {
+            const match = sentence.match(/\*\*(.*?)\*\*/);
+            return match ? match[1] : '';
+        }
+
+        function chunkArray(array, size) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += size) {
+                chunks.push(array.slice(i, i + size));
+            }
+            return chunks;
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Refactored: generateQuiz now accepts a sentences array
+        function generateQuiz(sentences) {
+            const quizSection = document.getElementById('quizSection');
+            quizSection.innerHTML = '';
+            const sentenceGroups = chunkArray(sentences, 5);
+            sentenceGroups.forEach((group, groupIndex) => {
+                const vocabWords = group.map(sentence => extractVocab(sentence));
+                const shuffledOptions = shuffleArray(vocabWords);
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'sentence-group';
+                groupDiv.innerHTML = `<h2>Sentences ${groupIndex * 5 + 1} - ${Math.min((groupIndex + 1) * 5, sentences.length)}</h2>`;
+                group.forEach((sentence, sentenceIndex) => {
+                    const correctAnswer = extractVocab(sentence);
+                    const parts = sentence.split(/\*\*(.*?)\*\*/);
+                    const beforeText = parts[0];
+                    const afterText = parts[2] || '';
+                    const sentenceItem = document.createElement('div');
+                    sentenceItem.className = 'sentence-item';
+                    let selectOptions = '<option value="">Select...</option>';
+                    shuffledOptions.forEach(option => {
+                        selectOptions += `<option value="${option}">${option}</option>`;
+                    });
+                    sentenceItem.innerHTML = `
+                        <span class="sentence-text">${beforeText}</span>
+                        <select class="vocab-select" data-correct="${correctAnswer}" data-group="${groupIndex}" data-sentence="${sentenceIndex}">
+                            ${selectOptions}
+                        </select>
+                        <span class="sentence-text">${afterText}</span>
+                    `;
+                    const selectElement = sentenceItem.querySelector('select');
+selectElement.addEventListener('change', function() {
+    this.classList.remove('correct');
+    this.classList.remove('incorrect');
+    if (this.value === '') return;
+    if (this.value === this.dataset.correct) {
+        this.classList.add('correct');
+    } else {
+        this.classList.add('incorrect');
+    }
+});
+                    groupDiv.appendChild(sentenceItem);
+                });
+                quizSection.appendChild(groupDiv);
+            });
+        }
+
+        // Parse user input safely
+        function parseSentences(input) {
+            const lines = input.split('\n');
+            const sentences = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                // Remove trailing comma if present
+                if (line.endsWith(',')) line = line.slice(0, -1);
+                // Must start and end with "
+                if (!line.startsWith('"') || !line.endsWith('"')) {
+                    throw new Error(`Line must be enclosed in quotes: ${line}`);
+                }
+                let content = line.slice(1, -1); // remove quotes
+                // Must contain exactly one **...** pair
+                const boldMatches = content.match(/\*\*(.*?)\*\*/g);
+                if (!boldMatches || boldMatches.length !== 1) {
+                    throw new Error(`Exactly one vocabulary word in **bold** required: ${line}`);
+                }
+                sentences.push(content);
+            }
+            if (sentences.length === 0) {
+                throw new Error("No valid sentences found.");
+            }
+            return sentences;
+        }
+
+        // Download current page as HTML
+        function downloadCurrentPage() {
+            const fullHTML = document.documentElement.outerHTML;
+            const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vocab-quiz-${Date.now()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('nameInput');
+            const idInput = document.getElementById('idInput');
+            const printBtn = document.getElementById('printBtn');
+            const authoringPanel = document.getElementById('authoringPanel');
+            const sentenceInput = document.getElementById('sentenceInput');
+            const makeBtn = document.getElementById('makeBtn');
+
+            // Print button always enabled — validate on click
+            printBtn.addEventListener('click', () => {
+                if (nameInput.value.trim() === '' || idInput.value.trim() === '') {
+                    alert('Name and ID required');
+                    return;
+                }
+                window.print();
+            });
+
+            // Make Quiz Button
+makeBtn.addEventListener('click', () => {
+    try {
+        const userSentences = parseSentences(sentenceInput.value);
+        generateQuiz(userSentences);
+
+        // Hide authoring panel
+        authoringPanel.style.display = 'none';
+
+        // Get filename
+        const fileNameInput = document.getElementById('fileNameInput');
+        let fileName = fileNameInput.value.trim();
+        if (!fileName) {
+            fileName = `vocab-quiz-${Date.now()}`;
+        }
+        fileName = fileName.endsWith('.html') ? fileName : fileName + '.html';
+
+        // Create and trigger download
+        const fullHTML = document.documentElement.outerHTML;
+        const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Restore authoring panel
+        authoringPanel.style.display = 'block';
+
+        // Show save message
+        const saveMessage = document.getElementById('saveMessage');
+        saveMessage.style.display = 'block';
+        setTimeout(() => {
+            saveMessage.style.display = 'none';
+        }, 5000); // 5 seconds
+
+    } catch (err) {
+        alert('Error parsing sentences:\n' + err.message);
+        // Ensure panel is visible if error occurs
+        authoringPanel.style.display = 'block';
+    }
+});
+        });
+        
+        
+        
+        
+// Add this at the bottom of your script, outside generateQuiz
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('vocab-select')) {
+        const select = e.target;
+        select.classList.remove('correct', 'incorrect');
+        if (select.value === '') return;
+        if (select.value === select.dataset.correct) {
+            select.classList.add('correct');
+        } else {
+            select.classList.add('incorrect');
+        }
+    }
+});
+        
+    </script>
+</body>
+</html>
