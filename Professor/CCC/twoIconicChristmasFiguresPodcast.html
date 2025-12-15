@@ -37,19 +37,52 @@
                       font-size:.65rem;cursor:pointer;border-radius:3px;margin-left:8px}
     .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
     .editMode{display:block}
-    #pseudoAudioPlayerWithLink { display: none; }
     #audioPlayer { margin: 0.3rem 0 !important; }                  /* was 1.5rem+ */
     #audioWrapper { margin: 0.3rem 0 !important; }  /* Tightens outer wrapper */
-#audioPlayer, #pseudoAudioPlayerWithLink {
-  margin: 0 !important; padding: 0 0 !important;  /* Zeroes player margins, tiny inner pad */
+    #audioPlayer, #pseudoAudioPlayerWithLink {
+      margin: 0 !important; padding: 0 0 !important;  /* Zeroes player margins, tiny inner pad */
+    }
+    #audioPlayer audio, #pseudoAudioPlayerWithLink audio {
+      margin: 0 !important;  /* Targets the actual <audio> tag */
+    }
+
+    #btnSave{
+      background-color:blue; font-size:1rem;
+    }
+
+
+#pseudoAudioPlayerWithLink { display: none; border-radius:5px;}
+
+.native-audio-mock {
+  display: flex; align-items: center; height: 30px; width: 100%;
+  background: #D0D0D0; border-radius: 4px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+  overflow: hidden; position: relative; width:95%;
 }
-#audioPlayer audio, #pseudoAudioPlayerWithLink audio {
-  margin: 0 !important;  /* Targets the actual <audio> tag */
+.play-triangle {
+  flex-shrink: 0; width: 0; height: 0; margin: 0 8px 0 6px;
+  border-left: 12px solid #000; border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+  cursor: pointer; transition: border-color 0.2s;
 }
 
-#btnSave{
-  background-color:blue; font-size:1rem;
+.play-triangle:hover { border-left-color: #555; }
+
+.progress-track {
+  flex: 1; height: 6px; background: #F5F5F5; border-radius: 3px;
+  position: relative; box-shadow:
+    inset 0 1px 3px #888888,
+    0 1px 2px #989898;
+  margin-left: 4px; border: 1px solid #bbb;
 }
+
+.progress-fill {
+  position: absolute; top: 0; height: 100%; width: 1%; /* Few pixels */
+  background: #4a90e2; border-radius: 2px; box-shadow: 0 0 2px rgba(74,144,226,0.4);
+  width:1%;
+}
+
+
   </style>
 </head>
 <body>
@@ -64,7 +97,7 @@
 <hr>
 
 
-    <label>Display Text<br><input id="linkText" placeholder="e.g. Watch on YouTube"></label>
+    <label>Display Text<br><input id="linkText" placeholder="e.g. Listen on YouTube"></label>
     <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
 <label for="pseudoToggle" style="display: inline; cursor: pointer;">
   <input type="checkbox" id="pseudoToggle" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;">
@@ -105,12 +138,15 @@ sustains it?</p><p></p>
       </div>
 
 
+<div id="pseudoAudioPlayerWithLink" style="position: relative; display: flex;
+  justify-content: center; align-items: center;">
+  <div class="native-audio-mock">
+    <div class="play-triangle"></div>
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div><span style="font-size:70%;">&nbsp;&nbsp;0:00/---&nbsp;&nbsp;</span>
+  </div>
 
-<div id="pseudoAudioPlayerWithLink" style="position: relative; display: block;">
-  <audio controls="" style="width: 100%; height: 100%;">
-    <source src="pseudoAudio.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
   <a id="pseudoLinkOut" href="https://youtu.be/eiGBva1ZmSo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             text-indent: -9999px; background: rgba(0,0,0,0); z-index: 10;" target="blank"></a>
 </div>
