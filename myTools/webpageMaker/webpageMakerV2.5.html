@@ -38,9 +38,9 @@
                       font-size:.65rem;cursor:pointer;border-radius:3px;margin-left:8px}
     .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
     .editMode{display:block}
-    #pseudoAudioPlayerWithLink { display: none; }
+
     #audioPlayer { margin: 0.3rem 0 !important; }                  /* was 1.5rem+ */
-    #audioWrapper { margin: 0.3rem 0 !important; }  /* Tightens outer wrapper */
+    #audioWrapper { margin: 0.3rem 0 !important; padding:0 .75rem 0 .75rem; }  /* Tightens outer wrapper */
 #audioPlayer, #pseudoAudioPlayerWithLink {
   margin: 0 !important; padding: 0 0 !important;  /* Zeroes player margins, tiny inner pad */
 }
@@ -51,6 +51,40 @@
 #btnSave{
   background-color:blue; font-size:1rem;
 }
+
+#pseudoAudioPlayerWithLink { display: none; border-radius:5px;}
+
+.native-audio-mock {
+  display: flex; align-items: center; height: 30px; width: 100%;
+  background: #424042; border-radius: 4px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+  overflow: hidden; position: relative; padding: 8px;
+}
+.play-triangle {
+  flex-shrink: 0; width: 0; height: 0; margin: 0 8px 0 6px;
+  border-left: 12px solid #ffffff; border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+  cursor: pointer; transition: border-color 0.2s;
+}
+
+.play-triangle:hover { border-left-color: #555; }
+
+.progress-track {
+  flex: 1; height: 6px; background: #AFAFAF; border-radius: 3px;
+  position: relative; box-shadow:
+    inset 0 1px 2px #888888,
+    0 1px 2px #989898;
+  margin: 4px; border: 1px solid #bbb;
+}
+
+.progress-fill {
+  position: absolute; top: 0; height: 100%; width: 1%; /* Few pixels */
+  background: #4a90e2; border-radius: 2px; box-shadow: 0 0 2px rgba(74,144,226,0.4);
+  width:3%;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -99,19 +133,22 @@
       </div>
 
 
+<div id="pseudoAudioPlayerWithLink" style="position: relative;
+  justify-content: center; align-items: center;">
+  <div class="native-audio-mock">
+    <div class="play-triangle"></div>
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div><span style="font-size:70%;color:#D8D8D8">&nbsp;&nbsp;0:00/---&nbsp;&nbsp;</span>
+  </div>
 
-<div id="pseudoAudioPlayerWithLink" style="position: relative;">
-  <audio controls style="width: 100%; height: 100%;">
-    <source src="pseudoAudio.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
   <a id="pseudoLinkOut" href="https://youtu.be/REqSGbrLa1A"
      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             text-indent: -9999px; background: rgba(0,0,0,0); z-index: 10;"
             target="blank"></a>
 </div>
 
-<div id="audioPlayer" style="text-align:center">
+<div id="audioPlayer" style="text-align:center;">
         <audio controls style="width:98%;margin:0 auto" id="pageAudio">
           <source src="culturalAwarenessPodcast.mp3" type="audio/mpeg">
         </audio>
@@ -299,7 +336,7 @@ $('#pseudoToggle').onchange = () => {
   $('#delAudioPlayer').style.display = pseudo ? 'none' : 'block';
  // $('#inputAudioFile').style.display = pseudo ? 'none' : 'block';
  // $('#btnRestoreAudio').style.display = pseudo ? 'none' : 'block';
-  $('#pseudoAudioPlayerWithLink').style.display = pseudo ? 'block' : 'none';
+  $('#pseudoAudioPlayerWithLink').style.display = pseudo ? 'flex' : 'none';
   if (!pseudo) $('#audioWrapper').style.display = 'block';
 
     // Update pseudo player link from audio input field
