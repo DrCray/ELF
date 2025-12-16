@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>FlashCard Maker</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+        <style>
+        body {
+            background-color: #d4e6f1; cursor:text;
+            font-family: helvetica, arial, sans-serif;
+            max-width:55rem; margin: auto;
+        }
+
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+
+
+
+        #zzpageHeader {
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+
+        #zztitle {
+            background-color:white;
+            border-style:solid;  border-width: medium;
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+
+        .card {
+            background-color:white; border-radius: 10px;
+            padding:10px;
+        }
+
+        .quStyle {
+            background-color:white; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000;
+            padding:3ex;
+            border-radius: 10px;
+         }
+
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
+        }
+
+
+         .answer {
+            display:block;
+            background-color:#ffffff; border-width:thin; border-style:solid;
+            border-color: blue;
+            padding:2ex; border-radius: 10px;
+         }
+
+        .fake-button {
+            background-color: #E9E9ED;
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+
+
+
+
+        .cardInfo {
+            background-color: #FFFFFF; border-radius: 5px;
+
+            margin: 0 0 0 0; padding:0 0 0 .75rem;
+		}
+
+
+        .cardTitle {
+            margin: 0 0 .5rem 0; padding:.75rem 0 .75rem .5rem;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 7px;
+        }
+
+        .cardTitle:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+        }
+
+
+        #flashcards {
+            background-color: lavender; padding:1ex;
+        }
+
+        #printOptions {
+            /*display:block;*/ display:none; background-color: #9CD7B7;
+            color: darkblue; width:fit-content;
+            border-radius: 5px;
+            box-shadow: 3px 3px darkgreen;
+            margin: 2ex 0 1ex 2ex;
+            padding:1ex;
+            font-weight: bold; font-size:85%;
+        }
+
+        .btnContnr {
+            display:block; margin:2ex 0 1ex 0;background-color:white; width:fit-content;
+        }
+
+        .cardBtns {
+            display:inline-block; margin:.33ex; font-size: 1.6ex;
+        }
+
+        #pasteHere {
+            background-color:#AFD4AF
+        }
+
+    </style>
+    
+  </head>
+  
+  <body>﻿
+  
+   <div id="warnLeavePage" style="display:none">on</div>   
+   <div id="studyMode" style="display:none">off</div>   
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+    
+    
+    
+    
+    
+    
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        Summer 2022, <br>
+        Professional English <br> 
+        Course 101, Student  Exercise, Chapter 3 
+        <br>
+        <br>
+        <strong>
+        Exercise Quiz, Chapter 3
+        </strong>
+        <br>
+        <strong>
+        Article: Raining Money
+        </strong> 
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->  
+    </section>   
+</header>
+
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+
+
+
+<details id="instructions1" class="editMode" style="background-color:#FFF8DC;"><summary>Instructions</summary>There is an example in the text area. Overwrite it with your own text. As in the example, the format is <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition^^word2^^definition2^^word3^^definition3</code><br>
+    Everything is separated with double carets (^^). Spaces are irrelevant.
+    <code style="background-color:white; display:block; padding:0.5ex; margin:0.7ex">word^^definition^^ word2^^ &nbsp; &nbsp; definition2   ^^ word3 &nbsp; &nbsp; ^^definition3</code><p>Of course, you are not limited to vocabulary/definition sets, you can use this for any other kind of paired sets.</p><p> ========</p><p>"When you save your work, there will be two versions of your file saved in the browser's default download folder. For example:</p> <ul><li>fileName.html</li><li>fileNameEditMode.html</li></ul><p>With the study version (e.g. fileName.html), you can rearrange or delete your cards, then save as a NEW file at the bottom. You can not add more items</p><p>The edit mode file is for adding, changing, or updating the original cards. The edit mode save file option ALWAYS creates a new file in the download folder. Once saved, open the EditMode verstion if  you need to add items.</p></details>
+      
+<div id="storeIndex" style="display:none">1</div>      
+      
+<div style="display:block;">
+    <button id="showAll" onclick="showAll()" style="display:inline-block;"> show all answers </button>
+    <button id='closeAll' onclick="closeAll()" style="display:none;"> hide all answers </button>
+    <button id="flipCards" onclick="flipCards()" style="display:inline-block;"> Flip Cards (only works with plain text) </button>
+</div>     
+      
+      
+<div id="flashcards"></div>
+
+<div style="display:block;">
+    <button id="showAll2" onclick="showAll()" style="display:inline-block;">show all answers</button>    
+    <button id='closeAll2' onclick="closeAll()" style="display:none;"> hide all answers </button>
+    <button id="flipCards2" onclick="flipCards()" style="display:inline-block;"> Flip Cards (only works with plain text) </button>
+</div>
+      
+ <br><br>  
+ <details id="pasteHere" class="editMode">
+	 <summary><span class="fake-button"> Add card/s text</span>
+		</summary>
+     <p id="cardInfoLbl"><span style="text-decoration:underline">Paste</span> or <i>type</i> <b>below</b> </p>
+        <div id="cardInfo" contenteditable="true">airport^^a place where airplanes take off and land ^^ baggage ^^ the suitcases and bags that a <b>person</b> takes on a trip ^^boarding pass^^a piece of paper or <b>electronic</b> document that shows you have the right to board a plane^^ <b>Itinerary</b> ^^ plan or schedule for a trip or vacation</div>
+        
+     <br>
+    <button id="convert" onclick="makeCards()">make card/s</button>
+ </details>     
+    
+
+<script>
+    
+    let ii=document.getElementById('storeIndex').innerHTML;  //details index
+    
+    
+function makeCards(){  
+
+    //The JavaScript code to achieve this would be:
+
+    // Get the value of the text area
+    let textAreaValB = document.getElementById('cardInfo').innerHTML.trim();
+    
+    //eleminate leading double carets
+    let textAreaValq = textAreaValB.replace(/^\^\^\s*/, '')
+    
+    //eleminate trailing double carets
+    let textAreaVal = textAreaValq.replace(/\s*\^\^$/, '')    
+    
+    // Eliminate any one or more spaces surrounding the double-carets
+    let newValz = textAreaVal.replace(/\s*\^\^\s*/g, "\^\^").trim();
+    
+    let newVal = newValz.replace(/\^{3,}/g, "^^");
+
+    // Split the items by the double carets
+    let itemList = newVal.split("^^");
+
+    // Create a div element with id "flashcards"
+    let flashcardsDiv = document.getElementById("flashcards");
+    //flashcardsDiv.id = 'flashcards';
+
+    // Loop through the array and create summary and details elements
+    for (let i = 0; i < itemList.length; i += 2) {
+        let summary = document.createElement('summary');
+        let details = document.createElement('details');
+        let delItem = document.createElement('button');
+        let move2end = document.createElement('button');
+        let move2top = document.createElement('button');
+        let moveUp = document.createElement('button');
+        let moveDown = document.createElement('button');
+        let btnContnr = document.createElement('div');
+
+        summary.innerHTML = itemList[i];
+        summary.className = "cardTitle";
+        summary.contentEditable=true;
+        
+        details.innerHTML = itemList[i+1];
+        details.id = "dtl" + ii;
+        details.className="cardInfo";
+        details.contentEditable=true;
+        
+        btnContnr.className="btnContnr";
+
+        move2end.innerHTML = "<b>&darr;</b>Last";
+        move2end.className="cardBtns";
+        move2endFn = "move2end('" + "dtl" + ii + "')";           
+        move2end.setAttribute("onclick", move2endFn);
+        
+        move2top.innerHTML = "<b>&uarr;</b>First";
+        move2top.className="cardBtns";
+        move2topFn = "move2top('" + "dtl" + ii + "')";           
+        move2top.setAttribute("onclick", move2topFn);
+        
+        moveUp.innerHTML = "<b>&uarr;</b>";
+        moveUp.className="cardBtns";
+        moveUpFn = "moveUp('" + "dtl" + ii + "')";           
+        moveUp.setAttribute("onclick", moveUpFn);
+        
+        moveDown.innerHTML = "<b>&darr;</b>";
+        moveDown.className="cardBtns";
+        moveDownFn = "moveDown('" + "dtl" + ii + "')";          
+        moveDown.setAttribute("onclick", moveDownFn);        
+                
+        delItem.innerHTML = "delete card";
+        delItem.className="cardBtns";
+        delCardFn="this.parentNode.parentElement.remove()"; 
+        delItem.setAttribute("onclick", delCardFn);
+
+        
+        btnContnr.appendChild(move2end);
+        btnContnr.appendChild(move2top);
+        btnContnr.appendChild(moveUp);
+        btnContnr.appendChild(moveDown);
+        btnContnr.appendChild(delItem);
+        details.appendChild(summary);
+        details.appendChild(btnContnr);
+        flashcardsDiv.appendChild(details);
+        
+        ii++;
+    }
+} //end makeCards fn 
+    
+</script>   
+      
+      
+      
+<script>
+function move2end(zchild){
+    let zthis = document.getElementById(zchild);
+    zthis.parentNode.appendChild(zthis);
+}
+    
+function move2top(zchild){
+    let zthis = document.getElementById(zchild);
+    zthis.parentNode.prepend(zthis);
+} 
+    
+    
+    function moveUp(zchild){ 
+        let zthis = document.getElementById(zchild);
+
+       if ((zthis !== zthis.parentNode.firstElementChild) && (zthis.previousElementSibling !== null))
+        {
+            zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
+        }       
+        
+    }   
+    
+    function moveDown(zchild){ 
+        let zthis = document.getElementById(zchild);
+        let nextChild = zthis.nextElementSibling;
+        // the second part of the if statement might be redundant, but I was trying to prevent
+        // "click twice for move" and this works, so I just left it
+        if ((nextChild !== undefined && nextChild !== null) && (zthis !== zthis.parentNode.lastElementChild)){
+          nextChild.parentNode.insertBefore(nextChild, zthis);      
+        }
+    } 
+//<!-- //end +++++====== Move one Child up/over   ============ -->           
+</script>      
+
+        <button id="editModeBtn" class="previewMode" onclick="editMode()" style="display:none;">Edit Mode</button>     
+      
+               <button  id="previewModeBtn" class="editMode" style="margin: 2ex 0 0 0; display:block;" onclick="previewMode()">Preview</button>
+
+      
+
+
+
+<script>
+function flipCards() {
+    
+// get all details elements
+let detailsElements = document.querySelectorAll('.cardInfo');
+
+// get all summary elements
+let summaryElements = document.querySelectorAll('.cardTitle');
+
+// loop through each detail element
+detailsElements.forEach(function(detailElement, index){
+  // get the summary element at the same index
+  let summaryElement = summaryElements[index]; 
+  // get the inner Text of the detail element
+  let detailText = detailElement.firstChild.nodeValue;  console.log ('detl:::' + detailText);
+  // get the inner Text of the summary element
+  let summaryText = summaryElement.innerHTML; console.log('sumry:::' + summaryText);
+  // set the inner Text of the detail element to the inner Text of the summary element
+  detailElement.firstChild.nodeValue = summaryText; console.log ('detlEl::' + detailElement.innerHTML);
+  // set the inner Text of the summary element to the inner Text of the detail element
+  summaryElement.innerHTML = detailText; console.log ('smtyEl::' + summaryElement.innerHTML);
+});
+}
+</script>      
+      
+      
+      
+<!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" style = "padding: 1em; background-color:cadetblue; width:fit-content; margin: 5px 0 0 1em; padding: 1ex;">
+             <br>   
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+        <p style="background-color:white; margin:1ex; padding:1ex;">Saves as a NEW file in your broswer's default download folder</p>
+    </div> 
+      
+
+      
+      <script>
+      function previewMode(){
+		  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+          		  
+          
+            //document.getElementById("saveDom").style.display="none";
+          
+            //document.getElementById("editOff").style.display="none";
+            //document.getElementById("editOn").style.display="block";    
+          
+            //document.getElementById("printOptions").style.display="block";
+          
+            //document.getElementById("cardInfoLbl").style.display  = "none";
+            //document.getElementById("convert").style.display  = "none";
+            //document.getElementById('pasteHere').style.display="none";
+            //document.getElementById('instructions1').style.display="none";
+          
+          
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+         /* let btnContnrs = document.querySelectorAll('.btnContnr');
+            for (const btnContnr of btnContnrs) {
+                btnContnr.style.display="none";
+            }   */       
+
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function editMode(){
+          
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }        
+           // document.getElementById("saveDom").style.display="block";
+          
+            //document.getElementById("editOff").style.display="block";
+            //document.getElementById("editOn").style.display="none";  
+          
+            //document.getElementById("printOptions").style.display="none";
+          
+            //document.getElementById("cardInfoLbl").style.display  = "block";
+            //document.getElementById("convert").style.display  = "block";        
+            //document.getElementById('pasteHere').style.display="block";
+            //document.getElementById('instructions1').style.display="block";
+          
+    
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+          //let btnContnrs = document.querySelectorAll('.btnContnr');
+          
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+    
+         /*   for (const btnContnr of btnContnrs) {
+                btnContnr.style.display="block";
+            }     */       
+          
+            
+            //end restore editabels **********************
+      }
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+ 
+//add this to beginning of save file section
+    let studyMode = document.getElementById('studyMode');
+
+    // Check if the element is hidden based on the display: none condition
+    if (studyMode.textContent === 'off') {
+    const currentContent = document.getElementById('zztitle').textContent;
+
+		if (initialContent === currentContent) {
+		  let userResponse = window.confirm('Update Page Title?');
+
+		  if (userResponse) {
+			// User clicked "Yes"
+			return; // Exit the function immediately
+		  } 
+		}    
+	}
+	
+			studyMode.textContent="on";
+    
+    document.getElementById('storeIndex').innerHTML= ii;    
+    let closeAllDetails = document.getElementsByTagName('details');
+    for (const closeAllDetail of closeAllDetails){
+        closeAllDetail.open=false;
+    }
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        previewMode();
+          //  document.getElementById("editOff").style.display="none";
+          //  document.getElementById("editModeBtn").style.display="none";  
+        
+        //turnn off leave page warning
+            document.getElementById("warnLeavePage").textContent="off";
+
+
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        //toggleEditOn();
+    
+       //turn on leave page warning
+        document.getElementById("warnLeavePage").textContent="on";  
+    
+        document.title = oldTitle;    
+        
+        editMode();    
+
+}      
+</script>
+      
+    <script>
+    
+    if (document.getElementById("warnLeavePage").textContent==="on"){
+      function warning()
+      {
+          return "Did you save your file? Reloading this page can cause your hard work to disappear."; //U can write any custom message here.
+      }
+      window.onbeforeunload = warning;
+    }
+        
+    </script>        
+      
+      
+      
+
+    <!-- ********************************** Print PDF ********************-->
+    <div id="printOptions" class="previewMode">
+        Print (save as PDF) <br>
+         <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>
+        <br>
+         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
+    </div> 
+    
+    <script>
+          function checkThenPrint(){
+   /*     let Name =  document.getElementById("name").value.trim();
+        let ID = document.getElementById("id").value.trim();
+                
+        if (
+            document.getElementById("toggle").checked && 
+            (Name==="name" || ID==="id\#" || Name==="" || ID==="")
+            ){
+            alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
+            return;
+            }
+            */
+         window.print();
+     } // end forgot
+    </script>
+    
+    <!-- ********************** END* Print PDF ********************-->
+    
+    
+    
+    
+    
+      
+
+      
+<script>
+    function showAll(){
+     document.getElementById('closeAll').style.display="inline-block";
+     document.getElementById('closeAll2').style.display="inline-block";
+        
+     document.getElementById('showAll').style.display="none";
+     document.getElementById('showAll2').style.display="none";
+        
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(element => element.open = true);
+            document.getElementById("instructions1").open = false;
+    
+    }//end showAll fn
+    
+    function closeAll(){
+     document.getElementById('closeAll').style.display="none";
+     document.getElementById('showAll').style.display="inline-block";
+        
+     document.getElementById('closeAll2').style.display="none";
+     document.getElementById('showAll2').style.display="inline-block";
+        
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(element => element.open = false);
+    }//end showAll fn
+</script>  
+<p style="margin:35px"> ... end. </p>
+  </body>
+</html>  
+  
+
