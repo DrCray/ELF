@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method" >		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>makeOlUlList</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; 
+            font-family: helvetica, arial, sans-serif;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:3ex; 
+            border-radius: 10px;
+         }
+         
+        .question {
+            cursor:default; width: fit-content; padding: .5rem; .3rem;background:white;
+        }
+         
+
+         .answer {
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; 
+         }
+         
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hltBtn"  */
+        .hlBtn {border-radius:5px; margin: 1ex; }
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+    </style>  
+    
+  </head>
+  
+  <body>﻿
+  
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="true">
+    
+    
+    
+    
+    
+    
+     
+        <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+        <!--************************ Type title here ******************-->
+            
+        Dr Ray  <br>
+        myTools
+        <br>
+        <br>
+        <strong>
+        Make a list
+        </strong>
+
+
+        <!--     ***************** End title ****************************-->
+        <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+
+        <!--  ------ Don’t type Title content past this line ---  -->               
+        
+        
+        
+        
+        
+    </section>   
+</header>
+
+
+
+
+  
+<!--  1   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<!--     **************************   A Card   *************************-->
+<div class="card">
+
+        <!--     **********************************************::z -->
+
+        <div class="question">
+        <ul><p>Make a List</p>
+            <li>The "<b>?</b>" and "<b>.</b>" are delimiters.</li>
+            <li>"<b style="color:blue;background:lightgreen">^^</b>" will ovveride the ?. delimiters </li>
+            <li> Default is UL </li>
+        </ul>
+<p>Click "Make List" now to see the default example in the box below</p>
+<p style="color:darkred;">NOTE: Formatted text cannot "crossover" the delimiters.<br>(delimiters can't be inside formatted text)</p>
+        </div>
+        <div id="text2list" class="answer" contenteditable="true">
+         <i>   Past/type your text here. Example without<b> carets. This</b> is item 1?This is<b stle="color:blue"> item 2.</b>This <b>is</b> <span style="color:red;">red</span><b style="background:blue;color:white"> item 3.</b> item4. item5?   item6? </i>
+        </div>
+
+        <!--     **********************************************::z --> 
+
+</div>
+<!--     **********************::::   END Card   ***********************-->
+
+      
+
+<input id="listType" type="checkbox">
+<label for="listType">Ordered List</label><br>
+
+<button onclick="makeList()">Make List</button>
+
+<div class="quStyle">
+	<div id="result" class="answer" contenteditable="true"></div>
+
+</div>
+      
+      
+<script>
+function makeList() {
+    const listTypeCheckbox = document.getElementById("listType");
+    const div = document.getElementById('text2list');
+    let html = div.innerHTML;
+
+    // Determine the delimiter
+    const useCarat = html.includes('^^');
+    const delimiter = useCarat ? '\\^\\^' : '[.?]\\s*'; // Escape the ^ characters
+
+    // Create the regex for the delimiter
+    const delimiterRegex = new RegExp(delimiter, 'g');
+
+    // Replace delimiters with </li><li>
+    let listItems = html.replace(delimiterRegex, '</li><li>');
+
+    // Wrap the whole thing in <ul> or <ol> and <li>
+    const listType = listTypeCheckbox.checked ? 'ol' : 'ul';
+    listItems = `<${listType}><li>${listItems}</li></${listType}>`;
+
+    // Fix any double </li><li> or orphaned tags
+    listItems = listItems.replace(/<li><\/li>/g, '').replace(/<\/li><li>/g, '</li><li>');
+
+    // Display the result
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = listItems;
+}
+
+
+</script>
+
+
+<p style="margin:35px"> ... end. </p>
+      
+      
+  </body>
+</html>  
+  
+
