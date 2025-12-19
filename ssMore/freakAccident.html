@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freak Arrow Saves Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+    body{font-family:'Poppins',sans-serif;line-height:1.4;color:#1a1a1a;background:#f5f7fa;margin:0;padding:0}
+    .header{padding:.8rem .8rem .8rem 1.8rem;font-weight:600;font-size:1.3rem;color:white;border-radius:3px;
+            background:linear-gradient(135deg,#6a5acd,#9370db);box-shadow:0 3px 6px rgba(0,0,0,.2)}
+    .container{width:100%;max-width:35rem;margin:0 auto;padding:1.5rem 1rem;background:#faf9f6;
+               border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.05);box-sizing:border-box}
+    h2{font-size:2rem;color:#2c3e50;margin-bottom:1.3rem;font-weight:700;border-bottom:3px solid #6a5acd;
+       padding-bottom:.5rem;transition:color .3s}h2:hover{color:#8470d9}
+    h3{font-size:1rem;color:#5b9bd5;font-weight:600}
+    p,ul{font-size:.8rem;color:#4a4a4a;margin-bottom:.8rem}
+    ul{padding-left:1rem;list-style:none}
+    ol{padding-left:1rem;}
+    ul>li{margin-bottom:.8rem;position:relative;padding-left:.8rem}
+    ul>li:before{content:'•';color:#6a5acd;position:absolute;left:0;top:.2rem}
+    audio{width:100%;margin:1.2rem 0;border-radius:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+    a{color:#5b9bd5;text-decoration:none;transition:color .3s}a:hover{color:#6a5acd;text-decoration:underline}
+    .section{border:thin solid #d8d4f0;background:#f9f9f9;padding:1rem;border-radius:8px;
+             margin-bottom:1.1rem;transition:transform .3s,box-shadow .3s;position:relative}
+    .section:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(0,0,0,.1)}
+    .sectionTop{border:thin solid #d8d4f0;background:#f9f9f9;padding:1rem;border-radius:8px;margin-bottom:1.1rem}
+    #sectionTemplate{display:none}
+    .editor-panel{position:fixed;top:10px;right:10px;background:rgba(255,255,255,.97);padding:14px;
+                  border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:9999;
+                  font-family:'Poppins',sans-serif;font-size:.85rem;min-width:10rem;max-width:15rem;}
+    .editor-panel input,.editor-panel button{width:100%;margin:6px 0;padding:8px 10px;
+                  font-size:.85rem;border:1px solid #ddd;border-radius:6px}
+    .editor-panel button{background:#6a5acd;color:white;font-weight:600;cursor:pointer;
+                        transition:background .3s}
+    .editor-panel button:hover{background:#5b9bd5}
+    .delBtn,.link-del{background:#6a5acd;color:white;border:none;padding:2px 6px;
+                      font-size:.65rem;cursor:pointer;border-radius:3px;margin-left:8px}
+    .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
+    .editMode{display:block}
+
+    #audioPlayer { margin: 0.3rem 0 !important; }
+    #audioWrapper { margin: 0.3rem 0 !important; padding:0 .75rem 0 .75rem; }
+    #audioPlayer, #pseudoAudioPlayerWithLink {
+      margin: 0 !important; padding: 0 0 !important;
+    }
+    #audioPlayer audio, #pseudoAudioPlayerWithLink audio {
+      margin: 0 !important;
+    }
+
+    #btnSave{background-color:#5b9bd5; font-size:1rem;}
+
+    #pseudoAudioPlayerWithLink { display: none; border-radius:5px;}
+
+    .native-audio-mock {
+      display: flex; align-items: center; height: 30px; width: 100%;
+      background: #424042; border-radius: 4px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
+      overflow: hidden; position: relative; padding: 8px;
+    }
+    .play-triangle {
+      flex-shrink: 0; width: 0; height: 0; margin: 0 8px 0 6px;
+      border-left: 12px solid #ffffff; border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+      cursor: pointer; transition: border-color 0.2s;
+    }
+
+    .play-triangle:hover { border-left-color: #555; }
+
+    .progress-track {
+      flex: 1; height: 6px; background: #AFAFAF; border-radius: 3px;
+      position: relative; box-shadow:
+        inset 0 1px 2px #888888,
+        0 1px 2px #989898;
+      margin: 4px; border: 1px solid #bbb;
+    }
+
+    .progress-fill {
+      position: absolute; top: 0; height: 100%; width: 1%;
+      background: #4a90e2; border-radius: 2px; box-shadow: 0 0 2px rgba(74,144,226,0.4);
+      width:3%;
+    }
+
+
+        .song-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .verse {
+            margin-bottom: 25px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chorus {
+            margin-bottom: 25px;
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid gray;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .verse p, .chorus p {
+            margin: 0 0 8px 0;
+            padding-left: 20px;
+             font-weight: 500;
+            font-size:1.1rem;
+            text-indent: -20px;
+            color: #34495e;
+        }
+
+        .verse p:last-child, .chorus p:last-child {
+            margin-bottom: 0;
+        }
+
+        .chorus p {
+
+            color: #005C62;
+        }
+
+</style>
+</head>
+<body>
+  <!-- EDITOR PANEL -->
+  <div class="editor-panel editMode" style="display: none;">
+    <div style="margin-bottom:1.2rem;"><strong>Editor Tools</strong></div>
+    <hr>
+    <label style="display: inline; cursor: pointer;"><b>Unordered List</b><br>Use ^^ for delimiter<br>
+        <input type="checkbox" id="olCheckbox" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;">Change to Ordered List
+</label>
+<button id="formatBtn">Make List</button>
+
+<hr>
+
+
+    <label>Display Text<br><input id="linkText" placeholder="e.g. Watch on YouTube"></label>
+    <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
+
+    <button id="btnAddLink">+ Add Link</button>
+    <hr>
+    <label id="inputAudioFile">Audio-only or AudioVid<br><input id="audioInput" placeholder="podcast.webm"></label>
+    <label for="pseudoToggle" style="display: inline; cursor: pointer;">
+  <input type="checkbox" id="pseudoToggle" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;">
+  <span style="display: inline-block; vertical-align: middle;">pseudo Player <br>(links out to youtube)</span>
+</label>
+    <button id="btnRestoreAudio">+ Restore Audio</button>
+    <hr>
+     <button id="btnAdd">+ Add Section</button>
+     <hr>
+    <label>Save As<br><input id="filenameInput" value="myPodcastPage.html"></label>
+    <button id="btnSave">Save as Local File</button>
+  </div>
+  <div class="container">
+    <div class="header">Dr. Ray's English Lessons</div><br>
+    <div class="sectionTop">
+      <h2 id="articleTitle" style="color:#52C2B9;">Freak Arrow Saves Life</h2>
+
+<p>Linka Kulla - The Arrow</p>
+      <div id="linksSection" style="text-align:right;width:100%"><a href="https://youtu.be/DRRAotvBodw" target="_blank" style="font-size: 85%; display: block; text-align: right;">YouTube</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button><a href="https://drcray.github.io/ELF/ssMore/arrowSavesLifeMusicVidCloze.html" target="_blank" style="font-size: 85%; display: block; text-align: right;">Lyrics Quiz</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button></div>
+    </div><br>
+    <!-- AUDIO BLOCK -->
+    <div id="audioWrapper">
+      <div style="text-align:center;font-weight:600;margin-bottom:.3rem">
+        Listen to the Music audioVid
+        <button id="delAudioPlayer" class="link-del editMode" style="font-size: 0.7rem; display: none;" onclick="document.getElementById('audioWrapper').remove()">Delete Audio</button>
+      </div>
+
+
+<div id="pseudoAudioPlayerWithLink" style="position: relative; justify-content: center; align-items: center; display: flex;">
+  <div class="native-audio-mock">
+    <div class="play-triangle"></div>
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div><span style="font-size:70%;color:#D8D8D8">&nbsp;&nbsp;0:00/---&nbsp;&nbsp;</span>
+  </div>
+
+  <a id="pseudoLinkOut" href="https://youtu.be/DRRAotvBodw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            text-indent: -9999px; background: rgba(0,0,0,0); z-index: 10;" target="blank"></a>
+</div>
+
+<div id="audioPlayer" style="text-align: center; display: none;">
+        <audio controls="" style="width:98%;margin:0 auto" id="pageAudio">
+          <source src="https://youtu.be/DRRAotvBodw" type="audio/mpeg">
+        </audio>
+      </div>
+</div><br>
+
+
+
+
+    <!-- TEMPLATE -->
+    <div id="sectionTemplate">
+      <h2>New Section</h2>
+        <div> [Paste or Type here.]</div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+    </div>
+
+
+    <!-- SECTION 1 -->
+    <div class="section">
+
+      <div id="parentForDeletion">
+        <div id="enterLabelledLyrics">
+        <div class="chorus"><span style="font-size:115%; font-weight:bold;"> The Arrow </span> <span style="font-size:85%"> &nbsp; Linka Kulla </span></div>
+        <div class="verse">
+<p>Warm April light, a garden day</p>
+<p>She thought the hard part was the end of the day,</p>
+<p>Then a horror shot, a silent blow</p>
+<p>Felt like a fist she didn't see or know,</p></div><div class="verse">
+<p>She touched the wound, she found the shaft</p>
+<p>A silent weapon, a deadly craft</p>
+<p>Across the fence, a twist of fate</p>
+<p>A practice arrow lost its straight,</p></div><div class="verse">
+<p>It went through baskets, fence, and tree</p>
+<p>nothing could change its destiny,</p>
+<p>The arrow held its target sure</p>
+<p>not knowing that it would be the cure,</p></div><div class="chorus">
+<p>When the worst day leads to a better day, yeah</p>
+<p>And the thing that breaks you makes a brand new way,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="chorus">
+<p>When the wrong turn takes you to the right place, hey</p>
+<p>And the pain is proof that you escaped that day,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="verse">
+<p>The doctors stared at the X-ray screen,</p>
+<p>The miracle they had never seen,</p>
+<p>Between the artery, beside the vein</p>
+<p>Not a single drop of blood, no strain</p></div><div class="verse">
+<p>They said: You're lucky, you should be gone</p>
+<p>But the story’s only just begun,</p>
+<p>Because the arrow showed them the way,</p>
+<p>To hidden monster, waiting to slay</p></div><div class="verse">
+<p>They found the tumor, the ticking clock</p>
+<p>The silent fault line in the body's rock,</p></div><div class="chorus">
+<p>When the worst day leads to the best day, yeah,</p>
+<p>And the thing that breaks you makes a brand new way,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="chorus">
+<p>When the wrong turn takes you to the right place, hey,</p>
+<p>And the pain is proof that you escaped that day,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="verse">
+<p>The blade that meant to cut her down,</p>
+<p>It brought the truth that saved her crown,</p>
+<p>She had a lion in her heart, a fire in her soul,</p>
+<p>The tumor, the aneurysm, took its toll,</p></div><div class="verse">
+<p>But when the devil came to claim her own,</p>
+<p>He never saw the seeds that had been sown,</p>
+<p>A ricochet, a twist in the air,</p>
+<p>It’s proof that sometimes, life will care!,</p></div><div class="chorus">
+<p>When the worst day leads to the best day, yeah,</p>
+<p>And the thing that breaks you makes a brand new way,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="chorus">
+<p>When the wrong turn takes you to the right place, hey,</p>
+<p>And the pain is proof that you escaped that day,</p>
+<p>That's how the darkness turns to light.</p>
+<p>(Every dark, every storm, keeps your heart beating warm)</p></div><div class="verse">
+<p>When the arrows fly to take your life,</p>
+<p>Look for the ways to make the bad things right,</p>
+<p>That's how the darkness turns to light.</p></div></div>
+
+      <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+      </div>
+      <button id="formatButton">Format Lyrics</button>
+    </div>
+    <div class="edit-spacer editMode" style="display: none;"></div>
+    <div id="outputSection"></div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = s => document.querySelector(s);
+  const linkText = $('#linkText');
+  const linkUrl = $('#linkUrl');
+  const audioIn = $('#audioInput');
+  const fileIn = $('#filenameInput');
+  const linksSec = $('#linksSection');
+  const container = $('.container');
+
+  // Init audio field
+  const srcEl = $('#pageAudio source');
+  if (srcEl) audioIn.value = srcEl.src.split('/').pop();
+
+  // ADD LINK (FIXED: separate link + delete button)
+  $('#btnAddLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    // Update pseudo player overlay link when pseudo mode is active
+const pseudoLink = document.getElementById('pseudoLinkOut');
+if (pseudoLink) pseudoLink.href = url;
+    if (!text || !url) return alert('Fill both fields');
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.textContent = text;
+    link.style = 'font-size:85%; display:block; text-align:right;';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'link-del editMode';
+    del.style = 'margin-left:8px; font-size:0.7rem;';
+    del.onclick = () => { link.remove(); del.remove(); };
+
+    linksSec.appendChild(link);
+    linksSec.appendChild(del);
+
+    linkText.value = linkUrl.value = '';
+    linkText.focus();
+  };
+
+  // RESTORE AUDIO (FIXED: only delete button has editMode)
+  $('#btnRestoreAudio').onclick = () => {
+    if ($('#audioWrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.id = 'audioWrapper';
+    wrapper.style.margin = '1.5rem 0';
+    wrapper.innerHTML = `
+      <div style="text-align:center; font-weight:600; margin-bottom:.3rem">
+        Listen to the Music audioVid
+        <button class="link-del editMode" style="font-size:.7rem; margin-left:8px;"
+                onclick="this.parentElement.parentElement.remove()">Delete Audio</button>
+      </div>
+      <div style="text-align:center">
+        <audio controls style="width:98%; margin:0 auto" id="pageAudio">
+          <source src="" type="audio/mpeg">
+        </audio>
+      </div>
+    `;
+    document.querySelector('.sectionTop').insertAdjacentElement('afterend', wrapper);
+    audioIn.value = '';
+  };
+
+  // ADD SECTION (FIXED: add editMode to delBtn and spacer)
+  $('#btnAdd').onclick = () => {
+    const clone = $('#sectionTemplate').cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.className = 'section';
+    clone.contentEditable = 'true';
+
+    const delBtn = clone.querySelector('.delBtn');
+    delBtn.classList.add('editMode');
+    delBtn.onclick = () => clone.remove();
+
+    container.appendChild(clone);
+
+    const sp = document.createElement('div');
+    sp.className = 'edit-spacer editMode';
+    sp.contentEditable = 'false';
+    container.appendChild(sp);
+  };
+
+  // SAVE (WORKS: hides only editMode, restores, saves clean)
+$('#btnSave').onclick = () => {
+  // 1. Update <title>
+  const h2 = document.getElementById('articleTitle');
+  const title = document.querySelector('title');
+  if (h2 && title) title.textContent = h2.textContent.trim();
+
+  // 2. Update audio
+  const audioInput = audioIn.value.trim();
+  const audioSource = document.querySelector('#pageAudio source');
+  if (audioSource && audioInput) audioSource.src = audioInput;
+
+  // 3. HIDE editMode elements
+  const editElements = document.querySelectorAll('.editMode');
+  editElements.forEach(el => el.style.display = 'none');
+
+  // 4. DISABLE contenteditable
+  const editableEls = document.querySelectorAll('[contenteditable]');
+  const wasEditable = [];
+  editableEls.forEach(el => {
+    wasEditable.push(el);
+    el.removeAttribute('contenteditable');
+  });
+
+  // 5. Capture clean HTML
+  const cleanHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // 6. RESTORE contenteditable
+  wasEditable.forEach(el => el.setAttribute('contenteditable', 'true'));
+
+  // 7. RESTORE visibility
+  editElements.forEach(el => el.style.display = 'block');
+
+  // 8. Download
+  const blob = new Blob([cleanHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileIn.value.trim() || 'podcast.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+title.textContent="webpageMaker";
+
+  // 9. Alert and confirm save editable version
+let saveEditableVersion = confirm("Saved to default download folder.\nSave an editable version?");
+
+if (!saveEditableVersion) return;  // Exit function if Cancel
+
+  // === 10. SAVE EDITABLE VERSION ===
+const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+const editBlob = new Blob([editHTML], { type: 'text/html' });
+const editUrl = URL.createObjectURL(editBlob);
+const editA = document.createElement('a');
+const baseName = fileIn.value.trim() || 'podcast.html';
+const editName = baseName.replace(/\.html$/, '') + 'EditMode.html';
+editA.href = editUrl;
+editA.download = editName;
+document.body.appendChild(editA);
+editA.click();
+document.body.removeChild(editA);
+URL.revokeObjectURL(editUrl);
+title.textContent="webpageMaker";
+};
+
+  // Enter = Add Link
+  linkText.onkeypress = linkUrl.onkeypress = e => {
+    if (e.key === 'Enter') $('#btnAddLink').click();
+  };
+
+$('#pseudoToggle').onchange = () => {
+  const pseudo = $('#pseudoToggle').checked;
+  $('#audioPlayer').style.display = pseudo ? 'none' : 'block';
+  $('#delAudioPlayer').style.display = pseudo ? 'none' : 'block';
+ // $('#inputAudioFile').style.display = pseudo ? 'none' : 'block';
+ // $('#btnRestoreAudio').style.display = pseudo ? 'none' : 'block';
+  $('#pseudoAudioPlayerWithLink').style.display = pseudo ? 'flex' : 'none';
+  if (!pseudo) $('#audioWrapper').style.display = 'block';
+
+    // Update pseudo player link from audio input field
+  if (pseudo) {
+    const pseudoLink = document.getElementById('pseudoLinkOut');
+    const youtubeUrl = audioIn.value.trim();
+    if (pseudoLink && youtubeUrl) {
+      pseudoLink.href = youtubeUrl;
+    }
+  }
+};
+
+});
+
+
+//Code for Making Lists
+document.getElementById('formatBtn').addEventListener('click', function() {
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount || selection.toString().trim() === '') {
+        alert('Please select some text first');
+        return;
+    }
+
+    // Check if OL is selected
+    const useOL = document.getElementById('olCheckbox').checked;
+    const listTag = useOL ? 'ol' : 'ul';
+
+    // Get the range and extract the contents (preserves formatting)
+    const range = selection.getRangeAt(0);
+    const selectedFragment = range.cloneContents();
+
+    // Create a temporary container to work with the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(selectedFragment);
+
+    // Get the HTML with formatting preserved
+    let selectedHTML = tempDiv.innerHTML.trim();
+
+    // Remove all <br> tags (including <br/> and <br />)
+    selectedHTML = selectedHTML.replace(/<br\s*\/?>/gi, '');
+
+    // Remove leading ^^ (checking both plain and within tags)
+    selectedHTML = selectedHTML.replace(/^\^\^/, '').trim();
+
+    // Remove trailing ^^
+    selectedHTML = selectedHTML.replace(/\^\^$/, '').trim();
+
+    // Create the list structure with the chosen list type
+    let newTextList = '<' + listTag + '><li>' + selectedHTML + '</li></' + listTag + '>';
+
+    // Replace ^^ with list item breaks
+    let finalTextList = newTextList.replace(/\^\^/g, '</li><li>');
+
+    // Remove whitespace after <li> and before </li>
+    finalTextList = finalTextList.replace(/<li>\s+/g, '<li>');
+    finalTextList = finalTextList.replace(/\s+<\/li>/g, '</li>');
+
+    // Replace the selected text with the formatted list
+    range.deleteContents();
+
+    const newTempDiv = document.createElement('div');
+    newTempDiv.innerHTML = finalTextList;
+    const fragment = document.createDocumentFragment();
+    while (newTempDiv.firstChild) {
+        fragment.appendChild(newTempDiv.firstChild);
+    }
+
+    range.insertNode(fragment);
+});
+
+</script>
+
+    <script>
+ document.getElementById('formatButton').addEventListener('click', function() {
+    const inputDiv = document.getElementById('enterLabelledLyrics');
+    const inputText = inputDiv.innerText;
+
+    // Clear current content
+    inputDiv.innerHTML = '';
+
+    // Remove [end] tag and split by section markers
+    let cleanedText = inputText.replace(/\[end\]/gi, '').trim();
+
+    // Split into sections
+    let sections = cleanedText.split(/\[(verse|chorus)\]/i);
+
+    // Process sections
+    for (let i = 1; i < sections.length; i += 2) {
+        const sectionType = sections[i].toLowerCase();
+        const sectionContent = sections[i + 1];
+
+        if (sectionContent && sectionContent.trim()) {
+            // Split by [ln] to get individual lines
+            const lines = sectionContent.split(/\[ln\]/i)
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            // Create the section div
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = sectionType;
+
+            // Add each line as a paragraph
+            lines.forEach(line => {
+                const p = document.createElement('p');
+                p.textContent = line;
+                sectionDiv.appendChild(p);
+            });
+
+            inputDiv.appendChild(sectionDiv);
+        }
+    }
+
+    // Make it non-editable after formatting
+    //inputDiv.contentEditable = 'false';
+});
+    </script>
+
+
+
+
+</body></html>
