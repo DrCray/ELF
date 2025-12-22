@@ -1,1512 +1,972 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
-		
-		<!-- content attribute is for search engines -->		
-		<meta name="quizMaker" content="English Learning Management Method">		
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
 
-		<!-- Mobile responsiveness -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- xxxx  NO Cache  xxx   -->
-		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
-		
-		
-		<title>tanaraJungleQueenLyricsQuiz</title>
-		
-		<!-- link rel="stylesheet" href="style.css" --> 
-		      
-		<!-- <script src="script.js"></script -->
-		
-    <style>  
-        body {
-            background-color: #d4e6f1; cursor:text; 
-            font-family: helvetica, arial, sans-serif;
-            max-width:55rem; margin:auto;
-        }  
-        
-        :focus {outline:none;}
-        ::-moz-focus-inner {border:0; }
-        
-        #i {display:none;}
-        #j {display:none;}
-        
-        #zzpageHeader { 
-            box-shadow: 0 1ex 1ex 0;
-            border-radius: 7px; margin:1ex;
-        }
-        
-        #zztitle { 
-            background-color:#fff8dc; 
-            border-style:solid;  border-width: medium; 
-            border-color:#8b0000; border-radius: 7px;
-            padding:2ex; margin-bottom: 3ex;
-        }
-        
-        .card {
-            background-color:  #d4e6f1  ; border-radius: 10px; 
-            padding:10px; 
-        }
- 
-        .quStyle {
-            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .inputPara {
-           background-color:#DDE8EA; width:fit-content;
-            min-width:30ex; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            margin: 1ex 0 0 1ex;
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .thePara {
-           background-color:#B0E0E6; width:fit-content;
-            min-width:30ex; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            margin: 1ex 0 0 1ex;
-            padding:3ex; 
-            border-radius: 10px;
-         }
-         
-        .question {
-            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
-        }
-        
-        .answer { 
-			margin:2ex 0 0 0; background-color:#fff8dc;
-			
-          /*  display:block;
-             border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex 2em 1ex 1ex; border-radius: 10px; 
-            */
-         }
-        
-         .choicesUl { column-count:2; column-width: auto;
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-         }        
-         
-
-         .answer2 {              
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-         }
-         
-        
-        .fake-button {
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
-
+            background-color: #F2F4F2; /* Lightish gray background */
         }
 
-       .fake-button:hover {
-            background-color: lightblue;
-             border-radius: 5px; box-shadow: 3px 3px gray;
-
+        button {
+            padding: 5px 5px;
         }
-        
-        /*  for <button> class="hltBtn"  */
-        .hlBtn {border-radius:5px; margin: 1ex; }
-
-        .hlBtn:hover {
-            background-color:lightblue;  border-radius: 5px;
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
         }
-        
-        /* begin style editor*/
-            .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
-                padding: 8px; display:inline-block;            
-            }
-
-            .styleBtn {
-                display:inline-block; box-shadow: 3px 3px 5px darkred;
-                background-color: #D4E6F1; border-radius: 3px;
-            } 
-
-              .fsSmall{ font-size:small; }
-              .fsMedium{ font-size:medium; }
-              .fsLarge{ font-size:large; }
-              .fsXlarge{ font-size:x-large; }
-              .fsXxlarge{ font-size:xx-large; }
-        /* end style editor*/
-        
-        .instrcs{
-            border: thin solid darkgreen; border-radius: 5px; 
-            margin: 1.3em 0 1ex 1em; background-color: #F5ECF7;
-            padding: 1ex; width: fit-content; color: #080865;
+        .toggle-button {
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
-        
-        .convDiv {
-            display:block; background-color:#DDE8EA; 
-            border: thin solid darkblue; border-radius: 5px;
-            margin:3ex 0 0 2ex; padding:1.5ex;
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px;
+        }
+        .answer-shown {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 1.5rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+        code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%;            
+        }
+        .quasi-code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%; 
             width: fit-content;
-            
+        }
+        .copy-popup {
+          position: absolute;
+          background: #333;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 9999;
+        }
+        .copy-popup.show {
+          opacity: 1;
         }
         
-        .saveDiv {
-            display:block; background-color:beige; 
-            border: thin solid darkblue; border-radius: 5px;
-            margin:1ex 0 0 2ex; padding:1.5ex;
-            width: fit-content;
-            
+        /* Save status styles */
+        .save-status {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .save-status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .save-status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .save-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
         }
         
-        .delBtn{
-            margin: 1ex;
-        }
-        
-        #printOptions {
-            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
+        /* Student info styling */
+        #verifyYou { 
+            display:none; 
+            background-color: #fff8dc;
+            color: darkgreen;
             border-radius: 5px;
-            box-shadow: 3px 3px darkgreen;
-            margin: 1ex 0 0 0;
-            padding:1ex;
-            font-weight: bold; font-size:85%;
-        }        
-        
-        .titleDiv {
-           width: fit-content;
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-            margin: 1rem 0 0 .3rem;
-         }        
-    </style>  
+            margin: .33rem 0 0 0;
+            padding: .5rem;
+            font-weight: bold;              
+         }
+         #verifyYou:hover { 
+            background-color: #D4CDB3;
+            color: green;
+         }         
+         #verifyYou:active { 
+            background-color: darkgray;
+            color: white;
+         }
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+    </style>
+</head>
+<body>
     
-  </head>
-  
-  <body>
-      
-<script>
-document.onreadystatechange = () => {
-  if (document.readyState === "complete") {
-    document.getElementById("toggleShowHideNameID").checked=1;
-  }
-};
-</script>      
-      
-  <div id="i">9</div>
-  <div id="j">65</div>      
-      
-          <img class="center" src="topImage.jpg" alt="" width="100%">
-  <header id="zzpageHeader">
-      
-    <section id="zztitle" contenteditable="false">Oral Practice<br>
-        <br>
-        <strong>
-        Exercise Quiz, Lyrics, Music Video</strong><br>
-        <strong>
-        Article: Tanara, Jungle Queen</strong></section>   
-</header>
+<div id="topHeading">
+    <h1 class="editMode" style="display: none;">Type Text or Delete</h1>
+    <h2>Tanara, Jungle Queen</h2>
+    <h3>Linka Kulla - Jungle Queen</h3><h4>Lyrics Exercise</h4></div>
+    <!-- Student Info Section -->
+
+    <input id="name" type="text" value="name">
+    <input id="id" type="text" value="id#">
+    <hr>
+    <input id="passCode" type="text" value="passcode" style="display:none;" "="">
+    <button id="verifyYou" onclick="verifyStudent()" style="display:none;">Verify Your Name, ID, Passcode</button>
+    
+    <details class="editMode" style="display: none;"><summary>Instructions</summary>
+        <div style="margin-bottom: 15px; font-family: Arial, sans-serif; font-size: 14px;">
+        <h4>Creating the Cloze/select sentences</h4>
+         <p> Use the standard bold markdown <code>**bold text**</code> for the cloze words in the quiz section.</p><p>Use<code>^^</code>as a delimiter(divider) to show which sentences will share the same answer choices</p> <p>Use ^br to start a new line.</p> <p> There is an example already in the text box</p>
+                    
+            <h4>Add optional info above the select sentences</h4>
+            <p>If you want to put instructions, reading material, or other things above the quiz selection sentences, follow these intructions</p>
+            <p>This is app-specific markdown, NOT traditional markdown.</p>
+        <p>Enter optional information within division markdown tags <br> <code><sup>^</sup>dv ... dv<sup>^</sup></code> Only ONE div allowed <br>(see example below)</p>
+            <p> Headings markdown (only 3 levels):<br> <code><sup>^</sup>h1 ... h1<sup>^</sup></code>, <code><sup>^</sup>h2 ... h2<sup>^</sup></code>, <code><sup>^</sup>h3 ... h3<sup>^</sup></code></p>
+            <p>Other markdown:<br> <code><sup>^</sup>bb bold bb<sup>^</sup></code>, <code><sup>^</sup>ii italic ii<sup>^</sup></code>, <code><sup>^</sup>uu underline uu<sup>^</sup></code></p>
+            <p> line breaks: <code><sup>^</sup>br</code></p> 
+
+
+            
+            Copy and paste this example to see how it renders:<br>
+            (only one division is allowed, so replace the current example division)<br><br>
+            <div class="quasi-code" style="margin: 0 0 0 2rem;">
+^dv  <br>
+&nbsp; &nbsp; &nbsp; ^h1 Cloze Instructions h1^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h2 Details h2^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; Complete the sentences below.^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h3 Note h3^<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; : Choose carefully<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ^bb bold bb^, with ^ii italic ii^ and ^uu underline uu^!<br>
+dv^<br>
+  <button class="button2" onclick="copyParent(this)">Copy</button>
+
+            </div>
+        </div>
+    </details>
+
+    <div id="output"><div id="cloze-div-1766364904706" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1766364904706')">Show Answers</button><div style="margin-bottom: 20px;">Choose the correct answers</div><div class="sentence-div">Storm <span style="font-size: 70%;">1</span><select data-correct="broke" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="fire">fire</option><option value="broken">broken</option><option value="tore">tore</option><option value="fever">fever</option><option value="broke">broke</option>
+            </select> the world I knew, <span style="font-size: 70%;">2</span><select data-correct="tore" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="fire">fire</option><option value="broken">broken</option><option value="tore">tore</option><option value="fever">fever</option><option value="broke">broke</option>
+            </select> the ship in two,<br>
+
+Left with nothing but a heartbeat and a piece of <span style="font-size: 70%;">3</span><select data-correct="broken" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="fire">fire</option><option value="broken">broken</option><option value="tore">tore</option><option value="fever">fever</option><option value="broke">broke</option>
+            </select> wood.<br>
+
+Father taught me <span style="font-size: 70%;">4</span><select data-correct="fire" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="fire">fire</option><option value="broken">broken</option><option value="tore">tore</option><option value="fever">fever</option><option value="broke">broke</option>
+            </select>, taught me how to stand, <br>
+
+Then the <span style="font-size: 70%;">5</span><select data-correct="fever" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="fire">fire</option><option value="broken">broken</option><option value="tore">tore</option><option value="fever">fever</option><option value="broke">broke</option>
+            </select> took him from me and I learned to hunt the land. <br></div><div class="sentence-div"><span style="font-size: 70%;">6</span><select data-correct="Bare" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select> feet on the earth, every <span style="font-size: 70%;">7</span><select data-correct="breath" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select> a fight,<br>
+
+But I found my strength in the <span style="font-size: 70%;">8</span><select data-correct="harsh" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select> jungle life.<br>
+
+I was <span style="font-size: 70%;">9</span><select data-correct="scared" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select>, I was small, but the jungle heard my cry--- <br>
+
+And it didn't give me <span style="font-size: 70%;">10</span><select data-correct="mercy" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select>... it taught me how to <span style="font-size: 70%;">11</span><select data-correct="survive" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="scared">scared</option><option value="harsh">harsh</option><option value="Bare">Bare</option><option value="mercy">mercy</option><option value="breath">breath</option><option value="survive">survive</option>
+            </select>.<br></div><div class="sentence-div">'Cause I'd rather face the <span style="font-size: 70%;">12</span><select data-correct="claws" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="cuts">cuts</option><option value="polished">polished</option><option value="straight">straight</option><option value="claws">claws</option>
+            </select> and teeth<br>
+
+Than the <span style="font-size: 70%;">13</span><select data-correct="polished" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="cuts">cuts</option><option value="polished">polished</option><option value="straight">straight</option><option value="claws">claws</option>
+            </select> lies that fill your streets. <br>
+
+The jungle shows its danger, <span style="font-size: 70%;">14</span><select data-correct="straight" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="cuts">cuts</option><option value="polished">polished</option><option value="straight">straight</option><option value="claws">claws</option>
+            </select> and real.<br>
+
+But the world of men <span style="font-size: 70%;">15</span><select data-correct="cuts" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="cuts">cuts</option><option value="polished">polished</option><option value="straight">straight</option><option value="claws">claws</option>
+            </select> deeper still--- <br></div><div class="sentence-div">They smile, then they <span style="font-size: 70%;">16</span><select data-correct="deceive" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="deceive">deceive</option><option value="queen">queen</option><option value="breathes">breathes</option>
+            </select>.<br>
+
+So I choose the place where truth still <span style="font-size: 70%;">17</span><select data-correct="breathes" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="deceive">deceive</option><option value="queen">queen</option><option value="breathes">breathes</option>
+            </select>. <br>
+
+I made my home* in the <span style="font-size: 70%;">18</span><select data-correct="wild" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="deceive">deceive</option><option value="queen">queen</option><option value="breathes">breathes</option>
+            </select>, (version 2 *life) <br>
+
+And the wild made a <span style="font-size: 70%;">19</span><select data-correct="queen" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="deceive">deceive</option><option value="queen">queen</option><option value="breathes">breathes</option>
+            </select> of me.<br></div><div class="sentence-div">Leopard in the <span style="font-size: 70%;">20</span><select data-correct="branches" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="thunder">thunder</option><option value="branches">branches</option><option value="spared">spared</option><option value="guards">guards</option><option value="creature">creature</option>
+            </select>, death within its eyes,<br>
+
+But I <span style="font-size: 70%;">21</span><select data-correct="spared" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="thunder">thunder</option><option value="branches">branches</option><option value="spared">spared</option><option value="guards">guards</option><option value="creature">creature</option>
+            </select> its final heartbeat---now it <span style="font-size: 70%;">22</span><select data-correct="guards" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="thunder">thunder</option><option value="branches">branches</option><option value="spared">spared</option><option value="guards">guards</option><option value="creature">creature</option>
+            </select> me by my side.<br>
+
+Gar walks like <span style="font-size: 70%;">23</span><select data-correct="thunder" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="thunder">thunder</option><option value="branches">branches</option><option value="spared">spared</option><option value="guards">guards</option><option value="creature">creature</option>
+            </select>, I move like the wind, <br>
+
+Every <span style="font-size: 70%;">24</span><select data-correct="creature" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="thunder">thunder</option><option value="branches">branches</option><option value="spared">spared</option><option value="guards">guards</option><option value="creature">creature</option>
+            </select> knows my footsteps, every tree calls me a friend. <br></div><div class="sentence-div">I learned the language of <span style="font-size: 70%;">25</span><select data-correct="river" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="river">river</option><option value="teeth">teeth</option><option value="alone">alone</option><option value="frighten">frighten</option>
+            </select> and bone,<br>
+
+And in the roar of the night, I was never <span style="font-size: 70%;">26</span><select data-correct="alone" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="river">river</option><option value="teeth">teeth</option><option value="alone">alone</option><option value="frighten">frighten</option>
+            </select>.<br>
+
+Danger doesn't <span style="font-size: 70%;">27</span><select data-correct="frighten" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="river">river</option><option value="teeth">teeth</option><option value="alone">alone</option><option value="frighten">frighten</option>
+            </select> me---the lies behind your eyes do. <br>
+
+Out here the truth has <span style="font-size: 70%;">28</span><select data-correct="teeth" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="river">river</option><option value="teeth">teeth</option><option value="alone">alone</option><option value="frighten">frighten</option>
+            </select>... and I trust it more than you.<br></div><div class="sentence-div">One day <span style="font-size: 70%;">29</span><select data-correct="strangers" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select> found me, said they came in peace--- <br>
+
+Took me to a world of mirrors, masks, and <span style="font-size: 70%;">30</span><select data-correct="silver" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select> screens. <br>
+
+But every word had <span style="font-size: 70%;">31</span><select data-correct="daggers" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select>, every <span style="font-size: 70%;">32</span><select data-correct="handshake" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select> hid a price--- <br>
+
+I'd rather hear a tiger's <span style="font-size: 70%;">33</span><select data-correct="growl" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select><br>
+
+Than a gentle, <span style="font-size: 70%;">34</span><select data-correct="practiced" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="handshake">handshake</option><option value="practiced">practiced</option><option value="daggers">daggers</option><option value="growl">growl</option><option value="strangers">strangers</option><option value="silver">silver</option>
+            </select> lie.<br></div><div class="sentence-div">So leave your <span style="font-size: 70%;">35</span><select data-correct="towers" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="towers">towers</option><option value="open">open</option><option value="danger">danger</option><option value="codes">codes</option>
+            </select>, your traded souls,<br>
+
+Your hearts behind unspoken <span style="font-size: 70%;">36</span><select data-correct="codes" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="towers">towers</option><option value="open">open</option><option value="danger">danger</option><option value="codes">codes</option>
+            </select>--- <br>
+
+Give me forests, storms, and <span style="font-size: 70%;">37</span><select data-correct="open" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="towers">towers</option><option value="open">open</option><option value="danger">danger</option><option value="codes">codes</option>
+            </select> sky,<br>
+
+Where even <span style="font-size: 70%;">38</span><select data-correct="danger" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="towers">towers</option><option value="open">open</option><option value="danger">danger</option><option value="codes">codes</option>
+            </select> doesn't lie. <br></div><div class="sentence-div">To your <span style="font-size: 70%;">39</span><select data-correct="concrete" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="made">made</option><option value="concrete">concrete</option><option value="jungle">jungle</option>
+            </select> idols I'll never bow,<br>
+
+I rule the <span style="font-size: 70%;">40</span><select data-correct="jungle" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="made">made</option><option value="concrete">concrete</option><option value="jungle">jungle</option>
+            </select>, my home now. <br>
+
+I made my life in the <span style="font-size: 70%;">41</span><select data-correct="wild" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="made">made</option><option value="concrete">concrete</option><option value="jungle">jungle</option>
+            </select>---<br>
+
+And the wild <span style="font-size: 70%;">42</span><select data-correct="made" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="wild">wild</option><option value="made">made</option><option value="concrete">concrete</option><option value="jungle">jungle</option>
+            </select> a queen of me.<br>
+
+Yeah, the wild made a queen of me.<br>
+
+p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</div><button class="deleteThisSectionBtn editMode" onclick="this.parentElement.remove();alert(&quot;section deleted&quot;);" style="display: none;">Delete This Section</button></div></div>
+    <textarea id="inputText" class="editMode" style="white-space: pre-wrap; display: none;" rows="10" cols="80" placeholder="Enter optional info in ^dv dv^, headings in ^h1 h1^, ^h2 h2^, ^h3 h3^, followed by sentences with **bold** words, separated by ^^">^dv
+  Choose the correct answers
+dv^
+        
+The mirror image appeared **opposite** to the original ^br^br 
+object's **orientation**. ^br
+The laser **sliced** through the **metal** sheet with **precision** cutting technology. ^br ^^
+The **motor** completed a **half turn** before the safety **sensor** triggered the **stop**. ^br
+The **circuit** was ^br**overloaded** due to excessive **current**. ^br^^
+The **signal** was **amplified** for better **transmission**. ^br 
+The **gear** shifted with a **click**. ^br^^
+
+
+
+    </textarea>
+    <button class="editMode" onclick="generateCloze()" style="display: none;">Generate Cloze</button>
+    
+    <!-- Submit Assignment Button -->
+    <button id="submitAssignment" style="display:none; margin-top: 20px;" disabled="">Submit Assignment</button>
+    
+    <!-- Save System -->
+    <!--
+    <button id="save2server" class="editMode" onclick="document.getElementById('output').style.pointerEvents = 'none'; saveBothVersions()" style="display:none">Save To Server</button>
+    <div id="adminSaveStatus" class="save-status editMode"></div>
+    <div id="publicSaveStatus" class="save-status editMode"></div>
+    
+    <button id="viewStudentVersion" class="editMode" onclick="redirectToHtml()" style="display:none;">View Student Version</button>
+    -->
 
 <script>
-//put this under the header section
-  let initialContent = document.getElementById('zztitle').textContent;
-</script>
+function copyParent(button) {
+  const parent = button.parentElement;
 
+  // Temporarily hide button
+  const oldDisplay = button.style.display;
+  button.style.display = "none";
+  const text = parent.innerText.trim();
+  button.style.display = oldDisplay;
 
-<!-- hidden elements -->
-    <div id="hidBtns">
-    <button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-    <button id="delAnsBox" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-    </div>
-<!-- hidden elements -->
-      
-      
-      <details id="instrcs" class="instrcs editMode" style="border: thin solid black; padding: 1rem; display: none;"><summary>Basic Instructions</summary>
-<div style="margin: 0 2rem 0 2rem;"><br>
-          Type/Paste in the text area below that reads "Replace the content in this area ..." Then bold the words/answers you want to blank-out. (see the example) 
-          <br><br>There are two approaches: <br><br>
-          You can copy and paste from any document editor or html wysiwyg editor. Make bold or other style changes in your editor, then copy and paste into the text area.
-          It's been tested with LibreOffice Writer in both document and web mode, and in the Blogger editor compose mode (for Google Blogger pages).
-          <br> <br>Also: <br>
-          <br> You can use the built-in simple style editor.
-          <br> Highlight the text you wish to style and then click a style button (e.g. bold, underline, xxl etc.)
-          <br>Use<code style="background-color:#FDFCE5"> ctl + z </code> for undo and<code style="background-color:#FDFCE5"> ctl + y </code> for redo. However, once you click the style editor, you can only undo back to that point and not before. The solution is to just copy and cut, then repaste with<code style="background-color:#FDFCE5"> ctl + shift + v </code> (paste unformatted). Everything returns to plain text and you retype as desired.
-          
-          <div style="margin:.5rem 2rem 0 2rem;"><span style="background-color:darkgreen;color:white;">Note:</span>When you copy the text be sure to highllight BEYOND both ends of where you want to correct.
-          <br>For example:
-          <br>If you want to change the underline text in: <code style="background-color:white;"><b>Red Bull</b> is a popular <u>energy</u> drink. </code>
-          <br>You would highlight like this: <code style="background-color:white;"><b>Red Bull</b> is a popu<span style="background-color: yellow">lar <u>energy</u> dri</span>nk. </code>
-          <br>Then cut and repaste as unformatted text on the spot: <code style="background-color:white;"><b>Red Bull</b> is a popular energy drink. </code>
-          <br> Now you can highlight and restyle as you like. <code style="background-color:white;"><u>Red Bull</u> is a <i>popular</i> <b>energy</b> drink. </code><br><br>
-          </div></div>
-       <div style="background-color: antiquewhite; light-pink; border: thin solid black; border-radius:5px; padding:1em;"> 
-          <div class="answers"> Example:<br>
-          Input <br> 
-              <code> This is a <b>sample</b> sentence. <br>  This is <b>another</b> sample sentence. <br></code><br>
-          Output<br>
-              <code> a. another <br> b. sample <br> <br>This is a <u>____</u> sample sentence. 
-          <br>This is <u>____</u> sentence.</code>
-          </div>
-        </div> 
-      </details> 
-
-      <label id="ansChoicesListLbl" class="editMode" for="ansChoicesList" style="display: none;"><input id="ansChoicesList" type="checkbox">include answer choices list</label>      
-      
-      <label id="allowShowHideAnsLbl" class="editMode" for="allowShowHideAns" style="display: none;">
-        <input id="allowShowHideAns" type="checkbox">include an option to open all answer peeks on the page with a single click
-      </label>
-      <br>
-      <label id="noShowCorrectAnsLbl" class="editMode" for="noShowCorrectAns" style="display: none;">
-        <input id="noShowCorrectAns" type="checkbox">don't highlight correct/incorrect answers
-      </label>
-      
-      <!--div id="noteA" style="border-style:solid; width:100%; max-width:25rem; margin:1ex; padding:1ex;">Don't use the apostrophe if you want the correct and incorrect answers highlighted. Everything will still work, but answers with an apostrophe won't show red or green highlights.</div>
-      
-      -->
-      
-    <div id="showHideAnsBtns2"> 
-      <p><button id="showAll2" class="previewMode" onclick="showAll('details')" style="display: none;">
-          Show all Answers </button></p>
-      <p><button id="closeAll2" class="previewMode" onclick="closeAll('details')" style="display: none;">
-          Hide all Answers </button></p>
-    </div>
-
-      
-      
-      
-<!-- show name and ID and Javascript ==================-->      
-<input id="toggleShowHideNameID" class="editMode" type="checkbox" style="display: none;">
-<label id="toggleShowHideNameIDLbl" for="toggle" class="editMode" style="display: none;">Show Name and ID</label>
-<br>
-<input id="name" type="text" value="name">
-<input id="id" type="text" value="id#">
-      
-<script>
-  const toggleShowHideNameID = document.getElementById('toggleShowHideNameID');
-  const nameInput = document.getElementById('name');
-  const idInput = document.getElementById('id');
-  
-  toggleShowHideNameID.addEventListener('change', event => {
-    const checked = event.target.checked;
-    if (checked){
-    nameInput.style.display="inline-block";
-    idInput.style.display="inline-block";}
-    else {
-    nameInput.style.display="none";
-    idInput.style.display="none";}
+  // Copy
+  navigator.clipboard.writeText(text).then(() => {
+    showPopup(button, "Copied");
   });
-</script>      
-<!-- END show name and ID and Javascript ==================-->      
+}
 
-      
-      
-      
-      
-   <section id="allParags" class="allParags">    
-<div id="thePara2" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
+function showPopup(button, message) {
+  const popup = document.createElement("div");
+  popup.className = "copy-popup show";
+  popup.textContent = message;
+  document.body.appendChild(popup);
 
+  // Position near the button
+  const rect = button.getBoundingClientRect();
+  popup.style.left = rect.left + window.scrollX + "px";
+  popup.style.top = rect.top + window.scrollY - 30 + "px"; // 30px above button
 
-
-	
-	
-	
-	
-
-<p style="line-height: 100%; margin-bottom: 0in">
-Storm broke the world I knew, <b><code style="padding-left:1ex">1 </code><select id="selectDiv32" class="answer" onchange="ansCheck('1 ','tore','selectDiv32')"><option>choices</option><option>piece</option>
-<option>hunt</option>
-<option>tore</option>
-<option>harsh</option>
-<option>fever</option>
-</select></b> the ship in two,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Left with nothing
-but a heartbeat and a <b><code style="padding-left:1ex">2 </code><select id="selectDiv33" class="answer" onchange="ansCheck('2 ','piece','selectDiv33')"><option>choices</option><option>piece</option>
-<option>hunt</option>
-<option>tore</option>
-<option>harsh</option>
-<option>fever</option>
-</select></b> of broken wood.</p>
-<p style="line-height: 100%; margin-bottom: 0in">Father taught me
-fire, taught me how to stand, 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Then the <b><code style="padding-left:1ex">3 </code><select id="selectDiv34" class="answer" onchange="ansCheck('3 ','fever','selectDiv34')"><option>choices</option><option>piece</option>
-<option>hunt</option>
-<option>tore</option>
-<option>harsh</option>
-<option>fever</option>
-</select></b>
-took him from me and I learned to <b><code style="padding-left:1ex">4 </code><select id="selectDiv35" class="answer" onchange="ansCheck('4 ','hunt','selectDiv35')"><option>choices</option><option>piece</option>
-<option>hunt</option>
-<option>tore</option>
-<option>harsh</option>
-<option>fever</option>
-</select></b> the land. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Bare feet on the
-earth, every breath a fight,</p><p style="line-height: 100%; margin-bottom: 0in">But I found my
-strength in the <b><code style="padding-left:1ex">5 </code><select id="selectDiv36" class="answer" onchange="ansCheck('5 ','harsh','selectDiv36')"><option>choices</option><option>piece</option>
-<option>hunt</option>
-<option>tore</option>
-<option>harsh</option>
-<option>fever</option>
-</select></b> jungle life.p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</p>
-<details id="ansbox2" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox2" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary>
-
-
-	
-	
-	
-	
-
-<p style="line-height: 100%; margin-bottom: 0in">
-Storm broke the world I knew, <b>tore</b> the ship in two,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Left with nothing
-but a heartbeat and a <b>piece</b> of broken wood.</p>
-<p style="line-height: 100%; margin-bottom: 0in">Father taught me
-fire, taught me how to stand, 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Then the <b>fever</b>
-took him from me and I learned to <b>hunt</b> the land. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Bare feet on the
-earth, every breath a fight,</p><p style="line-height: 100%; margin-bottom: 0in">But I found my
-strength in the <b>harsh</b> jungle life.</p></details>
-</div>
-<div id="thePara3" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">I was <b><code style="padding-left:1ex">1 </code><select id="selectDiv37" class="answer" onchange="ansCheck('1 ','scared','selectDiv37')"><option>choices</option><option>survive</option>
-<option>mercy</option>
-<option>scared</option>
-</select></b>,
-I was small, but the jungle heard my cry— 
-</p><p style="line-height: 100%; margin-bottom: 0in">And it didn’t give
-me <b><code style="padding-left:1ex">2 </code><select id="selectDiv38" class="answer" onchange="ansCheck('2 ','mercy','selectDiv38')"><option>choices</option><option>survive</option>
-<option>mercy</option>
-<option>scared</option>
-</select></b>… it taught me how to <b><code style="padding-left:1ex">3 </code><select id="selectDiv39" class="answer" onchange="ansCheck('3 ','survive','selectDiv39')"><option>choices</option><option>survive</option>
-<option>mercy</option>
-<option>scared</option>
-</select></b>.</p><br><details id="ansbox3" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox3" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I was <b><span style="font-weight: normal">scared</span></b>,
-I was small, but the jungle heard my cry— 
-</p><p style="line-height: 100%; margin-bottom: 0in">And it didn’t give
-me <b>mercy</b>… it taught me how to <b>survive</b>.</p><br><p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p></details>
-</div>
-<div id="thePara4" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">’Cause I’d
-rather face the <b><code style="padding-left:1ex">1 </code><select id="selectDiv40" class="answer" onchange="ansCheck('1 ','claws','selectDiv40')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b> and teeth</p>
-<p style="line-height: 100%; margin-bottom: 0in">Than the <b><code style="padding-left:1ex">2 </code><select id="selectDiv41" class="answer" onchange="ansCheck('2 ','polished','selectDiv41')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b>
-lies that fill your streets. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">The jungle shows its
-<b><code style="padding-left:1ex">3 </code><select id="selectDiv42" class="answer" onchange="ansCheck('3 ','danger','selectDiv42')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b>, straight and real.</p>
-<p style="line-height: 100%; margin-bottom: 0in">But the world of men
-<b><code style="padding-left:1ex">4 </code><select id="selectDiv43" class="answer" onchange="ansCheck('4 ','cuts','selectDiv43')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b> deeper still— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">They smile, then
-they <b><code style="padding-left:1ex">5 </code><select id="selectDiv44" class="answer" onchange="ansCheck('5 ','deceive','selectDiv44')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b>.</p>
-<p style="line-height: 100%; margin-bottom: 0in">So I choose the
-place where truth still <b><code style="padding-left:1ex">6 </code><select id="selectDiv45" class="answer" onchange="ansCheck('6 ','breathes','selectDiv45')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b>. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I made my home in
-the wild,</p><p style="line-height: 100%; margin-bottom: 0in">And the <b><code style="padding-left:1ex">7 </code><select id="selectDiv46" class="answer" onchange="ansCheck('7 ','wild','selectDiv46')"><option>choices</option><option>cuts</option>
-<option>deceive</option>
-<option>polished</option>
-<option>claws</option>
-<option>wild</option>
-<option>danger</option>
-<option>breathes</option>
-</select></b>
-made a queen of me.</p><p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p><p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-<details id="ansbox4" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox4" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">’Cause I’d
-rather face the <b>claws</b> and teeth</p>
-<p style="line-height: 100%; margin-bottom: 0in">Than the <b>polished</b>
-lies that fill your streets. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">The jungle shows its
-<b>danger</b>, straight and real.</p>
-<p style="line-height: 100%; margin-bottom: 0in">But the world of men
-<b>cuts</b> deeper still— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">They smile, then
-they <b>deceive</b>.</p>
-<p style="line-height: 100%; margin-bottom: 0in">So I choose the
-place where truth still <b>breathes</b>. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I made my home in
-the wild,</p><p style="line-height: 100%; margin-bottom: 0in">And the <b>wild</b>
-made a queen of me.</p><p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p><p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p></details>
-</div>
-<div id="thePara5" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">Leopard in the
-<b><code style="padding-left:1ex">1 </code><select id="selectDiv47" class="answer" onchange="ansCheck('1 ','branches','selectDiv47')"><option>choices</option><option>footsteps</option>
-<option>alone</option>
-<option>thunder</option>
-<option>branches</option>
-</select></b>, death within its eyes,</p>
-<p style="line-height: 100%; margin-bottom: 0in">But I spared its
-final heartbeat—now it guards me by my side.</p>
-<p style="line-height: 100%; margin-bottom: 0in">Gar walks like
-<b><code style="padding-left:1ex">2 </code><select id="selectDiv48" class="answer" onchange="ansCheck('2 ','thunder','selectDiv48')"><option>choices</option><option>footsteps</option>
-<option>alone</option>
-<option>thunder</option>
-<option>branches</option>
-</select></b>, I move like the wind, 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Every creature knows
-my <b><code style="padding-left:1ex">3 </code><select id="selectDiv49" class="answer" onchange="ansCheck('3 ','footsteps','selectDiv49')"><option>choices</option><option>footsteps</option>
-<option>alone</option>
-<option>thunder</option>
-<option>branches</option>
-</select></b>, every tree calls me a friend. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I learned the
-language of river and bone,</p><p style="line-height: 100%; margin-bottom: 0in">And in the roar of
-the night, I was never <b><code style="padding-left:1ex">4 </code><select id="selectDiv50" class="answer" onchange="ansCheck('4 ','alone','selectDiv50')"><option>choices</option><option>footsteps</option>
-<option>alone</option>
-<option>thunder</option>
-<option>branches</option>
-</select></b>.</p>
-<details id="ansbox5" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox5" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">Leopard in the
-<b>branches</b>, death within its eyes,</p>
-<p style="line-height: 100%; margin-bottom: 0in">But I spared its
-final heartbeat—now it guards me by my side.</p>
-<p style="line-height: 100%; margin-bottom: 0in">Gar walks like
-<b>thunder</b>, I move like the wind, 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Every creature knows
-my <b>footsteps</b>, every tree calls me a friend. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I learned the
-language of river and bone,</p><p style="line-height: 100%; margin-bottom: 0in">And in the roar of
-the night, I was never <b>alone</b>.</p></details>
-</div>
-<div id="thePara6" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">Danger doesn’t
-<b><code style="padding-left:1ex">1 </code><select id="selectDiv51" class="answer" onchange="ansCheck('1 ','frighten','selectDiv51')"><option>choices</option><option>lies</option>
-<option>trust</option>
-<option>frighten</option>
-</select></b> me—the <b><code style="padding-left:1ex">2 </code><select id="selectDiv52" class="answer" onchange="ansCheck('2 ','lies','selectDiv52')"><option>choices</option><option>lies</option>
-<option>trust</option>
-<option>frighten</option>
-</select></b> behind your eyes do. 
-</p><p style="line-height: 100%; margin-bottom: 0in">Out here the truth
-has teeth… and I <b><code style="padding-left:1ex">3 </code><select id="selectDiv53" class="answer" onchange="ansCheck('3 ','trust','selectDiv53')"><option>choices</option><option>lies</option>
-<option>trust</option>
-<option>frighten</option>
-</select></b> it more than you.</p>
-<details id="ansbox6" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox6" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">Danger doesn’t
-<b>frighten</b> me—the <b>lies</b> behind your eyes do. 
-</p><p style="line-height: 100%; margin-bottom: 0in">Out here the truth
-has teeth… and I <b>trust</b> it more than you.</p></details>
-</div>
-<div id="thePara7" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">One day <b><code style="padding-left:1ex">1 </code><select id="selectDiv54" class="answer" onchange="ansCheck('1 ','strangers','selectDiv54')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b>
-found me, said they came in peace— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Took me to a world
-of <b><code style="padding-left:1ex">2 </code><select id="selectDiv55" class="answer" onchange="ansCheck('2 ','mirrors','selectDiv55')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b>, masks, and silver screens. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">But every word had
-<b><code style="padding-left:1ex">3 </code><select id="selectDiv56" class="answer" onchange="ansCheck('3 ','daggers','selectDiv56')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b>, every <b><code style="padding-left:1ex">4 </code><select id="selectDiv57" class="answer" onchange="ansCheck('4 ','handshake','selectDiv57')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b> hid a price— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I’d rather hear a
-tiger’s <b><code style="padding-left:1ex">5 </code><select id="selectDiv58" class="answer" onchange="ansCheck('5','growl','selectDiv58')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b></p><p style="line-height: 100%; margin-bottom: 0in">Than a gentle,
-practiced <b><code style="padding-left:1ex">6 </code><select id="selectDiv59" class="answer" onchange="ansCheck('6 ','lie','selectDiv59')"><option>choices</option><option>lie</option>
-<option>mirrors</option>
-<option>strangers</option>
-<option>growl</option>
-<option>handshake</option>
-<option>daggers</option>
-</select></b>.</p>
-<details id="ansbox7" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox7" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in">One day <b>strangers</b>
-found me, said they came in peace— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Took me to a world
-of <b>mirrors</b>, masks, and silver screens. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">But every word had
-<b>daggers</b>, every <b>handshake</b> hid a price— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I’d rather hear a
-tiger’s <b>growl</b></p><p style="line-height: 100%; margin-bottom: 0in">Than a gentle,
-practiced <b>lie</b>.</p></details>
-</div>
-<div id="thePara8" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: block;"><button id="delThis" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in"></p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">So leave your
-towers, your traded <b><code style="padding-left:1ex">1 </code><select id="selectDiv60" class="answer" onchange="ansCheck('1 ','souls','selectDiv60')"><option>choices</option><option>danger</option>
-<option>codes</option>
-<option>concrete</option>
-<option>souls</option>
-<option>open</option>
-</select></b>,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Your hearts behind
-unspoken <b><code style="padding-left:1ex">2 </code><select id="selectDiv61" class="answer" onchange="ansCheck('2 ','codes','selectDiv61')"><option>choices</option><option>danger</option>
-<option>codes</option>
-<option>concrete</option>
-<option>souls</option>
-<option>open</option>
-</select></b>— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Give me forests,
-storms, and <b><code style="padding-left:1ex">3 </code><select id="selectDiv62" class="answer" onchange="ansCheck('3 ','open','selectDiv62')"><option>choices</option><option>danger</option>
-<option>codes</option>
-<option>concrete</option>
-<option>souls</option>
-<option>open</option>
-</select></b> sky,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Where even <b><code style="padding-left:1ex">4 </code><select id="selectDiv63" class="answer" onchange="ansCheck('4 ','danger','selectDiv63')"><option>choices</option><option>danger</option>
-<option>codes</option>
-<option>concrete</option>
-<option>souls</option>
-<option>open</option>
-</select></b>
-doesn’t lie. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">To your <b><code style="padding-left:1ex">5 </code><select id="selectDiv64" class="answer" onchange="ansCheck('5 ','concrete','selectDiv64')"><option>choices</option><option>danger</option>
-<option>codes</option>
-<option>concrete</option>
-<option>souls</option>
-<option>open</option>
-</select></b>
-idols I'll never bow,</p>
-<p style="line-height: 100%; margin-bottom: 0in">I rule the jungle,
-my home now. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I made my life in
-the wild—</p>
-<p style="line-height: 100%; margin-bottom: 0in">And the wild made a
-queen of me.</p>
-<details id="ansbox8" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox8" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in"></p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">So leave your
-towers, your traded <b>souls</b>,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Your hearts behind
-unspoken <b>codes</b>— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Give me forests,
-storms, and <b>open</b> sky,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Where even <b>danger</b>
-doesn’t lie. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">To your <b>concrete</b>
-idols I'll never bow,</p>
-<p style="line-height: 100%; margin-bottom: 0in">I rule the jungle,
-my home now. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I made my life in
-the wild—</p>
-<p style="line-height: 100%; margin-bottom: 0in">And the wild made a
-queen of me.</p></details>
-</div>
-</section> 
-      <br>
-      
-      
-      
-      <div id="styleEditor" class="styleEditor editMode" style="display: none;">
-                
-                <div class="styleBtn">
-                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
-                </div>
-                
-                <div class="styleBtn">
-                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
-                </div>
-                
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
-                </div>
-                
-                <div class="styleBtn">
-                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
-                </div>
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
-                </div>    
-                 
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
-                </div>
-                                  
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
-                </div>
-                                  
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
-                </div>
-                                  
-                <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
-                </div>          
-
-      </div>
-  
-      
-      <!-- replace inputPara contenteditable (no arguments)-->    
-      <div id="inputPara" class="inputPara editMode" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: none;"><p style="line-height: 100%; margin-bottom: 0in"></p><p style="line-height: 100%; margin-bottom: 0in"></p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
-
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">So leave your
-towers, your traded <b>souls</b>,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Your hearts behind
-unspoken <b>codes</b>— 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">Give me forests,
-storms, and <b>open</b> sky,</p>
-<p style="line-height: 100%; margin-bottom: 0in">Where even <b>danger</b>
-doesn’t lie. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">To your <b>concrete</b>
-idols I'll never bow,</p>
-<p style="line-height: 100%; margin-bottom: 0in">I rule the jungle,
-my home now. 
-</p>
-<p style="line-height: 100%; margin-bottom: 0in">I made my life in
-the wild—</p>
-<p style="line-height: 100%; margin-bottom: 0in">And the wild made a
-queen of me.</p></div>
-  <div id="showHideAnsBtns"> <!-- / added title option button too  --> 
-      <label id="includeTitleLbl" for="includeTitle" class="editMode" style="display: none; margin: 1ex 0px 0px;"><input id="includeTitle" class="editMode" type="checkbox" style="display: none;">include Title</label>
-      <p><button id="showAll" onclick="showAll('details')" style="display: none;">
-          Show all Answers </button></p>
-      <p><button id="closeAll" onclick="closeAll('details')" style="display: none;">
-          Hide all Answers </button></p>
-  </div>    
-      <script>
-          function showAll(zTag){
-              document.getElementById("closeAll").style.cssText="display: block";
-              document.getElementById("showAll").style.cssText="display: none";
-              document.getElementById("closeAll2").style.cssText="display: block";
-              document.getElementById("showAll2").style.cssText="display: none";
-             let peaks = document.querySelectorAll(".detlsAnsPk");
-              for (const peak of peaks){
-                  peak.open=true;
-              }
-          } // end showall
-              
-          function closeAll(zTag){
-              document.getElementById("closeAll").style.cssText="display: none";
-              document.getElementById("showAll").style.cssText="display: block";
-              document.getElementById("closeAll2").style.cssText="display: none";
-              document.getElementById("showAll2").style.cssText="display: block";
-             let peaks = document.querySelectorAll(".detlsAnsPk");
-              for (const peak of peaks){
-                  peak.open=false;
-              }
-          } // end closeAll
-      </script>
-      
-<div id="convDiv" class="convDiv editMode" style="display: none;">  
-          <!--input id="ansPeak2" type="checkbox">
-         <label id="lblAnsPeak2" for="ansPeak2">&nbsp; turn off answer peak for this exercise only<code> </code>&nbsp;
-         </label--> 
-      <button id="convert" class="editMode" onclick="getCloneAndAlter()" style="display: none;">convert
-        </button>  
-     <div id="noUndl" style="display:none; background-color:#fff8dc; color:darkred;"> Must <b>bold</b> something</div>
-</div> 
-      
-    <div id="printOptions" class="previewMode" style="display: block;">
-        Print (save as PDF) <br>
-      <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>           <br>
-         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
-    </div>        
-          <script>
-            function checkThenPrint(){
-                let Name =  document.getElementById("name").value.trim();
-                let ID = document.getElementById("id").value.trim();
-                
-                            //=============================================================            
-            //remove this IF statement when not using "show/Hide name and ID"
-            let namedisplayValue=document.getElementById("name").style.display;            
-            if (namedisplayValue==="none"){
-                window.print(); return;}
-            //=============================================================  
-                
-
-                if (
-                    (Name==="name" || ID==="id\#" || Name==="" || ID==="")
-                    ){
-                    alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
-                    }
-                else{
-                  let closeDetails = document.getElementsByTagName("details");
-                    for (closeDetail of closeDetails){
-                        closeDetail.open=false; 
-                    }                                         
-                 window.print();
-                }
-             } // end checkThenPrint()
-         </script>               
-      
-  <br><br>
-        <button id="editOff" class="editMode" onclick="previewMode()" style="display: none;">Preview</button>
-        <button id="editOn" class="previewMode" onclick="editMode()" style="display: none;">Edit Mode</button>
-      <br><br>
-      
-<div id="saveDiv" class="saveDiv editMode" style="display: none;">     
-      <!--input id="ansPeak" type="checkbox">
-         <label id="lblAnsPeak" for="ansPeak">&nbsp; turn off answer peak for All exercises<code> (takes effect after saving) </code>&nbsp;
-         </label-->
-            <button id="editOff" onclick="previewMode()">Preview</button>
-        <button id="editOn" onclick="editMode()" style="display:none;">Edit Mode</button><br>
-    
-     <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beutify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="background-color: blue; border:thin solid orange; color:orange; display:none">done</span>
-    <br>
-            <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
-          <input id="fileName" type="text" size="30" value="fileName">
-        </label><br>  
-      <button id="saveDownload" class="editMode" onclick="saveDom()" style="display: none;">Save/Download</button>
-    <br>
-    
-</div> 
-      
-      
-     <script>
-        function bold(){
-            let bold = document.createElement("b");
-            window.getSelection().getRangeAt(0).surroundContents(bold); 
-        } //  end fn bold
-        
-        function italic(){
-            let italic = document.createElement("i");
-            window.getSelection().getRangeAt(0).surroundContents(italic); 
-        } //  end fn italic
-        
-        function undln(){
-            let undln = document.createElement("u");
-            window.getSelection().getRangeAt(0).surroundContents(undln); 
-        } //  end fn undln
-         
-       function normal(){
-                  let  spanPlain = document.createElement("span");
-                  spanPlain.innerHTML=" --plain-- ";
-                  spanPlain.style.fontWeight="initial";
-                  spanPlain.style.fontSize="initial";
-                  spanPlain.style.fontStyle="initial";
-                  spanPlain.style.textDecoration="revert";
-
-                  //let plainText = document.createTextNode(" --plain-- ");
-                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
-        } //  end fn none  
-         
-            function smAbc(){
-                  let smallAbc = document.createElement("span");
-                  smallAbc.className="fsSmall";
-                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
-              } //  end fn smAbc 
-        
-              function medAbc(){
-                  let medAbc = document.createElement("span");
-                  medAbc.className="fsMedium";
-                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
-              } //  end fn medAbc 
-        
-              function lgAbc(){
-                  let lgAbc = document.createElement("span");
-                  lgAbc.className="fsLarge";
-                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
-              } //  end fn lgAbc 
-        
-              function xlAbc(){
-                  let xlAbc = document.createElement("span");
-                  xlAbc.className="fsXlarge";
-                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
-              } //  end fn xlAbc 
-        
-              function xxlAbc(){
-                  let xxlAbc = document.createElement("span");
-                  xxlAbc.className="fsXxlarge";
-                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
-              } //  end fn xxlAbc          
-    </script>  
-      
-      
-      
-      <script>
-        function ansCheck(zselectNumb, thisAns, zselectDivID){
-            
-            let zzselected = document.getElementById(zselectDivID);
-            let zselected = zzselected.value; 
-            
-            let regex = /[^A-Za-z0-9]/g;              
-            zselected = zselected.replace(regex, '');
-
-            
-            if (zselected === thisAns){
-                zzselected.style.cssText="background-color: #D8F8E9; color: darkgreen; font-weight: bold;";
-            } else{
-                zzselected.style.cssText="background-color: #EEE8EF; color: darkred; font-weight: bold;";
-
-            }
-            console.log(zselected);
-            console.log(thisAns);
-            console.log(zselectNumb);
-        }
-      
-      </script>
-
-<script>
-    
-    let counterI = document.getElementById('i').innerHTML;
-    let counterJ = document.getElementById('j').innerHTML;
-    
-    let i = counterI;
-    let j = counterJ;
-    
-    function getCloneAndAlter(){
-        
-        u=1;
-        
-        
-        let inputParaz = document.getElementById("inputPara"); //console.log(inputPara);
-        
-                if (inputParaz.querySelectorAll("b").length === 0){
-        document.getElementById("noUndl").style.display="inline-block";
-        return;};
-        
-        let allParags = document.getElementById("allParags"); //console.log(allParags);
-        let thePara = inputParaz.cloneNode(true);//console.log(thePara);
-        let delThisz = document.getElementById("delThis");
-        let delThis = delThisz.cloneNode(true);//console.log(thePara);
-        let delAnsBoxz = document.getElementById("delAnsBox");
-        let delAnsBox = delAnsBoxz.cloneNode(true);//console.log(thePara);
-        
-        let theParaID = "thePara" + i; 
-        thePara.id = theParaID; //console.log(thePara);
-        thePara.className ="thePara";
-        
-        if (document.getElementById("includeTitle").checked){          
-            const titleDiv = document.createElement("div");
-                titleDiv.classList.add("titleDiv");
-                titleDiv.contentEditable = true;
-                titleDiv.textContent="Title/Info Here";            
-				titleDiv.innerHTML += "<br>";
-            
-                    // Create the delete button
-                    const deleteButton = document.createElement("button");
-                    deleteButton.id = "delAnsBox";
-                    deleteButton.classList.add("delBtn", "editMode");
-                    //deleteButton.style.display = "none";
-                    deleteButton.textContent = "delete this box";
-
-                    // Add click event to the delete button
-                    deleteButton.onclick = function() {
-                        this.parentElement.remove();
-                    };            
-                    // Append the delete button to the titleDiv
-                    titleDiv.appendChild(deleteButton);            
-        
-                allParags.appendChild(titleDiv);   
-                allParags.insertAdjacentHTML("beforeend","\n");
-                
-        }        
-                
-        
-        allParags.append(thePara);      
-        allParags.insertAdjacentHTML("beforeend","\n");
-        
-        let choices = [];
-        let undlns = thePara.querySelectorAll("b");
-        for (const undln of undlns){
-           choices[u-1] = undln.innerText.trim(); 
-           undln.innerHTML = "<code style='padding-left:1ex'>" + u + " </code>"; u++;
-        }   // console.log(choices);
-        
-         let choicesCopy = [...choices];
-        
-        if (choices.length>1){
-        while (JSON.stringify(choices)==JSON.stringify(choicesCopy)){
-             choicesCopy.sort(function () {
-                    return Math.random() - 0.5;
-             });
-             //console.log("shuffled" + choicesCopy);      
-         } //endWhile
-         } //endIf
-    
-    for (const undln2 of undlns){
-        let selectDiv = document.createElement("select");
-        let selectDivID = "selectDiv" + j; j++;
-        let selectNumb = undln2.querySelector('code').innerText; //console.log(selectNumb);
-        let thisAnsz = choices[Number(selectNumb)-1];
-        let regex = /[^A-Za-z0-9]/g;  
-        thisAnsz = thisAnsz.replace(regex, '');
-        selectDiv.id = selectDivID;
-        selectDiv.className="answer";
-        
-        if (!(document.getElementById("noShowCorrectAns").checked)){        
-        selectDiv.setAttribute("onchange", "ansCheck('" + selectNumb + "','" + thisAnsz + "','" + selectDivID + "')");
-        //selectDiv.type="a";
-        } //endif
-        
-        let firstChoice = "<option>choices</option>";
-        selectDiv.insertAdjacentHTML("afterbegin",firstChoice);
-        undln2.append(selectDiv);
-        
-        for (const choicez of choicesCopy){
-           let insertz="<option>" + choicez + "</option>";
-            selectDiv.insertAdjacentHTML("beforeend",insertz);
-            selectDiv.insertAdjacentHTML("beforeend","\n");
-        }
-        //undln2.innerHTML="";
-
-    }//end for unln2 of undlns
-        
-        
-        //thePara.prepend(selectDiv);
-        thePara.insertAdjacentHTML("afterbegin","\n");
-        thePara.prepend(delThis);
-        delThis.style.display="block";
-        thePara.insertAdjacentHTML("beforeend","\n");
-      
- //if (!document.getElementById("ansPeak2").checked){
-         let answer = inputParaz.innerHTML;
-         let ansBox = document.createElement("details");
-         let ansBoxID="ansbox"+i;
-        
-         ansBox.id = ansBoxID;
-         ansBox.style.backgroundColor="#C5F8E0";
-         ansBox.style.color="#0E237E";
-         ansBox.style.padding="1ex";
-         ansBox.style.margin="1.3em 0 1.3em 0";
-         ansBox.style.borderRadius="4px";
-         ansBox.setAttribute("class","detlsAnsPk");
-         ansBox.insertAdjacentHTML("beforeend", answer);        
-         thePara.appendChild(ansBox);
-         thePara.insertAdjacentHTML("beforeend","\n");
-
-         
-         let ansBoxSmry = document.createElement("summary");
-         ansBoxSmryID= "ansBoxSmry" + i;
-         ansBoxSmry.id = ansBoxSmry;
-         ansBoxSmry.style = "margin:1ex"
-         ansBoxSmry.innerHTML = "Answer";
-         ansBox.prepend(ansBoxSmry);
-         ansBox.insertAdjacentHTML("afterbegin","\n");
-         delAnsBox.id = "delAnsBox" + i; console.log(delAnsBox);
-         delAnsBox.style.cssText="display: block;";
-         ansBox.prepend(delAnsBox);
- //} //end if anspeak2checked
-        let openAnsboxs = document.querySelectorAll(".detlsAnsPk");
-            for (const openAnsbox of openAnsboxs){
-                openAnsbox.open=true;
-            }
-        
-        
-        
-        
-        
-        
-        console.log(choicesCopy);
-        
-        
-       if (document.getElementById("ansChoicesList").checked){
-            
-           
-           
-            const btnDelAnsChoicesList = document.createElement("button");            
-            btnDelAnsChoicesList.classList.add("delBtn", "editMode");
-            btnDelAnsChoicesList.setAttribute("onclick", "this.parentElement.remove()");
-            btnDelAnsChoicesList.setAttribute("style", "display: block; margin-top:.5rem;");
-            btnDelAnsChoicesList.textContent = "delete forever";
-            btnDelAnsChoicesList.contentEditable = false;  
-                      
-
-            let choicesDiv = document.createElement("ul");
-            let choicesDivID = "choicesDiv" + i;
-            choicesDiv.id = choicesDivID;
-            choicesDiv.className="choicesUl";
-            //choicesDiv.type="a";
-           
-            for (const choicezzz of choicesCopy){
-               let insertzzzz="<li style='margin-left:2em'>" + choicezzz + "</li>";
-                choicesDiv.insertAdjacentHTML("beforeend",insertzzzz);
-                choicesDiv.insertAdjacentHTML("beforeend", "\n");
-            }
-
-            thePara.prepend(choicesDiv);
-            choicesDiv.appendChild(btnDelAnsChoicesList);
-       } //end if ansChoicesList.checked        
-        
-        
-        i++;
-    } // end getCloneAndAlter
-    
-</script>
-      
-      
-<script>
-    function previewMode(){
-                // remove all editables ***********************************
-        
-          let editModes = document.querySelectorAll('.editMode');
-            for (const editMode of editModes) {
-                editMode.style.display="none";
-            }          
-
-          let previewModes = document.querySelectorAll('.previewMode');
-            for (const previewMode of previewModes) {
-                previewMode.style.display="block";
-            }           
-    
-        // setting up for allowing the "show/hide answers" buttons
-    if (document.getElementById("allowShowHideAns").checked){
-        document.getElementById("closeAll").style.cssText="display: none";
-        document.getElementById("showAll").style.cssText="display: block";
-        document.getElementById("closeAll2").style.cssText="display: none";
-        document.getElementById("showAll2").style.cssText="display: block";
-    }  else{
-        document.getElementById("closeAll").style.cssText="display: none";
-        document.getElementById("showAll").style.cssText="display: none";
-        document.getElementById("closeAll2").style.cssText="display: none";
-        document.getElementById("showAll2").style.cssText="display: none";
-    }
-  
-        document.getElementById("allowShowHideAnsLbl").style.cssText="display: none";
-        document.getElementById("noShowCorrectAnsLbl").style.cssText="display: none";
-        document.getElementById("ansChoicesListLbl").style.cssText="display: none";        
-        ansChoicesListLbl
-        // end "sho/hide" buttons
-
-    
-    let contEdbls = document.querySelectorAll("[contenteditable]"); console.log(contEdbls);
-        
-        for (const contEdbl of contEdbls ){
-            contEdbl.contentEditable = "false";
-        }
-    
-    
-    let closeDetails = document.getElementsByTagName("details");
-        for (closeDetail of closeDetails){
-            closeDetail.open=false; 
-        }    
-
-    }  //endpreviewMode
-    
-    
-    
-    function editMode(){        
-          // restore editables ***************************
-          let editModes = document.querySelectorAll('.editMode');
-            for (const editMode of editModes) {
-                editMode.style.display="block";
-            }          
-
-          let previewModes = document.querySelectorAll('.previewMode');
-            for (const previewMode of previewModes) {
-                previewMode.style.display="none";
-            }           
-        
-        
-        //fileNameEl.style.display="block";
-    let contEdbls = document.querySelectorAll("[contenteditable]"); console.log(contEdbls);
-      
-        for (const contEdbl of contEdbls ){
-            contEdbl.contentEditable = "true";
-        }
-    
- 
-        
-         let closeDetails = document.getElementsByTagName("details")
-
-
-            for (closeDetail of closeDetails){
-                closeDetail.open=true; 
-            }
-       document.getElementById("instrcs").open=false;
-
-        document.getElementById("editOff").style.display="initial";
-        document.getElementById("editOn").style.display="none";    
-        
-        document.getElementById("printOptions").style.display="none";
-        
-        
-    //end restore editabels **********************
-    } //end editMode
-
-</script>
-
-<!--  ===============  SAVE THE DOM as FILE ==================== -->
-    
-
-      
-      <script>
-function saveDom(){
-
-//add this to beginning of save file section
-    const currentContent = document.getElementById('zztitle').textContent;
-
-    if (initialContent === currentContent) {
-      let userResponse = window.confirm('Update Page Title?');
-
-      if (userResponse) {
-        // User clicked "Yes"
-        return; // Exit the function immediately
-      } 
-    }    
-                // ========  Unusual entry for SAVEDOM
-            if (!document.getElementById("toggleShowHideNameID").checked){
-              document.getElementById("name").setAttribute("value", "zzzz");
-              document.getElementById("id").setAttribute("value", "yyyy");
-                      console.log (document.getElementById("name").value);
-                      console.log (document.getElementById("id").value);                    
-                }   
-            //========= end unusual entry   
-    
-    
-    
-    
-    
-    
-    document.getElementById('i').innerHTML= i;
-    document.getElementById('j').innerHTML= j;        
-    
-        oldTitle = document.title;
-        let fileName = document.getElementById("fileName").value;
-        let fileNameEl = document.getElementById("fileName");
-        document.title = fileName;
-    
-         //save theDom *************************
-        let theDom = document.documentElement.innerHTML;
-        //console.log(theDom);
-        const docHtml = '<!DOCTYPE html><html lang="en">';
-        const endHtml = '</html>';
-        const fullHtmlDoc = docHtml + theDom + endHtml;
-
-
-        // here we use Blob to set up a download link
-
-        // (A) CREATE BLOB OBJECT
-        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
-
-        // (B) CREATE DOWNLOAD LINK
-        const url = window.URL.createObjectURL(myBlob);
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = fileName + "EditMode.html";
-
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        //end save theDom
-        
-    
-        previewMode(); //preview   
-    
-        document.getElementById("editOff").style.display="none";
-        document.getElementById("editOn").style.display="none";       
-
-  /*  if (document.getElementById("ansPeak").checked){
-        
-        document.getElementById("showHideAnsBtns2").style.cssText="display:none";
-        document.getElementById("showHideAnsBtns").style.cssText="display:none";
-        
-        let zansPeaks = document.querySelectorAll(".detlsAnsPk");
-        for (const  zansPeak of zansPeaks){
-            zansPeak.style.display="none";
-        }
-
-    } //end if ansPeakchecked */
-    
-    
-    // end remove all editables ************************
-    
-           //  theDOM study mode
-        
-
-    
-        let theDom2 = document.documentElement.innerHTML;
-        const docHtml2 = '<!DOCTYPE html><html lang="en">';
-        const endHtml2 = '</html>';
-        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
-
-        // EditMode save .. here we use Blob to set up a download link
-
-        // (A) CREATE BLOB OBJECT
-        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
-
-        // (B) CREATE DOWNLOAD LINK
-        const url2 = window.URL.createObjectURL(myBlob2);
-        const anchor2 = document.createElement("a");
-        anchor2.href = url2;
-        anchor2.download = fileName + ".html";
-
-        anchor2.click();
-        window.URL.revokeObjectURL(url2);
-        //end the BLOB stuff and save
-        
-        alert("Check the browser's \n default download folder");
-    
-  
-    
-        editMode();
-    
-        document.getElementById("editOff").style.display="block";
-        document.getElementById("editOn").style.display="none";  
-        document.title = oldTitle;
-    
+  // Fade out and remove
+  setTimeout(() => popup.classList.remove("show"), 1200);
+  setTimeout(() => popup.remove(), 1600);
 }
 </script>
-      <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
-      
+
 <script>
+let selectCounter = 0; // Counter for select element numbering        
 
-function replaceFontElms() {
- // Select all font elements
-const fonts = document.querySelectorAll("font");
-
-// Loop through each font and replace with a span
-fonts.forEach((font) => {
-  const span = document.createElement("span");
-
-  // Add the style attribute with the appropriate font styles
-  let style = "";
-  if (font.face) style += `font-family: ${font.face}; `;
-    if (font.size) {
-      const fontSize = Math.round(font.size * 3.7) + 'pt';
-      style += `font-size: ${fontSize}; `;
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-  if (font.color) style += `color: ${font.color}; `;
-  if (typeof font.style === "string") style += `font-style: ${font.style}; `;
-  if (style) span.setAttribute("style", style.trim());
+    return array;
+}
 
-  // Copy any child elements to the new span
-  while (font.firstChild) {
-    span.appendChild(font.firstChild);
-  }
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+    
+    if (button.textContent === 'Show Answers') {
+        // Show all answers
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        // Hide all answers
+        selects.forEach(select => {
+            select.value = '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+        });
+        button.textContent = 'Show Answers';
+    }
+}
 
-  // Replace the font element with the new span
-  font.parentNode.replaceChild(span, font);
+function generateCloze() {
+    selectCounter = 0; // Reset select numbering for new cloze exercise
+    const input = document.getElementById('inputText').value;
+    const outputDiv = document.getElementById('output');
+
+    // Create container for this cloze exercise
+    const clozeContainer = document.createElement('div');
+
+    const uniqueId = Date.now();
+    clozeContainer.id = `cloze-div-${uniqueId}`;
+    
+    clozeContainer.className = 'cloze-container';
+
+    // Add toggle button at the top
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toggle-button';
+    toggleButton.textContent = 'Show Answers';
+    toggleButton.setAttribute('onclick', `toggleAnswers('cloze-div-${uniqueId}')`);   clozeContainer.appendChild(toggleButton);
+
+    // Check for information section with ^dv dv^
+    const dvOpenCount = (input.split('^dv').length - 1);
+    const dvCloseCount = (input.split('dv^').length - 1);
+    console.log(`^dv count: ${dvOpenCount}, dv^ count: ${dvCloseCount}`);
+    if (dvOpenCount !== dvCloseCount) {
+        alert(`Tag mismatch: Found ${dvOpenCount} ^dv tags but ${dvCloseCount} dv^ tags. Please ensure each ^dv has a matching dv^.`);
+        return;
+    }
+    if (dvOpenCount + dvCloseCount > 2) {
+        alert(`only one ^dv...dv^ set allowed.`);
+        return;
+    }            
+
+    // Check heading tags
+    const headings = [
+        { open: '^h1', close: 'h1^', openTag: '<h1>', closeTag: '</h1>' },
+        { open: '^h2', close: 'h2^', openTag: '<h2>', closeTag: '</h2>' },
+        { open: '^h3', close: 'h3^', openTag: '<h3>', closeTag: '</h3>' }
+    ];
+    for (const heading of headings) {
+        const openCount = (input.split(heading.open).length - 1);
+        const closeCount = (input.split(heading.close).length - 1);
+        console.log(`${heading.open} count: ${openCount}, ${heading.close} count: ${closeCount}`);
+        if (openCount !== closeCount) {
+            alert(`Tag mismatch: Found ${openCount} ${heading.open} tags but ${closeCount} ${heading.close} tags. Please ensure each ${heading.open} has a matching ${heading.close}.`);
+            return;
+        }
+    }
+
+    // Process information section if present
+    let infoSection = '';
+    let sentencesInput = input;
+    const infoMatch = input.match(/\^dv([\s\S]*?)dv\^/);
+    if (infoMatch) {
+        infoSection = infoMatch[1].trim();
+        sentencesInput = input.replace(/\^dv[\s\S]*?dv\^/, '').trim();
+        console.log('Raw infoSection:', infoSection);
+
+        // Replace heading tags with simple string replacement
+        let processedInfo = infoSection;
+        headings.forEach(heading => {
+            console.log(`Replacing ${heading.open} with ${heading.openTag} and ${heading.close} with ${heading.closeTag}`);
+            processedInfo = processedInfo.replaceAll(heading.open, heading.openTag).replaceAll(heading.close, heading.closeTag);
+            console.log(`After ${heading.openTag} replacement:`, processedInfo);
+        });
+
+        
+// Validate bold, italic, underline tags
+const textStyles = [
+    { open: '^bb', close: 'bb^', name: 'bold' },
+    { open: '^ii', close: 'ii^', name: 'italic' },
+    { open: '^uu', close: 'uu^', name: 'underline' }
+];
+for (const style of textStyles) {
+    const openCount = (input.split(style.open).length - 1);
+    const closeCount = (input.split(style.close).length - 1);
+    console.log(`${style.open} count: ${openCount}, ${style.close} count: ${closeCount}`);
+    if (openCount !== closeCount) {
+        alert(`Tag mismatch: Found ${openCount} ${style.open} tags but ${closeCount} ${style.close} tags. Please ensure each ${style.open} has a matching ${style.close}.`);
+        return;
+    }
+}
+
+// Replace ^br and text style tags
+processedInfo = processedInfo.replaceAll('^br', '<br>')
+    .replaceAll('^bb', '<b>')
+    .replaceAll('bb^', '</b>')
+    .replaceAll('^ii', '<i>')
+    .replaceAll('ii^', '</i>')
+    .replaceAll('^uu', '<u>')
+    .replaceAll('uu^', '</u>');
+console.log('After ^br and text style replacement:', processedInfo);                
+        
+        
+        infoSection = processedInfo;
+        const infoDiv = document.createElement('div');
+        infoDiv.innerHTML = infoSection;
+        infoDiv.style.marginBottom = '20px';
+        clozeContainer.appendChild(infoDiv);
+    }
+
+const caretCount = (sentencesInput.match(/\^\^/g) || []).length;
+if (caretCount < 2) {
+    if (!confirm('Normally, two or more sets of ^^ should be present.\n Do you really want to continue?\n\n CANCEL = back to input; \n\n OK = make the quiz anyway. ')) {
+        return;
+    }
+}
+
+    // Split remaining input into groups by ^^ (each group can contain multiple sentences)
+    const groups = sentencesInput.split('^^').map(s => s.trim()).filter(s => s);
+
+    // Process each group
+    groups.forEach((group, groupIndex) => {
+        // Extract unique bold words for this group
+        const boldWords = [];
+        const matches = group.match(/\*\*([^\*]+)\*\*/g) || [];
+        matches.forEach(match => {
+            const word = match.replace(/\*\*/g, '').trim();
+            if (word && !boldWords.includes(word)) {
+                boldWords.push(word);
+            }
+        });
+
+        // Shuffle bold words once for this group
+        const shuffledWords = shuffleArray([...boldWords]);
+
+        // Generate HTML for the group
+        let clozeGroup = group;
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
+        
+        // Replace each bold word with a select element
+        boldWords.forEach(word => {
+            const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
+            selectCounter++; // Increment counter for this select
+            const selectHtml = `<span style="font-size: 70%;">${selectCounter}</span><select data-correct="${word}" data-group="${groupIndex}" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                ${shuffledWords.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>`;
+            clozeGroup = clozeGroup.replace(regex, selectHtml);
+        });
+
+        // Create group container
+        const sentenceDiv = document.createElement('div');
+        sentenceDiv.className = 'sentence-div'; // Apply the CSS class
+        sentenceDiv.innerHTML = clozeGroup;
+        clozeContainer.appendChild(sentenceDiv);
+    });
+    
+    const deleteThisSectionBtn = document.createElement('button');
+    deleteThisSectionBtn.className='deleteThisSectionBtn editMode';
+    deleteThisSectionBtn.textContent = 'Delete This Section';
+    deleteThisSectionBtn.setAttribute('onclick', 'this.parentElement.remove();alert("section deleted");');
+    clozeContainer.appendChild(deleteThisSectionBtn);
+
+    // Append to output
+    outputDiv.appendChild(clozeContainer);
+}
+
+function checkAnswer(select) {
+    // Don't provide feedback if answers are being shown
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+    
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+<!-- Student Verification Script -->
+<script>
+async function verifyStudent() {
+    const name = document.getElementById("name").value.trim();
+    const id = document.getElementById("id").value.trim();
+    const passCode = document.getElementById("passCode").value.trim();
+    
+    if (!name || !id || !passCode) {
+        alert("Please fill in all fields first!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('id', id);
+    formData.append('passCode', passCode);
+    
+    try {
+        const response = await fetch('./verify_student.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
+        
+        if (result === 'SUCCESS') {
+          document.getElementById('output').style.pointerEvents = 'auto';  
+          document.getElementById('submitAssignment').disabled = false;
+        }
+        
+    } catch (error) {
+        alert("Verification error. Try again!");
+    }
+}
+
+// Show verification button initially
+//document.getElementById('verifyYou').style.display = "block";
+</script>
+
+<!-- Save System Scripts -->
+<script>
+function redirectToHtml() {
+  // Get the current page's URL
+  let currentUrl = window.location.href;
+  // Replace .php with .html
+  let newUrl = currentUrl.replace(/\.php$/, '.html');
+  // Open the new URL in a new tab
+  window.open(newUrl, '_blank');
+}
+
+async function saveBothVersions() {
+    // Get the current file's pathname
+    const filePath = window.location.pathname;
+    let pathParts = filePath.split('/');
+
+    // Extract just the filename from the path
+    const fileNM = pathParts.pop() || 'lesson.php'; // Fallback if empty
+    const fileNameHtml = fileNM.replace(/\.php$/, ".html") || 'lesson.html';
+
+    console.log("1. Current filename:", fileNM);
+    console.log("2. New file name:", fileNameHtml);
+
+    // Validate filenames
+    if (!fileNM || typeof fileNM !== 'string') {
+        console.error('Error: fileNM is invalid:', fileNM);
+        return;
+    }
+    if (!fileNameHtml || typeof fileNameHtml !== 'string') {
+        console.error('Error: fileNameHtml is invalid:', fileNameHtml);
+        return;
+    }
+
+    // Set serverLocation to the desired directory
+    const serverLocation = './';
+    console.log('serverLocation:', serverLocation); // Debug: verify the path
+
+    // Run admin save first
+    await saveAdminVersion(fileNM, serverLocation);
+    // Then run public save
+    await savePublicVersion(fileNameHtml, serverLocation);
+}
+
+async function saveAdminVersion(fileNM, serverLocation) {
+    const saveStatus = document.getElementById('adminSaveStatus');
+    
+    document.getElementById('output').style.pointerEvents = 'auto'; 
+    document.getElementById("backToHub").style.display = "block";     
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    try {
+        // Capture the HTML content
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const htmlContent = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Wrap HTML content with basic PHP authentication (no auth_check yet)
+        const phpWrappedContent = `${htmlContent}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving admin version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', phpWrappedContent);
+        formData.append('filename', fileNM);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // File saved successfully, now inject auth_check.php
+            const injectFormData = new FormData();
+            injectFormData.append('filename', fileNM);
+            
+            const injectResponse = await fetch('./inject_auth.php', {
+                method: 'POST',
+                body: injectFormData
+            });
+            
+            if (injectResponse.ok) {
+                saveStatus.className = 'save-status success';
+                saveStatus.textContent = 'Admin PHP version saved successfully!';
+            } else {
+                saveStatus.className = 'save-status warning';
+                saveStatus.textContent = 'File saved but auth injection may have failed';
+            }
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Admin Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Admin Error: ${error.message}`;
+    }
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+
+async function savePublicVersion(fileNameHtml, serverLocation) {
+    
+    const deleteButtons = document.querySelectorAll('.deleteThisSectionBtn');
+    deleteButtons.forEach(button => {
+        button.style.display = 'none';
+    });
+    
+    document.getElementById('output').style.pointerEvents = 'none';
+    document.getElementById("backToHub").style.display = "none";     
+    document.getElementById("adminSaveStatus").style.display = "none";     
+
+    
+    const saveStatus = document.getElementById('publicSaveStatus');
+    
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    try {
+        // Capture DOCTYPE and full HTML
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const fullHtml = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving public version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', fullHtml);
+        formData.append('filename', fileNameHtml);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            saveStatus.className = 'save-status success';
+            saveStatus.textContent = 'Public version saved successfully!';
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Public Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Public Error: ${error.message}`;
+    }
+    
+    
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";  
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+</script>
+
+<!-- Include the submission system -->
+<script src="/drRayLMS/components/geniMore.js"></script>
+
+<!--========================================================
+edit HTML; save as DOM
+-------------------------
+Change a web page without coding!
+1. Set document to contenteditable.
+2. Then save the dom with code below
+------------------------- -->
+<div class="editMode" style="display: none;">
+<p>Save as: <input id="domFileName" type="text" value="File Name"></p>
+
+<button id="saveDomButton" class="editMode" style="display: none;">Save DOM as File</button>
+<a id="downloadLink" style="display: none;"></a>
+</div>
+<script>
+document.getElementById('saveDomButton').addEventListener('click', function() {
+const domFileName = document.getElementById('domFileName').value;
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+
+    document.getElementById('topHeading').removeAttribute('contenteditable');
+  // Capture the current DOM state as HTML
+  const domState = document.documentElement.outerHTML;
+
+  // Create a Blob with the DOM state
+  const blob = new Blob([domState], { type: 'text/html' });
+
+  // Create a URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Set the download link's href and download attributes
+  const downloadLink = document.getElementById('downloadLink');
+  downloadLink.href = url;
+  downloadLink.download = domFileName;
+
+  // Trigger the download
+  downloadLink.click();
+
+  // Clean up the URL object
+  URL.revokeObjectURL(url);
+
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    document.getElementById('topHeading').contentEditable = "true";
+
+  alert("Check Your Browser's Default Download Folder");
+
 });
-   
-    
- const spanDone = document.getElementById("doneFontElmReplace");
+</script>
+<!--///// end edit HTML save as DOM =======================
+========================================================-->
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
 
-  // Toggle display style
-  if (spanDone.style.display === "none") {
-    spanDone.style.display = "inline-block";
-  } 
+      <script>
+        function checkThenPrint(){
 
-  // Toggle border color and text color
-  if (spanDone.style.borderColor === "orange") {
-    spanDone.style.borderColor = "yellow";
-    spanDone.style.color = "yellow";
-  } else {
-    spanDone.style.borderColor = "orange";
-    spanDone.style.color = "orange";
-  }
-     // document.documentElement.style.pointerEvents = 'none';
-      setTimeout(replaceNlines, 100);    
-      setTimeout(addNewlines, 100);
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
 
-      setTimeout(addSpaces, 100);
-    
-}
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
 
-</script>    
-    
-    
 
-    <script>
-        function addNewlines() {
-            // Select all the elements: div, section, p, and span
-            const elements = document.querySelectorAll('div, section, p, span');
-
-            // Loop through each element and add a newline character before it
-            elements.forEach(element => {
-                switch (element.tagName.toLowerCase()) {
-                    case 'span':
-                        // Add '\n' only after <span>
-                        element.insertAdjacentHTML('beforebegin', '\r');
-                        //element.insertAdjacentHTML('afterend', '\n');
-                        break;
-                    default:
-                        // Add '\n' before all elements (including <span>), except <span>
-                        element.insertAdjacentHTML('beforebegin', '\r');
-                        element.insertAdjacentHTML('beforeend', '\r');
-                        break;
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
                 }
-            });
-            
-            //setTimeout(addSpaces, 300);
-          
-        }
-        
-        
-        function addSpaces() {
-            const elements = document.querySelectorAll('div, p, span');
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+     <footer style="margin-top:6rem;">...</footer>
 
-            elements.forEach(element => {                
-                
-                // Determine the number of spaces based on the element type
-                let numSpaces = 0;
-                switch (element.tagName.toLowerCase()) {
-                    case 'div':
-                        numSpaces = 3;
-                        break;
-                    case 'p':
-                        numSpaces = 7;
-                        break;
-                    case 'span':
-                        numSpaces = 10;
-                        break;
-                }
-
-                // Create the source code spaces using the repeat() method
-                const spaces = ' '.repeat(numSpaces);
-
-                // Add the spaces before the element's innerHTML
-                element.insertAdjacentHTML('beforebegin', spaces);
-            });
-            
-        setTimeout(dummy, 100);            
-        document.documentElement.style.pointerEvents = 'auto';              
-        }        
-    </script>   
-    
-<script>
-    
-    // this is currently turned off
-    // it may work in other apps that aren't as complicated as flatCMS
-    // if so we should convert this to REMOVE ALL WHITESPACES
-function replaceNlines() {
-  const allElements = document.querySelectorAll('div, p');
-  allElements.forEach(element => {
-    const originalText = element.innerHTML;
-    const updatedText = originalText.replace(/(\r\n|\r|\n)+/g, '\r');
-    element.innerHTML = updatedText;
-  });
-}
-</script>    
-    
-    
-    
-    <script>
-        function dummy(){ console.log("dummyFunction activated");}    
-    </script>     
-      
-<p style="margin:35px"> ... end. </p>
-  
-  
-  
 
 </body></html>
