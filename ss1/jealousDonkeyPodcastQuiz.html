@@ -1,0 +1,721 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz | English Learning Magazine</title>
+ <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2ff; /* Simplified background for faster loading/cleaner look */
+        color: #2c3e50;
+        line-height: 1.4;
+        padding: 0.75rem; /* Tightened outer padding */
+        min-height: 100vh;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    header {
+        text-align: center;
+        margin-bottom: 1rem; /* Reduced space */
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #7a6ece;
+    }
+    h1 {
+        font-size: 1.5rem; /* Slightly smaller for mobile-first */
+        color: #4a5568;
+        margin-bottom: 0.25rem;
+        font-weight: 700;
+    }
+    .subtitle {
+        font-size: 0.85rem;
+        color: #718096;
+    }
+    .user-info {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    .user-info input {
+        flex: 1;
+        min-width: 140px;
+        padding: 0.5rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+    .authoring-panel {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .authoring-panel textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 0.5rem;
+        font-family: monospace;
+        font-size: 0.9rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .quiz-section {
+        margin-bottom: 1rem;
+    }
+    .sentence-group {
+        background: white;
+        border-radius: 8px;
+        padding: 0.75rem; /* Tightened group padding */
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .sentence-group h2 {
+        margin-bottom: 0.75rem;
+        color: #4a5568;
+        font-size: 1rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .sentence-item {
+        margin-bottom: 0.75rem; /* Reduced space between questions */
+        padding: 0.5rem; /* Reduced internal padding */
+    background: linear-gradient(to top, #f5f0ff 0%, #f0f7ff 100%);
+        border-left: 3px solid #7a6ece; /* Simple accent instead of full border */
+        display: block;
+        line-height: 1.8; /* Reduced from 2.2 to tighten text while keeping select room */
+    }
+    .sentence-item:last-child {
+        margin-bottom: 0;
+    }
+    .sentence-text {
+        font-size: 0.9rem;
+        display: inline;
+        white-space: normal;
+    }
+    .vocab-select {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 2px 4px;
+        padding: 0.2rem 0.4rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        background: white;
+        min-width: 110px;
+        cursor: pointer;
+    }
+    .vocab-select.correct {
+        background-color: #e8f5e9;
+        border-color: #4caf50;
+        color: #0D2B18;
+    }
+    .vocab-select.incorrect {
+        background-color: #ffebee;
+        border-color: #f44336;
+        color: #c62828;
+    }
+    .print-section {
+        text-align: center;
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    #printBtn, #studyToggleBtn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s;
+    }
+    #printBtn {
+        background: #7a6ece;
+        color: white;
+    }
+    #studyToggleBtn {
+        background: #4a5568;
+        color: white;
+    }
+    #printBtn:hover, #studyToggleBtn:hover {
+        opacity: 0.9;
+    }
+
+    /* Mobile specific adjustments */
+    @media (max-width: 480px) {
+        .sentence-item {
+            padding: 0.4rem;
+            line-height: 1.7; /* Even tighter for very small screens */
+        }
+        .vocab-select {
+            min-width: 100px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 contenteditable="false">Vocabulary Quiz</h1>
+            <p class="subtitle" contenteditable="false">English Learning Magazine</p>
+        </header>
+
+<div id="sentenceData" style="display:none;">"After winning the lottery, she lived a **pampered** life, spending her afternoons at luxury spas and high-end boutiques."
+"One of the best **perks** of working at a tech startup is the free gourmet lunch provided to employees every day."
+"While the marketing team took the credit for the campaign's success, the IT department did all the **heavy lifting** to keep the servers running."
+"Instead of finishing his chores, Mark spent the entire Saturday **lounging around** on the sofa watching football."
+"The construction workers spent the morning **hauling** heavy bags of cement up three flights of stairs."
+"I had to work ten hours of **overtime** this week just to meet the project deadline."
+"The child was caught **peeking** through the keyhole to see what birthday presents were hidden in the closet."
+"Before you criticize the manager for his tough decisions, you should try living a day **in his shoes**."
+"When the power went out during the busy dinner rush, the restaurant kitchen turned into absolute **chaos**."
+"The comedian's impressions were so **hilarious** that several people in the audience were crying with laughter."
+"After getting off the dizzying carnival ride, Sarah felt like the entire world was **spinning**."
+"What started as a small disagreement quickly escalated into a **full-on** argument in the middle of the street."
+"The old silent movie relied on **slapstick** humor, featuring characters slipping on banana peels and falling into pies."
+"The rescue dog was wary at first, but it eventually began to crave **affection** and would wag its tail whenever I came home."
+"After a long day of riding through the trails, the horse was led back to the **stable** for a fresh bale of hay."
+"He came home with several **bruises** on his shins after a particularly rough game of soccer."
+"He quit his stable job for a flashy startup, only to realize **the grass isn't always greener** when the new company went bankrupt."
+"She had no **regrets** about moving to a new city, even though the first few months were difficult."
+"After years of searching for a bigger house, they finally realized they were perfectly **content** in their cozy cottage."
+"If you stay **focused** on your goals, you are much more likely to achieve them within the year."
+"You should choose a career that **suits** your personality rather than one that just pays a high salary."
+"Training for a **marathon** requires months of discipline and hundreds of miles of practice running."
+"The long commute in heavy rain was pure **misery** for the tired commuters stuck on the bus."
+"People think being a flight attendant is a **glamorous** job, but it actually involves a lot of cleaning and dealing with angry passengers."
+"We've discussed the budget for an hour; now, **switching gears**, let's talk about the upcoming holiday party."
+"Negotiating a contract with a competitor is a **tricky business** that requires a lot of patience."
+"After wandering in the desert for hours, the hikers were **desperate** for a single drop of water."
+"Even though he acted friendly, his sarcastic comments had a sharp **sting** that hurt her feelings."
+"Ignoring your partner's constant lies is a major **red flag** that the relationship might be in trouble."
+"Even though they were the underdogs, the entire city was **rooting** for the local team to win the championship."
+"It is hard not to feel a bit of **envy** when you see your neighbor driving a brand-new sports car."
+"Her ability to speak four languages fluently is a major **asset** to our international sales team."
+"There is a deep sense of **contentment** that comes from sitting by a fireplace with a good book."
+"The insurance agent spent the afternoon **assessing** the damage caused to the house by the storm."
+"Winning the Nobel Prize was a **life-altering** event that changed the scientist's career forever."
+"The police could not make an arrest because they didn't have enough physical **evidence** to link the suspect to the crime."
+"When the **stakes are high**, such as in heart surgery, there is absolutely no room for error."</div>
+
+<div class="authoring-panel" id="authoringPanel" style="display: none;">
+    <textarea id="sentenceInput" placeholder="Enter sentences like:
+&quot;She filed a **complaint** about the noisy neighbors.&quot;,
+&quot;Many people think holidays have become too **commercialized**...&quot;,"></textarea>
+    <input type="text" id="fileNameInput" placeholder="Name Your File" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 0.95rem;">
+    <button id="makeBtn">Make Quiz</button>
+
+    <div id="saveMessage" style="display: none; margin-top: 0.75rem; padding: 0.5rem; border: 2px solid #3182ce; color: #2f855a; font-weight: 600; border-radius: 4px; background: #ebf8ff;">
+        Saved to your browser's default download folder.
+    </div>
+
+</div>
+
+        <div class="user-info">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="idInput" placeholder="Enter your ID">
+        </div>
+
+
+        <button id="studyToggleBtn">Study Mode</button>
+        <br><br>
+
+
+        <div class="quiz-section" id="quizSection"><div class="sentence-group"><h2>Sentences 1 - 5</h2><div class="sentence-item">
+                        <span class="sentence-text">After winning the lottery, she lived a </span>
+                        <select class="vocab-select" data-correct="pampered" data-group="0" data-sentence="0">
+                            <option value="">Select...</option><option value="heavy lifting">heavy lifting</option><option value="hauling">hauling</option><option value="perks">perks</option><option value="pampered">pampered</option><option value="lounging around">lounging around</option>
+                        </select>
+                        <span class="sentence-text"> life, spending her afternoons at luxury spas and high-end boutiques.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">One of the best </span>
+                        <select class="vocab-select" data-correct="perks" data-group="0" data-sentence="1">
+                            <option value="">Select...</option><option value="heavy lifting">heavy lifting</option><option value="hauling">hauling</option><option value="perks">perks</option><option value="pampered">pampered</option><option value="lounging around">lounging around</option>
+                        </select>
+                        <span class="sentence-text"> of working at a tech startup is the free gourmet lunch provided to employees every day.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">While the marketing team took the credit for the campaign's success, the IT department did all the </span>
+                        <select class="vocab-select" data-correct="heavy lifting" data-group="0" data-sentence="2">
+                            <option value="">Select...</option><option value="heavy lifting">heavy lifting</option><option value="hauling">hauling</option><option value="perks">perks</option><option value="pampered">pampered</option><option value="lounging around">lounging around</option>
+                        </select>
+                        <span class="sentence-text"> to keep the servers running.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Instead of finishing his chores, Mark spent the entire Saturday </span>
+                        <select class="vocab-select" data-correct="lounging around" data-group="0" data-sentence="3">
+                            <option value="">Select...</option><option value="heavy lifting">heavy lifting</option><option value="hauling">hauling</option><option value="perks">perks</option><option value="pampered">pampered</option><option value="lounging around">lounging around</option>
+                        </select>
+                        <span class="sentence-text"> on the sofa watching football.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The construction workers spent the morning </span>
+                        <select class="vocab-select" data-correct="hauling" data-group="0" data-sentence="4">
+                            <option value="">Select...</option><option value="heavy lifting">heavy lifting</option><option value="hauling">hauling</option><option value="perks">perks</option><option value="pampered">pampered</option><option value="lounging around">lounging around</option>
+                        </select>
+                        <span class="sentence-text"> heavy bags of cement up three flights of stairs.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 6 - 10</h2><div class="sentence-item">
+                        <span class="sentence-text">I had to work ten hours of </span>
+                        <select class="vocab-select" data-correct="overtime" data-group="1" data-sentence="0">
+                            <option value="">Select...</option><option value="chaos">chaos</option><option value="hilarious">hilarious</option><option value="in his shoes">in his shoes</option><option value="overtime">overtime</option><option value="peeking">peeking</option>
+                        </select>
+                        <span class="sentence-text"> this week just to meet the project deadline.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The child was caught </span>
+                        <select class="vocab-select" data-correct="peeking" data-group="1" data-sentence="1">
+                            <option value="">Select...</option><option value="chaos">chaos</option><option value="hilarious">hilarious</option><option value="in his shoes">in his shoes</option><option value="overtime">overtime</option><option value="peeking">peeking</option>
+                        </select>
+                        <span class="sentence-text"> through the keyhole to see what birthday presents were hidden in the closet.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Before you criticize the manager for his tough decisions, you should try living a day </span>
+                        <select class="vocab-select" data-correct="in his shoes" data-group="1" data-sentence="2">
+                            <option value="">Select...</option><option value="chaos">chaos</option><option value="hilarious">hilarious</option><option value="in his shoes">in his shoes</option><option value="overtime">overtime</option><option value="peeking">peeking</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">When the power went out during the busy dinner rush, the restaurant kitchen turned into absolute </span>
+                        <select class="vocab-select" data-correct="chaos" data-group="1" data-sentence="3">
+                            <option value="">Select...</option><option value="chaos">chaos</option><option value="hilarious">hilarious</option><option value="in his shoes">in his shoes</option><option value="overtime">overtime</option><option value="peeking">peeking</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The comedian's impressions were so </span>
+                        <select class="vocab-select" data-correct="hilarious" data-group="1" data-sentence="4">
+                            <option value="">Select...</option><option value="chaos">chaos</option><option value="hilarious">hilarious</option><option value="in his shoes">in his shoes</option><option value="overtime">overtime</option><option value="peeking">peeking</option>
+                        </select>
+                        <span class="sentence-text"> that several people in the audience were crying with laughter.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 11 - 15</h2><div class="sentence-item">
+                        <span class="sentence-text">After getting off the dizzying carnival ride, Sarah felt like the entire world was </span>
+                        <select class="vocab-select" data-correct="spinning" data-group="2" data-sentence="0">
+                            <option value="">Select...</option><option value="affection">affection</option><option value="full-on">full-on</option><option value="slapstick">slapstick</option><option value="stable">stable</option><option value="spinning">spinning</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">What started as a small disagreement quickly escalated into a </span>
+                        <select class="vocab-select" data-correct="full-on" data-group="2" data-sentence="1">
+                            <option value="">Select...</option><option value="affection">affection</option><option value="full-on">full-on</option><option value="slapstick">slapstick</option><option value="stable">stable</option><option value="spinning">spinning</option>
+                        </select>
+                        <span class="sentence-text"> argument in the middle of the street.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The old silent movie relied on </span>
+                        <select class="vocab-select" data-correct="slapstick" data-group="2" data-sentence="2">
+                            <option value="">Select...</option><option value="affection">affection</option><option value="full-on">full-on</option><option value="slapstick">slapstick</option><option value="stable">stable</option><option value="spinning">spinning</option>
+                        </select>
+                        <span class="sentence-text"> humor, featuring characters slipping on banana peels and falling into pies.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The rescue dog was wary at first, but it eventually began to crave </span>
+                        <select class="vocab-select" data-correct="affection" data-group="2" data-sentence="3">
+                            <option value="">Select...</option><option value="affection">affection</option><option value="full-on">full-on</option><option value="slapstick">slapstick</option><option value="stable">stable</option><option value="spinning">spinning</option>
+                        </select>
+                        <span class="sentence-text"> and would wag its tail whenever I came home.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">After a long day of riding through the trails, the horse was led back to the </span>
+                        <select class="vocab-select" data-correct="stable" data-group="2" data-sentence="4">
+                            <option value="">Select...</option><option value="affection">affection</option><option value="full-on">full-on</option><option value="slapstick">slapstick</option><option value="stable">stable</option><option value="spinning">spinning</option>
+                        </select>
+                        <span class="sentence-text"> for a fresh bale of hay.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 16 - 20</h2><div class="sentence-item">
+                        <span class="sentence-text">He came home with several </span>
+                        <select class="vocab-select" data-correct="bruises" data-group="3" data-sentence="0">
+                            <option value="">Select...</option><option value="regrets">regrets</option><option value="bruises">bruises</option><option value="content">content</option><option value="focused">focused</option><option value="the grass isn't always greener">the grass isn't always greener</option>
+                        </select>
+                        <span class="sentence-text"> on his shins after a particularly rough game of soccer.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">He quit his stable job for a flashy startup, only to realize </span>
+                        <select class="vocab-select" data-correct="the grass isn't always greener" data-group="3" data-sentence="1">
+                            <option value="">Select...</option><option value="regrets">regrets</option><option value="bruises">bruises</option><option value="content">content</option><option value="focused">focused</option><option value="the grass isn't always greener">the grass isn't always greener</option>
+                        </select>
+                        <span class="sentence-text"> when the new company went bankrupt.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">She had no </span>
+                        <select class="vocab-select" data-correct="regrets" data-group="3" data-sentence="2">
+                            <option value="">Select...</option><option value="regrets">regrets</option><option value="bruises">bruises</option><option value="content">content</option><option value="focused">focused</option><option value="the grass isn't always greener">the grass isn't always greener</option>
+                        </select>
+                        <span class="sentence-text"> about moving to a new city, even though the first few months were difficult.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">After years of searching for a bigger house, they finally realized they were perfectly </span>
+                        <select class="vocab-select" data-correct="content" data-group="3" data-sentence="3">
+                            <option value="">Select...</option><option value="regrets">regrets</option><option value="bruises">bruises</option><option value="content">content</option><option value="focused">focused</option><option value="the grass isn't always greener">the grass isn't always greener</option>
+                        </select>
+                        <span class="sentence-text"> in their cozy cottage.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">If you stay </span>
+                        <select class="vocab-select" data-correct="focused" data-group="3" data-sentence="4">
+                            <option value="">Select...</option><option value="regrets">regrets</option><option value="bruises">bruises</option><option value="content">content</option><option value="focused">focused</option><option value="the grass isn't always greener">the grass isn't always greener</option>
+                        </select>
+                        <span class="sentence-text"> on your goals, you are much more likely to achieve them within the year.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 21 - 25</h2><div class="sentence-item">
+                        <span class="sentence-text">You should choose a career that </span>
+                        <select class="vocab-select" data-correct="suits" data-group="4" data-sentence="0">
+                            <option value="">Select...</option><option value="switching gears">switching gears</option><option value="misery">misery</option><option value="marathon">marathon</option><option value="glamorous">glamorous</option><option value="suits">suits</option>
+                        </select>
+                        <span class="sentence-text"> your personality rather than one that just pays a high salary.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Training for a </span>
+                        <select class="vocab-select" data-correct="marathon" data-group="4" data-sentence="1">
+                            <option value="">Select...</option><option value="switching gears">switching gears</option><option value="misery">misery</option><option value="marathon">marathon</option><option value="glamorous">glamorous</option><option value="suits">suits</option>
+                        </select>
+                        <span class="sentence-text"> requires months of discipline and hundreds of miles of practice running.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The long commute in heavy rain was pure </span>
+                        <select class="vocab-select" data-correct="misery" data-group="4" data-sentence="2">
+                            <option value="">Select...</option><option value="switching gears">switching gears</option><option value="misery">misery</option><option value="marathon">marathon</option><option value="glamorous">glamorous</option><option value="suits">suits</option>
+                        </select>
+                        <span class="sentence-text"> for the tired commuters stuck on the bus.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">People think being a flight attendant is a </span>
+                        <select class="vocab-select" data-correct="glamorous" data-group="4" data-sentence="3">
+                            <option value="">Select...</option><option value="switching gears">switching gears</option><option value="misery">misery</option><option value="marathon">marathon</option><option value="glamorous">glamorous</option><option value="suits">suits</option>
+                        </select>
+                        <span class="sentence-text"> job, but it actually involves a lot of cleaning and dealing with angry passengers.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">We've discussed the budget for an hour; now, </span>
+                        <select class="vocab-select" data-correct="switching gears" data-group="4" data-sentence="4">
+                            <option value="">Select...</option><option value="switching gears">switching gears</option><option value="misery">misery</option><option value="marathon">marathon</option><option value="glamorous">glamorous</option><option value="suits">suits</option>
+                        </select>
+                        <span class="sentence-text">, let's talk about the upcoming holiday party.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 26 - 30</h2><div class="sentence-item">
+                        <span class="sentence-text">Negotiating a contract with a competitor is a </span>
+                        <select class="vocab-select" data-correct="tricky business" data-group="5" data-sentence="0">
+                            <option value="">Select...</option><option value="tricky business">tricky business</option><option value="rooting">rooting</option><option value="sting">sting</option><option value="red flag">red flag</option><option value="desperate">desperate</option>
+                        </select>
+                        <span class="sentence-text"> that requires a lot of patience.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">After wandering in the desert for hours, the hikers were </span>
+                        <select class="vocab-select" data-correct="desperate" data-group="5" data-sentence="1">
+                            <option value="">Select...</option><option value="tricky business">tricky business</option><option value="rooting">rooting</option><option value="sting">sting</option><option value="red flag">red flag</option><option value="desperate">desperate</option>
+                        </select>
+                        <span class="sentence-text"> for a single drop of water.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Even though he acted friendly, his sarcastic comments had a sharp </span>
+                        <select class="vocab-select" data-correct="sting" data-group="5" data-sentence="2">
+                            <option value="">Select...</option><option value="tricky business">tricky business</option><option value="rooting">rooting</option><option value="sting">sting</option><option value="red flag">red flag</option><option value="desperate">desperate</option>
+                        </select>
+                        <span class="sentence-text"> that hurt her feelings.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Ignoring your partner's constant lies is a major </span>
+                        <select class="vocab-select" data-correct="red flag" data-group="5" data-sentence="3">
+                            <option value="">Select...</option><option value="tricky business">tricky business</option><option value="rooting">rooting</option><option value="sting">sting</option><option value="red flag">red flag</option><option value="desperate">desperate</option>
+                        </select>
+                        <span class="sentence-text"> that the relationship might be in trouble.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Even though they were the underdogs, the entire city was </span>
+                        <select class="vocab-select" data-correct="rooting" data-group="5" data-sentence="4">
+                            <option value="">Select...</option><option value="tricky business">tricky business</option><option value="rooting">rooting</option><option value="sting">sting</option><option value="red flag">red flag</option><option value="desperate">desperate</option>
+                        </select>
+                        <span class="sentence-text"> for the local team to win the championship.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 31 - 35</h2><div class="sentence-item">
+                        <span class="sentence-text">It is hard not to feel a bit of </span>
+                        <select class="vocab-select" data-correct="envy" data-group="6" data-sentence="0">
+                            <option value="">Select...</option><option value="asset">asset</option><option value="envy">envy</option><option value="assessing">assessing</option><option value="contentment">contentment</option><option value="life-altering">life-altering</option>
+                        </select>
+                        <span class="sentence-text"> when you see your neighbor driving a brand-new sports car.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Her ability to speak four languages fluently is a major </span>
+                        <select class="vocab-select" data-correct="asset" data-group="6" data-sentence="1">
+                            <option value="">Select...</option><option value="asset">asset</option><option value="envy">envy</option><option value="assessing">assessing</option><option value="contentment">contentment</option><option value="life-altering">life-altering</option>
+                        </select>
+                        <span class="sentence-text"> to our international sales team.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">There is a deep sense of </span>
+                        <select class="vocab-select" data-correct="contentment" data-group="6" data-sentence="2">
+                            <option value="">Select...</option><option value="asset">asset</option><option value="envy">envy</option><option value="assessing">assessing</option><option value="contentment">contentment</option><option value="life-altering">life-altering</option>
+                        </select>
+                        <span class="sentence-text"> that comes from sitting by a fireplace with a good book.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The insurance agent spent the afternoon </span>
+                        <select class="vocab-select" data-correct="assessing" data-group="6" data-sentence="3">
+                            <option value="">Select...</option><option value="asset">asset</option><option value="envy">envy</option><option value="assessing">assessing</option><option value="contentment">contentment</option><option value="life-altering">life-altering</option>
+                        </select>
+                        <span class="sentence-text"> the damage caused to the house by the storm.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Winning the Nobel Prize was a </span>
+                        <select class="vocab-select" data-correct="life-altering" data-group="6" data-sentence="4">
+                            <option value="">Select...</option><option value="asset">asset</option><option value="envy">envy</option><option value="assessing">assessing</option><option value="contentment">contentment</option><option value="life-altering">life-altering</option>
+                        </select>
+                        <span class="sentence-text"> event that changed the scientist's career forever.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 36 - 37</h2><div class="sentence-item">
+                        <span class="sentence-text">The police could not make an arrest because they didn't have enough physical </span>
+                        <select class="vocab-select" data-correct="evidence" data-group="7" data-sentence="0">
+                            <option value="">Select...</option><option value="stakes are high">stakes are high</option><option value="evidence">evidence</option>
+                        </select>
+                        <span class="sentence-text"> to link the suspect to the crime.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">When the </span>
+                        <select class="vocab-select" data-correct="stakes are high" data-group="7" data-sentence="1">
+                            <option value="">Select...</option><option value="stakes are high">stakes are high</option><option value="evidence">evidence</option>
+                        </select>
+                        <span class="sentence-text">, such as in heart surgery, there is absolutely no room for error.</span>
+                    </div></div></div>
+        <button id="toggleAnswersBtn">Show Answers</button>
+        <div class="print-section">
+            <button id="printBtn">Print/Save to PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions (same as before)
+        function extractVocab(sentence) {
+            const match = sentence.match(/\*\*(.*?)\*\*/);
+            return match ? match[1] : '';
+        }
+
+        function chunkArray(array, size) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += size) {
+                chunks.push(array.slice(i, i + size));
+            }
+            return chunks;
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Refactored: generateQuiz now accepts a sentences array
+        function generateQuiz(sentences) {
+            const quizSection = document.getElementById('quizSection');
+            quizSection.innerHTML = '';
+            const sentenceGroups = chunkArray(sentences, 5);
+            sentenceGroups.forEach((group, groupIndex) => {
+                const vocabWords = group.map(sentence => extractVocab(sentence));
+                const shuffledOptions = shuffleArray(vocabWords);
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'sentence-group';
+                groupDiv.innerHTML = `<h2>Sentences ${groupIndex * 5 + 1} - ${Math.min((groupIndex + 1) * 5, sentences.length)}</h2>`;
+                group.forEach((sentence, sentenceIndex) => {
+                    const correctAnswer = extractVocab(sentence);
+                    const parts = sentence.split(/\*\*(.*?)\*\*/);
+                    const beforeText = parts[0];
+                    const afterText = parts[2] || '';
+                    const sentenceItem = document.createElement('div');
+                    sentenceItem.className = 'sentence-item';
+                    let selectOptions = '<option value="">Select...</option>';
+                    shuffledOptions.forEach(option => {
+                        selectOptions += `<option value="${option}">${option}</option>`;
+                    });
+                    sentenceItem.innerHTML = `
+                        <span class="sentence-text">${beforeText}</span>
+                        <select class="vocab-select" data-correct="${correctAnswer}" data-group="${groupIndex}" data-sentence="${sentenceIndex}">
+                            ${selectOptions}
+                        </select>
+                        <span class="sentence-text">${afterText}</span>
+                    `;
+                    const selectElement = sentenceItem.querySelector('select');
+selectElement.addEventListener('change', function() {
+    this.classList.remove('correct');
+    this.classList.remove('incorrect');
+    if (this.value === '') return;
+    if (this.value === this.dataset.correct) {
+        this.classList.add('correct');
+    } else {
+        this.classList.add('incorrect');
+    }
+});
+                    groupDiv.appendChild(sentenceItem);
+                });
+                quizSection.appendChild(groupDiv);
+            });
+        }
+
+        // Parse user input safely
+        function parseSentences(input) {
+            const lines = input.split('\n');
+            const sentences = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                // Remove trailing comma if present
+                if (line.endsWith(',')) line = line.slice(0, -1);
+                // Must start and end with "
+                if (!line.startsWith('"') || !line.endsWith('"')) {
+                    throw new Error(`Line must be enclosed in quotes: ${line}`);
+                }
+                let content = line.slice(1, -1); // remove quotes
+                // Must contain exactly one **...** pair
+                const boldMatches = content.match(/\*\*(.*?)\*\*/g);
+                if (!boldMatches || boldMatches.length !== 1) {
+                    throw new Error(`Exactly one vocabulary word in **bold** required: ${line}`);
+                }
+                sentences.push(content);
+            }
+            if (sentences.length === 0) {
+                throw new Error("No valid sentences found.");
+            }
+            return sentences;
+        }
+
+        // Download current page as HTML
+        function downloadCurrentPage(fileName) {
+            const fullHTML = document.documentElement.outerHTML;
+            const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('nameInput');
+            const idInput = document.getElementById('idInput');
+            const printBtn = document.getElementById('printBtn');
+            const authoringPanel = document.getElementById('authoringPanel');
+            const sentenceInput = document.getElementById('sentenceInput');
+            const sentenceData = document.getElementById('sentenceData');
+            const makeBtn = document.getElementById('makeBtn');
+
+            document.getElementById('sentenceInput').value = document.getElementById('sentenceData').textContent.trim();
+            // Print button always enabled — validate on click
+            printBtn.addEventListener('click', () => {
+                if (nameInput.value.trim() === '' || idInput.value.trim() === '') {
+                    alert('Name and ID required');
+                    return;
+                }
+                window.print();
+            });
+
+            // Make Quiz Button
+makeBtn.addEventListener('click', () => {
+
+    document.getElementById('sentenceData').textContent=document.getElementById('sentenceInput').value.trim();
+
+    try {
+        const userSentences = parseSentences(sentenceInput.value);
+        generateQuiz(userSentences);
+
+
+        // Get filename
+        const fileNameInput = document.getElementById('fileNameInput');
+        let fileNameBase = fileNameInput.value.trim();
+        if (!fileNameBase) {
+            fileNameBase = `vocab-quiz-${Date.now()}`;
+        }
+
+        let fileName = fileNameBase + 'EditMode.html';
+        // Create and trigger download
+        downloadCurrentPage(fileName);
+
+        // Hide authoring panel and contenEdble = false
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+        });
+        authoringPanel.style.display = 'none';
+        fileName = fileNameBase + '.html';
+
+        downloadCurrentPage(fileName);
+
+        // Restore authoring panel and contenteditables
+        authoringPanel.style.display = 'block';
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+        });
+
+        // Show save message
+        const saveMessage = document.getElementById('saveMessage');
+        saveMessage.style.display = 'block';
+        setTimeout(() => {
+            saveMessage.style.display = 'none';
+        }, 5000); // 5 seconds
+
+    } catch (err) {
+        alert('Error parsing sentences:\n' + err.message);
+        // Ensure panel is visible if error occurs
+        authoringPanel.style.display = 'block';
+    }
+});
+
+
+
+const studyToggleBtn = document.getElementById('studyToggleBtn');
+
+studyToggleBtn.addEventListener('click', () => {
+    const selects = document.querySelectorAll('.vocab-select');
+    const isCurrentlyStudyMode = studyToggleBtn.textContent === "Study Mode";
+
+    selects.forEach(select => {
+        if (isCurrentlyStudyMode) {
+            // Switch to Study Mode: Show all correct answers
+            select.value = select.dataset.correct;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Switch to Hide Answers: Restore to blank/original state
+            select.value = "";
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    // Toggle the button text
+    studyToggleBtn.textContent = isCurrentlyStudyMode ? "Hide Answers" : "Study Mode";
+});
+
+
+
+        });
+        
+        
+        
+        
+// Add this at the bottom of your script, outside generateQuiz
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('vocab-select')) {
+        const select = e.target;
+        select.classList.remove('correct', 'incorrect');
+        if (select.value === '') return;
+        if (select.value === select.dataset.correct) {
+            select.classList.add('correct');
+        } else {
+            select.classList.add('incorrect');
+        }
+    }
+});
+        
+
+
+// Toggle answers button
+const toggleBtn = document.getElementById('toggleAnswersBtn');
+let answersVisible = false;
+
+toggleBtn.addEventListener('click', () => {
+    answersVisible = !answersVisible;
+    const selects = document.querySelectorAll('.vocab-select');
+
+    selects.forEach(select => {
+        const correct = select.dataset.correct;
+        if (answersVisible) {
+            // Set to correct answer and lock
+            select.value = correct;
+            select.disabled = true;
+            select.classList.remove('incorrect');
+            select.classList.add('correct');
+        } else {
+            // Restore to "Select..." and unlock
+            select.value = '';
+            select.disabled = false;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    toggleBtn.textContent = answersVisible ? 'Hide Answers' : 'Show Answers';
+});
+    </script>
+
+
+</body></html>
