@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrambler</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 40px; color: #2980b9; }
+        p.instructions { text-align: center; font-style: italic; color: #666; }
+
+        .section { margin-bottom: 30px; }
+        
+        .dialog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .line {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            position: relative;
+        }
+
+        .line:hover { border-color: #3498db; }
+
+        /* Indicator for first item clicked */
+        .selected {
+            border-color: #f39c12 !important;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        /* Feedback Colors */
+/* Feedback Colors - Subtle Shades */
+.correct {
+    background-color: #f0fdf4 !important; /* Very light mint green */
+    border-color: #c3e6cb !important;
+}
+
+.incorrect {
+    background-color: #F4F7F6 !important; /* Very light rose/pink */
+    border-color: #f5c6cb !important;
+}
+
+        .speaker-label {
+            font-weight: bold;
+            display: block;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            color: #7f8c8d;
+        }
+.submission-area {
+    margin-top: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
+
+#bodyAllContent{
+    max-width:37rem; margin:auto;
+    -webkit-box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82);
+box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
+}
+/* Hide the inputs and button when actually printing the PDF */
+@media print {
+    .submission-area, .instructions, .selected {
+        display: none;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+<div id="bodyAllContent">
+ <div class ="editMode">
+    <ul>
+        <li>Update the Title and subtitle areas</li>
+        <li>Then save this page <button id="savePageBtn">Save this page</button></li>
+        <li>In your default download folder, change the file name as desired</li>
+        <li>Open the new file in your editor and manually update the JS</li>
+        <ul><li>Use the JSON converter (seperate app) and paste the converted code into JS section (replaces the current example).</li></ul>
+    </ul>
+    </div>
+<div  contenteditable>
+    <h1>Podcast Scramble</h1>
+    <p class="instructions">Criminal and Victim Call 911<br>
+    Click two lines to swap them. Changes to<span style="background-color: #f0fdf4; border:thin solid #75A082;border-radius:6px;">&nbsp;green&nbsp;</span>when correct</p>
+</div>
+
+
+    <div id="game-board"></div>
+
+
+<hr>
+<div class="submission-area">
+    <div class="input-group">
+        <input type="text" id="studentName" placeholder="Name" oninput="validateForm()">
+        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+    </div>
+        <p id="msg" class="error-msg">Name and ID required for PDF print/save</p>
+    <button id="printBtn" onclick="window.print()" disabled>Print/Save to PDF</button>
+
+</div>
+
+</div>
+
+    <script>
+    document.getElementById('savePageBtn').addEventListener('click', function () {
+    // === NEW LINES START HERE ===
+
+    // 1. Disable all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+    });
+
+    // 2. Hide all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // === END OF NEW LINES ===
+
+    // Original save logic continues...
+    const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'changeThisFileName.html';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
+
+
+        //Restore all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+    });
+
+    //Restore all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'block';
+    });
+
+    alert("saved to default download folder");
+
+});
+    </script>
+
+    <script>
+const quizData = [
+    {
+        "title": "Section 1",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "Clamdens on the  seventh  floor,"
+            },
+            {
+                "s": "Line",
+                "t": "Saturday sun through the door."
+            },
+            {
+                "s": "Line",
+                "t": "Mom flips eggs, Dad reads the news,"
+            },
+            {
+                "s": "Line",
+                "t": "Little Johnny ties his shoes."
+            },
+            {
+                "s": "Line",
+                "t": "Windows shut, AC hums,"
+            },
+            {
+                "s": "Line",
+                "t": "Balcony door left open—someone…"
+            }
+        ]
+    },
+    {
+        "title": "Section 2",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "Oh, Johnny flew like a bird from the rail,"
+            },
+            {
+                "s": "Line",
+                "t": "Seven stories down, but the branches prevailed."
+            },
+            {
+                "s": "Line",
+                "t": "Leaves caught his fall, dirt kissed his skin,"
+            },
+            {
+                "s": "Line",
+                "t": "Good fortune wrapped him up again."
+            },
+            {
+                "s": "Line",
+                "t": "Hallelujah, hallelujah—thank the tree!"
+            },
+            {
+                "s": "Line",
+                "t": "Seventh-floor miracle, wild and free."
+            }
+        ]
+    }
+]
+;
+
+let selectedElement = null;
+
+// Function to shuffle indices so that no index matches its original position
+function getDerangedIndices(length) {
+    let indices = Array.from({length}, (_, i) => i);
+    let scrambled = [...indices];
+    
+    // Fisher-Yates shuffle with a check
+    do {
+        for (let i = scrambled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+        }
+    } while (scrambled.some((val, idx) => val === idx));
+    
+    return scrambled;
+}
+
+function initGame() {
+    const board = document.getElementById('game-board');
+    board.innerHTML = ''; // Clear board for fresh start
+    
+    quizData.forEach((section, sectionIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+        
+        const container = document.createElement('div');
+        container.className = 'dialog-container';
+        
+        // Generate a derangement so every line starts in the wrong place
+        const scrambledIndices = getDerangedIndices(section.lines.length);
+
+        scrambledIndices.forEach((originalIdx) => {
+            const lineData = section.lines[originalIdx];
+            const lineEl = document.createElement('div');
+            lineEl.className = 'line';
+            lineEl.dataset.originalIndex = originalIdx;
+            lineEl.dataset.sectionIndex = sectionIdx;
+
+            //the below line was replaced by it's following line
+            //lineEl.innerHTML = `<span class="speaker-label">${lineData.s}</span> <span class="text">${lineData.t}</span>`;
+            lineEl.innerHTML = `<span class="text">${lineData.t}</span>`;
+            
+            lineEl.onclick = () => handleSelection(lineEl);
+            container.appendChild(lineEl);
+        });
+
+        sectionDiv.appendChild(container);
+        board.appendChild(sectionDiv);
+        checkColors(container);
+    });
+}
+
+function handleSelection(el) {
+    if (!selectedElement) {
+        selectedElement = el;
+        el.classList.add('selected');
+    } else {
+        if (selectedElement === el) {
+            el.classList.remove('selected');
+            selectedElement = null;
+            return;
+        }
+
+        if (selectedElement.dataset.sectionIndex === el.dataset.sectionIndex) {
+            const parent = el.parentNode;
+            const nextToEl = el.nextSibling;
+            const nextToSelected = selectedElement.nextSibling;
+
+            parent.insertBefore(el, nextToSelected);
+            parent.insertBefore(selectedElement, nextToEl);
+            
+            checkColors(parent);
+        }
+
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    }
+}
+
+function checkColors(container) {
+    const lines = container.querySelectorAll('.line');
+    lines.forEach((line, currentIndex) => {
+        if (parseInt(line.dataset.originalIndex) === currentIndex) {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        } else {
+            line.classList.add('incorrect');
+            line.classList.remove('correct');
+        }
+    });
+}
+
+initGame();
+
+
+
+function validateForm() {
+    const name = document.getElementById('studentName').value.trim();
+    const id = document.getElementById('studentID').value.trim();
+    const btn = document.getElementById('printBtn');
+    const msg = document.getElementById('msg');
+
+    if (name !== "" && id !== "") {
+        btn.disabled = false;
+        msg.style.visibility = "hidden";
+    } else {
+        btn.disabled = true;
+        msg.style.visibility = "visible";
+    }
+}
+    </script>
+
+</body>
+</html>

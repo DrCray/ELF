@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to Song JSON Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        details {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            position: relative; /* Needed for absolute positioning of copy button */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #error {
+            color: red;
+            margin-top: 10px;
+        }
+        /* Copy button styles */
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 1;
+            background-color: #218838;
+        }
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+        .copy-feedback {
+            position: absolute;
+            top: 40px;
+            right: 8px;
+            background-color: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Markdown to Song JSON Converter</h1>
+
+    <details>
+        <summary>Instructions & Example</summary>
+        <!-- (same as before, omitted for brevity) -->
+        <p>This tool converts specially formatted markdown text (like song or poem lyrics with sections) into a structured JSON array, similar to the example below.</p>
+        <p>The input must follow this format:</p>
+        <ul>
+            <li><code>[section N]</code> — defines a new section (N starts from 1)</li>
+            <li><code>[ln]Line text here</code> — each line of lyrics</li>
+            <li><code>[end]</code> — optional, marks the end of the input</li>
+        </ul>
+
+        <p><strong>Example input:</strong></p>
+        <pre>[section 1]
+[ln]Clamdens on the <b> seventh </b> floor,
+[ln]Saturday sun through the door. 
+[ln]Mom flips eggs, Dad reads the news,
+[ln]Little Johnny ties his shoes. 
+[ln]Windows shut, AC hums,
+[ln]Balcony door left open—someone… 
+[section 2]
+[ln]Oh, Johnny flew like a bird from the rail,
+[ln]Seven stories down, but the branches prevailed. 
+[ln]Leaves caught his fall, dirt kissed his skin,
+[ln]Good fortune wrapped him up again. 
+[ln]Hallelujah, hallelujah—thank the tree!
+[ln]Seventh-floor miracle, wild and free. 
+[end]</pre>
+    </details>
+
+    <textarea id="input" placeholder="Paste your markdown text here..."></textarea>
+
+    <button onclick="convertToJson()">Convert to JSON</button>
+
+    <div id="error"></div>
+    <div id="output"></div>
+
+    <script>
+        function convertToJson() {
+            const input = document.getElementById('input').value.trim();
+            const outputDiv = document.getElementById('output');
+            const errorDiv = document.getElementById('error');
+            
+            outputDiv.innerHTML = ''; // Clear previous content including button
+            errorDiv.textContent = '';
+
+            if (!input) {
+                errorDiv.textContent = 'Please paste some markdown text first.';
+                return;
+            }
+
+            const lines = input.split('\n');
+            const sections = [];
+            let currentSection = null;
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+
+                if (line.startsWith('[section ')) {
+                    const match = line.match(/\[section\s+(\d+)\]/);
+                    if (match) {
+                        if (currentSection) {
+                            sections.push(currentSection);
+                        }
+                        currentSection = {
+                            title: `Section ${match[1]}`,
+                            lines: []
+                        };
+                    }
+                } else if (line.startsWith('[ln]')) {
+                    if (!currentSection) {
+                        errorDiv.textContent = `Error: Found [ln] before any [section] on line ${i + 1}`;
+                        return;
+                    }
+                    const text = line.substring(4).trim();
+                    currentSection.lines.push({ s: "Line", t: text });
+                } else if (line === '[end]' || line === '') {
+                    // Ignore
+                } else if (line) {
+                    errorDiv.textContent += `Warning: Unrecognized line ignored: "${line}" (line ${i + 1})\n`;
+                }
+            }
+
+            if (currentSection && currentSection.lines.length > 0) {
+                sections.push(currentSection);
+            }
+
+            if (sections.length === 0) {
+                errorDiv.textContent = 'No valid sections found.';
+                return;
+            }
+
+            const jsonText = JSON.stringify(sections, null, 4);
+
+            // Create pre element for formatted JSON
+            const pre = document.createElement('pre');
+            pre.textContent = jsonText;
+
+            // Create copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Copy';
+            copyBtn.className = 'copy-btn';
+            copyBtn.title = 'Copy JSON to clipboard';
+
+            // Feedback tooltip
+            const feedback = document.createElement('div');
+            feedback.textContent = 'Copied!';
+            feedback.className = 'copy-feedback';
+
+            copyBtn.appendChild(feedback);
+
+            copyBtn.onclick = async () => {
+                try {
+                    await navigator.clipboard.writeText(jsonText);
+                    feedback.style.opacity = '1';
+                    setTimeout(() => {
+                        feedback.style.opacity = '0';
+                    }, 1500);
+                } catch (err) {
+                    alert('Failed to copy: ' + err);
+                }
+            };
+
+            // Append button first (so it's on top), then the JSON
+            outputDiv.appendChild(copyBtn);
+            outputDiv.appendChild(pre);
+        }
+    </script>
+</body>
+</html>
