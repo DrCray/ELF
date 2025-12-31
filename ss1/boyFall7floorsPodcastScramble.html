@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrambler</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 40px; color: #2980b9; }
+        p.instructions { text-align: center; font-style: italic; color: #666; }
+
+        .section { margin-bottom: 30px; }
+        
+        .dialog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .line {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            position: relative;
+        }
+
+        .line:hover { border-color: #3498db; }
+
+        /* Indicator for first item clicked */
+        .selected {
+            border-color: #f39c12 !important;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        /* Feedback Colors */
+/* Feedback Colors - Subtle Shades */
+.correct {
+    background-color: #f0fdf4 !important; /* Very light mint green */
+    border-color: #c3e6cb !important;
+}
+
+.incorrect {
+    background-color: #F4F7F6 !important; /* Very light rose/pink */
+    border-color: #f5c6cb !important;
+}
+
+        .speaker-label {
+            font-weight: bold;
+            display: block;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            color: #7f8c8d;
+        }
+.submission-area {
+    margin-top: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
+
+#bodyAllContent{
+    max-width:37rem; margin:auto;
+    -webkit-box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82);
+box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
+}
+/* Hide the inputs and button when actually printing the PDF */
+@media print {
+    .submission-area, .instructions, .selected {
+        display: none;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+<div id="bodyAllContent">
+ <div class="editMode" style="display: none;">
+    <ul>
+        <li>Update the Title and subtitle areas</li>
+        <li>Then save this page <button id="savePageBtn">Save this page</button></li>
+        <li>In your default download folder, change the file name as desired</li>
+        <li>Open the new file in your editor and manually update the JS</li>
+        <ul><li>Use the JSON converter (seperate app) and paste the converted code into JS section (replaces the current example).</li></ul>
+    </ul>
+    </div>
+<div contenteditable="false">
+    <h1>Podcast Scramble</h1>
+    <p class="instructions">Boy Falls 7 Floors</p><p class="instructions">Click two lines to swap them. Changes to&nbsp;<span style="background-color: #f0fdf4; border:thin solid #75A082;border-radius:6px;">&nbsp;green&nbsp;</span>&nbsp;when correct</p>
+</div>
+
+
+    <div id="game-board"><div class="section"><h2>Section 1</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="0"><span class="text">Balcony door left open—someone…</span></div><div class="line incorrect" data-original-index="3" data-section-index="0"><span class="text">Little Johnny ties his shoes.</span></div><div class="line incorrect" data-original-index="0" data-section-index="0"><span class="text">Clamdens on the  seventh  floor,</span></div><div class="line incorrect" data-original-index="2" data-section-index="0"><span class="text">Mom flips eggs, Dad reads the news,</span></div><div class="line incorrect" data-original-index="1" data-section-index="0"><span class="text">Saturday sun through the door.</span></div><div class="line incorrect" data-original-index="4" data-section-index="0"><span class="text">Windows shut, AC hums,</span></div></div></div><div class="section"><h2>Section 2</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="1"><span class="text">Seventh-floor miracle, wild and free.</span></div><div class="line incorrect" data-original-index="4" data-section-index="1"><span class="text">Hallelujah, hallelujah—thank the tree!</span></div><div class="line incorrect" data-original-index="3" data-section-index="1"><span class="text">Good fortune wrapped him up again.</span></div><div class="line incorrect" data-original-index="2" data-section-index="1"><span class="text">Leaves caught his fall, dirt kissed his skin,</span></div><div class="line incorrect" data-original-index="0" data-section-index="1"><span class="text">Oh, Johnny flew like a bird from the rail,</span></div><div class="line incorrect" data-original-index="1" data-section-index="1"><span class="text">Seven stories down, but the branches prevailed.</span></div></div></div></div>
+
+
+<hr>
+<div class="submission-area">
+    <div class="input-group">
+        <input type="text" id="studentName" placeholder="Name" oninput="validateForm()">
+        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+    </div>
+        <p id="msg" class="error-msg">Name and ID required for PDF print/save</p>
+    <button id="printBtn" onclick="window.print()" disabled="">Print/Save to PDF</button>
+
+</div>
+
+</div>
+
+    <script>
+    document.getElementById('savePageBtn').addEventListener('click', function () {
+    // === NEW LINES START HERE ===
+
+    // 1. Disable all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+    });
+
+    // 2. Hide all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // === END OF NEW LINES ===
+
+    // Original save logic continues...
+    const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'changeThisFileName.html';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
+
+
+        //Restore all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+    });
+
+    //Restore all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'block';
+    });
+
+    alert("saved to default download folder");
+
+});
+    </script>
+
+    <script>
+const quizData = [
+    {
+        "title": "Section 1",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "speaker1: You know, it's scary how a day can start off normal and suddenly turn into a tragedy--well, what could have been a tragedy. The Clamden family was just having what sounded like the most typical Saturday morning---kids still in pajamas, mom cooking breakfast, dad lost in his newspaper."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: That's right. You could almost picture the scene---everyone assuming the day would just unfold like it always had. There's something oddly comforting about daily or weekly rituals. But we can quickly see how fragile they really are."
+            },
+            {
+                "s": "Line",
+                "t": "speaker1: Totally. It's like we all expect life to follow this predictable script, and then---out of nowhere---everything can change. The Clamdens had no warning. No ominous music before a tragic scene, just a regular morning."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: It reminds me how quickly routines can unravel. One minute it's breakfast, the next it's chaos. And the scariest part? It usually comes without any kind of heads up."
+            }
+        ]
+    },
+    {
+        "title": "Section 2",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "speaker1: Exactly. And what struck me is how ordinary all those details were: the dad working on a deadline, kids bringing dishes to the sink, mom calling her best friend. Nothing felt out of place."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: Yeah, even those tiny moments---the mom closing the balcony doors, turning on the air conditioner---just everyday stuff. But somewhere in all that routine, something slipped. Little Johnny went missing, and no one even noticed at first."
+            },
+            {
+                "s": "Line",
+                "t": "speaker1: That actually reminds me of how easy it is to miss one little thing. You do something on autopilot, and before you know it, you're asking yourself, 'Did I really lock that door?' or 'Did I leave the stove on?'"
+            }
+        ]
+    },
+    {
+        "title": "Section 3",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "speaker1: But then---the switch flips. The moment Susie asked, 'Where's Johnny?'---you could almost feel the parents' stomachs drop. That dread must have hit like a train."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: My heart just clenched reading that. One second you're chatting about weekend plans, the next you're sprinting for the balcony, not knowing what you'll find. That scream for Johnny---the terror in that moment is hard to even imagine."
+            },
+            {
+                "s": "Line",
+                "t": "speaker1: And both parents just dropping everything, running for the balcony, the dad's cup hitting the floor. It's such a gut-level reaction, pure instinct taking over."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: It really shows how parenthood is this mix of love and constant, low-level fear. Most days it sits quiet in the background, but suddenly it can swamp you completely."
+            }
+        ]
+    },
+    {
+        "title": "Section 4",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "speaker1: And here's where I can't help but think about fate---or, you know, a bit of luck, maybe even divine intervention. Johnny survived a fall from the seventh floor with just scratches. That's almost unbelievable."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: Honestly, it gives me chills. The way the combination of trees, bushes, and soft dirt cushioned his fall---it feels like all the odds lined up in his favor. Some people would say it's a miracle; others would call it pure chance."
+            },
+            {
+                "s": "Line",
+                "t": "speaker1: Either way, that sense of relief must have been overwhelming for the parents---expecting a parent's worst nightmare, but discovering Little Johnny was just fine."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: I keep thinking, would I have just sat there stunned or burst into tears? When things work out after so much fear, it really jumbles the emotions."
+            }
+        ]
+    },
+    {
+        "title": "Section 5",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "speaker1: Moving past that kind of day must be so hard. Even with a happy ending, I bet the Clamdens' sense of security was shaken. You start questioning all the little things you do without thinking."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: I've had scares, though nothing like this, and they stick with you. Suddenly you double-check every lock, every window. You replay what happened, wondering how close you came to a different outcome."
+            },
+            {
+                "s": "Line",
+                "t": "speaker1: Events like this really remind us not to take our routines for granted. Even a day that starts with pancakes and cartoons can transform in a heartbeat---and maybe, sometimes, we get lucky enough to learn from it without paying the highest price."
+            },
+            {
+                "s": "Line",
+                "t": "speaker2: You said it. If anything, stories like the Clamdens' push us to appreciate those quiet mornings just a little more---and hold our loved ones a little tighter."
+            }
+        ]
+    }
+]
+;
+
+let selectedElement = null;
+
+// Function to shuffle indices so that no index matches its original position
+function getDerangedIndices(length) {
+    let indices = Array.from({length}, (_, i) => i);
+    let scrambled = [...indices];
+    
+    // Fisher-Yates shuffle with a check
+    do {
+        for (let i = scrambled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+        }
+    } while (scrambled.some((val, idx) => val === idx));
+    
+    return scrambled;
+}
+
+function initGame() {
+    const board = document.getElementById('game-board');
+    board.innerHTML = ''; // Clear board for fresh start
+    
+    quizData.forEach((section, sectionIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+        
+        const container = document.createElement('div');
+        container.className = 'dialog-container';
+        
+        // Generate a derangement so every line starts in the wrong place
+        const scrambledIndices = getDerangedIndices(section.lines.length);
+
+        scrambledIndices.forEach((originalIdx) => {
+            const lineData = section.lines[originalIdx];
+            const lineEl = document.createElement('div');
+            lineEl.className = 'line';
+            lineEl.dataset.originalIndex = originalIdx;
+            lineEl.dataset.sectionIndex = sectionIdx;
+
+            //the below line was replaced by it's following line
+            //lineEl.innerHTML = `<span class="speaker-label">${lineData.s}</span> <span class="text">${lineData.t}</span>`;
+            lineEl.innerHTML = `<span class="text">${lineData.t}</span>`;
+            
+            lineEl.onclick = () => handleSelection(lineEl);
+            container.appendChild(lineEl);
+        });
+
+        sectionDiv.appendChild(container);
+        board.appendChild(sectionDiv);
+        checkColors(container);
+    });
+}
+
+function handleSelection(el) {
+    if (!selectedElement) {
+        selectedElement = el;
+        el.classList.add('selected');
+    } else {
+        if (selectedElement === el) {
+            el.classList.remove('selected');
+            selectedElement = null;
+            return;
+        }
+
+        if (selectedElement.dataset.sectionIndex === el.dataset.sectionIndex) {
+            const parent = el.parentNode;
+            const nextToEl = el.nextSibling;
+            const nextToSelected = selectedElement.nextSibling;
+
+            parent.insertBefore(el, nextToSelected);
+            parent.insertBefore(selectedElement, nextToEl);
+            
+            checkColors(parent);
+        }
+
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    }
+}
+
+function checkColors(container) {
+    const lines = container.querySelectorAll('.line');
+    lines.forEach((line, currentIndex) => {
+        if (parseInt(line.dataset.originalIndex) === currentIndex) {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        } else {
+            line.classList.add('incorrect');
+            line.classList.remove('correct');
+        }
+    });
+}
+
+initGame();
+
+
+
+function validateForm() {
+    const name = document.getElementById('studentName').value.trim();
+    const id = document.getElementById('studentID').value.trim();
+    const btn = document.getElementById('printBtn');
+    const msg = document.getElementById('msg');
+
+    if (name !== "" && id !== "") {
+        btn.disabled = false;
+        msg.style.visibility = "hidden";
+    } else {
+        btn.disabled = true;
+        msg.style.visibility = "visible";
+    }
+}
+    </script>
+
+
+
+</body></html>
