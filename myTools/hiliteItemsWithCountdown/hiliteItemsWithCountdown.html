@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Grammar Exercise Editor</title>
+<style>
+/* --- General Body & Container --- */
+body {
+    max-width: 42rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    font-size: 15px;
+    margin: 1rem auto;
+    padding: 4rem 1.5rem 1.5rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    color: #2c3e50;
+}
+
+header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+header h2 {
+    margin: 0.3rem 0;
+    color: #34495e;
+    font-weight: 600;
+}
+
+header h3 {
+    margin: 0.25rem 0;
+    color: #5a6c7d;
+    font-weight: 500;
+}
+
+header h4 {
+    margin: 0.2rem 0;
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    color: #95a5a6;
+    font-size: 0.9em;
+}
+
+footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    color: #95a5a6;
+    font-size: 0.85em;
+}
+
+/* --- Toolbar --- */
+#toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 1000;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#toolbar button {
+    padding: 7px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#toolbar button:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+#toolbar button:active {
+    transform: translateY(0);
+}
+
+#toolbar #makeBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    margin-left: auto;
+}
+
+#toolbar #makeBtn:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Editor Wrapper --- */
+#editorWrapper {
+    margin-top: 0;
+    padding: 0;
+}
+
+#editor {
+    border: 2px solid #e0e6ed;
+    padding: 1rem;
+    min-height: 120px;
+    outline: none;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s;
+}
+
+#editor:focus {
+    border-color: #667eea;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05),
+                0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* --- Main Container --- */
+#mainContainer {
+    margin: 1.5rem 0;
+    padding: 0;
+}
+
+/* --- Exercise Block --- */
+.exerciseBlock {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.exerciseBlock:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e0;
+}
+
+/* --- Instructions & HR --- */
+.instructions {
+    margin-bottom: 0.75rem;
+    font-size: 0.95em;
+    color: #5a6c7d;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid #e9ecef;
+    margin: 1rem 0;
+}
+
+/* --- Interactive Content --- */
+.interactiveContent p {
+    margin: 0.5rem 0;
+    line-height: 1.7;
+}
+
+.highlight {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+/* Highlights visible in edit mode */
+.highlight.x {
+    background-color: #cce5ff;
+    border-bottom: 2px solid #99ccff;
+}
+.highlight.y {
+    background-color: #d4edda;
+    border-bottom: 2px solid #a8d5b5;
+}
+.highlight.z {
+    background-color: #fff3cd;
+    border-bottom: 2px solid #ffe69c;
+}
+
+/* Highlights invisible in student mode until clicked */
+.studentMode .highlight.x,
+.studentMode .highlight.y,
+.studentMode .highlight.z {
+    background-color: transparent;
+    border-bottom: none;
+}
+
+.studentMode .highlight.active.x {
+    background-color: #cce5ff;
+    border-bottom: 2px solid #99ccff;
+}
+.studentMode .highlight.active.y {
+    background-color: #d4edda;
+    border-bottom: 2px solid #a8d5b5;
+}
+.studentMode .highlight.active.z {
+    background-color: #fff3cd;
+    border-bottom: 2px solid #ffe69c;
+}
+
+.highlight.active {
+    color: #000;
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* --- Highlight Counters & Toast --- */
+.highlightCounters {
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.9em;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 6px;
+    border-left: 4px solid #667eea;
+}
+
+.highlightCounters p {
+    margin: 0;
+    font-weight: 500;
+    color: #495057;
+}
+
+.highlightCounters span {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.toast {
+    position: absolute;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.95;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* --- File Controls (editMode) --- */
+.fileControls {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.fileControls input {
+    width: 240px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    margin-right: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.fileControls input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.fileControls button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fileControls button:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.editMode {
+    display: block;
+}
+
+/* --- Student Submission --- */
+.studentSubmission {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.studentSubmission input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    flex: 1 1 140px;
+    min-width: 120px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.studentSubmission input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.studentSubmission button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.studentSubmission button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.studentSubmission button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    body {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    #mainContainer {
+        padding: 0;
+    }
+
+    .highlightCounters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .studentSubmission {
+        flex-direction: column;
+    }
+
+    #toolbar {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    #toolbar button {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* --- Print Styling --- */
+@media print {
+    .editMode, .fileControls, .studentSubmission, .toast, #toolbar, #editorWrapper {
+        display: none !important;
+    }
+
+    body {
+        font-size: 11pt;
+        box-shadow: none;
+        margin: 0;
+        padding: 1rem;
+        background: white;
+    }
+
+    .exerciseBlock {
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        box-shadow: none;
+    }
+
+    .highlightCounters {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+    }
+}
+</style>
+</head>
+<body>
+
+<header contenteditable="true">
+<h2>A title if desired</h2>
+<h3>subtitle or info if desired</h3>
+<h4>smaller subtitle or info</h4><p> Any info here, if desired</p>
+</header>
+
+<!-- ===== Toolbar ===== -->
+<div id="toolbar" class="editMode">
+    <button data-color="x" title="Blue Highlight (X)">Blue</button>
+    <button data-color="y" title="Green Highlight (Y)">Green</button>
+    <button data-color="z" title="Yellow Highlight (Z)">Yellow</button>
+    <button data-tag="strong"><b>B</b></button>
+    <button data-tag="em"><i>I</i></button>
+    <button id="hrBtn" title="Insert Horizontal Rule">HR</button>
+    <button id="makeBtn">Make Exercise</button>
+</div>
+
+<!-- ===== Editor ===== -->
+<div id="editorWrapper" class="editMode">
+    <div id="editor" contenteditable="true">
+        Paste or type text here, select text, then click highlight buttons above to mark grammar features.
+    </div>
+</div>
+
+<!-- ===== Output Container ===== -->
+<div id="mainContainer"></div>
+
+<!-- ===== File Controls ===== -->
+<div class="fileControls editMode" style="max-width: 900px; margin: 1em auto; padding: 0 0.8em;">
+    <input type="text" placeholder="File Name:" value="grammarExercise.html" class="fileName">
+    <button class="saveBtn">Save as Local</button>
+</div>
+
+<!-- ===== Student Submission ===== -->
+<div class="studentSubmission">
+    <input type="text" placeholder="Name" id="studentName">
+    <input type="text" placeholder="ID" id="studentID">
+    <button id="printPDF" disabled>Print / Save as PDF</button>
+</div>
+
+<script>
+// --------- Selection Wrapper ---------
+function wrapSelection(wrapper) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const range = sel.getRangeAt(0);
+    if (range.collapsed) return;
+
+    const content = range.extractContents();
+    wrapper.appendChild(content);
+    range.insertNode(wrapper);
+
+    sel.removeAllRanges();
+}
+
+// --------- Color/Highlight Buttons ---------
+document.querySelectorAll("[data-color]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const span = document.createElement("span");
+        span.className = "highlight " + btn.dataset.color;
+        span.dataset.type = btn.dataset.color;
+        span.dataset.countId = btn.dataset.color + "Count";
+        wrapSelection(span);
+    });
+});
+
+// --------- Bold / Italic Buttons ---------
+document.querySelectorAll("[data-tag]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const el = document.createElement(btn.dataset.tag);
+        wrapSelection(el);
+    });
+});
+
+// --------- HR Button ---------
+document.getElementById("hrBtn").addEventListener("click", () => {
+    const editor = document.getElementById("editor");
+    const hr = document.createElement("hr");
+    
+    const sel = window.getSelection();
+    if (sel.rangeCount) {
+        const range = sel.getRangeAt(0);
+        range.insertNode(hr);
+        range.collapse(false);
+    } else {
+        editor.appendChild(hr);
+    }
+});
+
+// --------- Make Button ---------
+document.getElementById("makeBtn").addEventListener("click", () => {
+    const editor = document.getElementById("editor");
+    
+    if (!editor.innerText.trim()) {
+        alert("Editor is empty!");
+        return;
+    }
+
+    // Get the formatted content from editor
+    const content = editor.innerHTML;
+
+    // Create exercise block
+    const block = document.createElement("div");
+    block.className = "exerciseBlock";
+    block.innerHTML = `
+        <div class="interactiveContent">${content}</div>
+        <div class="highlightCounters">
+            <p class="counter x">Blue Countdown: <span id="xCount">0</span></p>
+            <p class="counter y">Green Countdown: <span id="yCount">0</span></p>
+            <p class="counter z">Yellow Countdown: <span id="zCount">0</span></p>
+        </div>
+        <div class="toast" style="display:none"></div>
+    `;
+    
+    document.getElementById("mainContainer").appendChild(block);
+
+    // Initialize counters
+    const highlightTypes = {x:"x", y:"y", z:"z"};
+    for (let type in highlightTypes) {
+        const count = block.querySelectorAll(`.highlight.${type}`).length;
+        const countSpan = block.querySelector(`#${type}Count`);
+        if (countSpan) {
+            countSpan.textContent = count;
+        }
+    }
+
+    // Add click behavior to highlights
+    block.querySelectorAll(".highlight").forEach(span => {
+        span.addEventListener("click", () => {
+            if (!span.classList.contains("active")) {
+                span.classList.add("active");
+                const type = span.dataset.type;
+                const countSpan = block.querySelector(`#${type}Count`);
+                if (countSpan) {
+                    let currentCount = parseInt(countSpan.textContent);
+                    if (currentCount > 0) currentCount--;
+                    countSpan.textContent = currentCount;
+
+                    const toast = block.querySelector(".toast");
+                    toast.textContent = `${currentCount} more ${type.toUpperCase()} highlights left`;
+                    toast.style.display = "block";
+                    setTimeout(() => { toast.style.display = "none"; }, 1500);
+                }
+            }
+        });
+    });
+
+    // Optional: clear editor
+    editor.innerHTML = "Type or paste new content here...";
+});
+
+// --------- Dual Save Function ---------
+function saveExerciseBlock() {
+    const fileNameInput = document.querySelector(".fileControls .fileName").value;
+    const baseName = fileNameInput.replace(/\.html$/i, "");
+
+    // Save EditMode version
+    const editModeHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob1 = new Blob([editModeHTML], {type: "text/html"});
+    saveBlob(blob1, baseName + "EditMode.html");
+
+    // Prepare student version
+    const editElements = document.querySelectorAll(".editMode");
+    editElements.forEach(el => el.style.display = "none");
+    const editableElements = document.querySelectorAll("[contenteditable]");
+    editableElements.forEach(el => el.setAttribute("contenteditable", "false"));
+    
+    // Add studentMode class to body
+    document.body.classList.add("studentMode");
+
+    const studentHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob2 = new Blob([studentHTML], {type: "text/html"});
+    saveBlob(blob2, baseName + ".html");
+
+    // Restore
+    document.body.classList.remove("studentMode");
+    editElements.forEach(el => el.style.display = "block");
+    editableElements.forEach(el => el.setAttribute("contenteditable", "true"));
+
+    alert("Files saved:\n• " + baseName + "EditMode.html (teacher version)\n• " + baseName + ".html (student version)");
+}
+
+// Attach save button event listener
+document.querySelector(".fileControls .saveBtn").addEventListener("click", saveExerciseBlock);
+
+function saveBlob(blob, filename) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+// --------- Student PDF / Name ID ---------
+const nameInput = document.getElementById("studentName");
+const idInput = document.getElementById("studentID");
+const printBtn = document.getElementById("printPDF");
+
+function togglePrintButton() {
+    printBtn.disabled = !(nameInput.value.trim() && idInput.value.trim());
+}
+
+nameInput.addEventListener("input", togglePrintButton);
+idInput.addEventListener("input", togglePrintButton);
+
+printBtn.addEventListener("click", () => {
+    let header = document.getElementById("studentHeader");
+    if (!header) {
+        header = document.createElement("div");
+        header.id = "studentHeader";
+        header.style.marginBottom = "1em";
+        header.style.maxWidth = "900px";
+        header.style.margin = "0 auto 1em auto";
+        header.style.padding = "0 0.8em";
+        header.innerHTML = `<strong>Name:</strong> ${nameInput.value} &nbsp;&nbsp; <strong>ID:</strong> ${idInput.value}`;
+        document.body.prepend(header);
+    }
+    window.print();
+});
+
+// --------- Highlight Click Handler (for saved student version) ---------
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.addEventListener("click", function(e) {
+        if (e.target.classList.contains("highlight")) {
+            const span = e.target;
+            if (!span.classList.contains("active")) {
+                span.classList.add("active");
+                const block = span.closest(".exerciseBlock");
+                if (block) {
+                    const type = span.dataset.type;
+                    const countSpan = block.querySelector("#" + type + "Count");
+                    if (countSpan) {
+                        let currentCount = parseInt(countSpan.textContent);
+                        if (currentCount > 0) currentCount--;
+                        countSpan.textContent = currentCount;
+                        const toast = block.querySelector(".toast");
+                        if (toast) {
+                            toast.textContent = currentCount + " more " + type.toUpperCase() + " highlights left";
+                            toast.style.display = "block";
+                            setTimeout(function() { toast.style.display = "none"; }, 1500);
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+</script>
+<footer>...</footer>
+
+</body>
+</html>
