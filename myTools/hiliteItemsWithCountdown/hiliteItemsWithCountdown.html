@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Grammar Exercise Editor</title>
+<title>Interactive Sytax Exercise Editor</title>
 <style>
 /* --- General Body & Container --- */
 body {
@@ -60,8 +60,7 @@ footer {
 #toolbar {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
     padding: 10px 16px;
@@ -162,9 +161,16 @@ footer {
 }
 
 hr {
-    border: none;
-    border-top: 2px solid #e9ecef;
-    margin: 1rem 0;
+  /* Remove default border */
+        border: none;
+        /* Set height of the rule */
+        height: 5px;
+        /* Apply the linear gradient background */
+        background-image: linear-gradient(to right, #FFB6C1, #E6E6FA);
+        /* Ensure the background covers the entire element */
+        background-size: cover;
+        /* Optional: Add some margin for better visibility */
+        margin: 20px 0;
 }
 
 /* --- Interactive Content --- */
@@ -419,9 +425,146 @@ hr {
         border: 1px solid #ddd;
     }
 }
+
+/* --- Toggle Answers Button --- */
+#toggleAnswersBtn {
+    position: fixed;
+    bottom: 10px;
+    /*right: 20px;*/
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+#toggleAnswersBtn:hover {
+    background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+#toggleAnswersBtn:active {
+    transform: translateY(0);
+}
+
+/* Show answers mode - force highlights visible */
+body.showAnswers .highlight.x,
+body.showAnswers .highlight.y,
+body.showAnswers .highlight.z {
+    background-color: #cce5ff !important;
+    border-bottom: 2px solid #99ccff !important;
+}
+
+body.showAnswers .highlight.x {
+    background-color: #cce5ff !important;
+    border-bottom: 2px solid #99ccff !important;
+}
+
+body.showAnswers .highlight.y {
+    background-color: #d4edda !important;
+    border-bottom: 2px solid #a8d5b5 !important;
+}
+
+body.showAnswers .highlight.z {
+    background-color: #fff3cd !important;
+    border-bottom: 2px solid #ffe69c !important;
+}
+
+@media print {
+    #toggleAnswersBtn {
+        display: none !important;
+    }
+}
+
+summary {
+  list-style: none; /* Standard way to remove the marker (Firefox, Edge, Chrome) */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* Webkit-specific pseudo-element for Safari and older Chrome */
+}
+
 </style>
 </head>
 <body>
+
+
+<div id="instructions" class="editMode" style="max-width: 900px; margin: 1rem auto; padding: 1rem; background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px; border-left: 4px solid #667eea;">
+   <details><summary> <h3 style="margin-top: 0; color: #34495e;">📝 How to Use This Syntax Exercise Builder</h3>
+</summary>
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin-bottom: 0.5rem;">Getting Started</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Edit the header:</strong> Click on the title, subtitle, or info sections at the top to customize them for your exercise.</li>
+            <li><strong>Add your text:</strong> Type or paste your exercise text into the editor box below the toolbar.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Highlight the syntax features you are working on.</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Select text:</strong> Highlight the word or phrase you want students to identify.</li>
+            <li><strong>Choose a color:</strong>
+                <ul style="margin: 0.3rem 0; padding-left: 1.5rem;">
+                    <li><span style="background: #cce5ff; padding: 2px 6px; border-radius: 3px;">Blue</span> - For one type of syntax feature (e.g., subjects)</li>
+                    <li><span style="background: #d4edda; padding: 2px 6px; border-radius: 3px;">Green</span> - For a second type (e.g., verbs)</li>
+                    <li><span style="background: #fff3cd; padding: 2px 6px; border-radius: 3px;">Yellow</span> - For a third type (e.g., objects)</li>
+                </ul>
+            </li>
+            <li><strong>Number of Colored highlights:</strong> You do not have to use all three colors. One or two is just fine. <br>For example, "Click on all verbs below" only requires one color of your choice.</li>
+            <li><strong>Syntax, not just grammar:</strong>You can use this in many ways, e.g. "Find all the collocations that were also in the article."<br>Or a more expansive example:<ul><li>
+            Click on all the following collocations in the article below: <br>wake up<br>go out<br>sit tight<br>[horisontal rule]<br>He didn't want to wake up and go out; he just wanted to sit tight and stay warm in his little corner of the world.</li></ul></li>
+
+            <li><strong>Format text:</strong> Use <strong>B</strong> for bold, <em>I</em> for italic, or <strong>HR</strong> to insert a horizontal line.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Creating the Exercise</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Click "Make Exercise":</strong> This converts your formatted text into an interactive exercise block.</li>
+            <li><strong>Check the counters:</strong> Each color shows how many highlights students need to find.</li>
+            <li><strong>Create multiple exercises:</strong> Clear the editor and repeat to add more exercise blocks to the same page.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Saving Your Work</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Enter a filename:</strong> Type a name in the "File Name" field (e.g., "prep_phrases_quiz.html").</li>
+            <li><strong>Click "Save as Local":</strong> This creates TWO files:
+                <ul style="margin: 0.3rem 0; padding-left: 1.5rem;">
+                    <li><strong>EditMode version:</strong> For you to reopen and edit later (highlights visible).</li>
+                    <li><strong>Student version:</strong> For your students (highlights hidden until clicked).</li>
+                </ul>
+            </li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Student Experience</summary>
+        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li>Students open the file (without "EditMode" in the name).</li>
+            <li>They enter their name and ID, then can print/save as PDF.</li>
+            <li>Highlights are <strong>invisible</strong> - based on your instructions, students click where they think the syntax features are.</li>
+            <li>Correct clicks reveal the highlight and decrease the countdown.</li>
+            <li>A <strong>"Show Answers"</strong> button appears in the bottom-right for checking work.</li>
+        </ul>
+    </details>
+
+    <div style="margin-top: 1rem; padding: 0.75rem; background: #fff3cd; border-radius: 5px; border-left: 3px solid #ffc107;">
+        <strong>💡 Pro Tip:</strong> You can create different exercises for SVO, IO DO, gerund phrases, participle phrases, clauses, use your imagination - just assign each concept/s it's own color!
+    </div>
+    </details>
+</div>
+
 
 <header contenteditable="true">
 <h2>A title if desired</h2>
@@ -443,16 +586,16 @@ hr {
 <!-- ===== Editor ===== -->
 <div id="editorWrapper" class="editMode">
     <div id="editor" contenteditable="true">
-        Paste or type text here, select text, then click highlight buttons above to mark grammar features.
+        Paste or type text here, select text, then click highlight buttons above to mark syntax features.
     </div>
 </div>
-
+<button id="toggleAnswersBtn" class="studentMode" style="display: none;">Show Answers</button>
 <!-- ===== Output Container ===== -->
 <div id="mainContainer"></div>
 
 <!-- ===== File Controls ===== -->
 <div class="fileControls editMode" style="max-width: 900px; margin: 1em auto; padding: 0 0.8em;">
-    <input type="text" placeholder="File Name:" value="grammarExercise.html" class="fileName">
+    <input type="text" placeholder="File Name:" value="syntaxExercise.html" class="fileName">
     <button class="saveBtn">Save as Local</button>
 </div>
 
@@ -528,13 +671,12 @@ document.getElementById("makeBtn").addEventListener("click", () => {
     // Create exercise block
     const block = document.createElement("div");
     block.className = "exerciseBlock";
-    block.innerHTML = `
-        <div class="interactiveContent">${content}</div>
-        <div class="highlightCounters">
+    block.innerHTML = `<div class="highlightCounters">
             <p class="counter x">Blue Countdown: <span id="xCount">0</span></p>
             <p class="counter y">Green Countdown: <span id="yCount">0</span></p>
             <p class="counter z">Yellow Countdown: <span id="zCount">0</span></p>
         </div>
+        <div class="interactiveContent">${content}</div>
         <div class="toast" style="display:none"></div>
     `;
     
@@ -550,7 +692,7 @@ document.getElementById("makeBtn").addEventListener("click", () => {
         }
     }
 
-    // Add click behavior to highlights
+// Add click behavior to highlights
     block.querySelectorAll(".highlight").forEach(span => {
         span.addEventListener("click", () => {
             if (!span.classList.contains("active")) {
@@ -562,8 +704,14 @@ document.getElementById("makeBtn").addEventListener("click", () => {
                     if (currentCount > 0) currentCount--;
                     countSpan.textContent = currentCount;
 
+                    // Map type to color name
+                    let colorName = "";
+                    if (type === "x") colorName = "Blue";
+                    else if (type === "y") colorName = "Green";
+                    else if (type === "z") colorName = "Yellow";
+
                     const toast = block.querySelector(".toast");
-                    toast.textContent = `${currentCount} more ${type.toUpperCase()} highlights left`;
+                    toast.textContent = `${colorName} Countdown: ${currentCount}`;
                     toast.style.display = "block";
                     setTimeout(() => { toast.style.display = "none"; }, 1500);
                 }
@@ -576,7 +724,15 @@ document.getElementById("makeBtn").addEventListener("click", () => {
 });
 
 // --------- Dual Save Function ---------
+// --------- Dual Save Function ---------
 function saveExerciseBlock() {
+    // Check if mainContainer has any exercise blocks
+    const mainContainer = document.getElementById("mainContainer");
+    if (!mainContainer.hasChildNodes() || mainContainer.children.length === 0) {
+        alert("Did you forget to click [Make Exercise]?");
+        return;
+    }
+
     const fileNameInput = document.querySelector(".fileControls .fileName").value;
     const baseName = fileNameInput.replace(/\.html$/i, "");
 
@@ -590,7 +746,7 @@ function saveExerciseBlock() {
     editElements.forEach(el => el.style.display = "none");
     const editableElements = document.querySelectorAll("[contenteditable]");
     editableElements.forEach(el => el.setAttribute("contenteditable", "false"));
-    
+
     // Add studentMode class to body
     document.body.classList.add("studentMode");
 
@@ -659,9 +815,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         let currentCount = parseInt(countSpan.textContent);
                         if (currentCount > 0) currentCount--;
                         countSpan.textContent = currentCount;
+
+                        // Map type to color name
+                        let colorName = "";
+                        if (type === "x") colorName = "Blue";
+                        else if (type === "y") colorName = "Green";
+                        else if (type === "z") colorName = "Yellow";
+
                         const toast = block.querySelector(".toast");
                         if (toast) {
-                            toast.textContent = currentCount + " more " + type.toUpperCase() + " highlights left";
+                            toast.textContent = colorName + " Countdown: " + currentCount;
                             toast.style.display = "block";
                             setTimeout(function() { toast.style.display = "none"; }, 1500);
                         }
@@ -672,6 +835,28 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+</script>
+<script>
+// --------- Toggle Answers Button ---------
+const toggleAnswersBtn = document.getElementById("toggleAnswersBtn");
+let answersVisible = false;
+
+// Show toggle button only in student mode
+if (document.body.classList.contains("studentMode")) {
+    toggleAnswersBtn.style.display = "block";
+}
+
+toggleAnswersBtn.addEventListener("click", function() {
+    answersVisible = !answersVisible;
+
+    if (answersVisible) {
+        document.body.classList.add("showAnswers");
+        toggleAnswersBtn.textContent = "Hide Answers";
+    } else {
+        document.body.classList.remove("showAnswers");
+        toggleAnswersBtn.textContent = "Show Answers";
+    }
+});
 </script>
 <footer>...</footer>
 
