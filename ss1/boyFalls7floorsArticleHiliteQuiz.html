@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Grammar Exercise Editor</title>
+<style>
+/* --- General Body & Container --- */
+body {
+    max-width: 42rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    font-size: 15px;
+    margin: 1rem auto;
+    padding: 4rem 1.5rem 1.5rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    color: #2c3e50;
+}
+
+header {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+header h2 {
+    margin: 0.3rem 0;
+    color: #34495e;
+    font-weight: 600;
+}
+
+header h3 {
+    margin: 0.25rem 0;
+    color: #5a6c7d;
+    font-weight: 500;
+}
+
+header h4 {
+    margin: 0.2rem 0;
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    color: #95a5a6;
+    font-size: 0.9em;
+}
+
+footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    color: #95a5a6;
+    font-size: 0.85em;
+}
+
+/* --- Toolbar --- */
+#toolbar {
+    position: fixed;
+    top: 0;
+
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 1000;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#toolbar button {
+    padding: 7px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#toolbar button:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+#toolbar button:active {
+    transform: translateY(0);
+}
+
+#toolbar #makeBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    margin-left: auto;
+}
+
+#toolbar #makeBtn:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Editor Wrapper --- */
+#editorWrapper {
+    margin-top: 0;
+    padding: 0;
+}
+
+#editor {
+    border: 2px solid #e0e6ed;
+    padding: 1rem;
+    min-height: 120px;
+    outline: none;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.2s;
+}
+
+#editor:focus {
+    border-color: #667eea;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05),
+                0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* --- Main Container --- */
+#mainContainer {
+    margin: 1.5rem 0;
+    padding: 0;
+}
+
+/* --- Exercise Block --- */
+.exerciseBlock {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.exerciseBlock:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e0;
+}
+
+/* --- Instructions & HR --- */
+.instructions {
+    margin-bottom: 0.75rem;
+    font-size: 0.95em;
+    color: #5a6c7d;
+}
+
+hr {
+  /* Remove default border */
+        border: none;
+        /* Set height of the rule */
+        height: 5px;
+        /* Apply the linear gradient background */
+        background-image: linear-gradient(to left, #FFB6C1, #E6E6FA);
+        /* Ensure the background covers the entire element */
+        background-size: cover;
+        /* Optional: Add some margin for better visibility */
+        margin: 20px 0;
+}
+
+/* --- Interactive Content --- */
+.interactiveContent p {
+    margin: 0.5rem 0;
+    line-height: 1.7;
+}
+
+.highlight {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+/* Highlights visible in edit mode */
+.highlight.x {
+    background-color: #cce5ff;
+    border-bottom: 2px solid #99ccff;
+}
+.highlight.y {
+    background-color: #d4edda;
+    border-bottom: 2px solid #a8d5b5;
+}
+.highlight.z {
+    background-color: #fff3cd;
+    border-bottom: 2px solid #ffe69c;
+}
+
+/* Highlights invisible in student mode until clicked */
+.studentMode .highlight.x,
+.studentMode .highlight.y,
+.studentMode .highlight.z {
+    background-color: transparent;
+    border-bottom: none;
+}
+
+.studentMode .highlight.active.x {
+    background-color: #cce5ff;
+    border-bottom: 2px solid #99ccff;
+}
+.studentMode .highlight.active.y {
+    background-color: #d4edda;
+    border-bottom: 2px solid #a8d5b5;
+}
+.studentMode .highlight.active.z {
+    background-color: #fff3cd;
+    border-bottom: 2px solid #ffe69c;
+}
+
+.highlight.active {
+    color: #000;
+    font-weight: 400;
+    opacity: 1;
+}
+
+/* --- Highlight Counters & Toast --- */
+.highlightCounters {
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.9em;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 6px;
+    border-left: 4px solid #667eea;
+}
+
+.highlightCounters p {
+    margin: 0;
+    font-weight: 500;
+    color: #495057;
+}
+
+.highlightCounters span {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.toast {
+    position: absolute;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.95;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* --- File Controls (editMode) --- */
+.fileControls {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.fileControls input {
+    width: 240px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    margin-right: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.fileControls input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.fileControls button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fileControls button:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.editMode {
+    display: block;
+}
+
+/* --- Student Submission --- */
+.studentSubmission {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.studentSubmission input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9em;
+    flex: 1 1 140px;
+    min-width: 120px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.studentSubmission input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.studentSubmission button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.studentSubmission button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #218838 0%, #1ba87e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.studentSubmission button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    body {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    #mainContainer {
+        padding: 0;
+    }
+
+    .highlightCounters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .studentSubmission {
+        flex-direction: column;
+    }
+
+    #toolbar {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    #toolbar button {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* --- Print Styling --- */
+@media print {
+    .editMode, .fileControls, .studentSubmission, .toast, #toolbar, #editorWrapper {
+        display: none !important;
+    }
+
+    body {
+        font-size: 11pt;
+        box-shadow: none;
+        margin: 0;
+        padding: 1rem;
+        background: white;
+    }
+
+    .exerciseBlock {
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        box-shadow: none;
+    }
+
+    .highlightCounters {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+    }
+}
+
+/* --- Toggle Answers Button --- */
+#toggleAnswersBtn {
+    position: fixed;
+    bottom: 10px;
+    /*right: 20px;*/
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+#toggleAnswersBtn:hover {
+    background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+#toggleAnswersBtn:active {
+    transform: translateY(0);
+}
+
+/* Show answers mode - force highlights visible */
+body.showAnswers .highlight.x,
+body.showAnswers .highlight.y,
+body.showAnswers .highlight.z {
+    background-color: #cce5ff !important;
+    border-bottom: 2px solid #99ccff !important;
+}
+
+body.showAnswers .highlight.x {
+    background-color: #cce5ff !important;
+    border-bottom: 2px solid #99ccff !important;
+}
+
+body.showAnswers .highlight.y {
+    background-color: #d4edda !important;
+    border-bottom: 2px solid #a8d5b5 !important;
+}
+
+body.showAnswers .highlight.z {
+    background-color: #fff3cd !important;
+    border-bottom: 2px solid #ffe69c !important;
+}
+
+@media print {
+    #toggleAnswersBtn {
+        display: none !important;
+    }
+}
+
+summary {
+  list-style: none; /* Standard way to remove the marker (Firefox, Edge, Chrome) */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* Webkit-specific pseudo-element for Safari and older Chrome */
+}
+
+</style>
+</head>
+<body class="studentMode">
+
+
+<div id="instructions" class="editMode" style="max-width: 900px; margin: 1rem auto; padding: 1rem; background: linear-gradient(to right, rgb(248, 249, 250) 0%, rgb(233, 236, 239) 100%); border-radius: 8px; border-left: 4px solid rgb(102, 126, 234); display: none;">
+   <details><summary> <h3 style="margin-top: 0; color: #34495e;">📝 How to Use This Grammar Exercise Builder</h3>
+</summary>
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin-bottom: 0.5rem;">Getting Started</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Edit the header:</strong> Click on the title, subtitle, or info sections at the top to customize them for your exercise.</li>
+            <li><strong>Add your text:</strong> Type or paste your exercise text into the editor box below the toolbar.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Highlight the syntax features you are working on.</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Select text:</strong> Highlight the word or phrase you want students to identify.</li>
+            <li><strong>Choose a color:</strong>
+                <ul style="margin: 0.3rem 0; padding-left: 1.5rem;">
+                    <li><span style="background: #cce5ff; padding: 2px 6px; border-radius: 3px;">Blue</span> - For one type of syntax feature (e.g., subjects)</li>
+                    <li><span style="background: #d4edda; padding: 2px 6px; border-radius: 3px;">Green</span> - For a second type (e.g., verbs)</li>
+                    <li><span style="background: #fff3cd; padding: 2px 6px; border-radius: 3px;">Yellow</span> - For a third type (e.g., objects)</li>
+                </ul>
+            </li>
+            <li><strong>Number of Colored highlights:</strong> You do not have to use all three colors. One or two is just fine. <br>For example, "Click on all verbs below" only requires one color of your choice.</li>
+            <li><strong>Syntax, not just grammar:</strong>You can use this in many ways, e.g. "Find all the collocations that were also in the article."<br>Or a more expansive example:<ul><li>
+            Click on all the following collocations in the article below: <br>wake up<br>go out<br>sit tight<br>[horisontal rule]<br>He didn't want to wake up and go out; he just wanted to sit tight and stay warm in his little corner of the world.</li></ul></li>
+
+            <li><strong>Format text:</strong> Use <strong>B</strong> for bold, <em>I</em> for italic, or <strong>HR</strong> to insert a horizontal line.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Creating the Exercise</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Click "Make Exercise":</strong> This converts your formatted text into an interactive exercise block.</li>
+            <li><strong>Check the counters:</strong> Each color shows how many highlights students need to find.</li>
+            <li><strong>Create multiple exercises:</strong> Clear the editor and repeat to add more exercise blocks to the same page.</li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Saving Your Work</summary>
+        <ol style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li><strong>Enter a filename:</strong> Type a name in the "File Name" field (e.g., "prep_phrases_quiz.html").</li>
+            <li><strong>Click "Save as Local":</strong> This creates TWO files:
+                <ul style="margin: 0.3rem 0; padding-left: 1.5rem;">
+                    <li><strong>EditMode version:</strong> For you to reopen and edit later (highlights visible).</li>
+                    <li><strong>Student version:</strong> For your students (highlights hidden until clicked).</li>
+                </ul>
+            </li>
+        </ol>
+    </details>
+
+    <details>
+        <summary style="cursor: pointer; font-weight: 600; color: #667eea; margin: 0.5rem 0;">Student Experience</summary>
+        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+            <li>Students open the file (without "EditMode" in the name).</li>
+            <li>They enter their name and ID, then can print/save as PDF.</li>
+            <li>Highlights are <strong>invisible</strong> - students click where they think the grammar features are.</li>
+            <li>Correct clicks reveal the highlight and decrease the countdown.</li>
+            <li>A <strong>"Show Answers"</strong> button appears in the bottom-right for checking work.</li>
+        </ul>
+    </details>
+
+    <div style="margin-top: 1rem; padding: 0.75rem; background: #fff3cd; border-radius: 5px; border-left: 3px solid #ffc107;">
+        <strong>💡 Pro Tip:</strong> You can create different exercises for SVO, IO DO, gerund phrases, participle phrases, clauses, use your imagination - just assign each concept/s it's own color!
+    </div>
+    </details>
+</div>
+
+
+<header contenteditable="false"><h2>Boy Falls From 7th Floor</h2>click on all prepositions. Make a note if they are part of a prepositional phrase or a phrasal verb.</header>
+
+<!-- ===== Toolbar ===== -->
+<div id="toolbar" class="editMode" style="display: none;">
+    <button data-color="x" title="Blue Highlight (X)">Blue</button>
+    <button data-color="y" title="Green Highlight (Y)">Green</button>
+    <button data-color="z" title="Yellow Highlight (Z)">Yellow</button>
+    <button data-tag="strong"><b>B</b></button>
+    <button data-tag="em"><i>I</i></button>
+    <button id="hrBtn" title="Insert Horizontal Rule">HR</button>
+    <button id="makeBtn">Make Exercise</button>
+</div>
+
+<!-- ===== Editor ===== -->
+<div id="editorWrapper" class="editMode" style="display: none;">
+    <div id="editor" contenteditable="false">Type or paste new content here...</div>
+</div>
+<button id="toggleAnswersBtn" class="studentMode" style="display: none;">Show Answers</button>
+<!-- ===== Output Container ===== -->
+<div id="mainContainer"><div class="exerciseBlock"><div class="highlightCounters">
+            <p class="counter x">Blue Countdown: <span id="xCount">14</span></p>
+            <p class="counter y">Green Countdown: <span id="yCount">14</span></p>
+            <p class="counter z">Yellow Countdown: <span id="zCount">13</span></p>
+        </div>
+        <div class="interactiveContent"><br><br>The Clamdens live <span class="highlight x" data-type="x" data-count-id="xCount">on the seventh floor</span> <span class="highlight y" data-type="y" data-count-id="yCount">of their apartment building</span>. This terrible day began <span class="highlight z" data-type="z" data-count-id="zCount">for them</span> just like any other Saturday. There was no school <span class="highlight x" data-type="x" data-count-id="xCount">for the kids</span>, and the father and mother had the weekend off. The mom <span class="highlight y" data-type="y" data-count-id="yCount">woke up </span>first and began making breakfast. Little Johnny, who is only four years old, was the first one <span class="highlight z" data-type="z" data-count-id="zCount">at the table</span>. Susie and Betty soon followed.<br><br>As the kids ate, the mom was asking the dad what his plans were <span class="highlight x" data-type="x" data-count-id="xCount">for the day</span>. The dad, ignoring the mom, had his face buried <span class="highlight y" data-type="y" data-count-id="yCount">in the newspaper</span>.<br><br><span class="highlight z" data-type="z" data-count-id="zCount">After breakfast</span>, the kids helped mom clear the table. They carried their dishes <span class="highlight x" data-type="x" data-count-id="xCount">to the kitchen sink.</span> Since it was too early to go out and play, they <span class="highlight y" data-type="y" data-count-id="yCount">turned on</span> the TV.<br><br>The dad went <span class="highlight z" data-type="z" data-count-id="zCount">into his office</span> and began <span class="highlight x" data-type="x" data-count-id="xCount">working on</span> a last-minute report; he had to meet a deadline <span class="highlight y" data-type="y" data-count-id="yCount">by this coming Tuesday</span>. The mom closed all the windows and the sliding glass doors <span class="highlight z" data-type="z" data-count-id="zCount">by the balcony</span> and then <span class="highlight x" data-type="x" data-count-id="xCount">turned on</span> the air conditioner. The mom made a call <span class="highlight y" data-type="y" data-count-id="yCount">to her best friend</span> and they began chatting <span class="highlight z" data-type="z" data-count-id="zCount">about who-knows-what</span>.<br><br>When the dad <span class="highlight x" data-type="x" data-count-id="xCount">came out</span> <span class="highlight y" data-type="y" data-count-id="yCount">of his office</span> <span class="highlight z" data-type="z" data-count-id="zCount">for a drink refill</span>, he noticed that the balcony doors were open. “The air conditioner is on! Who left the doors open?” he asked angrily. The mom looked puzzled. “I could have sworn I closed those doors,” she said.<br><br>“Where's Johnny?” asked Susie.<br><br><span class="highlight x" data-type="x" data-count-id="xCount">At that very moment</span>, the mom realized what had happened. She ran <span class="highlight y" data-type="y" data-count-id="yCount">to the balcony</span> screaming “Johnny!” The father's cup went crashing <span class="highlight y" data-type="y" data-count-id="yCount">to the floor</span> as he also rushed <span class="highlight z" data-type="z" data-count-id="zCount">to the balcony.<br></span><br>They looked <span class="highlight x" data-type="x" data-count-id="xCount">over the balcony rail </span>and could see people running <span class="highlight y" data-type="y" data-count-id="yCount">to a spot</span> <span class="highlight z" data-type="z" data-count-id="zCount">under a tree</span> <span class="highlight x" data-type="x" data-count-id="xCount">near the pool</span>. Someone was yelling, “Call 911!” The mom ran <span class="highlight y" data-type="y" data-count-id="yCount">to the elevator</span> and the dad ran <span class="highlight z" data-type="z" data-count-id="zCount">down the stairs</span>. An ambulance siren began howling <span class="highlight x" data-type="x" data-count-id="xCount">in the distance</span>, getting louder as it got nearer. An off-duty policeman who was nearby <span class="highlight y" data-type="y" data-count-id="yCount">in his patrol car</span> had already arrived <span class="highlight z" data-type="z" data-count-id="zCount">at the scene</span>.<br><br>When the mom and dad reached the scene, they didn't see the horror they expected. Instead, they saw little Johnny sitting <span class="highlight x" data-type="x" data-count-id="xCount">next to the policeman</span>. The mom and dad ran and hugged him. Johnny was not seriously injured; he only had a few scratches <span class="highlight y" data-type="y" data-count-id="yCount">on his face</span> and a bruised arm.<br><br>Apparently, the trees <span class="highlight z" data-type="z" data-count-id="zCount">around the pool</span> had <span class="highlight x" data-type="x" data-count-id="xCount">slowed down</span> Johnny's fall, and he landed <span class="highlight y" data-type="y" data-count-id="yCount">in some bushes</span> that were surrounded <span class="highlight z" data-type="z" data-count-id="zCount">by a pile</span> <span class="highlight x" data-type="x" data-count-id="xCount">of soft dirt</span> which taken together helped to soften the fall.<br><hr><div>* ran + down can be a phrasal verb which means to chase someone, which doesn't fit our case.</div><div>* next + to work jointly as a preposition</div></div>
+        <div class="toast" style="display:none"></div>
+    </div></div>
+
+<!-- ===== File Controls ===== -->
+<div class="fileControls editMode" style="max-width: 900px; margin: 1em auto; padding: 0px 0.8em; display: none;">
+    <input type="text" placeholder="File Name:" value="grammarExercise.html" class="fileName">
+    <button class="saveBtn">Save as Local</button>
+</div>
+
+<!-- ===== Student Submission ===== -->
+<div class="studentSubmission">
+    <input type="text" placeholder="Name" id="studentName">
+    <input type="text" placeholder="ID" id="studentID">
+    <button id="printPDF" disabled="">Print / Save as PDF</button>
+</div>
+
+<script>
+// --------- Selection Wrapper ---------
+function wrapSelection(wrapper) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const range = sel.getRangeAt(0);
+    if (range.collapsed) return;
+
+    const content = range.extractContents();
+    wrapper.appendChild(content);
+    range.insertNode(wrapper);
+
+    sel.removeAllRanges();
+}
+
+// --------- Color/Highlight Buttons ---------
+document.querySelectorAll("[data-color]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const span = document.createElement("span");
+        span.className = "highlight " + btn.dataset.color;
+        span.dataset.type = btn.dataset.color;
+        span.dataset.countId = btn.dataset.color + "Count";
+        wrapSelection(span);
+    });
+});
+
+// --------- Bold / Italic Buttons ---------
+document.querySelectorAll("[data-tag]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const el = document.createElement(btn.dataset.tag);
+        wrapSelection(el);
+    });
+});
+
+// --------- HR Button ---------
+document.getElementById("hrBtn").addEventListener("click", () => {
+    const editor = document.getElementById("editor");
+    const hr = document.createElement("hr");
+    
+    const sel = window.getSelection();
+    if (sel.rangeCount) {
+        const range = sel.getRangeAt(0);
+        range.insertNode(hr);
+        range.collapse(false);
+    } else {
+        editor.appendChild(hr);
+    }
+});
+
+// --------- Make Button ---------
+document.getElementById("makeBtn").addEventListener("click", () => {
+    const editor = document.getElementById("editor");
+    
+    if (!editor.innerText.trim()) {
+        alert("Editor is empty!");
+        return;
+    }
+
+    // Get the formatted content from editor
+    const content = editor.innerHTML;
+
+    // Create exercise block
+    const block = document.createElement("div");
+    block.className = "exerciseBlock";
+    block.innerHTML = `<div class="highlightCounters">
+            <p class="counter x">Blue Countdown: <span id="xCount">0</span></p>
+            <p class="counter y">Green Countdown: <span id="yCount">0</span></p>
+            <p class="counter z">Yellow Countdown: <span id="zCount">0</span></p>
+        </div>
+        <div class="interactiveContent">${content}</div>
+        <div class="toast" style="display:none"></div>
+    `;
+    
+    document.getElementById("mainContainer").appendChild(block);
+
+    // Initialize counters
+    const highlightTypes = {x:"x", y:"y", z:"z"};
+    for (let type in highlightTypes) {
+        const count = block.querySelectorAll(`.highlight.${type}`).length;
+        const countSpan = block.querySelector(`#${type}Count`);
+        if (countSpan) {
+            countSpan.textContent = count;
+        }
+    }
+
+// Add click behavior to highlights
+    block.querySelectorAll(".highlight").forEach(span => {
+        span.addEventListener("click", () => {
+            if (!span.classList.contains("active")) {
+                span.classList.add("active");
+                const type = span.dataset.type;
+                const countSpan = block.querySelector(`#${type}Count`);
+                if (countSpan) {
+                    let currentCount = parseInt(countSpan.textContent);
+                    if (currentCount > 0) currentCount--;
+                    countSpan.textContent = currentCount;
+
+                    // Map type to color name
+                    let colorName = "";
+                    if (type === "x") colorName = "Blue";
+                    else if (type === "y") colorName = "Green";
+                    else if (type === "z") colorName = "Yellow";
+
+                    const toast = block.querySelector(".toast");
+                    toast.textContent = `${colorName} Countdown: ${currentCount}`;
+                    toast.style.display = "block";
+                    setTimeout(() => { toast.style.display = "none"; }, 1500);
+                }
+            }
+        });
+    });
+
+    // Optional: clear editor
+    editor.innerHTML = "Type or paste new content here...";
+});
+
+// --------- Dual Save Function ---------
+// --------- Dual Save Function ---------
+function saveExerciseBlock() {
+    // Check if mainContainer has any exercise blocks
+    const mainContainer = document.getElementById("mainContainer");
+    if (!mainContainer.hasChildNodes() || mainContainer.children.length === 0) {
+        alert("Did you forget to click [Make Exercise]?");
+        return;
+    }
+
+    const fileNameInput = document.querySelector(".fileControls .fileName").value;
+    const baseName = fileNameInput.replace(/\.html$/i, "");
+
+    // Save EditMode version
+    const editModeHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob1 = new Blob([editModeHTML], {type: "text/html"});
+    saveBlob(blob1, baseName + "EditMode.html");
+
+    // Prepare student version
+    const editElements = document.querySelectorAll(".editMode");
+    editElements.forEach(el => el.style.display = "none");
+    const editableElements = document.querySelectorAll("[contenteditable]");
+    editableElements.forEach(el => el.setAttribute("contenteditable", "false"));
+
+    // Add studentMode class to body
+    document.body.classList.add("studentMode");
+
+    const studentHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob2 = new Blob([studentHTML], {type: "text/html"});
+    saveBlob(blob2, baseName + ".html");
+
+    // Restore
+    document.body.classList.remove("studentMode");
+    editElements.forEach(el => el.style.display = "block");
+    editableElements.forEach(el => el.setAttribute("contenteditable", "true"));
+
+    alert("Files saved:\n• " + baseName + "EditMode.html (teacher version)\n• " + baseName + ".html (student version)");
+}
+
+// Attach save button event listener
+document.querySelector(".fileControls .saveBtn").addEventListener("click", saveExerciseBlock);
+
+function saveBlob(blob, filename) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+// --------- Student PDF / Name ID ---------
+const nameInput = document.getElementById("studentName");
+const idInput = document.getElementById("studentID");
+const printBtn = document.getElementById("printPDF");
+
+function togglePrintButton() {
+    printBtn.disabled = !(nameInput.value.trim() && idInput.value.trim());
+}
+
+nameInput.addEventListener("input", togglePrintButton);
+idInput.addEventListener("input", togglePrintButton);
+
+printBtn.addEventListener("click", () => {
+    let header = document.getElementById("studentHeader");
+    if (!header) {
+        header = document.createElement("div");
+        header.id = "studentHeader";
+        header.style.marginBottom = "1em";
+        header.style.maxWidth = "900px";
+        header.style.margin = "0 auto 1em auto";
+        header.style.padding = "0 0.8em";
+        header.innerHTML = `<strong>Name:</strong> ${nameInput.value} &nbsp;&nbsp; <strong>ID:</strong> ${idInput.value}`;
+        document.body.prepend(header);
+    }
+    window.print();
+});
+
+// --------- Highlight Click Handler (for saved student version) ---------
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.addEventListener("click", function(e) {
+        if (e.target.classList.contains("highlight")) {
+            const span = e.target;
+            if (!span.classList.contains("active")) {
+                span.classList.add("active");
+                const block = span.closest(".exerciseBlock");
+                if (block) {
+                    const type = span.dataset.type;
+                    const countSpan = block.querySelector("#" + type + "Count");
+                    if (countSpan) {
+                        let currentCount = parseInt(countSpan.textContent);
+                        if (currentCount > 0) currentCount--;
+                        countSpan.textContent = currentCount;
+
+                        // Map type to color name
+                        let colorName = "";
+                        if (type === "x") colorName = "Blue";
+                        else if (type === "y") colorName = "Green";
+                        else if (type === "z") colorName = "Yellow";
+
+                        const toast = block.querySelector(".toast");
+                        if (toast) {
+                            toast.textContent = colorName + " Countdown: " + currentCount;
+                            toast.style.display = "block";
+                            setTimeout(function() { toast.style.display = "none"; }, 1500);
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+
+</script>
+<script>
+// --------- Toggle Answers Button ---------
+const toggleAnswersBtn = document.getElementById("toggleAnswersBtn");
+let answersVisible = false;
+
+// Show toggle button only in student mode
+if (document.body.classList.contains("studentMode")) {
+    toggleAnswersBtn.style.display = "block";
+}
+
+toggleAnswersBtn.addEventListener("click", function() {
+    answersVisible = !answersVisible;
+
+    if (answersVisible) {
+        document.body.classList.add("showAnswers");
+        toggleAnswersBtn.textContent = "Hide Answers";
+    } else {
+        document.body.classList.remove("showAnswers");
+        toggleAnswersBtn.textContent = "Show Answers";
+    }
+});
+</script>
+<footer>...</footer>
+
+
+
+</body></html>
