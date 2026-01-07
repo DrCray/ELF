@@ -1,0 +1,757 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz | English Learning Magazine</title>
+ <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2ff; /* Simplified background for faster loading/cleaner look */
+        color: #2c3e50;
+        line-height: 1.4;
+        padding: 0.75rem; /* Tightened outer padding */
+        min-height: 100vh;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+box-shadow:
+    /* Right side shadow: positive horizontal offset */
+    5px 0 10px -5px rgba(0, 0, 0, 0.5),
+    /* Left side shadow: negative horizontal offset */
+    -5px 0 10px -5px rgba(0, 0, 0, 0.5);
+    }
+    header {
+        text-align: center;
+        margin-bottom: 1rem; /* Reduced space */
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #7a6ece;
+    }
+    h1 {
+        font-size: 1.5rem; /* Slightly smaller for mobile-first */
+        color: #4a5568;
+        margin-bottom: 0.25rem;
+        font-weight: 700;
+    }
+    .subtitle {
+        font-size: 0.85rem;
+        color: #718096;
+    }
+    .user-info {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0rem .7rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    .user-info input {
+        flex: 1;
+        min-width: 140px;
+        padding: 0.5rem 1.5rem 0.5rem 1rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+    .authoring-panel {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .authoring-panel textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 0.5rem;
+        font-family: monospace;
+        font-size: 0.9rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .quiz-section {
+        margin-bottom: 1rem; background:white;
+    }
+    .sentence-group {
+        background: white;
+        border-radius: 8px;
+        padding: 0.75rem; /* Tightened group padding */
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .sentence-group h2 {
+        margin-bottom: 0.75rem;
+        color: #4a5568;
+        font-size: 1rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .sentence-item {
+        border-radius: 7px;
+        margin: 0 .7rem .7rem .7rem; /* Reduced space between questions */
+        padding:1rem; /* Reduced internal padding */
+    background: linear-gradient(to top, #f5f0ff 0%, #f0f7ff 100%);
+    -webkit-box-shadow: 3px 0px 5px 4px #adadad;
+box-shadow: 2px 0px 3px 2px #adadad;
+        border-left: 3px solid #7a6ece; /* Simple accent instead of full border */
+        display: block;
+        line-height: 1.8; /* Reduced from 2.2 to tighten text while keeping select room */
+    }
+    .sentence-item:last-child {
+        margin-bottom: 0;
+    }
+    .sentence-text {
+        font-size: 0.9rem;
+        display: inline;
+        white-space: normal;
+        margin: 0 .31rem 0 .31rem;
+        padding-left: 0em;
+    }
+    .vocab-select {
+        display: block;
+        vertical-align: middle;
+        margin: 2px 1.2rem;
+        padding: 0.2rem 0.4rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        background: white;
+        min-width: 110px;
+        cursor: pointer;
+    }
+    .vocab-select.correct {
+        background-color: #e8f5e9;
+        border-color: #4caf50;
+        color: #0D2B18;
+    }
+    .vocab-select.incorrect {
+        background-color: #ffebee;
+        border-color: #f44336;
+        color: #c62828;
+    }
+    .print-section {
+        text-align: center;
+        margin-top: 1rem;
+        padding-bottom: 4rem;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    #printBtn, #studyToggleBtn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s;
+    }
+    #printBtn {
+        background: #7a6ece;
+        color: white;
+    }
+    #studyToggleBtn {
+        margin:0rem .7rem;
+        background: #4a5568;
+        color: white;
+    }
+    #printBtn:hover, #studyToggleBtn:hover {
+        opacity: 0.9;
+    }
+
+    /* Mobile specific adjustments */
+    @media (max-width: 480px) {
+        .sentence-item {
+            padding: 0.4rem;
+            line-height: 1.7; /* Even tighter for very small screens */
+        }
+        .vocab-select {
+            min-width: 100px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 contenteditable="false">Vocabulary Quiz</h1>
+            <h3>Negotiations Idioms</h3>
+            <p class="subtitle" contenteditable="false">English Learning Magazine</p>
+        </header>
+
+<div id="sentenceData" style="display:none;">""</div>
+
+<div class="authoring-panel" id="authoringPanel" style="display: none;">
+    <textarea id="sentenceInput" placeholder="Enter sentences like:
+&quot;She filed a **complaint** about the noisy neighbors.&quot;,
+&quot;Many people think holidays have become too **commercialized**...&quot;,"></textarea>
+    <input type="text" id="fileNameInput" placeholder="Name Your File" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 0.95rem;">
+    <button id="makeBtn">Make Quiz</button>
+
+    <div id="saveMessage" style="display: none; margin-top: 0.75rem; padding: 0.5rem; border: 2px solid rgb(49, 130, 206); color: rgb(47, 133, 90); font-weight: 600; border-radius: 4px; background: rgb(235, 248, 255);">
+        Saved to your browser's default download folder.
+    </div>
+
+</div>
+
+        <div class="user-info">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="idInput" placeholder="Enter your ID">
+        </div>
+
+
+        <button id="studyToggleBtn">Study Mode</button>
+        <br><br>
+
+
+<div class="quiz-section" id="quizSection">
+
+<div class="sentence-item">
+    <span class="sentence-text">1. The negotiations (bogged down) because of the salary issue.</span>
+    <select class="vocab-select" data-correct="slowed to a stop" data-group="0" data-sentence="0">
+        <option value="">Select...</option>
+        <option value="broke through">broke through</option>
+        <option value="slowed to a stop">slowed to a stop</option>
+        <option value="closed ranks">closed ranks</option>
+        <option value="got down to business">got down to business</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">2. The junior salesperson was (calling the shots) during the meeting.</span>
+    <select class="vocab-select" data-correct="in charge" data-group="0" data-sentence="1">
+        <option value="">Select...</option>
+        <option value="driving a hard bargain">driving a hard bargain</option>
+        <option value="getting the message">getting the message</option>
+        <option value="dragging her heels">dragging her heels</option>
+        <option value="in charge">in charge</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">3. We were told (off the record) that the company was having financial problems.</span>
+    <select class="vocab-select" data-correct="confidentially" data-group="0" data-sentence="2">
+        <option value="">Select...</option>
+        <option value="confidentially">confidentially</option>
+        <option value="standing our ground">standing our ground</option>
+        <option value="to the letter">to the letter</option>
+        <option value="under the wire">under the wire</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">4. After thirty hours of bargaining we were able to (cut a deal).</span>
+    <select class="vocab-select" data-correct="make an agreement" data-group="0" data-sentence="3">
+        <option value="">Select...</option>
+        <option value="get down to business">get down to business</option>
+        <option value="cave in">cave in</option>
+        <option value="make an agreement">make an agreement</option>
+        <option value="paint ourselves into a corner">paint ourselves into a corner</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">5. We worked very hard to (iron out) the problems with the computer supplier.</span>
+    <select class="vocab-select" data-correct="find a solution to" data-group="0" data-sentence="4">
+        <option value="">Select...</option>
+        <option value="drag on">drag on</option>
+        <option value="turn thumbs down on">turn thumbs down on</option>
+        <option value="find a solution to">find a solution to</option>
+        <option value="break off">break off</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">6. We read everything (to the letter) before we signed the contract.</span>
+    <select class="vocab-select" data-correct="exactly" data-group="0" data-sentence="5">
+        <option value="">Select...</option>
+        <option value="fifty-fifty">fifty-fifty</option>
+        <option value="off the record">off the record</option>
+        <option value="under the wire">under the wire</option>
+        <option value="exactly">exactly</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">7. After seven weeks of negotiations an agreement was (in the bag).</span>
+    <select class="vocab-select" data-correct="certain" data-group="0" data-sentence="6">
+        <option value="">Select...</option>
+        <option value="watered down">watered down</option>
+        <option value="certain">certain</option>
+        <option value="read between the lines">read between the lines</option>
+        <option value="called off">called off</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">8. The negotiating team worked very hard to (hammer out) a contract with the new company.</span>
+    <select class="vocab-select" data-correct="discuss and finalize" data-group="0" data-sentence="7">
+        <option value="">Select...</option>
+        <option value="discuss and finalize">discuss and finalize</option>
+        <option value="go back on">go back on</option>
+        <option value="smooth over">smooth over</option>
+        <option value="water down">water down</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">9. After the talks failed we were forced to (go back to square one).</span>
+    <select class="vocab-select" data-correct="go back to the beginning" data-group="0" data-sentence="8">
+        <option value="">Select...</option>
+        <option value="stand our ground">stand our ground</option>
+        <option value="make headway">make headway</option>
+        <option value="go back to the beginning">go back to the beginning</option>
+        <option value="hang in the balance">hang in the balance</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">10. We (turned thumbs down on) the proposal that the company made.</span>
+    <select class="vocab-select" data-correct="rejected" data-group="0" data-sentence="9">
+        <option value="">Select...</option>
+        <option value="rejected">rejected</option>
+        <option value="watered down">watered down</option>
+        <option value="nailed down">nailed down</option>
+        <option value="wrapped up">wrapped up</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">11. We decided to abandon the project when the negotiations (fell through).</span>
+    <select class="vocab-select" data-correct="failed" data-group="0" data-sentence="10">
+        <option value="">Select...</option>
+        <option value="dragged on">dragged on</option>
+        <option value="faced down">faced down</option>
+        <option value="played into our hands">played into our hands</option>
+        <option value="failed">failed</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">12. We bargained hard at the meeting but we were unable to (get to first base) with our opponents.</span>
+    <select class="vocab-select" data-correct="succeed" data-group="0" data-sentence="11">
+        <option value="">Select...</option>
+        <option value="give ground">give ground</option>
+        <option value="succeed">succeed</option>
+        <option value="drive a hard bargain">drive a hard bargain</option>
+        <option value="take sides">take sides</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">13. We (wrapped up) our work and went home early.</span>
+    <select class="vocab-select" data-correct="finished" data-group="0" data-sentence="12">
+        <option value="">Select...</option>
+        <option value="smoothed over">smoothed over</option>
+        <option value="talked over">talked over</option>
+        <option value="finished">finished</option>
+        <option value="followed up">followed up</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">14. During the meeting I (painted myself into a corner) which was very difficult to deal with.</span>
+    <select class="vocab-select" data-correct="got into a bad situation" data-group="0" data-sentence="13">
+        <option value="">Select...</option>
+        <option value="got into a bad situation">got into a bad situation</option>
+        <option value="got down to brass tacks">got down to brass tacks</option>
+        <option value="came to terms">came to terms</option>
+        <option value="started the ball rolling">started the ball rolling</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">15. The new contract was a major (bone of contention) between the workers and the company.</span>
+    <select class="vocab-select" data-correct="reason for a dispute" data-group="0" data-sentence="14">
+        <option value="">Select...</option>
+        <option value="setback">setback</option>
+        <option value="trump card">trump card</option>
+        <option value="rock-bottom offer">rock-bottom offer</option>
+        <option value="reason for a dispute">reason for a dispute</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">16. The negotiators continued talking (down to the wire).</span>
+    <select class="vocab-select" data-correct="until the deadline" data-group="0" data-sentence="15">
+        <option value="">Select...</option>
+        <option value="hard-nosed">hard-nosed</option>
+        <option value="until the deadline">until the deadline</option>
+        <option value="at stake">at stake</option>
+        <option value="fifty-fifty">fifty-fifty</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">17. Everyone at the meeting had forgotten about the salary dispute until it was (brought up) by our boss.</span>
+    <select class="vocab-select" data-correct="mentioned" data-group="0" data-sentence="16">
+        <option value="">Select...</option>
+        <option value="mentioned">mentioned</option>
+        <option value="called off">called off</option>
+        <option value="faced down">faced down</option>
+        <option value="watered down">watered down</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">18. We spent several days last week trying to (draw up) the new contract.</span>
+    <select class="vocab-select" data-correct="put in writing" data-group="0" data-sentence="17">
+        <option value="">Select...</option>
+        <option value="drag on">drag on</option>
+        <option value="wind up">wind up</option>
+        <option value="put in writing">put in writing</option>
+        <option value="break through">break through</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">19. There was much (at stake) when we began the discussions of the new contract.</span>
+    <select class="vocab-select" data-correct="to be gained or lost" data-group="0" data-sentence="18">
+        <option value="">Select...</option>
+        <option value="under the wire">under the wire</option>
+        <option value="smoothed over">smoothed over</option>
+        <option value="common ground">common ground</option>
+        <option value="to be gained or lost">to be gained or lost</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">20. Our opponents tried to (throw us a curve) during the meeting.</span>
+    <select class="vocab-select" data-correct="mislead us" data-group="0" data-sentence="19">
+        <option value="">Select...</option>
+        <option value="come to terms">come to terms</option>
+        <option value="mislead us">mislead us</option>
+        <option value="meet us halfway">meet us halfway</option>
+        <option value="force our hand">force our hand</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">21. The salesman complained that he had received (a raw deal) from his boss.</span>
+    <select class="vocab-select" data-correct="unfair treatment" data-group="0" data-sentence="20">
+        <option value="">Select...</option>
+        <option value="a setback">a setback</option>
+        <option value="a horse trade">a horse trade</option>
+        <option value="unfair treatment">unfair treatment</option>
+        <option value="a card up his sleeve">a card up his sleeve</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">22. Our boss is very careful not to (take sides) in an argument among the staff.</span>
+    <select class="vocab-select" data-correct="choose one side" data-group="0" data-sentence="21">
+        <option value="">Select...</option>
+        <option value="close ranks">close ranks</option>
+        <option value="beat around the bush">beat around the bush</option>
+        <option value="lay his cards on the table">lay his cards on the table</option>
+        <option value="choose one side">choose one side</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">23. The members of the group refused to (give ground) during the negotiations.</span>
+    <select class="vocab-select" data-correct="change their position" data-group="0" data-sentence="22">
+        <option value="">Select...</option>
+        <option value="change their position">change their position</option>
+        <option value="break through">break through</option>
+        <option value="go for broke">go for broke</option>
+        <option value="reach a stalemate">reach a stalemate</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">24. The members of the committee (got behind) our proposal to have a vote.</span>
+    <select class="vocab-select" data-correct="supported" data-group="0" data-sentence="23">
+        <option value="">Select...</option>
+        <option value="nailed down">nailed down</option>
+        <option value="cut off">cut off</option>
+        <option value="supported">supported</option>
+        <option value="talked over">talked over</option>
+    </select>
+</div>
+
+<div class="sentence-item">
+    <span class="sentence-text">25. We (nailed down) the date for the annual meeting.</span>
+    <select class="vocab-select" data-correct="made sure of" data-group="0" data-sentence="24">
+        <option value="">Select...</option>
+        <option value="smoothed over">smoothed over</option>
+        <option value="made sure of">made sure of</option>
+        <option value="watered down">watered down</option>
+        <option value="drove at">drove at</option>
+    </select>
+</div>
+</div>
+
+
+
+
+        <button id="toggleAnswersBtn" style="margin-left: .7rem;">Show Answers</button>
+        <div class="print-section">
+            <button id="printBtn">Print/Save to PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions (same as before)
+        function extractVocab(sentence) {
+            const match = sentence.match(/\*\*(.*?)\*\*/);
+            return match ? match[1] : '';
+        }
+
+        function chunkArray(array, size) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += size) {
+                chunks.push(array.slice(i, i + size));
+            }
+            return chunks;
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Refactored: generateQuiz now accepts a sentences array
+        function generateQuiz(sentences) {
+            const quizSection = document.getElementById('quizSection');
+            quizSection.innerHTML = '';
+            const sentenceGroups = chunkArray(sentences, 5);
+            sentenceGroups.forEach((group, groupIndex) => {
+                const vocabWords = group.map(sentence => extractVocab(sentence));
+                const shuffledOptions = shuffleArray(vocabWords);
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'sentence-group';
+                groupDiv.innerHTML = `<h2>Sentences ${groupIndex * 5 + 1} - ${Math.min((groupIndex + 1) * 5, sentences.length)}</h2>`;
+                group.forEach((sentence, sentenceIndex) => {
+                    const correctAnswer = extractVocab(sentence);
+                    const parts = sentence.split(/\*\*(.*?)\*\*/);
+                    const beforeText = parts[0];
+                    const afterText = parts[2] || '';
+                    const sentenceItem = document.createElement('div');
+                    sentenceItem.className = 'sentence-item';
+                    let selectOptions = '<option value="">Select...</option>';
+                    shuffledOptions.forEach(option => {
+                        selectOptions += `<option value="${option}">${option}</option>`;
+                    });
+                    sentenceItem.innerHTML = `
+                        <span class="sentence-text">${beforeText}</span>
+                        <select class="vocab-select" data-correct="${correctAnswer}" data-group="${groupIndex}" data-sentence="${sentenceIndex}">
+                            ${selectOptions}
+                        </select>
+                        <span class="sentence-text">${afterText}</span>
+                    `;
+                    const selectElement = sentenceItem.querySelector('select');
+selectElement.addEventListener('change', function() {
+    this.classList.remove('correct');
+    this.classList.remove('incorrect');
+    if (this.value === '') return;
+    if (this.value === this.dataset.correct) {
+        this.classList.add('correct');
+    } else {
+        this.classList.add('incorrect');
+    }
+});
+                    groupDiv.appendChild(sentenceItem);
+                });
+                quizSection.appendChild(groupDiv);
+            });
+        }
+
+        // Parse user input safely
+        function parseSentences(input) {
+            const lines = input.split('\n');
+            const sentences = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                // Remove trailing comma if present
+                if (line.endsWith(',')) line = line.slice(0, -1);
+                // Must start and end with "
+                if (!line.startsWith('"') || !line.endsWith('"')) {
+                    throw new Error(`Line must be enclosed in quotes: ${line}`);
+                }
+                let content = line.slice(1, -1); // remove quotes
+                // Must contain exactly one **...** pair
+                const boldMatches = content.match(/\*\*(.*?)\*\*/g);
+                if (!boldMatches || boldMatches.length !== 1) {
+                    throw new Error(`Exactly one vocabulary word in **bold** required: ${line}`);
+                }
+                sentences.push(content);
+            }
+            if (sentences.length === 0) {
+                throw new Error("No valid sentences found.");
+            }
+            return sentences;
+        }
+
+        // Download current page as HTML
+        function downloadCurrentPage(fileName) {
+            const fullHTML = document.documentElement.outerHTML;
+            const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('nameInput');
+            const idInput = document.getElementById('idInput');
+            const printBtn = document.getElementById('printBtn');
+            const authoringPanel = document.getElementById('authoringPanel');
+            const sentenceInput = document.getElementById('sentenceInput');
+            const sentenceData = document.getElementById('sentenceData');
+            const makeBtn = document.getElementById('makeBtn');
+
+            document.getElementById('sentenceInput').value = document.getElementById('sentenceData').textContent.trim();
+            // Print button always enabled — validate on click
+            printBtn.addEventListener('click', () => {
+                if (nameInput.value.trim() === '' || idInput.value.trim() === '') {
+                    alert('Name and ID required');
+                    return;
+                }
+                window.print();
+            });
+
+            // Make Quiz Button
+makeBtn.addEventListener('click', () => {
+
+    document.getElementById('sentenceData').textContent=document.getElementById('sentenceInput').value.trim();
+
+    try {
+        const userSentences = parseSentences(sentenceInput.value);
+        generateQuiz(userSentences);
+
+
+        // Get filename
+        const fileNameInput = document.getElementById('fileNameInput');
+        let fileNameBase = fileNameInput.value.trim();
+        if (!fileNameBase) {
+            fileNameBase = `vocab-quiz-${Date.now()}`;
+        }
+
+        let fileName = fileNameBase + 'EditMode.html';
+        // Create and trigger download
+        downloadCurrentPage(fileName);
+
+        // Hide authoring panel and contenEdble = false
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+        });
+        authoringPanel.style.display = 'none';
+        fileName = fileNameBase + '.html';
+
+        downloadCurrentPage(fileName);
+
+        // Restore authoring panel and contenteditables
+        authoringPanel.style.display = 'block';
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+        });
+
+        // Show save message
+        const saveMessage = document.getElementById('saveMessage');
+        saveMessage.style.display = 'block';
+        setTimeout(() => {
+            saveMessage.style.display = 'none';
+        }, 5000); // 5 seconds
+
+    } catch (err) {
+        alert('Error parsing sentences:\n' + err.message);
+        // Ensure panel is visible if error occurs
+        authoringPanel.style.display = 'block';
+    }
+});
+
+
+
+const studyToggleBtn = document.getElementById('studyToggleBtn');
+
+studyToggleBtn.addEventListener('click', () => {
+    const selects = document.querySelectorAll('.vocab-select');
+    const isCurrentlyStudyMode = studyToggleBtn.textContent === "Study Mode";
+
+    selects.forEach(select => {
+        if (isCurrentlyStudyMode) {
+            // Switch to Study Mode: Show all correct answers
+            select.value = select.dataset.correct;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Switch to Hide Answers: Restore to blank/original state
+            select.value = "";
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    // Toggle the button text
+    studyToggleBtn.textContent = isCurrentlyStudyMode ? "Hide Answers" : "Study Mode";
+});
+
+
+
+        });
+
+
+
+
+// Add this at the bottom of your script, outside generateQuiz
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('vocab-select')) {
+        const select = e.target;
+        select.classList.remove('correct', 'incorrect');
+        if (select.value === '') return;
+        if (select.value === select.dataset.correct) {
+            select.classList.add('correct');
+        } else {
+            select.classList.add('incorrect');
+        }
+    }
+});
+
+
+
+// Toggle answers button
+const toggleBtn = document.getElementById('toggleAnswersBtn');
+let answersVisible = false;
+
+toggleBtn.addEventListener('click', () => {
+    answersVisible = !answersVisible;
+    const selects = document.querySelectorAll('.vocab-select');
+
+    selects.forEach(select => {
+        const correct = select.dataset.correct;
+        if (answersVisible) {
+            // Set to correct answer and lock
+            select.value = correct;
+            select.disabled = true;
+            select.classList.remove('incorrect');
+            select.classList.add('correct');
+        } else {
+            // Restore to "Select..." and unlock
+            select.value = '';
+            select.disabled = false;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    toggleBtn.textContent = answersVisible ? 'Hide Answers' : 'Show Answers';
+});
+    </script>
+
+
+</body></html>

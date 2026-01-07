@@ -1,0 +1,890 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz | English Learning Magazine</title>
+ <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2ff; /* Simplified background for faster loading/cleaner look */
+        color: #2c3e50;
+        line-height: 1.4;
+        padding: 0.75rem; /* Tightened outer padding */
+        min-height: 100vh;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+box-shadow:
+    /* Right side shadow: positive horizontal offset */
+    5px 0 10px -5px rgba(0, 0, 0, 0.5),
+    /* Left side shadow: negative horizontal offset */
+    -5px 0 10px -5px rgba(0, 0, 0, 0.5);
+    }
+    header {
+        text-align: center;
+        margin-bottom: 1rem; /* Reduced space */
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #7a6ece;
+    }
+    h1 {
+        font-size: 1.5rem; /* Slightly smaller for mobile-first */
+        color: #4a5568;
+        margin-bottom: 0.25rem;
+        font-weight: 700;
+    }
+    .subtitle {
+        font-size: 0.85rem;
+        color: #718096;
+    }
+    .user-info {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0rem .7rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+    .user-info input {
+        flex: 1;
+        min-width: 140px;
+        padding: 0.5rem 1.5rem 0.5rem 1rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+    .authoring-panel {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .authoring-panel textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 0.5rem;
+        font-family: monospace;
+        font-size: 0.9rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .quiz-section {
+        margin-bottom: 1rem;
+    }
+    .sentence-group {
+        background: white;
+        border-radius: 8px;
+        padding: 0.75rem; /* Tightened group padding */
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .sentence-group h2 {
+        margin-bottom: 0.75rem;
+        color: #4a5568;
+        font-size: 1rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .sentence-item {
+        margin-bottom: 0.75rem; /* Reduced space between questions */
+        padding: 0.5rem; /* Reduced internal padding */
+    background: linear-gradient(to top, #f5f0ff 0%, #f0f7ff 100%);
+        border-left: 3px solid #7a6ece; /* Simple accent instead of full border */
+        display: block;
+        line-height: 1.8; /* Reduced from 2.2 to tighten text while keeping select room */
+    }
+    .sentence-item:last-child {
+        margin-bottom: 0;
+    }
+    .sentence-text {
+        font-size: 0.9rem;
+        display: inline;
+        white-space: normal;
+    }
+    .vocab-select {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 2px 4px;
+        padding: 0.2rem 0.4rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        background: white;
+        min-width: 110px;
+        cursor: pointer;
+    }
+    .vocab-select.correct {
+        background-color: #e8f5e9;
+        border-color: #4caf50;
+        color: #0D2B18;
+    }
+    .vocab-select.incorrect {
+        background-color: #ffebee;
+        border-color: #f44336;
+        color: #c62828;
+    }
+    .print-section {
+        text-align: center;
+        margin-top: 1rem;
+        padding-bottom: 4rem;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    #printBtn, #studyToggleBtn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        transition: opacity 0.2s;
+    }
+    #printBtn {
+        background: #7a6ece;
+        color: white;
+    }
+    #studyToggleBtn {
+        margin:0rem .7rem;
+        background: #4a5568;
+        color: white;
+    }
+    #printBtn:hover, #studyToggleBtn:hover {
+        opacity: 0.9;
+    }
+
+    /* Mobile specific adjustments */
+    @media (max-width: 480px) {
+        .sentence-item {
+            padding: 0.4rem;
+            line-height: 1.7; /* Even tighter for very small screens */
+        }
+        .vocab-select {
+            min-width: 100px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 contenteditable="false">Vocabulary Quiz</h1>
+            <p class="subtitle" contenteditable="false">English Learning Magazine</p>
+        </header>
+
+<div id="sentenceData" style="display:none;">"The city council has the **authority** to make decisions about public parks, but they must listen to the community first."
+"As a teacher, she feels a strong **obligation** to help all her students succeed."
+"The **implementation** of the new recycling program will start next month."
+"The company took a firm **stance** against pollution and stopped using plastic bags."
+"The new policy faced a lot of **resistance** from people who didn’t want change."
+"From the **perspective** of the children, the playground is the best part of the park."
+"The garden was covered in **overgrowth** after no one took care of it for years."
+"The factory’s carbon **footprint** is much smaller after switching to solar energy."
+"The architect suggested raising the **elevation** of the building to improve the view."
+"The new ramp makes the library more **accessible** for people in wheelchairs."
+"His **dilemma** was choosing between keeping the old park or building something new for the community."
+"She used **hyperbole** when she said, “This backpack weighs a ton!”"
+"The old house needed a complete **overhaul** before anyone could live in it."
+"A fresh coat of paint gave the room a quick **facelift**."
+"The school had to cut its art program because of a tight **budget**."
+"The abandoned lot was an **eyesore** in the middle of the neighborhood."
+"The farmer cleared a **swath** of land to plant new crops."
+"The wedding reception was held in a beautiful **pavilion** by the lake."
+"The children loved playing near the **fountain** in the town square."
+"A tall **hedge** separated the two gardens, giving each family privacy."
+"The **plaza** in the city center is always crowded with people enjoying the sunshine."
+"The city hired a company to handle the **landscaping** around the new library."
+"After years of use, the kitchen needed a full **renovation**."
+"The **committee** met every week to discuss improvements for the school."
+"No one raised an **objection** when the teacher suggested a field trip."
+"The mayor’s **justification** for the new law was to improve public safety."
+"The scientist could **envision** a future where clean energy powers everything."
+"The city decided to **replace** the old playground with a modern one."
+"I really **appreciate** your help with my homework—thank you!"
+"The artist tried to **replicate** the famous painting, but it wasn’t easy."
+"The new software can **integrate** with other programs to make work easier."
+"The company decided to **eliminate** plastic straws to help the environment."
+"The road will **extend** all the way to the beach next year."
+"It’s important to **maintain** your bike so it lasts longer."
+"The secret door was **tucked away** behind a bookshelf."
+"Workers will **construct** a new bridge over the river next spring."
+"Let’s stop talking and **dive right in** to solving the problem."
+"The government **mandated** that all cars must pass an emissions test."
+"The team decided to **abandon** the old plan and start fresh."
+"They had to **raise** the height of the fence to keep the dogs from jumping over."
+"The museum has a **state-of-the-art** security system to protect the artifacts."
+"The **ancient** ruins told stories of civilizations from thousands of years ago."
+"We walked along the **winding** path through the forest."
+"The new shopping mall felt **oversized** compared to the small shops downtown."
+"The project required a **massive** effort from everyone involved."
+"The hotel lobby was decorated in a **grand** style, with chandeliers and marble floors."
+"She wore an **elaborate** dress to the party, with lace and beads everywhere."
+"The trail became **impassable** after the heavy rain caused a landslide."
+"The sign was placed high so it would be **visible** from far away."
+"The app is designed to be **accessible** to people of all ages."
+"The garden’s **natural** beauty attracted many visitors."
+"The artist kept the **original** painting and sold only copies."
+"The park is an **integral** part of the community, where everyone gathers."
+"Their plan to build a spaceship was very **ambitious**, but they worked hard to achieve it."
+"**With all due respect**, I think we should consider another option."
+"The treasure was hidden **in the middle of** the dense jungle."
+"This tradition has been passed down **going back generations**."
+"I think you’re **on to something**—that idea could really work!"
+"The store sold the furniture **as-is**, so we couldn’t return it."
+"The library’s mission is to **bring knowledge to everyone** in the city."</div>
+
+<div class="authoring-panel" id="authoringPanel" style="display: none;">
+    <textarea id="sentenceInput" placeholder="Enter sentences like:
+&quot;She filed a **complaint** about the noisy neighbors.&quot;,
+&quot;Many people think holidays have become too **commercialized**...&quot;,"></textarea>
+    <input type="text" id="fileNameInput" placeholder="Name Your File" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 0.95rem;">
+    <button id="makeBtn">Make Quiz</button>
+
+    <div id="saveMessage" style="display: none; margin-top: 0.75rem; padding: 0.5rem; border: 2px solid rgb(49, 130, 206); color: rgb(47, 133, 90); font-weight: 600; border-radius: 4px; background: rgb(235, 248, 255);">
+        Saved to your browser's default download folder.
+    </div>
+
+</div>
+
+        <div class="user-info">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="idInput" placeholder="Enter your ID">
+        </div>
+
+
+        <button id="studyToggleBtn">Study Mode</button>
+        <br><br>
+
+
+        <div class="quiz-section" id="quizSection"><div class="sentence-group"><h2>Sentences 1 - 5</h2><div class="sentence-item">
+                        <span class="sentence-text">The city council has the </span>
+                        <select class="vocab-select" data-correct="authority" data-group="0" data-sentence="0">
+                            <option value="">Select...</option><option value="stance">stance</option><option value="implementation">implementation</option><option value="obligation">obligation</option><option value="resistance">resistance</option><option value="authority">authority</option>
+                        </select>
+                        <span class="sentence-text"> to make decisions about public parks, but they must listen to the community first.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">As a teacher, she feels a strong </span>
+                        <select class="vocab-select" data-correct="obligation" data-group="0" data-sentence="1">
+                            <option value="">Select...</option><option value="stance">stance</option><option value="implementation">implementation</option><option value="obligation">obligation</option><option value="resistance">resistance</option><option value="authority">authority</option>
+                        </select>
+                        <span class="sentence-text"> to help all her students succeed.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The </span>
+                        <select class="vocab-select" data-correct="implementation" data-group="0" data-sentence="2">
+                            <option value="">Select...</option><option value="stance">stance</option><option value="implementation">implementation</option><option value="obligation">obligation</option><option value="resistance">resistance</option><option value="authority">authority</option>
+                        </select>
+                        <span class="sentence-text"> of the new recycling program will start next month.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The company took a firm </span>
+                        <select class="vocab-select" data-correct="stance" data-group="0" data-sentence="3">
+                            <option value="">Select...</option><option value="stance">stance</option><option value="implementation">implementation</option><option value="obligation">obligation</option><option value="resistance">resistance</option><option value="authority">authority</option>
+                        </select>
+                        <span class="sentence-text"> against pollution and stopped using plastic bags.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The new policy faced a lot of </span>
+                        <select class="vocab-select" data-correct="resistance" data-group="0" data-sentence="4">
+                            <option value="">Select...</option><option value="stance">stance</option><option value="implementation">implementation</option><option value="obligation">obligation</option><option value="resistance">resistance</option><option value="authority">authority</option>
+                        </select>
+                        <span class="sentence-text"> from people who didn’t want change.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 6 - 10</h2><div class="sentence-item">
+                        <span class="sentence-text">From the </span>
+                        <select class="vocab-select" data-correct="perspective" data-group="1" data-sentence="0">
+                            <option value="">Select...</option><option value="overgrowth">overgrowth</option><option value="perspective">perspective</option><option value="elevation">elevation</option><option value="accessible">accessible</option><option value="footprint">footprint</option>
+                        </select>
+                        <span class="sentence-text"> of the children, the playground is the best part of the park.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The garden was covered in </span>
+                        <select class="vocab-select" data-correct="overgrowth" data-group="1" data-sentence="1">
+                            <option value="">Select...</option><option value="overgrowth">overgrowth</option><option value="perspective">perspective</option><option value="elevation">elevation</option><option value="accessible">accessible</option><option value="footprint">footprint</option>
+                        </select>
+                        <span class="sentence-text"> after no one took care of it for years.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The factory’s carbon </span>
+                        <select class="vocab-select" data-correct="footprint" data-group="1" data-sentence="2">
+                            <option value="">Select...</option><option value="overgrowth">overgrowth</option><option value="perspective">perspective</option><option value="elevation">elevation</option><option value="accessible">accessible</option><option value="footprint">footprint</option>
+                        </select>
+                        <span class="sentence-text"> is much smaller after switching to solar energy.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The architect suggested raising the </span>
+                        <select class="vocab-select" data-correct="elevation" data-group="1" data-sentence="3">
+                            <option value="">Select...</option><option value="overgrowth">overgrowth</option><option value="perspective">perspective</option><option value="elevation">elevation</option><option value="accessible">accessible</option><option value="footprint">footprint</option>
+                        </select>
+                        <span class="sentence-text"> of the building to improve the view.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The new ramp makes the library more </span>
+                        <select class="vocab-select" data-correct="accessible" data-group="1" data-sentence="4">
+                            <option value="">Select...</option><option value="overgrowth">overgrowth</option><option value="perspective">perspective</option><option value="elevation">elevation</option><option value="accessible">accessible</option><option value="footprint">footprint</option>
+                        </select>
+                        <span class="sentence-text"> for people in wheelchairs.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 11 - 15</h2><div class="sentence-item">
+                        <span class="sentence-text">His </span>
+                        <select class="vocab-select" data-correct="dilemma" data-group="2" data-sentence="0">
+                            <option value="">Select...</option><option value="facelift">facelift</option><option value="budget">budget</option><option value="overhaul">overhaul</option><option value="dilemma">dilemma</option><option value="hyperbole">hyperbole</option>
+                        </select>
+                        <span class="sentence-text"> was choosing between keeping the old park or building something new for the community.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">She used </span>
+                        <select class="vocab-select" data-correct="hyperbole" data-group="2" data-sentence="1">
+                            <option value="">Select...</option><option value="facelift">facelift</option><option value="budget">budget</option><option value="overhaul">overhaul</option><option value="dilemma">dilemma</option><option value="hyperbole">hyperbole</option>
+                        </select>
+                        <span class="sentence-text"> when she said, “This backpack weighs a ton!”</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The old house needed a complete </span>
+                        <select class="vocab-select" data-correct="overhaul" data-group="2" data-sentence="2">
+                            <option value="">Select...</option><option value="facelift">facelift</option><option value="budget">budget</option><option value="overhaul">overhaul</option><option value="dilemma">dilemma</option><option value="hyperbole">hyperbole</option>
+                        </select>
+                        <span class="sentence-text"> before anyone could live in it.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">A fresh coat of paint gave the room a quick </span>
+                        <select class="vocab-select" data-correct="facelift" data-group="2" data-sentence="3">
+                            <option value="">Select...</option><option value="facelift">facelift</option><option value="budget">budget</option><option value="overhaul">overhaul</option><option value="dilemma">dilemma</option><option value="hyperbole">hyperbole</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The school had to cut its art program because of a tight </span>
+                        <select class="vocab-select" data-correct="budget" data-group="2" data-sentence="4">
+                            <option value="">Select...</option><option value="facelift">facelift</option><option value="budget">budget</option><option value="overhaul">overhaul</option><option value="dilemma">dilemma</option><option value="hyperbole">hyperbole</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 16 - 20</h2><div class="sentence-item">
+                        <span class="sentence-text">The abandoned lot was an </span>
+                        <select class="vocab-select" data-correct="eyesore" data-group="3" data-sentence="0">
+                            <option value="">Select...</option><option value="hedge">hedge</option><option value="pavilion">pavilion</option><option value="fountain">fountain</option><option value="swath">swath</option><option value="eyesore">eyesore</option>
+                        </select>
+                        <span class="sentence-text"> in the middle of the neighborhood.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The farmer cleared a </span>
+                        <select class="vocab-select" data-correct="swath" data-group="3" data-sentence="1">
+                            <option value="">Select...</option><option value="hedge">hedge</option><option value="pavilion">pavilion</option><option value="fountain">fountain</option><option value="swath">swath</option><option value="eyesore">eyesore</option>
+                        </select>
+                        <span class="sentence-text"> of land to plant new crops.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The wedding reception was held in a beautiful </span>
+                        <select class="vocab-select" data-correct="pavilion" data-group="3" data-sentence="2">
+                            <option value="">Select...</option><option value="hedge">hedge</option><option value="pavilion">pavilion</option><option value="fountain">fountain</option><option value="swath">swath</option><option value="eyesore">eyesore</option>
+                        </select>
+                        <span class="sentence-text"> by the lake.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The children loved playing near the </span>
+                        <select class="vocab-select" data-correct="fountain" data-group="3" data-sentence="3">
+                            <option value="">Select...</option><option value="hedge">hedge</option><option value="pavilion">pavilion</option><option value="fountain">fountain</option><option value="swath">swath</option><option value="eyesore">eyesore</option>
+                        </select>
+                        <span class="sentence-text"> in the town square.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">A tall </span>
+                        <select class="vocab-select" data-correct="hedge" data-group="3" data-sentence="4">
+                            <option value="">Select...</option><option value="hedge">hedge</option><option value="pavilion">pavilion</option><option value="fountain">fountain</option><option value="swath">swath</option><option value="eyesore">eyesore</option>
+                        </select>
+                        <span class="sentence-text"> separated the two gardens, giving each family privacy.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 21 - 25</h2><div class="sentence-item">
+                        <span class="sentence-text">The </span>
+                        <select class="vocab-select" data-correct="plaza" data-group="4" data-sentence="0">
+                            <option value="">Select...</option><option value="renovation">renovation</option><option value="committee">committee</option><option value="objection">objection</option><option value="plaza">plaza</option><option value="landscaping">landscaping</option>
+                        </select>
+                        <span class="sentence-text"> in the city center is always crowded with people enjoying the sunshine.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The city hired a company to handle the </span>
+                        <select class="vocab-select" data-correct="landscaping" data-group="4" data-sentence="1">
+                            <option value="">Select...</option><option value="renovation">renovation</option><option value="committee">committee</option><option value="objection">objection</option><option value="plaza">plaza</option><option value="landscaping">landscaping</option>
+                        </select>
+                        <span class="sentence-text"> around the new library.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">After years of use, the kitchen needed a full </span>
+                        <select class="vocab-select" data-correct="renovation" data-group="4" data-sentence="2">
+                            <option value="">Select...</option><option value="renovation">renovation</option><option value="committee">committee</option><option value="objection">objection</option><option value="plaza">plaza</option><option value="landscaping">landscaping</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The </span>
+                        <select class="vocab-select" data-correct="committee" data-group="4" data-sentence="3">
+                            <option value="">Select...</option><option value="renovation">renovation</option><option value="committee">committee</option><option value="objection">objection</option><option value="plaza">plaza</option><option value="landscaping">landscaping</option>
+                        </select>
+                        <span class="sentence-text"> met every week to discuss improvements for the school.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">No one raised an </span>
+                        <select class="vocab-select" data-correct="objection" data-group="4" data-sentence="4">
+                            <option value="">Select...</option><option value="renovation">renovation</option><option value="committee">committee</option><option value="objection">objection</option><option value="plaza">plaza</option><option value="landscaping">landscaping</option>
+                        </select>
+                        <span class="sentence-text"> when the teacher suggested a field trip.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 26 - 30</h2><div class="sentence-item">
+                        <span class="sentence-text">The mayor’s </span>
+                        <select class="vocab-select" data-correct="justification" data-group="5" data-sentence="0">
+                            <option value="">Select...</option><option value="replace">replace</option><option value="envision">envision</option><option value="appreciate">appreciate</option><option value="justification">justification</option><option value="replicate">replicate</option>
+                        </select>
+                        <span class="sentence-text"> for the new law was to improve public safety.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The scientist could </span>
+                        <select class="vocab-select" data-correct="envision" data-group="5" data-sentence="1">
+                            <option value="">Select...</option><option value="replace">replace</option><option value="envision">envision</option><option value="appreciate">appreciate</option><option value="justification">justification</option><option value="replicate">replicate</option>
+                        </select>
+                        <span class="sentence-text"> a future where clean energy powers everything.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The city decided to </span>
+                        <select class="vocab-select" data-correct="replace" data-group="5" data-sentence="2">
+                            <option value="">Select...</option><option value="replace">replace</option><option value="envision">envision</option><option value="appreciate">appreciate</option><option value="justification">justification</option><option value="replicate">replicate</option>
+                        </select>
+                        <span class="sentence-text"> the old playground with a modern one.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">I really </span>
+                        <select class="vocab-select" data-correct="appreciate" data-group="5" data-sentence="3">
+                            <option value="">Select...</option><option value="replace">replace</option><option value="envision">envision</option><option value="appreciate">appreciate</option><option value="justification">justification</option><option value="replicate">replicate</option>
+                        </select>
+                        <span class="sentence-text"> your help with my homework—thank you!</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The artist tried to </span>
+                        <select class="vocab-select" data-correct="replicate" data-group="5" data-sentence="4">
+                            <option value="">Select...</option><option value="replace">replace</option><option value="envision">envision</option><option value="appreciate">appreciate</option><option value="justification">justification</option><option value="replicate">replicate</option>
+                        </select>
+                        <span class="sentence-text"> the famous painting, but it wasn’t easy.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 31 - 35</h2><div class="sentence-item">
+                        <span class="sentence-text">The new software can </span>
+                        <select class="vocab-select" data-correct="integrate" data-group="6" data-sentence="0">
+                            <option value="">Select...</option><option value="eliminate">eliminate</option><option value="integrate">integrate</option><option value="maintain">maintain</option><option value="tucked away">tucked away</option><option value="extend">extend</option>
+                        </select>
+                        <span class="sentence-text"> with other programs to make work easier.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The company decided to </span>
+                        <select class="vocab-select" data-correct="eliminate" data-group="6" data-sentence="1">
+                            <option value="">Select...</option><option value="eliminate">eliminate</option><option value="integrate">integrate</option><option value="maintain">maintain</option><option value="tucked away">tucked away</option><option value="extend">extend</option>
+                        </select>
+                        <span class="sentence-text"> plastic straws to help the environment.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The road will </span>
+                        <select class="vocab-select" data-correct="extend" data-group="6" data-sentence="2">
+                            <option value="">Select...</option><option value="eliminate">eliminate</option><option value="integrate">integrate</option><option value="maintain">maintain</option><option value="tucked away">tucked away</option><option value="extend">extend</option>
+                        </select>
+                        <span class="sentence-text"> all the way to the beach next year.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">It’s important to </span>
+                        <select class="vocab-select" data-correct="maintain" data-group="6" data-sentence="3">
+                            <option value="">Select...</option><option value="eliminate">eliminate</option><option value="integrate">integrate</option><option value="maintain">maintain</option><option value="tucked away">tucked away</option><option value="extend">extend</option>
+                        </select>
+                        <span class="sentence-text"> your bike so it lasts longer.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The secret door was </span>
+                        <select class="vocab-select" data-correct="tucked away" data-group="6" data-sentence="4">
+                            <option value="">Select...</option><option value="eliminate">eliminate</option><option value="integrate">integrate</option><option value="maintain">maintain</option><option value="tucked away">tucked away</option><option value="extend">extend</option>
+                        </select>
+                        <span class="sentence-text"> behind a bookshelf.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 36 - 40</h2><div class="sentence-item">
+                        <span class="sentence-text">Workers will </span>
+                        <select class="vocab-select" data-correct="construct" data-group="7" data-sentence="0">
+                            <option value="">Select...</option><option value="abandon">abandon</option><option value="dive right in">dive right in</option><option value="mandated">mandated</option><option value="raise">raise</option><option value="construct">construct</option>
+                        </select>
+                        <span class="sentence-text"> a new bridge over the river next spring.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Let’s stop talking and </span>
+                        <select class="vocab-select" data-correct="dive right in" data-group="7" data-sentence="1">
+                            <option value="">Select...</option><option value="abandon">abandon</option><option value="dive right in">dive right in</option><option value="mandated">mandated</option><option value="raise">raise</option><option value="construct">construct</option>
+                        </select>
+                        <span class="sentence-text"> to solving the problem.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The government </span>
+                        <select class="vocab-select" data-correct="mandated" data-group="7" data-sentence="2">
+                            <option value="">Select...</option><option value="abandon">abandon</option><option value="dive right in">dive right in</option><option value="mandated">mandated</option><option value="raise">raise</option><option value="construct">construct</option>
+                        </select>
+                        <span class="sentence-text"> that all cars must pass an emissions test.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The team decided to </span>
+                        <select class="vocab-select" data-correct="abandon" data-group="7" data-sentence="3">
+                            <option value="">Select...</option><option value="abandon">abandon</option><option value="dive right in">dive right in</option><option value="mandated">mandated</option><option value="raise">raise</option><option value="construct">construct</option>
+                        </select>
+                        <span class="sentence-text"> the old plan and start fresh.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">They had to </span>
+                        <select class="vocab-select" data-correct="raise" data-group="7" data-sentence="4">
+                            <option value="">Select...</option><option value="abandon">abandon</option><option value="dive right in">dive right in</option><option value="mandated">mandated</option><option value="raise">raise</option><option value="construct">construct</option>
+                        </select>
+                        <span class="sentence-text"> the height of the fence to keep the dogs from jumping over.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 41 - 45</h2><div class="sentence-item">
+                        <span class="sentence-text">The museum has a </span>
+                        <select class="vocab-select" data-correct="state-of-the-art" data-group="8" data-sentence="0">
+                            <option value="">Select...</option><option value="ancient">ancient</option><option value="oversized">oversized</option><option value="state-of-the-art">state-of-the-art</option><option value="winding">winding</option><option value="massive">massive</option>
+                        </select>
+                        <span class="sentence-text"> security system to protect the artifacts.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The </span>
+                        <select class="vocab-select" data-correct="ancient" data-group="8" data-sentence="1">
+                            <option value="">Select...</option><option value="ancient">ancient</option><option value="oversized">oversized</option><option value="state-of-the-art">state-of-the-art</option><option value="winding">winding</option><option value="massive">massive</option>
+                        </select>
+                        <span class="sentence-text"> ruins told stories of civilizations from thousands of years ago.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">We walked along the </span>
+                        <select class="vocab-select" data-correct="winding" data-group="8" data-sentence="2">
+                            <option value="">Select...</option><option value="ancient">ancient</option><option value="oversized">oversized</option><option value="state-of-the-art">state-of-the-art</option><option value="winding">winding</option><option value="massive">massive</option>
+                        </select>
+                        <span class="sentence-text"> path through the forest.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The new shopping mall felt </span>
+                        <select class="vocab-select" data-correct="oversized" data-group="8" data-sentence="3">
+                            <option value="">Select...</option><option value="ancient">ancient</option><option value="oversized">oversized</option><option value="state-of-the-art">state-of-the-art</option><option value="winding">winding</option><option value="massive">massive</option>
+                        </select>
+                        <span class="sentence-text"> compared to the small shops downtown.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The project required a </span>
+                        <select class="vocab-select" data-correct="massive" data-group="8" data-sentence="4">
+                            <option value="">Select...</option><option value="ancient">ancient</option><option value="oversized">oversized</option><option value="state-of-the-art">state-of-the-art</option><option value="winding">winding</option><option value="massive">massive</option>
+                        </select>
+                        <span class="sentence-text"> effort from everyone involved.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 46 - 50</h2><div class="sentence-item">
+                        <span class="sentence-text">The hotel lobby was decorated in a </span>
+                        <select class="vocab-select" data-correct="grand" data-group="9" data-sentence="0">
+                            <option value="">Select...</option><option value="grand">grand</option><option value="elaborate">elaborate</option><option value="impassable">impassable</option><option value="visible">visible</option><option value="accessible">accessible</option>
+                        </select>
+                        <span class="sentence-text"> style, with chandeliers and marble floors.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">She wore an </span>
+                        <select class="vocab-select" data-correct="elaborate" data-group="9" data-sentence="1">
+                            <option value="">Select...</option><option value="grand">grand</option><option value="elaborate">elaborate</option><option value="impassable">impassable</option><option value="visible">visible</option><option value="accessible">accessible</option>
+                        </select>
+                        <span class="sentence-text"> dress to the party, with lace and beads everywhere.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The trail became </span>
+                        <select class="vocab-select" data-correct="impassable" data-group="9" data-sentence="2">
+                            <option value="">Select...</option><option value="grand">grand</option><option value="elaborate">elaborate</option><option value="impassable">impassable</option><option value="visible">visible</option><option value="accessible">accessible</option>
+                        </select>
+                        <span class="sentence-text"> after the heavy rain caused a landslide.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The sign was placed high so it would be </span>
+                        <select class="vocab-select" data-correct="visible" data-group="9" data-sentence="3">
+                            <option value="">Select...</option><option value="grand">grand</option><option value="elaborate">elaborate</option><option value="impassable">impassable</option><option value="visible">visible</option><option value="accessible">accessible</option>
+                        </select>
+                        <span class="sentence-text"> from far away.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The app is designed to be </span>
+                        <select class="vocab-select" data-correct="accessible" data-group="9" data-sentence="4">
+                            <option value="">Select...</option><option value="grand">grand</option><option value="elaborate">elaborate</option><option value="impassable">impassable</option><option value="visible">visible</option><option value="accessible">accessible</option>
+                        </select>
+                        <span class="sentence-text"> to people of all ages.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 51 - 55</h2><div class="sentence-item">
+                        <span class="sentence-text">The garden’s </span>
+                        <select class="vocab-select" data-correct="natural" data-group="10" data-sentence="0">
+                            <option value="">Select...</option><option value="ambitious">ambitious</option><option value="original">original</option><option value="integral">integral</option><option value="natural">natural</option><option value="With all due respect">With all due respect</option>
+                        </select>
+                        <span class="sentence-text"> beauty attracted many visitors.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The artist kept the </span>
+                        <select class="vocab-select" data-correct="original" data-group="10" data-sentence="1">
+                            <option value="">Select...</option><option value="ambitious">ambitious</option><option value="original">original</option><option value="integral">integral</option><option value="natural">natural</option><option value="With all due respect">With all due respect</option>
+                        </select>
+                        <span class="sentence-text"> painting and sold only copies.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The park is an </span>
+                        <select class="vocab-select" data-correct="integral" data-group="10" data-sentence="2">
+                            <option value="">Select...</option><option value="ambitious">ambitious</option><option value="original">original</option><option value="integral">integral</option><option value="natural">natural</option><option value="With all due respect">With all due respect</option>
+                        </select>
+                        <span class="sentence-text"> part of the community, where everyone gathers.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">Their plan to build a spaceship was very </span>
+                        <select class="vocab-select" data-correct="ambitious" data-group="10" data-sentence="3">
+                            <option value="">Select...</option><option value="ambitious">ambitious</option><option value="original">original</option><option value="integral">integral</option><option value="natural">natural</option><option value="With all due respect">With all due respect</option>
+                        </select>
+                        <span class="sentence-text">, but they worked hard to achieve it.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text"></span>
+                        <select class="vocab-select" data-correct="With all due respect" data-group="10" data-sentence="4">
+                            <option value="">Select...</option><option value="ambitious">ambitious</option><option value="original">original</option><option value="integral">integral</option><option value="natural">natural</option><option value="With all due respect">With all due respect</option>
+                        </select>
+                        <span class="sentence-text">, I think we should consider another option.</span>
+                    </div></div><div class="sentence-group"><h2>Sentences 56 - 60</h2><div class="sentence-item">
+                        <span class="sentence-text">The treasure was hidden </span>
+                        <select class="vocab-select" data-correct="in the middle of" data-group="11" data-sentence="0">
+                            <option value="">Select...</option><option value="as-is">as-is</option><option value="bring knowledge to everyone">bring knowledge to everyone</option><option value="on to something">on to something</option><option value="in the middle of">in the middle of</option><option value="going back generations">going back generations</option>
+                        </select>
+                        <span class="sentence-text"> the dense jungle.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">This tradition has been passed down </span>
+                        <select class="vocab-select" data-correct="going back generations" data-group="11" data-sentence="1">
+                            <option value="">Select...</option><option value="as-is">as-is</option><option value="bring knowledge to everyone">bring knowledge to everyone</option><option value="on to something">on to something</option><option value="in the middle of">in the middle of</option><option value="going back generations">going back generations</option>
+                        </select>
+                        <span class="sentence-text">.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">I think you’re </span>
+                        <select class="vocab-select" data-correct="on to something" data-group="11" data-sentence="2">
+                            <option value="">Select...</option><option value="as-is">as-is</option><option value="bring knowledge to everyone">bring knowledge to everyone</option><option value="on to something">on to something</option><option value="in the middle of">in the middle of</option><option value="going back generations">going back generations</option>
+                        </select>
+                        <span class="sentence-text">—that idea could really work!</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The store sold the furniture </span>
+                        <select class="vocab-select" data-correct="as-is" data-group="11" data-sentence="3">
+                            <option value="">Select...</option><option value="as-is">as-is</option><option value="bring knowledge to everyone">bring knowledge to everyone</option><option value="on to something">on to something</option><option value="in the middle of">in the middle of</option><option value="going back generations">going back generations</option>
+                        </select>
+                        <span class="sentence-text">, so we couldn’t return it.</span>
+                    </div><div class="sentence-item">
+                        <span class="sentence-text">The library’s mission is to </span>
+                        <select class="vocab-select" data-correct="bring knowledge to everyone" data-group="11" data-sentence="4">
+                            <option value="">Select...</option><option value="as-is">as-is</option><option value="bring knowledge to everyone">bring knowledge to everyone</option><option value="on to something">on to something</option><option value="in the middle of">in the middle of</option><option value="going back generations">going back generations</option>
+                        </select>
+                        <span class="sentence-text"> in the city.</span>
+                    </div></div></div>
+        <button id="toggleAnswersBtn" style="margin-left: .7rem;">Show Answers</button>
+        <div class="print-section">
+            <button id="printBtn">Print/Save to PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions (same as before)
+        function extractVocab(sentence) {
+            const match = sentence.match(/\*\*(.*?)\*\*/);
+            return match ? match[1] : '';
+        }
+
+        function chunkArray(array, size) {
+            const chunks = [];
+            for (let i = 0; i < array.length; i += size) {
+                chunks.push(array.slice(i, i + size));
+            }
+            return chunks;
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Refactored: generateQuiz now accepts a sentences array
+        function generateQuiz(sentences) {
+            const quizSection = document.getElementById('quizSection');
+            quizSection.innerHTML = '';
+            const sentenceGroups = chunkArray(sentences, 5);
+            sentenceGroups.forEach((group, groupIndex) => {
+                const vocabWords = group.map(sentence => extractVocab(sentence));
+                const shuffledOptions = shuffleArray(vocabWords);
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'sentence-group';
+                groupDiv.innerHTML = `<h2>Sentences ${groupIndex * 5 + 1} - ${Math.min((groupIndex + 1) * 5, sentences.length)}</h2>`;
+                group.forEach((sentence, sentenceIndex) => {
+                    const correctAnswer = extractVocab(sentence);
+                    const parts = sentence.split(/\*\*(.*?)\*\*/);
+                    const beforeText = parts[0];
+                    const afterText = parts[2] || '';
+                    const sentenceItem = document.createElement('div');
+                    sentenceItem.className = 'sentence-item';
+                    let selectOptions = '<option value="">Select...</option>';
+                    shuffledOptions.forEach(option => {
+                        selectOptions += `<option value="${option}">${option}</option>`;
+                    });
+                    sentenceItem.innerHTML = `
+                        <span class="sentence-text">${beforeText}</span>
+                        <select class="vocab-select" data-correct="${correctAnswer}" data-group="${groupIndex}" data-sentence="${sentenceIndex}">
+                            ${selectOptions}
+                        </select>
+                        <span class="sentence-text">${afterText}</span>
+                    `;
+                    const selectElement = sentenceItem.querySelector('select');
+selectElement.addEventListener('change', function() {
+    this.classList.remove('correct');
+    this.classList.remove('incorrect');
+    if (this.value === '') return;
+    if (this.value === this.dataset.correct) {
+        this.classList.add('correct');
+    } else {
+        this.classList.add('incorrect');
+    }
+});
+                    groupDiv.appendChild(sentenceItem);
+                });
+                quizSection.appendChild(groupDiv);
+            });
+        }
+
+        // Parse user input safely
+        function parseSentences(input) {
+            const lines = input.split('\n');
+            const sentences = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                // Remove trailing comma if present
+                if (line.endsWith(',')) line = line.slice(0, -1);
+                // Must start and end with "
+                if (!line.startsWith('"') || !line.endsWith('"')) {
+                    throw new Error(`Line must be enclosed in quotes: ${line}`);
+                }
+                let content = line.slice(1, -1); // remove quotes
+                // Must contain exactly one **...** pair
+                const boldMatches = content.match(/\*\*(.*?)\*\*/g);
+                if (!boldMatches || boldMatches.length !== 1) {
+                    throw new Error(`Exactly one vocabulary word in **bold** required: ${line}`);
+                }
+                sentences.push(content);
+            }
+            if (sentences.length === 0) {
+                throw new Error("No valid sentences found.");
+            }
+            return sentences;
+        }
+
+        // Download current page as HTML
+        function downloadCurrentPage(fileName) {
+            const fullHTML = document.documentElement.outerHTML;
+            const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('nameInput');
+            const idInput = document.getElementById('idInput');
+            const printBtn = document.getElementById('printBtn');
+            const authoringPanel = document.getElementById('authoringPanel');
+            const sentenceInput = document.getElementById('sentenceInput');
+            const sentenceData = document.getElementById('sentenceData');
+            const makeBtn = document.getElementById('makeBtn');
+
+            document.getElementById('sentenceInput').value = document.getElementById('sentenceData').textContent.trim();
+            // Print button always enabled — validate on click
+            printBtn.addEventListener('click', () => {
+                if (nameInput.value.trim() === '' || idInput.value.trim() === '') {
+                    alert('Name and ID required');
+                    return;
+                }
+                window.print();
+            });
+
+            // Make Quiz Button
+makeBtn.addEventListener('click', () => {
+
+    document.getElementById('sentenceData').textContent=document.getElementById('sentenceInput').value.trim();
+
+    try {
+        const userSentences = parseSentences(sentenceInput.value);
+        generateQuiz(userSentences);
+
+
+        // Get filename
+        const fileNameInput = document.getElementById('fileNameInput');
+        let fileNameBase = fileNameInput.value.trim();
+        if (!fileNameBase) {
+            fileNameBase = `vocab-quiz-${Date.now()}`;
+        }
+
+        let fileName = fileNameBase + 'EditMode.html';
+        // Create and trigger download
+        downloadCurrentPage(fileName);
+
+        // Hide authoring panel and contenEdble = false
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+        });
+        authoringPanel.style.display = 'none';
+        fileName = fileNameBase + '.html';
+
+        downloadCurrentPage(fileName);
+
+        // Restore authoring panel and contenteditables
+        authoringPanel.style.display = 'block';
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+        });
+
+        // Show save message
+        const saveMessage = document.getElementById('saveMessage');
+        saveMessage.style.display = 'block';
+        setTimeout(() => {
+            saveMessage.style.display = 'none';
+        }, 5000); // 5 seconds
+
+    } catch (err) {
+        alert('Error parsing sentences:\n' + err.message);
+        // Ensure panel is visible if error occurs
+        authoringPanel.style.display = 'block';
+    }
+});
+
+
+
+const studyToggleBtn = document.getElementById('studyToggleBtn');
+
+studyToggleBtn.addEventListener('click', () => {
+    const selects = document.querySelectorAll('.vocab-select');
+    const isCurrentlyStudyMode = studyToggleBtn.textContent === "Study Mode";
+
+    selects.forEach(select => {
+        if (isCurrentlyStudyMode) {
+            // Switch to Study Mode: Show all correct answers
+            select.value = select.dataset.correct;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Switch to Hide Answers: Restore to blank/original state
+            select.value = "";
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    // Toggle the button text
+    studyToggleBtn.textContent = isCurrentlyStudyMode ? "Hide Answers" : "Study Mode";
+});
+
+
+
+        });
+        
+        
+        
+        
+// Add this at the bottom of your script, outside generateQuiz
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('vocab-select')) {
+        const select = e.target;
+        select.classList.remove('correct', 'incorrect');
+        if (select.value === '') return;
+        if (select.value === select.dataset.correct) {
+            select.classList.add('correct');
+        } else {
+            select.classList.add('incorrect');
+        }
+    }
+});
+        
+
+
+// Toggle answers button
+const toggleBtn = document.getElementById('toggleAnswersBtn');
+let answersVisible = false;
+
+toggleBtn.addEventListener('click', () => {
+    answersVisible = !answersVisible;
+    const selects = document.querySelectorAll('.vocab-select');
+
+    selects.forEach(select => {
+        const correct = select.dataset.correct;
+        if (answersVisible) {
+            // Set to correct answer and lock
+            select.value = correct;
+            select.disabled = true;
+            select.classList.remove('incorrect');
+            select.classList.add('correct');
+        } else {
+            // Restore to "Select..." and unlock
+            select.value = '';
+            select.disabled = false;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+
+    toggleBtn.textContent = answersVisible ? 'Hide Answers' : 'Show Answers';
+});
+    </script>
+
+
+</body></html>
