@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Ray's Technology Lectures</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .topSection {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .topSection h2 {
+            color: #2980b9;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+
+        
+        .lecture-link {
+            display: block;
+            margin: 0px 0;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .lecture-link:hover {
+            background: #ffeaa7;
+            transform: translateX(5px);
+        }
+        
+        .duration {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .mainSection {
+            margin-top: 30px;
+        }
+        
+        .mainSection h2 {
+            color: #27ae60;
+            border-bottom: 2px solid #27ae60;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .generalInfo {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .linksGrid {
+            display: grid;
+            gap: 12px;
+            counter-reset: itemCounter; /* Initialize/reset counter */
+        }
+        
+        .aLink {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #6c5ce7;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .aLink::before {
+  counter-increment: itemCounter; /* Increment counter */
+  content: counter(itemCounter) ". "; /* Display counter before each item */
+  /*font-weight: bold;*/
+  color: blue;
+}
+        
+        .aLink:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-link {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .video-link:hover {
+            color: #5f3dc4;
+            text-decoration: underline;
+        }
+        
+        .video-title {
+            color: #2d3436;
+            font-size: 0.95em;
+        }
+        
+        .ted-ed-link {
+            display: inline-block;
+            background: #e17055;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .ted-ed-link:hover {
+            background: #d63031;
+        }
+        
+        button {
+            display: block;
+            margin: 0 0 .7rem 0;
+        }
+
+        img {
+            display:block;
+            max-width:100%;
+            height:auto;
+            border-radius:8px;
+        }
+
+        .editor-panel{
+            position:fixed;top:10px;right:10px;
+            background:rgba(255,255,255,.97);
+            padding:14px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,.15);
+            z-index:9999;
+            font-family:'Poppins',sans-serif;
+            font-size:.85rem;
+            min-width:10rem;
+            max-width:15rem;
+            }
+        .editor-panel input,.editor-panel button{
+            width:100%;
+            margin:6px 0;
+            padding:8px 10px;
+            font-size:.85rem;
+            border:1px solid #ddd;
+            border-radius:6px
+        }
+        .editor-panel button{
+            background:#ff6b6b;
+            color:white;
+            font-weight:600;
+            cursor:pointer;
+            transition:background .3s
+        }
+        .editor-panel button:hover{
+            background:#4ecdc4
+        }
+        .editor-panel input{
+            max-width:90%;
+        }
+
+        .left_arrow{
+            font-size: 150%;
+        }
+
+
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+        .typeTextBelow{
+            pointer-events:none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 contenteditable="false">Dr. Ray's EFL-ESL&nbsp;<br>Learning Materials&nbsp;</h1>
+
+        <div class="subtitle" contenteditable="false">Improving English online since 2008
+        </div>
+        
+        <div id="topSection" class="topSection" contenteditable="false">
+
+            <h2>Business English in Action: Launching a Cosmetics Brand&nbsp;</h2>
+
+            <div><strong>Can be used for the following types of Business English courses:&nbsp;</strong>
+            </div>
+
+            <div><strong>&nbsp; &nbsp; &nbsp; &nbsp;Meetings,
+            Marketing, Negotiations, General Business:upper-intermediate</strong>
+                </div><br>
+
+        </div>
+        
+        <div class="mainSection">
+            <h2 contenteditable="false">Course Overview / Description</h2>
+            
+            <div class="generalInfo" contenteditable="false">
+                <div>A dynamic scenario-based Business English course.&nbsp;
+                    </div><br>
+
+            <div>Follow the journey of "Beautiful Years,"
+            a cosmetics company launching its innovative "Just4you"
+            skincare line for middle-aged women. Across <strong>14 progressive
+            scripted meeting dialogues</strong>. (each designed as a standalone
+            lesson), learners
+            participate in authentic professional conversations — from initial
+            brainstorming and marketing strategies to ethical discussions,
+            celebrity negotiations, contract finalization, and a creative joint
+            music video campaign.</div><br>
+
+
+                <details>
+                    <summary>[more ...]</summary>
+                        <p>This
+                        comprehensive General Business English course builds confidence in
+                        everyday workplace communication while developing key professional
+                        skills. It can be flexibly taught as:</p>
+                        <ul><li><p style="margin-bottom: 0in"><strong>General Business English</strong>
+                            (broad focus on meetings, collaboration, and professional discourse)
+                                </p>
+                            </li><li><p style="margin-bottom: 0in"><strong>Business Meetings</strong>
+                            (leading/participating, turn-taking, agreeing/disagreeing)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in"><strong>Marketing &amp; Brand
+                            Promotion</strong> (strategies, events, social media, overcoming
+                            consumer resistance)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in"><strong>Negotiations &amp;
+                            Deal-Making</strong> (contracts, concessions, ethical bargaining)
+                            </p>
+                            </li><li><p><strong>Business Ethics &amp; Corporate Responsibility</strong>
+                            (child labor, environment, animal testing, sustainability)
+                            </p>
+                        </li></ul>
+                        <p><strong>Key features</strong>:</p>
+                        <ul><li><p style="margin-bottom: 0in">Authentic, engaging dialogues
+                            packed with practical business idioms and expressions
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Progressive storyline that
+                            motivates learners and mirrors real international business projects
+                            </p>
+                            </li><li><p>Opportunities for role-plays, discussions, vocabulary
+                            expansion, and creative output
+                            </p>
+                        </li></ul>
+                        <p><strong>Target audience</strong>: Professionals, business
+                        students, or career-focused learners who want to communicate fluently
+                        and confidently in international or English-speaking work
+                        environments.</p>
+                        <h3 class="western">Level</h3>
+                        <p><strong>Upper-Intermediate (CEFR B2 / Vantage)</strong> Ideal for
+                        learners at solid B1+ who are ready to advance, or those already at
+                        B2 seeking practical fluency in business contexts. The language
+                        features:</p>
+                        <ul><li><p style="margin-bottom: 0in">A wide range of everyday and
+                            business-specific vocabulary, including common idioms (e.g., "think
+                            outside the box," "go the extra mile," "hit the
+                            nail on the head")
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Varied sentence structures with
+                            good control of connectors, relative clauses, passives, and
+                            conditionals
+                            </p>
+                            </li><li><p>Natural, polite professional tone and coherent discourse
+                            typical of effective meetings and negotiations
+                            </p>
+                        </li></ul>
+                        <p>This level aligns with major B2 Business English programs (e.g.,
+                        Market Leader Upper-Intermediate, Business Result
+                        Upper-Intermediate), where learners handle detailed discussions on
+                        concrete and some abstract topics with increasing independence and
+                        accuracy.</p>
+                        <h3 class="western">Main Topics &amp; Skills Covered</h3>
+                        <ul><li><p style="margin-bottom: 0in">Participating in and leading
+                            effective business meetings
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Brainstorming marketing ideas and
+                            promotion strategies (events, social media, user-generated content)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Addressing consumer resistance and
+                            building trust
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Selecting and negotiating
+                            celebrity endorsements
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Ethical business practices (child
+                            labor, environmental sustainability, cruelty-free testing,
+                            charitable initiatives)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Contract and financial
+                            negotiations (fees, percentages, renewals, trial periods)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Event planning (mall promotions,
+                            fashion shows, free makeovers)
+                            </p>
+                            </li><li><p style="margin-bottom: 0in">Creative collaboration and project
+                            management (joint campaigns, music video production)
+                            </p>
+                            </li><li><p>Professional language: idioms/expressions, polite persuasion,
+                            building rapport, handling challenges</p>
+                            </li></ul><br>
+                </details>
+
+            </div><!--end generalInfo-->
+
+            <div class="linksGrid">
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson01_Scenario1.html" target="_blank">Lesson 01 - Scenario 1</a>
+    <span class="typeTextBelow"><br>[Scenario 1]<br><br></span>
+
+    <a href="Lesson01A_Idioms.html" target="_blank">Lesson 01 - Idioms</a>
+    <span class="typeTextBelow"><br>[Idioms]<br><br></span>
+
+   <a href="Lesson01B_Vocabulary.html" target="_blank">Lesson 01 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson02_Scenario2.html" target="_blank">Lesson 02 - Scenario 2</a>
+    <span class="typeTextBelow"><br>[Scenario 2]<br><br></span>
+
+    <a href="Lesson02A_Idioms.html" target="_blank">Lesson 02 - Idioms</a>
+    <span class="typeTextBelow"><br>[Idioms]<br><br></span>
+
+    <a href="Lesson02B_Vocabulary.html" target="_blank">Lesson 02 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson03_Scenario3.html" target="_blank">Lesson 03 - Scenario 3</a>
+    <span class="typeTextBelow"><br>[Scenario 3]<br><br></span>
+
+    <a href="Lesson03A_Idioms.html" target="_blank">Lesson 03 - Idioms</a>
+    <span class="typeTextBelow"><br>[Idioms]<br><br></span>
+
+    <a href="Lesson03B_Vocabulary.html" target="_blank">Lesson 03 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson04_Scenario4.html" target="_blank">Lesson 04 - Scenario 4</a>
+    <span class="typeTextBelow"><br>[Scenario 4]<br><br></span>
+
+    <a href="Lesson04A_Idioms.html" target="_blank">Lesson 04 - Idioms</a>
+    <span class="typeTextBelow"><br>[Idioms]<br><br></span>
+
+    <a href="Lesson04B_Vocabulary.html" target="_blank">Lesson 04 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson05_Scenario5.html" target="_blank">Lesson 05 - Scenario 5</a>
+    <span class="typeTextBelow"><br>[Scenario 5]<br><br></span>
+
+    <a href="Lesson05A_IdiomsCollocations.html" target="_blank">Lesson 05 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson05B_Vocabulary.html" target="_blank">Lesson 05 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson06_Scenario6.html" target="_blank">Lesson 06 - Scenario 6</a>
+    <span class="typeTextBelow"><br>[Scenario 6]<br><br></span>
+
+    <a href="Lesson06A_IdiomsCollocations.html" target="_blank">Lesson 06 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson06B_Vocabulary.html" target="_blank">Lesson 06 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson07_Scenario7.html" target="_blank">Lesson 07 - Scenario 7</a>
+    <span class="typeTextBelow"><br>[Scenario 7]<br><br></span>
+
+    <a href="Lesson07A_IdiomsCollocations.html" target="_blank">Lesson 07 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson07B_Vocabulary.html" target="_blank">Lesson 07 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson08_Scenario8.html" target="_blank">Lesson 08 - Scenario 8</a>
+    <span class="typeTextBelow"><br>[Scenario 8]<br><br></span>
+
+    <a href="Lesson08A_IdiomsCollocations.html" target="_blank">Lesson 08 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson08B_Vocabulary.html" target="_blank">Lesson 08 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson09_Scenario9.html" target="_blank">Lesson 09 - Scenario 9</a>
+    <span class="typeTextBelow"><br>[Scenario 9]<br><br></span>
+
+    <a href="Lesson09A_IdiomsCollocations.html" target="_blank">Lesson 09 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson09B_Vocabulary.html" target="_blank">Lesson 09 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+
+    <a href="Lesson10_Scenario.html" target="_blank">Lesson 10 - Scenario</a>
+    <span class="typeTextBelow"><br>[Scenario]<br><br></span>
+
+
+    <a href="Lesson10_idiomCollocations.html" target="_blank">Lesson 10 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson10_vocab.html" target="_blank">Lesson 10 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson11_Scenario.html" target="_blank">Lesson 11 - Scenario</a>
+    <span class="typeTextBelow"><br>[Scenario]<br><br></span>
+
+    <a href="Lesson11idiomsCollocations.html" target="_blank">Lesson 11 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson11vocab.html" target="_blank">Lesson 11 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson12_Scenario.html" target="_blank">Lesson 12 - Scenario</a>
+    <span class="typeTextBelow"><br>[Scenario]<br><br></span>
+
+    <a href="Lesson12idiomsColocations.html" target="_blank">Lesson 12 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson12vocab.html" target="_blank">Lesson 12 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+    <a href="Lesson013Scenario.html" target="_blank">Lesson 13 - Scenario</a>
+    <span class="typeTextBelow"><br>[Scenario]<br><br></span>
+
+    <a href="Lesson13idiomsCollocations.html" target="_blank">Lesson 13 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson13vocab.html" target="_blank">Lesson 13 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+<div class="aLink" contentEditable="false">
+
+    <a href="Lesson14_Scenario.html" target="_blank">Lesson 14 - Scenario</a>
+    <span class="typeTextBelow"><br>[Scenario]<br><br></span>
+
+    <a href="Lesson14_IdiomsCollocations.html" target="_blank">Lesson 14 - Idioms & Collocations</a>
+    <span class="typeTextBelow"><br>[Idioms & Collocations]<br><br></span>
+
+    <a href="Lesson14_Vocabulary.html" target="_blank">Lesson 14 - Vocabulary</a>
+    <span class="typeTextBelow"><br>[Vocabulary]<br><br></span>
+</div>
+
+
+            </div>
+
+    </div><!--end main section-->
+
+</div> <!--end container-->
+        
+    
+
+
+
+<!-- link templates -->
+<template id="link_template" contenteditable="false"> <!-- appends to id="topSection" -->
+    <div class="aLink" contentEditable="false">
+        <a href="url" target="_blank">link label</a><span class="typeTextBelow"><br>[optional: type/paste plain/formatted below]<br><br></span>
+    </div>
+</template>
+
+
+
+
+
+
+
+</body></html>
