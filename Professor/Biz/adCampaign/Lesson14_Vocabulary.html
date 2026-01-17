@@ -119,7 +119,7 @@
             border-bottom: none;
         }
         
-        .vocab-title {
+        . {
             font-size: 18px;
             font-weight: bold;
             color: #1565C0;
@@ -163,6 +163,28 @@
             color: #1565C0;
             font-weight: 500;
         }
+                .vocab-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1565C0;
+            margin-bottom: 8px;
+        }
+
+
+.vocabulary-list {
+    counter-reset: collocationCount;
+}
+
+.vocab-entry {
+    counter-increment: collocationCount;
+}
+.vocab-title::before {
+    content: counter(collocationCount) ". ";
+    font-weight: 600;
+    margin-right: 0.25em;
+}
+
+footer {margin-top:8rem;}
     </style>
 </head>
 <body>
@@ -178,7 +200,7 @@
 
     <div class="vocabulary-list">
         <div class="vocab-entry">
-            <div class="vocab-term">1. Multigenerational</div>
+            <div class="vocab-title">Multigenerational</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">Involving or relating to several different generations of people.</span>
@@ -189,7 +211,7 @@
         </div>
 
         <div class="vocab-entry">
-            <div class="vocab-term">2. Integration</div>
+            <div class="vocab-title">Integration</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">The act of combining or incorporating elements together to form a unified whole.</span>
@@ -200,7 +222,7 @@
         </div>
 
         <div class="vocab-entry">
-            <div class="vocab-term">3. Authentic</div>
+            <div class="vocab-title">Authentic</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">Genuine, real, and sincere; not false or imitation.</span>
@@ -210,8 +232,23 @@
             </div>
         </div>
 
+
         <div class="vocab-entry">
-            <div class="vocab-term">4. Chaos</div>
+            <div class="vocab-title">Outdo</div>
+            <div class="definition">
+                <span class="definition-label">Definition:</span>
+                <span class="definition-text">To perform better than or surpass someone or something; to exceed in quality or achievement.</span>
+            </div>
+            <div class="example">
+                <span class="example-label">Example:</span> Our new marketing strategy will <span class="vocab-highlight">outdo</span> anything our competitors have tried.
+            </div>
+        </div>
+
+
+
+
+        <div class="vocab-entry">
+            <div class="vocab-title">Chaos</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">Complete disorder or confusion; a state of disorganization.</span>
@@ -222,7 +259,7 @@
         </div>
 
         <div class="vocab-entry">
-            <div class="vocab-term">5. Climax</div>
+            <div class="vocab-title">Climax</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">The most intense, exciting, or important point of something; the peak or culmination.</span>
@@ -233,7 +270,7 @@
         </div>
 
         <div class="vocab-entry">
-            <div class="vocab-term">6. Phenomenal</div>
+            <div class="vocab-title">Phenomenal</div>
             <div class="definition">
                 <span class="definition-label">Definition:</span>
                 <span class="definition-text">Remarkably impressive or extraordinary; exceptional in quality or achievement.</span>
@@ -438,6 +475,26 @@
             window.print();
         });
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const titles = Array.from(
+    document.querySelectorAll('.vocab-title')
+  )
+    .map(div =>
+      div.textContent
+        .replace(/^\s*\d+\.\s*/, '') // remove leading "1. ", "2. ", etc.
+        .trim()
+    )
+    .filter(text => text.length > 0);
+
+  const output = document.createElement('div');
+  output.id = 'idiom-list';
+  output.textContent = titles.join(' | ');
+
+  document.body.appendChild(output);
+});
+</script>
+
 
 
 </body></html>
