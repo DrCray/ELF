@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Language Learning Word List</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: .5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .input-area {
+      margin-bottom: 2rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      font-size: 1.1rem;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+    }
+    #wordList {
+      display: flex;
+      flex-wrap: wrap;
+row-gap: 1rem; column-gap: .3rem;
+      justify-content: flex-start;
+      align-content: flex-start;
+      
+    }
+    .word-item {
+      /* These will be set dynamically via JS */
+      padding: 0.2rem 1.5rem;
+      background: #f0f8ff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1.15rem;
+      white-space: nowrap;  /* prevent words from breaking */
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+        box-shadow: 0 2px 3px gray;
+    }
+    
+
+.prefix {
+  /* No bold by default — plain text */
+  font-weight: normal;
+  /* Optional styles to make it visually distinct if desired */
+  color: #555;              /* slightly darker gray */
+  /* font-style: italic; */   /* ← uncomment if you want italics instead */
+  opacity: 0.85;             /* subtle fade — feels like a label */
+  min-width: 2.5ch;          /* keeps alignment neat */
+  display: inline-block;
+  text-align: right;
+}
+
+footer { margin-top: 6rem; }
+
+#copyCodeBtn {
+  margin-left: 1rem;
+  background: #2196f3;
+  color: white;
+  border: none;
+}
+  </style>
+</head>
+<body>
+  <h1>Word List Builder</h1>
+<div style="margin: 1rem 0;">
+  <label for="numberingStyle">Numbering style: </label>
+  <select id="numberingStyle">
+    <option value="off" selected>Off</option>
+    <option value="numeric">1. 2. 3.</option>
+    <option value="letter-dot">a. b. c.</option>
+    <option value="letter-paren">a) b) c)</option>
+  </select>
+</div>
+  <div class="input-area">
+    <p>Enter your words/phrases, separated by commas.<br>
+       If a word/phrase contains a comma, escape it with a backslash: <code>\,</code></p>
+    <textarea id="wordInput" placeholder="e.g. Tiger, Elephant, Humpback Whale, Red Kangaroo, Kaohsiung\, Taiwan"></textarea>
+    <button id="renderBtn">Render List</button>
+  </div>
+  <p> ... </p>
+
+  <div id="wordList"></div>
+  <p> ... </p>
+  <br>
+  <button id="copyCodeBtn">Copy Code</button>
+<footer>...</footer>
+
+
+  <script>
+document.getElementById('renderBtn').addEventListener('click', function() {
+  const input = document.getElementById('wordInput').value.trim();
+  if (!input) return;
+
+  // Get selected numbering style
+  const numberingStyle = document.getElementById('numberingStyle').value;
+
+  // 1. Split the input, respecting escaped commas (\,)
+  const escaped = input.replace(/\\,/g, '\u200B');
+  const items = escaped.split(',').map(item => item.trim().replace(/\u200B/g, ','));
+  const cleanItems = items.filter(item => item.length > 0);
+
+  if (cleanItems.length === 0) return;
+
+  // 2. Measure max content width (including future prefix for safety)
+  const measurer = document.createElement('div');
+  measurer.style.position = 'absolute';
+  measurer.style.visibility = 'hidden';
+  measurer.style.whiteSpace = 'nowrap';
+  measurer.style.font = getComputedStyle(document.body).font;
+  document.body.appendChild(measurer);
+
+  let maxWidth = 0;
+  cleanItems.forEach((item, index) => {
+    let displayText = item;
+    if (numberingStyle !== 'off') {
+      displayText = getPrefix(index, numberingStyle) + ' ' + item;
+    }
+    measurer.textContent = displayText;
+    const width = measurer.getBoundingClientRect().width;
+    if (width > maxWidth) maxWidth = width;
+  });
+
+  document.body.removeChild(measurer);
+
+  // Add padding buffer (increased slightly to account for prefixes)
+  const itemWidth = Math.ceil(maxWidth) + 26;
+
+  // 3. Render the list
+  const container = document.getElementById('wordList');
+  container.innerHTML = '';
+
+  cleanItems.forEach((item, index) => {
+    const span = document.createElement('span');
+    span.className = 'word-item';
+    span.style.width = `${itemWidth}px`;
+    span.style.minWidth = `${itemWidth}px`;
+
+    // Apply prefix if selected
+    if (numberingStyle !== 'off') {
+      const prefix = getPrefix(index, numberingStyle);
+span.innerHTML = `<span class="prefix">${prefix}</span>&nbsp;&nbsp;${item}`;
+    } else {
+      span.textContent = item;
+    }
+
+    container.appendChild(span);
+  });
+});
+
+// Helper function to generate prefix
+function getPrefix(index, style) {
+  if (style === 'off') return '';
+
+  const n = index + 1; // 1-based counting for nicer sequence
+
+  if (style === 'numeric') {
+    return n + '.';
+  }
+
+  // ── Letter styles ───────────────────────────────────────
+  const letterIndex = index % 26;
+  const group = Math.floor(index / 26);
+
+  const letter = String.fromCharCode(97 + letterIndex); // a..z
+
+  let prefixStr;
+  if (group === 0) {
+    prefixStr = letter;                    // a)   b)   ...   z)
+  } else {
+    prefixStr = letter + group;            // a1)  b1)  ...  z1)   →   a2)  etc.
+  }
+
+  if (style === 'letter-dot') {
+    return prefixStr + '.';
+  } else if (style === 'letter-paren') {
+    return prefixStr + ')';
+  }
+
+  return ''; // fallback
+}
+  </script>
+  
+  <script>
+ document.getElementById('copyCodeBtn').addEventListener('click', function() {
+  // Get raw content
+  const styleElement = document.querySelector('head style') || document.querySelector('style');
+const rawStyle = styleElement ? styleElement.outerHTML : '<!-- No <style> tag found -->';
+
+  const wordListContainer = document.getElementById('wordList');
+  const rawHtml = wordListContainer ? wordListContainer.outerHTML : '<!-- No wordList found -->';
+
+  // Apply simple beautification
+  const prettyHtml = simpleBeautify(rawHtml);
+
+  // For CSS we can keep it simple or also apply basic formatting
+  const prettyCss = rawStyle
+    .split(';')
+    .map(rule => rule.trim())
+    .filter(rule => rule)
+    .join(';\n  ');   // very basic CSS line breaks
+
+  // Combine
+  const fullCode = prettyCss + '\n\n\n' + prettyHtml;
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(fullCode)
+    .then(() => {
+      const originalText = this.textContent;
+      this.textContent = 'Copied!';
+      this.style.backgroundColor = '#4caf50';
+      this.style.color = 'white';
+      
+      setTimeout(() => {
+        this.textContent = originalText;
+        this.style.backgroundColor = '';
+        this.style.color = '';
+      }, 2000);
+    })
+    .catch(err => {
+      console.error('Copy failed:', err);
+      alert('Copy failed — try manually selecting the code.');
+    });
+});
+
+
+function simpleBeautify(html) {
+  return html
+    .replace(/>\s*</g, '>\n<')           // line break between every tag
+    .split('\n')
+    .map(line => line.trim())            // remove extra whitespace per line
+    .filter(line => line.length > 0)     // remove empty lines
+    .join('\n');
+}
+
+  </script>
+</body>
+</html>
