@@ -201,7 +201,7 @@ footer {margin-top:8rem;}
         </div>
         
         <div class="intro">
-            <p>This lesson covers 28 essential business vocabulary words used when planning promotional events and customer engagement strategies. Each word is defined and illustrated with an example sentence.</p>
+            <p>This lesson covers essential business vocabulary words used when planning promotional events and customer engagement strategies. Each word is defined and illustrated with an example sentence.</p>
         </div>
         
         <div class="vocab-entry">
@@ -670,6 +670,78 @@ footer {margin-top:8rem;}
             window.print();
         });
     </script>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.vocab-entry').forEach(entry => {
+
+
+    if (entry.querySelector('details')) return;
+
+const title = entry.querySelector('.vocab-title');
+    if (!title) return;
+
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+details.classList.add('study-item');
+//details.open = true;
+
+
+    summary.appendChild(title);
+    details.appendChild(summary);
+
+    Array.from(entry.children).forEach(child => {
+      if (child !== title) {
+        details.appendChild(child);
+      }
+    });
+
+    entry.innerHTML = '';
+    entry.appendChild(details);
+
+    /* ---- STYLE FIXES (bulk, no file edits needed) ---- */
+
+    title.style.display = 'inline';
+
+    const definition = details.querySelector('.definition');
+    if (definition) {
+      definition.style.marginTop = '1rem';
+    }
+  });
+
+
+
+//add Study Mode Toggle button and function
+const intro = document.querySelector('.intro');
+if (intro) {
+  const button = document.createElement('button');
+  button.textContent = 'Study Mode';
+  button.style.marginBottom=".8rem";
+  button.style.background="blue";
+  button.style.color="white";
+  button.style.fontWeight="bold";
+
+  intro.insertAdjacentElement('afterend', button);
+
+  button.addEventListener('click', () => {
+    const detailsList = document.querySelectorAll('details.study-item');
+    const openAll = button.textContent === 'Study Mode';
+
+    detailsList.forEach(d => {
+      d.open = openAll;
+    });
+
+    button.textContent = openAll ? 'Hide All' : 'Study Mode';
+  });
+}
+
+});
+</script>
+
 
 
 </body></html>
