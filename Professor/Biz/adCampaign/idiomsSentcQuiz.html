@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exercises</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(135, 206, 250, 0.5);
+            border-radius:6px;
+        }
+
+
+        .header-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 6px;
+                        box-shadow: 0 0 20px #E1D7D7;
+                        border: thin solid #E1D7D7;
+
+        }
+
+        .header-section h1 {
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        .input-group label {
+            display: inline-block;
+            width: 80px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            padding: 8px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .exercise-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            page-break-after: always;
+            box-shadow: 0 0 20px rgba(135, 206, 250, 0.3);
+
+        }
+
+        .exercise-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .student-info {
+            display: none; /* Hidden by default */
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .student-info p {
+            margin: 5px 0;
+        }
+
+        .exercise-content {
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+/*        .exercise-sentence {
+            margin: 15px 0;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+*/
+
+/* automatically number sentnences */
+.exercise-content {
+    counter-reset: sentence-counter; /* Initialize counter for each section */
+}
+
+.exercise-sentence {
+    margin: 15px 0;
+    line-height: 1.8;
+    font-size: 16px;
+    counter-increment: sentence-counter; /* Increment for each sentence */
+}
+
+.exercise-sentence::before {
+    content: counter(sentence-counter) ". ";
+    font-weight: bold;
+    margin-right: 5px;
+}
+/* end auto-numbering */
+
+        .vocab-select {
+            padding: 4px 8px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            border: 1px solid #999;
+            border-radius: 3px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 180px;
+            max-width: 350px;
+            transition: all 0.3s;
+            margin: 0 .3rem;
+        }
+
+        .vocab-select:focus {
+            outline: 2px solid #4CAF50;
+            outline-offset: 2px;
+        }
+
+        .print-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .print-message {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .print-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .print-button:enabled {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .print-button:enabled:hover {
+            background-color: #45a049;
+        }
+
+        .print-button:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+
+.collapse-arrow {
+    font-size: 0.8em;
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.exercise-section h2:hover {
+    color: #4CAF50;
+}
+
+
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 20px;
+            }
+
+            .header-section {
+                display: none;
+            }
+
+            .exercise-section {
+                border: none;
+                page-break-after: avoid;
+            }
+
+            .student-info {
+                display: block; /* Show on print */
+            }
+
+            .print-section {
+                display: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .vocab-select {
+                border: none;
+                background-color: transparent;
+                padding: 0;
+                font-weight: bold;
+            }
+        }
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header-section {
+        padding: 15px;
+    }
+
+    .input-group input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .vocab-select {
+        min-width: 120px;
+        max-width: 100%;
+        font-size: 14px;
+        margin: 0 0.3rem;
+    }
+
+    .exercise-sentence {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .print-button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h1>Online Exercises</h1>
+        <div class="input-group">
+            <label for="studentName">Name:</label>
+            <input type="text" id="studentName" placeholder="Enter your name">
+        </div>
+        <div class="input-group">
+            <label for="studentId">ID:</label>
+            <input type="text" id="studentId" placeholder="Enter your ID">
+        </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="exercise-section" id="section1">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 1</h2>
+        <div class="exercise-content" data-section="1">
+            <p class="exercise-sentence" data-correct="goes the extra mile">Our customer service team always <select class="vocab-select"><option value="">---</option></select> to ensure clients are satisfied with their purchases.</p>
+            <p class="exercise-sentence" data-correct="a leg up">Having experience in digital marketing gives you <select class="vocab-select"><option value="">---</option></select> when applying for this position.</p>
+            <p class="exercise-sentence" data-correct="think outside the box">We need to <select class="vocab-select"><option value="">---</option></select> if we want to attract younger customers to our traditional brand.</p>
+            <p class="exercise-sentence" data-correct="made a big splash">The company's new advertising campaign <select class="vocab-select"><option value="">---</option></select> on social media with millions of views in the first week.</p>
+            <p class="exercise-sentence" data-correct="sweeten the deal">To close the sale, the real estate agent agreed to <select class="vocab-select"><option value="">---</option></select> by including all the furniture.</p>
+            <p class="exercise-sentence" data-correct="kill two birds with one stone">By attending the conference, I can <select class="vocab-select"><option value="">---</option></select>—network with potential clients and learn about new industry trends.</p>
+            <p class="exercise-sentence" data-correct="Rome wasn't built in a day">Don't get discouraged if your startup isn't profitable yet—<select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="keep our eyes on the prize">Even though the project is challenging, we need to <select class="vocab-select"><option value="">---</option></select> and remember why we started this initiative.</p>
+            <p class="exercise-sentence" data-correct="paid off">All those late nights studying really <select class="vocab-select"><option value="">---</option></select> when she received the promotion.</p>
+            <p class="exercise-sentence" data-correct="roaring success">The product launch was a <select class="vocab-select"><option value="">---</option></select>, with sales exceeding our projections by 200%.</p>
+            <p class="exercise-sentence" data-correct="put our heads together">If we <select class="vocab-select"><option value="">---</option></select>, I'm sure we can find a solution to this budget problem.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="1" disabled>Print/Save PDF - Section 1</button>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="exercise-section" id="section2">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 2</h2>
+        <div class="exercise-content" data-section="2">
+            <p class="exercise-sentence" data-correct="threw in the towel">After months of trying to fix the old car, he finally <select class="vocab-select"><option value="">---</option></select> and bought a new one.</p>
+            <p class="exercise-sentence" data-correct="turn a blind eye">Management cannot <select class="vocab-select"><option value="">---</option></select> to employee complaints about workplace safety.</p>
+            <p class="exercise-sentence" data-correct="take a step back">When the project got too complicated, we decided to <select class="vocab-select"><option value="">---</option></select> and reassess our priorities.</p>
+            <p class="exercise-sentence" data-correct="hit the nail on the head">When you said our pricing was too high, you really <select class="vocab-select"><option value="">---</option></select>—that's exactly why sales have been slow.</p>
+            <p class="exercise-sentence" data-correct="tap into">The company plans to <select class="vocab-select"><option value="">---</option></select> the growing market for sustainable products.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="2" disabled>Print/Save PDF - Section 2</button>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="exercise-section" id="section3">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 3</h2>
+        <div class="exercise-content" data-section="3">
+            <p class="exercise-sentence" data-correct="get the green light">Once we <select class="vocab-select"><option value="">---</option></select> from the board, we can start hiring new staff.</p>
+            <p class="exercise-sentence" data-correct="win-win situation">The partnership created a <select class="vocab-select"><option value="">---</option></select> where both companies increased their market share.</p>
+            <p class="exercise-sentence" data-correct="reach out">Please <select class="vocab-select"><option value="">---</option></select> to the client if you have any questions about their requirements.</p>
+            <p class="exercise-sentence" data-correct="keep in mind">When planning your schedule, <select class="vocab-select"><option value="">---</option></select> that the deadline is next Friday.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="3" disabled>Print/Save PDF - Section 3</button>
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="exercise-section" id="section4">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 4</h2>
+        <div class="exercise-content" data-section="4">
+            <p class="exercise-sentence" data-correct="refer back">If you have questions about the policy, please <select class="vocab-select"><option value="">---</option></select> to the employee handbook we distributed last month.</p>
+            <p class="exercise-sentence" data-correct="target market">Our <select class="vocab-select"><option value="">---</option></select> consists of young professionals aged 25-35.</p>
+            <p class="exercise-sentence" data-correct="long-term benefits">Investing in employee training provides <select class="vocab-select"><option value="">---</option></select> for the company.</p>
+            <p class="exercise-sentence" data-correct="user-generated content">The brand's social media strategy relies heavily on <select class="vocab-select"><option value="">---</option></select> from satisfied customers.</p>
+            <p class="exercise-sentence" data-correct="high-traffic area">The kiosk is positioned in a <select class="vocab-select"><option value="">---</option></select> to maximize visibility.</p>
+            <p class="exercise-sentence" data-correct="before and after">The <select class="vocab-select"><option value="">---</option></select> photos clearly show the effectiveness of the renovation.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="4" disabled>Print/Save PDF - Section 4</button>
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="exercise-section" id="section5">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 5</h2>
+        <div class="exercise-content" data-section="5">
+            <p class="exercise-sentence" data-correct="keeping in mind">We should choose a location for the office <select class="vocab-select"><option value="">---</option></select> the needs of employees with families.</p>
+            <p class="exercise-sentence" data-correct="comes to mind">When I think of excellent customer service, your company immediately <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="Let's not forget"><select class="vocab-select"><option value="">---</option></select> that our main goal is customer satisfaction, not just profit.</p>
+            <p class="exercise-sentence" data-correct="open doors">This partnership will <select class="vocab-select"><option value="">---</option></select> to new markets in Asia.</p>
+            <p class="exercise-sentence" data-correct="new heights">The company's stock price has reached <select class="vocab-select"><option value="">---</option></select> after the product launch.</p>
+            <p class="exercise-sentence" data-correct="brand visibility">The billboard campaign significantly increased our <select class="vocab-select"><option value="">---</option></select> in the downtown area.</p>
+            <p class="exercise-sentence" data-correct="strong following">The influencer has a <select class="vocab-select"><option value="">---</option></select> among fashion-conscious millennials.</p>
+            <p class="exercise-sentence" data-correct="positive impact">The new training program had a <select class="vocab-select"><option value="">---</option></select> on employee productivity.</p>
+            <p class="exercise-sentence" data-correct="social media presence">The company is working to improve its <select class="vocab-select"><option value="">---</option></select> across multiple platforms.</p>
+            <p class="exercise-sentence" data-correct="star power">The actor's <select class="vocab-select"><option value="">---</option></select> helped the movie become a box office success.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="5" disabled>Print/Save PDF - Section 5</button>
+        </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="exercise-section" id="section6">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 6</h2>
+        <div class="exercise-content" data-section="6">
+            <p class="exercise-sentence" data-correct="take charge of">The senior manager will <select class="vocab-select"><option value="">---</option></select> the restructuring process.</p>
+            <p class="exercise-sentence" data-correct="moving on to">Now <select class="vocab-select"><option value="">---</option></select> the quarterly results, I'm pleased to report strong growth.</p>
+            <p class="exercise-sentence" data-correct="did our homework">Before the meeting, we <select class="vocab-select"><option value="">---</option></select> and analyzed all the competitor data.</p>
+            <p class="exercise-sentence" data-correct="go a long way">A simple thank you note can <select class="vocab-select"><option value="">---</option></select> in building client relationships.</p>
+            <p class="exercise-sentence" data-correct="large-scale campaigns">The agency specializes in <select class="vocab-select"><option value="">---</option></select> for international brands.</p>
+            <p class="exercise-sentence" data-correct="uncharted territory">Entering the Asian market is <select class="vocab-select"><option value="">---</option></select> for our company.</p>
+            <p class="exercise-sentence" data-correct="contract negotiations">The <select class="vocab-select"><option value="">---</option></select> took several weeks but resulted in favorable terms.</p>
+            <p class="exercise-sentence" data-correct="talent agency">The <select class="vocab-select"><option value="">---</option></select> represents some of Hollywood's biggest stars.</p>
+            <p class="exercise-sentence" data-correct="mutually beneficial">The partnership proved to be <select class="vocab-select"><option value="">---</option></select> for both companies.</p>
+            <p class="exercise-sentence" data-correct="common ground">Despite initial differences, the negotiators found <select class="vocab-select"><option value="">---</option></select> on pricing.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="6" disabled>Print/Save PDF - Section 6</button>
+        </div>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="exercise-section" id="section7">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 7</h2>
+        <div class="exercise-content" data-section="7">
+            <p class="exercise-sentence" data-correct="First and foremost"><select class="vocab-select"><option value="">---</option></select>, we need to ensure the safety of all employees.</p>
+            <p class="exercise-sentence" data-correct="token of our sincerity">As a <select class="vocab-select"><option value="">---</option></select>, we're offering a full refund to all affected customers.</p>
+            <p class="exercise-sentence" data-correct="ethical business practices">The company is known for its <select class="vocab-select"><option value="">---</option></select> and transparency.</p>
+            <p class="exercise-sentence" data-correct="strict policies">We have <select class="vocab-select"><option value="">---</option></select> against workplace harassment.</p>
+            <p class="exercise-sentence" data-correct="supply chain">Managing the <select class="vocab-select"><option value="">---</option></select> efficiently is crucial for reducing costs.</p>
+            <p class="exercise-sentence" data-correct="Environmental sustainability"><select class="vocab-select"><option value="">---</option></select> is a core value of our organization.</p>
+            <p class="exercise-sentence" data-correct="carbon footprint">The company is working to reduce its <select class="vocab-select"><option value="">---</option></select> by 50% by 2030.</p>
+            <p class="exercise-sentence" data-correct="tangible evidence">The audit report provides <select class="vocab-select"><option value="">---</option></select> of our compliance.</p>
+            <p class="exercise-sentence" data-correct="joint initiatives">The <select class="vocab-select"><option value="">---</option></select> between the organizations have been very successful.</p>
+            <p class="exercise-sentence" data-correct="charitable partnerships">Our <select class="vocab-select"><option value="">---</option></select> focus on education and healthcare access.</p>
+            <p class="exercise-sentence" data-correct="child welfare">The foundation supports programs dedicated to <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="environmental conservation">The organization is committed to <select class="vocab-select"><option value="">---</option></select> efforts worldwide.</p>
+            <p class="exercise-sentence" data-correct="animal rights">The company supports <select class="vocab-select"><option value="">---</option></select> through cruelty-free policies.</p>
+            <p class="exercise-sentence" data-correct="constructive dialogue">The meeting fostered <select class="vocab-select"><option value="">---</option></select> between management and employees.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="7" disabled>Print/Save PDF - Section 7</button>
+        </div>
+    </div>
+
+    <!-- Section 8 -->
+    <div class="exercise-section" id="section8">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 8</h2>
+        <div class="exercise-content" data-section="8">
+            <p class="exercise-sentence" data-correct="Turning to"><select class="vocab-select"><option value="">---</option></select> the budget proposal, we need to review the quarterly expenses.</p>
+            <p class="exercise-sentence" data-correct="child labor">Our company has a zero-tolerance policy against <select class="vocab-select"><option value="">---</option></select> in all our factories.</p>
+            <p class="exercise-sentence" data-correct="production process">We monitor every stage of the <select class="vocab-select"><option value="">---</option></select> to ensure quality control.</p>
+            <p class="exercise-sentence" data-correct="manufacturing facilities">Our <select class="vocab-select"><option value="">---</option></select> are located in countries with strong labor protections.</p>
+            <p class="exercise-sentence" data-correct="ethical practices">We carefully select suppliers who demonstrate commitment to <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="fair wages">All our employees receive <select class="vocab-select"><option value="">---</option></select> that reflect their skills and contributions.</p>
+            <p class="exercise-sentence" data-correct="safe working conditions">We ensure <select class="vocab-select"><option value="">---</option></select> through regular inspections and training programs.</p>
+            <p class="exercise-sentence" data-correct="top priority">Environmental sustainability is a <select class="vocab-select"><option value="">---</option></select> for our organization.</p>
+            <p class="exercise-sentence" data-correct="energy efficient">We have invested in <select class="vocab-select"><option value="">---</option></select> equipment to reduce our carbon footprint.</p>
+            <p class="exercise-sentence" data-correct="continuous improvement">Our <select class="vocab-select"><option value="">---</option></select> initiatives help us identify and adopt better technologies.</p>
+            <p class="exercise-sentence" data-correct="regulatory agencies">Our testing methods have been approved by <select class="vocab-select"><option value="">---</option></select> in multiple countries.</p>
+            <p class="exercise-sentence" data-correct="limited resources">Our programs focus on helping families with <select class="vocab-select"><option value="">---</option></select> access healthcare.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="8" disabled>Print/Save PDF - Section 8</button>
+        </div>
+    </div>
+
+    <!-- Section 9 -->
+    <div class="exercise-section" id="section9">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 9</h2>
+        <div class="exercise-content" data-section="9">
+            <p class="exercise-sentence" data-correct="delve into">Let's <select class="vocab-select"><option value="">---</option></select> the details of the new marketing strategy.</p>
+            <p class="exercise-sentence" data-correct="touched upon">We <select class="vocab-select"><option value="">---</option></select> several important issues during the meeting.</p>
+            <p class="exercise-sentence" data-correct="maintain a balance">It's important to <select class="vocab-select"><option value="">---</option></select> between work and personal life.</p>
+            <p class="exercise-sentence" data-correct="Moving forward"><select class="vocab-select"><option value="">---</option></select>, we'll implement quarterly reviews.</p>
+            <p class="exercise-sentence" data-correct="financial aspects">We need to carefully consider the <select class="vocab-select"><option value="">---</option></select> of this merger.</p>
+            <p class="exercise-sentence" data-correct="flat rate">The consultant charges a <select class="vocab-select"><option value="">---</option></select> of $5,000 per project.</p>
+            <p class="exercise-sentence" data-correct="percentage of sales">The agent receives 10% <select class="vocab-select"><option value="">---</option></select> as commission.</p>
+            <p class="exercise-sentence" data-correct="stock options">Senior executives are typically offered <select class="vocab-select"><option value="">---</option></select> as part of their package.</p>
+            <p class="exercise-sentence" data-correct="independent status">The auditor must maintain <select class="vocab-select"><option value="">---</option></select> to ensure objectivity.</p>
+            <p class="exercise-sentence" data-correct="percentage fee">Real estate agents typically work on a <select class="vocab-select"><option value="">---</option></select> basis.</p>
+            <p class="exercise-sentence" data-correct="financial performance">The quarterly report shows strong <select class="vocab-select"><option value="">---</option></select> across all divisions.</p>
+            <p class="exercise-sentence" data-correct="mutual agreement">The partnership can be dissolved by <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="free products">Influencers often receive <select class="vocab-select"><option value="">---</option></select> in exchange for reviews.</p>
+            <p class="exercise-sentence" data-correct="endorsement deal">The celebrity signed a lucrative <select class="vocab-select"><option value="">---</option></select> with the cosmetics company.</p>
+            <p class="exercise-sentence" data-correct="informed decisions">Customers need accurate data to make <select class="vocab-select"><option value="">---</option></select>.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="9" disabled>Print/Save PDF - Section 9</button>
+        </div>
+    </div>
+
+    <!-- Section 10 -->
+    <div class="exercise-section" id="section10">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 10</h2>
+        <div class="exercise-content" data-section="10">
+            <p class="exercise-sentence" data-correct="put all our eggs in one basket">We shouldn't <select class="vocab-select"><option value="">---</option></select> by relying solely on this one supplier.</p>
+            <p class="exercise-sentence" data-correct="shed some light on">Could you <select class="vocab-select"><option value="">---</option></select> why the project was delayed?</p>
+            <p class="exercise-sentence" data-correct="signed contract">We need a <select class="vocab-select"><option value="">---</option></select> before we can begin production.</p>
+            <p class="exercise-sentence" data-correct="fair request">Asking for more time to review the document is a <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="trial period">We offer a 30-day <select class="vocab-select"><option value="">---</option></select> for all new software purchases.</p>
+            <p class="exercise-sentence" data-correct="strong partnership">Building a <select class="vocab-select"><option value="">---</option></select> requires trust and open communication.</p>
+            <p class="exercise-sentence" data-correct="company's interests">All decisions must align with the <select class="vocab-select"><option value="">---</option></select> and long-term goals.</p>
+            <p class="exercise-sentence" data-correct="alternative choices">We should always have <select class="vocab-select"><option value="">---</option></select> ready in case our first plan fails.</p>
+            <p class="exercise-sentence" data-correct="backup options">Smart businesses always maintain <select class="vocab-select"><option value="">---</option></select> for critical suppliers.</p>
+            <p class="exercise-sentence" data-correct="favorable position">Our early market entry put us in a <select class="vocab-select"><option value="">---</option></select> compared to competitors.</p>
+            <p class="exercise-sentence" data-correct="best outcome">Negotiating carefully will help us achieve the <select class="vocab-select"><option value="">---</option></select> for all parties.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="10" disabled>Print/Save PDF - Section 10</button>
+        </div>
+    </div>
+
+    <!-- Section 11 -->
+    <div class="exercise-section" id="section11">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 11</h2>
+        <div class="exercise-content" data-section="11">
+            <p class="exercise-sentence" data-correct="resonates with">The company's sustainability message <select class="vocab-select"><option value="">---</option></select> environmentally conscious consumers.</p>
+            <p class="exercise-sentence" data-correct="get back to you">I need to review the proposal with my team, and I'll <select class="vocab-select"><option value="">---</option></select> by Friday.</p>
+            <p class="exercise-sentence" data-correct="global fan base">The artist's <select class="vocab-select"><option value="">---</option></select> spans over 50 countries.</p>
+            <p class="exercise-sentence" data-correct="brand's image">Consistent quality helps maintain our <select class="vocab-select"><option value="">---</option></select> in the marketplace.</p>
+            <p class="exercise-sentence" data-correct="long-standing reputation">The company's <select class="vocab-select"><option value="">---</option></select> for excellence attracts top talent.</p>
+            <p class="exercise-sentence" data-correct="brand's values">Sustainability and innovation are central to our <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="international appeal">The product's simple design gives it broad <select class="vocab-select"><option value="">---</option></select>.</p>
+            <p class="exercise-sentence" data-correct="final decision">The board will make the <select class="vocab-select"><option value="">---</option></select> on the merger next week.</p>
+            <p class="exercise-sentence" data-correct="one-month trial period">Customers can test our software with a <select class="vocab-select"><option value="">---</option></select> before purchasing.</p>
+            <p class="exercise-sentence" data-correct="respectful relationship">Maintaining a positive and <select class="vocab-select"><option value="">---</option></select> with suppliers ensures long-term success.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="11" disabled>Print/Save PDF - Section 11</button>
+        </div>
+    </div>
+
+    <!-- Section 12 -->
+    <div class="exercise-section" id="section12">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 12</h2>
+        <div class="exercise-content" data-section="12">
+            <p class="exercise-sentence" data-correct="catch up with">Let's <select class="vocab-select"><option value="">---</option></select> the team after the conference to hear about their experiences.</p>
+            <p class="exercise-sentence" data-correct="lives up to the hype">The new software really <select class="vocab-select"><option value="">---</option></select>—it's even better than advertised.</p>
+            <p class="exercise-sentence" data-correct="Super Bowl halftime show">Performing at the <select class="vocab-select"><option value="">---</option></select> is one of the highest honors for an entertainer.</p>
+            <p class="exercise-sentence" data-correct="positive reception">Our product launch received a <select class="vocab-select"><option value="">---</option></select> from industry experts.</p>
+            <p class="exercise-sentence" data-correct="career highlight">Winning the industry award was a major <select class="vocab-select"><option value="">---</option></select> for the young entrepreneur.</p>
+            <p class="exercise-sentence" data-correct="skincare routine">A consistent <select class="vocab-select"><option value="">---</option></select> is essential for maintaining healthy, youthful-looking skin.</p>
+            <p class="exercise-sentence" data-correct="joint endorsement">The <select class="vocab-select"><option value="">---</option></select> by both athletes significantly boosted the brand's credibility.</p>
+            <p class="exercise-sentence" data-correct="collective influence">The <select class="vocab-select"><option value="">---</option></select> of all our brand ambassadors reaches millions of consumers.</p>
+            <p class="exercise-sentence" data-correct="powerful impact">The CEO's speech had a <select class="vocab-select"><option value="">---</option></select> on employee morale.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="12" disabled>Print/Save PDF - Section 12</button>
+        </div>
+    </div>
+
+    <!-- Section 13 -->
+    <div class="exercise-section" id="section13">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 13</h2>
+        <div class="exercise-content" data-section="13">
+            <p class="exercise-sentence" data-correct="pretty well off">After years of successful investments, they're <select class="vocab-select"><option value="">---</option></select> and can afford to retire early.</p>
+            <p class="exercise-sentence" data-correct="taken lead">Our manager has <select class="vocab-select"><option value="">---</option></select> on the new client acquisition strategy.</p>
+            <p class="exercise-sentence" data-correct="bring out the best in">A good leader knows how to <select class="vocab-select"><option value="">---</option></select> their team members.</p>
+            <p class="exercise-sentence" data-correct="combined star power">The <select class="vocab-select"><option value="">---</option></select> of the two actors made the film a box office success.</p>
+            <p class="exercise-sentence" data-correct="shared admiration">Their <select class="vocab-select"><option value="">---</option></select> for innovation brought the two companies together.</p>
+            <p class="exercise-sentence" data-correct="significant impact">The new policy had a <select class="vocab-select"><option value="">---</option></select> on employee productivity.</p>
+            <p class="exercise-sentence" data-correct="positive working relationship">Building a <select class="vocab-select"><option value="">---</option></select> with clients is essential for long-term success.</p>
+            <p class="exercise-sentence" data-correct="busy performance schedules">Despite their <select class="vocab-select"><option value="">---</option></select>, both artists made time for the charity event.</p>
+            <p class="exercise-sentence" data-correct="joint appearances">The CEOs made several <select class="vocab-select"><option value="">---</option></select> to announce the merger.</p>
+            <p class="exercise-sentence" data-correct="workable schedule">We need to find a <select class="vocab-select"><option value="">---</option></select> that suits all team members.</p>
+            <p class="exercise-sentence" data-correct="fair compensation structure">The company implemented a <select class="vocab-select"><option value="">---</option></select> based on performance metrics.</p>
+            <p class="exercise-sentence" data-correct="final approval">The project is ready to launch pending <select class="vocab-select"><option value="">---</option></select> from the board of directors.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="13" disabled>Print/Save PDF - Section 13</button>
+        </div>
+    </div>
+
+    <!-- Section 14 -->
+    <div class="exercise-section" id="section14">
+        <div class="student-info">
+            <p><strong>Name:</strong> <span class="name-display"></span></p>
+            <p><strong>ID:</strong> <span class="id-display"></span></p>
+        </div>
+        <h2>Lesson 14</h2>
+        <div class="exercise-content" data-section="14">
+            <p class="exercise-sentence" data-correct="in mind">Do you have a specific candidate <select class="vocab-select"><option value="">---</option></select> for the management position?</p>
+            <p class="exercise-sentence" data-correct="pulls back">As the camera <select class="vocab-select"><option value="">---</option></select>, we see the entire city skyline behind the building.</p>
+            <p class="exercise-sentence" data-correct="power song">The <select class="vocab-select"><option value="">---</option></select> became an anthem for women's empowerment movements.</p>
+            <p class="exercise-sentence" data-correct="family connections">Advertising that emphasizes <select class="vocab-select"><option value="">---</option></select> resonates strongly with parents.</p>
+            <p class="exercise-sentence" data-correct="visual story">The director crafted a compelling <select class="vocab-select"><option value="">---</option></select> without relying on dialogue.</p>
+            <p class="exercise-sentence" data-correct="nighttime skincare routine">A consistent <select class="vocab-select"><option value="">---</option></select> can significantly improve skin health.</p>
+            <p class="exercise-sentence" data-correct="makeup application">Professional <select class="vocab-select"><option value="">---</option></select> requires both skill and quality products.</p>
+            <p class="exercise-sentence" data-correct="Contouring products"><select class="vocab-select"><option value="">---</option></select> help create the illusion of more defined cheekbones.</p>
+            <p class="exercise-sentence" data-correct="full stage production">The tour features a <select class="vocab-select"><option value="">---</option></select> with elaborate choreography and visual effects.</p>
+            <p class="exercise-sentence" data-correct="concert arena">The band sold out the 20,000-seat <select class="vocab-select"><option value="">---</option></select> in just two hours.</p>
+            <p class="exercise-sentence" data-correct="emotional notes">The film masterfully hits different <select class="vocab-select"><option value="">---</option></select> throughout its runtime.</p>
+        </div>
+        <div class="print-section no-print">
+            <p class="print-message">Name and ID required for Print/Save PDF</p>
+            <button class="print-button" data-section="14" disabled>Print/Save PDF - Section 14</button>
+        </div>
+    </div>
+
+    <script>
+        // Get input elements
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentId');
+        const printButtons = document.querySelectorAll('.print-button');
+
+        // Function to update all name and ID displays
+        function updateStudentInfo() {
+            const name = nameInput.value;
+            const id = idInput.value;
+            
+            // Update all name displays
+            document.querySelectorAll('.name-display').forEach(span => {
+                span.textContent = name;
+            });
+            
+            // Update all ID displays
+            document.querySelectorAll('.id-display').forEach(span => {
+                span.textContent = id;
+            });
+            
+            // Enable/disable print buttons based on validation
+            const isValid = name.length > 2 && id.length > 2;
+            printButtons.forEach(button => {
+                button.disabled = !isValid;
+            });
+        }
+
+        // Add event listeners to inputs
+        nameInput.addEventListener('input', updateStudentInfo);
+        idInput.addEventListener('input', updateStudentInfo);
+
+        // Function to print specific section
+// Function to print specific section
+function printSection(sectionNumber) {
+    // Set the document title to create the default filename
+    const name = nameInput.value.replace(/\s+/g, '_'); // Replace spaces with underscores
+    const id = idInput.value.replace(/\s+/g, '_');
+    const originalTitle = document.title;
+    document.title = `${name}_${id}_Lesson_${sectionNumber}`;
+
+    // Show student info in the section to be printed
+    const sectionToPrint = document.getElementById(`section${sectionNumber}`);
+    const studentInfo = sectionToPrint.querySelector('.student-info');
+    studentInfo.style.display = 'block';
+
+    // Hide all sections except the one to print
+    const allSections = document.querySelectorAll('.exercise-section');
+    allSections.forEach((section, index) => {
+        if (index + 1 !== sectionNumber) {
+            section.style.display = 'none';
+        }
+    });
+
+    // Trigger print
+    window.print();
+
+    // Restore all sections
+    allSections.forEach(section => {
+        section.style.display = 'block';
+    });
+
+    // Hide student info again
+    studentInfo.style.display = 'none';
+
+    // Restore original title
+    document.title = originalTitle;
+}
+
+        // Add click handlers to all print buttons
+        printButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionNumber = parseInt(this.getAttribute('data-section'));
+                printSection(sectionNumber);
+            });
+        });
+
+        // Function to shuffle array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Function to populate select options for each section
+        function populateSelectOptions() {
+            // Process each section
+            document.querySelectorAll('.exercise-content[data-section]').forEach(section => {
+                // Get all sentences in this section
+                const sentences = section.querySelectorAll('.exercise-sentence');
+                
+                // Collect all correct answers (vocabulary words) from this section
+                const allVocab = [];
+                sentences.forEach(sentence => {
+                    const correctAnswer = sentence.getAttribute('data-correct');
+                    if (correctAnswer && !allVocab.includes(correctAnswer)) {
+                        allVocab.push(correctAnswer);
+                    }
+                });
+
+                // For each sentence, populate its select element
+                sentences.forEach(sentence => {
+                    const select = sentence.querySelector('.vocab-select');
+                    const correctAnswer = sentence.getAttribute('data-correct');
+                    
+                    // Get distractors (other vocab words from this section, excluding the correct answer)
+                    const distractors = allVocab.filter(vocab => vocab !== correctAnswer);
+                    
+                    // Shuffle distractors and take up to 4
+                    const shuffledDistractors = shuffleArray(distractors).slice(0, 4);
+                    
+                    // Combine correct answer with distractors and shuffle
+                    const allOptions = shuffleArray([correctAnswer, ...shuffledDistractors]);
+                    
+                    // Add options to select (keeping the first "---" option)
+                    allOptions.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        select.appendChild(optionElement);
+                    });
+                    
+                    // Add change event listener for immediate feedback
+                    select.addEventListener('change', function() {
+                        const selectedValue = this.value;
+                        
+                        if (selectedValue === '') {
+                            // Reset styling if "---" is selected
+                            this.style.backgroundColor = '';
+                            this.style.color = '';
+                            this.style.fontWeight = '';
+                        } else if (selectedValue === correctAnswer) {
+                            // Correct answer - light pastel green
+                            this.style.backgroundColor = '#d4edda';
+                            this.style.color = 'black';
+                            this.style.fontWeight = 'normal';
+                        } else {
+                            // Incorrect answer - light pastel pink
+                            this.style.backgroundColor = '#f8d7da';
+                            this.style.color = 'black';
+                            this.style.fontWeight = 'normal';
+                        }
+                    });
+                });
+            });
+        }
+
+        // Initialize everything on page load
+        updateStudentInfo();
+        populateSelectOptions();
+    </script>
+
+
+
+    <script>
+// Make sections collapsible by clicking on h2
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.exercise-section h2').forEach(h2 => {
+        // Add arrow indicator
+        h2.style.cursor = 'pointer';
+        h2.style.userSelect = 'none';
+        h2.innerHTML = '<span class="collapse-arrow">▶</span> ' + h2.textContent;
+
+        // Add click handler
+        h2.addEventListener('click', function() {
+            const section = this.closest('.exercise-section');
+            const content = section.querySelector('.exercise-content');
+            const printSection = section.querySelector('.print-section');
+            const arrow = this.querySelector('.collapse-arrow');
+
+            // Toggle visibility
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                printSection.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                printSection.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        });
+
+        // Close all sections on load
+        const content = h2.closest('.exercise-section').querySelector('.exercise-content');
+        const printSection = h2.closest('.exercise-section').querySelector('.print-section');
+        content.style.display = 'none';
+        printSection.style.display = 'none';
+    });
+});
+    </script>
+
+
+</body>
+</html>
