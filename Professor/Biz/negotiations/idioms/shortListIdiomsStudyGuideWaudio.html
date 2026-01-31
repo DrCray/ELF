@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negotiation Idioms Study Guide</title>
+    <style>
+        /* Mobile-First Base Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 10px;
+            max-width:800px; margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h3{
+            text-align:center;
+        }
+
+        /* Category Styling */
+        .category-card {
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .category-card:hover {
+            transform: translateX(5px);
+            background-color: #f0f8ff;
+        }
+
+        .idiom-name {
+            color: #2980b9;
+            font-weight: bold;
+            display: block;
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
+
+        .idiom-definition {
+            display: block;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .idiom-sentence {
+            display: block;
+            color: #555;
+            padding-top: 5px;
+            border-top: 1px dashed #ddd;
+        }
+
+        /* Responsive Print Button Styles */
+        .pdf-controls {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column; /* Stacked on mobile */
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+        }
+
+        #printBtn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: not-allowed;
+            opacity: 0.5;
+            width: 100%; /* Full width on mobile */
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 600px) {
+            body { padding: 40px 20px; }
+            .input-group { flex-direction: row; }
+            input[type="text"] { flex: 1; }
+            #printBtn { width: auto; }
+        }
+
+        /* Print Logic */
+        @media print {
+            .pdf-controls, h1::after { display: none !important; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; }
+            .category-card { break-inside: avoid; }
+        }
+
+        .audioVidLink {
+            font-size: 1.15; background:#CDD9CD;
+            padding: 0 1rem 0 1rem; width:fit-content;
+        }
+
+        img {
+            display:block;
+            width:85%; margin: 0 auto;
+
+        }
+        a { font-size: 1.2rem;}
+
+
+
+/* Initially hide everything inside the card EXCEPT the h2 */
+.category-card > *:not(h2) {
+    display: none;
+}
+
+/* When the card has the 'active' class, show everything */
+.category-card.active > *:not(h2) {
+    display: block;
+}
+.category-card.active h2 {
+    color: blue;          /* or #1e40af, royalblue, #2563eb, etc. */
+    /* Optional extra flair: */
+    /* text-shadow: 0 1px 2px rgba(41,128,185,0.3); */
+    /* font-weight: 900; */
+}
+/* Optional: Pointer cursor lets users know h2 is a button */
+.category-card h2 {
+    cursor: pointer;
+    user-select: none;
+}
+.hidden {
+    display: none;
+}
+
+.category-card h2 {
+    position: relative;
+    padding-right: 2rem;           /* ← reserve space */
+    transition: color 0.2s ease;
+}
+
+.category-card h2::after {
+    content: "▶";
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 1rem;
+    color: #9ca3af;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.category-card.active h2 {
+    color: #2563eb;
+}
+
+.category-card.active h2::after {
+    transform: translateY(-50%) rotate(-90deg);
+    color: #2563eb;
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Idiom Sentences Short List</h1>
+    <h3>Categorized by use</h3>
+<p style="max-width:100%;margin:.3rem auto .6rem auto;text-align:center;">(36 sentences)</p>
+<div style="margin-bottom: 20px;">
+    <button id="studyMode" style="padding: 10px; cursor: pointer;">Study Mode</button>
+    <button id="hideAll" class="hidden" style="padding: 10px; cursor: pointer;">Hide All</button>
+</div> Or click individually to see one at a time
+
+<div class="category-card">
+        <h2>1. Strategy and Tactics</h2>
+        <p>These sentences describe how a party is handling information, behaving, or positioning themselves.</p>
+
+        <a href="https://youtu.be/K8o0mX2Rduo" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Playing it Safe/Secretive:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">My colleague was <em>playing his cards close to his chest</em> when he began to talk to our competitor.</li>
+
+<li class="idiom-sentence">I thought that the negotiations would not succeed but my boss had <em>a card up his sleeve</em> that we did not know about.</li>
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Being Direct/Aggressive:</h4>
+        <ul style="margin-top:0;">
+
+<li class="idiom-sentence">Our boss <em>laid his cards on the table</em> during the meeting.</li>
+
+<li class="idiom-sentence">The union <em>played hardball</em> during the contract talks.</li>
+
+<li class="idiom-sentence">The government decided to <em>face down</em> the striking transportation workers.</li>
+
+<li class="idiom-sentence">The sales manager <em>drives a hard bargain</em> and it is difficult to negotiate with him.</li>
+
+<li class="idiom-sentence">The manager <em>stacked the deck</em> against his opponent when he went into the meeting.</li>
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Testing/Misleading:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The government <em>called the union's bluff</em> when the union threatened to go on strike.</li>
+
+<li class="idiom-sentence">The purchasing manager <em>threw us a curve</em> when he said that he would not need any of our products until next year.</li>
+
+<li class="idiom-sentence">The manager was <em>beating around the bush</em> and never said anything important.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>2. Making Progress and Compromising</h2>
+        <p>These sentences cover the "give and take" required to move toward a deal.</p>
+        <a href="https://youtu.be/FBQmR3MpLAM" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Compromising:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We know that we must <em>give a little</em> if we want to complete the negotiations.</li>
+
+<li class="idiom-sentence">After much <em>give and take</em> we reached an agreement regarding the property transfer.</li>
+
+<li class="idiom-sentence">The price for the truck was too high but we <em>met the salesman halfway</em> and made an agreement to buy it.</li>
+
+<li class="idiom-sentence">The union made <em>a big concession</em> in their negotiations with their company.</li>
+
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Gaining Ground:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We are bargaining hard and <em>making headway</em> with the new agreement.</li>
+
+<li class="idiom-sentence">We were able to <em>break through</em> in our efforts to find a solution to the problem.</li>
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Starting the Process:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We should <em>get the ball rolling</em> and begin the meeting at once.</li>
+
+<li class="idiom-sentence">"Let's <em>get down to brass tacks</em> and begin talking about the new contract."</li>
+
+<li class="idiom-sentence">I will <em>start the ball rolling</em> by making some telephone calls to my coworkers.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>3. Obstacles and Failures</h2>
+        <p>These sentences describe moments where negotiations slow down, stop, or fail entirely.</p>
+        <a href="https://youtu.be/CEUX-EHoXyo" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Deadlocks and Stalls:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The negotiations <em>bogged down</em> over the issue of part-time workers.</li>
+
+<li class="idiom-sentence">The talks to buy the new computers have <em>reached a stalemate</em> and it will be difficult to start them again.</li>
+
+<li class="idiom-sentence">The salary issue was <em>a stumbling block</em> in the negotiations between the company and the union.</li>
+
+<li class="idiom-sentence">The negotiations on where to build the new bridge have <em>reached an impasse</em>.</li>
+
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Failures and Retreats:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The meeting was a failure and we were forced to <em>go back to square one</em>.</li>
+
+<li class="idiom-sentence">The deal for the new machinery <em>fell through</em> and we will have to look for another supplier.</li>
+
+<li class="idiom-sentence">The negotiations <em>broke down</em> last night when both sides refused to compromise.</li>
+
+<li class="idiom-sentence">The property developer <em>backed out</em> of the plan to build the new apartment building.</li>
+
+<li class="idiom-sentence">The negotiations failed so we had to <em>go back to the drawing board</em> and start over.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>4. Reaching the Finish Line</h2>
+        <p>These sentences focus on the final stages of a deal, deadlines, and signing contracts.</p>
+        <a href="https://youtu.be/hrScJjAVTPs" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">The Final Stretch:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The negotiations <em>went down to the wire</em> last night.</li>
+
+<li class="idiom-sentence">We were able to send the documents to the lawyer <em>under the wire</em>.</li>
+
+<li class="idiom-sentence">We spent several hours <em>ironing out</em> the final details of the contract.</li>
+
+
+
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Closing the Deal:</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We had to work hard but we were finally able to <em>close the deal</em>.</li>
+
+<li class="idiom-sentence">The company <em>inked a deal</em> to buy the new product.</li>
+
+<li class="idiom-sentence">We <em>wrapped up</em> the meeting and went home for the weekend.</li>
+
+<li class="idiom-sentence">The contract for the new insurance policy is <em>in the bag</em>.</li>
+
+<li class="idiom-sentence">The lawyers <em>drew up</em> a contract for the new housing development on the government land.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.category-card');
+    const studyBtn = document.getElementById('studyMode');
+    const hideBtn = document.getElementById('hideAll');
+
+    // --- ACCORDION LOGIC ---
+    cards.forEach(card => {
+        const header = card.querySelector('h2');
+        header.addEventListener('click', () => {
+            const isOpen = card.classList.contains('active');
+
+            // Close all cards first (maintains the "only one open" rule)
+            cards.forEach(c => c.classList.remove('active'));
+
+            // Toggle the clicked one if it wasn't already open
+            if (!isOpen) {
+                card.classList.add('active');
+            }
+
+// Inside the header click listener:
+if (hideBtn.classList.contains('hidden') === false) {
+    hideBtn.classList.add('hidden');
+    studyBtn.classList.remove('hidden');
+}
+        });
+    });
+
+    // --- MASTER CONTROLS ---
+// Open ALL and swap buttons
+studyBtn.addEventListener('click', () => {
+    cards.forEach(card => card.classList.add('active'));
+
+    studyBtn.classList.add('hidden');   // Hide Study Mode
+    hideBtn.classList.remove('hidden'); // Show Hide All
+});
+
+// Close ALL and swap buttons back
+hideBtn.addEventListener('click', () => {
+    cards.forEach(card => card.classList.remove('active'));
+
+    hideBtn.classList.add('hidden');    // Hide Hide All
+    studyBtn.classList.remove('hidden'); // Show Study Mode
+});
+});
+</script>
+
+<footer style="margin-top: 8rem;">...</footer>
+</body>
+</html>
