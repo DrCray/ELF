@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Negotiation Idioms Study Guide</title>
+    <style>
+        /* Mobile-First Base Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 10px;
+            max-width:800px; margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h3{
+            text-align:center;
+        }
+
+        /* Category Styling */
+        .category-card {
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .category-card:hover {
+            transform: translateX(5px);
+            background-color: #f0f8ff;
+        }
+
+        .idiom-name {
+            color: #2980b9;
+            font-weight: bold;
+            display: block;
+            font-size: 1.2em;
+            text-transform: capitalize;
+        }
+
+        .idiom-definition {
+            display: block;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .idiom-sentence {
+            display: block;
+            color: #555;
+            padding-top: 5px;
+            border-top: 1px dashed #ddd;
+        }
+
+        /* Responsive Print Button Styles */
+        .pdf-controls {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column; /* Stacked on mobile */
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+        }
+
+        #printBtn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: not-allowed;
+            opacity: 0.5;
+            width: 100%; /* Full width on mobile */
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 600px) {
+            body { padding: 40px 20px; }
+            .input-group { flex-direction: row; }
+            input[type="text"] { flex: 1; }
+            #printBtn { width: auto; }
+        }
+
+        /* Print Logic */
+        @media print {
+            .pdf-controls, h1::after { display: none !important; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; }
+            .category-card { break-inside: avoid; }
+        }
+
+        .audioVidLink {
+            font-size: 1.15; background:#CDD9CD;
+            padding: 0 1rem 0 1rem; width:fit-content;
+        }
+
+        img {
+            display:block;
+            width:85%; margin: 0 auto;
+
+        }
+        a { font-size: 1.2rem;}
+
+
+
+/* Initially hide everything inside the card EXCEPT the h2 */
+.category-card > *:not(h2) {
+    display: none;
+}
+
+/* When the card has the 'active' class, show everything */
+.category-card.active > *:not(h2) {
+    display: block;
+}
+.category-card.active h2 {
+    color: blue;          /* or #1e40af, royalblue, #2563eb, etc. */
+    /* Optional extra flair: */
+    /* text-shadow: 0 1px 2px rgba(41,128,185,0.3); */
+    /* font-weight: 900; */
+}
+/* Optional: Pointer cursor lets users know h2 is a button */
+.category-card h2 {
+    cursor: pointer;
+    user-select: none;
+}
+.hidden {
+    display: none;
+}
+
+.category-card h2 {
+    position: relative;
+    padding-right: 2rem;           /* ← reserve space */
+    transition: color 0.2s ease;
+}
+
+.category-card h2::after {
+    content: "▶";
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 1rem;
+    color: #9ca3af;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.category-card.active h2 {
+    color: #2563eb;
+}
+
+.category-card.active h2::after {
+    transform: translateY(-50%) rotate(-90deg);
+    color: #2563eb;
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Idiom Sentences Full List</h1>
+    <h3>Categorized by use</h3>
+<p style="max-width:100%;margin:.3rem auto .6rem auto;text-align:center;">(126 idiom sentences)</p>
+<div style="margin-bottom: 20px;">
+    <button id="studyMode" style="padding: 10px; cursor: pointer;">Study Mode</button>
+    <button id="hideAll" class="hidden" style="padding: 10px; cursor: pointer;">Hide All</button>
+</div> Or click individually to see one at a time
+
+    <div class="category-card">
+        <h2>Phase 1: Opening & Setting the Tone</h2>
+        <p>These sentences involve starting the discussion, setting prices, or establishing a stance.</p>
+
+        <a href="https://youtu.be/puyV-i8JBiI" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Starting Up</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We should <em>get the ball rolling</em> and begin the meeting at once.</li>
+
+<li class="idiom-sentence">"Let's <em>get down to brass tacks</em> and begin talking about the new contract."</li>
+
+<li class="idiom-sentence">I will <em>start the ball rolling</em> by making some telephone calls to my coworkers.</li>
+
+<li class="idiom-sentence">We must <em>get down to business</em> and finish our work quickly.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Initial Offers</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The salesman <em>came in high</em> during the negotiations and could not sell his product.</li>
+
+<li class="idiom-sentence">The company <em>came in low</em> with an offer for our product.</li>
+
+<li class="idiom-sentence">I will <em>make an offer</em> and try to buy the house that I like.</li>
+
+<li class="idiom-sentence">The buyer made a <em>rock-bottom offer</em> to buy our product.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Establishing Stance</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">Our boss <em>laid his cards on the table</em> during the meeting.</li>
+
+<li class="idiom-sentence">We <em>put our cards on the table</em> and tried to solve the problem.</li>
+
+<li class="idiom-sentence">The other negotiating team was very aggressive but we <em>stood our ground</em> and bargained hard.</li>
+
+<li class="idiom-sentence">The negotiators were <em>hard-nosed</em> during the talks for a new contract.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>Phase 2: Strategy, Tactics & Power Plays</h2>
+        <p>How the parties behave, use their advantages, or try to outmaneuver each other.</p>
+        
+        <a href="https://youtu.be/zoa4dZws8Jc" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Aggression & Power</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The union <em>played hardball</em> during the contract talks.</li>
+
+<li class="idiom-sentence">The government decided to <em>face down</em> the striking transportation workers.</li>
+
+<li class="idiom-sentence">The management group was <em>holding all the aces</em> during the meeting with the union.</li>
+
+<li class="idiom-sentence">During the meeting the vice-president was <em>calling the shots</em>.</li>
+
+<li class="idiom-sentence">We decided to <em>force our opponent's hand</em> because we wanted to finish the negotiations quickly.</li>
+
+<li class="idiom-sentence">The sales manager <em>drives a hard bargain</em> and it is difficult to negotiate with him.</li>
+
+<li class="idiom-sentence">The small country <em>raised the ante</em> in the trade dispute with the other countries.</li>
+
+<li class="idiom-sentence">The union <em>upped the ante</em> in their dispute with the company.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Secrecy & Deception</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">My colleague was <em>playing his cards close to his chest</em> when he began to talk to our competitor.</li>
+
+<li class="idiom-sentence">I thought that the negotiations would not succeed but my boss had <em>a card up his sleeve</em> that we did not know about.</li>
+
+<li class="idiom-sentence">The purchasing manager <em>threw us a curve</em> when he said that he would not need any of our products until next year.</li>
+
+<li class="idiom-sentence">The manager <em>stacked the deck</em> against his opponent when he went into the meeting.</li>
+
+<li class="idiom-sentence">The salesman likes to <em>wheel and deal</em> with his customers.</li>
+
+<li class="idiom-sentence">The salesman did not say that no products were available but we could <em>read between the lines</em> and we knew that there were none available.</li>
+
+<li class="idiom-sentence">Our boss had a <em>poker face</em> when he told us that our office would soon close.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Hidden Intentions & Indirectness</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">I told my boss <em>off the record</em> that I would probably not return after the summer holiday.</li>
+
+<li class="idiom-sentence">The manager was <em>beating around the bush</em> and never said anything important.</li>
+
+<li class="idiom-sentence">I could not understand what the other negotiators in the meeting were <em>driving at</em>.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Final Resources</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">I <em>played my ace</em> when I asked my boss for more money.</li>
+
+<li class="idiom-sentence">Although we appeared weak during the negotiations we had some new information to use as our <em>trump card</em>.</li>
+
+<li class="idiom-sentence">After <em>going for broke</em> at the meeting we were able to reach an agreement.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>Phase 3: The Middle Game (Discussion & Compromise)</h2>
+        <p>Finding common ground, making concessions, and handling the "give and take."</p>
+        
+        <a href="https://youtu.be/I1xUTmQT8Bw" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Support & Unity</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">Although we did not agree with the manager we <em>got behind</em> his proposal at the meeting.</li>
+
+<li class="idiom-sentence">During the meeting we <em>closed ranks</em> and refused to compromise on any issue.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Compromise & Concessions</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The price for the truck was too high but we <em>met the salesman halfway</em> and made an agreement to buy it.</li>
+
+<li class="idiom-sentence">We know that we must <em>give a little</em> if we want to complete the negotiations.</li>
+
+<li class="idiom-sentence">After much <em>give and take</em> we reached an agreement regarding the property transfer.</li>
+
+<li class="idiom-sentence">The union made <em>a big concession</em> in their negotiations with their company.</li>
+
+<li class="idiom-sentence">We shared the profits with the other company <em>fifty-fifty</em>.</li>
+
+<li class="idiom-sentence">The company tried very hard to <em>reach a compromise</em> with the workers.</li>
+
+<li class="idiom-sentence">After eight weeks of negotiations we <em>gave in</em> and agreed to sell the machinery at a discount.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Proposals & Adjustments</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">My boss was happy when I <em>came up with</em> some good ideas during the meeting.</li>
+
+<li class="idiom-sentence">We <em>sweetened the deal</em> during the negotiations in order to win the new contract.</li>
+
+<li class="idiom-sentence">We decided to <em>come down in price</em> and try and sell our products quickly.</li>
+
+<li class="idiom-sentence">The department store has <em>knocked down the price</em> of many of their products.</li>
+
+<li class="idiom-sentence">The manager tried to <em>water down</em> our proposal for the new quality control system.</li>
+
+<li class="idiom-sentence">We <em>came back with</em> a new offer and the negotiations continued smoothly.</li>
+
+<li class="idiom-sentence">We were able to <em>bring a new offer to the table</em> during the negotiations.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Progress</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">After several hours of <em>horse-trading</em> we reached an agreement to buy the new computers.</li>
+
+<li class="idiom-sentence">We are bargaining hard and <em>making headway</em> with the new agreement.</li>
+
+<li class="idiom-sentence">We were able to <em>break through</em> in our efforts to find a solution to the problem.</li>
+
+<li class="idiom-sentence">There was a <em>breakthrough</em> in the talks to end the teacher's strike.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>Phase 4: Conflict, Resistance & Obstacles</h2>
+        <p>When things go wrong, slow down, or people refuse to budge.</p>
+        
+        <a href="https://youtu.be/RrDqC5b_iwo" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Stalling & Resistance</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The negotiations <em>bogged down</em> over the issue of part-time workers.</li>
+
+<li class="idiom-sentence">The talks between the company and the lawyers <em>dragged on</em> for several weeks.</li>
+
+<li class="idiom-sentence">The government <em>dragged their heels</em> in talks with the union about the new contract.</li>
+
+<li class="idiom-sentence">We bargained hard but the other sales representative refused to <em>give ground</em>.</li>
+
+<li class="idiom-sentence">We <em>stuck to our guns</em> during the meeting and asked for more time to consider the proposal.</li>
+
+<li class="idiom-sentence">The union is <em>holding out</em> for a better deal and they do not plan to end their strike.</li>
+
+<li class="idiom-sentence">The new manager has been <em>holding out on</em> the company and he will not tell anyone his plans.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Points of Disagreement</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The size of the project was <em>a bone of contention</em> between the city and the developer.</li>
+
+<li class="idiom-sentence">The salary issue was <em>a stumbling block</em> in the negotiations between the company and the union.</li>
+
+<li class="idiom-sentence">The union was flexible on the salary issue but they <em>drew the line</em> at talking about health benefits.</li>
+
+<li class="idiom-sentence">There was no <em>common ground</em> between the two sides and the negotiations did not go well.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Deadlocks & Bad Situations</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The talks to buy the new computers have <em>reached a stalemate</em> and it will be difficult to start them again.</li>
+
+<li class="idiom-sentence">The negotiations on where to build the new bridge have <em>reached an impasse</em>.</li>
+
+<li class="idiom-sentence">The negotiations became easier when the other side <em>painted themselves into a corner</em>.</li>
+
+<li class="idiom-sentence">The outcome of the election was <em>hanging in the balance</em> after the top candidates had an equal number of votes.</li>
+
+<li class="idiom-sentence">I got <em>the raw end of the deal</em> when I received my new work schedule.</li>
+
+<li class="idiom-sentence">The sales manager received <em>a raw deal</em> when he was forced to give up his former position.</li>
+
+<li class="idiom-sentence">The bad weather was <em>a setback</em> in our efforts to get the material delivered on time.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Failing & Quitting</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The government decided to <em>break off</em> talks about extending the trade agreement.</li>
+
+<li class="idiom-sentence">The meeting was a failure and we were forced to <em>go back to square one</em>.</li>
+
+<li class="idiom-sentence">We are working hard so that we do not <em>blow the deal</em> with our new customer.</li>
+
+<li class="idiom-sentence">The property developer <em>backed out</em> of the plan to build the new apartment building.</li>
+
+<li class="idiom-sentence">The company was forced to <em>cave in</em> to the demands of the workers for more money.</li>
+
+<li class="idiom-sentence">The other negotiating team <em>turned thumbs down</em> on our wish to postpone the meeting until tomorrow.</li>
+
+<li class="idiom-sentence">The deal for the new machinery <em>fell through</em> and we will have to look for another supplier.</li>
+
+<li class="idiom-sentence">The company directors <em>went back on their word</em> to give the employees a salary increase.</li>
+
+<li class="idiom-sentence">The negotiations <em>broke down</em> last night when both sides refused to compromise.</li>
+
+<li class="idiom-sentence">The sales manager's proposal <em>went over like a lead balloon</em> at the meeting.</li>
+
+<li class="idiom-sentence">We <em>called off</em> the meeting because everybody was busy.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>Phase 5: Closing & Reaching Agreement</h2>
+        <p>Finishing the talk, signing the papers, and finalizing details.</p>
+        
+        <a href="https://youtu.be/GSyvIcuTJaA" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">The Final Stretch</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">The negotiations <em>went down to the wire</em> last night.</li>
+
+<li class="idiom-sentence">They <em>went down to the wire</em> but the two sides finally agreed to a new contract.</li>
+
+<li class="idiom-sentence">The negotiations continued <em>down to the wire</em> but they ended successfully.</li>
+
+<li class="idiom-sentence">We were able to send the documents to the lawyer <em>under the wire</em>.</li>
+
+<li class="idiom-sentence">We spent several hours <em>ironing out</em> the final details of the contract.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Finalizing the Deal</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We must try and <em>nail down</em> the terms of the agreement at the meeting tomorrow.</li>
+
+<li class="idiom-sentence">We <em>nailed down</em> an agreement to build the staff room as quickly as possible.</li>
+
+<li class="idiom-sentence">After negotiating all night the government and the company <em>came to terms</em> on an arrangement for the new water system.</li>
+
+<li class="idiom-sentence">The government worked hard to <em>bring the two sides to terms</em>.</li>
+
+<li class="idiom-sentence">The company <em>inked a deal</em> to buy the new product.</li>
+
+<li class="idiom-sentence">The company <em>reached a deal</em> with their supplier.</li>
+
+<li class="idiom-sentence">The supplier and the buyer <em>reached an agreement</em> about the new product.</li>
+
+<li class="idiom-sentence">We had to work hard but we were finally able to <em>close the deal</em>.</li>
+
+<li class="idiom-sentence">The contract for the new insurance policy is <em>in the bag</em>.</li>
+
+<li class="idiom-sentence">The lawyers <em>drew up</em> a contract for the new housing development on the government land.</li>
+
+<li class="idiom-sentence">The negotiations lasted all night but finally we were able to <em>hammer out</em> an agreement.</li>
+
+<li class="idiom-sentence">I made a <em>gentlemen's agreement</em> with the carpenter to build some new furniture.</li>
+
+<li class="idiom-sentence">The union representative followed the contract agreement <em>to the letter</em>.</li>
+        </ul>
+
+        <h4 style="margin-bottom:5px;">Wrapping Up</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">We <em>wrapped up</em> the meeting and went home for the weekend.</li>
+
+<li class="idiom-sentence">We would like to <em>wind up</em> the meeting early tomorrow.</li>
+        </ul>
+    </div>
+
+    <div class="category-card">
+        <h2>Phase 6: Miscellaneous Discussion Points</h2>
+        <p>Sentences that describe the conversation itself or specific reactions.</p>
+        
+        <a href="https://youtu.be/v4LZHeLHKaw" target="_blank"> audioVid </a>
+
+        <h4 style="margin-bottom:5px;">Discussion & Communication</h4>
+        <ul style="margin-top:0;">
+<li class="idiom-sentence">Nothing related to the issue of quality <em>came up</em> in the discussion.</li>
+
+<li class="idiom-sentence">Our boss said that wages would improve soon but he never <em>followed through</em> with his promise.</li>
+
+<li class="idiom-sentence">I tried to <em>bring up</em> the subject of sales commissions during the meeting.</li>
+
+<li class="idiom-sentence">We spent the morning trying to <em>get to the heart of</em> the problem with the computer supplier.</li>
+
+<li class="idiom-sentence">It will be difficult to <em>get to the bottom of</em> the financial problems in the company.</li>
+
+<li class="idiom-sentence">I do not think that the opposite side <em>got the message</em> about where the negotiations are heading.</li>
+
+<li class="idiom-sentence">We were unable to <em>talk the other members of our team into</em> delaying the meeting until next week.</li>
+
+<li class="idiom-sentence">We were unable to <em>bring off</em> a deal to buy the new computer system for our company.</li>
+
+<li class="idiom-sentence">We tried to <em>smooth over</em> the problems between the two managers.</li>
+
+<li class="idiom-sentence">We were unable to <em>reach first base</em> in the discussions.</li>
+
+<li class="idiom-sentence">We have not been able to <em>get to first base</em> regarding the terms of the new contract.</li>
+
+<li class="idiom-sentence">My idea about employee evaluations <em>went over well</em> with the new manager.</li>
+
+<li class="idiom-sentence">I <em>accepted the offer</em> to buy my car.</li>
+
+<li class="idiom-sentence">We <em>cut a deal</em> and left the meeting in a positive mood.</li>
+
+<li class="idiom-sentence">My friend <em>cut me off</em> when I was speaking.</li>
+
+<li class="idiom-sentence">The questions were endless and we were unable to <em>cover much ground</em> during the meeting.</li>
+
+<li class="idiom-sentence">The man <em>considered the offer</em> to buy his car.</li>
+
+<li class="idiom-sentence">I tried to <em>talk our sales manager out of</em> offering a price for the product that was too low.</li>
+
+<li class="idiom-sentence">The new discount store is trying hard to <em>undercut</em> other stores in the area.</li>
+
+<li class="idiom-sentence">We asked for some time during the meeting to <em>talk over</em> the new proposal.</li>
+
+<li class="idiom-sentence">I did not <em>take sides</em> in the discussion about buying a new computer.</li>
+
+<li class="idiom-sentence">The contract seemed impossible to win but we <em>pulled it off</em> through our skillful negotiating.</li>
+
+<li class="idiom-sentence">The problem was difficult but somehow we were able to <em>pull a solution out of a hat</em>.</li>
+
+<li class="idiom-sentence">Our manager <em>played into the hands of</em> the other side when he became angry during the meeting.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.category-card');
+    const studyBtn = document.getElementById('studyMode');
+    const hideBtn = document.getElementById('hideAll');
+
+    // --- ACCORDION LOGIC ---
+    cards.forEach(card => {
+        const header = card.querySelector('h2');
+        header.addEventListener('click', () => {
+            const isOpen = card.classList.contains('active');
+
+            // Close all cards first (maintains the "only one open" rule)
+            cards.forEach(c => c.classList.remove('active'));
+
+            // Toggle the clicked one if it wasn't already open
+            if (!isOpen) {
+                card.classList.add('active');
+            }
+
+// Inside the header click listener:
+if (hideBtn.classList.contains('hidden') === false) {
+    hideBtn.classList.add('hidden');
+    studyBtn.classList.remove('hidden');
+}
+        });
+    });
+
+    // --- MASTER CONTROLS ---
+// Open ALL and swap buttons
+studyBtn.addEventListener('click', () => {
+    cards.forEach(card => card.classList.add('active'));
+
+    studyBtn.classList.add('hidden');   // Hide Study Mode
+    hideBtn.classList.remove('hidden'); // Show Hide All
+});
+
+// Close ALL and swap buttons back
+hideBtn.addEventListener('click', () => {
+    cards.forEach(card => card.classList.remove('active'));
+
+    hideBtn.classList.add('hidden');    // Hide Hide All
+    studyBtn.classList.remove('hidden'); // Show Study Mode
+});
+});
+</script>
+
+<footer style="margin-top: 8rem;">...</footer>
+</body>
+</html>
