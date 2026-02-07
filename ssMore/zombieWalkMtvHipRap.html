@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Zombie Walk - Alternative Version</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles - Mobile First */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --zombie-green: #4a7c4a;
+            --dark-bg: #121212;
+            --blood-red: #8b0000;
+            --text-light: #f0f0f0;
+            --text-dim: #b0b0b0;
+            --section-bg: #1a1a1a;
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 124, 74, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.05) 0%, transparent 20%);
+            padding-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--dark-bg), var(--zombie-green), var(--dark-bg));
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid var(--blood-red);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "☠";
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.1;
+            left: 10%;
+            top: 10px;
+        }
+
+        header::after {
+            content: "☠";
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.1;
+            right: 10%;
+            top: 10px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Links Section */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--zombie-green);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid transparent;
+        }
+
+        .link-btn:hover {
+            background-color: var(--blood-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .link-btn.article {
+            background-color: var(--section-bg);
+            border: 2px solid var(--zombie-green);
+        }
+
+        .link-btn.audio {
+            background-color: var(--blood-red);
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 5px solid var(--zombie-green);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .about h3 {
+            color: var(--zombie-green);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about h3 i {
+            color: var(--blood-red);
+        }
+
+        .about p {
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        /* Lyrics Container */
+        .lyrics {
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .verse {
+            margin-bottom: 25px;
+        }
+
+        .verse h4 {
+            color: var(--blood-red);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verse h4 i {
+            color: var(--zombie-green);
+        }
+
+        .verse p {
+            color: var(--text-light);
+            margin-bottom: 12px;
+            padding-left: 10px;
+            line-height: 1.8;
+        }
+
+        .chorus {
+            background-color: rgba(74, 124, 74, 0.1);
+            border-left: 4px solid var(--zombie-green);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .chorus h4 {
+            color: var(--zombie-green);
+        }
+
+        .bridge {
+            background-color: rgba(139, 0, 0, 0.1);
+            border-left: 4px solid var(--blood-red);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .bridge h4 {
+            color: var(--blood-red);
+        }
+
+        .outro {
+            font-style: italic;
+            text-align: center;
+            color: var(--text-dim);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles - Tablet */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .links {
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .link-btn {
+                width: auto;
+                min-width: 220px;
+            }
+            
+            .verse p {
+                font-size: 1.05rem;
+            }
+        }
+
+        /* Responsive Styles - Desktop - SINGLE COLUMN VERSION */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 30px;
+            }
+            
+            h1 {
+                font-size: 4rem;
+            }
+            
+            .lyrics {
+                padding: 30px;
+                max-width: 800px;
+                margin: 25px auto;
+            }
+            
+            .verse {
+                display: block;
+                margin-bottom: 30px;
+            }
+            
+            .chorus, .bridge {
+                margin: 25px 0;
+            }
+            
+            .verse p {
+                font-size: 1.1rem;
+                line-height: 1.9;
+            }
+        }
+
+        /* Animation for header */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1, header .subtitle {
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Zombie Walk</h1>
+            <h2>Hip-hop with Rap version<h2>
+            <div class="subtitle">For the English Learning article: Exploring Zombie Walks</div>
+        </header>
+
+        <main>
+            <section class="links">
+                <a href="https://drcray.github.io/ELF/ssMore/zombieWalksArticle.html" class="link-btn article" target="_blank">
+                    <i class="fas fa-newspaper"></i> Read the Article
+                </a>
+                <a href="https://youtu.be/3HuxfTNb6ww" class="link-btn audio" target="_blank">
+                    <i class="fas fa-headphones"></i> Listen to Audio/Video
+                </a>
+            </section>
+
+            <section class="about">
+                <h3><i class="fas fa-info-circle"></i> About the Song:</h3>
+                <p>A person encounters a "Zombie Walk", not realizing what it is. Though first afraid, the stranger decides to join the fun. The walk ends with a Zombie dance off. Then the "zombies" go pub crawling and talk about their favorite horror movies and shows (The Shining, Halloween, and Walking Dead).</p>
+            </section>
+
+            <section class="lyrics">
+                <div class="verse">
+                    <h4><i class="fas fa-music"></i> Verse 1</h4>
+                    <p>At the edge of dusk, the light starts to fade,</p>
+                    <p>I turned the corner, heart racing, afraid.</p>
+                    <p>Twisted figures drifting through the night,</p>
+                    <p>Gray skin glowing under the pale moonlight</p>
+                    <p>Bruised and ragged, moving slow and strange,</p>
+                    <p>Human once, now something rearranged.</p>
+                    <p>I thought I could run, they were half my speed,</p>
+                    <p>But I was suddenly surrounded — no way to be freed.</p>
+                    <p>Left, right, front, back, closing in tight,</p>
+                    <p>Surrounded by the undead in the dying light.</p>
+                </div>
+
+                <div class="verse">
+                    <h4><i class="fas fa-wave-square"></i> Pre-Chorus</h4>
+                    <p>Fear hit like ice, I dropped to the ground,</p>
+                    <p>Arms over my head, waiting for the sound...</p>
+                </div>
+
+                <div class="chorus verse">
+                    <h4><i class="fas fa-volume-up"></i> Chorus</h4>
+                    <p>Zombie walks appear out of nowhere,</p>
+                    <p>Give you a scare when you're not prepared.</p>
+                    <p>But they're dancing, parading through the night,</p>
+                    <p>Raising money, spreading light.</p>
+                    <p>Zombies at the bars, laughing loud,</p>
+                    <p>Friendliest souls in any crowd.</p>
+                    <p>Think the dead can't move? Watch them glide —</p>
+                    <p>Monster Mash and Thriller is their style.</p>
+                </div>
+
+                <div class="verse">
+                    <h4><i class="fas fa-music"></i> Verse 2</h4>
+                    <p>Then came laughter, voices warm and real,</p>
+                    <p>A hand reached down: "Hey friend, no big deal."</p>
+                    <p>"We didn't mean to freak you out tonight,</p>
+                    <p>This is our walk — come join the light."</p>
+                    <p>No costume needed, they welcomed me in,</p>
+                    <p>We shuffled together, letting the fun begin.</p>
+                    <p>Hours of makeup to look our very worst,</p>
+                    <p>Comfy shoes on for the long march first.</p>
+                    <p>We startled some kids (oops, accidental fright),</p>
+                    <p>But smiles followed under the festival night.</p>
+                </div>
+
+                <div class="chorus verse">
+                    <h4><i class="fas fa-volume-up"></i> Chorus</h4>
+                    <p>Zombie walks appear out of nowhere,</p>
+                    <p>Give you a scare when you're not prepared.</p>
+                    <p>But they're dancing, parading through the night,</p>
+                    <p>Raising money, spreading light.</p>
+                    <p>Zombies at the bars, laughing loud,</p>
+                    <p>Friendliest souls in any crowd.</p>
+                    <p>Think the dead can't move? Watch them glide —</p>
+                    <p>Monster Mash and Thriller is their style.</p>
+                </div>
+
+                <div class="bridge verse">
+                    <h4><i class="fas fa-guitar"></i> Bridge</h4>
+                    <p>At the finale spot, the Thriller beat dropped low,</p>
+                    <p>Zombies walk slow, but watch the dance show.</p>
+                    <p>Awkward steps turn sharp, half-splits, rhythm flows,</p>
+                    <p>Half-dead beats stealing the glow.</p>
+                    <p>The bass keeps thumping, the crowd starts to sway,</p>
+                    <p>Rotten limbs flying in a wild display.</p>
+                    <p>We spin and we drop, defying the grave,</p>
+                    <p>Zombies own the night when the music is played.</p>
+                    <p>Then five pubs deep, we talked through the night —</p>
+                    <p>"The Shining" topped the list, Halloween right behind,</p>
+                    <p>"The Walking Dead" binge-worthy to the end.</p>
+                </div>
+
+                <div class="chorus verse">
+                    <h4><i class="fas fa-volume-up"></i> Chorus</h4>
+                    <p>Zombie walks appear out of nowhere,</p>
+                    <p>Give you a scare when you're not prepared.</p>
+                    <p>But they're dancing, parading through the night,</p>
+                    <p>Raising money, spreading light.</p>
+                    <p>Zombies at the bars, laughing loud,</p>
+                    <p>Friendliest souls in any crowd.</p>
+                    <p>Think the dead can't move? Watch them glide —</p>
+                    <p>Monster Mash and Thriller is their style.</p>
+                </div>
+
+                <div class="outro">
+                    <p>Zombie walk surprise...</p>
+                    <p>Under the twilight sky...</p>
+                    <p>No more fear, just the night alive...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>The Zombie Walk - Alternative Version - English Learning Resource</p>
+            <p>Horror-themed content for language education</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add subtle interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to buttons
+            const buttons = document.querySelectorAll('.link-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create a ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size/2;
+                    const y = e.clientY - rect.top - size/2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.7);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        top: ${y}px;
+                        left: ${x}px;
+                        pointer-events: none;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add scroll animation for lyrics sections
+            const verses = document.querySelectorAll('.verse');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            verses.forEach(verse => {
+                verse.style.opacity = '0';
+                verse.style.transform = 'translateY(20px)';
+                verse.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(verse);
+            });
+        });
+
+        // Add the ripple animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
