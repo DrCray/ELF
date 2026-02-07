@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lend vs. Borrow - English Lesson & Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3498db;
+      --primary-dark: #2980b9;
+      --secondary: #2c3e50;
+      --accent: #e74c3c;
+      --light: #f8f9fa;
+      --light-gray: #ecf0f1;
+      --medium-gray: #bdc3c7;
+      --dark-gray: #7f8c8d;
+      --success: #2ecc71;
+      --error: #e74c3c;
+      --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      background-image: linear-gradient(to bottom, #f5f7fa 0%, #f9f9f9 100%);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: var(--shadow);
+      padding: 25px 0;
+      margin-bottom: 40px;
+      border-bottom: 4px solid var(--primary);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo-icon {
+      background-color: var(--primary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .logo-text h1 {
+      font-size: 28px;
+      color: var(--secondary);
+      margin-bottom: 5px;
+    }
+    
+    .logo-text p {
+      font-size: 14px;
+      color: var(--dark-gray);
+      font-weight: 500;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .stat-box {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: var(--dark-gray);
+    }
+    
+    /* Main Content */
+    .page-title {
+      font-size: 36px;
+      color: var(--secondary);
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .page-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+    
+    .intro-text {
+      text-align: center;
+      font-size: 18px;
+      color: var(--dark-gray);
+      max-width: 800px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    
+    /* Content Cards */
+    .content-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+    
+    .content-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+      color: var(--secondary);
+      font-size: 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .card-title i {
+      color: var(--primary);
+    }
+    
+    /* Definitions */
+    .definitions {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .definition-box {
+      flex: 1;
+      padding: 25px;
+      border-radius: var(--border-radius);
+      background-color: var(--light-gray);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .definition-box:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+    }
+    
+    .lend-box:before {
+      background-color: var(--primary);
+    }
+    
+    .borrow-box:before {
+      background-color: var(--accent);
+    }
+    
+    .definition-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--secondary);
+    }
+    
+    .definition-desc {
+      color: var(--dark-gray);
+      margin-bottom: 15px;
+    }
+    
+    .example {
+      background-color: white;
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-style: italic;
+      border-left: 3px solid var(--primary);
+    }
+    
+    /* Rule of thumb */
+    .rule-box {
+      background-color: #e8f4fc;
+      border-left: 5px solid var(--primary);
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+    
+    .rule-title {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    /* Substitution trick */
+    .substitution-trick {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    .trick-item {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      min-width: 180px;
+      transition: var(--transition);
+    }
+    
+    .trick-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .trick-verb {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    
+    .trick-arrow {
+      font-size: 24px;
+      color: var(--medium-gray);
+    }
+    
+    /* Common mistakes */
+    .mistakes-list {
+      list-style-type: none;
+    }
+    
+    .mistakes-list li {
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    
+    .mistakes-list li:nth-child(odd) {
+      background-color: #fff8f8;
+    }
+    
+    .mistakes-list li:nth-child(even) {
+      background-color: #f8faff;
+    }
+    
+    .mistake-icon {
+      color: var(--error);
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .correct-icon {
+      color: var(--success);
+    }
+    
+    /* Quiz Section */
+    .quiz-section {
+      margin-top: 40px;
+    }
+    
+    .section-title {
+      font-size: 28px;
+      color: var(--secondary);
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--light-gray);
+    }
+    
+    .quiz-container {
+      background: white;
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+    
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .quiz-title {
+      font-size: 22px;
+      color: var(--secondary);
+    }
+    
+    .quiz-hint {
+      background-color: var(--primary);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .question {
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      border-left: 5px solid var(--primary);
+      transition: var(--transition);
+    }
+    
+    .question:hover {
+      background-color: #f0f7ff;
+    }
+    
+    .question-number {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 10px;
+      font-weight: 600;
+    }
+    
+    select {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 2px solid var(--medium-gray);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 140px;
+      margin-left: 10px;
+      font-weight: 500;
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+    }
+    
+    /* Correct answer style */
+    select.correct {
+      background-color: #e8f5e9 !important;
+      border-color: var(--success);
+      color: #2d572c;
+    }
+    
+    /* Incorrect answer style */
+    select.incorrect {
+      background-color: #ffebee !important;
+      border-color: var(--error);
+      color: #b71c1c;
+    }
+    
+    .placeholder {
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+    
+    /* Results */
+    .results-box {
+      background-color: #e8f4fc;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      margin-top: 30px;
+      text-align: center;
+      display: none;
+    }
+    
+    .results-box.show {
+      display: block;
+    }
+    
+    .results-title {
+      font-size: 20px;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+    
+    .score {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 15px 0;
+    }
+    
+    .check-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 20px;
+    }
+    
+    .check-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(52, 152, 219, 0.3);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--light-gray);
+      color: var(--dark-gray);
+      font-size: 14px;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .definitions {
+        flex-direction: column;
+      }
+      
+      .page-title {
+        font-size: 28px;
+      }
+      
+      .substitution-trick {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .quiz-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+      
+      select {
+        display: block;
+        margin: 10px 0 0 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-language"></i>
+        </div>
+        <div class="logo-text">
+          <h1>English Mastery</h1>
+          <p>Practical lessons for confident communication</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-number">16</div>
+          <div class="stat-label">Questions</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Quizzes</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Practical</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Lend vs. Borrow: A Complete English Lesson</h1>
+    
+    <p class="intro-text">Welcome to this comprehensive lesson on the difference between <strong>lend</strong> and <strong>borrow</strong>. Master this common confusion with clear explanations, practical examples, and interactive quizzes that will help you use these verbs correctly in everyday conversation.</p>
+    
+    <div class="content-card">
+      <h2 class="card-title"><i class="fas fa-book-open"></i> Quick Definitions</h2>
+      
+      <div class="definitions">
+        <div class="definition-box lend-box">
+          <h3 class="definition-title">Lend</h3>
+          <p class="definition-desc">To give something temporarily to someone else (giver's perspective)</p>
+          <div class="example">
+            <i class="fas fa-quote-left"></i> I can lend you my book.
+          </div>
+        </div>
+        
+        <div class="definition-box borrow-box">
+          <h3 class="definition-title">Borrow</h3>
+          <p class="definition-desc">To take/receive something temporarily from someone else (receiver's perspective)</p>
+          <div class="example">
+            <i class="fas fa-quote-left"></i> Can I borrow your pen?
+          </div>
+        </div>
+      </div>
+      
+      <div class="rule-box">
+        <div class="rule-title">Simple Rule to Remember:</div>
+        <p>If <strong>Person A lends</strong> something to <strong>Person B</strong> → <strong>Person B borrows</strong> it from <strong>Person A</strong>.</p>
+      </div>
+    </div>
+    
+    <div class="content-card">
+      <h2 class="card-title"><i class="fas fa-lightbulb"></i> The "Give / Get" Substitution Trick</h2>
+      <p>This simple trick will help you choose the correct word every time:</p>
+      
+      <div class="substitution-trick">
+        <div class="trick-item">
+          <div class="trick-verb">Lend</div>
+          <div class="trick-label">equals</div>
+          <div class="trick-verb-sub">give (temporarily)</div>
+        </div>
+        
+        <div class="trick-arrow">
+          <i class="fas fa-arrows-alt-h"></i>
+        </div>
+        
+        <div class="trick-item">
+          <div class="trick-verb">Borrow</div>
+          <div class="trick-label">equals</div>
+          <div class="trick-verb-sub">get (temporarily)</div>
+        </div>
+      </div>
+      
+      <p style="text-align: center; margin-top: 20px;">If "give" fits naturally → use <strong class="highlight">lend</strong>.<br>If "get" fits naturally → use <strong class="highlight">borrow</strong>.</p>
+    </div>
+    
+    <div class="content-card">
+      <h2 class="card-title"><i class="fas fa-comment-dots"></i> Examples in Context</h2>
+      
+      <div class="definitions">
+        <div class="definition-box" style="background-color: #f0f8ff;">
+          <h3 class="definition-title">With "Lend"</h3>
+          <ul style="padding-left: 20px; color: var(--dark-gray);">
+            <li style="margin-bottom: 10px;">I can <strong>lend</strong> you my charger. → I can <strong>give</strong> you my charger.</li>
+            <li style="margin-bottom: 10px;">The bank will <strong>lend</strong> us money. → The bank will <strong>give</strong> us money.</li>
+            <li>Would you <strong>lend</strong> me your ear for a moment? → Would you <strong>give</strong> me your ear for a moment?</li>
+          </ul>
+        </div>
+        
+        <div class="definition-box" style="background-color: #f8f0ff;">
+          <h3 class="definition-title">With "Borrow"</h3>
+          <ul style="padding-left: 20px; color: var(--dark-gray);">
+            <li style="margin-bottom: 10px;">Can I <strong>borrow</strong> your notes? → Can I <strong>get</strong> your notes?</li>
+            <li style="margin-bottom: 10px;">We need to <strong>borrow</strong> $500. → We need to <strong>get</strong> $500.</li>
+            <li>She wants to <strong>borrow</strong> my dress. → She wants to <strong>get</strong> my dress.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-card">
+      <h2 class="card-title"><i class="fas fa-exclamation-triangle"></i> Common Mistakes to Avoid</h2>
+      
+      <ul class="mistakes-list">
+        <li>
+          <div class="mistake-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div>
+            <strong>Wrong:</strong> "Can you borrow me your pen?"<br>
+            <strong class="correct-icon"><i class="fas fa-check-circle"></i> Correct:</strong> "Can you <strong>lend</strong> me your pen?" or "Can I <strong>borrow</strong> your pen?"
+          </div>
+        </li>
+        <li>
+          <div class="mistake-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div>
+            Use <strong>to</strong> with lend: lend something <strong>to</strong> someone<br>
+            <em>Example: I lent my book <strong>to</strong> Maria.</em>
+          </div>
+        </li>
+        <li>
+          <div class="mistake-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div>
+            Use <strong>from</strong> with borrow: borrow something <strong>from</strong> someone<br>
+            <em>Example: She borrowed a dress <strong>from</strong> her sister.</em>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="quiz-section">
+      <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Practice Quizzes</h2>
+      
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h3 class="quiz-title">Quiz 1: With "Give / Get" Hints</h3>
+          <div class="quiz-hint">Use the substitution trick!</div>
+        </div>
+        
+        <div class="question">
+          <span class="question-number">1</span>
+          The library will 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder">give</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          books to students.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">2</span>
+          Can I 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>get</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          your umbrella for a minute?
+        </div>
+        
+        <div class="question">
+          <span class="question-number">3</span>
+          My sister wants to 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>get</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          my headphones again.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">4</span>
+          Would you 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>give</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          me a hand with this box?
+        </div>
+        
+        <div class="question">
+          <span class="question-number">5</span>
+          I need to 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>get</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          some money from my parents.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">6</span>
+          The company will 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>give</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          equipment to the event team.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">7</span>
+          Can you 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>give</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          me your calculator during the test?
+        </div>
+        
+        <div class="question">
+          <span class="question-number">8</span>
+          He always 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>get</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          tools from the neighbor.
+        </div>
+      </div>
+      
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h3 class="quiz-title">Quiz 2: No Hints - Test Your Knowledge</h3>
+          <div class="quiz-hint" style="background-color: var(--secondary);">Advanced level</div>
+        </div>
+        
+        <div class="question">
+          <span class="question-number">1</span>
+          Banks often 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          money to people who need it.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">2</span>
+          May I 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          your jacket? It's freezing!
+        </div>
+        
+        <div class="question">
+          <span class="question-number">3</span>
+          She 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          books from the public library every week.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">4</span>
+          Could you 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          me your phone charger please?
+        </div>
+        
+        <div class="question">
+          <span class="question-number">5</span>
+          I want to 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          your camera for the weekend.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">6</span>
+          Friends sometimes 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          each other clothes for parties.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">7</span>
+          He needs to 
+          <select onchange="checkAnswer(this, 'borrow')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          a ladder to fix the roof.
+        </div>
+        
+        <div class="question">
+          <span class="question-number">8</span>
+          The teacher will 
+          <select onchange="checkAnswer(this, 'lend')">
+            <option value="" class="placeholder" selected>----</option>
+            <option value="lend">lend</option>
+            <option value="borrow">borrow</option>
+          </select> 
+          us her projector for the presentation.
+        </div>
+        
+        <div class="results-box" id="quizResults">
+          <h3 class="results-title">Your Quiz Results</h3>
+          <p>You've completed the quizzes! See how many you got correct:</p>
+          <div class="score" id="scoreDisplay">0/16</div>
+          <p id="resultMessage">Keep practicing to master lend vs. borrow!</p>
+          <button class="check-btn" onclick="calculateScore()">Check My Score</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="container">
+    <p>This interactive lesson is designed to help English learners master commonly confused verbs.</p>
+    
+    <!--div class="footer-links">
+      <a href="#">More Grammar Lessons</a>
+      <a href="#">Vocabulary Building</a>
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+    </div-->
+  </footer>
+
+  <script>
+    // Function to check individual answers
+    function checkAnswer(selectElement, correctValue) {
+      const selected = selectElement.value;
+      selectElement.classList.remove('correct', 'incorrect');
+      
+      if (selected === correctValue) {
+        selectElement.classList.add('correct');
+      } else if (selected !== "") {
+        selectElement.classList.add('incorrect');
+      }
+      
+      // Remove any previous result display
+      document.getElementById('quizResults').classList.remove('show');
+    }
+    
+    // Function to calculate overall score
+    function calculateScore() {
+      const allSelects = document.querySelectorAll('select');
+      let correctCount = 0;
+      let answeredCount = 0;
+      
+      allSelects.forEach(select => {
+        if (select.value !== "") {
+          answeredCount++;
+          
+          // Determine the correct value based on the onchange attribute
+          const onchangeAttr = select.getAttribute('onchange');
+          const correctValue = onchangeAttr.match(/'([^']+)'/)[1];
+          
+          if (select.value === correctValue) {
+            correctCount++;
+          }
+        }
+      });
+      
+      // Update results display
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const resultMessage = document.getElementById('resultMessage');
+      const resultsBox = document.getElementById('quizResults');
+      
+      scoreDisplay.textContent = `${correctCount}/${allSelects.length}`;
+      
+      if (answeredCount < allSelects.length) {
+        resultMessage.textContent = `You've answered ${answeredCount} out of ${allSelects.length} questions. Complete all questions for a full score!`;
+      } else {
+        const percentage = (correctCount / allSelects.length) * 100;
+        
+        if (percentage === 100) {
+          resultMessage.textContent = "Perfect! You've mastered the difference between lend and borrow!";
+        } else if (percentage >= 80) {
+          resultMessage.textContent = "Great job! You have a good understanding of lend vs. borrow.";
+        } else if (percentage >= 60) {
+          resultMessage.textContent = "Good effort! Review the examples and try again.";
+        } else {
+          resultMessage.textContent = "Keep practicing! Review the lesson and try the quizzes again.";
+        }
+      }
+      
+      resultsBox.classList.add('show');
+      resultsBox.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Add event listeners to all selects to track when all are answered
+    document.addEventListener('DOMContentLoaded', function() {
+      const selects = document.querySelectorAll('select');
+      selects.forEach(select => {
+        select.addEventListener('change', function() {
+          // Check if all selects have been answered
+          const allAnswered = Array.from(selects).every(s => s.value !== "");
+          
+          if (allAnswered) {
+            // Show a subtle prompt that score can be checked
+            const resultsBox = document.getElementById('quizResults');
+            if (!resultsBox.classList.contains('show')) {
+              const checkBtn = document.querySelector('.check-btn');
+              checkBtn.textContent = "Check My Score (All questions answered!)";
+              checkBtn.style.backgroundColor = "#2ecc71";
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

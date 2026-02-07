@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus: Dedicated</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #2d1b4e;
+    --purple-mid: #4a2d7a;
+    --purple-accent: #7c4dba;
+    --purple-light: #b388e8;
+    --purple-wash: #f3ecfc;
+    --purple-tint: #f9f5ff;
+    --text-primary: #1e1e2f;
+    --text-secondary: #4a4a6a;
+    --text-light: #7a7a9a;
+    --white: #ffffff;
+    --border: #e2d8f0;
+    --highlight-bg: #fffbe6;
+    --highlight-border: #f0d960;
+    --shadow-sm: 0 1px 3px rgba(45, 27, 78, 0.08);
+    --shadow-md: 0 4px 12px rgba(45, 27, 78, 0.1);
+    --shadow-lg: 0 8px 30px rgba(45, 27, 78, 0.12);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background: linear-gradient(175deg, var(--purple-wash) 0%, #f7f4fb 40%, var(--white) 100%);
+    min-height: 100vh;
+  }
+
+  .page-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 20px 20px 60px;
+  }
+
+  /* ── Header ── */
+  .lesson-header {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-mid) 60%, var(--purple-accent) 100%);
+    border-radius: var(--radius);
+    padding: 40px 36px 32px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lesson-header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(179, 136, 232, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .lesson-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 10px;
+  }
+
+  .lesson-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .lesson-title em {
+    font-style: italic;
+    color: var(--purple-light);
+  }
+
+  .lesson-subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+  }
+
+  .lesson-subtitle strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ── Sections ── */
+  .section {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 30px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--purple-wash);
+  }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  thead th {
+    background: var(--purple-deep);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--purple-tint); }
+
+  td strong { color: var(--purple-mid); }
+  td em { color: var(--text-secondary); font-style: italic; }
+
+  /* ── Tip / Note boxes ── */
+  .tip-box {
+    background: var(--highlight-bg);
+    border-left: 4px solid var(--highlight-border);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .tip-box .icon { margin-right: 6px; }
+
+  .note-box {
+    background: var(--purple-tint);
+    border-left: 4px solid var(--purple-accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .note-box strong { color: var(--purple-mid); }
+
+  /* ── Example sentences ── */
+  .examples-group {
+    margin-bottom: 28px;
+  }
+
+  .examples-group:last-child { margin-bottom: 0; }
+
+  .examples-group-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--purple-accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .examples-group-title::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    background: var(--purple-accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .example-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .example-list li {
+    padding: 10px 16px;
+    margin-bottom: 6px;
+    background: var(--purple-tint);
+    border-radius: 8px;
+    font-size: 0.97rem;
+    line-height: 1.6;
+    border-left: 3px solid var(--purple-light);
+    transition: background 0.2s ease;
+  }
+
+  .example-list li:hover {
+    background: var(--purple-wash);
+  }
+
+  .example-list li strong {
+    color: var(--purple-mid);
+    font-weight: 700;
+  }
+
+  .example-number {
+    display: inline-block;
+    font-weight: 700;
+    color: var(--purple-accent);
+    min-width: 26px;
+    font-size: 0.85rem;
+  }
+
+  /* ── Collocations ── */
+  .collocation-block {
+    margin-bottom: 22px;
+  }
+
+  .collocation-block:last-child { margin-bottom: 0; }
+
+  .collocation-label {
+    font-weight: 700;
+    color: var(--purple-mid);
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .collocation-words {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+    margin-bottom: 8px;
+  }
+
+  .collocation-examples {
+    list-style: none;
+    padding: 0;
+  }
+
+  .collocation-examples li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  .collocation-examples li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--purple-light);
+    font-weight: 700;
+  }
+
+  .collocation-examples li em {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  /* ── Summary ── */
+  .summary-box {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-mid) 100%);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    color: var(--white);
+  }
+
+  .summary-box .section-title {
+    color: var(--white);
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .summary-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+  }
+
+  .summary-text strong {
+    color: var(--purple-light);
+    font-weight: 600;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .page-wrapper { padding: 12px 12px 40px; }
+    .lesson-header { padding: 28px 22px 24px; }
+    .section { padding: 22px 18px; }
+    table { font-size: 0.88rem; }
+    thead th, tbody td { padding: 10px 12px; }
+    .example-list li { padding: 9px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ── HEADER ── -->
+  <header class="lesson-header">
+    <div class="lesson-label">Language Focus</div>
+    <h1 class="lesson-title"><em>Dedicated</em></h1>
+    <p class="lesson-subtitle">One word, two meanings: something or someone that is fully committed — either a <strong>person with strong commitment</strong>, or a <strong>thing reserved for one specific purpose</strong>.</p>
+  </header>
+
+  <!-- ── DEFINITIONS ── -->
+  <section class="section">
+    <h2 class="section-title">Definitions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Meaning</th>
+            <th>Definition</th>
+            <th>Used for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>dedicated</strong> (1)</td>
+            <td>Giving a lot of time and energy to something; strongly committed</td>
+            <td>People</td>
+          </tr>
+          <tr>
+            <td><strong>dedicated</strong> (2)</td>
+            <td>Existing or used for only one particular purpose</td>
+            <td>Things, spaces, systems</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── GRAMMAR PATTERNS ── -->
+  <section class="section">
+    <h2 class="section-title">Grammar Patterns</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Pattern</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>dedicated</strong> + noun (adjective before noun)</td>
+            <td><em>a dedicated teacher / a dedicated server</em></td>
+          </tr>
+          <tr>
+            <td><strong>dedicated to</strong> + noun / gerund (people)</td>
+            <td><em>She is dedicated to her work. / He is dedicated to helping others.</em></td>
+          </tr>
+          <tr>
+            <td><strong>dedicated to</strong> + noun / gerund (things)</td>
+            <td><em>This room is dedicated to training. / This lane is dedicated to buses.</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── EXAMPLE SENTENCES ── -->
+  <section class="section">
+    <h2 class="section-title">Example Sentences</h2>
+
+    <div class="examples-group">
+      <div class="examples-group-title">Meaning 1: Committed (people)</div>
+      <ol class="example-list">
+        <li><span class="example-number">1.</span> She's a <strong>dedicated</strong> nurse who often stays late to help her patients.</li>
+        <li><span class="example-number">2.</span> The company succeeded because of its small but <strong>dedicated</strong> team.</li>
+        <li><span class="example-number">3.</span> He has always been <strong>dedicated to</strong> his family.</li>
+        <li><span class="example-number">4.</span> You don't need to be talented — you just need to be <strong>dedicated</strong>.</li>
+        <li><span class="example-number">5.</span> The most <strong>dedicated</strong> students in the class practised every single day.</li>
+        <li><span class="example-number">6.</span> She was so <strong>dedicated to</strong> the project that she worked through the weekend.</li>
+      </ol>
+    </div>
+
+    <div class="examples-group">
+      <div class="examples-group-title">Meaning 2: Set aside for one purpose (things)</div>
+      <ol class="example-list">
+        <li><span class="example-number">7.</span> The office has a <strong>dedicated</strong> space for video calls.</li>
+        <li><span class="example-number">8.</span> There is a <strong>dedicated</strong> bus lane on this road — no cars are allowed.</li>
+        <li><span class="example-number">9.</span> This laptop is <strong>dedicated to</strong> graphic design — we don't use it for anything else.</li>
+        <li><span class="example-number">10.</span> The hotel has a <strong>dedicated</strong> floor for business guests.</li>
+        <li><span class="example-number">11.</span> We set up a <strong>dedicated</strong> email address for customer complaints.</li>
+        <li><span class="example-number">12.</span> The hospital opened a <strong>dedicated</strong> ward for children.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── COLLOCATIONS ── -->
+  <section class="section">
+    <h2 class="section-title">Collocations &amp; Common Combinations</h2>
+
+    <div class="collocation-block">
+      <div class="collocation-label">Meaning 1 — People</div>
+      <div class="collocation-words">dedicated + teacher, nurse, employee, team, volunteer, fan, follower, parent, professional</div>
+      <ul class="collocation-examples">
+        <li><em>He's a <strong>dedicated</strong> fan — he hasn't missed a single game in ten years.</em></li>
+      </ul>
+    </div>
+
+    <div class="collocation-block">
+      <div class="collocation-label">Meaning 2 — Things</div>
+      <div class="collocation-words">dedicated + server, space, room, lane, line, channel, fund, team, unit, app</div>
+      <ul class="collocation-examples">
+        <li><em>The company uses a <strong>dedicated</strong> server for its customer data.</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── SUMMARY ── -->
+  <section class="section summary-box">
+    <h2 class="section-title">Summary</h2>
+    <p class="summary-text">
+      <strong>Dedicated</strong> always carries the idea of <strong>"fully given to one thing."</strong> When we talk about people, it means strong personal commitment. When we talk about things, it means reserved for a single purpose.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>
