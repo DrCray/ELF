@@ -3,609 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zombie Walks Vocabulary Quiz</title>
+    <title>Vocabulary Cloze Exercise</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
-            background-color: #1a1a2e;
-            color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
+        }
+
+        .container {
             max-width: 900px;
             margin: 0 auto;
-            line-height: 1.6;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
+
         h1 {
-            color: #e94560;
+            color: #667eea;
             text-align: center;
             margin-bottom: 10px;
+            font-size: 2em;
         }
+
         .subtitle {
             text-align: center;
-            color: #8888aa;
+            color: #666;
             margin-bottom: 30px;
-            font-style: italic;
+            font-size: 1.1em;
         }
-        .instructions {
-            background-color: rgba(233, 69, 96, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-left: 4px solid #e94560;
-        }
-        .instructions h3 {
-            color: #e94560;
-            margin-top: 0;
-        }
-        .quiz-item {
-            background-color: #2d2d44;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s;
-        }
-        .quiz-item.correct {
-            background-color: rgba(144, 238, 144, 0.15); /* Pale pastel green */
-        }
-        .quiz-item.incorrect {
-            background-color: rgba(255, 182, 193, 0.15); /* Pale pastel pink */
-        }
-        .sentence {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #444466;
-        }
-        select {
-            background-color: #39395a;
-            color: white;
-            border: 2px solid #555577;
-            border-radius: 6px;
-            padding: 8px 15px;
-            font-size: 1rem;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-        select:hover {
-            border-color: #e94560;
-        }
-        select:focus {
-            outline: none;
-            border-color: #e94560;
-            box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.3);
-        }
-        option {
-            background-color: #2d2d44;
-            padding: 10px;
-        }
-        .feedback {
-            margin-top: 15px;
-            padding: 10px 15px;
-            border-radius: 6px;
-            display: none;
-            font-weight: bold;
-        }
-        .correct-feedback {
-            background-color: rgba(144, 238, 144, 0.3);
-            color: #90ee90;
-            border-left: 4px solid #90ee90;
-        }
-        .incorrect-feedback {
-            background-color: rgba(255, 182, 193, 0.3);
-            color: #ffb6c1;
-            border-left: 4px solid #ffb6c1;
-        }
+
         .controls {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 40px 0;
-        }
-        button {
-            background-color: #e94560;
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        button:hover {
-            background-color: #ff5773;
-            transform: translateY(-2px);
-        }
-        button:active {
-            transform: translateY(0);
-        }
-        #checkAnswers {
-            background-color: #4CAF50;
-        }
-        #checkAnswers:hover {
-            background-color: #5fcf64;
-        }
-        #resetQuiz {
-            background-color: #666688;
-        }
-        #resetQuiz:hover {
-            background-color: #777799;
-        }
-        .score-container {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background-color: rgba(233, 69, 96, 0.1);
-            border-radius: 10px;
-            display: none;
-        }
-        .score {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #e94560;
-            margin: 10px 0;
-        }
-        .quiz-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 25px;
-            background-color: #252536;
-            border-radius: 10px;
+            gap: 15px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        .status-item {
-            text-align: center;
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
-        .status-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #e94560;
+
+        .btn-study {
+            background: #667eea;
+            color: white;
         }
-        .status-label {
-            font-size: 0.9rem;
-            color: #8888aa;
+
+        .btn-study:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #8888aa;
-            font-size: 0.9rem;
-            padding-top: 20px;
-            border-top: 1px solid #444466;
+
+        .btn-hide {
+            background: #764ba2;
+            color: white;
         }
+
+        .btn-hide:hover {
+            background: #633d8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .dark-mode-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .dark-mode-control input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode .container {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1 {
+            color: #9d84f5;
+        }
+
+        body.dark-mode .subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .sentence-item {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode select {
+            background: #16213e;
+            color: #e0e0e0;
+            border-color: #9d84f5;
+        }
+
+        body.dark-mode select:hover {
+            border-color: #b39ddb;
+        }
+
+        /* Keep correct/incorrect colors in dark mode */
+        body.dark-mode select.correct {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        body.dark-mode select.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        body.dark-mode .dark-mode-control {
+            color: #e0e0e0;
+        }
+
+        .sentence-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        select {
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        select:hover {
+            border-color: #764ba2;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 5px rgba(118, 75, 162, 0.3);
+        }
+
+        select.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        select.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    .controls {
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.95em;
+    }
+
+    .dark-mode-control {
+        font-size: 0.9em;
+    }
+
+    .sentence-item {
+        font-size: 1.05rem;
+        padding: 10px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+    }
+
+    select {
+        min-width: 110px;
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+}
     </style>
 </head>
 <body>
-    <h1>Zombie Walks Vocabulary Quiz</h1>
-    <div class="subtitle">Fill in the blanks with the correct vocabulary words</div>
-    
-    <div class="instructions">
-        <h3>How to Play:</h3>
-        <p>Each sentence below uses a vocabulary word from the Zombie Walks text. The word has been replaced with a dropdown menu.</p>
-        <p>Select the correct word from the four options. Three are random distractors, only one is correct.</p>
-        <p>After making your selections, click "Check All Answers" to see your score and get feedback.</p>
-    </div>
-    
-    <div class="quiz-status">
-        <div class="status-item">
-            <div class="status-value" id="totalQuestions">40</div>
-            <div class="status-label">Total Questions</div>
+    <div class="container">
+        <h1>Zombie Walks - Vocab Sentences</h1>
+        <p class="subtitle">Select the correct word or phrase to complete each sentence</p>
+        
+        <div class="controls">
+            <button id="studyBtn" class="btn btn-study" onclick="showAllAnswers()">Study Mode - Show All Answers</button>
+            <button id="hideBtn" class="btn btn-hide" onclick="hideAllAnswers()" style="display: none;">Hide All</button>
         </div>
-        <div class="status-item">
-            <div class="status-value" id="answeredCount">0</div>
-            <div class="status-label">Answered</div>
+        <div class="controls">
+            <div class="dark-mode-control">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <label for="darkModeToggle">Dark Mode</label>
+            </div>
         </div>
-        <div class="status-item">
-            <div class="status-value" id="correctCount">0</div>
-            <div class="status-label">Correct</div>
-        </div>
+
+        <div id="sentences"></div>
     </div>
-    
-    <div id="quizContainer">
-        <!-- Quiz items will be generated here -->
-    </div>
-    
-    <div class="controls">
-        <button id="checkAnswers">Check All Answers</button>
-        <button id="resetQuiz">Reset Quiz</button>
-    </div>
-    
-    <div class="score-container" id="scoreContainer">
-        <h2>Quiz Complete!</h2>
-        <div class="score">Score: <span id="finalScore">0</span>/<span id="maxScore">40</span></div>
-        <p id="scoreMessage">Your performance message will appear here.</p>
-    </div>
-    
-
-
-    <div class="student-info-container">
-        <div class="input-group">
-            <input type="text" id="studentName" value="Name" maxlength="25">
-            <input type="text" id="studentID" value="ID" maxlength="25">
-        </div>
-        <p class="note">Name and ID required for PDF print.</p>
-        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
-
-
-    </div>
-
-       <script>
-        const nameInput = document.getElementById('studentName');
-        const idInput = document.getElementById('studentID');
-        const pdfButton = document.getElementById('pdfButton');
-
-        const DEFAULTS = {
-            name: 'Name',
-            id: 'ID'
-        };
-
-        // Sanitize input to prevent injection
-        function sanitizeInput(input) {
-            const temp = document.createElement('div');
-            temp.textContent = input;
-            return temp.innerHTML;
-        }
-
-        // Validate input length and content
-        function validateInput(input, fieldName) {
-            const sanitized = sanitizeInput(input.trim());
-
-            if (sanitized.length < 2) {
-                alert(`${fieldName} must be at least 2 characters long.`);
-                return false;
-            }
-
-            if (sanitized.length > 25) {
-                alert(`${fieldName} must be no more than 25 characters long.`);
-                return false;
-            }
-
-            return true;
-        }
-
-        // Check if both fields are valid and changed from defaults
-        function checkEnablePDF() {
-            const nameValue = nameInput.value.trim();
-            const idValue = idInput.value.trim();
-
-            // Check if changed from defaults
-            const nameChanged = nameValue !== DEFAULTS.name;
-            const idChanged = idValue !== DEFAULTS.id;
-
-            // Check if valid
-            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
-            const idValid = idValue.length >= 2 && idValue.length <= 25;
-
-            // Enable button only if both changed AND both valid
-            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
-        }
-
-        // Validate on blur (when user leaves field)
-        nameInput.addEventListener('blur', function() {
-            const value = this.value.trim();
-            if (value !== DEFAULTS.name && value.length > 0) {
-                if (validateInput(value, 'Name')) {
-                    this.value = sanitizeInput(value);
-                } else {
-                    this.value = DEFAULTS.name;
-                }
-            }
-            checkEnablePDF();
-        });
-
-        idInput.addEventListener('blur', function() {
-            const value = this.value.trim();
-            if (value !== DEFAULTS.id && value.length > 0) {
-                if (validateInput(value, 'ID')) {
-                    this.value = sanitizeInput(value);
-                } else {
-                    this.value = DEFAULTS.id;
-                }
-            }
-            checkEnablePDF();
-        });
-
-        // Also check on input to provide immediate feedback for enabling button
-        nameInput.addEventListener('input', checkEnablePDF);
-        idInput.addEventListener('input', checkEnablePDF);
-
-        // Clear default on focus
-        nameInput.addEventListener('focus', function() {
-            if (this.value === DEFAULTS.name) {
-                this.value = '';
-            }
-        });
-
-        idInput.addEventListener('focus', function() {
-            if (this.value === DEFAULTS.id) {
-                this.value = '';
-            }
-        });
-
-        // PDF Print functionality
-        pdfButton.addEventListener('click', function() {
-            window.print();
-        });
-    </script>
-
-    <footer>
-        Vocabulary Quiz based on "Zombie Walks" text | Created for educational purposes
-    </footer>
 
     <script>
-        // Vocabulary data from the previous page
-        const vocabulary = [
-            {word: "parades", example: "The city's annual holiday parades draw thousands of spectators to the downtown streets."},
-            {word: "dress up", example: "For the 1920s-themed party, everyone was asked to dress up in flapper dresses and pinstripe suits."},
-            {word: "gatherings", example: "The neighborhood holds regular social gatherings in the park to foster community spirit."},
-            {word: "charity", example: "The concert was organized for charity, with all proceeds going to support local animal shelters."},
-            {word: "origin", example: "The origin of the chocolate chip cookie can be traced back to a Massachusetts inn in the 1930s."},
-            {word: "took place", example: "The historic peace treaty took place in the grand hall of the palace."},
-            {word: "promote", example: "The company hired influencers to promote their new eco-friendly product line on social media."},
-            {word: "phenomenon", example: "The northern lights are a natural phenomenon that attracts tourists to Arctic regions."},
-            {word: "massive", example: "The museum's new wing is a massive structure made entirely of glass and steel."},
-            {word: "participants", example: "All participants in the marathon received a commemorative medal at the finish line."},
-            {word: "core concept", example: "The core concept of the game is simple: build, explore, and survive in an open world."},
-            {word: "unique", example: "Each snowflake has a unique pattern that forms as it falls through the atmosphere."},
-            {word: "focus", example: "This semester, the students will focus on advanced techniques in digital animation."},
-            {word: "costume", example: "Her elaborate peacock costume won first prize at the masquerade ball."},
-            {word: "connected", example: "The museum's new exhibit is connected to a series of lectures on ancient civilizations."},
-            {word: "raising money", example: "The school band is raising money for new instruments by hosting a car wash."},
-            {word: "causes", example: "She volunteers for several environmental causes, including beach cleanups and tree planting."},
-            {word: "impact", example: "The new recycling program has had a significant impact on reducing landfill waste."},
-            {word: "makeup", example: "The actor spent three hours in the makeup chair to transform into the aging wizard."},
-            {word: "atmosphere", example: "The cozy fireplace and soft music created a warm, welcoming atmosphere in the café."},
-            {word: "artistic", example: "Her artistic talents extend beyond painting to include sculpture and textile design."},
-            {word: "elaborate", example: "The wedding cake featured an elaborate design of sugar flowers and edible gold leaf."},
-            {word: "drudgery", example: "The drudgery of data entry was relieved by the team's lively lunchtime conversations."},
-            {word: "engage", example: "The teacher used interactive games to help students engage with the difficult subject matter."},
-            {word: "food banks", example: "During the holidays, many volunteers help sort donations at local food banks."},
-            {word: "fee", example: "There's a small registration fee for the workshop, which includes all materials."},
-            {word: "symbol", example: "In many cultures, the olive branch is a symbol of peace and reconciliation."},
-            {word: "organized event", example: "The charity run is an organized event with designated routes, water stations, and medical support."},
-            {word: "permits", example: "Film crews need permits to shoot on public property in most cities."},
-            {word: "sponsors", example: "Local businesses often act as sponsors for the community theater's productions."},
-            {word: "balances", example: "A good recipe balances sweet and savory flavors to create a complex taste profile."},
-            {word: "stain", example: "Be careful with that red wine—it could stain the light-colored carpet."},
-            {word: "texture", example: "The artist used thick paint to create an interesting texture on the canvas."},
-            {word: "shuffling", example: "Exhausted after the long hike, we could only manage a slow shuffling walk back to the car."},
-            {word: "peeling", example: "After a bad sunburn, the peeling skin can be uncomfortable and sensitive."},
-            {word: "sunken", example: "His sunken cheeks and tired eyes showed how little he had slept during finals week."},
-            {word: "heavy-duty", example: "For the construction job, he bought heavy-duty work boots with steel toes."},
-            {word: "smearing", example: "The child's painting technique involved smearing different colors together with her fingers."},
-            {word: "dehydrate", example: "Hikers need to drink plenty of water to avoid becoming dehydrated on long trails."},
-            {word: "cleanup", example: "After the outdoor concert, volunteers assisted with the cleanup of the park grounds."}
+        const vocab = [
+            {word: "parades", sentence: "The city's annual holiday _____ draw thousands of spectators to the downtown streets."},
+            {word: "dress up", sentence: "For the 1920s-themed party, everyone was asked to _____ in flapper dresses and pinstripe suits."},
+            {word: "gatherings", sentence: "The neighborhood holds regular social _____ in the park to foster community spirit."},
+            {word: "charity", sentence: "The concert was organized for _____, with all proceeds going to support local animal shelters."},
+            {word: "origin", sentence: "The _____ of the chocolate chip cookie can be traced back to a Massachusetts inn in the 1930s."},
+            {word: "took place", sentence: "The historic peace treaty _____ in the grand hall of the palace."},
+            {word: "promote", sentence: "The company hired influencers to _____ their new eco-friendly product line on social media."},
+            {word: "phenomenon", sentence: "The northern lights are a natural _____ that attracts tourists to Arctic regions."},
+            {word: "massive", sentence: "The museum's new wing is a _____ structure made entirely of glass and steel."},
+            {word: "participants", sentence: "All _____ in the marathon received a commemorative medal at the finish line."},
+            {word: "core concept", sentence: "The _____ of the game is simple: build, explore, and survive in an open world."},
+            {word: "unique", sentence: "Each snowflake has a _____ pattern that forms as it falls through the atmosphere."},
+            {word: "focus", sentence: "This semester, the students will _____ on advanced techniques in digital animation."},
+            {word: "costume", sentence: "Her elaborate peacock _____ won first prize at the masquerade ball."},
+            {word: "connected", sentence: "The museum's new exhibit is _____ to a series of lectures on ancient civilizations."},
+            {word: "raising money", sentence: "The school band is _____ for new instruments by hosting a car wash."},
+            {word: "causes", sentence: "She volunteers for several environmental _____, including beach cleanups and tree planting."},
+            {word: "impact", sentence: "The new recycling program has had a significant _____ on reducing landfill waste."},
+            {word: "makeup", sentence: "The actor spent three hours in the _____ chair to transform into the aging wizard."},
+            {word: "atmosphere", sentence: "The cozy fireplace and soft music created a warm, welcoming _____ in the café."},
+            {word: "artistic", sentence: "Her _____ talents extend beyond painting to include sculpture and textile design."},
+            {word: "elaborate", sentence: "The wedding cake featured an _____ design of sugar flowers and edible gold leaf."},
+            {word: "drudgery", sentence: "The _____ of data entry was relieved by the team's lively lunchtime conversations."},
+            {word: "engage", sentence: "The teacher used interactive games to help students _____ with the difficult subject matter."},
+            {word: "food banks", sentence: "During the holidays, many volunteers help sort donations at local _____."},
+            {word: "fee", sentence: "There's a small registration _____ for the workshop, which includes all materials."},
+            {word: "symbol", sentence: "In many cultures, the olive branch is a _____ of peace and reconciliation."},
+            {word: "organized event", sentence: "The charity run is an _____ with designated routes, water stations, and medical support."},
+            {word: "permits", sentence: "Film crews need _____ to shoot on public property in most cities."},
+            {word: "sponsors", sentence: "Local businesses often act as _____ for the community theater's productions."},
+            {word: "balances", sentence: "A good recipe _____ sweet and savory flavors to create a complex taste profile."},
+            {word: "stain", sentence: "Be careful with that red wine—it could _____ the light-colored carpet."},
+            {word: "texture", sentence: "The artist used thick paint to create an interesting _____ on the canvas."},
+            {word: "shuffling", sentence: "Exhausted after the long hike, we could only manage a slow _____ walk back to the car."},
+            {word: "peeling", sentence: "After a bad sunburn, the _____ skin can be uncomfortable and sensitive."},
+            {word: "sunken", sentence: "His _____ cheeks and tired eyes showed how little he had slept during finals week."},
+            {word: "heavy-duty", sentence: "For the construction job, he bought _____ work boots with steel toes."},
+            {word: "smearing", sentence: "The child's painting technique involved _____ different colors together with her fingers."},
+            {word: "dehydrated", sentence: "Hikers need to drink plenty of water to avoid becoming _____ on long trails."},
+            {word: "cleanup", sentence: "After the outdoor concert, volunteers assisted with the _____ of the park grounds."}
         ];
 
-        // Get all vocabulary words for generating distractors
-        const allWords = vocabulary.map(item => item.word);
-        
-        // Function to get random distractors (excluding the correct word)
-        function getRandomDistractors(correctWord, count = 3) {
-            const availableWords = allWords.filter(word => word !== correctWord);
-            const shuffled = [...availableWords].sort(() => 0.5 - Math.random());
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function getDistractors(correctWord, allWords, count = 3) {
+            const distractors = allWords.filter(w => w !== correctWord);
+            const shuffled = shuffleArray(distractors);
             return shuffled.slice(0, count);
         }
 
-        // Function to create a quiz item
-        function createQuizItem(item, index) {
-            const quizItem = document.createElement('div');
-            quizItem.className = 'quiz-item';
-            quizItem.id = `quiz-item-${index}`;
-            
-            // Create sentence with dropdown placeholder
-            const sentenceElement = document.createElement('div');
-            sentenceElement.className = 'sentence';
-            
-            // Replace the target word with a placeholder marker
-            const placeholder = `{{${index}}}`;
-            const sentenceWithPlaceholder = item.example.replace(item.word, placeholder);
-            
-            // Split sentence around the placeholder and create HTML
-            const parts = sentenceWithPlaceholder.split(placeholder);
-            
-            sentenceElement.innerHTML = `
-                <span>${parts[0]}</span>
-                <select id="select-${index}" data-correct="${item.word}">
-                    <option value="" disabled selected>Select a word</option>
-                </select>
-                <span>${parts[1]}</span>
-            `;
-            
-            // Create feedback element
-            const feedbackElement = document.createElement('div');
-            feedbackElement.id = `feedback-${index}`;
-            feedbackElement.className = 'feedback';
-            
-            quizItem.appendChild(sentenceElement);
-            quizItem.appendChild(feedbackElement);
-            
-            return quizItem;
-        }
+        function createSelect(correctWord, index) {
+            const allWords = vocab.map(v => v.word);
+            const distractors = getDistractors(correctWord, allWords, 3);
+            const options = [correctWord, ...distractors];
+            const shuffledOptions = shuffleArray(options);
 
-        // Function to populate dropdown options
-        function populateDropdown(selectElement, correctWord) {
-            // Get random distractors
-            const distractors = getRandomDistractors(correctWord, 3);
-            
-            // Create array with correct word and distractors
-            const allOptions = [correctWord, ...distractors];
-            
-            // Shuffle the options
-            const shuffledOptions = [...allOptions].sort(() => 0.5 - Math.random());
-            
-            // Add options to select element
+            let select = `<select id="select-${index}" data-correct="${correctWord}" onchange="checkAnswer(${index})">`;
+            select += `<option value="">--select--</option>`;
             shuffledOptions.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                selectElement.appendChild(optionElement);
+                select += `<option value="${option}">${option}</option>`;
             });
+            select += `</select>`;
+            
+            return select;
         }
 
-        // Function to check an individual answer
+        function renderSentences() {
+            const container = document.getElementById('sentences');
+            let html = '';
+            
+            vocab.forEach((item, index) => {
+                const sentenceWithSelect = item.sentence.replace('_____', createSelect(item.word, index));
+                html += `<div class="sentence-item">${sentenceWithSelect}</div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
         function checkAnswer(index) {
-            const selectElement = document.getElementById(`select-${index}`);
-            const quizItem = document.getElementById(`quiz-item-${index}`);
-            const feedbackElement = document.getElementById(`feedback-${index}`);
-            const correctAnswer = selectElement.dataset.correct;
-            const selectedAnswer = selectElement.value;
+            const select = document.getElementById(`select-${index}`);
+            const selectedValue = select.value;
+            const correctValue = select.getAttribute('data-correct');
             
-            // Remove previous feedback classes
-            quizItem.classList.remove('correct', 'incorrect');
-            feedbackElement.classList.remove('correct-feedback', 'incorrect-feedback');
-            feedbackElement.style.display = 'none';
-            
-            // If no answer selected, return
-            if (!selectedAnswer) return false;
-            
-            // Check if answer is correct
-            const isCorrect = selectedAnswer === correctAnswer;
-            
-            // Apply appropriate styling
-            if (isCorrect) {
-                quizItem.classList.add('correct');
-                feedbackElement.classList.add('correct-feedback');
-                feedbackElement.textContent = `✓ Correct! "${correctAnswer}" fits perfectly in this context.`;
+            if (selectedValue === '') {
+                select.className = '';
+            } else if (selectedValue === correctValue) {
+                select.className = 'correct';
             } else {
-                quizItem.classList.add('incorrect');
-                feedbackElement.classList.add('incorrect-feedback');
-                feedbackElement.textContent = `✗ Not quite. The correct word is "${correctAnswer}".`;
+                select.className = 'incorrect';
             }
-            
-            feedbackElement.style.display = 'block';
-            
-            return isCorrect;
         }
 
-        // Function to update the status counters
-        function updateStatusCounters() {
-            const totalQuestions = vocabulary.length;
-            const selectElements = document.querySelectorAll('select');
-            
-            let answeredCount = 0;
-            let correctCount = 0;
-            
-            selectElements.forEach((select, index) => {
-                if (select.value) {
-                    answeredCount++;
-                    if (checkAnswer(index)) {
-                        correctCount++;
-                    }
-                }
+        function showAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                const correctValue = select.getAttribute('data-correct');
+                select.value = correctValue;
+                select.className = 'correct';
             });
             
-            document.getElementById('answeredCount').textContent = answeredCount;
-            document.getElementById('correctCount').textContent = correctCount;
+            // Toggle buttons
+            document.getElementById('studyBtn').style.display = 'none';
+            document.getElementById('hideBtn').style.display = 'block';
         }
 
-        // Function to check all answers and show score
-        function checkAllAnswers() {
-            let correctCount = 0;
-            const totalQuestions = vocabulary.length;
-            
-            // Check each answer
-            vocabulary.forEach((_, index) => {
-                const isCorrect = checkAnswer(index);
-                if (isCorrect) correctCount++;
-            });
-            
-            // Update status counters
-            updateStatusCounters();
-            
-            // Calculate and display score
-            const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
-            document.getElementById('finalScore').textContent = correctCount;
-            document.getElementById('maxScore').textContent = totalQuestions;
-            
-            // Generate score message
-            let scoreMessage = '';
-            if (scorePercentage === 100) {
-                scoreMessage = "Perfect score! You're a vocabulary master!";
-            } else if (scorePercentage >= 80) {
-                scoreMessage = "Excellent work! You know these words well.";
-            } else if (scorePercentage >= 60) {
-                scoreMessage = "Good job! You're getting the hang of it.";
-            } else if (scorePercentage >= 40) {
-                scoreMessage = "Keep practicing! You're on the right track.";
-            } else {
-                scoreMessage = "Don't give up! Review the words and try again.";
-            }
-            
-            document.getElementById('scoreMessage').textContent = scoreMessage;
-            document.getElementById('scoreContainer').style.display = 'block';
-            
-            // Scroll to score container
-            document.getElementById('scoreContainer').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Function to reset the quiz
-        function resetQuiz() {
-            // Reset all select elements
-            document.querySelectorAll('select').forEach(select => {
+        function hideAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
                 select.value = '';
+                select.className = '';
             });
             
-            // Remove all feedback styling
-            document.querySelectorAll('.quiz-item').forEach(item => {
-                item.classList.remove('correct', 'incorrect');
-            });
-            
-            // Hide all feedback messages
-            document.querySelectorAll('.feedback').forEach(feedback => {
-                feedback.style.display = 'none';
-            });
-            
-            // Hide score container
-            document.getElementById('scoreContainer').style.display = 'none';
-            
-            // Reset status counters
-            document.getElementById('answeredCount').textContent = '0';
-            document.getElementById('correctCount').textContent = '0';
-            
-            // Re-shuffle options for each dropdown
-            document.querySelectorAll('select').forEach(select => {
-                const correctWord = select.dataset.correct;
-                // Clear current options
-                while (select.options.length > 1) {
-                    select.remove(1);
-                }
-                // Repopulate with new shuffled options
-                populateDropdown(select, correctWord);
-            });
+            // Toggle buttons
+            document.getElementById('hideBtn').style.display = 'none';
+            document.getElementById('studyBtn').style.display = 'block';
         }
 
-        // Initialize the quiz when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const quizContainer = document.getElementById('quizContainer');
-            
-            // Create quiz items for each vocabulary word
-            vocabulary.forEach((item, index) => {
-                const quizItem = createQuizItem(item, index);
-                quizContainer.appendChild(quizItem);
-                
-                // Populate dropdown with options
-                const selectElement = document.getElementById(`select-${index}`);
-                populateDropdown(selectElement, item.word);
-                
-                // Add change event listener to update status
-                selectElement.addEventListener('change', function() {
-                    updateStatusCounters();
-                });
-            });
-            
-            // Set total questions count
-            document.getElementById('totalQuestions').textContent = vocabulary.length;
-            
-            // Add event listeners to buttons
-            document.getElementById('checkAnswers').addEventListener('click', checkAllAnswers);
-            document.getElementById('resetQuiz').addEventListener('click', resetQuiz);
-        });
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Initialize
+        renderSentences();
     </script>
 </body>
 </html>
