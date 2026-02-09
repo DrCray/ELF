@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie Walks - Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        footer { margin-top: 15rem; }
+        
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+   
+    #theWordList {
+        display: none;
+    }
+    .show-hide-button {
+        margin: 0 0 1rem 0;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .show-hide-button:hover {
+        background-color: #218838;
+    } 
+    #subtitle {
+        font-size: 120%;
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Zombie Walks</h1>
+        <p id="subtitle">Vocabulary Quiz - Podcast</p>
+        <p>Complete the sentences by selecting the correct vocabulary word</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
+    
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. After the storm, the refugees arrived at the shelter wearing <select data-answer="ragged">
+                <option value="">-- Select --</option>
+                <option value="ragged">ragged</option>
+                <option value="chaos">chaos</option>
+                <option value="creativity">creativity</option>
+                <option value="doubles as">doubles as</option>
+                <option value="dig in">dig in</option>
+            </select> clothes and looking exhausted.
+        </div>
+        <div class="sentence">
+            2. The teacher tried to maintain order, but the classroom descended into <select data-answer="chaos">
+                <option value="">-- Select --</option>
+                <option value="creativity">creativity</option>
+                <option value="chaos">chaos</option>
+                <option value="ragged">ragged</option>
+                <option value="evolved">evolved</option>
+                <option value="dig in">dig in</option>
+            </select> when the fire alarm went off.
+        </div>
+        <div class="sentence">
+            3. The art competition encouraged students to show their <select data-answer="creativity">
+                <option value="">-- Select --</option>
+                <option value="doubles as">doubles as</option>
+                <option value="creativity">creativity</option>
+                <option value="chaos">chaos</option>
+                <option value="ragged">ragged</option>
+                <option value="dedicated">dedicated</option>
+            </select> by designing original sculptures.
+        </div>
+        <div class="sentence">
+            4. This café <select data-answer="doubles as">
+                <option value="">-- Select --</option>
+                <option value="ragged">ragged</option>
+                <option value="doubles as">doubles as</option>
+                <option value="dig in">dig in</option>
+                <option value="creativity">creativity</option>
+                <option value="promo">promo</option>
+            </select> a bookstore, so you can browse novels while drinking coffee.
+        </div>
+        <div class="sentence">
+            5. If you <select data-answer="dig in">
+                <option value="">-- Select --</option>
+                <option value="evolved">evolved</option>
+                <option value="dig in">dig in</option>
+                <option value="doubles as">doubles as</option>
+                <option value="chaos">chaos</option>
+                <option value="dedicated">dedicated</option>
+            </select> to the history of this building, you'll find some fascinating stories about the original owners.
+        </div>
+        <div class="sentence">
+            6. The technology industry has <select data-answer="evolved">
+                <option value="">-- Select --</option>
+                <option value="creativity">creativity</option>
+                <option value="evolved">evolved</option>
+                <option value="dedicated">dedicated</option>
+                <option value="dig in">dig in</option>
+                <option value="ragged">ragged</option>
+            </select> dramatically over the past twenty years.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            7. The library has a <select data-answer="dedicated">
+                <option value="">-- Select --</option>
+                <option value="dedicated">dedicated</option>
+                <option value="promo">promo</option>
+                <option value="spin">spin</option>
+                <option value="evolved">evolved</option>
+                <option value="vibe">vibe</option>
+            </select> room for group study sessions that can't be used for anything else.
+        </div>
+        <div class="sentence">
+            8. The movie studio released a short <select data-answer="promo">
+                <option value="">-- Select --</option>
+                <option value="spin">spin</option>
+                <option value="promo">promo</option>
+                <option value="dedicated">dedicated</option>
+                <option value="tied to">tied to</option>
+                <option value="vibe">vibe</option>
+            </select> video to generate excitement before the film's premiere.
+        </div>
+        <div class="sentence">
+            9. The restaurant puts its own unique <select data-answer="spin">
+                <option value="">-- Select --</option>
+                <option value="vibe">vibe</option>
+                <option value="spin">spin</option>
+                <option value="promo">promo</option>
+                <option value="tied to">tied to</option>
+                <option value="dedicated">dedicated</option>
+            </select> on traditional Italian recipes by adding local ingredients.
+        </div>
+        <div class="sentence">
+            10. The beach resort has a relaxed <select data-answer="vibe">
+                <option value="">-- Select --</option>
+                <option value="promo">promo</option>
+                <option value="vibe">vibe</option>
+                <option value="spin">spin</option>
+                <option value="social action">social action</option>
+                <option value="tied to">tied to</option>
+            </select> that makes visitors feel instantly at ease.
+        </div>
+        <div class="sentence">
+            11. Many environmental problems are <select data-answer="tied to">
+                <option value="">-- Select --</option>
+                <option value="spin">spin</option>
+                <option value="tied to">tied to</option>
+                <option value="vibe">vibe</option>
+                <option value="social action">social action</option>
+                <option value="elaborate">elaborate</option>
+            </select> overconsumption and waste.
+        </div>
+        <div class="sentence">
+            12. The university increased funding for scholarships and other <select data-answer="social action">
+                <option value="">-- Select --</option>
+                <option value="tied to">tied to</option>
+                <option value="social action">social action</option>
+                <option value="elaborate">elaborate</option>
+                <option value="vibe">vibe</option>
+                <option value="full-on">full-on</option>
+            </select> programs.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            13. The wedding reception featured <select data-answer="elaborate">
+                <option value="">-- Select --</option>
+                <option value="elaborate">elaborate</option>
+                <option value="full-on">full-on</option>
+                <option value="draw">draw</option>
+                <option value="social action">social action</option>
+                <option value="special effects">special effects</option>
+            </select> decorations with ice sculptures and crystal chandeliers.
+        </div>
+        <div class="sentence">
+            14. Planning a successful business launch requires <select data-answer="full-on">
+                <option value="">-- Select --</option>
+                <option value="draw">draw</option>
+                <option value="full-on">full-on</option>
+                <option value="elaborate">elaborate</option>
+                <option value="special effects">special effects</option>
+                <option value="daily grind">daily grind</option>
+            </select> commitment and long hours.
+        </div>
+        <div class="sentence">
+            15. The new shopping mall will <select data-answer="draw">
+                <option value="">-- Select --</option>
+                <option value="special effects">special effects</option>
+                <option value="draw">draw</option>
+                <option value="full-on">full-on</option>
+                <option value="daily grind">daily grind</option>
+                <option value="elaborate">elaborate</option>
+            </select> customers from neighboring towns.
+        </div>
+        <div class="sentence">
+            16. Movie makeup artists use <select data-answer="special effects">
+                <option value="">-- Select --</option>
+                <option value="full-on">full-on</option>
+                <option value="special effects">special effects</option>
+                <option value="draw">draw</option>
+                <option value="daily grind">daily grind</option>
+                <option value="angle">angle</option>
+            </select> to create realistic injuries and aging.
+        </div>
+        <div class="sentence">
+            17. Many people exercise after work to escape the <select data-answer="daily grind">
+                <option value="">-- Select --</option>
+                <option value="draw">draw</option>
+                <option value="daily grind">daily grind</option>
+                <option value="special effects">special effects</option>
+                <option value="angle">angle</option>
+                <option value="underrated">underrated</option>
+            </select> of office routine.
+        </div>
+        <div class="sentence">
+            18. From a financial <select data-answer="angle">
+                <option value="">-- Select --</option>
+                <option value="special effects">special effects</option>
+                <option value="angle">angle</option>
+                <option value="daily grind">daily grind</option>
+                <option value="underrated">underrated</option>
+                <option value="cross paths">cross paths</option>
+            </select>, investing in renewable energy makes sense for long-term savings.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            19. The benefits of meditation are <select data-answer="underrated">
+                <option value="">-- Select --</option>
+                <option value="underrated">underrated</option>
+                <option value="cross paths">cross paths</option>
+                <option value="bound">bound</option>
+                <option value="angle">angle</option>
+                <option value="learning curve">learning curve</option>
+            </select> by people who've never tried it.
+        </div>
+        <div class="sentence">
+            20. During my travels through Southeast Asia, I would often <select data-answer="cross paths">
+                <option value="">-- Select --</option>
+                <option value="bound">bound</option>
+                <option value="cross paths">cross paths</option>
+                <option value="underrated">underrated</option>
+                <option value="learning curve">learning curve</option>
+                <option value="comfy">comfy</option>
+            </select> with the same backpackers in different cities.
+        </div>
+        <div class="sentence">
+            21. With the new highway opening, traffic congestion is <select data-answer="bound">
+                <option value="">-- Select --</option>
+                <option value="learning curve">learning curve</option>
+                <option value="bound">bound</option>
+                <option value="cross paths">cross paths</option>
+                <option value="comfy">comfy</option>
+                <option value="oversized">oversized</option>
+            </select> to decrease significantly.
+        </div>
+        <div class="sentence">
+            22. Starting a new job involves a <select data-answer="learning curve">
+                <option value="">-- Select --</option>
+                <option value="cross paths">cross paths</option>
+                <option value="learning curve">learning curve</option>
+                <option value="bound">bound</option>
+                <option value="comfy">comfy</option>
+                <option value="aftermath">aftermath</option>
+            </select> as you adapt to different procedures.
+        </div>
+        <div class="sentence">
+            23. Pack <select data-answer="comfy">
+                <option value="">-- Select --</option>
+                <option value="bound">bound</option>
+                <option value="comfy">comfy</option>
+                <option value="oversized">oversized</option>
+                <option value="learning curve">learning curve</option>
+                <option value="aftermath">aftermath</option>
+            </select> shoes for the hiking trip because we'll be walking for several hours.
+        </div>
+        <div class="sentence">
+            24. He bought an <select data-answer="oversized">
+                <option value="">-- Select --</option>
+                <option value="comfy">comfy</option>
+                <option value="oversized">oversized</option>
+                <option value="aftermath">aftermath</option>
+                <option value="underestimate">underestimate</option>
+                <option value="learning curve">learning curve</option>
+            </select> jacket thinking it would shrink in the wash.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 5</h3>
+        <div class="sentence">
+            25. The <select data-answer="aftermath">
+                <option value="">-- Select --</option>
+                <option value="aftermath">aftermath</option>
+                <option value="underestimate">underestimate</option>
+                <option value="takes">takes</option>
+                <option value="oversized">oversized</option>
+                <option value="minimalist">minimalist</option>
+            </select> of the hurricane left thousands of homes without power.
+        </div>
+        <div class="sentence">
+            26. Never <select data-answer="underestimate">
+                <option value="">-- Select --</option>
+                <option value="takes">takes</option>
+                <option value="underestimate">underestimate</option>
+                <option value="aftermath">aftermath</option>
+                <option value="minimalist">minimalist</option>
+                <option value="horde">horde</option>
+            </select> how long it takes to drive across the city during rush hour.
+        </div>
+        <div class="sentence">
+            27. The photographer shared different <select data-answer="takes">
+                <option value="">-- Select --</option>
+                <option value="minimalist">minimalist</option>
+                <option value="takes">takes</option>
+                <option value="underestimate">underestimate</option>
+                <option value="horde">horde</option>
+                <option value="aftermath">aftermath</option>
+            </select> on the same landscape by shooting at various times of day.
+        </div>
+        <div class="sentence">
+            28. The architect preferred a <select data-answer="minimalist">
+                <option value="">-- Select --</option>
+                <option value="underestimate">underestimate</option>
+                <option value="minimalist">minimalist</option>
+                <option value="takes">takes</option>
+                <option value="horde">horde</option>
+                <option value="ragged">ragged</option>
+            </select> design with clean lines and neutral colors.
+        </div>
+        <div class="sentence">
+            29. During the Black Friday sale, a <select data-answer="horde">
+                <option value="">-- Select --</option>
+                <option value="takes">takes</option>
+                <option value="horde">horde</option>
+                <option value="minimalist">minimalist</option>
+                <option value="chaos">chaos</option>
+                <option value="aftermath">aftermath</option>
+            </select> of shoppers rushed into the store when it opened.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem;">     
+            Instructions:<br>
+            1. Save as PDF file<br>
+            2. Upload to the E-class<br>
+        </div>
+    </div>
+
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check if name is missing or unchanged
+            if (studentName === '' || studentName === 'Enter your name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Check if ID is missing or unchanged
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // If both are filled, hide error and print
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+        
+        // Force hard refresh on any page reload
+        window.addEventListener('beforeunload', function() {
+            // Clear form data
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });        
+        
+        // Toggle show/hide answers
+        let answersVisible = false;
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            
+            document.querySelectorAll('select').forEach(select => {
+                if (answersVisible) {
+                    // Show correct answer
+                    const correctAnswer = select.getAttribute('data-answer');
+                    select.value = correctAnswer;
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                } else {
+                    // Hide answers - reset to default
+                    select.selectedIndex = 0;
+                    select.classList.remove('correct', 'incorrect');
+                }
+            });
+            
+            // Update button text
+            button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+        }        
+    </script>
+
+    <script>
+        function updateOutput() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            const output = document.getElementById('output');
+            const isColumnView = output.classList.contains('column');
+            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+            if (isColumnView) {
+                output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+            } else {
+                output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column') 
+                ? 'Close Column View' 
+                : 'View as Column';
+            updateOutput();
+        }
+
+        // Initial render
+        updateOutput();
+    </script>   
+  
+    <script>
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const showHideButton = document.querySelector('.show-hide-button');
+            if (wordList.style.display === 'none' || wordList.style.display === '') {
+                wordList.style.display = 'block';
+                showHideButton.textContent = 'Hide Word List';
+            } else {
+                wordList.style.display = 'none';
+                showHideButton.textContent = 'Show Word List';
+            }
+        }
+    </script>
+    
+    <footer>...</footer>
+</body>
+</html>
