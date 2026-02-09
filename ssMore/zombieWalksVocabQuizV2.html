@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Cloze Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-study {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-study:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-hide {
+            background: #764ba2;
+            color: white;
+        }
+
+        .btn-hide:hover {
+            background: #633d8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .dark-mode-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .dark-mode-control input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode .container {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1 {
+            color: #9d84f5;
+        }
+
+        body.dark-mode .subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .sentence-item {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode select {
+            background: #16213e;
+            color: #e0e0e0;
+            border-color: #9d84f5;
+        }
+
+        body.dark-mode select:hover {
+            border-color: #b39ddb;
+        }
+
+        /* Keep correct/incorrect colors in dark mode */
+        body.dark-mode select.correct {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        body.dark-mode select.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        body.dark-mode .dark-mode-control {
+            color: #e0e0e0;
+        }
+
+        .sentence-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        select {
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        select:hover {
+            border-color: #764ba2;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 5px rgba(118, 75, 162, 0.3);
+        }
+
+        select.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        select.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    .controls {
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.95em;
+    }
+
+    .dark-mode-control {
+        font-size: 0.9em;
+    }
+
+    .sentence-item {
+        font-size: 0.95em;
+        padding: 10px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+    }
+
+    select {
+        min-width: 110px;
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vocabulary Cloze Exercise</h1>
+        <p class="subtitle">Select the correct word or phrase to complete each sentence</p>
+        
+        <div class="controls">
+            <button id="studyBtn" class="btn btn-study" onclick="showAllAnswers()">Study Mode - Show All Answers</button>
+            <button id="hideBtn" class="btn btn-hide" onclick="hideAllAnswers()" style="display: none;">Hide All</button>
+        </div>
+        <div class="controls">
+            <div class="dark-mode-control">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <label for="darkModeToggle">Dark Mode</label>
+            </div>
+        </div>
+
+        <div id="sentences"></div>
+    </div>
+
+    <script>
+        const vocab = [
+            {word: "parades", sentence: "The city's annual holiday _____ draw thousands of spectators to the downtown streets."},
+            {word: "dress up", sentence: "For the 1920s-themed party, everyone was asked to _____ in flapper dresses and pinstripe suits."},
+            {word: "gatherings", sentence: "The neighborhood holds regular social _____ in the park to foster community spirit."},
+            {word: "charity", sentence: "The concert was organized for _____, with all proceeds going to support local animal shelters."},
+            {word: "origin", sentence: "The _____ of the chocolate chip cookie can be traced back to a Massachusetts inn in the 1930s."},
+            {word: "took place", sentence: "The historic peace treaty _____ in the grand hall of the palace."},
+            {word: "promote", sentence: "The company hired influencers to _____ their new eco-friendly product line on social media."},
+            {word: "phenomenon", sentence: "The northern lights are a natural _____ that attracts tourists to Arctic regions."},
+            {word: "massive", sentence: "The museum's new wing is a _____ structure made entirely of glass and steel."},
+            {word: "participants", sentence: "All _____ in the marathon received a commemorative medal at the finish line."},
+            {word: "core concept", sentence: "The _____ of the game is simple: build, explore, and survive in an open world."},
+            {word: "unique", sentence: "Each snowflake has a _____ pattern that forms as it falls through the atmosphere."},
+            {word: "focus", sentence: "This semester, the students will _____ on advanced techniques in digital animation."},
+            {word: "costume", sentence: "Her elaborate peacock _____ won first prize at the masquerade ball."},
+            {word: "connected", sentence: "The museum's new exhibit is _____ to a series of lectures on ancient civilizations."},
+            {word: "raising money", sentence: "The school band is _____ for new instruments by hosting a car wash."},
+            {word: "causes", sentence: "She volunteers for several environmental _____, including beach cleanups and tree planting."},
+            {word: "impact", sentence: "The new recycling program has had a significant _____ on reducing landfill waste."},
+            {word: "makeup", sentence: "The actor spent three hours in the _____ chair to transform into the aging wizard."},
+            {word: "atmosphere", sentence: "The cozy fireplace and soft music created a warm, welcoming _____ in the café."},
+            {word: "artistic", sentence: "Her _____ talents extend beyond painting to include sculpture and textile design."},
+            {word: "elaborate", sentence: "The wedding cake featured an _____ design of sugar flowers and edible gold leaf."},
+            {word: "drudgery", sentence: "The _____ of data entry was relieved by the team's lively lunchtime conversations."},
+            {word: "engage", sentence: "The teacher used interactive games to help students _____ with the difficult subject matter."},
+            {word: "food banks", sentence: "During the holidays, many volunteers help sort donations at local _____."},
+            {word: "fee", sentence: "There's a small registration _____ for the workshop, which includes all materials."},
+            {word: "symbol", sentence: "In many cultures, the olive branch is a _____ of peace and reconciliation."},
+            {word: "organized event", sentence: "The charity run is an _____ with designated routes, water stations, and medical support."},
+            {word: "permits", sentence: "Film crews need _____ to shoot on public property in most cities."},
+            {word: "sponsors", sentence: "Local businesses often act as _____ for the community theater's productions."},
+            {word: "balances", sentence: "A good recipe _____ sweet and savory flavors to create a complex taste profile."},
+            {word: "stain", sentence: "Be careful with that red wine—it could _____ the light-colored carpet."},
+            {word: "texture", sentence: "The artist used thick paint to create an interesting _____ on the canvas."},
+            {word: "shuffling", sentence: "Exhausted after the long hike, we could only manage a slow _____ walk back to the car."},
+            {word: "peeling", sentence: "After a bad sunburn, the _____ skin can be uncomfortable and sensitive."},
+            {word: "sunken", sentence: "His _____ cheeks and tired eyes showed how little he had slept during finals week."},
+            {word: "heavy-duty", sentence: "For the construction job, he bought _____ work boots with steel toes."},
+            {word: "smearing", sentence: "The child's painting technique involved _____ different colors together with her fingers."},
+            {word: "dehydrated", sentence: "Hikers need to drink plenty of water to avoid becoming _____ on long trails."},
+            {word: "cleanup", sentence: "After the outdoor concert, volunteers assisted with the _____ of the park grounds."}
+        ];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function getDistractors(correctWord, allWords, count = 3) {
+            const distractors = allWords.filter(w => w !== correctWord);
+            const shuffled = shuffleArray(distractors);
+            return shuffled.slice(0, count);
+        }
+
+        function createSelect(correctWord, index) {
+            const allWords = vocab.map(v => v.word);
+            const distractors = getDistractors(correctWord, allWords, 3);
+            const options = [correctWord, ...distractors];
+            const shuffledOptions = shuffleArray(options);
+
+            let select = `<select id="select-${index}" data-correct="${correctWord}" onchange="checkAnswer(${index})">`;
+            select += `<option value="">--select--</option>`;
+            shuffledOptions.forEach(option => {
+                select += `<option value="${option}">${option}</option>`;
+            });
+            select += `</select>`;
+            
+            return select;
+        }
+
+        function renderSentences() {
+            const container = document.getElementById('sentences');
+            let html = '';
+            
+            vocab.forEach((item, index) => {
+                const sentenceWithSelect = item.sentence.replace('_____', createSelect(item.word, index));
+                html += `<div class="sentence-item">${sentenceWithSelect}</div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function checkAnswer(index) {
+            const select = document.getElementById(`select-${index}`);
+            const selectedValue = select.value;
+            const correctValue = select.getAttribute('data-correct');
+            
+            if (selectedValue === '') {
+                select.className = '';
+            } else if (selectedValue === correctValue) {
+                select.className = 'correct';
+            } else {
+                select.className = 'incorrect';
+            }
+        }
+
+        function showAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                const correctValue = select.getAttribute('data-correct');
+                select.value = correctValue;
+                select.className = 'correct';
+            });
+            
+            // Toggle buttons
+            document.getElementById('studyBtn').style.display = 'none';
+            document.getElementById('hideBtn').style.display = 'block';
+        }
+
+        function hideAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                select.value = '';
+                select.className = '';
+            });
+            
+            // Toggle buttons
+            document.getElementById('hideBtn').style.display = 'none';
+            document.getElementById('studyBtn').style.display = 'block';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // Initialize
+        renderSentences();
+    </script>
+</body>
+</html>
