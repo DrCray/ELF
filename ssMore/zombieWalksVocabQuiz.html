@@ -1,634 +1,611 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zombie Walks - Vocabulary Quiz</title>
+    <title>Zombie Walks Vocabulary Quiz</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 40rem;
-            margin: 10px auto;
-            padding: 10px;
-            background-color: #4A0004;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-        .header {
-            background-color: #00274D;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        .student-info {
-            background-color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        .student-info input {
-            width: 100%;
-            max-width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
+        * {
             box-sizing: border-box;
-        }        
-        
-        .section {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .section h3 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            font-size:1.1rem
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #8888aa;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .instructions {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #e94560;
+        }
+        .instructions h3 {
+            color: #e94560;
+            margin-top: 0;
+        }
+        .quiz-item {
+            background-color: #2d2d44;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+        .quiz-item.correct {
+            background-color: rgba(144, 238, 144, 0.15); /* Pale pastel green */
+        }
+        .quiz-item.incorrect {
+            background-color: rgba(255, 182, 193, 0.15); /* Pale pastel pink */
         }
         .sentence {
-            margin: 10px 0;
-            font-size: .9rem;
-            line-height: 1.2;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444466;
         }
         select {
-            font-size: .8rem;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
+            background-color: #39395a;
+            color: white;
+            border: 2px solid #555577;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 1rem;
+            margin: 0 5px;
             cursor: pointer;
-            min-width: 4rem;
+            transition: border-color 0.3s;
         }
-        select.correct {
-            background-color: #CFFFE2;
-            color: #0404D0;
-            border-color: #27ae60;
+        select:hover {
+            border-color: #e94560;
         }
-        select.incorrect {
-            background-color: #FEE2E5;
-            color: #940D0D;
-            border-color: #C70000;
+        select:focus {
+            outline: none;
+            border-color: #e94560;
+            box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.3);
         }
-        .print-section {
-            text-align: center;
-            margin-top: 20px;
+        option {
+            background-color: #2d2d44;
             padding: 10px;
-            background-color: white;
-            border-radius: 8px;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: none;
+            font-weight: bold;
+        }
+        .correct-feedback {
+            background-color: rgba(144, 238, 144, 0.3);
+            color: #90ee90;
+            border-left: 4px solid #90ee90;
+        }
+        .incorrect-feedback {
+            background-color: rgba(255, 182, 193, 0.3);
+            color: #ffb6c1;
+            border-left: 4px solid #ffb6c1;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
         }
         button {
-            padding: .33rem;
-            font-size: 1rem;
-            background-color: #3498db;
+            background-color: #e94560;
             color: white;
             border: none;
-            border-radius: 4px;
+            padding: 14px 28px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.2s;
         }
         button:hover {
-            background-color: #2980b9;
+            background-color: #ff5773;
+            transform: translateY(-2px);
         }
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
+        button:active {
+            transform: translateY(0);
         }
-        .error-message {
-            color: #e74c3c;
+        #checkAnswers {
+            background-color: #4CAF50;
+        }
+        #checkAnswers:hover {
+            background-color: #5fcf64;
+        }
+        #resetQuiz {
+            background-color: #666688;
+        }
+        #resetQuiz:hover {
+            background-color: #777799;
+        }
+        .score-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(233, 69, 96, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+        .score {
+            font-size: 2rem;
             font-weight: bold;
-            margin-top: 10px;
+            color: #e94560;
+            margin: 10px 0;
         }
-        
-        @media print {
-            .print-section {
-                display: none;
-            }
-            body {
-                background-color: white;
-            }
+        .quiz-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: #252536;
+            border-radius: 10px;
+            margin-bottom: 30px;
         }
-        
-        footer { margin-top: 15rem; }
-        
-    .toggle-button {
-      padding: 5px 10px;
-      font-size: .8rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s;
-    }
-    .toggle-button:hover {
-      background-color: #0056b3;
-    }
-    .output {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-      font-size: 16px;
-      word-wrap: break-word;
-      text-align:left;
-    }
-    .output.column {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .output.column span {
-      padding: 5px;
-      border-bottom: 1px solid #eee;
-    }
-   
-    #theWordList {
-        display: none;
-    }
-    .show-hide-button {
-        margin: 0 0 1rem 0;
-        padding: 5px 10px;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        border-radius: 4px;
-        background-color: #28a745;
-        color: white;
-        transition: background-color 0.3s;
-    }
-    .show-hide-button:hover {
-        background-color: #218838;
-    } 
-    #subtitle {
-        font-size: 120%;
-    }
+        .status-item {
+            text-align: center;
+        }
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+        .status-label {
+            font-size: 0.9rem;
+            color: #8888aa;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #8888aa;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #444466;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Zombie Walks</h1>
-        <p id="subtitle">Vocabulary Quiz</p>
-        <p>Complete the sentences by selecting the correct vocabulary word</p>
-    </div>
-
-    <div class="student-info">
-        <label for="studentName"><strong>Student Name:</strong></label>
-        <input type="text" id="studentName" placeholder="Enter your name">
-        
-        <label for="studentID"><strong>Student ID:</strong></label>
-        <input type="text" id="studentID" placeholder="Enter your student ID number">
-    </div>
-    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
-    <div id="theWordList">
-        <button class="toggle-button" onclick="toggleView()">View as Column</button>
-        <div class="output" id="output"></div>
-    </div>
-    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
+    <h1>Zombie Walks Vocabulary Quiz</h1>
+    <div class="subtitle">Fill in the blanks with the correct vocabulary words</div>
     
-    <div class="section">
-        <h3>Section 1</h3>
-        <div class="sentence">
-            1. After the storm, the refugees arrived at the shelter wearing <select data-answer="ragged">
-                <option value="">-- Select --</option>
-                <option value="ragged">ragged</option>
-                <option value="chaos">chaos</option>
-                <option value="creativity">creativity</option>
-                <option value="doubles as">doubles as</option>
-                <option value="dig in">dig in</option>
-            </select> clothes and looking exhausted.
+    <div class="instructions">
+        <h3>How to Play:</h3>
+        <p>Each sentence below uses a vocabulary word from the Zombie Walks text. The word has been replaced with a dropdown menu.</p>
+        <p>Select the correct word from the four options. Three are random distractors, only one is correct.</p>
+        <p>After making your selections, click "Check All Answers" to see your score and get feedback.</p>
+    </div>
+    
+    <div class="quiz-status">
+        <div class="status-item">
+            <div class="status-value" id="totalQuestions">40</div>
+            <div class="status-label">Total Questions</div>
         </div>
-        <div class="sentence">
-            2. The teacher tried to maintain order, but the classroom descended into <select data-answer="chaos">
-                <option value="">-- Select --</option>
-                <option value="creativity">creativity</option>
-                <option value="chaos">chaos</option>
-                <option value="ragged">ragged</option>
-                <option value="evolved">evolved</option>
-                <option value="dig in">dig in</option>
-            </select> when the fire alarm went off.
+        <div class="status-item">
+            <div class="status-value" id="answeredCount">0</div>
+            <div class="status-label">Answered</div>
         </div>
-        <div class="sentence">
-            3. The art competition encouraged students to show their <select data-answer="creativity">
-                <option value="">-- Select --</option>
-                <option value="doubles as">doubles as</option>
-                <option value="creativity">creativity</option>
-                <option value="chaos">chaos</option>
-                <option value="ragged">ragged</option>
-                <option value="dedicated">dedicated</option>
-            </select> by designing original sculptures.
-        </div>
-        <div class="sentence">
-            4. This café <select data-answer="doubles as">
-                <option value="">-- Select --</option>
-                <option value="ragged">ragged</option>
-                <option value="doubles as">doubles as</option>
-                <option value="dig in">dig in</option>
-                <option value="creativity">creativity</option>
-                <option value="promo">promo</option>
-            </select> a bookstore, so you can browse novels while drinking coffee.
-        </div>
-        <div class="sentence">
-            5. If you <select data-answer="dig in">
-                <option value="">-- Select --</option>
-                <option value="evolved">evolved</option>
-                <option value="dig in">dig in</option>
-                <option value="doubles as">doubles as</option>
-                <option value="chaos">chaos</option>
-                <option value="dedicated">dedicated</option>
-            </select> to the history of this building, you'll find some fascinating stories about the original owners.
-        </div>
-        <div class="sentence">
-            6. The technology industry has <select data-answer="evolved">
-                <option value="">-- Select --</option>
-                <option value="creativity">creativity</option>
-                <option value="evolved">evolved</option>
-                <option value="dedicated">dedicated</option>
-                <option value="dig in">dig in</option>
-                <option value="ragged">ragged</option>
-            </select> dramatically over the past twenty years.
+        <div class="status-item">
+            <div class="status-value" id="correctCount">0</div>
+            <div class="status-label">Correct</div>
         </div>
     </div>
+    
+    <div id="quizContainer">
+        <!-- Quiz items will be generated here -->
+    </div>
+    
+    <div class="controls">
+        <button id="checkAnswers">Check All Answers</button>
+        <button id="resetQuiz">Reset Quiz</button>
+    </div>
+    
+    <div class="score-container" id="scoreContainer">
+        <h2>Quiz Complete!</h2>
+        <div class="score">Score: <span id="finalScore">0</span>/<span id="maxScore">40</span></div>
+        <p id="scoreMessage">Your performance message will appear here.</p>
+    </div>
+    
 
-    <div class="section">
-        <h3>Section 2</h3>
-        <div class="sentence">
-            7. The library has a <select data-answer="dedicated">
-                <option value="">-- Select --</option>
-                <option value="dedicated">dedicated</option>
-                <option value="promo">promo</option>
-                <option value="spin">spin</option>
-                <option value="evolved">evolved</option>
-                <option value="vibe">vibe</option>
-            </select> room for group study sessions that can't be used for anything else.
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" maxlength="25">
         </div>
-        <div class="sentence">
-            8. The movie studio released a short <select data-answer="promo">
-                <option value="">-- Select --</option>
-                <option value="spin">spin</option>
-                <option value="promo">promo</option>
-                <option value="dedicated">dedicated</option>
-                <option value="tied to">tied to</option>
-                <option value="vibe">vibe</option>
-            </select> video to generate excitement before the film's premiere.
-        </div>
-        <div class="sentence">
-            9. The restaurant puts its own unique <select data-answer="spin">
-                <option value="">-- Select --</option>
-                <option value="vibe">vibe</option>
-                <option value="spin">spin</option>
-                <option value="promo">promo</option>
-                <option value="tied to">tied to</option>
-                <option value="dedicated">dedicated</option>
-            </select> on traditional Italian recipes by adding local ingredients.
-        </div>
-        <div class="sentence">
-            10. The beach resort has a relaxed <select data-answer="vibe">
-                <option value="">-- Select --</option>
-                <option value="promo">promo</option>
-                <option value="vibe">vibe</option>
-                <option value="spin">spin</option>
-                <option value="social action">social action</option>
-                <option value="tied to">tied to</option>
-            </select> that makes visitors feel instantly at ease.
-        </div>
-        <div class="sentence">
-            11. Many environmental problems are <select data-answer="tied to">
-                <option value="">-- Select --</option>
-                <option value="spin">spin</option>
-                <option value="tied to">tied to</option>
-                <option value="vibe">vibe</option>
-                <option value="social action">social action</option>
-                <option value="elaborate">elaborate</option>
-            </select> overconsumption and waste.
-        </div>
-        <div class="sentence">
-            12. The university increased funding for scholarships and other <select data-answer="social action">
-                <option value="">-- Select --</option>
-                <option value="tied to">tied to</option>
-                <option value="social action">social action</option>
-                <option value="elaborate">elaborate</option>
-                <option value="vibe">vibe</option>
-                <option value="full-on">full-on</option>
-            </select> programs.
-        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+
+
     </div>
 
-    <div class="section">
-        <h3>Section 3</h3>
-        <div class="sentence">
-            13. The wedding reception featured <select data-answer="elaborate">
-                <option value="">-- Select --</option>
-                <option value="elaborate">elaborate</option>
-                <option value="full-on">full-on</option>
-                <option value="draw">draw</option>
-                <option value="social action">social action</option>
-                <option value="special effects">special effects</option>
-            </select> decorations with ice sculptures and crystal chandeliers.
-        </div>
-        <div class="sentence">
-            14. Planning a successful business launch requires <select data-answer="full-on">
-                <option value="">-- Select --</option>
-                <option value="draw">draw</option>
-                <option value="full-on">full-on</option>
-                <option value="elaborate">elaborate</option>
-                <option value="special effects">special effects</option>
-                <option value="daily grind">daily grind</option>
-            </select> commitment and long hours.
-        </div>
-        <div class="sentence">
-            15. The new shopping mall will <select data-answer="draw">
-                <option value="">-- Select --</option>
-                <option value="special effects">special effects</option>
-                <option value="draw">draw</option>
-                <option value="full-on">full-on</option>
-                <option value="daily grind">daily grind</option>
-                <option value="elaborate">elaborate</option>
-            </select> customers from neighboring towns.
-        </div>
-        <div class="sentence">
-            16. Movie makeup artists use <select data-answer="special effects">
-                <option value="">-- Select --</option>
-                <option value="full-on">full-on</option>
-                <option value="special effects">special effects</option>
-                <option value="draw">draw</option>
-                <option value="daily grind">daily grind</option>
-                <option value="angle">angle</option>
-            </select> to create realistic injuries and aging.
-        </div>
-        <div class="sentence">
-            17. Many people exercise after work to escape the <select data-answer="daily grind">
-                <option value="">-- Select --</option>
-                <option value="draw">draw</option>
-                <option value="daily grind">daily grind</option>
-                <option value="special effects">special effects</option>
-                <option value="angle">angle</option>
-                <option value="underrated">underrated</option>
-            </select> of office routine.
-        </div>
-        <div class="sentence">
-            18. From a financial <select data-answer="angle">
-                <option value="">-- Select --</option>
-                <option value="special effects">special effects</option>
-                <option value="angle">angle</option>
-                <option value="daily grind">daily grind</option>
-                <option value="underrated">underrated</option>
-                <option value="cross paths">cross paths</option>
-            </select>, investing in renewable energy makes sense for long-term savings.
-        </div>
-    </div>
+       <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
 
-    <div class="section">
-        <h3>Section 4</h3>
-        <div class="sentence">
-            19. The benefits of meditation are <select data-answer="underrated">
-                <option value="">-- Select --</option>
-                <option value="underrated">underrated</option>
-                <option value="cross paths">cross paths</option>
-                <option value="bound">bound</option>
-                <option value="angle">angle</option>
-                <option value="learning curve">learning curve</option>
-            </select> by people who've never tried it.
-        </div>
-        <div class="sentence">
-            20. During my travels through Southeast Asia, I would often <select data-answer="cross paths">
-                <option value="">-- Select --</option>
-                <option value="bound">bound</option>
-                <option value="cross paths">cross paths</option>
-                <option value="underrated">underrated</option>
-                <option value="learning curve">learning curve</option>
-                <option value="comfy">comfy</option>
-            </select> with the same backpackers in different cities.
-        </div>
-        <div class="sentence">
-            21. With the new highway opening, traffic congestion is <select data-answer="bound">
-                <option value="">-- Select --</option>
-                <option value="learning curve">learning curve</option>
-                <option value="bound">bound</option>
-                <option value="cross paths">cross paths</option>
-                <option value="comfy">comfy</option>
-                <option value="oversized">oversized</option>
-            </select> to decrease significantly.
-        </div>
-        <div class="sentence">
-            22. Starting a new job involves a <select data-answer="learning curve">
-                <option value="">-- Select --</option>
-                <option value="cross paths">cross paths</option>
-                <option value="learning curve">learning curve</option>
-                <option value="bound">bound</option>
-                <option value="comfy">comfy</option>
-                <option value="aftermath">aftermath</option>
-            </select> as you adapt to different procedures.
-        </div>
-        <div class="sentence">
-            23. Pack <select data-answer="comfy">
-                <option value="">-- Select --</option>
-                <option value="bound">bound</option>
-                <option value="comfy">comfy</option>
-                <option value="oversized">oversized</option>
-                <option value="learning curve">learning curve</option>
-                <option value="aftermath">aftermath</option>
-            </select> shoes for the hiking trip because we'll be walking for several hours.
-        </div>
-        <div class="sentence">
-            24. He bought an <select data-answer="oversized">
-                <option value="">-- Select --</option>
-                <option value="comfy">comfy</option>
-                <option value="oversized">oversized</option>
-                <option value="aftermath">aftermath</option>
-                <option value="underestimate">underestimate</option>
-                <option value="learning curve">learning curve</option>
-            </select> jacket thinking it would shrink in the wash.
-        </div>
-    </div>
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
 
-    <div class="section">
-        <h3>Section 5</h3>
-        <div class="sentence">
-            25. The <select data-answer="aftermath">
-                <option value="">-- Select --</option>
-                <option value="aftermath">aftermath</option>
-                <option value="underestimate">underestimate</option>
-                <option value="takes">takes</option>
-                <option value="oversized">oversized</option>
-                <option value="minimalist">minimalist</option>
-            </select> of the hurricane left thousands of homes without power.
-        </div>
-        <div class="sentence">
-            26. Never <select data-answer="underestimate">
-                <option value="">-- Select --</option>
-                <option value="takes">takes</option>
-                <option value="underestimate">underestimate</option>
-                <option value="aftermath">aftermath</option>
-                <option value="minimalist">minimalist</option>
-                <option value="horde">horde</option>
-            </select> how long it takes to drive across the city during rush hour.
-        </div>
-        <div class="sentence">
-            27. The photographer shared different <select data-answer="takes">
-                <option value="">-- Select --</option>
-                <option value="minimalist">minimalist</option>
-                <option value="takes">takes</option>
-                <option value="underestimate">underestimate</option>
-                <option value="horde">horde</option>
-                <option value="aftermath">aftermath</option>
-            </select> on the same landscape by shooting at various times of day.
-        </div>
-        <div class="sentence">
-            28. The architect preferred a <select data-answer="minimalist">
-                <option value="">-- Select --</option>
-                <option value="underestimate">underestimate</option>
-                <option value="minimalist">minimalist</option>
-                <option value="takes">takes</option>
-                <option value="horde">horde</option>
-                <option value="ragged">ragged</option>
-            </select> design with clean lines and neutral colors.
-        </div>
-        <div class="sentence">
-            29. During the Black Friday sale, a <select data-answer="horde">
-                <option value="">-- Select --</option>
-                <option value="takes">takes</option>
-                <option value="horde">horde</option>
-                <option value="minimalist">minimalist</option>
-                <option value="chaos">chaos</option>
-                <option value="aftermath">aftermath</option>
-            </select> of shoppers rushed into the store when it opened.
-        </div>
-    </div>
+        // Sanitize input to prevent injection
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
 
-    <div class="print-section">
-        <button onclick="printQuiz()">Print to PDF</button>
-        <div id="errorMessage" class="error-message" style="display: none;"></div>
-        <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem;">     
-            Instructions:<br>
-            1. Save as PDF file<br>
-            2. Upload to the E-class<br>
-        </div>
-    </div>
+        // Validate input length and content
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
 
-    <script>
-        // Check answers when select changes
-        document.querySelectorAll('select').forEach(select => {
-            select.addEventListener('change', function() {
-                const correctAnswer = this.getAttribute('data-answer');
-                const selectedValue = this.value;
-                
-                if (selectedValue === correctAnswer) {
-                    this.classList.remove('incorrect');
-                    this.classList.add('correct');
-                } else if (selectedValue !== '') {
-                    this.classList.remove('correct');
-                    this.classList.add('incorrect');
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Check if both fields are valid and changed from defaults
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            // Check if changed from defaults
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            // Check if valid
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            // Enable button only if both changed AND both valid
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        // Validate on blur (when user leaves field)
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
                 } else {
-                    this.classList.remove('correct', 'incorrect');
+                    this.value = DEFAULTS.name;
                 }
-            });
+            }
+            checkEnablePDF();
         });
 
-        function printQuiz() {
-            const studentName = document.getElementById('studentName').value.trim();
-            const studentID = document.getElementById('studentID').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Check if name is missing or unchanged
-            if (studentName === '' || studentName === 'Enter your name') {
-                errorMessage.textContent = 'You forgot your name or ID';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // Check if ID is missing or unchanged
-            if (studentID === '' || studentID === 'Enter your student ID number') {
-                errorMessage.textContent = 'You forgot your name or ID';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // If both are filled, hide error and print
-            errorMessage.style.display = 'none';
-            window.print();
-        }
-        
-        // Force hard refresh on any page reload
-        window.addEventListener('beforeunload', function() {
-            // Clear form data
-            document.querySelectorAll('select').forEach(select => {
-                select.selectedIndex = 0;
-            });
-        });        
-        
-        // Toggle show/hide answers
-        let answersVisible = false;
-
-        function toggleAnswers() {
-            answersVisible = !answersVisible;
-            const button = document.getElementById('toggleAnswersBtn');
-            
-            document.querySelectorAll('select').forEach(select => {
-                if (answersVisible) {
-                    // Show correct answer
-                    const correctAnswer = select.getAttribute('data-answer');
-                    select.value = correctAnswer;
-                    select.classList.add('correct');
-                    select.classList.remove('incorrect');
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
                 } else {
-                    // Hide answers - reset to default
-                    select.selectedIndex = 0;
-                    select.classList.remove('correct', 'incorrect');
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        // Also check on input to provide immediate feedback for enabling button
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        // Clear default on focus
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        // PDF Print functionality
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+    <footer>
+        Vocabulary Quiz based on "Zombie Walks" text | Created for educational purposes
+    </footer>
+
+    <script>
+        // Vocabulary data from the previous page
+        const vocabulary = [
+            {word: "parades", example: "The city's annual holiday parades draw thousands of spectators to the downtown streets."},
+            {word: "dress up", example: "For the 1920s-themed party, everyone was asked to dress up in flapper dresses and pinstripe suits."},
+            {word: "gatherings", example: "The neighborhood holds regular social gatherings in the park to foster community spirit."},
+            {word: "charity", example: "The concert was organized for charity, with all proceeds going to support local animal shelters."},
+            {word: "origin", example: "The origin of the chocolate chip cookie can be traced back to a Massachusetts inn in the 1930s."},
+            {word: "took place", example: "The historic peace treaty took place in the grand hall of the palace."},
+            {word: "promote", example: "The company hired influencers to promote their new eco-friendly product line on social media."},
+            {word: "phenomenon", example: "The northern lights are a natural phenomenon that attracts tourists to Arctic regions."},
+            {word: "massive", example: "The museum's new wing is a massive structure made entirely of glass and steel."},
+            {word: "participants", example: "All participants in the marathon received a commemorative medal at the finish line."},
+            {word: "core concept", example: "The core concept of the game is simple: build, explore, and survive in an open world."},
+            {word: "unique", example: "Each snowflake has a unique pattern that forms as it falls through the atmosphere."},
+            {word: "focus", example: "This semester, the students will focus on advanced techniques in digital animation."},
+            {word: "costume", example: "Her elaborate peacock costume won first prize at the masquerade ball."},
+            {word: "connected", example: "The museum's new exhibit is connected to a series of lectures on ancient civilizations."},
+            {word: "raising money", example: "The school band is raising money for new instruments by hosting a car wash."},
+            {word: "causes", example: "She volunteers for several environmental causes, including beach cleanups and tree planting."},
+            {word: "impact", example: "The new recycling program has had a significant impact on reducing landfill waste."},
+            {word: "makeup", example: "The actor spent three hours in the makeup chair to transform into the aging wizard."},
+            {word: "atmosphere", example: "The cozy fireplace and soft music created a warm, welcoming atmosphere in the café."},
+            {word: "artistic", example: "Her artistic talents extend beyond painting to include sculpture and textile design."},
+            {word: "elaborate", example: "The wedding cake featured an elaborate design of sugar flowers and edible gold leaf."},
+            {word: "drudgery", example: "The drudgery of data entry was relieved by the team's lively lunchtime conversations."},
+            {word: "engage", example: "The teacher used interactive games to help students engage with the difficult subject matter."},
+            {word: "food banks", example: "During the holidays, many volunteers help sort donations at local food banks."},
+            {word: "fee", example: "There's a small registration fee for the workshop, which includes all materials."},
+            {word: "symbol", example: "In many cultures, the olive branch is a symbol of peace and reconciliation."},
+            {word: "organized event", example: "The charity run is an organized event with designated routes, water stations, and medical support."},
+            {word: "permits", example: "Film crews need permits to shoot on public property in most cities."},
+            {word: "sponsors", example: "Local businesses often act as sponsors for the community theater's productions."},
+            {word: "balances", example: "A good recipe balances sweet and savory flavors to create a complex taste profile."},
+            {word: "stain", example: "Be careful with that red wine—it could stain the light-colored carpet."},
+            {word: "texture", example: "The artist used thick paint to create an interesting texture on the canvas."},
+            {word: "shuffling", example: "Exhausted after the long hike, we could only manage a slow shuffling walk back to the car."},
+            {word: "peeling", example: "After a bad sunburn, the peeling skin can be uncomfortable and sensitive."},
+            {word: "sunken", example: "His sunken cheeks and tired eyes showed how little he had slept during finals week."},
+            {word: "heavy-duty", example: "For the construction job, he bought heavy-duty work boots with steel toes."},
+            {word: "smearing", example: "The child's painting technique involved smearing different colors together with her fingers."},
+            {word: "dehydrate", example: "Hikers need to drink plenty of water to avoid becoming dehydrated on long trails."},
+            {word: "cleanup", example: "After the outdoor concert, volunteers assisted with the cleanup of the park grounds."}
+        ];
+
+        // Get all vocabulary words for generating distractors
+        const allWords = vocabulary.map(item => item.word);
+        
+        // Function to get random distractors (excluding the correct word)
+        function getRandomDistractors(correctWord, count = 3) {
+            const availableWords = allWords.filter(word => word !== correctWord);
+            const shuffled = [...availableWords].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Function to create a quiz item
+        function createQuizItem(item, index) {
+            const quizItem = document.createElement('div');
+            quizItem.className = 'quiz-item';
+            quizItem.id = `quiz-item-${index}`;
+            
+            // Create sentence with dropdown placeholder
+            const sentenceElement = document.createElement('div');
+            sentenceElement.className = 'sentence';
+            
+            // Replace the target word with a placeholder marker
+            const placeholder = `{{${index}}}`;
+            const sentenceWithPlaceholder = item.example.replace(item.word, placeholder);
+            
+            // Split sentence around the placeholder and create HTML
+            const parts = sentenceWithPlaceholder.split(placeholder);
+            
+            sentenceElement.innerHTML = `
+                <span>${parts[0]}</span>
+                <select id="select-${index}" data-correct="${item.word}">
+                    <option value="" disabled selected>Select a word</option>
+                </select>
+                <span>${parts[1]}</span>
+            `;
+            
+            // Create feedback element
+            const feedbackElement = document.createElement('div');
+            feedbackElement.id = `feedback-${index}`;
+            feedbackElement.className = 'feedback';
+            
+            quizItem.appendChild(sentenceElement);
+            quizItem.appendChild(feedbackElement);
+            
+            return quizItem;
+        }
+
+        // Function to populate dropdown options
+        function populateDropdown(selectElement, correctWord) {
+            // Get random distractors
+            const distractors = getRandomDistractors(correctWord, 3);
+            
+            // Create array with correct word and distractors
+            const allOptions = [correctWord, ...distractors];
+            
+            // Shuffle the options
+            const shuffledOptions = [...allOptions].sort(() => 0.5 - Math.random());
+            
+            // Add options to select element
+            shuffledOptions.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        // Function to check an individual answer
+        function checkAnswer(index) {
+            const selectElement = document.getElementById(`select-${index}`);
+            const quizItem = document.getElementById(`quiz-item-${index}`);
+            const feedbackElement = document.getElementById(`feedback-${index}`);
+            const correctAnswer = selectElement.dataset.correct;
+            const selectedAnswer = selectElement.value;
+            
+            // Remove previous feedback classes
+            quizItem.classList.remove('correct', 'incorrect');
+            feedbackElement.classList.remove('correct-feedback', 'incorrect-feedback');
+            feedbackElement.style.display = 'none';
+            
+            // If no answer selected, return
+            if (!selectedAnswer) return false;
+            
+            // Check if answer is correct
+            const isCorrect = selectedAnswer === correctAnswer;
+            
+            // Apply appropriate styling
+            if (isCorrect) {
+                quizItem.classList.add('correct');
+                feedbackElement.classList.add('correct-feedback');
+                feedbackElement.textContent = `✓ Correct! "${correctAnswer}" fits perfectly in this context.`;
+            } else {
+                quizItem.classList.add('incorrect');
+                feedbackElement.classList.add('incorrect-feedback');
+                feedbackElement.textContent = `✗ Not quite. The correct word is "${correctAnswer}".`;
+            }
+            
+            feedbackElement.style.display = 'block';
+            
+            return isCorrect;
+        }
+
+        // Function to update the status counters
+        function updateStatusCounters() {
+            const totalQuestions = vocabulary.length;
+            const selectElements = document.querySelectorAll('select');
+            
+            let answeredCount = 0;
+            let correctCount = 0;
+            
+            selectElements.forEach((select, index) => {
+                if (select.value) {
+                    answeredCount++;
+                    if (checkAnswer(index)) {
+                        correctCount++;
+                    }
                 }
             });
             
-            // Update button text
-            button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
-        }        
-    </script>
+            document.getElementById('answeredCount').textContent = answeredCount;
+            document.getElementById('correctCount').textContent = correctCount;
+        }
 
-    <script>
-        function updateOutput() {
-            const selects = document.querySelectorAll('select[data-answer]');
-            const output = document.getElementById('output');
-            const isColumnView = output.classList.contains('column');
-            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
-
-            if (isColumnView) {
-                output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+        // Function to check all answers and show score
+        function checkAllAnswers() {
+            let correctCount = 0;
+            const totalQuestions = vocabulary.length;
+            
+            // Check each answer
+            vocabulary.forEach((_, index) => {
+                const isCorrect = checkAnswer(index);
+                if (isCorrect) correctCount++;
+            });
+            
+            // Update status counters
+            updateStatusCounters();
+            
+            // Calculate and display score
+            const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
+            document.getElementById('finalScore').textContent = correctCount;
+            document.getElementById('maxScore').textContent = totalQuestions;
+            
+            // Generate score message
+            let scoreMessage = '';
+            if (scorePercentage === 100) {
+                scoreMessage = "Perfect score! You're a vocabulary master!";
+            } else if (scorePercentage >= 80) {
+                scoreMessage = "Excellent work! You know these words well.";
+            } else if (scorePercentage >= 60) {
+                scoreMessage = "Good job! You're getting the hang of it.";
+            } else if (scorePercentage >= 40) {
+                scoreMessage = "Keep practicing! You're on the right track.";
             } else {
-                output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+                scoreMessage = "Don't give up! Review the words and try again.";
             }
+            
+            document.getElementById('scoreMessage').textContent = scoreMessage;
+            document.getElementById('scoreContainer').style.display = 'block';
+            
+            // Scroll to score container
+            document.getElementById('scoreContainer').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function toggleView() {
-            const output = document.getElementById('output');
-            const button = document.querySelector('.toggle-button');
-            output.classList.toggle('column');
-            button.textContent = output.classList.contains('column') 
-                ? 'Close Column View' 
-                : 'View as Column';
-            updateOutput();
+        // Function to reset the quiz
+        function resetQuiz() {
+            // Reset all select elements
+            document.querySelectorAll('select').forEach(select => {
+                select.value = '';
+            });
+            
+            // Remove all feedback styling
+            document.querySelectorAll('.quiz-item').forEach(item => {
+                item.classList.remove('correct', 'incorrect');
+            });
+            
+            // Hide all feedback messages
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+            
+            // Hide score container
+            document.getElementById('scoreContainer').style.display = 'none';
+            
+            // Reset status counters
+            document.getElementById('answeredCount').textContent = '0';
+            document.getElementById('correctCount').textContent = '0';
+            
+            // Re-shuffle options for each dropdown
+            document.querySelectorAll('select').forEach(select => {
+                const correctWord = select.dataset.correct;
+                // Clear current options
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                // Repopulate with new shuffled options
+                populateDropdown(select, correctWord);
+            });
         }
 
-        // Initial render
-        updateOutput();
-    </script>   
-  
-    <script>
-        function toggleWordList() {
-            const wordList = document.getElementById('theWordList');
-            const showHideButton = document.querySelector('.show-hide-button');
-            if (wordList.style.display === 'none' || wordList.style.display === '') {
-                wordList.style.display = 'block';
-                showHideButton.textContent = 'Hide Word List';
-            } else {
-                wordList.style.display = 'none';
-                showHideButton.textContent = 'Show Word List';
-            }
-        }
+        // Initialize the quiz when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizContainer = document.getElementById('quizContainer');
+            
+            // Create quiz items for each vocabulary word
+            vocabulary.forEach((item, index) => {
+                const quizItem = createQuizItem(item, index);
+                quizContainer.appendChild(quizItem);
+                
+                // Populate dropdown with options
+                const selectElement = document.getElementById(`select-${index}`);
+                populateDropdown(selectElement, item.word);
+                
+                // Add change event listener to update status
+                selectElement.addEventListener('change', function() {
+                    updateStatusCounters();
+                });
+            });
+            
+            // Set total questions count
+            document.getElementById('totalQuestions').textContent = vocabulary.length;
+            
+            // Add event listeners to buttons
+            document.getElementById('checkAnswers').addEventListener('click', checkAllAnswers);
+            document.getElementById('resetQuiz').addEventListener('click', resetQuiz);
+        });
     </script>
-    
-    <footer>...</footer>
 </body>
 </html>
