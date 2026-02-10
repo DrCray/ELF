@@ -51,7 +51,7 @@
         .section {
             background-color: white;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 10px; margin-top:1rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -201,18 +201,7 @@
     
 </div>
 
-    <div class="student-info">
-        <label for="studentName"><strong>Student Name:
-</strong>
-</label>
-        <input type="text" id="studentName" placeholder="Enter your name">
-        
-        <label for="studentID"><strong>Student ID:
-</strong>
-</label>
-        <input type="text" id="studentID" placeholder="Enter your student ID number">
-    
-</div>
+
     <button class="show-hide-button" onclick="toggleWordList()">Show Word List
 </button>
     <div id="theWordList">
@@ -223,8 +212,7 @@
 </div>
     
 </div>
-<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)
-</small>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode
 </button>
     
     <div class="section">
@@ -483,16 +471,135 @@
     
 </div>
 
-    <div class="print-section">
-        <button onclick="printQuiz()">Print to PDF
-</button>
-        <div id="errorMessage" class="error-message" style="display: none;">
-</div>
-   <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem;">     Instructions:  <br>
-1. Save as PDF file<br>
-2. Upload to the E-class<br>
-    
-</div>
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        // Sanitize input to prevent injection
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        // Validate input length and content
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Check if both fields are valid and changed from defaults
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            // Check if changed from defaults
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            // Check if valid
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            // Enable button only if both changed AND both valid
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        // Validate on blur (when user leaves field)
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        // Also check on input to provide immediate feedback for enabling button
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        // Clear default on focus
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        // PDF Print functionality
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
 
 </div>
     <script>
@@ -514,29 +621,7 @@
             });
         });
 
-        function printQuiz() {
-            const studentName = document.getElementById('studentName').value.trim();
-            const studentID = document.getElementById('studentID').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Check if name is missing or unchanged
-            if (studentName === '' || studentName === 'Enter your full name') {
-                errorMessage.textContent = 'You forgot your name or ID';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // Check if ID is missing or unchanged
-            if (studentID === '' || studentID === 'Enter your student ID number') {
-                errorMessage.textContent = 'You forgot your name or ID';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // If both are filled, hide error and print
-            errorMessage.style.display = 'none';
-            window.print();
-        }
+
         
         
 // Force hard refresh on any page reload
