@@ -100,12 +100,6 @@ font-size: 1.3rem;
     
 <div id="topHeading"><h1>English Learning</h1><h2>Zombie Walks</h2></div>
     <!-- Student Info Section -->
-<div id="nameID">
-    <input id="name" type="text" value="name"><br><br>
-    <input id="id" type="text" value="id#">
-    <hr>
-</div>
-    
 
 
     <div id="output"><div id="cloze-div-1770453487777" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1770453487777')">Show Answers</button><div class="sentence-div">Zombie Walks
@@ -266,6 +260,134 @@ Your first zombie walk <span style="font-size: 70%;">32</span><select data-corre
             </select> afterwards</div></div></div>
 
 
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        // Sanitize input to prevent injection
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        // Validate input length and content
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Check if both fields are valid and changed from defaults
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            // Check if changed from defaults
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            // Check if valid
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            // Enable button only if both changed AND both valid
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        // Validate on blur (when user leaves field)
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        // Also check on input to provide immediate feedback for enabling button
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        // Clear default on focus
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        // PDF Print functionality
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
 
 
 
@@ -326,32 +448,6 @@ function checkAnswer(select) {
 
 
 
-
-
-
-
-    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
-
-      <script>
-        function checkThenPrint(){
-
-            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
-
-            let Name =  document.getElementById("name").value.trim();
-            let ID = document.getElementById("id").value.trim();
-
-
-            if (
-                (Name==="name" || ID==="id#" || Name==="" || ID==="")
-                ){
-                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
-                }
-            else{
-             window.print();
-            }
-         } // end checkThenPrint()
-     </script>
-     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
      <footer style="margin-top:6rem;">...</footer>
 
 
