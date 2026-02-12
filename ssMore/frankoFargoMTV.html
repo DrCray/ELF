@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Zombie Walk - Alternative Version</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles - Mobile First */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --zombie-green: #4a7c4a;
+            --dark-bg: #121212;
+            --blood-red: #8b0000;
+            --text-light: #f0f0f0;
+            --text-dim: #b0b0b0;
+            --section-bg: #1a1a1a;
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 124, 74, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.05) 0%, transparent 20%);
+            padding-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--dark-bg), var(--zombie-green), var(--dark-bg));
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid var(--blood-red);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "☠";
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.1;
+            left: 10%;
+            top: 10px;
+        }
+
+        header::after {
+            content: "☠";
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.1;
+            right: 10%;
+            top: 10px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Links Section */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--zombie-green);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid transparent;
+        }
+
+        .link-btn:hover {
+            background-color: var(--blood-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .link-btn.article {
+            background-color: var(--section-bg);
+            border: 2px solid var(--zombie-green);
+        }
+
+        .link-btn.audio {
+            background-color: var(--blood-red);
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 5px solid var(--zombie-green);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .about h3 {
+            color: var(--zombie-green);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about h3 i {
+            color: var(--blood-red);
+        }
+
+        .about p {
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        /* Lyrics Container */
+        .lyrics {
+            background-color: var(--section-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .verse {
+            margin-bottom: 25px;
+        }
+
+        .verse h4 {
+            color: var(--blood-red);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verse h4 i {
+            color: var(--zombie-green);
+        }
+
+        .verse p {
+            color: var(--text-light);
+            margin-bottom: 12px;
+            padding-left: 10px;
+            line-height: 1.8;
+        }
+
+        .chorus {
+            background-color: rgba(74, 124, 74, 0.1);
+            border-left: 4px solid var(--zombie-green);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .chorus h4 {
+            color: var(--zombie-green);
+        }
+
+        .bridge {
+            background-color: rgba(139, 0, 0, 0.1);
+            border-left: 4px solid var(--blood-red);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .bridge h4 {
+            color: var(--blood-red);
+        }
+
+        .outro {
+            font-style: italic;
+            text-align: center;
+            color: var(--text-dim);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles - Tablet */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .links {
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .link-btn {
+                width: auto;
+                min-width: 220px;
+            }
+            
+            .verse p {
+                font-size: 1.05rem;
+            }
+        }
+
+        /* Responsive Styles - Desktop - SINGLE COLUMN VERSION */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 30px;
+            }
+            
+            h1 {
+                font-size: 4rem;
+            }
+            
+            .lyrics {
+                padding: 30px;
+                max-width: 800px;
+                margin: 25px auto;
+            }
+            
+            .verse {
+                display: block;
+                margin-bottom: 30px;
+            }
+            
+            .chorus, .bridge {
+                margin: 25px 0;
+            }
+            
+            .verse p {
+                font-size: 1.1rem;
+                line-height: 1.9;
+            }
+        }
+
+        /* Animation for header */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1, header .subtitle {
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Can't Keep Me Down</h1>
+            <h2>Linka Kulla<h2>
+            <div class="subtitle">For the English Learning article: Luckiest Unlucky Franko Fargo</div>
+        </header>
+
+        <main>
+            <section class="links">
+                <a href="https://drcray.github.io/ELF/ssMore/frankoFargoArticle.html" class="link-btn article" target="_blank">
+                    <i class="fas fa-newspaper"></i> Read the Article
+                </a>
+                <a href="https://youtu.be/N5yEjtYSSQ0" class="link-btn audio" target="_blank">
+                    <i class="fas fa-headphones"></i> Listen to Song (with subtitles)
+                </a>
+                <a href="#readLyrics" class="link-btn article" target="_blank">
+                    <i class="fas fa-newspaper"></i> Lyrics
+                </a>
+
+            </section>
+
+            <section class="about">
+                <h3><i class="fas fa-info-circle"></i> About the Song:</h3>
+                <p>Franko Fargo has many near-fatal accidents, then wins a million dollar lottery in his old age.</p>
+            </section>
+
+            <section class="lyrics">
+                <div class="verse">
+<p>Uh! Ha! Yeah! They call me lucky - nah I just don't quit. Let's go!</p>
+
+<p>Sixty-two I'm on that train ride, hey!</p>
+<p>Storm came heavy, track slid to the side</p>
+<p>Train hit the river, cold water rising fast</p>
+<p>Crawled out the wreckage, wiped the mud and laughed</p>
+
+<p>They write my name up in the papers every time!</p>
+<p>They say this man should not be alive!</p>
+                </div>
+
+
+                <div class="chorus verse">
+<p>Can't keep me down! No no!</p>
+<p>Throw me off a train I'm still around! Hey!</p>
+<p>Crash burn flip drown</p>
+<p>I dust it off and walk through town</p>
+<p>Can't keep me down!</p>
+                </div>
+
+                <div class="verse">
+<p>Sixty-three I'm flying high up in the sky, woo!</p>
+<p>Door blew open yeah I said goodbye</p>
+<p>Falling through the clouds, landed in the hay</p>
+<p>Doctors said no way, I said I'm okay!</p>
+
+<p>Front page news again they can't believe their eyes!</p>
+<p>This man keeps falling but he will not die!</p>
+                </div>
+
+                <div class="chorus verse">
+<p>Can't keep me down! No no!</p>
+<p>Throw me from a plane I'm still around! Hey!</p>
+<p>Crash burn flip drown</p>
+<p>I dust it off and walk through town</p>
+<p>Can't keep me down!</p>
+                </div>
+
+                <div class="bridge verse">
+<p>Bus in the river I swam!</p>
+<p>Car caught fire I ran!</p>
+<p>Off a cliff caught a tree!</p>
+<p>Nothing in this world can finish me!</p>
+<p>Hit me with your best shot destiny</p>
+<p>I got nine lives maybe twenty-three</p>
+
+<p>Wait - it gets better - listen up now...</p>
+                </div>
+
+                <div class="verse">
+<p>Two thousand three, walked in the shop bought a ticket</p>
+<p>Scratched it off slow, jackpot can you dig it?!</p>
+<p>Million dollars sitting right there in my hand</p>
+<p>Gave it all away cause you don't understand</p>
+<p>Don't need the money, don't need the fame</p>
+<p>I survived it all, that's the real game</p>
+                </div>
+
+
+
+
+                <div class="chorus verse">
+<p>Can't keep me down! No no no no!</p>
+<p>Train plane bus I'm still around! Hey! Hey!</p>
+<p>Crash burn flip drown</p>
+<p>The luckiest unlucky man in town!</p>
+<p>Can't keep me down! Everybody!</p>
+<p>Can't keep me down! One more time!</p>
+<p>The world keeps swinging but I don't hit the ground</p>
+<p>Can't keep me down!</p>
+
+
+                </div>
+
+                <div class="outro">
+<p>Ha! Lucky? Nah... I'm just built different.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Can't Keep me Down - Linka Kulla</p>
+            <p>- English Learning Resource - music for language education</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add subtle interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to buttons
+            const buttons = document.querySelectorAll('.link-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create a ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size/2;
+                    const y = e.clientY - rect.top - size/2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.7);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        top: ${y}px;
+                        left: ${x}px;
+                        pointer-events: none;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add scroll animation for lyrics sections
+            const verses = document.querySelectorAll('.verse');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            verses.forEach(verse => {
+                verse.style.opacity = '0';
+                verse.style.transform = 'translateY(20px)';
+                verse.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(verse);
+            });
+        });
+
+        // Add the ripple animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
