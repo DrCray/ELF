@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Dr Ray EFL ESL, English learning - Vocabulary Cloze Exercise">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Ray's News English — Cloze Exercise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --correct: #d4edda;
+            --incorrect: #fff9db;
+            --bg: #f0f0f5;
+            --card: #ffffff;
+            --border: #d8d8e0;
+            --accent: #5b4a8a;
+            --accent-light: #7b6aaa;
+            --text: #2d2d3a;
+            --text-muted: #6b6b80;
+            --shadow: 0 2px 8px rgba(91, 74, 138, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.4;
+            color: var(--text);
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header img {
+            width: 100%;
+            max-width: 850px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        li{
+
+        }
+
+        .title-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .title-box h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .title-box h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .instructions {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .instructions strong {
+            color: var(--accent);
+        }
+
+        .section-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-card h3 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--bg);
+        }
+
+        .section-card h4 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.05rem;
+            color: var(--accent-light);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-card p.definition {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .section-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-card li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f0f0f5;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .section-card li:last-child {
+            border-bottom: none;
+        }
+
+        select.cloze {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            padding: 3px 8px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: #fafafe;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.3s;
+            min-width: 140px;
+            appearance: auto;
+            margin-block: .3rem .1rem;
+        }
+
+        select.cloze:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        select.cloze.correct {
+            background-color: var(--correct);
+            border-color: #a3d9b1;
+        }
+
+        select.cloze.incorrect {
+            background-color: var(--incorrect);
+            border-color: #eed88a;
+        }
+
+        /* Score tracker */
+        .score-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .score-bar span {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .score-bar .score-detail {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Student info & print */
+        .student-info {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .student-info h3 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: #fafafe;
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group input.invalid {
+            border-color: #e6a0a0;
+            background: #fff5f5;
+        }
+
+        .validation-msg {
+            font-size: 0.8rem;
+            color: #c0392b;
+            margin-top: 0.2rem;
+            display: none;
+        }
+
+        .btn-print {
+            display: inline-block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.65rem 2rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-print:hover {
+            background: var(--accent-light);
+        }
+
+        .btn-print:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media print {
+            body { padding: 1rem; background: #fff; }
+            .instructions { break-inside: avoid; }
+            .section-card { break-inside: avoid; }
+            .btn-print { display: none; }
+            select.cloze {
+                border: 1px solid #999;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+            select.cloze.correct { background-color: #d4edda !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            select.cloze.incorrect { background-color: #fff9db !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .title-box h1 { font-size: 1.4rem; }
+            .form-row { flex-direction: column; }
+            select.cloze { min-width: 120px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="topImage.jpg" alt="Dr. Ray's News English Header">
+    <div class="title-box">
+        <h1>Dr. Ray's News English</h1>
+        <h2>Cloze Exercise — 5 Words to Boost Your Level</h2>
+    </div>
+</header>
+
+<div class="instructions">
+    <strong>Instructions:</strong> Read each sentence and choose the best word or phrase from the dropdown menu to complete the blank. Your answer will turn <span style="background:var(--correct);padding:2px 6px;border-radius:4px;">green</span> if correct or <span style="background:var(--incorrect);padding:2px 6px;border-radius:4px;">yellow</span> if incorrect.
+</div>
+
+<div class="score-bar">
+    <span>Score: <span id="scoreNum">0</span> / <span id="scoreTotal">0</span></span>
+    <span class="score-detail" id="scorePercent"></span>
+</div>
+
+<div id="allCards">
+
+    <!-- COUNTERPRODUCTIVE -->
+    <div class="section-card">
+        <h3>Counterproductive</h3>
+        <p class="definition">Adjective. Having the opposite effect to the one that was intended.</p>
+        <ul>
+            <li>Tom realized that his attempt to speed up the project by <select class="cloze" data-correct="cutting corners"><option value="">— choose —</option><option value="cutting corners">cutting corners</option><option value="making progress">making progress</option><option value="taking shortcuts">taking shortcuts</option></select> actually proved counterproductive, leading to more errors and delays in the long run.</li>
+
+            <li>The strict <select class="cloze" data-correct="micromanagement"><option value="">— choose —</option><option value="leadership">leadership</option><option value="micromanagement">micromanagement</option><option value="teamwork">teamwork</option></select> style of the supervisor proved counterproductive, demotivating the team and <select class="cloze" data-correct="stifling"><option value="">— choose —</option><option value="encouraging">encouraging</option><option value="stifling">stifling</option><option value="improving">improving</option></select> creativity.</li>
+
+            <li>In an effort to save money, the company decided to reduce employee training programs, but this move was counterproductive as employee performance and <select class="cloze" data-correct="morale"><option value="">— choose —</option><option value="salary">salary</option><option value="morale">morale</option><option value="schedule">schedule</option></select> suffered.</li>
+
+            <li>Jenny's <select class="cloze" data-correct="extreme dieting"><option value="">— choose —</option><option value="healthy eating">healthy eating</option><option value="extreme dieting">extreme dieting</option><option value="regular exercise">regular exercise</option></select> proved counterproductive to her goal of achieving a healthier lifestyle, as it led to <select class="cloze" data-correct="fatigue"><option value="">— choose —</option><option value="energy">energy</option><option value="fatigue">fatigue</option><option value="strength">strength</option></select> and weakened her immune system.</li>
+        </ul>
+    </div>
+
+    <!-- PHENOMENON -->
+    <div class="section-card">
+        <h3>Phenomenon</h3>
+        <p class="definition">Noun. An extraordinary but unusual event, action, or process.</p>
+        <ul>
+            <li>Rainbows are a beautiful <select class="cloze" data-correct="natural phenomenon"><option value="">— choose —</option><option value="natural phenomenon">natural phenomenon</option><option value="common event">common event</option><option value="daily occurrence">daily occurrence</option></select> that appears in the sky after rain.</li>
+
+            <li>The <select class="cloze" data-correct="migration"><option value="">— choose —</option><option value="migration">migration</option><option value="feeding">feeding</option><option value="nesting">nesting</option></select> of birds over long distances is a remarkable phenomenon in the animal kingdom.</li>
+
+            <li>The sudden popularity of a new song or dance can be a <select class="cloze" data-correct="social media phenomenon"><option value="">— choose —</option><option value="social media phenomenon">social media phenomenon</option><option value="brief moment">brief moment</option><option value="common trend">common trend</option></select>.</li>
+
+            <li>The eclipse of the sun is a rare <select class="cloze" data-correct="astronomical"><option value="">— choose —</option><option value="geographical">geographical</option><option value="astronomical">astronomical</option><option value="environmental">environmental</option></select> phenomenon that many people travel to witness.</li>
+
+            <li>The use of smartphones as a <select class="cloze" data-correct="primary means"><option value="">— choose —</option><option value="primary means">primary means</option><option value="only way">only way</option><option value="minor part">minor part</option></select> of communication is a recent phenomenon that has rapidly changed how people connect with each other.</li>
+        </ul>
+    </div>
+
+    <!-- COUNTERINTUITIVE -->
+    <div class="section-card">
+        <h3>Counterintuitive</h3>
+        <p class="definition">Adjective. When situations or results are contrary to what you expect.</p>
+        <ul>
+            <li><select class="cloze" data-correct="Pounding on"><option value="">— choose —</option><option value="Pounding on">Pounding on</option><option value="Tapping on">Tapping on</option><option value="Pressing on">Pressing on</option></select> a diamond with a hammer won't break it, but a gentle tap in the right spot will.</li>
+
+            <li>John suggested we drive a longer route to get there faster. That seemed counterintuitive, but he was right, because there was less traffic and fewer <select class="cloze" data-correct="traffic lights"><option value="">— choose —</option><option value="stop signs">stop signs</option><option value="traffic lights">traffic lights</option><option value="speed bumps">speed bumps</option></select>.</li>
+
+            <li>For centuries, researchers and <select class="cloze" data-correct="amateur"><option value="">— choose —</option><option value="professional">professional</option><option value="amateur">amateur</option><option value="experienced">experienced</option></select> scientists alike have battled over the counterintuitive theory that hot water freezes faster than cold.</li>
+
+            <li>The best way to win an argument is to listen more and <select class="cloze" data-correct="talk less"><option value="">— choose —</option><option value="talk less">talk less</option><option value="speak louder">speak louder</option><option value="argue back">argue back</option></select>.</li>
+
+            <li>Exercising when you're tired gives you more <select class="cloze" data-correct="energy"><option value="">— choose —</option><option value="pain">pain</option><option value="energy">energy</option><option value="stress">stress</option></select>.</li>
+
+            <li>The faster you travel in space, the more time <select class="cloze" data-correct="slows down"><option value="">— choose —</option><option value="speeds up">speeds up</option><option value="slows down">slows down</option><option value="stands still">stands still</option></select>.</li>
+        </ul>
+    </div>
+
+    <!-- PARADOX -->
+    <div class="section-card">
+        <h3>Paradox</h3>
+        <p class="definition">Noun. A statement or situation that seems impossible because it contradicts itself — but it is actually true, or at least partly true.</p>
+        <ul>
+            <li>Everyone should be free to do as they please, but some people <select class="cloze" data-correct="please to harm"><option value="">— choose —</option><option value="want to help">want to help</option><option value="please to harm">please to harm</option><option value="choose to agree">choose to agree</option></select> others.</li>
+
+            <li>The more you come to know, the more you realize how much you <select class="cloze" data-correct="don't know"><option value="">— choose —</option><option value="have learned">have learned</option><option value="don't know">don't know</option><option value="can teach">can teach</option></select>.</li>
+
+            <li>I have 900 <select class="cloze" data-correct="followers"><option value="">— choose —</option><option value="friends">friends</option><option value="followers">followers</option><option value="contacts">contacts</option></select> on social media, and yet, I feel so lonely.</li>
+
+            <li>In business, you have to <select class="cloze" data-correct="spend money to make money"><option value="">— choose —</option><option value="save money to make money">save money to make money</option><option value="spend money to make money">spend money to make money</option><option value="borrow money to make money">borrow money to make money</option></select>.</li>
+
+            <li>Celebrities are driven by their need for attention, yet complain about their <select class="cloze" data-correct="privacy"><option value="">— choose —</option><option value="fame">fame</option><option value="privacy">privacy</option><option value="schedule">schedule</option></select>.</li>
+
+            <li>Smart devices save time but create more <select class="cloze" data-correct="work"><option value="">— choose —</option><option value="fun">fun</option><option value="freedom">freedom</option><option value="work">work</option></select>.</li>
+
+            <li>Silence can be <select class="cloze" data-correct="deafening"><option value="">— choose —</option><option value="peaceful">peaceful</option><option value="deafening">deafening</option><option value="relaxing">relaxing</option></select>.</li>
+        </ul>
+    </div>
+
+    <!-- DILEMMA -->
+    <div class="section-card">
+        <h3>Dilemma</h3>
+        <p class="definition">Noun. A situation where you must choose between two options, but you can only pick one. Sometimes both options are bad, and sometimes both options are good.</p>
+        <ul>
+            <li>You are offered your <select class="cloze" data-correct="dream job"><option value="">— choose —</option><option value="part-time job">part-time job</option><option value="dream job">dream job</option><option value="temporary job">temporary job</option></select> in another city, a 6-hour drive from where you live. However, both your and your spouse's family lives here.</li>
+
+            <li>To keep my job, I have to work more. To keep my wife happy, I need to be home more. I <select class="cloze" data-correct="can't do both"><option value="">— choose —</option><option value="can manage both">can manage both</option><option value="can't do both">can't do both</option><option value="don't want either">don't want either</option></select>.</li>
+
+            <li>Two universities have accepted you — one is the best school for your subject, but the other is a nationally <select class="cloze" data-correct="renowned"><option value="">— choose —</option><option value="affordable">affordable</option><option value="renowned">renowned</option><option value="nearby">nearby</option></select> university.</li>
+
+            <li>Your best friend has done something <select class="cloze" data-correct="illegal"><option value="">— choose —</option><option value="unusual">unusual</option><option value="boring">boring</option><option value="illegal">illegal</option></select>. Do you turn him in or look the other way?</li>
+
+            <li>Your daughter is performing at a piano <select class="cloze" data-correct="recital"><option value="">— choose —</option><option value="concert">concert</option><option value="recital">recital</option><option value="lesson">lesson</option></select> at the same time as a very important business meeting. You can only be at one.</li>
+
+            <li>A doctor has two patients who both need an <select class="cloze" data-correct="emergency operation"><option value="">— choose —</option><option value="emergency operation">emergency operation</option><option value="annual checkup">annual checkup</option><option value="simple procedure">simple procedure</option></select>, but there is only one operating room available right now.</li>
+        </ul>
+
+        <h4>Critical Dilemmas</h4>
+        <ul>
+            <li>A building is on fire. A firefighter can hear two people calling for help, but from <select class="cloze" data-correct="opposite sides"><option value="">— choose —</option><option value="opposite sides">opposite sides</option><option value="the same side">the same side</option><option value="the roof">the roof</option></select> of the building. There's only time to reach one.</li>
+
+            <li>During a flood, a rescue boat has room for five more people, but <select class="cloze" data-correct="ten people"><option value="">— choose —</option><option value="three people">three people</option><option value="ten people">ten people</option><option value="twenty people">twenty people</option></select> are waiting on a rooftop. The pilot must choose who gets on.</li>
+
+            <li>A <select class="cloze" data-correct="field hospital"><option value="">— choose —</option><option value="city hospital">city hospital</option><option value="field hospital">field hospital</option><option value="private clinic">private clinic</option></select> has only one unit of blood left. Two injured soldiers both need it to survive.</li>
+
+            <li>A lifeboat is dangerously <select class="cloze" data-correct="overcrowded"><option value="">— choose —</option><option value="empty">empty</option><option value="overcrowded">overcrowded</option><option value="damaged">damaged</option></select> and sinking slowly. If no one gets off, everyone will drown.</li>
+
+            <li>During an earthquake, a mother is trapped in a <select class="cloze" data-correct="collapsed"><option value="">— choose —</option><option value="new">new</option><option value="collapsed">collapsed</option><option value="burning">burning</option></select> building with her two children. She can only shield one of them from the falling debris.</li>
+
+            <li>A surgeon has two patients who each need a new heart to survive, but only one <select class="cloze" data-correct="donor heart"><option value="">— choose —</option><option value="donor heart">donor heart</option><option value="hospital bed">hospital bed</option><option value="blood type">blood type</option></select> is available.</li>
+        </ul>
+    </div>
+
+    <!-- CONUNDRUM -->
+    <div class="section-card">
+        <h3>Conundrum</h3>
+        <p class="definition">Noun. A complicated and confusing problem with no easy solution. Unlike a dilemma, a conundrum may involve many factors and no clear choices.</p>
+        <ul>
+            <li>Building a new mall will create jobs and make thousands of people happy, but it means <select class="cloze" data-correct="tearing down"><option value="">— choose —</option><option value="planting">planting</option><option value="tearing down">tearing down</option><option value="watering">watering</option></select> all the trees as well as destroying a neighborhood where 37 elderly people live.</li>
+
+            <li>Your elderly parent needs daily care, but you live in a different city for work. Moving back means losing your <select class="cloze" data-correct="career"><option value="">— choose —</option><option value="hobby">hobby</option><option value="career">career</option><option value="apartment">apartment</option></select>. Hiring a <select class="cloze" data-correct="caregiver"><option value="">— choose —</option><option value="babysitter">babysitter</option><option value="caregiver">caregiver</option><option value="housekeeper">housekeeper</option></select> is too expensive.</li>
+
+            <li>A city needs more housing, but every empty space is either a park that residents love or <select class="cloze" data-correct="farmland"><option value="">— choose —</option><option value="desert">desert</option><option value="farmland">farmland</option><option value="forest">forest</option></select> that produces food. No one can agree on the best solution for <select class="cloze" data-correct="expansion"><option value="">— choose —</option><option value="tourism">tourism</option><option value="decoration">decoration</option><option value="expansion">expansion</option></select>.</li>
+
+            <li>A company wants to reduce <select class="cloze" data-correct="pollution"><option value="">— choose —</option><option value="profits">profits</option><option value="pollution">pollution</option><option value="production">production</option></select> from its factory, but the only way to do it would cost so much money that they would have to fire half their workers.</li>
+
+            <li>A deadly virus is spreading fast. A government <select class="cloze" data-correct="mandated"><option value="">— choose —</option><option value="voluntary">voluntary</option><option value="mandated">mandated</option><option value="suggested">suggested</option></select> lockdown would slow or stop the spreading, but cause businesses to fail, leaving people jobless and possibly losing their homes. Keeping businesses open means the virus continues to spread, hospitals will be <select class="cloze" data-correct="overrun"><option value="">— choose —</option><option value="empty">empty</option><option value="overrun">overrun</option><option value="closed">closed</option></select> and medical personnel overworked.</li>
+
+            <li>A country is running out of clean water. They could build a dam, but it would <select class="cloze" data-correct="flood"><option value="">— choose —</option><option value="protect">protect</option><option value="flood">flood</option><option value="connect">connect</option></select> three villages and destroy thousands of acres of farmland. They could <select class="cloze" data-correct="ration"><option value="">— choose —</option><option value="waste">waste</option><option value="boil">boil</option><option value="ration">ration</option></select> water, but people are already angry and protests are growing.</li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Student Info & Print -->
+<div class="student-info">
+    <h3>Submit Your Work</h3>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="studentName">Name</label>
+            <input type="text" id="studentName" placeholder="Name">
+            <div class="validation-msg" id="nameMsg">Name required</div>
+        </div>
+        <div class="form-group">
+            <label for="studentId">Student ID</label>
+            <input type="text" id="studentId" placeholder="Student ID">
+            <div class="validation-msg" id="idMsg">ID required</div>
+        </div>
+    </div>
+    <button class="btn-print" onclick="handlePrint()">Print / Save as PDF</button>
+</div>
+
+<footer>
+    <p>Dr. Ray's News English — Vocabulary Cloze Exercise</p>
+</footer>
+
+<script>
+    // Track total cloze items
+    const allSelects = document.querySelectorAll('select.cloze');
+    const totalQ = allSelects.length;
+    document.getElementById('scoreTotal').textContent = totalQ;
+
+    // Handle selection
+    allSelects.forEach(sel => {
+        sel.addEventListener('change', function() {
+            const correct = this.getAttribute('data-correct');
+            const chosen = this.value;
+
+            // Remove previous classes
+            this.classList.remove('correct', 'incorrect');
+
+            if (chosen === '') return; // reset if blank
+
+            if (chosen === correct) {
+                this.classList.add('correct');
+            } else {
+                this.classList.add('incorrect');
+            }
+
+            updateScore();
+        });
+    });
+
+    function updateScore() {
+        const correctCount = document.querySelectorAll('select.cloze.correct').length;
+        const answeredCount = document.querySelectorAll('select.cloze.correct, select.cloze.incorrect').length;
+        document.getElementById('scoreNum').textContent = correctCount;
+
+        const pctEl = document.getElementById('scorePercent');
+        if (answeredCount > 0) {
+            const pct = Math.round((correctCount / totalQ) * 100);
+            pctEl.textContent = `${answeredCount} answered · ${pct}% correct`;
+        } else {
+            pctEl.textContent = '';
+        }
+    }
+
+    function handlePrint() {
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentId');
+        const nameMsg = document.getElementById('nameMsg');
+        const idMsg = document.getElementById('idMsg');
+
+        let valid = true;
+
+        // Reset
+        nameInput.classList.remove('invalid');
+        idInput.classList.remove('invalid');
+        nameMsg.style.display = 'none';
+        idMsg.style.display = 'none';
+
+        if (nameInput.value.trim().length < 2) {
+            nameInput.classList.add('invalid');
+            nameMsg.style.display = 'block';
+            valid = false;
+        }
+
+        if (idInput.value.trim().length < 2) {
+            idInput.classList.add('invalid');
+            idMsg.style.display = 'block';
+            valid = false;
+        }
+
+        if (valid) {
+            window.print();
+        }
+    }
+</script>
+
+</body>
+</html>
