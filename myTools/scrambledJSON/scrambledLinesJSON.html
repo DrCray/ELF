@@ -120,11 +120,36 @@ box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
 }
 
 
+
+.solve-btn {
+    padding: 12px 28px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.solve-btn:hover {
+    background-color: #d35400;
+}
+
+
+
     </style>
 </head>
 <body>
 <div id="bodyAllContent">
  <div class ="editMode">
+ <div class="editMode" style="margin: 20px 0; padding: 12px; background: #fff3e0; border: 1px solid #ffb74d; border-radius: 6px;">
+    <label style="font-weight: bold; user-select: none; cursor: pointer;">
+        <input type="checkbox" id="disableSolverCheckbox">
+        Disable Puzzle Solver
+    </label>
+</div>
     <ul>
         <li>Update the Title and subtitle areas</li>
         <li>Then save this page <button id="savePageBtn">Save this page</button></li>
@@ -146,9 +171,10 @@ box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
 
 
     <div id="game-board"></div>
-
-
 <hr>
+<div id="solvePuzzle" style="text-align: center; margin: 30px 0;">
+    <button id="solveToggleBtn" class="solve-btn">Solve the puzzle</button>
+</div>
 <div class="submission-area">
     <div class="input-group">
         <input type="text" id="studentName" placeholder="Name" oninput="validateForm()">
@@ -385,5 +411,117 @@ function validateForm() {
 }
     </script>
 
+
+<script>
+
+// ───────────────────────────────────────────────
+// Solve / Return toggle functionality
+// ───────────────────────────────────────────────
+
+let isSolved = false;
+let savedOrder = [];           // will store array of .line elements in scrambled order
+
+function saveCurrentOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    savedOrder = []; // reset
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        savedOrder.push(lines); // save reference to DOM elements in current order
+    });
+}
+
+function restoreSavedOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach((container, idx) => {
+        const fragment = document.createDocumentFragment();
+        savedOrder[idx].forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';           // clear
+        container.appendChild(fragment);    // restore
+        checkColors(container);             // re-apply correct/incorrect colors
+    });
+}
+
+function showCorrectOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        // Sort lines by their original index
+        lines.sort((a, b) => {
+            return parseInt(a.dataset.originalIndex) - parseInt(b.dataset.originalIndex);
+        });
+
+        const fragment = document.createDocumentFragment();
+        lines.forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';
+        container.appendChild(fragment);
+
+        // All lines should now be correct
+        lines.forEach(line => {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        });
+    });
+}
+
+function toggleSolve() {
+    const btn = document.getElementById('solveToggleBtn');
+
+    if (!isSolved) {
+        // Solve: save current state → show correct order
+        saveCurrentOrder();
+        showCorrectOrder();
+        btn.textContent = "Return to puzzle";
+        isSolved = true;
+    } else {
+        // Return: restore scrambled state
+        restoreSavedOrder();
+        btn.textContent = "Solve the puzzle";
+        isSolved = false;
+    }
+}
+
+// Attach the button listener
+document.getElementById('solveToggleBtn').addEventListener('click', toggleSolve);
+
+// Optional: save initial order when game first loads (so "Return" works even if never solved)
+window.addEventListener('load', () => {
+    saveCurrentOrder();
+});
+</script>
+
+<script>
+// disable puzzle solver button
+// ───────────────────────────────────────────────
+// Checkbox to disable/hide the solver button
+// ───────────────────────────────────────────────
+
+function updateSolverVisibility() {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    const solverDiv = document.getElementById('solvePuzzle');
+
+    if (!solverDiv) return; // safety
+
+    if (checkbox.checked) {
+        solverDiv.classList.add('editMode');     // using editMode class to hide it
+    } else {
+        solverDiv.classList.remove('editMode');
+    }
+}
+
+// Run once on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    if (checkbox) {
+        // Initial state
+        updateSolverVisibility();
+
+        // Listen for changes (toggles every time checkbox is clicked)
+        checkbox.addEventListener('change', updateSolverVisibility);
+    }
+});
+</script>
 </body>
 </html>
