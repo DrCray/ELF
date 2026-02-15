@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toothache Fiasco</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+ html { font-size: 100%; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+    color: #e0e0e0;
+    background: #0f0f14;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    padding: 0.8rem 0.8rem 0.8rem 1.8rem;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: white;
+    background: linear-gradient(135deg, #8b0000, #4b0082);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+}
+
+.container {
+    width: 100%;
+    max-width: 35rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    background: #16161d;
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.5);
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #d32f2f;
+    margin-bottom: 1.3rem;
+    font-weight: 700;
+    border-bottom: 3px solid #b71c1c;
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: #ab47bc;
+    font-weight: 600;
+    margin: 1.5rem 0 0.8rem;
+}
+
+p, ul {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 0.8rem;
+}
+
+ul {
+    padding-left: 0;           /* Remove default left padding */
+    margin-left: 0;
+    list-style: none;          /* Completely remove bullets */
+}
+
+ul > li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.75rem;      /* Indent the entire content (adjust as needed) */
+    text-indent: -1.75rem;      /* Pull the first line back to the left edge */
+}
+
+/* Optional: better line wrapping behavior */
+ul > li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.75rem;
+    text-indent: -1.75rem;
+    /* Helps with very long words or forced breaks */
+    overflow-wrap: break-word;
+    hyphens: auto;             /* Optional: soft hyphens in long words */
+}
+
+a {
+    color: #ce93d8;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #f06292;
+    text-decoration: underline;
+}
+
+.section,
+.sectionTop {
+    border: thin solid #512da8;
+    background: #1e1e2e;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.2rem;
+}
+
+/* Audio player styling */
+#audioLinks {
+    margin: 1.2rem 0;
+    text-align: center;
+}
+
+.fake-player-bar {
+    display: flex;
+    align-items: center;
+    background: #212121;
+    padding: 0.5rem 0.7rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+    flex: 0 0 60%;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.fake-player-bar:hover {
+    background: #333344;
+    transform: translateY(-3px);
+}
+
+.play-emoji {
+    font-size: 28px;
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.progress-track {
+    flex: 1;
+    height: 7px;
+    background: #424242;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 20%;
+    background: #d81b60;
+}
+
+.audio-label {
+    margin-left: 1.2rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #e0e0e0;
+}
+
+  </style>
+</head>
+<body>
+  <!-- EDITOR PANEL -->
+  <div class="editor-panel editMode" style="display: none;">
+    <div style="margin-bottom:1.2rem;"><strong>Editor Tools</strong></div>
+    <hr>
+    <label style="display: inline; cursor: pointer;"><b>Unordered List</b><br>Use ^^ for delimiter<br>
+        <input type="checkbox" id="olCheckbox" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;">Change to Ordered List
+</label>
+<button id="formatBtn">Make List</button>
+
+<hr>
+
+
+    <label>Display Text<br><input id="linkText" placeholder="e.g. Watch on YouTube"></label>
+    <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
+
+    <button id="btnAddLink">+ Add Link</button>
+    <button id="btnAddAudioLink">+ Add Podcast Player w/Link</button>
+    <hr>
+
+    <hr>
+     <button id="btnAdd">+ Add Section</button>
+     <hr>
+    <label>Save As<br><input id="filenameInput" value="myPodcastPage.html"></label>
+    <button id="btnSave">Save to Local File</button>
+  </div>
+  <div class="container">
+    <div class="header">Dr. Ray's English Lessons</div><br>
+    <div class="sectionTop">
+      <h2 id="articleTitle" style="color:#3CA29A;">Toothache Fiasco</h2>
+      <p>Mark's day spirals into chaos after a toothache leads to a series 
+of mishaps—locking himself out of his car and house, a crow stealing his
+ keys, falling into mud and thorny bushes. Fortunately, his neighbor 
+shows up and offers to drive him to the dentist, reminding Mark of the 
+value of good neighbors.</p>
+      <div id="linksSection" style="text-align:right;width:100%"><a href="https://drcray.github.io/ELF/ssPre/toothacheFiascoPodcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">Cloze Select Quiz</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button></div>
+    </div><br>
+    <!-- AUDIO BLOCK -->
+<div id="audioLinks">
+  <div>Listen to Podcast
+    <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete title only</button>
+  </div>
+<div class="audio-link-wrapper"><button class="audio-del editMode" style="display: none;">X</button><a href="https://youtu.be/hbDqDpMmse4" target="_blank" style="display: flex; width: 100%; text-decoration: none; color: inherit;"><div class="fake-player-bar"><div class="play-emoji">▶️</div><div class="progress-track"><div class="progress-fill"></div></div></div><div class="audio-label">Toothache Fiasco</div></a></div></div>
+
+
+
+
+    <!-- TEMPLATE -->
+    <div id="sectionTemplate" style="display:none">
+      <h3>New Section</h3>
+        <div>  [Type or past text here] </div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+    </div>
+
+
+    <!-- SECTION 1 -->
+    <div class="section"><div><div class="podcast-story">
+  <h2>A Toothache and a String of Unfortunate Events</h2><section>
+    <h3>1. Waking Up to Disaster: Mark’s Painful Morning</h3>
+    <ul><li><b>Host:</b> You ever have one of those mornings where 
+everything goes sideways before you even get out the door? Picture this:
+ Mark wakes up with a toothache from hell. Like, one of those aches that
+ just throbs in your jaw.</li><li><b>Guest:</b> Oh, I’ve been there! It’s like your whole day is
+ doomed from the start. And with tooth pain, it feels like your brain is
+ rattling in your skull. So, Mark calls his dentist in a panic, right?</li><li><b>Host:</b> Exactly! He’s lucky—his dentist squeezes him in, 
+but there’s a catch: don’t be late or you’re out of luck until tomorrow.
+ No pressure! So Mark, even though his tooth is throbbing, grabs his 
+toothbrush. He can’t face the dentist with gross breath.</li><li><b>Guest:</b> That's a true commitment to personal hygiene. He
+ brushes, it’s agony, but he manages, grabs his coat and dashes outside.
+ That’s when things really start to unravel.</li><li><b>Host:</b> Yeah, it goes from bad to slapstick comedy in seconds. You can just tell it’s going to be one of those stories.</li></ul>
+  </section>
+
+  <section>
+    <h3>2. A Crow, Shiny Keys, and a Muddy Disaster</h3>
+    <ul><li><b>Guest:</b> So as Mark’s rushing, he gets to his car 
+and—nothing. No beep, no welcome. He’s locked out because his key fob is
+ inside. You can almost hear that sinking feeling, right?</li><li><b>Host:</b> Totally. He races back to the house, and then the
+ scene turns from one chaotic event to another. He trips, his keys go 
+flying, and before he even gets a chance to react, a huge crow swoops in
+ and snatches them up!</li><li><b>Guest:</b> You're right, things went from bad to worse in a
+ flash. A crafty crow! Out of nowhere, takes Mark's keys. He tries to 
+swipe at the bird but instead, he face-plants into a mud puddle. Now 
+he’s in physical pain, emotionally upset, and wearing a mud suit.</li><li><b>Host:</b> It's like the universe was stacking up all the 
+minor miseries for him. But what really got me is he still doesn’t give 
+up. Covered in mud, tooth pounding, he’s already looking for plan B.</li><li><b>Guest:</b> But little did he know, things were about to get
+ even messier—literally and figuratively. He grabs a ladder to get into 
+an unlocked window upstairs, but he reaches for the window, and ... like
+ Humpty Dumpty ... has a great fall. Luckily there were bushes below -- 
+sticker bushes ... Ouch!</li></ul>
+  </section>
+
+  <section>
+    <h3>3. Neighborly Rescue: When Bad Luck Meets Good People</h3>
+    <ul><li><b>Host:</b> So there’s Mark, muddy and scratched up, crawling
+ out of the bushes. To say he was disheveled would be an understatement.
+ I'm sure he was ready to call it quits.</li><li><b>Guest:</b> But then—perfect timing—his neighbor Tom pulls 
+in. I love this moment. Tom could’ve just ignored the chaos, but 
+instead, he’s right there, asking what’s up, barely holding back 
+laughter.</li><li><b>Host:</b> Honestly, I can’t blame Tom for wanting to laugh.
+ Mark explaining the whole absurd morning while looking like he survived
+ a mudslide must’ve been a sight. But Tom doesn’t hesitate—he offers him
+ a ride, muddy clothes and all.</li><li><b>Guest:</b> That’s real neighbor spirit. Tom just shrugs off
+ the mess and says, 'That’s what good neighbors are for.' It’s such a 
+perfect ending after all that chaos. Sometimes your luck turns around in
+ the most unexpected way.</li><li><b>Host:</b> Definitely. It’s those little moments of kindness
+ that make the disasters feel almost worth it—plus, you get a wonderful 
+self-deprecating story to pass on to your grandchildren.</li></ul>
+  </section>
+</div>] </div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+    </div>
+    <div class="edit-spacer editMode" style="display: none;"></div>
+  </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const $ = s => document.querySelector(s);
+  const linkText = $('#linkText');
+  const linkUrl = $('#linkUrl');
+  //const audioIn = $('#audioInput');
+  const fileIn = $('#filenameInput');
+  const linksSec = $('#linksSection');
+  const audioLinksSec = $('#audioLinks');
+  const container = $('.container');
+
+
+// TOP-RIGHT LINKS DELETE (delegation)
+linksSec.addEventListener('click', (e) => {
+  if (e.target.classList.contains('link-del')) {
+    e.target.previousElementSibling.remove(); // remove the <a>
+    e.target.remove();                        // remove the X button
+  }
+});
+
+
+  audioLinksSec.addEventListener('click', (e) => {
+  if (e.target.classList.contains('audio-del')) {
+    e.target.parentElement.remove();
+  }
+});
+
+ // ADD REGULAR LINK (top right)
+  // ADD REGULAR LINK - now uses delegation
+  $('#btnAddLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    if (!text || !url) return alert('Fill both fields');
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.textContent = text;
+    link.style = 'font-size:92%; display:block; text-align:right;';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'link-del editMode';
+    del.style = 'margin-left:8px; font-size:0.7rem;';
+    // NO onclick here — handled by delegation below
+
+    linksSec.appendChild(link);
+    linksSec.appendChild(del);
+
+    linkText.focus();
+  };
+
+   // ADD AUDIO LINK - now uses delegation
+  $('#btnAddAudioLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    if (!text || !url) return alert('Fill both fields');
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'audio-link-wrapper';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'audio-del editMode';
+    // NO onclick here
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.style = 'display:flex; width:100%; text-decoration:none; color:inherit;';
+
+    const bar = document.createElement('div');
+    bar.className = 'fake-player-bar';
+
+    const emoji = document.createElement('div');
+    emoji.className = 'play-emoji';
+    emoji.textContent = '▶️';
+
+    const track = document.createElement('div');
+    track.className = 'progress-track';
+    const fill = document.createElement('div');
+    fill.className = 'progress-fill';
+    track.appendChild(fill);
+
+    bar.appendChild(emoji);
+    bar.appendChild(track);
+
+    const label = document.createElement('div');
+    label.className = 'audio-label';
+    label.textContent = text;
+
+    a.appendChild(bar);
+    a.appendChild(label);
+
+    wrapper.appendChild(del);
+    wrapper.appendChild(a);
+
+    audioLinksSec.appendChild(wrapper);
+
+    linkText.focus();
+  };
+
+
+
+  // ADD SECTION (FIXED: add editMode to delBtn and spacer)
+  $('#btnAdd').onclick = () => {
+    const clone = $('#sectionTemplate').cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.className = 'section';
+    clone.contentEditable = 'true';
+
+    const delBtn = clone.querySelector('.delBtn');
+    delBtn.classList.add('editMode');
+    delBtn.onclick = () => clone.remove();
+
+    container.appendChild(clone);
+
+    const sp = document.createElement('div');
+    sp.className = 'edit-spacer editMode';
+    sp.contentEditable = 'false';
+    container.appendChild(sp);
+  };
+
+  // SAVE (WORKS: hides only editMode, restores, saves clean)
+$('#btnSave').onclick = () => {
+  // 1. Update <title>
+  const h2 = document.getElementById('articleTitle');
+  const title = document.querySelector('title');
+  if (h2 && title) title.textContent = h2.textContent.trim();
+
+
+  // 3. HIDE editMode elements
+  const editElements = document.querySelectorAll('.editMode');
+  editElements.forEach(el => el.style.display = 'none');
+
+  // 4. DISABLE contenteditable
+  const editableEls = document.querySelectorAll('[contenteditable]');
+  const wasEditable = [];
+  editableEls.forEach(el => {
+    wasEditable.push(el);
+    el.removeAttribute('contenteditable');
+  });
+
+  // 5. Capture clean HTML
+  const cleanHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // 6. RESTORE contenteditable
+  wasEditable.forEach(el => el.setAttribute('contenteditable', 'true'));
+
+  // 7. RESTORE visibility
+  editElements.forEach(el => el.style.display = 'block');
+
+  // 8. Download
+  const blob = new Blob([cleanHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileIn.value.trim() || 'podcast.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+title.textContent="webpageMaker";
+
+  // 9. Alert and confirm save editable version
+let saveEditableVersion = confirm("Saved to default download folder.\nSave an editable version?");
+
+if (!saveEditableVersion) return;  // Exit function if Cancel
+
+  // === 10. SAVE EDITABLE VERSION ===
+const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+const editBlob = new Blob([editHTML], { type: 'text/html' });
+const editUrl = URL.createObjectURL(editBlob);
+const editA = document.createElement('a');
+const baseName = fileIn.value.trim() || 'podcast.html';
+const editName = baseName.replace(/\.html$/, '') + 'EditMode.html';
+editA.href = editUrl;
+editA.download = editName;
+document.body.appendChild(editA);
+editA.click();
+document.body.removeChild(editA);
+URL.revokeObjectURL(editUrl);
+title.textContent="webpageMaker";
+};
+
+  // Enter = Add Link
+  linkText.onkeypress = linkUrl.onkeypress = e => {
+    if (e.key === 'Enter') $('#btnAddLink').click();
+  };
+
+
+});
+
+
+//Code for Making Lists
+document.getElementById('formatBtn').addEventListener('click', function() {
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount || selection.toString().trim() === '') {
+        alert('Please select some text first');
+        return;
+    }
+
+    // Check if OL is selected
+    const useOL = document.getElementById('olCheckbox').checked;
+    const listTag = useOL ? 'ol' : 'ul';
+
+    // Get the range and extract the contents (preserves formatting)
+    const range = selection.getRangeAt(0);
+    const selectedFragment = range.cloneContents();
+
+    // Create a temporary container to work with the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(selectedFragment);
+
+    // Get the HTML with formatting preserved
+    let selectedHTML = tempDiv.innerHTML.trim();
+
+    // Remove all <br> tags (including <br/> and <br />)
+    selectedHTML = selectedHTML.replace(/<br\s*\/?>/gi, '');
+
+    // Remove leading ^^ (checking both plain and within tags)
+    selectedHTML = selectedHTML.replace(/^\^\^/, '').trim();
+
+    // Remove trailing ^^
+    selectedHTML = selectedHTML.replace(/\^\^$/, '').trim();
+
+    // Create the list structure with the chosen list type
+    let newTextList = '<' + listTag + '><li>' + selectedHTML + '</li></' + listTag + '>';
+
+    // Replace ^^ with list item breaks
+    let finalTextList = newTextList.replace(/\^\^/g, '</li><li>');
+
+    // Remove whitespace after <li> and before </li>
+    finalTextList = finalTextList.replace(/<li>\s+/g, '<li>');
+    finalTextList = finalTextList.replace(/\s+<\/li>/g, '</li>');
+
+    // Replace the selected text with the formatted list
+    range.deleteContents();
+
+    const newTempDiv = document.createElement('div');
+    newTempDiv.innerHTML = finalTextList;
+    const fragment = document.createDocumentFragment();
+    while (newTempDiv.firstChild) {
+        fragment.appendChild(newTempDiv.firstChild);
+    }
+
+    range.insertNode(fragment);
+
+});
+
+</script>
+
+
+
+</body></html>
