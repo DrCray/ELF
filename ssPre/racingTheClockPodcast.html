@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Ray's English Learning · A Race Against The Clock</title>
+  <style>
+   /* mobile-first responsive CSS — replace your entire <style> block with this */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f7fb;
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: #1e2b3c;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.page {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 20px 40px -12px rgba(0,20,40,0.2);
+  overflow: hidden;
+  padding: 1.5rem 1.2rem;
+}
+
+/* top placeholder linkouts — mobile first: column on very small, row when enough space */
+.top-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: stretch;
+  padding-bottom: 1rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid #eaeef3;
+}
+
+@media (min-width: 380px) {
+  .top-links {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.link-placeholder {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2c5f8a;
+  background: #e9f0f9;
+  padding: 0.5rem 1.2rem;
+  border-radius: 40px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: default;
+  pointer-events: none;
+  border: 1px solid #d0e0ee;
+  white-space: nowrap;
+}
+
+.link-placeholder::before {
+  content: "🔗";
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* site header */
+.site-header {
+  margin-bottom: 1.5rem;
+}
+
+.site-header h1 {
+  font-size: 1.9rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #0e3b5c;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 480px) {
+  .site-header h1 {
+    font-size: 2.2rem;
+  }
+}
+
+.site-header .tagline {
+  font-size: 0.95rem;
+  color: #557da5;
+  font-style: italic;
+  border-left: 4px solid #a2c4e0;
+  padding-left: 0.8rem;
+}
+
+/* summary block — always full width, comfortable reading */
+.summary {
+  background: #eef5fa;
+  padding: 1.4rem 1.2rem;
+  border-radius: 24px;
+  margin: 1.5rem 0 1.2rem 0;
+  font-size: 1rem;
+  border-left: 6px solid #2c5f8a;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+}
+
+@media (min-width: 400px) {
+  .summary {
+    padding: 1.6rem 2rem;
+    font-size: 1.05rem;
+  }
+}
+
+.summary p {
+  margin-bottom: 0.6rem;
+}
+
+.summary p:last-child {
+  margin-bottom: 0;
+}
+
+/* fake audio player — fully responsive, tappable */
+.fake-audio {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 60px;
+  box-shadow: 0 4px 12px rgba(0, 30, 50, 0.1), 0 0 0 1px #d9e3ed inset;
+  padding: 0.4rem 0.8rem 0.4rem 0.6rem;
+  width: 100%;
+  max-width: 440px;
+  margin: 1.2rem 0 1.8rem 0;
+  transition: 0.2s;
+}
+
+.fake-audio:hover {
+  background: #f9fcff;
+  box-shadow: 0 6px 16px rgba(37, 99, 148, 0.2);
+}
+
+.fake-audio a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+@media (min-width: 380px) {
+  .fake-audio a {
+    flex-wrap: nowrap;
+  }
+}
+
+.audio-control-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 160px;
+}
+
+.play-icon {
+  background: #2c5f8a;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(44,95,138,0.3);
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.track-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #0f344d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-source {
+  font-size: 0.7rem;
+  color: #6b85a0;
+}
+
+.wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.wave-bars span {
+  width: 4px;
+  height: 18px;
+  background: #a0bedb;
+  border-radius: 12px;
+  display: inline-block;
+  opacity: 0.6;
+}
+
+.wave-bars span:nth-child(2) { height: 26px; background: #2c5f8a; opacity: 1; }
+.wave-bars span:nth-child(3) { height: 14px; }
+.wave-bars span:nth-child(4) { height: 22px; }
+.wave-bars span:nth-child(5) { height: 12px; }
+
+.duration {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2b4e6f;
+  background: #e2ecf5;
+  padding: 4px 8px;
+  border-radius: 30px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* main discussion — mobile-first: speaker label above message, not to the side */
+.discussion {
+  margin-top: 2rem;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 3px solid #cbdbe9;
+  padding-bottom: 0.3rem;
+  margin-bottom: 1.5rem;
+  color: #1e405e;
+  line-height: 1.3;
+}
+
+@media (min-width: 480px) {
+  .section-title {
+    font-size: 1.7rem;
+  }
+}
+
+/* conversation messages - each message as a card-like block */
+.message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+  background: #f8fafd;
+  border-radius: 20px;
+  padding: 0.9rem 1rem 0.7rem 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.message-mark, .message-Sally {
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.3rem;
+  display: inline-block;
+  width: fit-content;
+  padding: 0.15rem 1rem 0.15rem 0;
+  border-bottom: 2px dotted currentColor;
+}
+
+.message-mark {
+  color: #1d6091;
+  border-bottom-color: #b5cfec;
+}
+
+.message-Sally {
+  color: #b1624b;
+  border-bottom-color: #e7c1b3;
+}
+
+.message p {
+  margin: 0;
+  font-size: 0.98rem;
+  color: #1b3144;
+  line-height: 1.5;
+}
+
+/* alternate background for Sally messages (soft contrast) */
+.message:has(.message-Sally) {
+  background: #fef8f5;
+}
+
+/* a bit more breathing on tablets */
+@media (min-width: 600px) {
+  .page {
+    padding: 2rem 2rem;
+  }
+
+  .message {
+    padding: 1rem 1.4rem;
+  }
+
+  .message p {
+    font-size: 1.02rem;
+  }
+}
+
+/* optional subtle hover for messages (nice on desktop) */
+.message:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+/* footer */
+footer {
+  margin-top: 2.5rem;
+  border-top: 2px solid #e2eaf2;
+  padding-top: 1.2rem;
+  font-size: 0.8rem;
+  color: #6682a0;
+  text-align: center;
+}
+
+/* hide any accidental numbers */
+.discussion h2::before,
+.discussion h3::before,
+.section-title::before,
+.message::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* extra small screen fine-tuning */
+@media (max-width: 360px) {
+  .fake-audio a {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .duration {
+    margin-left: 0;
+    width: fit-content;
+  }
+  .top-links .link-placeholder {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- top placeholder linkouts (two items) -->
+    <div class="top-links">
+      <a href="https://drcray.github.io/ELF/ssPre/racingTheClockPodcastIdiomCollocates.html" target="_blank"><span class="link-placeholder">Podcast Quiz (idioms and collocations)</span></a>
+<a href="https://drcray.github.io/ELF/ssPre/racingTheClockPodcastVocabQuiz.html" target="_blank"><span class="link-placeholder">Podcast Quiz (Vocab)</span></a>    </div>
+
+    <!-- site header -->
+    <div class="site-header">
+      <h1>Dr. Ray's English Learning</h1>
+      <div class="tagline">real talk · real stories · real english</div>
+    </div>
+
+    <!-- story summary (no numbers) -->
+    <div class="summary">
+      <p><strong>A Race Against The Clock - Podcast</strong><br><br><em>For the article: <a href="https://drcray.github.io/ELF/ssPre/JamesRacesTheClockArticle.html" target="_blank">James Races the Clock</a></p>
+      <p>James misses his bus and, desperate to avoid being late for work, rents a bike and races through city streets. After a near-miss with a pedestrian and crashing into a coffee stand, James unexpectedly meets his boss, who offers him a coffee, turning a stressful morning into a moment of relief.</p>
+    </div>
+
+    <!-- fake audio player linking to YouTube (only CSS styling, looks like audio) -->
+    <div class="fake-audio">
+      <a href="https://youtu.be/MmDgGQlSM2Q" target="_blank" rel="noopener">
+        <div class="audio-control-left">
+          <span class="play-icon">▶</span>
+          <div class="track-info">
+            <span class="track-name">A Race Against The Clock - Podcast</span>
+            <span class="track-source">Dr. Ray's audio · YouTube</span>
+          </div>
+        </div>
+        <div class="wave-bars">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span class="duration">3:04</span>
+      </a>
+    </div>
+
+    <!-- main discussion – numbers are not displayed, only names and paragraphs -->
+    <div class="discussion">
+
+      <!-- section 1: Missing the Bus -->
+      <div class="section">
+        <div class="section-title">Missing the Bus: A Comedic Race Against Time</div>
+        <div class="speaker-block">
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>I can’t help but laugh picturing James sprinting down the street, briefcase flapping, desperately trying to catch that bus. There’s something so universal about that panic when you realize you’re about to be late.</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>Exactly! That awful mix of adrenaline and doom as the bus door closes just out of reach—it’s like time suddenly speeds up, but your legs turn to jelly. Poor James had no wiggle room with his boss, either.</p>
+          </div>
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>Exactly! And it’s that split-second decision—do I just give up or do I go for it? I love how James didn’t even hesitate. He just took off, chasing after hope and maybe that last sliver of dignity.</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>For sure, and what really gets me is that bittersweet moment when he almost makes it—the bus is right there at the red light. That moment of hope, then poof, the light turns green, and he’s left gasping on the sidewalk. It’s like the universe is having a laugh at his expense.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- section 2: Desperate Solutions -->
+      <div class="section">
+        <div class="section-title">Desperate Solutions: A Bike and a Big Gamble</div>
+        <div class="speaker-block">
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>After that crushing defeat, James could’ve just sulked, but instead he’s scanning the street for any possible solution. I love that he spots the bike rental—seriously, it’s like a little action movie moment.</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>Totally, his instincts kick in and suddenly he’s a Tour de France contender, flying down the street. You can almost hear the dramatic music. And there’s this sense that he’s betting everything on pure determination and pedal power.</p>
+          </div>
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>And what a gamble! He’s racing the clock, dodging traffic, probably sweating buckets—just praying he won’t hit another red light. There’s something heroic but also a little ridiculous about it, which I think makes James even more relatable.</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>Definitely—plus, that tunnel vision when you’re so focused on the goal, everything else blurs out. But the world keeps throwing challenges at him: timing, traffic, and then that one last unpredictable obstacle.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- section 3: Unexpected Detours -->
+      <div class="section">
+        <div class="section-title">Unexpected Detours: Crash, Coffee, and a Twist of Fate</div>
+        <div class="speaker-block">
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>So just when you think James might actually pull off this wild commute, things suddenly go south: the old lady in the crosswalk. I mean, talk about bad timing!</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>It’s classic—that moment where everything hangs in the balance, and then, bam, he’s flying into a coffee stand instead of the office. It’s almost slapstick, but it’s also that culmination of all his frantic effort.</p>
+          </div>
+          <div class="message">
+            <div class="message-mark">Mark</div>
+            <p>So, as he’s sitting there, dazed and probably a bit bruised, fate decides to throw in one last twist—his boss was standing there, coffee in hand. And then, instead of a lecture, his boss just grins and offers him a coffee. That moment of unexpected kindness—after a morning packed with setbacks—must have been a great relief for Mark.</p>
+          </div>
+          <div class="message">
+            <div class="message-Sally">Sally</div>
+            <p>I think that the incident actually turned out to be a good thing. Mark's boss was probably impressed to see the effort Mark was making to get to work on time. And sharing a coffee with the boss puts that relationship at another level. It's not just a memorable moment for Mark, but for his boss as well. It puts Mark on the boss' radar; and Mark can use that to his advantage by being on time and performing well.</p>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- end discussion -->
+
+    <footer style="margin-top: 3rem; border-top: 2px solid #e2eaf2; padding-top: 1.5rem; font-size: 0.9rem; color: #6682a0; text-align: center;">
+      Dr. Ray's English Learning · language practice
+    </footer>
+  </div> <!-- end page -->
+</body>
+</html>
