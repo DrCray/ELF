@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Race Against the Clock - Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+             display: flex;
+      flex-direction: column;
+      gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+  
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        
+        footer { margin-top: 15rem; }
+        
+        
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+   
+   
+ #theWordList {
+    display: none; /* Initially hide theWordList div */
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  } 
+  #subtitle {
+    font-size: 120%;
+  }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>A Race Against the Clock</h1>
+        <p id="subtitle">Podcast Vocabulary Exercise</p>
+        <p>Select the correct vocabulary word or phrase for each sentence.</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column</button>
+
+    <div class="output" id="output"></div>
+    </div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. The bus door closed just <select data-answer="out of reach">
+                <option value="">-- Select --</option>
+                <option value="speeds up">speeds up</option>
+                <option value="out of reach">out of reach</option>
+                <option value="give up">give up</option>
+                <option value="wiggle room">wiggle room</option>
+                <option value="took off">took off</option>
+            </select>---meaning it was too far away for James to get to it.
+        </div>
+        <div class="sentence">
+            2. It's like time suddenly <select data-answer="speeds up">
+                <option value="">-- Select --</option>
+                <option value="took off">took off</option>
+                <option value="wiggle room">wiggle room</option>
+                <option value="speeds up">speeds up</option>
+                <option value="out of reach">out of reach</option>
+                <option value="give up">give up</option>
+            </select>, meaning it seems to go faster than normal.
+        </div>
+        <div class="sentence">
+            3. Poor James had no <select data-answer="wiggle room">
+                <option value="">-- Select --</option>
+                <option value="give up">give up</option>
+                <option value="out of reach">out of reach</option>
+                <option value="took off">took off</option>
+                <option value="wiggle room">wiggle room</option>
+                <option value="speeds up">speeds up</option>
+            </select> with his boss, meaning there was no flexibility or room for mistakes.
+        </div>
+        <div class="sentence">
+            4. It's that split-second decision---do I just <select data-answer="give up">
+                <option value="">-- Select --</option>
+                <option value="wiggle room">wiggle room</option>
+                <option value="speeds up">speeds up</option>
+                <option value="out of reach">out of reach</option>
+                <option value="took off">took off</option>
+                <option value="give up">give up</option>
+            </select> or do I go for it? This means to stop trying.
+        </div>
+        <div class="sentence">
+            5. He just <select data-answer="took off">
+                <option value="">-- Select --</option>
+                <option value="out of reach">out of reach</option>
+                <option value="took off">took off</option>
+                <option value="speeds up">speeds up</option>
+                <option value="give up">give up</option>
+                <option value="wiggle room">wiggle room</option>
+            </select>, chasing after hope, meaning he left quickly and suddenly.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            6. James didn't even hesitate---he decided to <select data-answer="go for it">
+                <option value="">-- Select --</option>
+                <option value="at his expense">at his expense</option>
+                <option value="go for it">go for it</option>
+                <option value="sweating buckets">sweating buckets</option>
+                <option value="kick in">kick in</option>
+                <option value="tunnel vision">tunnel vision</option>
+            </select>, meaning he chose to try his hardest despite the risk.
+        </div>
+        <div class="sentence">
+            7. The universe is having a laugh <select data-answer="at his expense">
+                <option value="">-- Select --</option>
+                <option value="tunnel vision">tunnel vision</option>
+                <option value="kick in">kick in</option>
+                <option value="at his expense">at his expense</option>
+                <option value="go for it">go for it</option>
+                <option value="sweating buckets">sweating buckets</option>
+            </select>, meaning bad things are happening to him in a way that seems funny to others.
+        </div>
+        <div class="sentence">
+            8. His instincts <select data-answer="kick in">
+                <option value="">-- Select --</option>
+                <option value="sweating buckets">sweating buckets</option>
+                <option value="go for it">go for it</option>
+                <option value="tunnel vision">tunnel vision</option>
+                <option value="at his expense">at his expense</option>
+                <option value="kick in">kick in</option>
+            </select> and suddenly he's a Tour de France contender, meaning his natural reactions start working automatically.
+        </div>
+        <div class="sentence">
+            9. He's racing the clock, dodging traffic, probably <select data-answer="sweating buckets">
+                <option value="">-- Select --</option>
+                <option value="go for it">go for it</option>
+                <option value="sweating buckets">sweating buckets</option>
+                <option value="at his expense">at his expense</option>
+                <option value="kick in">kick in</option>
+                <option value="tunnel vision">tunnel vision</option>
+            </select>, meaning he is sweating a lot from stress and effort.
+        </div>
+        <div class="sentence">
+            10. That <select data-answer="tunnel vision">
+                <option value="">-- Select --</option>
+                <option value="kick in">kick in</option>
+                <option value="at his expense">at his expense</option>
+                <option value="go for it">go for it</option>
+                <option value="tunnel vision">tunnel vision</option>
+                <option value="sweating buckets">sweating buckets</option>
+            </select> when you're so focused on the goal means you can only see one thing and ignore everything else.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            11. Everything else <select data-answer="blurs out">
+                <option value="">-- Select --</option>
+                <option value="just when you think">just when you think</option>
+                <option value="blurs out">blurs out</option>
+                <option value="go south">go south</option>
+                <option value="pull off">pull off</option>
+                <option value="bad timing">bad timing</option>
+            </select> when you're so focused, meaning the surroundings become unclear and hard to notice.
+        </div>
+        <div class="sentence">
+            12. <select data-answer="just when you think">
+                <option value="">-- Select --</option>
+                <option value="bad timing">bad timing</option>
+                <option value="pull off">pull off</option>
+                <option value="blurs out">blurs out</option>
+                <option value="just when you think">just when you think</option>
+                <option value="go south">go south</option>
+            </select> James might actually make it, things suddenly get worse. This phrase introduces an unexpected change.
+        </div>
+        <div class="sentence">
+            13. James might actually <select data-answer="pull off">
+                <option value="">-- Select --</option>
+                <option value="go south">go south</option>
+                <option value="blurs out">blurs out</option>
+                <option value="bad timing">bad timing</option>
+                <option value="just when you think">just when you think</option>
+                <option value="pull off">pull off</option>
+            </select> this wild commute, meaning he might succeed at something difficult.
+        </div>
+        <div class="sentence">
+            14. Things suddenly <select data-answer="go south">
+                <option value="">-- Select --</option>
+                <option value="pull off">pull off</option>
+                <option value="bad timing">bad timing</option>
+                <option value="just when you think">just when you think</option>
+                <option value="go south">go south</option>
+                <option value="blurs out">blurs out</option>
+            </select>: the old lady in the crosswalk. This means the situation gets worse or goes wrong.
+        </div>
+        <div class="sentence">
+            15. Talk about <select data-answer="bad timing">
+                <option value="">-- Select --</option>
+                <option value="blurs out">blurs out</option>
+                <option value="go south">go south</option>
+                <option value="just when you think">just when you think</option>
+                <option value="pull off">pull off</option>
+                <option value="bad timing">bad timing</option>
+            </select>! This means something happened at the worst possible moment.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            16. That moment where everything <select data-answer="hangs in the balance">
+                <option value="">-- Select --</option>
+                <option value="turned out">turned out</option>
+                <option value="hangs in the balance">hangs in the balance</option>
+                <option value="to his advantage">to his advantage</option>
+            </select>, meaning the outcome is uncertain and could go either way.
+        </div>
+        <div class="sentence">
+            17. The incident actually <select data-answer="turned out">
+                <option value="">-- Select --</option>
+                <option value="to his advantage">to his advantage</option>
+                <option value="hangs in the balance">hangs in the balance</option>
+                <option value="turned out">turned out</option>
+            </select> to be a good thing, meaning the result or ending was positive.
+        </div>
+        <div class="sentence">
+            18. James can use that <select data-answer="to his advantage">
+                <option value="">-- Select --</option>
+                <option value="hangs in the balance">hangs in the balance</option>
+                <option value="to his advantage">to his advantage</option>
+                <option value="turned out">turned out</option>
+            </select> by being on time and performing well, meaning he can benefit from the situation.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+   <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem.">     Instructions:  <br>
+1. Save as PDF file<br>
+2. Upload to the E-class<br>
+    </div>
+
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check if name is missing or unchanged
+            if (studentName === '' || studentName === 'Enter your full name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Check if ID is missing or unchanged
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // If both are filled, hide error and print
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+        
+        
+// Force hard refresh on any page reload
+window.addEventListener('beforeunload', function() {
+    // Clear form data
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+});        
+        
+        
+// Toggle show/hide answers
+let answersVisible = false;
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    const button = document.getElementById('toggleAnswersBtn');
+    
+    document.querySelectorAll('select').forEach(select => {
+        if (answersVisible) {
+            // Show correct answer
+            const correctAnswer = select.getAttribute('data-answer');
+            select.value = correctAnswer;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Hide answers - reset to default
+            select.selectedIndex = 0;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+    
+    // Update button text
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}        
+    </script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column') 
+        ? 'Close Column View' 
+        : 'View as Column';
+      updateOutput();
+    }
+
+    // Initial render
+    updateOutput();
+    
+    
+    
+  </script>   
+  
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+</script>
+    <footer>...</footer>
+</body>
+</html>

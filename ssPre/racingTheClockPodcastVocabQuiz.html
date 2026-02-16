@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Race Against the Clock - Vocabulary Quiz</title>
+    <style>
+    html {
+    font-size: 150%; /* or 1.2rem equivalent */
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+             display: flex;
+      flex-direction: column;
+      gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+  
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        
+        footer { margin-top: 15rem; }
+        
+        
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+   
+   
+ #theWordList {
+    display: none; /* Initially hide theWordList div */
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  } 
+  #subtitle {
+    font-size: 120%;
+  }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>A Race Against the Clock</h1>
+        <p id="subtitle">Podcast Vocabulary Exercise</p>
+        <p>Select the correct vocabulary word or phrase for each sentence.</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column</button>
+
+    <div class="output" id="output"></div>
+    </div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+
+   <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. Mark: I can't help but laugh picturing James sprinting down the street, briefcase flapping, <select data-answer="desperately">
+                <option value="">-- Select --</option>
+                <option value="panic">panic</option>
+                <option value="desperately">desperately</option>
+                <option value="adrenaline">adrenaline</option>
+                <option value="split-second">split-second</option>
+                <option value="hesitate">hesitate</option>
+            </select> trying to catch that bus. There's something so universal about that <select data-answer="panic">
+                <option value="">-- Select --</option>
+                <option value="hesitate">hesitate</option>
+                <option value="adrenaline">adrenaline</option>
+                <option value="panic">panic</option>
+                <option value="desperately">desperately</option>
+                <option value="split-second">split-second</option>
+            </select> when you realize you're about to be late.
+        </div>
+        <div class="sentence">
+            2. Sally: Exactly! That awful mix of <select data-answer="adrenaline">
+                <option value="">-- Select --</option>
+                <option value="split-second">split-second</option>
+                <option value="desperately">desperately</option>
+                <option value="adrenaline">adrenaline</option>
+                <option value="hesitate">hesitate</option>
+                <option value="panic">panic</option>
+            </select> and doom as the bus door closes just out of reach---it's like time suddenly speeds up, but your legs turn to jelly. Poor James had no wiggle room with his boss, either.
+        </div>
+        <div class="sentence">
+            3. Mark: Exactly! And it's that <select data-answer="split-second">
+                <option value="">-- Select --</option>
+                <option value="adrenaline">adrenaline</option>
+                <option value="panic">panic</option>
+                <option value="hesitate">hesitate</option>
+                <option value="split-second">split-second</option>
+                <option value="desperately">desperately</option>
+            </select> decision---do I just give up or do I go for it? I love how James didn't even <select data-answer="hesitate">
+                <option value="">-- Select --</option>
+                <option value="desperately">desperately</option>
+                <option value="split-second">split-second</option>
+                <option value="panic">panic</option>
+                <option value="adrenaline">adrenaline</option>
+                <option value="hesitate">hesitate</option>
+            </select>. He just took off, chasing after hope and maybe that last <select data-answer="sliver">
+                <option value="">-- Select --</option>
+                <option value="panic">panic</option>
+                <option value="hesitate">hesitate</option>
+                <option value="sliver">sliver</option>
+                <option value="desperately">desperately</option>
+                <option value="adrenaline">adrenaline</option>
+            </select> of dignity.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            4. Sally: For sure, and what really gets me is that <select data-answer="bittersweet">
+                <option value="">-- Select --</option>
+                <option value="scanning">scanning</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="crushing">crushing</option>
+                <option value="gasping">gasping</option>
+                <option value="instincts">instincts</option>
+            </select> moment when he almost makes it---the bus is right there at the red light. That moment of hope, then poof, the light turns green, and he's left <select data-answer="gasping">
+                <option value="">-- Select --</option>
+                <option value="crushing">crushing</option>
+                <option value="instincts">instincts</option>
+                <option value="gasping">gasping</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="scanning">scanning</option>
+            </select> on the sidewalk. It's like the universe is having a laugh at his expense.
+        </div>
+        <div class="sentence">
+            5. Mark: After that <select data-answer="crushing">
+                <option value="">-- Select --</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="gasping">gasping</option>
+                <option value="instincts">instincts</option>
+                <option value="crushing">crushing</option>
+                <option value="scanning">scanning</option>
+            </select> defeat, James could've just sulked, but instead he's <select data-answer="scanning">
+                <option value="">-- Select --</option>
+                <option value="instincts">instincts</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="scanning">scanning</option>
+                <option value="gasping">gasping</option>
+                <option value="crushing">crushing</option>
+            </select> the street for any possible solution. I love that he spots the bike rental---seriously, it's like a little action movie moment.
+        </div>
+        <div class="sentence">
+            6. Sally: Totally, his <select data-answer="instincts">
+                <option value="">-- Select --</option>
+                <option value="gasping">gasping</option>
+                <option value="crushing">crushing</option>
+                <option value="scanning">scanning</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="instincts">instincts</option>
+            </select> kick in and suddenly he's a Tour de France <select data-answer="contender">
+                <option value="">-- Select --</option>
+                <option value="scanning">scanning</option>
+                <option value="contender">contender</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="crushing">crushing</option>
+                <option value="gasping">gasping</option>
+            </select>, flying down the street. You can almost hear the dramatic music. And there's this sense that he's betting everything on pure <select data-answer="determination">
+                <option value="">-- Select --</option>
+                <option value="bittersweet">bittersweet</option>
+                <option value="instincts">instincts</option>
+                <option value="gasping">gasping</option>
+                <option value="determination">determination</option>
+                <option value="crushing">crushing</option>
+            </select> and pedal power.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            7. Mark: And what a gamble! He's racing the clock, <select data-answer="dodging">
+                <option value="">-- Select --</option>
+                <option value="unpredictable">unpredictable</option>
+                <option value="dodging">dodging</option>
+                <option value="relatable">relatable</option>
+                <option value="commute">commute</option>
+                <option value="culmination">culmination</option>
+            </select> traffic, probably sweating buckets---just praying he won't hit another red light. There's something heroic but also a little ridiculous about it, which I think makes James even more <select data-answer="relatable">
+                <option value="">-- Select --</option>
+                <option value="commute">commute</option>
+                <option value="culmination">culmination</option>
+                <option value="dodging">dodging</option>
+                <option value="relatable">relatable</option>
+                <option value="unpredictable">unpredictable</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            8. Sally: Definitely---plus, that tunnel vision when you're so focused on the goal, everything else blurs out. But the world keeps throwing challenges at him: timing, traffic, and then that one last <select data-answer="unpredictable">
+                <option value="">-- Select --</option>
+                <option value="relatable">relatable</option>
+                <option value="commute">commute</option>
+                <option value="unpredictable">unpredictable</option>
+                <option value="culmination">culmination</option>
+                <option value="dodging">dodging</option>
+            </select> obstacle.
+        </div>
+        <div class="sentence">
+            9. Mark: So just when you think James might actually pull off this wild <select data-answer="commute">
+                <option value="">-- Select --</option>
+                <option value="dodging">dodging</option>
+                <option value="unpredictable">unpredictable</option>
+                <option value="culmination">culmination</option>
+                <option value="relatable">relatable</option>
+                <option value="commute">commute</option>
+            </select>, things suddenly go south: the old lady in the crosswalk. I mean, talk about bad timing!
+        </div>
+        <div class="sentence">
+            10. Sally: It's classic---that moment where everything hangs in the balance, and then, bam, he's flying into a coffee stand instead of the office. It's almost slapstick, but it's also that <select data-answer="culmination">
+                <option value="">-- Select --</option>
+                <option value="culmination">culmination</option>
+                <option value="dodging">dodging</option>
+                <option value="unpredictable">unpredictable</option>
+                <option value="commute">commute</option>
+                <option value="relatable">relatable</option>
+            </select> of all his <select data-answer="frantic">
+                <option value="">-- Select --</option>
+                <option value="commute">commute</option>
+                <option value="relatable">relatable</option>
+                <option value="dodging">dodging</option>
+                <option value="frantic">frantic</option>
+                <option value="unpredictable">unpredictable</option>
+            </select> effort.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            11. Mark: So, as he's sitting there, <select data-answer="dazed">
+                <option value="">-- Select --</option>
+                <option value="incident">incident</option>
+                <option value="dazed">dazed</option>
+                <option value="impressed">impressed</option>
+                <option value="setbacks">setbacks</option>
+                <option value="memorable">memorable</option>
+            </select> and probably a bit bruised, fate decides to throw in one last twist---his boss was standing there, coffee in hand. And then, instead of a lecture, his boss just grins and offers him a coffee. That moment of unexpected kindness---after a morning packed with <select data-answer="setbacks">
+                <option value="">-- Select --</option>
+                <option value="memorable">memorable</option>
+                <option value="setbacks">setbacks</option>
+                <option value="dazed">dazed</option>
+                <option value="incident">incident</option>
+                <option value="impressed">impressed</option>
+            </select>---must have been a great relief for James.
+        </div>
+        <div class="sentence">
+            12. Sally: I think that the <select data-answer="incident">
+                <option value="">-- Select --</option>
+                <option value="impressed">impressed</option>
+                <option value="dazed">dazed</option>
+                <option value="memorable">memorable</option>
+                <option value="incident">incident</option>
+                <option value="setbacks">setbacks</option>
+            </select> actually turned out to be a good thing. James' boss was probably <select data-answer="impressed">
+                <option value="">-- Select --</option>
+                <option value="setbacks">setbacks</option>
+                <option value="memorable">memorable</option>
+                <option value="impressed">impressed</option>
+                <option value="incident">incident</option>
+                <option value="dazed">dazed</option>
+            </select> to see the effort James was making to get to work on time. And sharing a coffee with the boss puts that relationship at another level. It's not just a <select data-answer="memorable">
+                <option value="">-- Select --</option>
+                <option value="dazed">dazed</option>
+                <option value="incident">incident</option>
+                <option value="setbacks">setbacks</option>
+                <option value="memorable">memorable</option>
+                <option value="impressed">impressed</option>
+            </select> moment for James, but for his boss as well. It puts James on the boss' radar; and James can use that to his advantage by being on time and performing well.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+   <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem.">     Instructions:  <br>
+1. Save as PDF file<br>
+2. Upload to the E-class<br>
+    </div>
+
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check if name is missing or unchanged
+            if (studentName === '' || studentName === 'Enter your full name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Check if ID is missing or unchanged
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // If both are filled, hide error and print
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+        
+        
+// Force hard refresh on any page reload
+window.addEventListener('beforeunload', function() {
+    // Clear form data
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+});        
+        
+        
+// Toggle show/hide answers
+let answersVisible = false;
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    const button = document.getElementById('toggleAnswersBtn');
+    
+    document.querySelectorAll('select').forEach(select => {
+        if (answersVisible) {
+            // Show correct answer
+            const correctAnswer = select.getAttribute('data-answer');
+            select.value = correctAnswer;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        } else {
+            // Hide answers - reset to default
+            select.selectedIndex = 0;
+            select.classList.remove('correct', 'incorrect');
+        }
+    });
+    
+    // Update button text
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}        
+    </script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column') 
+        ? 'Close Column View' 
+        : 'View as Column';
+      updateOutput();
+    }
+
+    // Initial render
+    updateOutput();
+    
+    
+    
+  </script>   
+  
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+</script>
+    <footer>...</footer>
+</body>
+</html>
