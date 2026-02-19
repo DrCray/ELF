@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worst Villains - Version 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+    body{font-family:'Poppins',sans-serif;line-height:1.4;color:#1a1a1a;background:#f5f7fa;margin:0;padding:0}
+    .header{padding:.8rem .8rem .8rem 1.8rem;font-weight:600;font-size:1.3rem;color:white;border-radius:3px;
+            background:linear-gradient(135deg,#6a5acd,#9370db);box-shadow:0 3px 6px rgba(0,0,0,.2)}
+    .container{width:100%;max-width:35rem;margin:0 auto;padding:1.5rem 1rem;background:#faf9f6;
+               border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.05);box-sizing:border-box}
+    h2{font-size:2rem;color:#2c3e50;margin-bottom:1.3rem;font-weight:700;border-bottom:3px solid #6a5acd;
+       padding-bottom:.5rem;transition:color .3s}h2:hover{color:#8470d9}
+    h3{font-size:1rem;color:#5b9bd5;font-weight:600}
+    p,ul{font-size:1rem;color:#4a4a4a;margin-bottom:.8rem}
+    ul{padding-left:1rem;list-style:none}
+    ol{padding-left:1rem;}
+    ul>li{margin-bottom:.8rem;position:relative;padding-left:.8rem}
+    ul>li:before{content:'•';color:#6a5acd;position:absolute;left:0;top:.2rem}
+    a{color:#FF14BA;text-decoration:none;transition:color .3s}a:hover{color:#6a5acd;text-decoration:underline}
+    .section{border:thin solid #d8d4f0;background:#f9f9f9;padding:1rem;border-radius:8px;
+             margin-bottom:1.1rem;transition:transform .3s,box-shadow .3s;position:relative}
+    .section:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(0,0,0,.1)}
+    .sectionTop{border:thin solid #d8d4f0;background:#f9f9f9;padding:1rem;border-radius:8px;margin-bottom:1.1rem}
+    #sectionTemplate{display:none}
+    .editor-panel{position:fixed;top:10px;right:10px;background:rgba(255,255,255,.97);padding:14px;
+                  border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:9999;
+                  font-family:'Poppins',sans-serif;font-size:.85rem;min-width:10rem;max-width:15rem;}
+    .editor-panel input,.editor-panel button{width:100%;margin:6px 0;padding:8px 10px;
+                  font-size:.85rem;border:1px solid #ddd;border-radius:6px}
+    .editor-panel button{background:#6a5acd;color:white;font-weight:600;cursor:pointer;
+                        transition:background .3s}
+    .editor-panel button:hover{background:#5b9bd5}
+    .delBtn,.link-del{background:#6a5acd;color:white;border:none;padding:2px 6px;
+                      font-size:.65rem;cursor:pointer;border-radius:3px;margin-left:8px}
+    .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
+    .editMode{display:block}
+
+    #btnSave{background-color:#5b9bd5; font-size:1rem;}
+
+
+    /* AUDIO LINKS STYLING */
+    #audioLinks {
+        margin: 1.1rem 0;
+        text-align: center;
+    }
+    #audioLinks > div:first-child {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+
+    .audio-link-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+        position: relative;
+    }
+
+    .fake-player-bar {
+        display: flex;
+        align-items: center;
+        background: #e8ecef;
+        padding: 5px 7px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        flex: 0 0 60%;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .fake-player-bar:hover {
+        background: #d8e2ec;
+        transform: translateY(-3px);
+    }
+
+    .play-emoji {
+        font-size: 28px;
+        margin-right: 16px;
+        flex-shrink: 0;
+    }
+
+    .progress-track {
+        flex: 1;
+        height: 7px;
+        background: #bbb;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 20%;
+        background: #ff9500; /* matches orange ▶️ */
+    }
+
+    .audio-label {
+        margin-left: 18px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: #2c3e50;
+    }
+
+    .audio-del {
+        position: absolute;
+        right: -30px;
+        background: #6a5acd;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-size: 14px;
+        cursor: pointer;
+        /* No display: none or block here — let .editMode control it globally */
+    }
+
+    .editMode {
+        display: block;
+    }
+    .song-title {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+
+    .verse {
+        margin-bottom: 25px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chorus {
+        margin-bottom: 25px;
+        background-color: #e8f4f8;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid gray;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .verse p, .chorus p {
+        margin: 0 0 8px 0;
+        padding-left: 20px;
+        font-weight: 500;
+        font-size:1.1rem;
+        text-indent: -20px;
+        color: #34495e;
+    }
+
+    .verse p:last-child, .chorus p:last-child {
+        margin-bottom: 0;
+    }
+
+    .chorus p {
+        color: #005C62;
+    }
+</style>
+</head>
+<body>
+  <!-- EDITOR PANEL -->
+  <div class="editor-panel editMode" style="display: none;">
+    <div style="margin-bottom:1.2rem;"><strong>Editor Tools</strong></div>
+    <hr>
+    <label style="display: inline; cursor: pointer;"><b>Unordered List</b><br>Use ^^ for delimiter<br>
+        <input type="checkbox" id="olCheckbox" style="display: inline-block; vertical-align: middle; margin: 0 4px 0 0; width: auto; height: auto;">Change to Ordered List
+    </label>
+    <button id="formatBtn">Make List</button>
+
+    <hr>
+
+    <label>Display Text<br><input id="linkText" placeholder="e.g. Official Version on YouTube"></label>
+    <label>URL<br><input id="linkUrl" placeholder="e.g. https://youtu.be/..."></label>
+
+    <button id="btnAddLink">+ Add Link</button>
+    <button id="btnAddAudioLink">+ Add Audio Link</button>
+    <hr>
+    <button id="btnAdd">+ Add Section</button>
+    <hr>
+    <label>Save As<br><input id="filenameInput" value="myLyricsPage.html"></label>
+    <button id="btnSave">Save as Local File</button>
+  </div>
+
+  <div class="container">
+    <div class="header" contenteditable="false">Dr. Ray's English Lessons</div><br>
+    <div class="sectionTop" contenteditable="false">
+      <h2 id="articleTitle" style="color:#52C2B9;">Worst Villains - Version 1</h2>
+      <p>Linka Kulla</p>
+
+      <div id="linksSection" style="text-align:right;width:100%">
+      <a href="https://youtu.be/2MbOjdevna0" target="_blank" style="font-size: 92%; display: block; text-align: right;">Worst Villains V1 audioVid</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button>
+      <a href="worstVillainsLesson.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">Study Page</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button><a href="worstVillainsMTVclozeQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">Study Quiz</a><button class="link-del editMode" style="margin-left: 8px; font-size: 0.7rem; display: none;">X</button></div>
+    </div>
+
+    <!-- AUDIO VERSIONS SECTION -->
+    <div id="audioLinks">
+      
+
+    <div class="audio-link-wrapper"><button class="audio-del editMode" style="display: none;">X</button><a href="https://youtu.be/2MbOjdevna0" target="_blank" style="display: flex; width: 100%; text-decoration: none; color: inherit;"><div class="fake-player-bar"><div class="play-emoji">▶️</div><div class="progress-track"><div class="progress-fill"></div></div></div><div class="audio-label">Worst Villains V1</div></a></div></div>
+
+    <!-- TEMPLATE -->
+    <div id="sectionTemplate">
+      <h2>New Section</h2>
+      <div>[Paste or Type here.]</div>
+      <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section" contenteditable="false">
+      <div id="parentForDeletion">
+        <div id="enterLabelledLyrics">
+          <h2 class="song-title">Worst Villains - Lyrics</h2><h3> Linka Kulla</h3><div id="enterLabelledLyrics"><div class="verse"><p>Yeah…</p>
+<p>Oh you thought…</p>
+<p>You really thought…</p>
+<p>Called ahead like a reservation,</p>
+<p>Big bad talk, intimidation.</p>
+<p>“Money ready when I arrive.”</p>
+<p>You gave them time to strategize.</p>
+</div><div class="verse"><p>Major threat in broad daylight,</p>
+<p>Five more minutes, real polite.</p>
+<p>Door swings open — surprise inside…</p>
+<p>Whole room ready for your pride.</p>
+</div><div class="verse"><p>Phone lines lit.</p>
+<p>Red light blink.</p>
+<p>You made the plan —</p>
+<p>They made you sink.</p>
+</div><div class="verse"><p>You walked in bold,</p>
+<p>All dramatic…</p>
+<p>Didn’t know</p>
+<p>It’d end so tragic.</p>
+</div><div class="chorus"><p>World’s worst villains — that’s your name.</p>
+<p>All that talk, no real game.</p>
+<p>Thought you were slick, thought you were cold,</p>
+<p>Story finished before it’s told.</p>
+<p>---</p>
+<p>World’s worst villains — say it loud.</p>
+<p>You played yourself in front of a crowd.</p>
+<p>No mastermind, no grand design —</p>
+<p>You did the cops’ job half the time.</p>
+<p>---</p>
+<p>Worst!</p>
+<p>Worst!</p>
+<p>Worst villains!</p>
+</div><div class="verse"><p>Speeding fast in a stolen ride,</p>
+<p>Bag in the back you couldn’t hide.</p>
+<p>Label bold in black and white —</p>
+<p>Says exactly what’s inside.</p>
+</div><div class="verse"><p>“What’s in there?” — “Just a bag.”</p>
+<p>Officer staring like, “Don’t brag.”</p>
+<p>Plain sight rule, open and shut —</p>
+<p>You talk too much, that’s your bad luck.</p>
+</div><div class="verse"><p>No disguise.</p>
+<p>No finesse.</p>
+<p>Criminal genius?</p>
+<p>Hard to guess.</p>
+</div><div class="verse"><p>Argue loud,</p>
+<p>But facts don’t bend.</p>
+<p>You lost the game</p>
+<p>Before it began.</p>
+</div><div class="chorus"><p>World’s worst villains — headline joke.</p>
+<p>All that smoke, but you choke.</p>
+<p>Thought you were sharp , thought you were prime&nbsp; —</p>
+<p>Caught in less than record time.</p>
+<p>---</p>
+<p>World’s worst villains — front page news.</p>
+<p>Big bad energy, orange suits.</p>
+<p>No big chase, no overtime —</p>
+<p>You solved your own crime.</p>
+<p>---</p>
+<p>Worst!</p>
+<p>Worst!</p>
+<p>Worst villains!</p>
+</div><div class="verse"><p>Red dye rain from head to toe.</p>
+<p>Sirens screaming — nowhere to go.</p>
+<p>Bag full of proof, printed clear…</p>
+<p>You made it easy, crystal clear.</p>
+</div><div class="verse"><p>You wanted fear.</p>
+<p>You made a scene.</p>
+<p>But every move</p>
+<p>Was self-defeat.</p>
+<p>You really thought…</p>
+</div><div class="chorus"><p>World’s worst villains — that’s your crown.</p>
+<p>Built it up, burned it down.</p>
+<p>All that hype, zero skill —</p>
+<p>Signed and sealed against your will.</p>
+<p>---</p>
+<p>World’s worst villains — one more time.</p>
+<p>You handed them the case and the crime.</p>
+<p>No mastermind, no grand design —</p>
+<p>You caught yourself this time.</p>
+<p>---</p>
+<p>Worst!</p>
+<p>Worst!</p>
+<p>Worst villains!</p>
+<p>Worst… villains…</p>
+</div></div></div>
+
+        <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
+      </div>
+      <button id="formatButton" class="editMode" style="display: none;">Format Lyrics</button>
+    </div>
+    <div class="edit-spacer editMode" contenteditable="false" style="display: none;"></div>
+    <div id="outputSection"></div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = s => document.querySelector(s);
+  const linkText = $('#linkText');
+  const linkUrl = $('#linkUrl');
+  const fileIn = $('#filenameInput');
+  const linksSec = $('#linksSection');
+  const audioLinksSec = $('#audioLinks');
+  const container = $('.container');
+
+  // ADD REGULAR LINK (top right)
+  // ADD REGULAR LINK - now uses delegation
+  $('#btnAddLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    if (!text || !url) return alert('Fill both fields');
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.textContent = text;
+    link.style = 'font-size:92%; display:block; text-align:right;';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'link-del editMode';
+    del.style = 'margin-left:8px; font-size:0.7rem;';
+    // NO onclick here — handled by delegation below
+
+    linksSec.appendChild(link);
+    linksSec.appendChild(del);
+
+    linkText.focus();
+  };
+
+  // ADD AUDIO LINK - now uses delegation
+  $('#btnAddAudioLink').onclick = () => {
+    const text = linkText.value.trim();
+    const url = linkUrl.value.trim();
+    if (!text || !url) return alert('Fill both fields');
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'audio-link-wrapper';
+
+    const del = document.createElement('button');
+    del.textContent = 'X';
+    del.className = 'audio-del editMode';
+    // NO onclick here
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.style = 'display:flex; width:100%; text-decoration:none; color:inherit;';
+
+    const bar = document.createElement('div');
+    bar.className = 'fake-player-bar';
+
+    const emoji = document.createElement('div');
+    emoji.className = 'play-emoji';
+    emoji.textContent = '▶️';
+
+    const track = document.createElement('div');
+    track.className = 'progress-track';
+    const fill = document.createElement('div');
+    fill.className = 'progress-fill';
+    track.appendChild(fill);
+
+    bar.appendChild(emoji);
+    bar.appendChild(track);
+
+    const label = document.createElement('div');
+    label.className = 'audio-label';
+    label.textContent = text;
+
+    a.appendChild(bar);
+    a.appendChild(label);
+
+    wrapper.appendChild(del);
+    wrapper.appendChild(a);
+
+    audioLinksSec.appendChild(wrapper);
+
+    linkText.focus();
+  };
+
+  // ADD SECTION
+  $('#btnAdd').onclick = () => {
+    const clone = $('#sectionTemplate').cloneNode(true);
+    clone.removeAttribute('id');
+    clone.style.display = 'block';
+    clone.className = 'section';
+    clone.contentEditable = 'true';
+
+    const delBtn = clone.querySelector('.delBtn');
+    delBtn.classList.add('editMode');
+    delBtn.onclick = () => clone.remove();
+
+    container.appendChild(clone);
+
+    const sp = document.createElement('div');
+    sp.className = 'edit-spacer editMode';
+    sp.contentEditable = 'false';
+    container.appendChild(sp);
+  };
+
+  // SAVE
+   // SAVE - FIXED VERSION
+  $('#btnSave').onclick = () => {
+    // 1. Update page title
+    const h2 = document.getElementById('articleTitle');
+    const title = document.querySelector('title');
+    if (h2 && title) title.textContent = h2.textContent.trim();
+
+    // 2. Hide editMode elements (panel, delete buttons, spacers)
+    const editElements = document.querySelectorAll('.editMode');
+    editElements.forEach(el => el.style.display = 'none');
+
+    // 3. Disable editing temporarily (set to false, not remove)
+    const editableEls = document.querySelectorAll('[contenteditable]');
+    editableEls.forEach(el => el.contentEditable = 'false');
+
+    // 4. Capture CLEAN HTML (no editing tools, no contenteditable)
+    const cleanHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    // 5. Download clean version
+    const blob = new Blob([cleanHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileIn.value.trim() || 'lyrics.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // 6. Ask for editable version
+    const saveEditable = confirm("Saved clean version.\nSave an editable version too?");
+    if (!saveEditable) {
+      // Restore everything for continued editing
+      editElements.forEach(el => el.style.display = 'block');
+      editableEls.forEach(el => el.contentEditable = 'true');
+      return;
+    }
+
+    // 7. RESTORE editMode visibility and full editability BEFORE saving editable version
+    editElements.forEach(el => el.style.display = 'block');
+    editableEls.forEach(el => el.contentEditable = 'true');
+
+    // 8. Capture and save EDITABLE version
+    const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const editBlob = new Blob([editHTML], { type: 'text/html' });
+    const editUrl = URL.createObjectURL(editBlob);  // ← Fixed typo
+    const editA = document.createElement('a');
+    const baseName = fileIn.value.trim() || 'lyrics.html';
+    const editName = baseName.replace(/\.html$/, '') + 'EditMode.html';
+    editA.href = editUrl;
+    editA.download = editName;
+    document.body.appendChild(editA);
+    editA.click();
+    document.body.removeChild(editA);
+    URL.revokeObjectURL(editUrl);
+  };
+
+
+
+  // Enter key adds regular link
+  linkText.onkeypress = linkUrl.onkeypress = e => {
+    if (e.key === 'Enter') $('#btnAddLink').click();
+  };
+
+
+  // EVENT DELEGATION FOR ALL DELETE BUTTONS
+  // Regular top links
+  linksSec.addEventListener('click', (e) => {
+    if (e.target.classList.contains('link-del')) {
+      e.target.previousElementSibling.remove(); // remove the <a>
+      e.target.remove(); // remove the X
+    }
+  });
+
+  // Audio links
+  audioLinksSec.addEventListener('click', (e) => {
+    if (e.target.classList.contains('audio-del')) {
+      e.target.parentElement.remove(); // remove whole wrapper
+    }
+  });
+
+
+
+});
+
+// Make List (^^ delimiter)
+document.getElementById('formatBtn').addEventListener('click', function() {
+  const selection = window.getSelection();
+  if (!selection.rangeCount || selection.toString().trim() === '') {
+    alert('Please select some text first');
+    return;
+  }
+
+  const useOL = document.getElementById('olCheckbox').checked;
+  const listTag = useOL ? 'ol' : 'ul';
+
+  const range = selection.getRangeAt(0);
+  const selectedFragment = range.cloneContents();
+  const tempDiv = document.createElement('div');
+  tempDiv.appendChild(selectedFragment);
+  let selectedHTML = tempDiv.innerHTML.trim();
+
+  selectedHTML = selectedHTML.replace(/<br\s*\/?>/gi, '');
+  selectedHTML = selectedHTML.replace(/^\^\^/, '').trim();
+  selectedHTML = selectedHTML.replace(/\^\^$/, '').trim();
+
+  let finalTextList = '<' + listTag + '><li>' + selectedHTML + '</li></' + listTag + '>';
+  finalTextList = finalTextList.replace(/\^\^/g, '</li><li>');
+  finalTextList = finalTextList.replace(/<li>\s+/g, '<li>');
+  finalTextList = finalTextList.replace(/\s+<\/li>/g, '</li>');
+
+  range.deleteContents();
+  const newTempDiv = document.createElement('div');
+  newTempDiv.innerHTML = finalTextList;
+  const fragment = document.createDocumentFragment();
+  while (newTempDiv.firstChild) {
+    fragment.appendChild(newTempDiv.firstChild);
+  }
+  range.insertNode(fragment);
+});
+
+// Format Lyrics
+document.getElementById('formatButton').addEventListener('click', function() {
+  const inputDiv = document.getElementById('enterLabelledLyrics');
+  const inputText = inputDiv.innerText;
+
+  inputDiv.innerHTML = '';
+
+  let cleanedText = inputText.replace(/\[end\]/gi, '').trim();
+  let sections = cleanedText.split(/\[(verse|chorus)\]/i);
+
+  for (let i = 1; i < sections.length; i += 2) {
+    const sectionType = sections[i].toLowerCase();
+    const sectionContent = sections[i + 1];
+
+    if (sectionContent && sectionContent.trim()) {
+      const lines = sectionContent.split(/\[ln\]/i)
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = sectionType;
+
+      lines.forEach(line => {
+        const p = document.createElement('p');
+        p.textContent = line;
+        sectionDiv.appendChild(p);
+      });
+
+      inputDiv.appendChild(sectionDiv);
+    }
+  }
+});
+</script>
+
+
+
+</body></html>
