@@ -19,171 +19,973 @@
 		      
 		<!-- <script src="script.js"></script -->
 		
-    <style>  
-        body {
-            background-color: #d4e6f1; cursor:text; 
-            font-family: helvetica, arial, sans-serif;
-        }  
-        
-        :focus {outline:none;}
-        ::-moz-focus-inner {border:0; }
-        
-        #i {display:none;}
-        #j {display:none;}
-        
-        #zzpageHeader { 
-            box-shadow: 0 1ex 1ex 0;
-            border-radius: 7px; margin:1ex;
-        }
-        
-        #zztitle { 
-            background-color:#fff8dc; 
-            border-style:solid;  border-width: medium; 
-            border-color:#8b0000; border-radius: 7px;
-            padding:2ex; margin-bottom: 3ex;
-        }
-        
-        .card {
-            background-color:  #d4e6f1  ; border-radius: 10px; 
-            padding:10px; 
-        }
- 
-        .quStyle {
-            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .inputPara {
-           background-color:#DDE8EA; width:fit-content;
-            min-width:30ex; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            margin: 1ex 0 0 1ex;
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .thePara {
-           background-color:#B0E0E6; width:fit-content;
-            min-width:30ex; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            margin: 1ex 0 0 1ex;
-            padding:3ex; 
-            border-radius: 10px;
-         }
-         
-        .question {
-            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
-        }
-        
-        .answer { 
-			margin:2ex 0 0 0; background-color:#fff8dc;
-			
-          /*  display:block;
-             border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex 2em 1ex 1ex; border-radius: 10px; 
-            */
-         }
-        
-         .choicesUl { column-count:2; column-width: auto;
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-         }        
-         
+ <!-- ================================================================
+     REPLACEMENT <style> BLOCK — conflictMgtPrepFIBselect.html
+     Paste this in place of the existing <style>…</style> in <head>.
+     All JS and HTML is unchanged. Only visible elements are restyled.
+     display:none elements (styleEditor, inputPara, hidden controls)
+     are left unstyled as requested.
+================================================================ -->
+<style>
 
-         .answer2 {              
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-         }
-         
-        
-        .fake-button {
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+        --clr-bg:           #f0ede8;   /* warm off-white page bg     */
+        --clr-surface:      #faf8f5;   /* card / box surfaces        */
+        --clr-surface-alt:  #f4f0fc;   /* pale lavender accent       */
 
-        }
+        /* header — dark top band */
+        --clr-header-bg:    #1e1e2e;
+        --clr-header-text:  #ffffff;
+        --clr-header-sub:   #b8b4ff;   /* soft lilac subtitle        */
 
-       .fake-button:hover {
-            background-color: lightblue;
-             border-radius: 5px; box-shadow: 3px 3px gray;
+        /* pastel palette */
+        --clr-pastel-blue:   #d6eaf8;
+        --clr-pastel-lilac:  #e8e4fb;
+        --clr-pastel-mint:   #d9f2e9;
+        --clr-pastel-peach:  #fde8d8;
+        --clr-pastel-yellow: #fdf6dc;
 
-        }
-        
-        /*  for <button> class="hltBtn"  */
-        .hlBtn {border-radius:5px; margin: 1ex; }
+        /* answer-check colours */
+        --clr-correct:   #d8f8e9;
+        --clr-incorrect: #f8e0e0;
 
-        .hlBtn:hover {
-            background-color:lightblue;  border-radius: 5px;
-        }
-        
-        /* begin style editor*/
-            .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
-                padding: 8px; display:inline-block;            
-            }
+        /* borders & shadows */
+        --clr-border:   #c9c4d8;
+        --clr-shadow:   rgba(80, 60, 120, 0.11);
 
-            .styleBtn {
-                display:inline-block; box-shadow: 3px 3px 5px darkred;
-                background-color: #D4E6F1; border-radius: 3px;
-            } 
+        /* text */
+        --clr-text:       #2c2a3a;
+        --clr-text-muted: #6b6780;
+        --clr-link:       #5a47a8;
 
-              .fsSmall{ font-size:small; }
-              .fsMedium{ font-size:medium; }
-              .fsLarge{ font-size:large; }
-              .fsXlarge{ font-size:x-large; }
-              .fsXxlarge{ font-size:xx-large; }
-        /* end style editor*/
-        
-        .instrcs{
-            border: thin solid darkgreen; border-radius: 5px; 
-            margin: 1.3em 0 1ex 1em; background-color: #F5ECF7;
-            padding: 1ex; width: fit-content; color: #080865;
-        }
-        
-        .convDiv {
-            display:block; background-color:#DDE8EA; 
-            border: thin solid darkblue; border-radius: 5px;
-            margin:3ex 0 0 2ex; padding:1.5ex;
-            width: fit-content;
-            
-        }
-        
-        .saveDiv {
-            display:block; background-color:beige; 
-            border: thin solid darkblue; border-radius: 5px;
-            margin:1ex 0 0 2ex; padding:1.5ex;
-            width: fit-content;
-            
-        }
-        
-        .delBtn{
-            margin: 1ex;
-        }
-        
-        #printOptions {
-            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
-            border-radius: 5px;
-            box-shadow: 3px 3px darkgreen;
-            margin: 1ex 0 0 0;
-            padding:1ex;
-            font-weight: bold; font-size:85%;
-        }        
-        
-        .titleDiv {
-           width: fit-content;
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; 
-            margin: 1rem 0 0 .3rem;
-         }        
-    </style>  
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+
+        --font: 'Segoe UI', system-ui, -apple-system, helvetica, sans-serif;
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        background-color: var(--clr-bg);
+        color: var(--clr-text);
+        font-family: var(--font);
+        font-size: 16px;
+        line-height: 1.65;
+        cursor: text;
+        max-width: 54rem;
+        margin: 0 auto;
+        padding: 0 0 3rem 0;
+    }
+
+    :focus { outline: none; }
+    ::-moz-focus-inner { border: 0; }
+
+    /* hidden counters — keep invisible */
+    #i, #j { display: none; }
+
+    img.center { display: block; width: 100%; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+
+    /* ============================================================
+       PAGE HEADER  — dark top band, white text
+    ============================================================ */
+    #zzpageHeader {
+        background: var(--clr-header-bg);
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        margin: 0 0 1.4rem 0;
+        box-shadow: 0 4px 18px var(--clr-shadow);
+    }
+
+    #zztitle {
+        padding: 1.5rem 1.4rem 1.6rem 1.4rem;
+        color: var(--clr-header-text);
+        font-size: 1rem;
+        line-height: 1.6;
+        border: none;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    #zztitle strong {
+        display: block;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #fff;
+        margin-top: .25rem;
+    }
+
+    #zztitle div {
+        color: var(--clr-header-sub);
+        font-size: .92rem;
+        margin-top: .15rem;
+    }
+
+    /* ============================================================
+       CARD
+    ============================================================ */
+    .card {
+        background: var(--clr-surface);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        box-shadow: 0 2px 8px var(--clr-shadow);
+    }
+
+    /* ============================================================
+       MAIN EXERCISE WRAPPER  (.quStyle)
+    ============================================================ */
+    .quStyle {
+        background: var(--clr-pastel-blue);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 3px 10px var(--clr-shadow);
+        padding: 1.2rem 1rem;
+        margin: .5rem .4rem;
+    }
+
+    /* ============================================================
+       PARAGRAPH BLOCKS  (.thePara — visible exercise paras)
+    ============================================================ */
+    .thePara {
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        box-shadow: 0 2px 8px var(--clr-shadow);
+        min-width: 0;
+        width: 100%;
+        margin: 1rem 0 0 0;
+        padding: 1rem 1.1rem;
+        line-height: 1.9;
+    }
+
+    /* ============================================================
+       INPUT / EDIT PARAGRAPH  (.inputPara — display:none, minimal)
+    ============================================================ */
+    .inputPara {
+        background: var(--clr-surface-alt);
+        border: 1px dashed var(--clr-border);
+        border-radius: var(--radius-md);
+        min-width: 0;
+        width: fit-content;
+        margin: 1rem 0 0 .5rem;
+        padding: 1rem;
+    }
+
+    /* ============================================================
+       QUESTION SPANS
+    ============================================================ */
+    .question {
+        cursor: cell;
+        width: fit-content;
+        padding: 0 .5rem;
+    }
+
+    /* ============================================================
+       DROPDOWN SELECTS  (.answer)
+    ============================================================ */
+    .answer {
+        font-family: var(--font);
+        font-size: .93rem;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .15rem .4rem;
+        margin: .1rem 0;
+        cursor: pointer;
+        transition: background .15s;
+        vertical-align: middle;
+    }
+
+    .answer:hover { background: #f8f0c0; }
+
+    /* correct / incorrect feedback (set by JS via style.cssText) */
+    select[style*="D8F8E9"] { background: var(--clr-correct)   !important; }
+    select[style*="EEE8EF"] { background: var(--clr-incorrect) !important; }
+
+    /* ============================================================
+       ANSWER PEEK  (details/summary)
+    ============================================================ */
+    .detlsAnsPk {
+        background: var(--clr-pastel-mint);
+        color: #0e237e;
+        padding: .8rem 1rem;
+        margin: 1.1rem 0;
+        border-radius: var(--radius-sm);
+        border: 1px solid #a8dfc5;
+        font-size: .93rem;
+    }
+
+    .detlsAnsPk summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #1a5e35;
+        padding: .1rem 0;
+        margin: 0 0 .4rem 0;
+        list-style: disclosure-closed;
+    }
+
+    .detlsAnsPk[open] summary { list-style: disclosure-open; }
+
+    /* ============================================================
+       WORD-CHOICES LIST  (.choicesUl)
+    ============================================================ */
+    .choicesUl {
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .6rem 1rem .6rem 2rem;
+        margin: 0 0 .8rem 0;
+        column-count: 2;
+        column-gap: 1.5rem;
+        font-size: .93rem;
+        list-style: disc;
+    }
+
+    .choicesUl li { margin: .2rem 0; }
+
+    /* ============================================================
+       ANSWER2  (secondary answer display)
+    ============================================================ */
+    .answer2 {
+        display: block;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .6rem .8rem;
+    }
+
+    /* ============================================================
+       TITLE DIV  (exercise heading block)
+    ============================================================ */
+    .titleDiv {
+        display: block;
+        background: var(--clr-pastel-lilac);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .55rem .9rem;
+        margin: 1rem 0 0 .3rem;
+        width: fit-content;
+        font-weight: 600;
+        color: var(--clr-link);
+        font-size: .97rem;
+    }
+
+    /* ============================================================
+       INSTRUCTIONS  (.instrcs — <details> summary)
+    ============================================================ */
+    .instrcs {
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: 1.2rem 0 .8rem .4rem;
+        background: var(--clr-surface-alt);
+        padding: .7rem 1rem;
+        width: fit-content;
+        color: #080865;
+        font-size: .9rem;
+    }
+
+    .instrcs summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--clr-link);
+    }
+
+    /* ============================================================
+       CONVERSATION / SAVE DIVS
+    ============================================================ */
+    .convDiv {
+        display: block;
+        background: var(--clr-pastel-blue);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: 1.2rem 0 0 .4rem;
+        padding: .8rem 1rem;
+        width: fit-content;
+    }
+
+    .saveDiv {
+        display: block;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: .8rem 0 0 .4rem;
+        padding: .8rem 1rem;
+        width: fit-content;
+    }
+
+    /* ============================================================
+       PRINT OPTIONS
+    ============================================================ */
+    #printOptions {
+        display: inline-block;
+        background: var(--clr-pastel-mint);
+        color: var(--clr-link);
+        border-radius: var(--radius-md);
+        border: 1px solid #a8dfc5;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        margin: 1rem 0 0 0;
+        padding: .7rem 1rem;
+        font-weight: 600;
+        font-size: .88rem;
+    }
+
+    /* ============================================================
+       BUTTONS  (visible / interactive)
+    ============================================================ */
+    button {
+        font-family: var(--font);
+        cursor: pointer;
+    }
+
+    /* General action buttons */
+    .hlBtn {
+        background: var(--clr-link);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: .35rem .9rem;
+        font-size: .9rem;
+        font-weight: 600;
+        margin: .4rem .2rem;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        transition: background .18s, transform .1s;
+    }
+
+    .hlBtn:hover {
+        background: #3f2e8a;
+        transform: translateY(-1px);
+    }
+
+    .fake-button {
+        background: #ededf2;
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        box-shadow: 1px 1px 3px var(--clr-shadow);
+        padding: .1rem .6rem;
+        font-size: .85em;
+        transition: background .15s;
+    }
+
+    .fake-button:hover {
+        background: var(--clr-pastel-blue);
+        box-shadow: 2px 2px 5px var(--clr-shadow);
+    }
+
+    .delBtn {
+        background: var(--clr-pastel-peach);
+        border: 1px solid #e8c0a8;
+        border-radius: var(--radius-sm);
+        padding: .2rem .6rem;
+        font-size: .8rem;
+        color: #6b3520;
+        margin: .4rem 0;
+        transition: background .15s;
+    }
+
+    .delBtn:hover { background: #f5d5c0; }
+
+    /* Print button */
+    #printFullView {
+        background: var(--clr-link);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: .4rem 1.1rem;
+        font-size: .92rem;
+        font-weight: 600;
+        margin: .4rem 0;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        transition: background .18s, transform .1s;
+    }
+
+    #printFullView:hover {
+        background: #3f2e8a;
+        transform: translateY(-1px);
+    }
+
+    /* Convert button */
+    #convert {
+        background: var(--clr-pastel-lilac);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .35rem .9rem;
+        font-size: .9rem;
+        transition: background .15s;
+    }
+
+    #convert:hover { background: #d4cef8; }
+
+    /* Show/Hide answer buttons */
+    #showAll, #closeAll, #showAll2, #closeAll2 {
+        background: var(--clr-pastel-mint);
+        border: 1px solid #a8dfc5;
+        border-radius: var(--radius-sm);
+        padding: .3rem .8rem;
+        font-size: .88rem;
+        color: #1a5e35;
+        margin: .3rem .2rem;
+        transition: background .15s;
+    }
+
+    #showAll:hover, #closeAll:hover,
+    #showAll2:hover, #closeAll2:hover { background: #b8e8d2; }
+
+    /* ============================================================
+       NAME / ID TEXT INPUTS
+    ============================================================ */
+    input[type="text"] {
+        color: var(--clr-link);
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .3rem .55rem;
+        font-family: var(--font);
+        font-size: .92rem;
+        margin: .2rem .3rem .2rem 0;
+    }
+
+    /* ============================================================
+       STYLE EDITOR FONT-SIZE HELPERS  (still needed by JS)
+    ============================================================ */
+    .fsSmall   { font-size: small; }
+    .fsMedium  { font-size: medium; }
+    .fsLarge   { font-size: large; }
+    .fsXlarge  { font-size: x-large; }
+    .fsXxlarge { font-size: xx-large; }
+
+    /* ============================================================
+       MOBILE-FIRST RESPONSIVE
+    ============================================================ */
+    @media (max-width: 480px) {
+        body { font-size: 15px; padding: 0 0 2.5rem 0; }
+
+        #zztitle { padding: 1.2rem 1rem 1.3rem 1rem; }
+        #zztitle strong { font-size: 1.2rem; }
+
+        .thePara { padding: .8rem .75rem; line-height: 1.85; }
+
+        .choicesUl { column-count: 1; }
+
+        .answer { font-size: .88rem; }
+
+        .instrcs, .convDiv, .saveDiv,
+        .titleDiv { margin-left: 0; width: 100%; }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+        body { padding: 0 .5rem 2.5rem .5rem; }
+        .thePara { margin: .8rem .2rem 0 .2rem; }
+    }
+
+    @media (min-width: 769px) {
+        body { padding: 0 1rem 3rem 1rem; }
+    }
+
+    /* ============================================================
+       PRINT
+    ============================================================ */
+    @media print {
+        body { background: #fff; max-width: 100%; }
+        #zzpageHeader { border-radius: 0; box-shadow: none; }
+        .thePara { box-shadow: none; border: 1px solid #ccc; }
+        .detlsAnsPk { background: #f0fff8; }
+        [style*="display: none"] { display: none !important; }
+    }
+
+</style><!-- ================================================================
+     REPLACEMENT <style> BLOCK — conflictMgtPrepFIBselect.html
+     Paste this in place of the existing <style>…</style> in <head>.
+     All JS and HTML is unchanged. Only visible elements are restyled.
+     display:none elements (styleEditor, inputPara, hidden controls)
+     are left unstyled as requested.
+================================================================ -->
+<style>
+
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+        --clr-bg:           #f0ede8;   /* warm off-white page bg     */
+        --clr-surface:      #faf8f5;   /* card / box surfaces        */
+        --clr-surface-alt:  #f4f0fc;   /* pale lavender accent       */
+
+        /* header — dark top band */
+        --clr-header-bg:    #1e1e2e;
+        --clr-header-text:  #ffffff;
+        --clr-header-sub:   #b8b4ff;   /* soft lilac subtitle        */
+
+        /* pastel palette */
+        --clr-pastel-blue:   #d6eaf8;
+        --clr-pastel-lilac:  #e8e4fb;
+        --clr-pastel-mint:   #d9f2e9;
+        --clr-pastel-peach:  #fde8d8;
+        --clr-pastel-yellow: #fdf6dc;
+
+        /* answer-check colours */
+        --clr-correct:   #d8f8e9;
+        --clr-incorrect: #f8e0e0;
+
+        /* borders & shadows */
+        --clr-border:   #c9c4d8;
+        --clr-shadow:   rgba(80, 60, 120, 0.11);
+
+        /* text */
+        --clr-text:       #2c2a3a;
+        --clr-text-muted: #6b6780;
+        --clr-link:       #5a47a8;
+
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+
+        --font: 'Segoe UI', system-ui, -apple-system, helvetica, sans-serif;
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        background-color: var(--clr-bg);
+        color: var(--clr-text);
+        font-family: var(--font);
+        font-size: 16px;
+        line-height: 1.65;
+        cursor: text;
+        max-width: 54rem;
+        margin: 0 auto;
+        padding: 0 0 3rem 0;
+    }
+
+    :focus { outline: none; }
+    ::-moz-focus-inner { border: 0; }
+
+    /* hidden counters — keep invisible */
+    #i, #j { display: none; }
+
+    img.center { display: block; width: 100%; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+
+    /* ============================================================
+       PAGE HEADER  — dark top band, white text
+    ============================================================ */
+    #zzpageHeader {
+        background: var(--clr-header-bg);
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        margin: 0 0 1.4rem 0;
+        box-shadow: 0 4px 18px var(--clr-shadow);
+    }
+
+    #zztitle {
+        padding: 1.5rem 1.4rem 1.6rem 1.4rem;
+        color: var(--clr-header-text);
+        font-size: 1rem;
+        line-height: 1.6;
+        border: none;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    #zztitle strong {
+        display: block;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #fff;
+        margin-top: .25rem;
+    }
+
+    #zztitle div {
+        color: var(--clr-header-sub);
+        font-size: .92rem;
+        margin-top: .15rem;
+    }
+
+    /* ============================================================
+       CARD
+    ============================================================ */
+    .card {
+        background: var(--clr-surface);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        box-shadow: 0 2px 8px var(--clr-shadow);
+    }
+
+    /* ============================================================
+       MAIN EXERCISE WRAPPER  (.quStyle)
+    ============================================================ */
+    .quStyle {
+        background: var(--clr-pastel-blue);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 3px 10px var(--clr-shadow);
+        padding: 1.2rem 1rem;
+        margin: .5rem .4rem;
+    }
+
+    /* ============================================================
+       PARAGRAPH BLOCKS  (.thePara — visible exercise paras)
+    ============================================================ */
+    .thePara {
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        box-shadow: 0 2px 8px var(--clr-shadow);
+        min-width: 0;
+        width: 100%;
+        margin: 1rem 0 0 0;
+        padding: 1rem 1.1rem;
+        line-height: 1.9;
+    }
+
+    /* ============================================================
+       INPUT / EDIT PARAGRAPH  (.inputPara — display:none, minimal)
+    ============================================================ */
+    .inputPara {
+        background: var(--clr-surface-alt);
+        border: 1px dashed var(--clr-border);
+        border-radius: var(--radius-md);
+        min-width: 0;
+        width: fit-content;
+        margin: 1rem 0 0 .5rem;
+        padding: 1rem;
+    }
+
+    /* ============================================================
+       QUESTION SPANS
+    ============================================================ */
+    .question {
+        cursor: cell;
+        width: fit-content;
+        padding: 0 .5rem;
+    }
+
+    /* ============================================================
+       DROPDOWN SELECTS  (.answer)
+    ============================================================ */
+    .answer {
+        font-family: var(--font);
+        font-size: .93rem;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .15rem .4rem;
+        margin: .1rem 0;
+        cursor: pointer;
+        transition: background .15s;
+        vertical-align: middle;
+    }
+
+    .answer:hover { background: #f8f0c0; }
+
+    /* correct / incorrect feedback (set by JS via style.cssText) */
+    select[style*="D8F8E9"] { background: var(--clr-correct)   !important; }
+    select[style*="EEE8EF"] { background: var(--clr-incorrect) !important; }
+
+    /* ============================================================
+       ANSWER PEEK  (details/summary)
+    ============================================================ */
+    .detlsAnsPk {
+        background: var(--clr-pastel-mint);
+        color: #0e237e;
+        padding: .8rem 1rem;
+        margin: 1.1rem 0;
+        border-radius: var(--radius-sm);
+        border: 1px solid #a8dfc5;
+        font-size: .93rem;
+    }
+
+    .detlsAnsPk summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #1a5e35;
+        padding: .1rem 0;
+        margin: 0 0 .4rem 0;
+        list-style: disclosure-closed;
+    }
+
+    .detlsAnsPk[open] summary { list-style: disclosure-open; }
+
+    /* ============================================================
+       WORD-CHOICES LIST  (.choicesUl)
+    ============================================================ */
+    .choicesUl {
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .6rem 1rem .6rem 2rem;
+        margin: 0 0 .8rem 0;
+        column-count: 2;
+        column-gap: 1.5rem;
+        font-size: .93rem;
+        list-style: disc;
+    }
+
+    .choicesUl li { margin: .2rem 0; }
+
+    /* ============================================================
+       ANSWER2  (secondary answer display)
+    ============================================================ */
+    .answer2 {
+        display: block;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .6rem .8rem;
+    }
+
+    /* ============================================================
+       TITLE DIV  (exercise heading block)
+    ============================================================ */
+    .titleDiv {
+        display: block;
+        background: var(--clr-pastel-lilac);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        padding: .55rem .9rem;
+        margin: 1rem 0 0 .3rem;
+        width: fit-content;
+        font-weight: 600;
+        color: var(--clr-link);
+        font-size: .97rem;
+    }
+
+    /* ============================================================
+       INSTRUCTIONS  (.instrcs — <details> summary)
+    ============================================================ */
+    .instrcs {
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: 1.2rem 0 .8rem .4rem;
+        background: var(--clr-surface-alt);
+        padding: .7rem 1rem;
+        width: fit-content;
+        color: #080865;
+        font-size: .9rem;
+    }
+
+    .instrcs summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--clr-link);
+    }
+
+    /* ============================================================
+       CONVERSATION / SAVE DIVS
+    ============================================================ */
+    .convDiv {
+        display: block;
+        background: var(--clr-pastel-blue);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: 1.2rem 0 0 .4rem;
+        padding: .8rem 1rem;
+        width: fit-content;
+    }
+
+    .saveDiv {
+        display: block;
+        background: var(--clr-pastel-yellow);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-md);
+        margin: .8rem 0 0 .4rem;
+        padding: .8rem 1rem;
+        width: fit-content;
+    }
+
+    /* ============================================================
+       PRINT OPTIONS
+    ============================================================ */
+    #printOptions {
+        display: inline-block;
+        background: var(--clr-pastel-mint);
+        color: var(--clr-link);
+        border-radius: var(--radius-md);
+        border: 1px solid #a8dfc5;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        margin: 1rem 0 0 0;
+        padding: .7rem 1rem;
+        font-weight: 600;
+        font-size: .88rem;
+    }
+
+    /* ============================================================
+       BUTTONS  (visible / interactive)
+    ============================================================ */
+    button {
+        font-family: var(--font);
+        cursor: pointer;
+    }
+
+    /* General action buttons */
+    .hlBtn {
+        background: var(--clr-link);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: .35rem .9rem;
+        font-size: .9rem;
+        font-weight: 600;
+        margin: .4rem .2rem;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        transition: background .18s, transform .1s;
+    }
+
+    .hlBtn:hover {
+        background: #3f2e8a;
+        transform: translateY(-1px);
+    }
+
+    .fake-button {
+        background: #ededf2;
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        box-shadow: 1px 1px 3px var(--clr-shadow);
+        padding: .1rem .6rem;
+        font-size: .85em;
+        transition: background .15s;
+    }
+
+    .fake-button:hover {
+        background: var(--clr-pastel-blue);
+        box-shadow: 2px 2px 5px var(--clr-shadow);
+    }
+
+    .delBtn {
+        background: var(--clr-pastel-peach);
+        border: 1px solid #e8c0a8;
+        border-radius: var(--radius-sm);
+        padding: .2rem .6rem;
+        font-size: .8rem;
+        color: #6b3520;
+        margin: .4rem 0;
+        transition: background .15s;
+    }
+
+    .delBtn:hover { background: #f5d5c0; }
+
+    /* Print button */
+    #printFullView {
+        background: var(--clr-link);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: .4rem 1.1rem;
+        font-size: .92rem;
+        font-weight: 600;
+        margin: .4rem 0;
+        box-shadow: 0 2px 6px var(--clr-shadow);
+        transition: background .18s, transform .1s;
+    }
+
+    #printFullView:hover {
+        background: #3f2e8a;
+        transform: translateY(-1px);
+    }
+
+    /* Convert button */
+    #convert {
+        background: var(--clr-pastel-lilac);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .35rem .9rem;
+        font-size: .9rem;
+        transition: background .15s;
+    }
+
+    #convert:hover { background: #d4cef8; }
+
+    /* Show/Hide answer buttons */
+    #showAll, #closeAll, #showAll2, #closeAll2 {
+        background: var(--clr-pastel-mint);
+        border: 1px solid #a8dfc5;
+        border-radius: var(--radius-sm);
+        padding: .3rem .8rem;
+        font-size: .88rem;
+        color: #1a5e35;
+        margin: .3rem .2rem;
+        transition: background .15s;
+    }
+
+    #showAll:hover, #closeAll:hover,
+    #showAll2:hover, #closeAll2:hover { background: #b8e8d2; }
+
+    /* ============================================================
+       NAME / ID TEXT INPUTS
+    ============================================================ */
+    input[type="text"] {
+        color: var(--clr-link);
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: var(--radius-sm);
+        padding: .3rem .55rem;
+        font-family: var(--font);
+        font-size: .92rem;
+        margin: .2rem .3rem .2rem 0;
+    }
+
+    /* ============================================================
+       STYLE EDITOR FONT-SIZE HELPERS  (still needed by JS)
+    ============================================================ */
+    .fsSmall   { font-size: small; }
+    .fsMedium  { font-size: medium; }
+    .fsLarge   { font-size: large; }
+    .fsXlarge  { font-size: x-large; }
+    .fsXxlarge { font-size: xx-large; }
+
+    /* ============================================================
+       MOBILE-FIRST RESPONSIVE
+    ============================================================ */
+    @media (max-width: 480px) {
+        body { font-size: 15px; padding: 0 0 2.5rem 0; }
+
+        #zztitle { padding: 1.2rem 1rem 1.3rem 1rem; }
+        #zztitle strong { font-size: 1.2rem; }
+
+        .thePara { padding: .8rem .75rem; line-height: 1.85; }
+
+        .choicesUl { column-count: 1; }
+
+        .answer { font-size: .88rem; }
+
+        .instrcs, .convDiv, .saveDiv,
+        .titleDiv { margin-left: 0; width: 100%; }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+        body { padding: 0 .5rem 2.5rem .5rem; }
+        .thePara { margin: .8rem .2rem 0 .2rem; }
+    }
+
+    @media (min-width: 769px) {
+        body { padding: 0 1rem 3rem 1rem; }
+    }
+
+    /* ============================================================
+       PRINT
+    ============================================================ */
+    @media print {
+        body { background: #fff; max-width: 100%; }
+        #zzpageHeader { border-radius: 0; box-shadow: none; }
+        .thePara { box-shadow: none; border: 1px solid #ccc; }
+        .detlsAnsPk { background: #f0fff8; }
+        [style*="display: none"] { display: none !important; }
+    }
+
+    #BBClink {
+  display:inline-block; margin-top:.3rem;
+  padding: 0 .8rem;
+  color: white; /* Changes text color */
+  text-decoration: none; /* Removes the default underline */
+  background-color: purple; /* Adds a background color */
+  padding: 3px 5px; /* Adds space around the text (optional, often used to make links look like buttons) */
+  border-radius: 5px; /* Rounds the corners (optional) */
+}
+
+</style>
     
   </head>
   
@@ -198,7 +1000,9 @@ document.onreadystatechange = () => {
 </script>      
       
   <div id="i">3</div>
-  <div id="j">17</div>      
+
+  <div id="j">17</div>
+      
       
           <img class="center" src="topImage.jpg" alt="" width="100%">
   <header id="zzpageHeader">
@@ -206,11 +1010,18 @@ document.onreadystatechange = () => {
     <section id="zztitle" contenteditable="false">
     
         Dr Ray  <br>
-        Professional English <br> 
+
+        Professional English <br>
+ 
         Course 201, Business Mgt. 
         <br>
-        <div>(BBC | LearnEnglish | Business English)</div><div><br><strong>
-</strong></div><div><strong>Conflict Management        </strong></div> 
+
+        <div>(quiz based on <a id="BBClink" href="https://learnenglish.britishcouncil.org/business-english/business-magazine/conflict-management" target="_blank"> BBC | LearnEnglish | Business English<a>)</div>
+<div><br>
+<strong>
+</strong></div>
+<div><strong>Conflict Management        </strong></div>
+ 
     
     </section>   
 </header>
@@ -222,36 +1033,69 @@ document.onreadystatechange = () => {
     <button id="delAnsBox" class="delBtn" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
         </button>
     </div>
+
 <!-- hidden elements -->
       
       
       <details id="instrcs" class="instrcs" style="border: thin solid black; padding: 1rem; display: none;"><summary>Basic Instructions</summary>
 <div style="margin: 0 2rem 0 2rem;"><br>
+
           Type/Paste in the text area below that reads "Replace the content in this area ..." Then underline the words/answers you want to blank-out. (see the example) 
-          <br><br>There are two approaches: <br><br>
+          <br>
+<br>
+There are two approaches: <br>
+<br>
+
           You can copy and paste from any document editor or html wysiwyg editor. Make underlines or other style changes in your editor, then copy and paste into the text area.
           It's been tested with LibreOffice Writer in both document and web mode, and in the Blogger editor compose mode (for Google Blogger pages).
-          <br> <br>Also: <br>
-          <br> You can use the built-in simple style editor.
-          <br> Highlight the text you wish to style and then click a style button (e.g. bold, underline, xxl etc.)
-          <br>Use<code style="background-color:#FDFCE5"> ctl + z </code> for undo and<code style="background-color:#FDFCE5"> ctl + y </code> for redo. However, once you click the style editor, you can only undo back to that point and not before. The solution is to just copy and cut, then repaste with<code style="background-color:#FDFCE5"> ctl + shift + v </code> (paste unformatted). Everything returns to plain text and you retype as desired.
+          <br>
+ <br>
+Also: <br>
+
+          <br>
+ You can use the built-in simple style editor.
+          <br>
+ Highlight the text you wish to style and then click a style button (e.g. bold, underline, xxl etc.)
+          <br>
+Use<code style="background-color:#FDFCE5"> ctl + z </code> for undo and<code style="background-color:#FDFCE5"> ctl + y </code> for redo. However, once you click the style editor, you can only undo back to that point and not before. The solution is to just copy and cut, then repaste with<code style="background-color:#FDFCE5"> ctl + shift + v </code> (paste unformatted). Everything returns to plain text and you retype as desired.
           
           <div style="margin:.5rem 2rem 0 2rem;"><span style="background-color:darkgreen;color:white;">Note:</span>When you copy the text be sure to highllight BEYOND both ends of where you want to correct.
-          <br>For example:
-          <br>If you want to change the underlined text in: <code style="background-color:white;"><b>Red Bull</b> is a popular <u>energy</u> drink. </code>
-          <br>You would highlight like this: <code style="background-color:white;"><b>Red Bull</b> is a popu<span style="background-color: yellow">lar <u>energy</u> dri</span>nk. </code>
-          <br>Then cut and repaste as unformatted text on the spot: <code style="background-color:white;"><b>Red Bull</b> is a popular energy drink. </code>
-          <br> Now you can highlight and restyle as you like. <code style="background-color:white;"><b>Red Bull</b> is a <u>popular</u> <b>energy</b> drink. </code><br><br>
-          </div></div>
+          <br>
+For example:
+          <br>
+If you want to change the underlined text in: <code style="background-color:white;"><b>Red Bull</b> is a popular <u>energy</u> drink. </code>
+          <br>
+You would highlight like this: <code style="background-color:white;"><b>Red Bull</b> is a popu<span style="background-color: yellow">lar <u>energy</u> dri</span>nk. </code>
+          <br>
+Then cut and repaste as unformatted text on the spot: <code style="background-color:white;"><b>Red Bull</b> is a popular energy drink. </code>
+          <br>
+ Now you can highlight and restyle as you like. <code style="background-color:white;"><b>Red Bull</b> is a <u>popular</u> <b>energy</b> drink. </code><br>
+<br>
+
+          </div>
+</div>
+
        <div style="background-color: antiquewhite; light-pink; border: thin solid black; border-radius:5px; padding:1em;"> 
           <div class="answers"> Example:<br>
-          Input <br> 
-              <code> This is a <u>sample</u> sentence. <br>  This is <u>another</u> sample sentence. <br></code><br>
+
+          Input <br>
+ 
+              <code> This is a <u>sample</u> sentence. <br>
+  This is <u>another</u> sample sentence. <br>
+</code><br>
+
           Output<br>
-              <code> a. another <br> b. sample <br> <br>This is a <u>____</u> sample sentence. 
-          <br>This is <u>____</u> sentence.</code>
+
+              <code> a. another <br>
+ b. sample <br>
+ <br>
+This is a <u>____</u> sample sentence. 
+          <br>
+This is <u>____</u> sentence.</code>
           </div>
-        </div> 
+
+        </div>
+ 
       </details> 
 
       <label id="ansChoicesListLbl" for="ansChoicesList" style="display: none;"><input id="ansChoicesList" type="checkbox">include answer choices list</label>      
@@ -260,20 +1104,26 @@ document.onreadystatechange = () => {
         <input id="allowShowHideAns" type="checkbox">include an option to open all answer peeks on the page with a single click
       </label>
       <br>
+
       <label id="noShowCorrectAnsLbl" for="noShowCorrectAns" style="display: none;">
         <input id="noShowCorrectAns" type="checkbox">don't highlight correct/incorrect answers
       </label>
       
       <!--div id="noteA" style="border-style:solid; width:100%; max-width:25rem; margin:1ex; padding:1ex;">Don't use the apostrophe if you want the correct and incorrect answers highlighted. Everything will still work, but answers with an apostrophe won't show red or green highlights.</div>
+
       
-      <br><br-->
+      <br>
+<br-->
       
     <div id="showHideAnsBtns2"> 
-      <p><button id="showAll2" onclick="showAll('details')" style="display: none;">
+      </p>
+<button id="showAll2" onclick="showAll('details')" style="display: none;">
           Show all Answers </button></p>
-      <p><button id="closeAll2" onclick="closeAll('details')" style="display: none;">
+      </p>
+<button id="closeAll2" onclick="closeAll('details')" style="display: none;">
           Hide all Answers </button></p>
     </div>
+
 
       
       
@@ -282,6 +1132,7 @@ document.onreadystatechange = () => {
 <input id="toggleShowHideNameID" type="checkbox" style="display: none;">
 <label id="toggleShowHideNameIDLbl" for="toggle" style="display: none;">Show Name and ID</label>
 <br>
+
 <input id="name" type="text" value="name">
 <input id="id" type="text" value="id#">
       
@@ -307,6 +1158,7 @@ document.onreadystatechange = () => {
       
       
    <section id="allParags" class="allParags">    <div class="titleDiv" contenteditable="false">Select a words from the the pulll-down menus to best complete the sentences.<button id="delAnsBox" class="delBtn editOff" style="display: none;">delete forever</button></div>
+
 <div id="thePara1" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false"><ul id="choicesDiv1" class="choicesUl"><li style="margin-left:2em">to resolve</li>
 <li style="margin-left:2em">constructive feedback</li>
 <li style="margin-left:2em">to handle</li>
@@ -325,7 +1177,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : to deal with or have responsibility for something <br><u><code style="padding-left:1ex">2 </code><select id="selectDiv2" class="answer" onchange="ansCheck('2 ','toresolve','selectDiv2')"><option>choices</option><option>to resolve</option>
+</select></u> : to deal with or have responsibility for something <br>
+<u><code style="padding-left:1ex">2 </code><select id="selectDiv2" class="answer" onchange="ansCheck('2 ','toresolve','selectDiv2')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -333,7 +1186,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : to solve or end a problem <br><u><code style="padding-left:1ex">3 </code><select id="selectDiv3" class="answer" onchange="ansCheck('3 ','constructivefeedback','selectDiv3')"><option>choices</option><option>to resolve</option>
+</select></u> : to solve or end a problem <br>
+<u><code style="padding-left:1ex">3 </code><select id="selectDiv3" class="answer" onchange="ansCheck('3 ','constructivefeedback','selectDiv3')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -341,7 +1195,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : advice and comments about your work that are useful and help to improve it <br><u><code style="padding-left:1ex">4 </code><select id="selectDiv4" class="answer" onchange="ansCheck('4 ','monologue','selectDiv4')"><option>choices</option><option>to resolve</option>
+</select></u> : advice and comments about your work that are useful and help to improve it <br>
+<u><code style="padding-left:1ex">4 </code><select id="selectDiv4" class="answer" onchange="ansCheck('4 ','monologue','selectDiv4')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -349,7 +1204,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : a long speech by one person <br><u><code style="padding-left:1ex">5 </code><select id="selectDiv5" class="answer" onchange="ansCheck('5 ','perspective','selectDiv5')"><option>choices</option><option>to resolve</option>
+</select></u> : a long speech by one person <br>
+<u><code style="padding-left:1ex">5 </code><select id="selectDiv5" class="answer" onchange="ansCheck('5 ','perspective','selectDiv5')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -357,7 +1213,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : a way of seeing or thinking about something <br><u><code style="padding-left:1ex">6 </code><select id="selectDiv6" class="answer" onchange="ansCheck('6 ','defensive','selectDiv6')"><option>choices</option><option>to resolve</option>
+</select></u> : a way of seeing or thinking about something <br>
+<u><code style="padding-left:1ex">6 </code><select id="selectDiv6" class="answer" onchange="ansCheck('6 ','defensive','selectDiv6')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -365,7 +1222,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u> : protecting yourself from being criticized or attacked <br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><code style="padding-left:1ex">7 </code><select id="selectDiv7" class="answer" onchange="ansCheck('7 ','tobringup','selectDiv7')"><option>choices</option><option>to resolve</option>
+</select></u> : protecting yourself from being criticized or attacked <br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><code style="padding-left:1ex">7 </code><select id="selectDiv7" class="answer" onchange="ansCheck('7 ','tobringup','selectDiv7')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -373,7 +1231,8 @@ document.onreadystatechange = () => {
 <option>defensive</option>
 <option>to blame</option>
 <option>to bring up</option>
-</select></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><code style="padding-left:1ex">8 </code><select id="selectDiv8" class="answer" onchange="ansCheck('8 ','toblame','selectDiv8')"><option>choices</option><option>to resolve</option>
+</select></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><code style="padding-left:1ex">8 </code><select id="selectDiv8" class="answer" onchange="ansCheck('8 ','toblame','selectDiv8')"><option>choices</option><option>to resolve</option>
 <option>constructive feedback</option>
 <option>to handle</option>
 <option>monologue</option>
@@ -382,14 +1241,25 @@ document.onreadystatechange = () => {
 <option>to blame</option>
 <option>to bring up</option>
 </select></u></font> : to say or think that someone is responsible for something bad happening <br>
+
 <details id="ansbox1" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox1" class="delBtn" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
         </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary><u><span style="color: rgb(153, 0, 0);">to handle</span></u> : to deal with or have responsibility for something <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">to resolve</font></u> : to solve or end a problem <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">constructive feedback</font></u> : advice and comments about your work that are useful and help to improve it <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">monologue</font></u> : a long speech by one person <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">perspective</font></u> : a way of seeing or thinking about something <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">defensive</font></u> : protecting yourself from being criticized or attacked <br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to bring up</span></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to blame</span></u></font> : to say or think that someone is responsible for something bad happening <br></details>
+<summary id="[object HTMLElement]" style="margin: 1ex;">Study Mode</summary><u><span style="color: rgb(153, 0, 0);">to handle</span></u> : to deal with or have responsibility for something <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">to resolve</font></u> : to solve or end a problem <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">constructive feedback</font></u> : advice and comments about your work that are useful and help to improve it <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">monologue</font></u> : a long speech by one person <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">perspective</font></u> : a way of seeing or thinking about something <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">defensive</font></u> : protecting yourself from being criticized or attacked <br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to bring up</span></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to blame</span></u></font> : to say or think that someone is responsible for something bad happening <br>
+</details>
 </div>
+
 
 
 </section> 
       <br>
+
       
       
       
@@ -398,50 +1268,72 @@ document.onreadystatechange = () => {
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
                 </div>
+
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
-                </div>    
+                </div>
+    
                  
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
-                </div>          
+                </div>
+          
 
       </div>
+
   
       
       <!-- replace inputPara contenteditable (no arguments)-->    
-      <div id="inputPara" class="inputPara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: none;"><u><span style="color: rgb(153, 0, 0);">to handle</span></u> : to deal with or have responsibility for something <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">to resolve</font></u> : to solve or end a problem <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">constructive feedback</font></u> : advice and comments about your work that are useful and help to improve it <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">monologue</font></u> : a long speech by one person <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">perspective</font></u> : a way of seeing or thinking about something <br><u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">defensive</font></u> : protecting yourself from being criticized or attacked <br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to bring up</span></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to blame</span></u></font> : to say or think that someone is responsible for something bad happening <br></div>
+      <div id="inputPara" class="inputPara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false" style="display: none;"><u><span style="color: rgb(153, 0, 0);">to handle</span></u> : to deal with or have responsibility for something <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">to resolve</font></u> : to solve or end a problem <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">constructive feedback</font></u> : advice and comments about your work that are useful and help to improve it <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">monologue</font></u> : a long speech by one person <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">perspective</font></u> : a way of seeing or thinking about something <br>
+<u><font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}" style="color: rgb(153, 0, 0);">defensive</font></u> : protecting yourself from being criticized or attacked <br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to bring up</span></u></font> : to start talking about a particular topic<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"> </font><br>
+<font data-keep-original-tag="false" data-original-attrs="{&quot;style&quot;:&quot;&quot;}"><u><span style="color: rgb(153, 0, 0);">to blame</span></u></font> : to say or think that someone is responsible for something bad happening <br>
+</div>
+
   <div id="showHideAnsBtns"> <!-- / added title option button too  --> 
       <label id="includeTitleLbl" for="includeTitle" style="display: none; margin: 1ex 0px 0px;"><input id="includeTitle" type="checkbox" style="display: none;">include Title</label>
-      <p><button id="showAll" onclick="showAll('details')" style="display: none;">
+      </p>
+<button id="showAll" onclick="showAll('details')" style="display: none;">
           Show all Answers </button></p>
-      <p><button id="closeAll" onclick="closeAll('details')" style="display: none;">
+      </p>
+<button id="closeAll" onclick="closeAll('details')" style="display: none;">
           Hide all Answers </button></p>
-  </div>    
+  </div>
+    
       <script>
           function showAll(zTag){
               document.getElementById("closeAll").style.cssText="display: block";
@@ -473,13 +1365,18 @@ document.onreadystatechange = () => {
       <button id="convert" onclick="getCloneAndAlter()" style="display: none;">convert
         </button>  
      <div id="noUndl" style="display:none; background-color:#fff8dc; color:darkred;"> Must Underline something</div>
-</div> 
+
+</div>
+ 
       
     <div id="printOptions" style="display: inline-block;">
         Print (save as PDF) <br>
+
       <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>           <br>
+
          <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
-    </div>        
+    </div>
+        
           <script>
             function checkThenPrint(){
                 let Name =  document.getElementById("name").value.trim();
@@ -508,10 +1405,14 @@ document.onreadystatechange = () => {
              } // end checkThenPrint()
          </script>               
       
-  <br><br>
+  <br>
+<br>
+
         <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
         <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
-      <br><br>
+      <br>
+<br>
+
       
 <div id="saveDiv" class="saveDiv" style="display: none;">     
       <!--input id="ansPeak" type="checkbox">
@@ -519,16 +1420,21 @@ document.onreadystatechange = () => {
          </label-->
             <button id="editOff" onclick="toggleEditOff()">Preview</button>
         <button id="editOn" onclick="toggleEditOn()" style="display:none;">Edit Mode</button><br>
+
     
      <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beutify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="background-color: blue; border:thin solid orange; color:orange; display:none">done</span>
     <br>
+
             <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
-        </label><br>  
+        </label><br>
+  
       <button id="saveDownload" onclick="saveDom()" style="display: none;">Save/Download</button>
     <br>
+
     
-</div> 
+</div>
+ 
       
       
      <script>
