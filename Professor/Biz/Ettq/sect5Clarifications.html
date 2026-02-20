@@ -19,181 +19,528 @@
 		      
 		<!-- <script src="script.js"></script -->
 		
-    <style>  
+    <style>
+
+        /* ============================================================
+           DESIGN TOKENS — edit here to retheme the whole page
+        ============================================================ */
+        :root {
+            --clr-bg:          #f0ede8;   /* warm off-white page bg   */
+            --clr-surface:     #faf8f5;   /* card / box surfaces       */
+            --clr-surface-alt: #f5f0ff;   /* pale lavender accent      */
+
+            /* header (dark band) */
+            --clr-header-bg:   #1e1e2e;
+            --clr-header-text: #ffffff;
+            --clr-header-sub:  #b8b4ff;   /* soft lilac subtitle       */
+
+            /* pastel accents */
+            --clr-pastel-blue:   #d6eaf8;
+            --clr-pastel-lilac:  #e8e4fb;
+            --clr-pastel-mint:   #d9f2e9;
+            --clr-pastel-peach:  #fde8d8;
+            --clr-pastel-yellow: #fdf6dc;
+
+            /* borders & shadows */
+            --clr-border:      #c9c4d8;
+            --clr-shadow:      rgba(80, 60, 120, 0.12);
+
+            /* text */
+            --clr-text:        #2c2a3a;
+            --clr-text-muted:  #6b6780;
+            --clr-link:        #5a47a8;
+
+            /* quiz interactive */
+            --clr-question-bg: #edeaf8;
+            --clr-quset-bg:    #e9f4fb;
+            --clr-correct-bg:  #fbfddb;
+            --clr-correct-txt: #003100;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+
+            --font-main: 'Segoe UI', system-ui, -apple-system, helvetica, sans-serif;
+        }
+
+        /* ============================================================
+           BASE
+        ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            background-color: #d4e6f1; cursor:text; 
-            font-family: helvetica, arial, sans-serif;
-            max-width:55rem; margin: auto;
-        }  
-        
-        :focus {outline:none;}
-        ::-moz-focus-inner {border:0; }
-        
-/* CSS begin style editor*/
-.styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
-    padding: 8px; display:inline-block;  
-    position: fixed;
-    top: 0;
-    left: 1rem;
-    right: 0;
-    z-index: 999; width:fit-content;
-}
-
-    .styleBtn {
-        display:inline-block; box-shadow: 3px 3px 5px darkred;
-        background-color: #D4E6F1; border-radius: 3px;
-    } 
-
-      .fsSmall{ font-size:small; }
-      .fsMedium{ font-size:medium; }
-      .fsLarge{ font-size:large; }
-      .fsXlarge{ font-size:x-large; }
-      .fsXxlarge{ font-size:xx-large; }
-
-  .editWithStyle{ 
-    font-size:2.2rem; color: orange; 
-    padding:3rem 0 1rem 2rem;
-    background-color: darkblue;   
-  }
-/* end style editor*/           
-        
-        #zzpageHeader { 
-            box-shadow: 0 1ex 1ex 0;
-            border-radius: 7px; margin:1ex;
-        }
-        
-        #zztitle { 
-            background-color:#fff8dc; 
-            border-style:solid;  border-width: medium; 
-            border-color:#8b0000; border-radius: 7px;
-            padding:2ex; margin-bottom: 3ex;
-        }
-        
-        .card {
-            background-color:  #d4e6f1  ; border-radius: 10px; 
-            padding:10px; 
-        }
- 
-        .quSet {
-            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .delThisQuSet{
-            border: thin solid darkblue;
-            border-radius: 7px; box-shadow: 2px 2px 2px gray;
-            margin: .5em 0 0 0; padding: 0 0 0 .3em;
-            background-color:#D7EDF0; 
-        }
-        
-        .allLabelsInputs{
-            margin:0 0 .2em 0;
-        }
-         
-        .question {
-            border-radius: 7px; box-shadow: 2px 2px 2px #C9C9CA;
-            width: fit-content; margin: .75em 0 1rem 0; padding:.2rem .wem .3rem .2em;
-            background-color:#E9E9E9; 
-
-        }
-         
-
-         .answer {
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:0; border-radius: 10px; 
-         }  
-        
-         .subDetails {
-            display:block; width:fit-content; 
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:.3rem; border-radius: 10px; 
-         }               
-        
-        .inputBox {
-            background-color:#F5F5F5; display: block;
-            border-style: solid; border-width:medium; border-color:slateblue;
-            border-radius: 8px;
-            padding: .5rem; margin:.75rem; width:fit-content;
-        }          
-                
-        .infoBox {
-            background-color:#F5F5F5; display: block;
-            border-style: solid; border-width:medium; border-color:slateblue;
-            border-radius: 8px;
-            padding: .2em; margin:.1em; width:fit-content;
-        }  
-        
-        .tbox4students {
-            background-color:beige; display: block;
-            border-style: double; border-width:thick; border-color:darkgreen;
-            padding: .5rem; margin:.75rem; width:fit-content;
-        }         
-        
-        .textLabel {
-          margin: 1rem 0 1rem 0; background-color:#fff8dc;
-          border-width:thin; border-style:solid;
-          border-color: blue; border-radius: 7px;
-          box-shadow: 3px 3px;
-          padding:1ex;
-        }         
-         
-        .fakeButton/*NO hover*/{
-            
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
-        }        
-         
-        .fake-button/*for hover*/{  
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+            background-color: var(--clr-bg);
+            color: var(--clr-text);
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.65;
+            cursor: text;
+            max-width: 54rem;
+            margin: 0 auto;
+            padding: 0 0 3rem 0;
         }
 
-       .fake-button:hover {
-            background-color: lightblue;
-             border-radius: 5px; box-shadow: 3px 3px gray;
+        :focus { outline: none; }
+        ::-moz-focus-inner { border: 0; }
 
-        }
-        
-        .addTextbox{
-            border-radius:5px; margin: 1rem 0 0 0; 
-            background-color:#E2FFEB;            
-        }
-        
-        .addTextbox:hover {
-            background-color:#D8DEDA;  border-radius: 5px;
-        }        
-        
-        /*  for <button> class="hltBtn"  */
-        .delBtn2 {
-            border-radius:5px; margin: 1rem 0 0 0; 
-            background-color:#FFEDFC;
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--clr-link);
+            margin: 1.1rem 0 .45rem 0;
+            letter-spacing: .02em;
         }
 
-        .delBtn2:hover {
-            background-color:#EED9EB;  border-radius: 5px;
+        p { margin: .3rem 0 .8rem 0; }
+
+        /* ============================================================
+           PAGE HEADER  — dark top band, white text
+        ============================================================ */
+        #zzpageHeader {
+            background: var(--clr-header-bg);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin: 0 0 1.5rem 0;
+            box-shadow: 0 4px 18px var(--clr-shadow);
         }
-        
-        #score {
-            display:inline;
-            margin: 0 1rem 0 0;
-            border-radius:5px; margin: 0 0 0 .5rem; 
-            border:thin solid darkblue;
-            padding: .2rem;
-            background-color:#E2FFEB;    
-            width:fit-content;
+
+        #zztitle {
+            padding: 1.6rem 1.4rem 1.5rem 1.4rem;
+            color: var(--clr-header-text);
+            font-size: 1rem;
+            line-height: 1.5;
+            border: none;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        #zztitle strong {
+            display: block;
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: .01em;
+            color: #fff;
+            margin-top: .25rem;
+        }
+
+        #zztitle strong:first-of-type {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--clr-header-sub);
+            margin-top: 0;
+        }
+
+        /* ============================================================
+           STYLE EDITOR TOOLBAR  (edit mode only)
+        ============================================================ */
+        .styleEditor {
+            background: var(--clr-pastel-lilac);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px var(--clr-shadow);
+        }
+
+        .styleBtn {
+            display: inline-block;
+        }
+
+        .styleBtn button {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: 2px 8px;
+            cursor: pointer;
             font-size: .85rem;
+            transition: background .15s;
         }
-        input {
-            color: #355279;
+
+        .styleBtn button:hover { background: var(--clr-pastel-blue); }
+
+        .fsSmall   { font-size: small; }
+        .fsMedium  { font-size: medium; }
+        .fsLarge   { font-size: large; }
+        .fsXlarge  { font-size: x-large; }
+        .fsXxlarge { font-size: xx-large; }
+
+        .editWithStyle {
+            font-size: 1.1rem;
+            color: var(--clr-header-sub);
+            padding: 2.8rem 0 .8rem 1.2rem;
+            background: var(--clr-header-bg);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            font-weight: 600;
         }
-    </style>  
+
+        /* ============================================================
+           CARD
+        ============================================================ */
+        .card {
+            background: var(--clr-surface);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--clr-shadow);
+        }
+
+        /* ============================================================
+           QUESTION SET WRAPPER
+        ============================================================ */
+        .quSet {
+            background: var(--clr-quset-bg);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem 1rem 1rem 1rem;
+            box-shadow: 0 3px 10px var(--clr-shadow);
+            margin: 0 .4rem .5rem .4rem;
+        }
+
+        /* ============================================================
+           INDIVIDUAL Q&A BLOCK
+        ============================================================ */
+        .delThisQuSet {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 5px var(--clr-shadow);
+            margin: .75rem 0 0 0;
+            padding: .6rem .7rem .5rem .7rem;
+        }
+
+        .allLabelsInputs {
+            margin: .2rem 0 .1rem 0;
+        }
+
+        .question {
+            background: var(--clr-question-bg);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 1px 4px var(--clr-shadow);
+            width: fit-content;
+            max-width: 100%;
+            margin: .4rem 0 .7rem 0;
+            padding: .35rem .65rem;
+            font-weight: 600;
+            font-size: .97rem;
+            color: var(--clr-text);
+        }
+
+        /* ============================================================
+           ANSWER LABELS  (radio + label pairs)
+        ============================================================ */
+        .lblAndInput {
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+            margin: .3rem 0;
+        }
+
+        .lblAndInput input[type="radio"] {
+            margin-top: .28rem;
+            accent-color: var(--clr-link);
+            flex-shrink: 0;
+        }
+
+        .ansLbl {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .3rem .65rem;
+            cursor: pointer;
+            display: inline-block;
+            font-size: .95rem;
+            line-height: 1.45;
+            transition: background .15s, border-color .15s;
+        }
+
+        .ansLbl:hover {
+            background: var(--clr-pastel-blue);
+            border-color: #a9c8e8;
+        }
+
+        /* ============================================================
+           INFO / INPUT BOXES
+        ============================================================ */
+        .answer {
+            display: block;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .4rem .6rem;
+        }
+
+        .subDetails {
+            display: block;
+            width: fit-content;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .4rem .6rem;
+        }
+
+        .inputBox {
+            background: var(--clr-surface);
+            display: block;
+            border: 2px solid #9b8ed4;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .75rem .4rem;
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        .infoBox {
+            background: var(--clr-surface);
+            display: block;
+            border: 2px solid #9b8ed4;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .6rem .2rem;
+            width: fit-content;
+            max-width: 100%;
+            font-size: .97rem;
+        }
+
+        /* phrases/examples inner boxes */
+        .infoBox [style*="background-color: #F8F4E5"],
+        .infoBox div[style*="background-color: #F1FDFF"],
+        div[style*="background-color: #F8F4E5"],
+        div[style*="background-color: #F1FDFF"] {
+            background: var(--clr-pastel-yellow) !important;
+            border: 1px solid #d9d0b8 !important;
+            border-radius: var(--radius-sm) !important;
+            padding: .6rem .8rem !important;
+        }
+
+        .tbox4students {
+            background: var(--clr-pastel-mint);
+            display: block;
+            border: 2px solid #6aaf8e;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .75rem .4rem;
+            width: fit-content;
+            max-width: 100%;
+            font-size: .95rem;
+        }
+
+        .textLabel {
+            margin: 1rem 0;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 2px 2px 4px var(--clr-shadow);
+            padding: .6rem .8rem;
+        }
+
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
+        button {
+            font-family: var(--font-main);
+            cursor: pointer;
+        }
+
+        .fakeButton {
+            background: #ededf2;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 1px 1px 3px var(--clr-shadow);
+            padding: .1rem .6rem;
+            font-size: .85em;
+        }
+
+        .fake-button {
+            background: #ededf2;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 1px 1px 3px var(--clr-shadow);
+            padding: .1rem .6rem;
+            font-size: .85em;
+            transition: background .15s;
+        }
+
+        .fake-button:hover {
+            background: var(--clr-pastel-blue);
+            box-shadow: 2px 2px 5px var(--clr-shadow);
+        }
+
+        .addTextbox {
+            border-radius: var(--radius-sm);
+            margin: .75rem 0 0 0;
+            background: var(--clr-pastel-mint);
+            border: 1px solid #9dd3b8;
+            padding: .25rem .65rem;
+            font-size: .85rem;
+            transition: background .15s;
+        }
+
+        .addTextbox:hover { background: #c5e8d5; }
+
+        .delBtn2 {
+            border-radius: var(--radius-sm);
+            margin: .75rem 0 0 0;
+            background: var(--clr-pastel-peach);
+            border: 1px solid #e8c0a8;
+            padding: .25rem .65rem;
+            font-size: .82rem;
+            color: #6b3520;
+            transition: background .15s;
+        }
+
+        .delBtn2:hover { background: #f5d5c0; }
+
+        /* Get Score / Print buttons */
+        #getScore, #printFullView {
+            background: var(--clr-link);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: .4rem 1.1rem;
+            font-size: .92rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+            box-shadow: 0 2px 6px var(--clr-shadow);
+            transition: background .18s, transform .1s;
+            margin: .5rem .3rem .5rem 0;
+        }
+
+        #getScore:hover, #printFullView:hover {
+            background: #3f2e8a;
+            transform: translateY(-1px);
+        }
+
+        #makeMCQ {
+            background: var(--clr-pastel-lilac);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .35rem .9rem;
+            font-size: .9rem;
+            margin: 1rem 0 0 0;
+            transition: background .15s;
+        }
+        #makeMCQ:hover { background: #d4cef8; }
+
+        /* ============================================================
+           SCORE DISPLAY
+        ============================================================ */
+        #score {
+            display: inline-block;
+            border-radius: var(--radius-sm);
+            border: 1px solid #7aaf8e;
+            padding: .2rem .6rem;
+            background: var(--clr-pastel-mint);
+            font-size: .88rem;
+            font-weight: 700;
+            color: #1a5e35;
+            margin-left: .4rem;
+            vertical-align: middle;
+        }
+
+        #correctAnsShowGreen {
+            font-size: .85rem;
+            color: var(--clr-text-muted);
+            margin: .35rem 0 .6rem 0;
+        }
+
+        /* ============================================================
+           NAME / ID INPUTS
+        ============================================================ */
+        input[type="text"] {
+            color: var(--clr-link);
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .3rem .5rem;
+            font-family: var(--font-main);
+            font-size: .92rem;
+            margin: .2rem .3rem .2rem 0;
+        }
+
+        /* exam-mode / auto-number labels */
+        #examModeLblInput label {
+            border: 1px solid var(--clr-border) !important;
+            background: var(--clr-pastel-lilac) !important;
+            border-radius: var(--radius-sm);
+            padding: .3rem .6rem !important;
+            font-size: .82rem;
+        }
+
+        /* ============================================================
+           SAVE DOM PANEL
+        ============================================================ */
+        #saveDom {
+            background: var(--clr-pastel-blue) !important;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .8rem 1rem !important;
+            margin: .5rem 0 0 .8rem !important;
+            width: fit-content;
+        }
+
+        #saveDom label {
+            background: var(--clr-pastel-yellow) !important;
+            border-radius: var(--radius-sm);
+            padding: .3rem .6rem;
+            font-size: .88rem;
+        }
+
+        #saveDownload {
+            background: var(--clr-link);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: .35rem .9rem;
+            font-size: .88rem;
+            margin-top: .5rem;
+            transition: background .15s;
+        }
+        #saveDownload:hover { background: #3f2e8a; }
+
+        /* ============================================================
+           MOBILE-FIRST RESPONSIVE
+        ============================================================ */
+        @media (max-width: 480px) {
+            body { font-size: 15px; padding: 0 0 2.5rem 0; }
+
+            #zztitle { padding: 1.2rem 1rem 1.2rem 1rem; }
+            #zztitle strong { font-size: 1.2rem; }
+
+            .quSet { padding: .9rem .65rem .8rem .65rem; margin: 0 0 .5rem 0; }
+
+            .question { font-size: .93rem; padding: .3rem .5rem; }
+
+            .ansLbl { font-size: .9rem; padding: .28rem .5rem; }
+
+            .infoBox, .inputBox { margin: .5rem 0; max-width: 100%; }
+
+            .styleEditor { padding: 4px 6px; gap: 3px; }
+            .styleBtn button { font-size: .78rem; padding: 1px 5px; }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            body { padding: 0 .5rem 2.5rem .5rem; }
+            .quSet { margin: 0 .2rem .5rem .2rem; }
+        }
+
+        @media (min-width: 769px) {
+            body { padding: 0 1rem 3rem 1rem; }
+        }
+
+        /* ============================================================
+           PRINT
+        ============================================================ */
+        @media print {
+            .editMode { display: none !important; }
+            body { background: #fff; max-width: 100%; }
+            #zzpageHeader { border-radius: 0; box-shadow: none; }
+            .quSet { box-shadow: none; border: 1px solid #ccc; }
+        }
+
+    </style>
     
   </head>
   
@@ -351,89 +698,89 @@
 	
 	
 
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu The project
+<p style="line-height: 100%;">zz.qu The project
 deadline has been moved to the 21<sup>st</sup> of July.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) I'm sorry,
+<p style="line-height: 100%;">zz.ans a) I'm sorry,
 could you repeat that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) I didn't
+<p style="line-height: 100%;">zz.not b) I didn't
 hear you. What did you say?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu We need to
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu We need to
 adjust our current marketing strategy.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) What
+<p style="line-height: 100%;">zz.ans a) What
 exactly do you mean by "adjust"?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) What are
+<p style="line-height: 100%;">zz.not b) What are
 you talking about?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu The new
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu The new
 policy will be implemented starting Monday.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 tell me more about that policy?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) What new
+<p style="line-height: 100%;">zz.not b) What new
 policy?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu We'll be
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu We'll be
 using a new tool for project management.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Can you
+<p style="line-height: 100%;">zz.ans a) Can you
 elaborate on that point?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Why do we
+<p style="line-height: 100%;">zz.not b) Why do we
 need a new tool?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu The data
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu The data
 from last quarter shows a significant trend.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) I'm sorry,
+<p style="line-height: 100%;">zz.ans a) I'm sorry,
 but I'm not following. Can you explain it a little more?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) I don't
+<p style="line-height: 100%;">zz.not b) I don't
 understand what you mean?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu Our team
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu Our team
 needs to improve communication.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 provide an example?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Why do you
+<p style="line-height: 100%;">zz.not b) Why do you
 think that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu We have to
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu We have to
 reduce expenses in the next few months.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 clarify what you mean by "reduce expenses"?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Why is
+<p style="line-height: 100%;">zz.not b) Why is
 that important?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu The client
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu The client
 requested some changes to the proposal.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 explain that in more detail, please?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) What
+<p style="line-height: 100%;">zz.not b) What
 changes are you talking about?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu We'll be
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu We'll be
 reallocating some resources for the new project.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) I'm sorry,
+<p style="line-height: 100%;">zz.ans a) I'm sorry,
 I missed that. Could you say it again?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Why are we
+<p style="line-height: 100%;">zz.not b) Why are we
 doing that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu The
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu The
 training session will cover new compliance regulations.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 clarify what you mean by "compliance regulations"?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Compliance
+<p style="line-height: 100%;">zz.not b) Compliance
 regulations for what?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu Our sales
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu Our sales
 strategy will shift towards digital channels.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 please explain that a bit more?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Why are we
+<p style="line-height: 100%;">zz.not b) Why are we
 shifting strategies?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.end</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.qu We need to
+<p style="line-height: 100%;">zz.end</p>
+<p style="line-height: 100%;">zz.qu We need to
 increase our customer feedback collection efforts.</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.ans a) Could you
+<p style="line-height: 100%;">zz.ans a) Could you
 be more specific about what you mean?</p>
-<p style="line-height: 100%; margin-bottom: 0in">zz.not b) Are we not
-doing enough?</p><p style="line-height: 100%; margin-bottom: 0in">zz.end<br></p>
+<p style="line-height: 100%;">zz.not b) Are we not
+doing enough?</p><p style="line-height: 100%;">zz.end<br></p>
 
             </div>
         </div>
@@ -485,65 +832,65 @@ doing enough?</p><p style="line-height: 100%; margin-bottom: 0in">zz.end<br></p>
 	
 
 <div class="delThis"><button id="addTextbox0" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><div class="infoBox" contenteditable="false"><h2 class="western">
-Section 5: Asking for Clarification</h2><p style="line-height: 100%; margin-bottom: 0in">In meetings and
+Section 5: Asking for Clarification</h2><p style="line-height: 100%;">In meetings and
 discussions, it's important to ensure that you fully understand the
 information being shared. Asking for clarification shows that you are
-engaged and willing to understand better. <br></p><p style="line-height: 100%; margin-bottom: 0in"><br></p><h3 class="western"><font face="Arial, sans-serif">Phrases for Asking
-for Clarification</font></h3><p style="line-height: 100%; margin-bottom: 0in">   <div style="margin:.2em; border: thin solid; padding: .5rem;  background-color: #F8F4E5;"> Could you please
+engaged and willing to understand better. <br></p><p style="line-height: 100%;"><br></p><h3 class="western"><font face="Arial, sans-serif">Phrases for Asking
+for Clarification</font></h3>
+<div style="margin:.2em; border: thin solid; padding: .5rem;  background-color: #F8F4E5;">
+<p style="line-height: 100%;"> Could you please
 explain that a bit more?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    I'm sorry, could
+<p style="line-height: 100%;">    I'm sorry, could
 you repeat that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    What do you mean
+<p style="line-height: 100%;">    What do you mean
 by...?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    I'm not sure I
+<p style="line-height: 100%;">    I'm not sure I
 understand. Could you clarify?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Could you give
+<p style="line-height: 100%;">    Could you give
 me more details on that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Could you tell
+<p style="line-height: 100%;">    Could you tell
 me more about that?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Can you
+<p style="line-height: 100%;">    Can you
 elaborate on that point?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    I'm sorry, but
+<p style="line-height: 100%;">    I'm sorry, but
 I'm not following. Could you explain differently?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    What exactly do
+<p style="line-height: 100%;">    What exactly do
 you mean by...?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Could you
+<p style="line-height: 100%;">    Could you
 provide an example?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Could you go
+<p style="line-height: 100%;">    Could you go
 over that again, please?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    I'm sorry, I
+<p style="line-height: 100%;">    I'm sorry, I
 missed that. Could you say it again?</p>
-<p style="line-height: 100%; margin-bottom: 0in">    Could you
+<p style="line-height: 100%;">    Could you
 clarify what you mean by...?</p>
-<p style="line-height: 100%; margin-bottom: 0in">
-	
-</p>	
+
 </div>
 
 
 </p>
 <h3 class="western"><font face="Arial, sans-serif">Example Dialogues</font></h3>
-<p style="line-height: 100%; margin-bottom: 0in">
+<p style="line-height: 100%;">
 </p>
 <div style="margin:.2em; border: thin solid; padding: .5rem;  background-color: #F1FDFF;">
-<p style="line-height: 100%; margin-bottom: 0in"><b>Dialogue 1:</b></p><p style="line-height: 100%; margin-bottom: 0in">The new software
+<p style="line-height: 100%;"><b>Dialogue 1:</b></p><p style="line-height: 100%;">The new software
 will streamline our workflow significantly.</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: Could you please
+<p style="line-height: 100%;">B: Could you please
 explain that a bit more? How exactly will it streamline our workflow?</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in"><b>Dialogue 2:</b></p><p style="line-height: 100%; margin-bottom: 0in">We need to
+<p style="line-height: 100%;"><b>Dialogue 2:</b></p><p style="line-height: 100%;">We need to
 improve our customer satisfaction metrics.</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm sorry, could
+<p style="line-height: 100%;">B: I'm sorry, could
 you repeat that? I didn't catch the last part.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in"><b>Dialogue 3:</b></p><p style="line-height: 100%; margin-bottom: 0in">A: Our budget
+<p style="line-height: 100%;"><b>Dialogue 3:</b></p><p style="line-height: 100%;">A: Our budget
 allocation for the next quarter will change.</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: What do you mean
-by "change"? Could you give me more details?</p><br></div><div><br></div></div><div class="infoBox" contenteditable="false"><strong>For the exercise below, choose the best response.</strong><style type="text/css">h2 { margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }h2.ctl { font-family: "Lohit Devanagari"; font-size: 16pt; font-weight: bold }h3 { margin-top: 0.1in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }h3.cjk { font-family: "Noto Serif CJK SC"; font-size: 14pt; font-weight: bold }h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></div><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question0" class="question"><span class="num"></span> 1.  The project
+<p style="line-height: 100%;">B: What do you mean
+by "change"? Could you give me more details?</p><br></div><div><br></div></div><div class="infoBox" contenteditable="false"><strong>For the exercise below, choose the best response.</strong></div><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question0" class="question"><span class="num"></span> 1.  The project
 deadline has been moved to the 21st of July.
 </p>	<div id="allLabelsInputs0" class="allLabelsInputs"><div id="lblAndInput1" class="lblAndInput"><input id="radioBtn1" type="radio" name="answer0" value="incorrect"><label for="radioBtn1" id="ansLbl1" class="ansLbl"> b) I didn't
 hear you. What did you say?

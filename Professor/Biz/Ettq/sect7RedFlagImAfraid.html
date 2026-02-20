@@ -19,181 +19,528 @@
 		      
 		<!-- <script src="script.js"></script -->
 		
-    <style>  
+    <style>
+
+        /* ============================================================
+           DESIGN TOKENS — edit here to retheme the whole page
+        ============================================================ */
+        :root {
+            --clr-bg:          #f0ede8;   /* warm off-white page bg   */
+            --clr-surface:     #faf8f5;   /* card / box surfaces       */
+            --clr-surface-alt: #f5f0ff;   /* pale lavender accent      */
+
+            /* header (dark band) */
+            --clr-header-bg:   #1e1e2e;
+            --clr-header-text: #ffffff;
+            --clr-header-sub:  #b8b4ff;   /* soft lilac subtitle       */
+
+            /* pastel accents */
+            --clr-pastel-blue:   #d6eaf8;
+            --clr-pastel-lilac:  #e8e4fb;
+            --clr-pastel-mint:   #d9f2e9;
+            --clr-pastel-peach:  #fde8d8;
+            --clr-pastel-yellow: #fdf6dc;
+
+            /* borders & shadows */
+            --clr-border:      #c9c4d8;
+            --clr-shadow:      rgba(80, 60, 120, 0.12);
+
+            /* text */
+            --clr-text:        #2c2a3a;
+            --clr-text-muted:  #6b6780;
+            --clr-link:        #5a47a8;
+
+            /* quiz interactive */
+            --clr-question-bg: #edeaf8;
+            --clr-quset-bg:    #e9f4fb;
+            --clr-correct-bg:  #fbfddb;
+            --clr-correct-txt: #003100;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+
+            --font-main: 'Segoe UI', system-ui, -apple-system, helvetica, sans-serif;
+        }
+
+        /* ============================================================
+           BASE
+        ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            background-color: #d4e6f1; cursor:text; 
-            font-family: helvetica, arial, sans-serif;
-            max-width:55rem; margin: auto;
-        }  
-        
-        :focus {outline:none;}
-        ::-moz-focus-inner {border:0; }
-        
-/* CSS begin style editor*/
-.styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
-    padding: 8px; display:inline-block;  
-    position: fixed;
-    top: 0;
-    left: 1rem;
-    right: 0;
-    z-index: 999; width:fit-content;
-}
-
-    .styleBtn {
-        display:inline-block; box-shadow: 3px 3px 5px darkred;
-        background-color: #D4E6F1; border-radius: 3px;
-    } 
-
-      .fsSmall{ font-size:small; }
-      .fsMedium{ font-size:medium; }
-      .fsLarge{ font-size:large; }
-      .fsXlarge{ font-size:x-large; }
-      .fsXxlarge{ font-size:xx-large; }
-
-  .editWithStyle{ 
-    font-size:2.2rem; color: orange; 
-    padding:3rem 0 1rem 2rem;
-    background-color: darkblue;   
-  }
-/* end style editor*/           
-        
-        #zzpageHeader { 
-            box-shadow: 0 1ex 1ex 0;
-            border-radius: 7px; margin:1ex;
-        }
-        
-        #zztitle { 
-            background-color:#fff8dc; 
-            border-style:solid;  border-width: medium; 
-            border-color:#8b0000; border-radius: 7px;
-            padding:2ex; margin-bottom: 3ex;
-        }
-        
-        .card {
-            background-color:  #d4e6f1  ; border-radius: 10px; 
-            padding:10px; 
-        }
- 
-        .quSet {
-            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            padding:3ex; 
-            border-radius: 10px;
-         }
-        
-        .delThisQuSet{
-            border: thin solid darkblue;
-            border-radius: 7px; box-shadow: 2px 2px 2px gray;
-            margin: .5em 0 0 0; padding: 0 0 0 .3em;
-            background-color:#D7EDF0; 
-        }
-        
-        .allLabelsInputs{
-            margin:0 0 .2em 0;
-        }
-         
-        .question {
-            border-radius: 7px; box-shadow: 2px 2px 2px #C9C9CA;
-            width: fit-content; margin: .75em 0 1rem 0; padding:.2rem .wem .3rem .2em;
-            background-color:#E9E9E9; 
-
-        }
-         
-
-         .answer {
-            display:block;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:0; border-radius: 10px; 
-         } 
-        
-         .subDetails {
-            display:block; width:fit-content; 
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:.3rem; border-radius: 10px; 
-         }               
-        
-        .inputBox {
-            background-color:#F5F5F5; display: block;
-            border-style: solid; border-width:medium; border-color:slateblue;
-            border-radius: 8px;
-            padding: .5rem; margin:.75rem; width:fit-content;
-        }          
-                
-        .infoBox {
-            background-color:#F5F5F5; display: block;
-            border-style: solid; border-width:medium; border-color:slateblue;
-            border-radius: 8px;
-            padding: .5rem; margin:.75em .2em .75em .2em; width:fit-content;
-        }  
-        
-        .tbox4students {
-            background-color:beige; display: block;
-            border-style: double; border-width:thick; border-color:darkgreen;
-            padding: .5rem; margin:.75rem; width:fit-content;
-        }         
-        
-        .textLabel {
-          margin: 1rem 0 1rem 0; background-color:#fff8dc;
-          border-width:thin; border-style:solid;
-          border-color: blue; border-radius: 7px;
-          box-shadow: 3px 3px;
-          padding:1ex;
-        }         
-         
-        .fakeButton/*NO hover*/{
-            
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
-        }        
-         
-        .fake-button/*for hover*/{  
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+            background-color: var(--clr-bg);
+            color: var(--clr-text);
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.65;
+            cursor: text;
+            max-width: 54rem;
+            margin: 0 auto;
+            padding: 0 0 3rem 0;
         }
 
-       .fake-button:hover {
-            background-color: lightblue;
-             border-radius: 5px; box-shadow: 3px 3px gray;
+        :focus { outline: none; }
+        ::-moz-focus-inner { border: 0; }
 
-        }
-        
-        .addTextbox{
-            border-radius:5px; margin: 1rem 0 0 0; 
-            background-color:#E2FFEB;            
-        }
-        
-        .addTextbox:hover {
-            background-color:#D8DEDA;  border-radius: 5px;
-        }        
-        
-        /*  for <button> class="hltBtn"  */
-        .delBtn2 {
-            border-radius:5px; margin: 1rem 0 0 0; 
-            background-color:#FFEDFC;
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--clr-link);
+            margin: 1.1rem 0 .45rem 0;
+            letter-spacing: .02em;
         }
 
-        .delBtn2:hover {
-            background-color:#EED9EB;  border-radius: 5px;
+        p { margin: .3rem 0 .8rem 0; }
+
+        /* ============================================================
+           PAGE HEADER  — dark top band, white text
+        ============================================================ */
+        #zzpageHeader {
+            background: var(--clr-header-bg);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin: 0 0 1.5rem 0;
+            box-shadow: 0 4px 18px var(--clr-shadow);
         }
-        
-        #score {
-            display:inline;
-            margin: 0 1rem 0 0;
-            border-radius:5px; margin: 0 0 0 .5rem; 
-            border:thin solid darkblue;
-            padding: .2rem;
-            background-color:#E2FFEB;    
-            width:fit-content;
+
+        #zztitle {
+            padding: 1.6rem 1.4rem 1.5rem 1.4rem;
+            color: var(--clr-header-text);
+            font-size: 1rem;
+            line-height: 1.5;
+            border: none;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        #zztitle strong {
+            display: block;
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: .01em;
+            color: #fff;
+            margin-top: .25rem;
+        }
+
+        #zztitle strong:first-of-type {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--clr-header-sub);
+            margin-top: 0;
+        }
+
+        /* ============================================================
+           STYLE EDITOR TOOLBAR  (edit mode only)
+        ============================================================ */
+        .styleEditor {
+            background: var(--clr-pastel-lilac);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px var(--clr-shadow);
+        }
+
+        .styleBtn {
+            display: inline-block;
+        }
+
+        .styleBtn button {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: 2px 8px;
+            cursor: pointer;
             font-size: .85rem;
+            transition: background .15s;
         }
-        input {
-            color: #355279;
+
+        .styleBtn button:hover { background: var(--clr-pastel-blue); }
+
+        .fsSmall   { font-size: small; }
+        .fsMedium  { font-size: medium; }
+        .fsLarge   { font-size: large; }
+        .fsXlarge  { font-size: x-large; }
+        .fsXxlarge { font-size: xx-large; }
+
+        .editWithStyle {
+            font-size: 1.1rem;
+            color: var(--clr-header-sub);
+            padding: 2.8rem 0 .8rem 1.2rem;
+            background: var(--clr-header-bg);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            font-weight: 600;
         }
-    </style>  
+
+        /* ============================================================
+           CARD
+        ============================================================ */
+        .card {
+            background: var(--clr-surface);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--clr-shadow);
+        }
+
+        /* ============================================================
+           QUESTION SET WRAPPER
+        ============================================================ */
+        .quSet {
+            background: var(--clr-quset-bg);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem 1rem 1rem 1rem;
+            box-shadow: 0 3px 10px var(--clr-shadow);
+            margin: 0 .4rem .5rem .4rem;
+        }
+
+        /* ============================================================
+           INDIVIDUAL Q&A BLOCK
+        ============================================================ */
+        .delThisQuSet {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 5px var(--clr-shadow);
+            margin: .75rem 0 0 0;
+            padding: .6rem .7rem .5rem .7rem;
+        }
+
+        .allLabelsInputs {
+            margin: .2rem 0 .1rem 0;
+        }
+
+        .question {
+            background: var(--clr-question-bg);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 1px 4px var(--clr-shadow);
+            width: fit-content;
+            max-width: 100%;
+            margin: .4rem 0 .7rem 0;
+            padding: .35rem .65rem;
+            font-weight: 600;
+            font-size: .97rem;
+            color: var(--clr-text);
+        }
+
+        /* ============================================================
+           ANSWER LABELS  (radio + label pairs)
+        ============================================================ */
+        .lblAndInput {
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+            margin: .3rem 0;
+        }
+
+        .lblAndInput input[type="radio"] {
+            margin-top: .28rem;
+            accent-color: var(--clr-link);
+            flex-shrink: 0;
+        }
+
+        .ansLbl {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .3rem .65rem;
+            cursor: pointer;
+            display: inline-block;
+            font-size: .95rem;
+            line-height: 1.45;
+            transition: background .15s, border-color .15s;
+        }
+
+        .ansLbl:hover {
+            background: var(--clr-pastel-blue);
+            border-color: #a9c8e8;
+        }
+
+        /* ============================================================
+           INFO / INPUT BOXES
+        ============================================================ */
+        .answer {
+            display: block;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .4rem .6rem;
+        }
+
+        .subDetails {
+            display: block;
+            width: fit-content;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .4rem .6rem;
+        }
+
+        .inputBox {
+            background: var(--clr-surface);
+            display: block;
+            border: 2px solid #9b8ed4;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .75rem .4rem;
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        .infoBox {
+            background: var(--clr-surface);
+            display: block;
+            border: 2px solid #9b8ed4;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .6rem .2rem;
+            width: fit-content;
+            max-width: 100%;
+            font-size: .97rem;
+        }
+
+        /* phrases/examples inner boxes */
+        .infoBox [style*="background-color: #F8F4E5"],
+        .infoBox div[style*="background-color: #F1FDFF"],
+        div[style*="background-color: #F8F4E5"],
+        div[style*="background-color: #F1FDFF"] {
+            background: var(--clr-pastel-yellow) !important;
+            border: 1px solid #d9d0b8 !important;
+            border-radius: var(--radius-sm) !important;
+            padding: .6rem .8rem !important;
+        }
+
+        .tbox4students {
+            background: var(--clr-pastel-mint);
+            display: block;
+            border: 2px solid #6aaf8e;
+            border-radius: var(--radius-md);
+            padding: .6rem .8rem;
+            margin: .75rem .4rem;
+            width: fit-content;
+            max-width: 100%;
+            font-size: .95rem;
+        }
+
+        .textLabel {
+            margin: 1rem 0;
+            background: var(--clr-pastel-yellow);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 2px 2px 4px var(--clr-shadow);
+            padding: .6rem .8rem;
+        }
+
+        /* ============================================================
+           BUTTONS
+        ============================================================ */
+        button {
+            font-family: var(--font-main);
+            cursor: pointer;
+        }
+
+        .fakeButton {
+            background: #ededf2;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 1px 1px 3px var(--clr-shadow);
+            padding: .1rem .6rem;
+            font-size: .85em;
+        }
+
+        .fake-button {
+            background: #ededf2;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 1px 1px 3px var(--clr-shadow);
+            padding: .1rem .6rem;
+            font-size: .85em;
+            transition: background .15s;
+        }
+
+        .fake-button:hover {
+            background: var(--clr-pastel-blue);
+            box-shadow: 2px 2px 5px var(--clr-shadow);
+        }
+
+        .addTextbox {
+            border-radius: var(--radius-sm);
+            margin: .75rem 0 0 0;
+            background: var(--clr-pastel-mint);
+            border: 1px solid #9dd3b8;
+            padding: .25rem .65rem;
+            font-size: .85rem;
+            transition: background .15s;
+        }
+
+        .addTextbox:hover { background: #c5e8d5; }
+
+        .delBtn2 {
+            border-radius: var(--radius-sm);
+            margin: .75rem 0 0 0;
+            background: var(--clr-pastel-peach);
+            border: 1px solid #e8c0a8;
+            padding: .25rem .65rem;
+            font-size: .82rem;
+            color: #6b3520;
+            transition: background .15s;
+        }
+
+        .delBtn2:hover { background: #f5d5c0; }
+
+        /* Get Score / Print buttons */
+        #getScore, #printFullView {
+            background: var(--clr-link);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: .4rem 1.1rem;
+            font-size: .92rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+            box-shadow: 0 2px 6px var(--clr-shadow);
+            transition: background .18s, transform .1s;
+            margin: .5rem .3rem .5rem 0;
+        }
+
+        #getScore:hover, #printFullView:hover {
+            background: #3f2e8a;
+            transform: translateY(-1px);
+        }
+
+        #makeMCQ {
+            background: var(--clr-pastel-lilac);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .35rem .9rem;
+            font-size: .9rem;
+            margin: 1rem 0 0 0;
+            transition: background .15s;
+        }
+        #makeMCQ:hover { background: #d4cef8; }
+
+        /* ============================================================
+           SCORE DISPLAY
+        ============================================================ */
+        #score {
+            display: inline-block;
+            border-radius: var(--radius-sm);
+            border: 1px solid #7aaf8e;
+            padding: .2rem .6rem;
+            background: var(--clr-pastel-mint);
+            font-size: .88rem;
+            font-weight: 700;
+            color: #1a5e35;
+            margin-left: .4rem;
+            vertical-align: middle;
+        }
+
+        #correctAnsShowGreen {
+            font-size: .85rem;
+            color: var(--clr-text-muted);
+            margin: .35rem 0 .6rem 0;
+        }
+
+        /* ============================================================
+           NAME / ID INPUTS
+        ============================================================ */
+        input[type="text"] {
+            color: var(--clr-link);
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: .3rem .5rem;
+            font-family: var(--font-main);
+            font-size: .92rem;
+            margin: .2rem .3rem .2rem 0;
+        }
+
+        /* exam-mode / auto-number labels */
+        #examModeLblInput label {
+            border: 1px solid var(--clr-border) !important;
+            background: var(--clr-pastel-lilac) !important;
+            border-radius: var(--radius-sm);
+            padding: .3rem .6rem !important;
+            font-size: .82rem;
+        }
+
+        /* ============================================================
+           SAVE DOM PANEL
+        ============================================================ */
+        #saveDom {
+            background: var(--clr-pastel-blue) !important;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            padding: .8rem 1rem !important;
+            margin: .5rem 0 0 .8rem !important;
+            width: fit-content;
+        }
+
+        #saveDom label {
+            background: var(--clr-pastel-yellow) !important;
+            border-radius: var(--radius-sm);
+            padding: .3rem .6rem;
+            font-size: .88rem;
+        }
+
+        #saveDownload {
+            background: var(--clr-link);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: .35rem .9rem;
+            font-size: .88rem;
+            margin-top: .5rem;
+            transition: background .15s;
+        }
+        #saveDownload:hover { background: #3f2e8a; }
+
+        /* ============================================================
+           MOBILE-FIRST RESPONSIVE
+        ============================================================ */
+        @media (max-width: 480px) {
+            body { font-size: 15px; padding: 0 0 2.5rem 0; }
+
+            #zztitle { padding: 1.2rem 1rem 1.2rem 1rem; }
+            #zztitle strong { font-size: 1.2rem; }
+
+            .quSet { padding: .9rem .65rem .8rem .65rem; margin: 0 0 .5rem 0; }
+
+            .question { font-size: .93rem; padding: .3rem .5rem; }
+
+            .ansLbl { font-size: .9rem; padding: .28rem .5rem; }
+
+            .infoBox, .inputBox { margin: .5rem 0; max-width: 100%; }
+
+            .styleEditor { padding: 4px 6px; gap: 3px; }
+            .styleBtn button { font-size: .78rem; padding: 1px 5px; }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            body { padding: 0 .5rem 2.5rem .5rem; }
+            .quSet { margin: 0 .2rem .5rem .2rem; }
+        }
+
+        @media (min-width: 769px) {
+            body { padding: 0 1rem 3rem 1rem; }
+        }
+
+        /* ============================================================
+           PRINT
+        ============================================================ */
+        @media print {
+            .editMode { display: none !important; }
+            body { background: #fff; max-width: 100%; }
+            #zzpageHeader { border-radius: 0; box-shadow: none; }
+            .quSet { box-shadow: none; border: 1px solid #ccc; }
+        }
+
+    </style>
     
   </head>
   
@@ -210,40 +557,51 @@
                 <div class="styleBtn">
                     <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
                 </div>
+
                 
                 <div class="styleBtn">
                     <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
                 </div>
+
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
-                </div>    
+                </div>
+
                  
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
                 </div>
+
                                   
                 <div class="styleBtn">
                     <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
-                </div>         
-      </div>   
+                </div>
+
+      </div>
+
       
       <div id="editWithStyle" class="editWithStyle editMode" style="display: none;">Edit Mode ------ Edit Mode</div>
+
 
            <script>
         function bold(){
@@ -309,11 +667,17 @@
 =================================================================
 ==================================================================-->
   
-<div id="flagEditState" style="display:none">0</div>      
+<div id="flagEditState" style="display:none">0</div>
+
       
   <header id="zzpageHeader">
-    <section id="zztitle" contenteditable="false">Dr Ray  <br>Business English<br><br>
-        <div><strong>Meetings Etiquette</strong></div><strong>Section 7 Red Flag: I'm Afraid<br></strong></section>   
+    <section id="zztitle" contenteditable="false">Dr Ray  <br>
+Business English<br>
+<br>
+
+        <div><strong>Meetings Etiquette</strong></div>
+<strong>Section 7 Red Flag: I'm Afraid<br>
+</strong></section>
 </header>
 
 <!-- ================= check if header was updated ============ -->
@@ -323,7 +687,11 @@
 </script>
     
     
-<details class="editMode" style="display: none;"><summary>Instructions</summary><div class="subDetails">As in the examples below, always place the correct answer first (zz.ans)<br> followed by the incorrects (zz.not).<br> The app will randomly shuffle the choices.<br>You may have as many incorrect choices as you like.</div></details>
+<details class="editMode" style="display: none;"><summary>Instructions</summary><div class="subDetails">As in the examples below, always place the correct answer first (zz.ans)<br>
+ followed by the incorrects (zz.not).<br>
+ The app will randomly shuffle the choices.<br>
+You may have as many incorrect choices as you like.</div>
+</details>
 
 
   
@@ -332,16 +700,70 @@
     <section id="textareaGroup" class="zztextAreaLabel" style="display:block;">
         <div id="textarea1" class="textarea">
 
-            <div id="textbox" class="inputBox editMode" contenteditable="false" style="display: none;">zz.qu Please bring the reports with you to the meeting.<br>zz.ans I'm afraid they're not complete yet.<br>zz.not Mark hasn't done them yet.<br><br>zz.end zz.qu Can we meet to discuss the budget?<br>zz.ans I'm afraid I can't meet today.<br>zz.not No. We can meet tommorrow.<br><br>zz.end zz.qu Do you have the client’s feedback?<br>zz.ans I'm afraid they haven't replied yet.<br>zz.not We don’t have the feedback yet.<br><br>zz.end zz.qu Can you help with the presentation?<br>zz.ans I’m afraid I won’t have time.<br>zz.not I don’t think so.<br><br>zz.end zz.qu Are you attending the training session tomorrow?<br>zz.ans I’m afraid I have another obligation at that time.<br>zz.not I’m not available tomorrow.<br><br>zz.end zz.qu Will we have the results by Friday?<br>zz.ans I’m afraid it will take longer; maybe Monday.<br>zz.not You’ll have to wait till Monday.<br><br>zz.end zz.qu Can we change the meeting time?<br>zz.ans I’m afraid that won’t be possible.<br>zz.not That’s not possible.<br><br>zz.end zz.qu Is the project on track?<br>zz.ans I’m afraid we’ve hit some delays.<br>zz.not No. We’ve run into several issues.<br><br>zz.end zz.qu Can you confirm the hotel booking?<br>zz.ans I’m afraid someone else will have to do that. I’m in the middle of something important right now. <br>zz.not Get someone else to do it. I’m busy right now.<br><br>zz.end zz.qu Will everyone be at the meeting?<br>zz.ans I’m afraid some people are unavailable.<br>zz.not No. Some people can’t make it.<br><br>zz.end zz.qu Are we ready to launch the website?<br>zz.ans I’m afraid we still need to test it.<br>zz.not We haven’t finished testing it.<br><br>zz.end zz.qu Should we proceed with the marketing campaign?<br>zz.ans I’m afraid we need more data first.<br>zz.not Not now. We need more data.<br>zz.end <br></div>
+            <div id="textbox" class="inputBox editMode" contenteditable="false" style="display: none;">zz.qu Please bring the reports with you to the meeting.<br>
+zz.ans I'm afraid they're not complete yet.<br>
+zz.not Mark hasn't done them yet.<br>
+<br>
+zz.end zz.qu Can we meet to discuss the budget?<br>
+zz.ans I'm afraid I can't meet today.<br>
+zz.not No. We can meet tommorrow.<br>
+<br>
+zz.end zz.qu Do you have the client’s feedback?<br>
+zz.ans I'm afraid they haven't replied yet.<br>
+zz.not We don’t have the feedback yet.<br>
+<br>
+zz.end zz.qu Can you help with the presentation?<br>
+zz.ans I’m afraid I won’t have time.<br>
+zz.not I don’t think so.<br>
+<br>
+zz.end zz.qu Are you attending the training session tomorrow?<br>
+zz.ans I’m afraid I have another obligation at that time.<br>
+zz.not I’m not available tomorrow.<br>
+<br>
+zz.end zz.qu Will we have the results by Friday?<br>
+zz.ans I’m afraid it will take longer; maybe Monday.<br>
+zz.not You’ll have to wait till Monday.<br>
+<br>
+zz.end zz.qu Can we change the meeting time?<br>
+zz.ans I’m afraid that won’t be possible.<br>
+zz.not That’s not possible.<br>
+<br>
+zz.end zz.qu Is the project on track?<br>
+zz.ans I’m afraid we’ve hit some delays.<br>
+zz.not No. We’ve run into several issues.<br>
+<br>
+zz.end zz.qu Can you confirm the hotel booking?<br>
+zz.ans I’m afraid someone else will have to do that. I’m in the middle of something important right now. <br>
+zz.not Get someone else to do it. I’m busy right now.<br>
+<br>
+zz.end zz.qu Will everyone be at the meeting?<br>
+zz.ans I’m afraid some people are unavailable.<br>
+zz.not No. Some people can’t make it.<br>
+<br>
+zz.end zz.qu Are we ready to launch the website?<br>
+zz.ans I’m afraid we still need to test it.<br>
+zz.not We haven’t finished testing it.<br>
+<br>
+zz.end zz.qu Should we proceed with the marketing campaign?<br>
+zz.ans I’m afraid we need more data first.<br>
+zz.not Not now. We need more data.<br>
+zz.end <br>
+</div>
+
         </div>
+
         
 <!-- ===============  Togle with Checkbox By Class =========================================== -->
 <div id="examModeLblInput" class="editMode" style="display: none;">
 <input id="autoNumbering" type="checkbox">
-    <label for="autoNumbering" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Auto Numbering</label><br><br>
+    <label for="autoNumbering" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Auto Numbering</label><br>
+<br>
+
     
 <input id="toggleScore" type="checkbox">
-    <label for="toggle" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Exam Mode (score won't show)</label> <br></div>
+    <label for="toggle" style="border:thin solid darkblue; background-color:lavenderblush; padding: .3rem; font-size:.80rem;">Exam Mode (score won't show)</label> <br>
+</div>
+
 
 
           <div id="showHideName" class="editMode" onclick="toglDisplay('nameAndID')" style="margin: 1rem 0.2rem 0.2rem; padding: 0.2rem; font-size: 0.8rem; border: thin solid darkblue; color: darkblue; background-color: lightcyan; width: fit-content; display: none;">
@@ -349,13 +771,18 @@
                   show/hide Name and ID
             </div>
 
+
             <div id="nameAndID">
               <input id="name" type="text" value="name">
               <input id="id" type="text" value="id#">
-            </div>  
-            <div>
-                <div id="quizID" class="inputBox editMode" contenteditable="" style="display: none;">RedFlagImAfraid<br></div>
             </div>
+
+            <div>
+                <div id="quizID" class="inputBox editMode" contenteditable="" style="display: none;">RedFlagImAfraid<br>
+</div>
+
+            </div>
+
         
         
             <script>    
@@ -382,73 +809,149 @@
 	
 
 <h2 class="western">
-Section 7: I’m Afraid ...</h2><p style="line-height: 100%; margin-bottom: 0in">“I’m afraid…”
+Section 7: I’m Afraid ...</h2><p style="line-height: 100%;">“I’m afraid…”
  is the most commonly used Red Flag for delivering bad news or
 disagreeable opinions.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<h3 class="western">Here are some examples:</h3><p style="line-height: 100%; margin-bottom: 0in">A: Bring me up to
+<h3 class="western">Here are some examples:</h3><p style="line-height: 100%;">A: Bring me up to
 date on our sales progress.</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I’m afraid we
+<p style="line-height: 100%;">B: I’m afraid we
 didn’t meet our sales quota for the month.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Could we schedule
+<p style="line-height: 100%;">A: Could we schedule
 the conference for the first week of January?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I’m afraid Mr.
+<p style="line-height: 100%;">B: I’m afraid Mr.
 Johnson will be out of the country at that time.  
 </p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: I’ll need that
+<p style="line-height: 100%;">A: I’ll need that
 report by tomorrow?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid we
+<p style="line-height: 100%;">B: I'm afraid we
 won't be able to finish by then.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Are we ready to
+<p style="line-height: 100%;">A: Are we ready to
 launch the new product?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid there
+<p style="line-height: 100%;">B: I'm afraid there
 are some issues on the production-line.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Is everyone
+<p style="line-height: 100%;">A: Is everyone
 attending the meeting next week?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid a few
+<p style="line-height: 100%;">B: I'm afraid a few
 team members won't be able to make it.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Will we be able
+<p style="line-height: 100%;">A: Will we be able
 to stay within the budget for this project?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid we
+<p style="line-height: 100%;">B: I'm afraid we
 might exceed the budget with the current plan.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Can you assist
+<p style="line-height: 100%;">A: Can you assist
 with the client presentation?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid I
+<p style="line-height: 100%;">B: I'm afraid I
 won't be available that day.</p>
-<p style="line-height: 100%; margin-bottom: 0in"><br>
+<p style="line-height: 100%;"><br>
+
 
 </p>
-<p style="line-height: 100%; margin-bottom: 0in">A: Is it possible to
+<p style="line-height: 100%;">A: Is it possible to
 extend the deadline for the project?</p>
-<p style="line-height: 100%; margin-bottom: 0in">B: I'm afraid we
+<p style="line-height: 100%;">B: I'm afraid we
 can't extend the deadline without approval.</p>
 
-<style type="text/css">h3 { margin-top: 0.1in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h3.western { font-family: "Arial", sans-serif; font-size: 14pt; font-weight: bold }h3.cjk { font-family: "Noto Sans CJK SC"; font-size: 14pt; font-weight: bold }h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }h2 { margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }h2.ctl { font-family: "Lohit Devanagari"; font-size: 16pt; font-weight: bold }p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></div><div class="infoBox" contenteditable="false"><b>Select the correct response for each dialogue.
+<style type="text/css">h3 { margin-top: 0.1in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h3.western { font-family: "Arial", sans-serif; font-size: 14pt; font-weight: bold }h3.cjk { font-family: "Noto Sans CJK SC"; font-size: 14pt; font-weight: bold }h3.ctl { font-family: "Lohit Devanagari"; font-size: 14pt; font-weight: bold }h2 { margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }h2.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }h2.cjk { font-family: "Noto Sans CJK SC"; font-size: 16pt; font-weight: bold }h2.ctl { font-family: "Lohit Devanagari"; font-size: 16pt; font-weight: bold }p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></div>
+<div class="infoBox" contenteditable="false"><b>Select the correct response for each dialogue.
 
-<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></b></div><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question0" class="question"><span class="num"></span> 1.  Please bring the reports with you to the meeting.</p>	<div id="allLabelsInputs0" class="allLabelsInputs"><div id="lblAndInput1" class="lblAndInput"><input id="radioBtn1" type="radio" name="answer0" value="incorrect"><label for="radioBtn1" id="ansLbl1" class="ansLbl"> Mark hasn't done them yet.</label></div><div id="lblAndInput0" class="lblAndInput"><input id="radioBtn0" type="radio" name="answer0" value="correct"><label for="radioBtn0" id="ansLbl0" class="ansLbl"> I'm afraid they're not complete yet.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox1" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question1" class="question"><span class="num"></span> 2.  Can we meet to discuss the budget?</p>	<div id="allLabelsInputs1" class="allLabelsInputs"><div id="lblAndInput3" class="lblAndInput"><input id="radioBtn3" type="radio" name="answer1" value="incorrect"><label for="radioBtn3" id="ansLbl3" class="ansLbl"> No. We can meet tommorrow.</label></div><div id="lblAndInput2" class="lblAndInput"><input id="radioBtn2" type="radio" name="answer1" value="correct"><label for="radioBtn2" id="ansLbl2" class="ansLbl"> I'm afraid I can't meet today.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox2" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question2" class="question"><span class="num"></span> 3.  Do you have the client’s feedback?</p>	<div id="allLabelsInputs2" class="allLabelsInputs"><div id="lblAndInput4" class="lblAndInput"><input id="radioBtn4" type="radio" name="answer2" value="correct"><label for="radioBtn4" id="ansLbl4" class="ansLbl"> I'm afraid they haven't replied yet.</label></div><div id="lblAndInput5" class="lblAndInput"><input id="radioBtn5" type="radio" name="answer2" value="incorrect"><label for="radioBtn5" id="ansLbl5" class="ansLbl"> We don’t have the feedback yet.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox3" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question3" class="question"><span class="num"></span> 4.  Can you help with the presentation?</p>	<div id="allLabelsInputs3" class="allLabelsInputs"><div id="lblAndInput7" class="lblAndInput"><input id="radioBtn7" type="radio" name="answer3" value="incorrect"><label for="radioBtn7" id="ansLbl7" class="ansLbl"> I don’t think so.</label></div><div id="lblAndInput6" class="lblAndInput"><input id="radioBtn6" type="radio" name="answer3" value="correct"><label for="radioBtn6" id="ansLbl6" class="ansLbl"> I’m afraid I won’t have time.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox4" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question4" class="question"><span class="num"></span> 5.  Are you attending the training session tomorrow?</p>	<div id="allLabelsInputs4" class="allLabelsInputs"><div id="lblAndInput8" class="lblAndInput"><input id="radioBtn8" type="radio" name="answer4" value="correct"><label for="radioBtn8" id="ansLbl8" class="ansLbl"> I’m afraid I have another obligation at that time.</label></div><div id="lblAndInput9" class="lblAndInput"><input id="radioBtn9" type="radio" name="answer4" value="incorrect"><label for="radioBtn9" id="ansLbl9" class="ansLbl"> I’m not available tomorrow.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox5" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question5" class="question"><span class="num"></span> 6.  Will we have the results by Friday?</p>	<div id="allLabelsInputs5" class="allLabelsInputs"><div id="lblAndInput10" class="lblAndInput"><input id="radioBtn10" type="radio" name="answer5" value="correct"><label for="radioBtn10" id="ansLbl10" class="ansLbl"> I’m afraid it will take longer; maybe Monday.</label></div><div id="lblAndInput11" class="lblAndInput"><input id="radioBtn11" type="radio" name="answer5" value="incorrect"><label for="radioBtn11" id="ansLbl11" class="ansLbl"> You’ll have to wait till Monday.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox6" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question6" class="question"><span class="num"></span> 7.  Can we change the meeting time?</p>	<div id="allLabelsInputs6" class="allLabelsInputs"><div id="lblAndInput12" class="lblAndInput"><input id="radioBtn12" type="radio" name="answer6" value="correct"><label for="radioBtn12" id="ansLbl12" class="ansLbl"> I’m afraid that won’t be possible.</label></div><div id="lblAndInput13" class="lblAndInput"><input id="radioBtn13" type="radio" name="answer6" value="incorrect"><label for="radioBtn13" id="ansLbl13" class="ansLbl"> That’s not possible.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox7" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question7" class="question"><span class="num"></span> 8.  Is the project on track?</p>	<div id="allLabelsInputs7" class="allLabelsInputs"><div id="lblAndInput15" class="lblAndInput"><input id="radioBtn15" type="radio" name="answer7" value="incorrect"><label for="radioBtn15" id="ansLbl15" class="ansLbl"> No. We’ve run into several issues.</label></div><div id="lblAndInput14" class="lblAndInput"><input id="radioBtn14" type="radio" name="answer7" value="correct"><label for="radioBtn14" id="ansLbl14" class="ansLbl"> I’m afraid we’ve hit some delays.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox8" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question8" class="question"><span class="num"></span> 9.  Can you confirm the hotel booking?</p>	<div id="allLabelsInputs8" class="allLabelsInputs"><div id="lblAndInput17" class="lblAndInput"><input id="radioBtn17" type="radio" name="answer8" value="incorrect"><label for="radioBtn17" id="ansLbl17" class="ansLbl"> Get someone else to do it. I’m busy right now.</label></div><div id="lblAndInput16" class="lblAndInput"><input id="radioBtn16" type="radio" name="answer8" value="correct"><label for="radioBtn16" id="ansLbl16" class="ansLbl"> I’m afraid someone else will have to do that. I’m in the middle of something important right now. </label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox9" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question9" class="question"><span class="num"></span> 10.  Will everyone be at the meeting?</p>	<div id="allLabelsInputs9" class="allLabelsInputs"><div id="lblAndInput18" class="lblAndInput"><input id="radioBtn18" type="radio" name="answer9" value="correct"><label for="radioBtn18" id="ansLbl18" class="ansLbl"> I’m afraid some people are unavailable.</label></div><div id="lblAndInput19" class="lblAndInput"><input id="radioBtn19" type="radio" name="answer9" value="incorrect"><label for="radioBtn19" id="ansLbl19" class="ansLbl"> No. Some people can’t make it.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox10" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question10" class="question"><span class="num"></span> 11.  Are we ready to launch the website?</p>	<div id="allLabelsInputs10" class="allLabelsInputs"><div id="lblAndInput21" class="lblAndInput"><input id="radioBtn21" type="radio" name="answer10" value="incorrect"><label for="radioBtn21" id="ansLbl21" class="ansLbl"> We haven’t finished testing it.</label></div><div id="lblAndInput20" class="lblAndInput"><input id="radioBtn20" type="radio" name="answer10" value="correct"><label for="radioBtn20" id="ansLbl20" class="ansLbl"> I’m afraid we still need to test it.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div> <div class="delThis"><button id="addTextbox11" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="question11" class="question"><span class="num"></span> 12.  Should we proceed with the marketing campaign?</p>	<div id="allLabelsInputs11" class="allLabelsInputs"><div id="lblAndInput23" class="lblAndInput"><input id="radioBtn23" type="radio" name="answer11" value="incorrect"><label for="radioBtn23" id="ansLbl23" class="ansLbl"> Not now. We need more data.</label></div><div id="lblAndInput22" class="lblAndInput"><input id="radioBtn22" type="radio" name="answer11" value="correct"><label for="radioBtn22" id="ansLbl22" class="ansLbl"> I’m afraid we need more data first.</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>      <div class="delThis"><button id="addTextbox12" class="addTextbox editMode" onclick="fn_tbox4students(this)" style="display: none;">add Essay Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox</button> </div>        <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete this section </button></div></div>
+<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></b></div>
+<button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question0" class="question"><span class="num"></span> 1.  Please bring the reports with you to the meeting.</p>	<div id="allLabelsInputs0" class="allLabelsInputs"><div id="lblAndInput1" class="lblAndInput"><input id="radioBtn1" type="radio" name="answer0" value="incorrect"><label for="radioBtn1" id="ansLbl1" class="ansLbl"> Mark hasn't done them yet.</label></div>
+<div id="lblAndInput0" class="lblAndInput"><input id="radioBtn0" type="radio" name="answer0" value="correct"><label for="radioBtn0" id="ansLbl0" class="ansLbl"> I'm afraid they're not complete yet.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox1" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question1" class="question"><span class="num"></span> 2.  Can we meet to discuss the budget?</p>	<div id="allLabelsInputs1" class="allLabelsInputs"><div id="lblAndInput3" class="lblAndInput"><input id="radioBtn3" type="radio" name="answer1" value="incorrect"><label for="radioBtn3" id="ansLbl3" class="ansLbl"> No. We can meet tommorrow.</label></div>
+<div id="lblAndInput2" class="lblAndInput"><input id="radioBtn2" type="radio" name="answer1" value="correct"><label for="radioBtn2" id="ansLbl2" class="ansLbl"> I'm afraid I can't meet today.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox2" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question2" class="question"><span class="num"></span> 3.  Do you have the client’s feedback?</p>	<div id="allLabelsInputs2" class="allLabelsInputs"><div id="lblAndInput4" class="lblAndInput"><input id="radioBtn4" type="radio" name="answer2" value="correct"><label for="radioBtn4" id="ansLbl4" class="ansLbl"> I'm afraid they haven't replied yet.</label></div>
+<div id="lblAndInput5" class="lblAndInput"><input id="radioBtn5" type="radio" name="answer2" value="incorrect"><label for="radioBtn5" id="ansLbl5" class="ansLbl"> We don’t have the feedback yet.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox3" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question3" class="question"><span class="num"></span> 4.  Can you help with the presentation?</p>	<div id="allLabelsInputs3" class="allLabelsInputs"><div id="lblAndInput7" class="lblAndInput"><input id="radioBtn7" type="radio" name="answer3" value="incorrect"><label for="radioBtn7" id="ansLbl7" class="ansLbl"> I don’t think so.</label></div>
+<div id="lblAndInput6" class="lblAndInput"><input id="radioBtn6" type="radio" name="answer3" value="correct"><label for="radioBtn6" id="ansLbl6" class="ansLbl"> I’m afraid I won’t have time.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox4" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question4" class="question"><span class="num"></span> 5.  Are you attending the training session tomorrow?</p>	<div id="allLabelsInputs4" class="allLabelsInputs"><div id="lblAndInput8" class="lblAndInput"><input id="radioBtn8" type="radio" name="answer4" value="correct"><label for="radioBtn8" id="ansLbl8" class="ansLbl"> I’m afraid I have another obligation at that time.</label></div>
+<div id="lblAndInput9" class="lblAndInput"><input id="radioBtn9" type="radio" name="answer4" value="incorrect"><label for="radioBtn9" id="ansLbl9" class="ansLbl"> I’m not available tomorrow.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox5" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question5" class="question"><span class="num"></span> 6.  Will we have the results by Friday?</p>	<div id="allLabelsInputs5" class="allLabelsInputs"><div id="lblAndInput10" class="lblAndInput"><input id="radioBtn10" type="radio" name="answer5" value="correct"><label for="radioBtn10" id="ansLbl10" class="ansLbl"> I’m afraid it will take longer; maybe Monday.</label></div>
+<div id="lblAndInput11" class="lblAndInput"><input id="radioBtn11" type="radio" name="answer5" value="incorrect"><label for="radioBtn11" id="ansLbl11" class="ansLbl"> You’ll have to wait till Monday.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox6" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question6" class="question"><span class="num"></span> 7.  Can we change the meeting time?</p>	<div id="allLabelsInputs6" class="allLabelsInputs"><div id="lblAndInput12" class="lblAndInput"><input id="radioBtn12" type="radio" name="answer6" value="correct"><label for="radioBtn12" id="ansLbl12" class="ansLbl"> I’m afraid that won’t be possible.</label></div>
+<div id="lblAndInput13" class="lblAndInput"><input id="radioBtn13" type="radio" name="answer6" value="incorrect"><label for="radioBtn13" id="ansLbl13" class="ansLbl"> That’s not possible.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox7" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question7" class="question"><span class="num"></span> 8.  Is the project on track?</p>	<div id="allLabelsInputs7" class="allLabelsInputs"><div id="lblAndInput15" class="lblAndInput"><input id="radioBtn15" type="radio" name="answer7" value="incorrect"><label for="radioBtn15" id="ansLbl15" class="ansLbl"> No. We’ve run into several issues.</label></div>
+<div id="lblAndInput14" class="lblAndInput"><input id="radioBtn14" type="radio" name="answer7" value="correct"><label for="radioBtn14" id="ansLbl14" class="ansLbl"> I’m afraid we’ve hit some delays.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox8" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question8" class="question"><span class="num"></span> 9.  Can you confirm the hotel booking?</p>	<div id="allLabelsInputs8" class="allLabelsInputs"><div id="lblAndInput17" class="lblAndInput"><input id="radioBtn17" type="radio" name="answer8" value="incorrect"><label for="radioBtn17" id="ansLbl17" class="ansLbl"> Get someone else to do it. I’m busy right now.</label></div>
+<div id="lblAndInput16" class="lblAndInput"><input id="radioBtn16" type="radio" name="answer8" value="correct"><label for="radioBtn16" id="ansLbl16" class="ansLbl"> I’m afraid someone else will have to do that. I’m in the middle of something important right now. </label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox9" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question9" class="question"><span class="num"></span> 10.  Will everyone be at the meeting?</p>	<div id="allLabelsInputs9" class="allLabelsInputs"><div id="lblAndInput18" class="lblAndInput"><input id="radioBtn18" type="radio" name="answer9" value="correct"><label for="radioBtn18" id="ansLbl18" class="ansLbl"> I’m afraid some people are unavailable.</label></div>
+<div id="lblAndInput19" class="lblAndInput"><input id="radioBtn19" type="radio" name="answer9" value="incorrect"><label for="radioBtn19" id="ansLbl19" class="ansLbl"> No. Some people can’t make it.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox10" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question10" class="question"><span class="num"></span> 11.  Are we ready to launch the website?</p>	<div id="allLabelsInputs10" class="allLabelsInputs"><div id="lblAndInput21" class="lblAndInput"><input id="radioBtn21" type="radio" name="answer10" value="incorrect"><label for="radioBtn21" id="ansLbl21" class="ansLbl"> We haven’t finished testing it.</label></div>
+<div id="lblAndInput20" class="lblAndInput"><input id="radioBtn20" type="radio" name="answer10" value="correct"><label for="radioBtn20" id="ansLbl20" class="ansLbl"> I’m afraid we still need to test it.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+ <div class="delThis"><button id="addTextbox11" class="addTextbox editMode" onclick="fn_addTextbox(this)" style="display: none;">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="question11" class="question"><span class="num"></span> 12.  Should we proceed with the marketing campaign?</p>	<div id="allLabelsInputs11" class="allLabelsInputs"><div id="lblAndInput23" class="lblAndInput"><input id="radioBtn23" type="radio" name="answer11" value="incorrect"><label for="radioBtn23" id="ansLbl23" class="ansLbl"> Not now. We need more data.</label></div>
+<div id="lblAndInput22" class="lblAndInput"><input id="radioBtn22" type="radio" name="answer11" value="correct"><label for="radioBtn22" id="ansLbl22" class="ansLbl"> I’m afraid we need more data first.</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+      <div class="delThis"><button id="addTextbox12" class="addTextbox editMode" onclick="fn_tbox4students(this)" style="display: none;">add Essay Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.previousSibling.remove()"> delete the above textbox</button> </div>
+        <button id="delTextareaBtn1" class="delBtn2 editMode" style="display: none;" onclick="this.parentElement.remove()"> delete this section </button></div>
+</div>
+
             <br>
+
         <button id="getScore" onclick="getScore();">get score</button><div id="score" class="score">00</div>
-        <div id="correctAnsShowGreen" style="margin:.2rem 0 0 0">Correct answers will <span style="background:#fbfddb; padding: .1rem 0 0 0; color:#003100"> &nbsp;highlight&nbsp;</span> in green </div>        
+
+        <div id="correctAnsShowGreen" style="margin:.2rem 0 0 0">Correct answers will <span style="background:#fbfddb; padding: .1rem 0 0 0; color:#003100"> &nbsp;highlight&nbsp;</span> in green </div>
+
     <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
              
       <!-- !!!! turn button on with display:block editMode  -->      
@@ -602,11 +1105,18 @@ function fn_makeMCQ() {
     
     
   let parsed = textBoxContent
-    .replace(/zz\.qu/gi, '<div class="delThis"><button id="addTextbox" class="addTextbox editMode" onclick ="fn_addTextbox(this)">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div><div class="delThisQuSet"><p id="unset" class="question"><span class="num"></span>')
+    .replace(/zz\.qu/gi, '<div class="delThis"><button id="addTextbox" class="addTextbox editMode" onclick ="fn_addTextbox(this)">add Text Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox </button></div>
+<div class="delThisQuSet"><p id="unset" class="question"><span class="num"></span>')
     .replace(/zz\.ans/gi, '</p>	<div id="unset" class="allLabelsInputs"><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="correct"><label for="unset" id="unset" class="ansLbl">')
-    .replace(/zz\.not/gi, '</label></div><div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="incorrect"><label for="unset" id="unset" class="ansLbl">')
-    .replace(/zz\.end/gi, '</label></div></div> <button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>');
-  let parsedMarkup = '<div id="unset" class="quSet">' + parsed  + '     <div class="delThis"><button id="addTextbox" class="addTextbox editMode" onclick ="fn_tbox4students(this)">add Essay Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox</button> </div>        <button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.parentElement.remove()"> delete this section </button></div>'
+    .replace(/zz\.not/gi, '</label></div>
+<div id="unset" class="lblAndInput"><input id="unset" type="radio" name="answer" value="incorrect"><label for="unset" id="unset" class="ansLbl">')
+    .replace(/zz\.end/gi, '</label></div>
+</div>
+ <button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.parentElement.remove()"> delete qu/ans set </button></div>
+');
+  let parsedMarkup = '<div id="unset" class="quSet">' + parsed  + '     <div class="delThis"><button id="addTextbox" class="addTextbox editMode" onclick ="fn_tbox4students(this)">add Essay Box here</button><button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.previousSibling.remove()"> delete the above textbox</button> </div>
+        <button id="delTextareaBtn1" class="delBtn2 editMode" style="display:block;" onclick="this.parentElement.remove()"> delete this section </button></div>
+'
     
   document.getElementById("MCsection").innerHTML += parsedMarkup;
 
@@ -802,10 +1312,12 @@ function fn_tbox4students(buttonThis) {
                 
         <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
           <input id="fileName" type="text" size="30" value="fileName">
-        </label><br>  
+        </label><br>
+
         
       <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
-    </div> 
+    </div>
+
       
                  <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
       
