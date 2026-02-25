@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laura's Lost Wallet – Podcast</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --text: #e8e2d9;
+    --text-muted: #888880;
+    --accent: #c8a96e;
+    --accent2: #7eb8c8;
+    --jake: #7eb8c8;
+    --priya: #c8857e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Subtle noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: #c8c2b8;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #1e1c17;
+  }
+
+  .nav-links a::before {
+    font-size: 0.9em;
+  }
+
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Fake player */
+  .player-wrap {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #1c1a14;
+  }
+
+  /* Play button */
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .player:hover .play-btn {
+    transform: scale(1.08);
+  }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #0f0f0f;
+    margin-left: 3px;
+  }
+
+  /* Player info */
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Progress bar */
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 18%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 18%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon {
+    color: var(--accent);
+  }
+
+  /* Script */
+  .script-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .script-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .script-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .speaker {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.05em;
+    text-align: right;
+  }
+
+  .speaker.jake  { color: var(--jake); }
+  .speaker.priya { color: var(--priya); }
+
+  .speech {
+    font-size: 0.92rem;
+    color: #cdc7be;
+    line-height: 1.65;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .line:last-child .speech {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 400px) {
+    .line {
+      grid-template-columns: 44px 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Everyday Stories &nbsp;·&nbsp; Episode 47</p>
+    <h1>Laura's Lost Wallet</h1>
+    <p class="episode-tag">Podcast</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">It's Friday, the week is over, and Laura is ready to meet her friends. But when she reaches into her bag and finds her wallet missing, her relaxing evening turns into a cross-town search — with a very unexpected ending.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="LaurasLostWalletArticle.html" class="article" target="_blank">Read the Article</a>
+    <a href="laurasLostWalletPodcQuiz.html" class="quiz">Take the Quiz</a>
+    <!--a href="mainPage.html" class="home">Main Page</a-->
+  </nav>
+
+  <!-- Fake player -->
+  <div class="player-wrap">
+    <a href="https://youtu.be/t6U_tNerOqY" target="_blank" rel="noopener">
+      <div class="player">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Laura's Lost Wallet — Everyday Stories Ep. 47</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:26</span>
+            <span>2:32</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Script -->
+  <section class="script-section">
+    <div class="script-label">Podcast Script</div>
+    <div class="dialogue">
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">Hey everyone, welcome back to Everyday Stories. I'm Jake.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">And I'm Priya. So Jake, we came across a really fun little story this week.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">We did! It's called "Laura's Lost Wallet," and I think just about anyone can relate to this one from the very first line.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">Oh, absolutely. It starts on a Friday afternoon — Laura's done with work, she's excited to meet her friends at a cafe, rushing out of the office with that end-of-week energy.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">That Friday feeling. We all know it. And then she gets to the cafe, parks her car, reaches into her bag for her wallet, and — nothing.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">Gone. So Laura goes into a panic. It's not just cash, it's credit cards, IDs — everything. Her heart is racing.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">So she does what anyone would do — she starts retracing her steps in her mind. During her lunch break she'd been to the grocery store, the library, and a coffee shop next to the library.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">And she works through it methodically. She remembers paying at the grocery store, so she knows she had it there. She showed her library card, so she had it there too.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">The last place she remembered using it was the coffee shop, so that's where she goes first. She asks at the counter, they check the lost and found box — but nothing.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">She walks out feeling completely defeated, and anyone who's ever had trouble trying to find something can relate to that feeling.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">Yes! But then — and this is where the story really picks up — she's standing outside, glances over at a nearby park, and suddenly remembers she sat on a bench there to enjoy her coffee.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">So she heads over, searches everywhere... and then she spots a squirrel.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">A squirrel. Playing with her wallet.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">Not what she was expecting, I'm sure. I mean, under a bench, or another person found it, but not, "Oh, I bet an animal has carried off my wallet."</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">She handles it pretty well too. She doesn't panic or lunge at it. She thinks it through — pulls out a bag of nuts, crouches down, and very calmly tries to make a deal with this squirrel.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">Which works! The squirrel goes for the nuts, Laura grabs her wallet, and off she goes to meet her friends.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">Wallet recovered, and a great story that she can share with her friends when they meet up.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker priya">Priya</span>
+        <p class="speech">It really is. Alright, that's our take on "Laura's Lost Wallet." Hope you enjoyed it as much as we did.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jake">Jake</span>
+        <p class="speech">See you next time, everyone.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories Podcast &nbsp;·&nbsp; Episode 47</div>
+
+</div>
+</body>
+</html>
