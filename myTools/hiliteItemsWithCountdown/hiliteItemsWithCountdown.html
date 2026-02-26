@@ -233,7 +233,7 @@ hr {
     display: flex;
     gap: 1.2rem;
     font-size: 0.9em;
-    margin-top: 1rem;
+    margin: 1rem 0;
     padding: 0.75rem;
     background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
     border-radius: 6px;
@@ -646,7 +646,7 @@ document.querySelectorAll("[data-tag]").forEach(btn => {
 document.getElementById("hrBtn").addEventListener("click", () => {
     const editor = document.getElementById("editor");
     const hr = document.createElement("hr");
-    
+
     const sel = window.getSelection();
     if (sel.rangeCount) {
         const range = sel.getRangeAt(0);
@@ -660,7 +660,7 @@ document.getElementById("hrBtn").addEventListener("click", () => {
 // --------- Make Button ---------
 document.getElementById("makeBtn").addEventListener("click", () => {
     const editor = document.getElementById("editor");
-    
+
     if (!editor.innerText.trim()) {
         alert("Editor is empty!");
         return;
@@ -680,7 +680,7 @@ document.getElementById("makeBtn").addEventListener("click", () => {
         <div class="interactiveContent">${content}</div>
         <div class="toast" style="display:none"></div>
     `;
-    
+
     document.getElementById("mainContainer").appendChild(block);
 
     // Initialize counters
@@ -738,7 +738,11 @@ function saveExerciseBlock() {
     const baseName = fileNameInput.replace(/\.html$/i, "");
 
     // Save EditMode version
-    const editModeHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const editModeHTML =
+    '<!DOCTYPE html>\n' +
+    document.documentElement.outerHTML
+        .replace(/>[\s\r\n\t]*</g, '>\n<')
+        .replace(/(<\/(div|p|span)>)/gi, '$1\n');
     const blob1 = new Blob([editModeHTML], {type: "text/html"});
     saveBlob(blob1, baseName + "EditMode.html");
 
@@ -751,7 +755,11 @@ function saveExerciseBlock() {
     // Add studentMode class to body
     document.body.classList.add("studentMode");
 
-    const studentHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const studentHTML =
+        '<!DOCTYPE html>\n' +
+    document.documentElement.outerHTML
+        .replace(/>[\s\r\n\t]*</g, '>\n<')
+        .replace(/(<\/(div|p|span)>)/gi, '$1\n');
     const blob2 = new Blob([studentHTML], {type: "text/html"});
     saveBlob(blob2, baseName + ".html");
 
