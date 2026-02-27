@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awkward Date – Podcast</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ee;
+    --surface: #ffffff;
+    --surface2: #ede9e3;
+    --border: #d8d2c8;
+    --text: #1a1714;
+    --text-muted: #857f76;
+    --accent: #a0622a;
+    --accent2: #4a7fa0;
+    --jack: #2e6e8e;
+    --mia: #a04a42;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: #3d3830;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fdf8f2;
+  }
+
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Fake player */
+  .player-wrap {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #fdf8f2;
+    box-shadow: 0 2px 12px rgba(160, 98, 42, 0.1);
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .player:hover .play-btn {
+    transform: scale(1.08);
+  }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #ffffff;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 18%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 18%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon {
+    color: var(--accent);
+  }
+
+  /* Script */
+  .script-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .script-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .script-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .speaker {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.05em;
+    text-align: right;
+  }
+
+  .speaker.jack { color: var(--jack); }
+  .speaker.mia  { color: var(--mia); }
+
+  .speech {
+    font-size: 0.92rem;
+    color: #3d3830;
+    line-height: 1.65;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .line:last-child .speech {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 400px) {
+    .line {
+      grid-template-columns: 44px 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Everyday Stories &nbsp;·&nbsp; Podcast</p>
+    <h1>Awkward Date</h1>
+    <p class="episode-tag">Podcast</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">Amelia and Thomas are set up on a blind date. It plays out like a rom-com with things going from bad to worse. In the end, "All's well that ends well."</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="AmeliasAwkwardDateArticle.html" class="article" target="_blank">Read the Article</a>
+    <a href="awkwardDatePodcastScrambled.html" class="quiz" target="_blank">Take the Quiz</a>
+    <!--a href="mainPage.html" class="home" target="_blank">Main Page</a-->
+  </nav>
+
+  <!-- Fake player -->
+  <div class="player-wrap">
+    <a href="https://youtu.be/BiTXPVTuylA" target="_blank" rel="noopener">
+      <div class="player">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Awkward Date — Everyday Stories Podcast</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:26</span>
+            <span>2:32</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Script -->
+  <section class="script-section">
+    <div class="script-label">Podcast Script</div>
+    <div class="dialogue">
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Okay, Mia, let's talk about the article — a classic "blind date at an Italian joint" setup. Sarah, the co-worker, plays Cupid.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">Oh, the "office Cupid." Dangerous game. I once let a co-worker set me up, but that's another story for another time.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Except for being nervous, everything seemed normal — until the "Spaghetti Incident." A server trips, and Amelia gets a side of spaghetti sauce on her blouse.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">Right, and Amelia plays it cool — total pro. But Thomas? He gets heated. He's about to lecture the waiter. Honestly, Jack, if a guy starts a scene with service staff on date one, that's a massive red flag.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Well, I mean, I think most guys would feel like they have to do something — after all, his date's blouse is ruined, and she's been humiliated. But anyway, Amelia goes to the bathroom to clean up, comes back, ... and Thomas is gone! The server says he literally ran out.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">The "dine and dash"! I would have been furious, ... sitting there with a stained blouse and a ghosted seat. I certainly wouldn't be sticking around.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Right? She thinks he scammed her for a free meal! But Amelia holds out hope and sticks around for just a few minutes longer. And sure enough, Thomas walks back in, wearing a completely different outfit.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">Amelia was quite perplexed, to say the least.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Apparently, the same server spilled three glasses of wine on Thomas, and he lost his balance and sat back onto his own plate. So he decided to do a speed-run to a clothing store next door.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">That sounds like a scene straight from a rom-com. So Thomas hadn't bailed on Amelia after all; he was just covered in mashed potatoes and gravy!</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">It's the "all's well that ends well" moment. They both just end up laughing at the whole situation.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">That's actually really sweet. The fact that he rushed to buy a whole new outfit just to finish the date. That's a keeper.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">They ended up leaving hand-in-hand.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker mia">Mia</span>
+        <p class="speech">Good move. Get out of that restaurant before the roof falls in.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker jack">Jack</span>
+        <p class="speech">Okay folks, that's a wrap on this "disaster turned dream-date"! Tune in next week for our look at the new vegan fashion trend — yep, ... you heard me correctly, "vegan fashion"!</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories Podcast</div>
+
+</div>
+</body>
+</html>
