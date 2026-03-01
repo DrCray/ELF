@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blind Date – Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── mtv_med_purple theme ── */
+  :root {
+    --bg: #e8e0f0;
+    --surface: #f0ecf8;
+    --surface2: #f5f2fc;
+    --border: #c4b8d8;
+    --text: #1e1530;
+    --text-muted: #6b5a8a;
+    --accent: #7c3aed;
+    --accent2: #5b8dd9;
+    --chorus-bg: #ede6fa;
+    --chorus-border: #7c3aed;
+    --chorus-text: #1e1530;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header — inverted dark */
+  .header {
+    background: #2d1f48;
+    padding: 1.5rem 1.25rem;
+    border-radius: 8px;
+    border-bottom: none;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c084fc;
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #f0ecf8;
+    margin-bottom: 0.25rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #a5f3d0;
+    margin-top: 0.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: #fcd34d;
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    background: #ebe4f8;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+
+  /* Players */
+  .player-wrap {
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap:last-of-type {
+    margin-bottom: 2.5rem;
+  }
+
+  .player-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+    box-shadow: 0 2px 10px rgba(124,58,237,0.08);
+  }
+
+  .player:hover {
+    background: #ebe4f8;
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(124,58,237,0.16);
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #ffffff;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .p1 .progress-fill { width: 22%; }
+  .p2 .progress-fill { width: 35%; }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .p1 .progress-dot { left: 22%; }
+  .p2 .progress-dot { left: 35%; }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* Lyrics */
+  .lyrics-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .lyrics-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lyrics-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .verse {
+    padding: 0.25rem 0 1rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .verse:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .lyric-line {
+    font-size: 0.92rem;
+    color: #2d1f48;
+    line-height: 1.65;
+  }
+
+  .lyric-line-spacer {
+    line-height: 0.80;
+    visibility: hidden;
+  }
+
+  .chorus {
+    background: var(--chorus-bg);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.5rem;
+    box-shadow: inset 0 1px 3px rgba(124,58,237,0.10),
+                0 2px 8px rgba(124,58,237,0.08);
+    position: relative;
+  }
+
+  .chorus .lyric-line {
+    color: #1e1530;
+    font-style: italic;
+  }
+
+  .verse::before,
+  .chorus::before {
+    content: '\266B';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Music audioVid</p>
+    <h1>Blind Date</h1>
+    <h2>Linka Kulla</h2>
+    <p class="episode-tag">Song &amp; Lyrics</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">Going out on a blind date — what could possibly happen? A night of butterflies, boom-boom heartbeats, and the courage to take a chance. Follow along as one leap of faith turns into the best night ever.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="AmeliasAwkwardDateArticle.html" class="article" target="_blank">Read the Article</a>
+    <a href="awkwardDateMTVquiz.html" class="quiz"  target="_blank">Take the Quiz</a>
+  </nav>
+
+  <!-- Player 1 -->
+  <div class="player-wrap">
+    <p class="player-label">Music Video 1</p>
+    <a href="https://youtu.be/vrFtjZRzSFM" target="_blank" rel="noopener">
+      <div class="player p1">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Blind Date — Linka Kulla (Version 1)</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:00</span>
+            <span>3:28</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Player 2 -->
+  <div class="player-wrap">
+    <p class="player-label">Music Video 2</p>
+    <a href="https://youtu.be/2SDw4eaGP9A" target="_blank" rel="noopener">
+      <div class="player p2">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Blind Date — Linka Kulla (Version 2)</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:00</span>
+            <span>3:14</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Lyrics -->
+  <section class="lyrics-section">
+    <div class="lyrics-label">Lyrics</div>
+    <div class="lyrics">
+
+      <div class="verse">
+        <p class="lyric-line">Going out on the town tonight</p>
+        <p class="lyric-line">Blind date; take a chance tonight</p>
+        <p class="lyric-line">Don't know your face, don't know your name</p>
+        <p class="lyric-line">Tonight I'm stepping up my game</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">New shoes on and my hair pulled tight</p>
+        <p class="lyric-line">Little bit nervous but I feel alright</p>
+        <p class="lyric-line">Could be magic, could be strange</p>
+        <p class="lyric-line">But I'm ready for a little change</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Heartbeat going boom-boom fast</p>
+        <p class="lyric-line">No looking back, no looking back</p>
+        <p class="lyric-line">Take a breath, let's make it last</p>
+        <p class="lyric-line">No strings attached, no strings attached</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Take a chance, take a chance</p>
+        <p class="lyric-line">I'm stepping out to dance</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">It's gonna be a good time, no matter what</p>
+        <p class="lyric-line">Even if the sparks don't light it up</p>
+        <p class="lyric-line">I'm gonna shine so bright tonight</p>
+        <p class="lyric-line">Yeah, I'm gonna make it right</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">It's gonna be a good time, wait and see</p>
+        <p class="lyric-line">Even if it's not meant to be</p>
+        <p class="lyric-line">I'm here to laugh, I'm here to vibe</p>
+        <p class="lyric-line">Best night of my life</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">Yeah, we're feeling alright</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">Dancing under the lights</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Saw you coming through the door</p>
+        <p class="lyric-line">A smile I've never seen before</p>
+        <p class="lyric-line">Maybe fate's got funny ways</p>
+        <p class="lyric-line">Bringing strangers face to face</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">We talk fast and we talk slow</p>
+        <p class="lyric-line">Where this goes, nobody knows</p>
+        <p class="lyric-line">But the music's pulling close</p>
+        <p class="lyric-line">And I kinda like it most</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Heartbeat going boom-boom fast</p>
+        <p class="lyric-line">No looking back, no looking back</p>
+        <p class="lyric-line">Hands up high, forget the past</p>
+        <p class="lyric-line">We're in the now, we're in the now</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Take a chance, take a chance</p>
+        <p class="lyric-line">Let's give this night a dance</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">It's gonna be a good time, no matter what</p>
+        <p class="lyric-line">Even if the sparks don't light it up</p>
+        <p class="lyric-line">I'm gonna shine so bright tonight</p>
+        <p class="lyric-line">Yeah, I'm gonna make it right</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">It's gonna be a good time, wait and see</p>
+        <p class="lyric-line">Even if it's not meant to be</p>
+        <p class="lyric-line">I'm here to laugh, I'm here to vibe</p>
+        <p class="lyric-line">Best night of my life</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">We don't need a headline</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">Just a moment in the spotlight</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Maybe this is just one night</p>
+        <p class="lyric-line">Maybe this could feel so right</p>
+        <p class="lyric-line">Either way I'm not afraid</p>
+        <p class="lyric-line">Every risk is worth the play</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Take a chance, take a chance</p>
+        <p class="lyric-line">Life's too short to stand and wait</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">No regrets when morning comes</p>
+        <p class="lyric-line">We're too young to play it numb</p>
+        <p class="lyric-line">Three, two, one—here we go</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">It's gonna be a good time, no matter what</p>
+        <p class="lyric-line">Even if the sparks don't light it up</p>
+        <p class="lyric-line">I'm gonna shine so bright tonight</p>
+        <p class="lyric-line">Yeah, I'm gonna make it right</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">It's gonna be a good time, can't you see?</p>
+        <p class="lyric-line">This is where I wanna be</p>
+        <p class="lyric-line">Blind date turned into a vibe</p>
+        <p class="lyric-line">Best night of my life</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">Yeah, we're feeling alright</p>
+        <p class="lyric-line">Good time, good time</p>
+        <p class="lyric-line">Stay with me tonight</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Take a chance, take a chance</p>
+        <p class="lyric-line">Spin me under neon lights</p>
+        <p class="lyric-line">Take a chance, take a chance</p>
+        <p class="lyric-line">Everything will be alright</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">(Ooh)</p>
+        <p class="lyric-line">Yeah-yeah</p>
+        <p class="lyric-line">Good time</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories &nbsp;·&nbsp; Blind Date — Linka Kulla</div>
+
+</div>
+</body>
+</html>

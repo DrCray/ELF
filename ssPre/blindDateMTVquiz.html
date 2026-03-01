@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity: Good Time</title>
+    <style>
+        :root {
+            --correct-bg: #d4edda;
+            --incorrect-bg: #fff3cd;
+            --primary-blue: #007bff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: #FAF9F6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1, h2 { text-align: center; margin: 5px 0; }
+        h2 { font-size: 1.2rem; color: #666; margin-bottom: 15px; }
+        .instructions {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .user-info {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .user-info input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 4px gray;
+        }
+        .lyrics-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .verse, .chorus {
+            margin-bottom: .7rem;
+            white-space: pre-line;
+            box-shadow: 0 0 4px gray;
+            padding: 10px;
+        }
+        .chorus {
+            padding-left: 12px;
+            border-left: 4px solid var(--primary-blue);
+            font-style: italic;
+            background-color: #f0f7ff;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        select {
+            padding: 2px 5px;
+            font-size: 0.95rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .correct-choice { background-color: var(--correct-bg) !important; }
+        .incorrect-choice { background-color: var(--incorrect-bg) !important; }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #printBtn { background: var(--primary-blue); color: white; }
+        #floatingCheckBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 16px;
+            z-index: 999;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 16px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.15s;
+            min-width: 48px;
+            min-height: 44px;
+        }
+        #floatingCheckBtn:active { transform: scale(0.95); }
+        #floatingCheckBtn.check-mode { background: #28a745; }
+        @media print {
+            .controls, .instructions, #floatingCheckBtn { display: none !important; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Blind Date</h1>
+    <h2>(Good Time)</h2>
+    <p class="instructions">Choose a synonym or appropriate phrase to replace the highlighted word or phrase.</p>
+    <div id="lyrics-display" class="lyrics-content"></div>
+    <div class="controls">
+        <div class="user-info">
+            <input type="text" id="studentName" placeholder="Name">
+            <input type="text" id="studentID" placeholder="ID">
+        </div>
+        <button id="printBtn">Print / Save PDF</button>
+    </div>
+</div>
+
+<button id="floatingCheckBtn">✓ Check</button>
+
+<script>
+const vocabList = [
+    { target: "going out on the town", synonym: "hitting the nightlife", distractors: ["staying at home", "visiting family", "cooking dinner"] },
+    { target: "take a chance", synonym: "take a risk", distractors: ["make a plan", "stay safe", "think twice"] },
+    { target: "stepping up my game", synonym: "giving more effort", distractors: ["playing it safe", "leaving the room", "losing interest"] },
+    { target: "feel alright", synonym: "feel good", distractors: ["feel nervous", "feel lost", "feel angry"] },
+    { target: "magic", synonym: "something special", distractors: ["a planned event", "a big mistake", "hard work"] },
+    { target: "strange", synonym: "unusual", distractors: ["familiar", "boring", "expensive"] },
+    { target: "ready for a change", synonym: "open to something new", distractors: ["afraid of tomorrow", "happy as I am", "done with dating"] },
+    { target: "boom-boom fast", synonym: "racing", distractors: ["calm and slow", "perfectly still", "faint and weak"] },
+    { target: "no looking back", synonym: "no regrets", distractors: ["full of doubt", "very forgetful", "turning around"] },
+    { target: "make it last", synonym: "keep it going", distractors: ["end it early", "speed it up", "throw it away"] },
+    { target: "no strings attached", synonym: "no commitment", distractors: ["very serious", "deeply planned", "tied together"] },
+    { target: "sparks don't light it up", synonym: "we're not a match", distractors: ["lights go out", "music stops", "weather turns bad"] },
+    { target: "shine so bright", synonym: "stand out and impress", distractors: ["hide away", "calm things down", "dress simply"] },
+    { target: "meant to be", synonym: "destined to be", distractors: ["too expensive", "planned ahead", "very boring"] },
+    { target: "vibe", synonym: "follow the music", distractors: ["loud noise", "traffic jam", "ticket price"] },
+    { target: "fate's got funny ways", synonym: "destiny works mysteriously", distractors: ["time flies quickly", "love hurts sometimes", "luck runs out fast"] },
+    { target: "pulling close", synonym: "moving me", distractors: ["moving away", "getting louder", "slowing down"] },
+    { target: "kinda like it most", synonym: "get the best feeling", distractors: ["barely noticing", "wanting to leave", "feeling confused"] },
+    { target: "worth the play", synonym: "worth the effort", distractors: ["too easy", "not interesting", "a total waste"] },
+    { target: "play it numb", synonym: "go through life without feeling", distractors: ["stay out late", "make new friends", "act very cool"] }
+];
+
+const lyricsData = [
+    { type: 'verse', text: `[going out on the town] tonight
+Blind date; [take a chance] tonight
+Don't know your face, don't know your name
+Tonight I'm [stepping up my game]` },
+    { type: 'verse', text: `New shoes on and my hair pulled tight
+Little bit nervous but I [feel alright]
+Could be [magic], could be [strange]
+But I'm [ready for a change]` },
+    { type: 'verse', text: `Heartbeat going [boom-boom fast]
+[no looking back], no looking back
+Take a breath, let's [make it last]
+[no strings attached], no strings attached
+Take a chance, take a chance
+I'm stepping out to dance` },
+    { type: 'chorus', text: `It's gonna be a good time, no matter what
+Even if the [sparks don't light it up]
+I'm gonna [shine so bright] tonight
+Yeah, I'm gonna make it right
+It's gonna be a good time, wait and see
+Even if it's not [meant to be]
+I'm here to laugh, I'm here to [vibe]
+Best night of my life` },
+    { type: 'verse', text: `Good time, good time
+Yeah, we're feeling alright
+Good time, good time
+Dancing under the lights` },
+    { type: 'verse', text: `Saw you coming through the door
+A smile I've never seen before
+Maybe [fate's got funny ways]
+Bringing strangers face to face` },
+    { type: 'verse', text: `We talk fast and we talk slow
+Where this goes, nobody knows
+But the music's [pulling close]
+And I [kinda like it most]` },
+    { type: 'verse', text: `Good time, good time
+We don't need a headline
+Good time, good time
+Just a moment in the spotlight` },
+    { type: 'verse', text: `Maybe this is just one night
+Maybe this could feel so right
+Either way I'm not afraid
+Every risk is [worth the play]` },
+    { type: 'verse', text: `Take a chance, take a chance
+Life's too short to stand and wait
+No regrets when morning comes
+We're too young to [play it numb]
+Three, two, one — here we go` }
+];
+
+let checkMode = false;
+let userMemory = {};
+
+function setup() {
+    const display = document.getElementById('lyrics-display');
+    display.innerHTML = '';
+    lyricsData.forEach(section => {
+        const div = document.createElement('div');
+        div.className = section.type;
+        let textContent = section.text;
+        vocabList.forEach((item, i) => {
+            const tag = `[${item.target}]`;
+            if (textContent.includes(tag)) {
+                const others = [item.synonym, ...item.distractors].sort(() => Math.random() - 0.5);
+                let selectStr = `<select id="v-${i}" onchange="colorSelect(this)">
+                    <option value="${item.target}">${item.target}</option>`;
+                others.forEach(opt => {
+                    const isCorrect = opt === item.synonym;
+                    selectStr += `<option value="${opt}" ${isCorrect ? 'data-correct="true"' : ''}>${opt}</option>`;
+                });
+                selectStr += `</select>`;
+                textContent = textContent.replace(tag, selectStr);
+            }
+        });
+        div.innerHTML = textContent;
+        display.appendChild(div);
+    });
+}
+
+function colorSelect(el) {
+    const selected = el.options[el.selectedIndex];
+    el.classList.remove('correct-choice', 'incorrect-choice');
+    if (el.selectedIndex === 0) return;
+    if (selected.getAttribute('data-correct') === "true") {
+        el.classList.add('correct-choice');
+    } else {
+        el.classList.add('incorrect-choice');
+    }
+}
+
+document.getElementById('floatingCheckBtn').addEventListener('click', function() {
+    const selects = document.querySelectorAll('select');
+    if (!checkMode) {
+        selects.forEach(s => {
+            userMemory[s.id] = s.value;
+            const correctOpt = Array.from(s.options).find(o => o.dataset.correct === "true");
+            s.value = correctOpt.value;
+            s.disabled = true;
+            colorSelect(s);
+        });
+        this.textContent = "Go Back";
+        this.classList.add('check-mode');
+    } else {
+        selects.forEach(s => {
+            s.disabled = false;
+            s.value = userMemory[s.id] || s.options[0].value;
+            colorSelect(s);
+        });
+        this.textContent = "✓ Check";
+        this.classList.remove('check-mode');
+    }
+    checkMode = !checkMode;
+});
+
+document.getElementById('printBtn').addEventListener('click', () => {
+    const name = document.getElementById('studentName').value.trim();
+    const id = document.getElementById('studentID').value.trim();
+    if (name.length < 2 || id.length < 2) {
+        alert("Name and ID required for PDF print/save option");
+    } else {
+        window.print();
+    }
+});
+
+setup();
+</script>
+</body>
+</html>
