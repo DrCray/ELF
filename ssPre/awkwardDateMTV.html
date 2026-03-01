@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blind Date (Reset the Night) – Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --text: #e8e2d9;
+    --text-muted: #888880;
+    --accent: #c8a96e;
+    --accent2: #7eb8c8;
+    --chorus-bg: #1e1a10;
+    --chorus-border: #c8a96e;
+    --chorus-text: #f0e6cc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: gold;
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: #c8c2b8;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #1e1c17;
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Fake player */
+  .player-wrap {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #1c1a14;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #0f0f0f;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 22%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 22%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* Lyrics */
+  .lyrics-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .lyrics-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lyrics-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Verse block */
+  .verse {
+    padding: 0.25rem 0 1rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: .5rem;
+  }
+
+  .verse:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .lyric-line {
+    font-size: 0.92rem;
+    color: #cdc7be;
+    line-height: 1.65;
+  }
+
+  .lyric-line-spacer{
+    line-height:.80; visibility:hidden;
+  }
+
+  /* Chorus block */
+  .chorus {
+    background: var(--chorus-bg);
+    /*border: 1px solid var(--chorus-border);
+    border-left: 3px solid var(--chorus-border);
+    border-radius: 0 8px 8px 0; */
+    padding: 1rem 0rem;
+    margin-bottom: .5rem;
+    position: relative;
+  }
+
+  .chorus-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chorus-label::before {
+    content: '♪';
+    font-size: 0.85em;
+  }
+
+  .chorus .lyric-line {
+    color: var(--chorus-text);
+    font-style: italic;
+  }
+
+ .verse::before,
+  .chorus::before {
+    content: '\266B';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Music audioVid</p>
+    <h1>Blind Date (Reset the Night)</h1>
+    <h2>Linka Kulla</h2>
+    <p class="episode-tag">Song &amp; Lyrics</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">Blind date--what could possibly go wrong? A fancy restaurant, candlelight, and a dropped plate of pasta Follow along as one chaotic blind date turns into a successful match up.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="AmeliasAwkwardDateArticle.html" class="article" target="_blank">Read the Article</a>
+    <a href="awkwardDateMTVquiz.html" class="quiz" target="_blank">Take the Quiz</a>
+  </nav>
+
+  <!-- Player -->
+  <div class="player-wrap">
+    <a href="https://youtu.be/ImyJfGt4Ab4" target="_blank" rel="noopener">
+      <div class="player">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Blind Date (Reset the Night) — Everyday Stories</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:00</span>
+            <span>3:14</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Lyrics -->
+  <section class="lyrics-section">
+    <div class="lyrics-label">Lyrics</div>
+    <div class="lyrics">
+
+      <div class="verse">
+        <p class="lyric-line">Check the mirror, do the eyes,</p>
+        <p class="lyric-line">Is he here yet? He just arrived.</p>
+        <p class="lyric-line">Butterflies, rising high</p>
+        <p class="lyric-line">Fancy restaurant, candlelight!</p>
+        <p class="lyric-line">Table for two, and then we sat</p>
+        <p class="lyric-line">Nice to meet you, just like that</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Friendly talk, hobbies, jobs</p>
+        <p class="lyric-line">Then the plate of pasta drops!</p>
+        <p class="lyric-line">White wine spilled, red sauce flying,</p>
+        <p class="lyric-line">Blouse is ruined, she feels like dying!</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Back at the table... no one in sight?</p>
+        <p class="lyric-line">Did he eat his meal without a goodbye?</p>
+        <p class="lyric-line">The server says he bolted for the door.</p>
+        <p class="lyric-line">But he's back in time, moving smoothly 'cross the floor!</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">I'm feeling good, I'm feeling fine</p>
+        <p class="lyric-line">Even with the red sauce and the spilled wine!</p>
+        <p class="lyric-line">It's a blind date, yeah, it's a total mess</p>
+        <p class="lyric-line">But I'm liking him more and the dinner less!</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Spinning around, yeah we're out the door</p>
+        <p class="lyric-line">I've never felt a rhythm like this before!</p>
+        <p class="lyric-line">Blind date, blind date—reset the night</p>
+        <p class="lyric-line">Everything's wrong, but it feels so right!</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">New shirt, new shoes, coming back fast</p>
+        <p class="lyric-line">Think we found a vibe that's gonna last</p>
+        <p class="lyric-line">Out the door, no time to pay?</p>
+        <p class="lyric-line">We're hand-in-hand and we're on our way!</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">What a first date! (What a first date!)</p>
+        <p class="lyric-line">What a story! (What a story!)</p>
+        <p class="lyric-line">He sat in the gravy, he sat in the sauce</p>
+        <p class="lyric-line">And the ruined blouse was worth the loss!</p>
+        <p class="lyric-line">One, two, three — GO!</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">I'm feeling good, I'm feeling fine</p>
+        <p class="lyric-line">Even with the red sauce and the spilled wine!</p>
+        <p class="lyric-line">It's a blind date, yeah, it's a total mess</p>
+        <p class="lyric-line">But I'm liking him more and the dinner less!</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Spinning around, yeah we're out the door</p>
+        <p class="lyric-line">I've never felt a rhythm like this before!</p>
+        <p class="lyric-line">Blind date, blind date—reset the night</p>
+        <p class="lyric-line">Everything's wrong, but it feels so right!</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">(Blind date... blind date...)</p>
+        <p class="lyric-line">Hand-in-hand, we're out the door.</p>
+        <p class="lyric-line">(Reset the night...)</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories &nbsp;·&nbsp; Blind Date (Reset the Night)</div>
+
+</div>
+</body>
+</html>

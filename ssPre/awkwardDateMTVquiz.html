@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity: Reset the Night</title>
+    <style>
+        :root {
+            --correct-bg: #d4edda;
+            --incorrect-bg: #fff3cd;
+            --primary-blue: #007bff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.4; /* Tighter line height */
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: #FAF9F6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1, h2 { text-align: center; margin: 5px 0; }
+        h2 { font-size: 1.2rem; color: #666; margin-bottom: 15px; }
+
+        .instructions { 
+            background: #e9ecef; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .user-info input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px; box-shadow: 0 0 4px gray;
+        }
+
+        /* LYRICS LAYOUT FIX */
+        .lyrics-content { 
+            font-size: 1.05rem; 
+            line-height: 1.8; 
+        }
+        .verse, .chorus { 
+            margin-bottom: .7rem; /* Reduced vertical gap */
+            white-space: pre-line; /* Handles breaks without extra hidden spaces */
+            box-shadow: 0 0 4px gray;
+            padding:10px;
+        }
+        .chorus { 
+            padding-left: 12px; 
+            border-left: 4px solid var(--primary-blue); 
+            font-style: italic;
+            background-color: #f0f7ff;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        select {
+            padding: 2px 5px;
+            font-size: 0.95rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .correct-choice { background-color: var(--correct-bg) !important; }
+        .incorrect-choice { background-color: var(--incorrect-bg) !important; }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #toggleBtn { background: #6c757d; color: white; }
+        #printBtn { background: var(--primary-blue); color: white; }
+
+        /* Floating check button */
+        #floatingCheckBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 16px;
+            z-index: 999;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 16px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.15s;
+            /* Good tap target on mobile */
+            min-width: 48px;
+            min-height: 44px;
+        }
+        #floatingCheckBtn:active {
+            transform: scale(0.95);
+        }
+        #floatingCheckBtn.check-mode {
+            background: #28a745;
+        }
+
+        @media print {
+            .controls, .instructions, #floatingCheckBtn { display: none !important; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Blind Date</h1>
+    <h2>(Reset the Night)</h2>
+    
+    <p class="instructions">Choose a synonym or appropriate phrase to replace the current word.</p>
+
+
+    <div id="lyrics-display" class="lyrics-content"></div>
+
+    <div class="controls">
+
+    <div class="user-info">
+        <input type="text" id="studentName" placeholder="Name">
+        <input type="text" id="studentID" placeholder="ID">
+    </div>        <button id="printBtn">Print / Save PDF</button>
+    </div>
+</div>
+
+<!-- Floating Check Answers button -->
+<button id="floatingCheckBtn">✓ Check</button>
+
+<script>
+    const vocabList = [
+        { target: "arrived", synonym: "got here", distractors: ["departed early", "sent a message", "fell asleep"] },
+        { target: "Butterflies", synonym: "nervous stomach", distractors: ["colorful bugs", "heavy breathing", "bright lights"] },
+        { target: "rising high", synonym: "intensifying", distractors: ["falling down", "disappearing", "drifting"] },
+        { target: "Blouse", synonym: "shit top", distractors: ["winter coat", "leather shoes", "silk scarf"] },
+        { target: "ruined", synonym: "destroyed", distractors: ["cleaned", "expensive", "fixed"] },
+        { target: "feels like dying", synonym: "is deeply embarrassed", distractors: ["is physically ill", "is very happy", "is quite hungry"] },
+        { target: "in sight", synonym: "to be seen", distractors: ["in the mirror", "quietly waiting", "hidden away"] },
+        { target: "bolted for", synonym: "ran quickly out", distractors: ["unlocked", "strolled toward", "shouted at"] },
+        { target: "smoothly", synonym: "with grace", distractors: ["awkwardly", "very slowly", "loudly"] },
+        { target: "fine", synonym: "great", distractors: ["angry", "broken", "terrible"] },
+        { target: "total mess", synonym: "complete disaster", distractors: ["clean room", "small mistake", "quiet event"] },
+        { target: "liking him more", synonym: "developing feelings", distractors: ["ignoring him", "hating his guts", "forgetting him"] },
+        { target: "rhythm", synonym: "flow", distractors: ["smell", "flavor", "color"] },
+        { target: "reset", synonym: "restart", distractors: ["end it", "pause", "ignore"] },
+        { target: "vibe", synonym: "atmosphere", distractors: ["ticket", "loud noise", "location"] },
+        { target: "last", synonym: "endure", distractors: ["break", "finish fast", "stop"] },
+        { target: "hand-in-hand", synonym: "holding hands", distractors: ["waving", "running away", "clapping"] },
+        { target: "gravy", synonym: "thick sauce", distractors: ["sweet juice", "cold water", "hot soup"] },
+        { target: "worth the loss", synonym: "worthwhile", distractors: ["a big waste", "too expensive", "very sad"] },
+        { target: "right", synonym: "compatible", distractors: ["wrong", "left", "boring"] }
+    ];
+
+    const lyricsData = [
+        { type: 'verse', text: `Check the mirror, do the eyes, 
+Is he here yet? He just [arrived].
+[Butterflies], [rising high]
+Fancy restuarant, candlelight!` },
+        { type: 'verse', text: `Table for two, and then we sat
+Nice to meet you, just like that
+Friendly talk, hobbies, jobs
+Then the plate of pasta drops!
+white wine spilled, red sauce flying,
+[Blouse] is [ruined], she [feels like dying]!` },
+        { type: 'verse', text: `Back at the table.. no one [in sight]?
+Did he eat his meal without a goodbye?
+The server says he [bolted for] the door.
+But he's back in time, moving [smoothly] 'cross the floor !` },
+        { type: 'chorus', text: `I’m feeling good, I’m feeling [fine]
+Even with the red sauce and the spilled wine!
+It’s a blind date, yeah, it’s a [total mess]
+But I’m [liking him more] and the dinner less!
+Spinning around, yeah we’re out the door
+I’ve never felt a [rhythm] like this before!
+Blind date, blind date—[reset] the night
+Everything’s wrong, but it feels so [right]!` },
+        { type: 'verse', text: `New shirt, new shoes, coming back fast
+Think we found a [vibe] that’s gonna [last]
+Out the door, no time to pay?”
+We’re [hand-in-hand] and we’re on our way!` },
+        { type: 'verse', text: `What a first date! (What a first date!)
+What a story! (What a story!)
+He sat in the [gravy], he sat in the sauce
+And the ruined blouse was [worth the loss]!` }
+    ];
+
+    let checkMode = false;
+    let userMemory = {};
+
+    function setup() {
+        const display = document.getElementById('lyrics-display');
+        display.innerHTML = '';
+
+        lyricsData.forEach(section => {
+            const div = document.createElement('div');
+            div.className = section.type;
+            let textContent = section.text;
+
+            vocabList.forEach((item, i) => {
+                if (textContent.includes(`[${item.target}]`)) {
+                    const others = [item.synonym, ...item.distractors].sort(() => Math.random() - 0.5);
+                    let selectStr = `<select id="v-${i}" onchange="colorSelect(this)">
+                        <option value="${item.target}">${item.target}</option>`;
+                    others.forEach(opt => {
+                        const isCorrect = opt === item.synonym;
+                        selectStr += `<option value="${opt}" ${isCorrect ? 'data-correct="true"' : ''}>${opt}</option>`;
+                    });
+                    selectStr += `</select>`;
+                    textContent = textContent.replace(`[${item.target}]`, selectStr);
+                }
+            });
+
+            div.innerHTML = textContent;
+            display.appendChild(div);
+        });
+    }
+
+    function colorSelect(el) {
+        const selected = el.options[el.selectedIndex];
+        el.classList.remove('correct-choice', 'incorrect-choice');
+        if (el.selectedIndex === 0) return;
+        if (selected.getAttribute('data-correct') === "true") {
+            el.classList.add('correct-choice');
+        } else {
+            el.classList.add('incorrect-choice');
+        }
+    }
+
+    document.getElementById('floatingCheckBtn').addEventListener('click', function() {
+        const selects = document.querySelectorAll('select');
+        if (!checkMode) {
+            selects.forEach(s => {
+                userMemory[s.id] = s.value;
+                const correctOpt = Array.from(s.options).find(o => o.dataset.correct === "true");
+                s.value = correctOpt.value;
+                s.disabled = true;
+                colorSelect(s);
+            });
+            this.textContent = "Go Back";
+            this.classList.add('check-mode');
+        } else {
+            selects.forEach(s => {
+                s.disabled = false;
+                s.value = userMemory[s.id] || s.options[0].value;
+                colorSelect(s);
+            });
+            this.textContent = "✓ Check";
+            this.classList.remove('check-mode');
+        }
+        checkMode = !checkMode;
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentID').value.trim();
+        if (name.length < 2 || id.length < 2) {
+            alert("Name and ID required for PDF print/save option");
+        } else {
+            window.print();
+        }
+    });
+
+    setup();
+</script>
+</body>
+</html>
