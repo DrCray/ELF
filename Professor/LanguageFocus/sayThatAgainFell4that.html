@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus – Common Sayings</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1209;
+    --paper: #faf6ef;
+    --cream: #f2ead8;
+    --rule: #d4c5a9;
+    --amber: #c9860a;
+    --amber-light: #f5d78e;
+    --teal: #1d7a72;
+    --teal-light: #c2e8e5;
+    --rose: #b03a2e;
+    --rose-light: #f5ccc8;
+    --card-shadow: 0 2px 12px rgba(26,18,9,0.10), 0 1px 3px rgba(26,18,9,0.07);
+    --radius: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Subtle ruled-paper background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      var(--rule) 27px,
+      var(--rule) 28px
+    );
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 28px 24px 22px;
+    border-bottom: 4px solid var(--amber);
+    text-align: center;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--amber-light);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  header p {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #c9bfad;
+    margin-top: 6px;
+  }
+
+  /* ── Section intro ── */
+  .intro {
+    padding: 22px 20px 8px;
+    font-size: 0.95rem;
+    color: #5a4a30;
+    border-left: 3px solid var(--amber);
+    margin: 24px 16px 0;
+    background: var(--cream);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  /* ── Phrase Cards ── */
+  .phrase-card {
+    margin: 24px 12px 0;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    border-top: 5px solid var(--amber);
+    animation: slideUp 0.5s ease both;
+  }
+
+  .phrase-card:nth-child(2) { border-top-color: var(--teal); animation-delay: .1s; }
+  .phrase-card:nth-child(3) { border-top-color: var(--rose); animation-delay: .2s; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-head {
+    padding: 16px 18px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .phrase-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--amber);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .phrase-card:nth-child(2) .phrase-number { background: var(--teal); }
+  .phrase-card:nth-child(3) .phrase-number { background: var(--rose); }
+
+  .phrase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.15rem, 4vw, 1.45rem);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .chevron {
+    width: 20px;
+    height: 20px;
+    color: #aaa;
+    flex-shrink: 0;
+    margin-top: 4px;
+    transition: transform .3s ease;
+  }
+
+  .card-body {
+    display: none;
+    padding: 0 18px 20px;
+    border-top: 1px solid var(--rule);
+    animation: fadeIn .3s ease;
+  }
+
+  .card-body.open { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .card-head.active .chevron { transform: rotate(180deg); }
+
+  /* ── Context box ── */
+  .context-box {
+    margin-top: 14px;
+    background: var(--cream);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 0.92rem;
+  }
+
+  .context-box .ctx-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .phrase-card:nth-child(2) .ctx-label { color: var(--teal); }
+  .phrase-card:nth-child(3) .ctx-label { color: var(--rose); }
+
+  /* ── Usage tags ── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: .07em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--amber-light);
+    color: #7a5100;
+  }
+
+  .phrase-card:nth-child(2) .tag { background: var(--teal-light); color: #0f4a46; }
+  .phrase-card:nth-child(3) .tag { background: var(--rose-light); color: #6b1f18; }
+
+  /* ── Examples ── */
+  .examples-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 18px 0 8px;
+  }
+
+  .example-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .example-list li {
+    padding: 10px 13px;
+    background: var(--paper);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.93rem;
+    line-height: 1.55;
+  }
+
+  .phrase-card:nth-child(2) .example-list li { border-left-color: var(--teal); }
+  .phrase-card:nth-child(3) .example-list li { border-left-color: var(--rose); }
+
+  .example-list li em {
+    font-style: italic;
+    font-weight: 400;
+    color: #3a2a10;
+  }
+
+  /* Highlight the key phrase within examples */
+  .key {
+    font-style: normal;
+    font-weight: 400;
+    background: var(--amber-light);
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .phrase-card:nth-child(2) .key { background: var(--teal-light); }
+  .phrase-card:nth-child(3) .key { background: var(--rose-light); }
+
+  /* ── Dialog Section ── */
+  .dialog-section {
+    margin: 32px 12px 0;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 6px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    animation: slideUp .5s .3s ease both;
+  }
+
+  .dialog-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid #3a3020;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dialog-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .dialog-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .dialog-header p {
+    font-size: 0.78rem;
+    color: #a09070;
+    margin-top: 1px;
+  }
+
+  .dialog-body {
+    padding: 16px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dialog-line {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .speaker {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .speaker.a {
+    background: var(--amber);
+    color: var(--ink);
+  }
+
+  .speaker.b {
+    background: var(--teal);
+    color: #fff;
+  }
+
+  .line-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #e8dfc8;
+  }
+
+  .line-text .key-dialog {
+    background: rgba(201,134,10,0.35);
+    border-radius: 2px;
+    padding: 0 2px;
+    font-style: italic;
+  }
+
+  .line-text .key-dialog.teal {
+    background: rgba(29,122,114,0.35);
+  }
+
+  .line-text .key-dialog.rose {
+    background: rgba(176,58,46,0.35);
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: #b8a888;
+    letter-spacing: .1em;
+    padding: 0 16px;
+  }
+
+  /* ── Scroll progress ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--amber);
+    width: 0%;
+    z-index: 100;
+    transition: width .1s linear;
+  }
+
+  /* Mobile fine-tuning */
+  @media (max-width: 480px) {
+    .phrase-card, .dialog-section { margin-left: 8px; margin-right: 8px; }
+    .intro { margin-left: 8px; margin-right: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="page">
+
+  <header>
+    <span class="header-label">Language Focus · Everyday English</span>
+    <h1>Common Sayings &amp; Expressions</h1>
+    <p>Informal spoken English — B1–B2 level</p>
+  </header>
+
+  <div class="intro">
+    These three expressions are very common in everyday spoken English. They are informal and show strong feeling or reaction. Tap each card to explore the meaning, usage, and examples.
+  </div>
+
+  <!-- ── CARD 1 ── -->
+  <div class="phrase-card">
+    <div class="card-head" onclick="toggle(this)">
+      <div class="phrase-number">1</div>
+      <div class="phrase-title">"You can say that again!"</div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="context-box">
+        <span class="ctx-label">Meaning &amp; Context</span>
+        We use this expression to show <strong>strong agreement</strong> with something someone just said. It means: "I completely agree with you — that is 100% true." We do NOT actually want the person to repeat what they said! The expression is a fixed idiom used as a response, usually with emphasis or a sigh.
+      </div>
+      <div class="tags">
+        <span class="tag">strong agreement</span>
+        <span class="tag">spoken response</span>
+        <span class="tag">informal</span>
+        <span class="tag">fixed expression</span>
+      </div>
+      <p class="examples-label">Example Sentences</p>
+      <ul class="example-list">
+        <li><em>"The traffic on the highway today was terrible." — "<span class="key">You can say that again!</span> I was stuck for two hours."</em></li>
+        <li><em>"Learning English grammar is really challenging." — "<span class="key">You can say that again.</span> The present perfect always confuses me."</em></li>
+        <li><em>"This project has been stressful from the start." — "<span class="key">You can say that again!</span> I haven't slept properly in a week."</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── CARD 2 ── -->
+  <div class="phrase-card">
+    <div class="card-head" onclick="toggle(this)">
+      <div class="phrase-number">2</div>
+      <div class="phrase-title">"That's the last thing I need right now!"</div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="context-box">
+        <span class="ctx-label">Meaning &amp; Context</span>
+        This expression is used when something <strong>unwanted or problematic</strong> is added to an already difficult situation. It expresses frustration — you are already stressed or busy, and now there is one more problem. "Last" here means "worst possible addition." It can also be used humorously about minor inconveniences.
+      </div>
+      <div class="tags">
+        <span class="tag">frustration</span>
+        <span class="tag">complaint</span>
+        <span class="tag">spoken reaction</span>
+        <span class="tag">informal</span>
+      </div>
+      <p class="examples-label">Example Sentences</p>
+      <ul class="example-list">
+        <li><em>My phone screen cracked on the way to my exam. <span class="key">That's the last thing I need right now!</span></em></li>
+        <li><em>"The server is down and all our files are gone." — "Oh no, <span class="key">that's the last thing I need right now</span>, the deadline tomorrow."</em></li>
+        <li><em>I have four assignments due this week, and now I have a cold. <span class="key">That's the last thing I need right now.</span></em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── CARD 3 ── -->
+  <div class="phrase-card">
+    <div class="card-head" onclick="toggle(this)">
+      <div class="phrase-number">3</div>
+      <div class="phrase-title">"Can't believe you fell for that!"</div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="context-box">
+        <span class="ctx-label">Meaning &amp; Context</span>
+        "To fall for" something means to be <strong>tricked or deceived</strong> — you believed something false or accepted a joke as true. "Can't believe you fell for that!" is said (usually laughing) after a prank, a joke, or when someone believed something obviously untrue. The full form is "I can't believe…" but the "I" is often dropped in casual speech. The tone is teasing, not usually cruel.
+      </div>
+      <div class="tags">
+        <span class="tag">teasing</span>
+        <span class="tag">phrasal verb: fall for</span>
+        <span class="tag">humor</span>
+        <span class="tag">informal</span>
+      </div>
+      <p class="examples-label">Example Sentences</p>
+      <ul class="example-list">
+        <li><em>I told him the canteen was closed all week as a joke. <span class="key">I can't believe he fell for it!</span></em></li>
+        <li><em>"Wait — is there really no class today?" — "Haha, <span class="key">can't believe you fell for that!</span> Of course there is."</em></li>
+        <li><em>She told me the assignment deadline was moved to next month. <span class="key">I can't believe I fell for that</span> — she was joking the whole time.</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── DIALOG ── -->
+  <div class="dialog-section">
+    <div class="dialog-header">
+      <div class="dialog-icon">💬</div>
+      <div>
+        <h2>Final Dialog</h2>
+        <p>All three expressions in context — read aloud with a partner</p>
+      </div>
+    </div>
+    <div class="dialog-body">
+
+      <div class="dialog-line">
+        <span class="speaker a">Amir</span>
+        <span class="line-text">Hey, did you hear? The professor cancelled the exam. We don't have to study tonight!</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker b">Bina</span>
+        <span class="line-text">Wait, seriously?! Oh wow, that's such a relief — I've been so stressed.</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker a">Amir</span>
+        <span class="line-text">Ha! <span class="key-dialog">Can't believe you fell for that!</span> Of course the exam isn't cancelled. It's tomorrow at nine.</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker b">Bina</span>
+        <span class="line-text">Ugh, Amir! <span class="key-dialog rose">That's the last thing I need right now!</span> I'm already nervous enough — don't do that to me!</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker a">Amir</span>
+        <span class="line-text">Sorry, sorry! But seriously, this exam is going to be really difficult. The reading passages alone are exhausting.</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker b">Bina</span>
+        <span class="line-text"><span class="key-dialog teal">You can say that again.</span> I've read the same paragraph five times and I still don't understand it. Let's study together tonight.</span>
+      </div>
+
+      <div class="dialog-line">
+        <span class="speaker a">Amir</span>
+        <span class="line-text">Good idea. And I promise — no more jokes!</span>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Language Focus · Everyday Expressions · B1–B2</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggle(head) {
+    const body = head.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.card-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.card-head').forEach(h => h.classList.remove('active'));
+    // Open this one if it was closed
+    if (!isOpen) {
+      body.classList.add('open');
+      head.classList.add('active');
+    }
+  }
+
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
+    document.getElementById('progress').style.width = scrolled + '%';
+  });
+
+  // Open first card by default
+  document.querySelector('.card-head').click();
+</script>
+</body>
+</html>
