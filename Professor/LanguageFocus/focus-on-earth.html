@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus: "on earth" | Intensifiers for Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #faf7f2;
+    --rule: #d4c9b8;
+    --purple: #5c3d7a;
+    --purple-light: #ede5f5;
+    --amber: #b5722a;
+    --red: #9b2335;
+    --green: #2a6b4a;
+    --note-bg: #f5f0e8;
+    --shadow: rgba(92,61,122,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--paper);
+    background-image:
+      repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        var(--rule) 31px,
+        var(--rule) 32px
+      );
+    background-attachment: local;
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 2rem;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Progress bar */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--purple);
+    z-index: 100;
+    transition: width 0.1s;
+  }
+
+  /* Header */
+  .lesson-header {
+    border-bottom: 2px solid var(--purple);
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+  }
+
+  .lesson-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--purple);
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-top: 0.25rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--purple);
+  }
+
+  .subtitle {
+    font-size: 0.92rem;
+    color: #6b5d4f;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  /* Section headings */
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--purple);
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 0.6rem;
+    line-height: 1.4;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Highlight phrase */
+  .phrase {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--purple);
+    font-size: 1.05em;
+  }
+
+  strong { font-weight: 600; }
+
+  /* Meaning box */
+  .meaning-box {
+    background: var(--purple-light);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 0.9rem 1.1rem;
+    margin: 1rem 0;
+  }
+
+  .meaning-box p { margin: 0; font-size: 0.97rem; }
+
+  /* Form grid */
+  .form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.93rem;
+  }
+
+  .form-table th {
+    background: var(--purple);
+    color: #fff;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.75rem;
+    text-align: left;
+  }
+
+  .form-table td {
+    padding: 0.4rem 0.75rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .form-table tr:last-child td { border-bottom: none; }
+
+  .form-table .wh { color: var(--red); font-weight: 600; }
+  .form-table .on-earth { color: var(--purple); font-style: italic; }
+
+  /* Dialog cards */
+  .dialog {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .dialog-context {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: #8a7a6a;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px dashed var(--rule);
+    padding-bottom: 0.4rem;
+  }
+
+  .line { margin-bottom: 0.3rem; font-size: 0.95rem; line-height: 1.6; }
+  .line:last-child { margin-bottom: 0; }
+
+  .speaker {
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    display: inline-block;
+    min-width: 3.2rem;
+    color: var(--amber);
+  }
+
+  .target { 
+    background: var(--purple-light);
+    border-radius: 3px;
+    padding: 0 3px;
+  }
+
+  /* Disclosure / accordion */
+  details {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    margin: 0.6rem 0;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  summary {
+    padding: 0.65rem 1rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--ink);
+    user-select: none;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: '＋';
+    font-size: 1rem;
+    color: var(--purple);
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  details[open] summary {
+    border-bottom: 1px solid var(--rule);
+    color: var(--purple);
+  }
+
+  .details-body {
+    padding: 0.7rem 1rem 0.8rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #3a2e26;
+  }
+
+  /* Note box */
+  .note {
+    background: var(--note-bg);
+    border: 1px dashed var(--amber);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.89rem;
+    line-height: 1.6;
+  }
+
+  .note-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 0.2rem;
+  }
+
+  /* Example list */
+  .examples { list-style: none; margin: 0.5rem 0; }
+  .examples li {
+    padding: 0.3rem 0 0.3rem 1.4rem;
+    position: relative;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+  .examples li:last-child { border-bottom: none; }
+  .examples li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--purple);
+    font-size: 0.85rem;
+  }
+
+  /* Intensity scale */
+  .scale {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 1rem 0;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.82rem;
+  }
+
+  .scale-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0.3rem;
+    border-right: 1px solid var(--rule);
+    line-height: 1.4;
+  }
+
+  .scale-item:last-child { border-right: none; }
+
+  .scale-item .s-word { font-weight: 700; display: block; margin-bottom: 0.15rem; }
+  .scale-item .s-label { font-size: 0.7rem; color: #6b5d4f; display: block; }
+
+  .scale-item.s1 { background: #f5f0e8; }
+  .scale-item.s2 { background: #ede5f5; color: var(--purple); }
+  .scale-item.s3 { background: #d4bef0; color: var(--purple); }
+  .scale-item.s4 { background: #5c3d7a; color: #fff; }
+
+  /* Footer */
+  .lesson-footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.75rem;
+    font-size: 0.78rem;
+    color: #9a8a7a;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  @media (max-width: 500px) {
+    body { font-size: 0.96rem; line-height: 2rem; }
+    h1 { font-size: 1.7rem; }
+    .scale { flex-direction: column; }
+    .scale-item { border-right: none; border-bottom: 1px solid var(--rule); }
+    .scale-item:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="lesson-header">
+    <p class="lesson-label">Language Focus · Intensifiers</p>
+    <h1><em>What on earth…?</em><br>Why on earth…?</h1>
+    <p class="subtitle">Adding emotion and emphasis to questions &nbsp;·&nbsp; B1–B2</p>
+  </header>
+
+  <!-- Meaning -->
+  <h2>What does it mean?</h2>
+  <p>We use <span class="phrase">on earth</span> after a question word (<em>what, why, where, who, how</em>) to add <strong>strong emotion</strong> to a question. The emotion is usually:</p>
+  <div class="meaning-box">
+    <p>😲 <strong>Surprise</strong> — something is shocking or unexpected<br>
+    😤 <strong>Frustration</strong> — something is annoying or hard to understand<br>
+    🤔 <strong>Disbelief</strong> — something seems impossible or strange</p>
+  </div>
+  <p>It is <strong>spoken</strong> English and quite informal. You will hear it often in everyday conversation.</p>
+
+  <!-- Form -->
+  <h2>Structure</h2>
+  <p>The pattern is simple: <strong>question word + on earth + rest of the question</strong>.</p>
+
+  <table class="form-table">
+    <thead>
+      <tr>
+        <th>Question word</th>
+        <th>on earth</th>
+        <th>rest of question</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="wh">What</span></td>
+        <td><span class="on-earth">on earth</span></td>
+        <td>is going on?</td>
+      </tr>
+      <tr>
+        <td><span class="wh">Why</span></td>
+        <td><span class="on-earth">on earth</span></td>
+        <td>did you say that?</td>
+      </tr>
+      <tr>
+        <td><span class="wh">Where</span></td>
+        <td><span class="on-earth">on earth</span></td>
+        <td>have you been?</td>
+      </tr>
+      <tr>
+        <td><span class="wh">Who</span></td>
+        <td><span class="on-earth">on earth</span></td>
+        <td>told you that?</td>
+      </tr>
+      <tr>
+        <td><span class="wh">How</span></td>
+        <td><span class="on-earth">on earth</span></td>
+        <td>did she manage it?</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div class="note">
+    <p class="note-label">💡 Register note</p>
+    <p>You can also substitue the above with <span class="phrase">in the world</span> <br>e.g. What <span class="phrase">in the world</span> are you talking about</p>
+  </div>
+
+  <!-- Intensity scale -->
+  <h2>Intensity scale</h2>
+  <p><span class="phrase">On earth</span> sits in the middle of a scale of question intensifiers. The higher the number, the stronger the emotion.</p>
+
+  <div class="scale">
+    <div class="scale-item s1"><span class="s-word">ever</span><span class="s-label">mild<br>surprise</span></div>
+    <div class="scale-item s2"><span class="s-word">on earth</span><span class="s-label">surprise /<br>frustration</span></div>
+    <div class="scale-item s3"><span class="s-word">in the world</span><span class="s-label">stronger<br>emotion</span></div>
+    <div class="scale-item s4"><span class="s-word">the hell / heck</span><span class="s-label">very strong<br>(rude/informal)</span></div>
+  </div>
+
+
+
+  <!-- Dialogs -->
+  <h2>Dialogs</h2>
+
+  <details>
+    <summary>Dialog 1 — At home (surprise)</summary>
+    <div class="details-body">
+      <div class="dialog">
+        <p class="dialog-context">A mother returns home and finds the kitchen is a complete mess.</p>
+        <p class="line"><span class="speaker">Mum:</span> <span class="target">What on earth happened in here?</span></p>
+        <p class="line"><span class="speaker">Tom:</span> I was trying to make a birthday cake. It got a bit … complicated.</p>
+        <p class="line"><span class="speaker">Mum:</span> A bit complicated?! There's flour on the ceiling!</p>
+        <p class="line"><span class="speaker">Tom:</span> I know. I'm really sorry. I'll clean it all up, I promise.</p>
+      </div>
+      <p><strong>Focus:</strong> <em>What on earth happened?</em> = the mother is very surprised and can't understand what she is seeing.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Dialog 2 — At work (frustration)</summary>
+    <div class="details-body">
+      <div class="dialog">
+        <p class="dialog-context">Two colleagues. Sarah has just sent an important report to the wrong client.</p>
+        <p class="line"><span class="speaker">Mark:</span> Did you just send the Tanaka report to Jensen & Co?</p>
+        <p class="line"><span class="speaker">Sarah:</span> Oh no. Yes, I think I did.</p>
+        <p class="line"><span class="speaker">Mark:</span> <span class="target">Why on earth did you do that?</span> That report is completely confidential!</p>
+        <p class="line"><span class="speaker">Sarah:</span> I picked the wrong contact from my address book. I'm so sorry — I'll call them straight away.</p>
+      </div>
+      <p><strong>Focus:</strong> <em>Why on earth did you do that?</em> = Mark is frustrated and can't understand the reason.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Dialog 3 — Between friends (disbelief)</summary>
+    <div class="details-body">
+      <div class="dialog">
+        <p class="dialog-context">Two friends chatting. Ben has just quit a very well-paid job.</p>
+        <p class="line"><span class="speaker">Priya:</span> Wait — you resigned? This morning?</p>
+        <p class="line"><span class="speaker">Ben:</span> Yep. Handed in my notice at nine o'clock.</p>
+        <p class="line"><span class="speaker">Priya:</span> <span class="target">Where on earth are you going to find another salary like that?</span></p>
+        <p class="line"><span class="speaker">Ben:</span> I'm not looking for one, honestly. I need a break. I'll figure it out.</p>
+        <p class="line"><span class="speaker">Priya:</span> You're brave. Or crazy. Probably both.</p>
+      </div>
+      <p><strong>Focus:</strong> <em>Where on earth …?</em> = Priya finds it very hard to believe Ben can replace his salary — she is amazed by his decision.</p>
+    </div>
+  </details>
+
+  <!-- Common examples -->
+  <h2>More examples in context</h2>
+  <ul class="examples">
+    <li><em>What on earth are you wearing?</em> — said when someone's outfit is very unusual.</li>
+    <li><em>Why on earth would anyone live here?</em> — disbelief about someone's choice of location.</li>
+    <li><em>Where on earth did I put my keys?</em> — frustrated with yourself when you can't find something.</li>
+    <li><em>Who on earth told you that?</em> — shocked by a piece of information.</li>
+    <li><em>How on earth did she finish so fast?</em> — amazed by someone's speed or ability.</li>
+  </ul>
+
+  <!-- Usage tips -->
+  <h2>Usage tips</h2>
+
+  <details>
+    <summary>Is it only for questions?</summary>
+    <div class="details-body">
+      <p>In everyday speech, we sometimes use it in <strong>indirect questions</strong> too:</p>
+      <ul class="examples">
+        <li><em>I can't imagine why on earth she agreed to that.</em></li>
+        <li><em>Nobody knows what on earth is going on.</em></li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Does it change the grammar of the question?</summary>
+    <div class="details-body">
+      <p>No. The grammar stays exactly the same. <span class="phrase">On earth</span> simply slots in after the question word. The tense, word order, and auxiliary verb are unchanged.</p>
+      <ul class="examples">
+        <li><em>What did you do?</em> → <em>What <strong>on earth</strong> did you do?</em></li>
+        <li><em>Where has she gone?</em> → <em>Where <strong>on earth</strong> has she gone?</em></li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Tone and stress in speech</summary>
+    <div class="details-body">
+      <p>When speaking, the stress usually falls on <strong>on earth</strong> as well as the key content word. The voice rises or rises-then-falls to show emotion. Compare:</p>
+      <ul class="examples">
+        <li>Neutral: <em>What are you doing?</em> (simple information request)</li>
+        <li>Emotional: <em>What <strong>ON EARTH</strong> are you DOING?</em> (shocked or angry)</li>
+      </ul>
+    </div>
+  </details>
+
+
+  <!-- Footer -->
+  <footer class="lesson-footer">
+    <span>Language Focus · Intensifiers</span>
+    <span>Level: B1–B2</span>
+    <span>© English Learning Magazine</span>
+  </footer>
+
+</div>
+
+<script>
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
+    document.getElementById('progress-bar').style.width = (scrolled * 100) + '%';
+  });
+</script>
+</body>
+</html>
