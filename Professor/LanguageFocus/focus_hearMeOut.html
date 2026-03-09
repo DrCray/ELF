@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>phrases · language learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f7fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 1.5rem 1rem 2.5rem;
+        }
+
+        .cards-container {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* card styles */
+        .phrase-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 20, 30, 0.05);
+            padding: 1.8rem 1.5rem;
+            transition: all 0.2s ease;
+            border: 1px solid #ffffff50;
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* subtle colour accent per card */
+        .card-1 { border-left: 6px solid #3b82f6; }   /* hear me out */
+        .card-2 { border-left: 6px solid #10b981; }   /* good news / bad news */
+        .card-3 { border-left: 6px solid #f59e0b; }   /* not the half of it */
+        .card-4 { border-left: 6px solid #8b5cf6; }   /* another story */
+
+        .phrase-headline {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            color: #0b1e33;
+        }
+
+        .headline-small {
+            font-size: 1.9rem; /* for slightly longer titles like "I've got good news and bad news" */
+            word-break: break-word;
+        }
+
+        .definition-block {
+            background: #f0f4fe;
+            padding: 1rem 1.2rem;
+            border-radius: 20px;
+            margin: 0.9rem 0 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #1e293b;
+            border: 1px solid #d9e2ef;
+        }
+
+        .definition-block strong {
+            font-weight: 600;
+            color: #0c4a6e;
+            display: inline-block;
+            margin-right: 0.25rem;
+        }
+
+        .use-section {
+            margin: 0.5rem 0 1rem;
+            padding-left: 0.8rem;
+            border-left: 3px solid #b7c9e2;
+        }
+
+        .use-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: #4a5c72;
+            margin-bottom: 0.2rem;
+        }
+
+        .use-text {
+            font-size: 1.05rem;
+            color: #1e2f44;
+            font-style: normal;
+            line-height: 1.45;
+        }
+
+        .examples-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1e3a5f;
+            margin: 0.75rem 0 0.5rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .examples-title::before {
+            content: "💬";
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .example-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .example-item {
+            font-size: 1rem;
+            background: #f9fafc;
+            padding: 0.9rem 1rem;
+            border-radius: 18px;
+            color: #1f2a3f;
+            line-height: 1.5;
+            box-shadow: inset 0 1px 3px #00000008, 0 1px 2px #0000000a;
+            border: 1px solid #eef2f6;
+        }
+
+        .example-item em {
+            font-style: italic;
+            color: #2563eb;
+            background: #e6edfb;
+            padding: 0.1rem 0.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .example-item strong {
+            font-weight: 600;
+            color: #0f3b5e;
+        }
+
+        .dialogue-note {
+            background: #eef9f2;
+            border-radius: 16px;
+            padding: 0.5rem 1rem;
+            color: #17634b;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin: 0.3rem 0 0 0;
+        }
+
+        /* responsive micro fix */
+        @media (max-width: 380px) {
+            .phrase-headline {
+                font-size: 1.8rem;
+            }
+            .headline-small {
+                font-size: 1.6rem;
+            }
+            .phrase-card {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+
+        /* subtle hover effect (non mobile) */
+        @media (hover: hover) {
+            .phrase-card:hover {
+                box-shadow: 0 14px 30px -8px rgba(30, 60, 90, 0.12);
+                transform: translateY(-2px);
+            }
+        }
+
+        .footer-note {
+            margin-top: 1.8rem;
+            font-size: 0.9rem;
+            color: #5f738c;
+            text-align: center;
+            max-width: 600px;
+            border-top: 1px dashed #cad5e2;
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="cards-container">
+        <!-- card 1: Hear me out (fixed spelling: optioin → opinion) -->
+        <div class="phrase-card card-1">
+            <div class="phrase-headline">Hear me out</div>
+            <div class="definition-block">
+                <strong>Definition: &nbsp; </strong> Ask someone to listen to an entire idea or explanation before forming an opinion.
+            </div>
+            <div class="use-section">
+                <div class="use-label">Use</div>
+                <div class="use-text">Use this phrase when you don’t want interruptions for what you need to say.</div>
+            </div>
+            <div class="examples-title">Examples</div>
+            <ul class="example-list">
+                <li class="example-item">I know it sounds like a far-fetched idea, but hear me out.</li>
+                <li class="example-item">Hear me out before you make a decision.</li>
+                <li class="example-item"><strong> A: &nbsp; </strong> I think your idea won’t work. <br><strong>B: &nbsp; </strong> Just hear me out first!</li>
+            </ul>
+        </div>
+
+        <!-- card 2: I've got good news and bad news (fixed optioin not present) -->
+        <div class="phrase-card card-2">
+            <div class="phrase-headline headline-small">I’ve got good news and bad news</div>
+            <div class="definition-block">
+                <strong>Definition: &nbsp; </strong> A common way to introduce a message that contains both positive and negative information.
+            </div>
+            <div class="use-section">
+                <div class="use-label">Use</div>
+                <div class="use-text">Often used at the beginning of a conversation when sharing mixed news.</div>
+            </div>
+            <div class="examples-title">Examples</div>
+            <ul class="example-list">
+                <li class="example-item">I’ve got good news and bad news. The good news is I got the job, but the bad news is I have to move to a new city.</li>
+                <li class="example-item">I’ve got good news and bad news. The good news is we won the game, but the bad news is I hurt my ankle.</li>
+                <li class="example-item"><strong> A: &nbsp; </strong> What’s the update? <br><strong>B: &nbsp; </strong> Well, I’ve got good news and bad news. Which one would you like first?</li>
+            </ul>
+        </div>
+
+        <!-- card 3: That's not the half of it (fixed 'situatin' & other small typos in examples) -->
+        <div class="phrase-card card-3">
+            <div class="phrase-headline">That’s not the half of it</div>
+            <div class="definition-block">
+                <strong>Definition: &nbsp; </strong> When there’s even more to an already strange or lengthy story.
+            </div>
+            <div class="use-section">
+                <div class="use-label">Use</div>
+                <div class="use-text">Use when what was just said is only the surface of a larger story.</div>
+            </div>
+            <div class="examples-title">Examples</div>
+            <ul class="example-list">
+                <li class="example-item"><strong>A: &nbsp; </strong> Did you hear that John lost his job? <br><strong>B: &nbsp; </strong> That’s just the half of it — the real story is behind the reason he got fired.</li>
+                <li class="example-item"><strong>A: &nbsp; </strong> Did you know Amy and Sam broke up? <br><strong>B: &nbsp; </strong> Oh yeah, but that’s just the half of it. Sam was cheating on Amy with her best friend.</li>
+                <li class="example-item"><strong>A: &nbsp; </strong> I heard Sue and James had a big fight at the meeting. <br><strong>B: &nbsp; </strong> That’s just the half of it! Apparently, James quit on the spot, and now half the team is threatening to leave too!</li>
+            </ul>
+        </div>
+
+        <!-- card 4: But that's another story for another time (fixed 'situatin'→situation) -->
+        <div class="phrase-card card-4">
+            <div class="phrase-headline headline-small">But that’s another story for another time</div>
+            <div class="definition-block">
+                <strong>Definition: &nbsp; </strong> A polite way to say that you don’t want to go into detail about a situation or event.
+            </div>
+            <div class="use-section">
+                <div class="use-label">Use</div>
+                <div class="use-text">Use when you want to change the subject or postpone telling more details.</div>
+            </div>
+            <div class="examples-title">Examples</div>
+            <ul class="example-list">
+                <li class="example-item">We had an amazing holiday. Mark got lost in Naples — but that’s another story for another time.</li>
+                <li class="example-item"><strong> A: &nbsp; </strong> Tell me what happened at the party. <br><strong>B: &nbsp; </strong> It was great, but Tom drank too much — but that’s another story for another time.</li>
+                <li class="example-item">I could tell you all about it, but that’s another story for another time.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-note">
+        ← 4 essential phrases · listen, learn, remember →
+    </div>
+</body>
+</html>

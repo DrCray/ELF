@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus: Never mind, Drop it & more</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #1c1712;
+    --bg:         #f8f5f0;
+    --card:       #ffffff;
+    --rule:       #e2dbd0;
+    --purple:     #5c3d7a;
+    --purple-lt:  #ede5f5;
+    --amber:      #b5722a;
+    --red:        #9b2335;
+    --green:      #2a6b4a;
+    --muted:      #7a6e64;
+    --shadow:     rgba(92,61,122,0.08);
+
+    /* tier colours */
+    --t1: #e8f5ee;
+    --t1-border: #2a6b4a;
+    --t1-label: #2a6b4a;
+    --t2: #fef9ec;
+    --t2-border: #b5722a;
+    --t2-label: #8a5418;
+    --t3: #fdf0e8;
+    --t3-border: #c8541a;
+    --t3-label: #c8541a;
+    --t4: #fdecea;
+    --t4-border: #9b2335;
+    --t4-label: #9b2335;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  /* Progress */
+  #prog {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: var(--purple);
+    z-index: 200;
+    transition: width 0.08s linear;
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* ── HEADER ── */
+  .lesson-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .pill {
+    display: inline-block;
+    background: var(--purple);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+  }
+
+  .level-pill {
+    background: transparent;
+    border: 1px solid var(--purple);
+    color: var(--purple);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.9rem, 5.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  h1 em { color: var(--purple); font-style: italic; }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-style: italic;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2rem 0;
+  }
+
+  /* ── SECTION HEADS ── */
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 0.75rem;
+    padding-left: 0.65rem;
+    border-left: 3px solid var(--amber);
+  }
+
+  p { margin-bottom: 0.6rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: var(--purple-lt);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.96rem;
+  }
+
+  /* ── TIER SECTION ── */
+  .tier-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .tier-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .tier-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem; height: 2rem;
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    color: #fff;
+  }
+
+  .t1 .tier-badge { background: var(--t1-border); }
+  .t2 .tier-badge { background: var(--t2-border); }
+  .t3 .tier-badge { background: var(--t3-border); }
+  .t4 .tier-badge { background: var(--t4-border); }
+
+  .tier-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .t1 .tier-title { color: var(--t1-label); }
+  .t2 .tier-title { color: var(--t2-label); }
+  .t3 .tier-title { color: var(--t3-label); }
+  .t4 .tier-title { color: var(--t4-label); }
+
+  /* expression cards */
+  .expr-card {
+    border-radius: 8px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    margin-bottom: 0.65rem;
+    overflow: hidden;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+
+  .expr-card summary {
+    list-style: none;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+  }
+
+  .expr-card summary::-webkit-details-marker { display: none; }
+
+  .expr-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .t1 .expr-name { color: var(--t1-label); }
+  .t2 .expr-name { color: var(--t2-label); }
+  .t3 .expr-name { color: var(--t3-label); }
+  .t4 .expr-name { color: var(--t4-label); }
+
+  .chevron {
+    font-size: 0.8rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  details[open] .chevron { transform: rotate(180deg); }
+
+  .expr-body {
+    padding: 0 1rem 0.9rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.93rem;
+    line-height: 1.7;
+  }
+
+  .expr-body .row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.55rem;
+    align-items: baseline;
+  }
+
+  .row-label {
+    font-size: 0.73rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    min-width: 4.5rem;
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+  }
+
+  .row-content { flex: 1; }
+
+  .example-line {
+    background: var(--bg);
+    border-left: 3px solid var(--rule);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+
+  .t1 details[open] { background: var(--t1); border-color: var(--t1-border); }
+  .t2 details[open] { background: var(--t2); border-color: var(--t2-border); }
+  .t3 details[open] { background: var(--t3); border-color: var(--t3-border); }
+  .t4 details[open] { background: var(--t4); border-color: var(--t4-border); }
+
+  /* ── DUAL-USE NOTE ── */
+  .dual-note {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 0.85rem 1rem;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 0.92rem;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+
+  .dual-note .note-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    margin-bottom: 0.25rem;
+  }
+
+  /* ── SCALE BAR ── */
+  .scale-wrap {
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .scale-bar {
+    display: flex;
+    height: 0.55rem;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+    background: linear-gradient(to right,
+      var(--t1-border) 0%,
+      var(--t2-border) 33%,
+      var(--t3-border) 66%,
+      var(--t4-border) 100%
+    );
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* ── REGISTER NOTE ── */
+  .register-note {
+    background: var(--purple-lt);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin-top: 1.5rem;
+  }
+
+  .register-note .note-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── FOOTER ── */
+  .lesson-footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.8rem;
+    font-size: 0.77rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 1.5rem 1rem 4rem; }
+    h1 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="lesson-header">
+    <div class="label-row">
+      <span class="pill">Language Focus</span>
+      <span class="level-pill">B1–B2</span>
+    </div>
+    <h1><em>"Never mind."<br>"Drop it."</em></h1>
+    <p class="subtitle">Expressions for ending or dismissing a conversation — ranked by frustration</p>
+  </header>
+
+  <!-- Intro -->
+  <h2>What these expressions have in common</h2>
+  <div class="intro-box">
+    <p>All of the expressions on this page share one core meaning: <strong>stop talking about this</strong>. The speaker wants to close a topic, move past an issue, or signal that they don't want to continue a conversation.</p>
+    <p>But they are <em>not</em> interchangeable. The tone ranges from warm reassurance all the way to real aggression — and choosing the wrong one in the wrong moment can damage a relationship.</p>
+  </div>
+
+  <!-- Scale -->
+  <div class="scale-wrap">
+    <div class="scale-bar"></div>
+    <div class="scale-labels">
+      <span>Neutral / polite</span>
+      <span>Dismissive</span>
+      <span>Frustrated</span>
+      <span>Rude / aggressive</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── TIER 1 ── -->
+  <div class="tier-section t1">
+    <div class="tier-heading">
+      <div class="tier-badge">T1</div>
+      <span class="tier-title">Neutral / Polite</span>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Never mind"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">It doesn't matter / forget I said it / forget about it.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Very common and generally safe. Can feel slightly cold if said sharply, but normally just practical and mild.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Actually, never mind — I found it."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Don't worry about it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">It's not important / you don't need to concern yourself with this.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Often genuinely reassuring. Can drift into dismissiveness if the tone is flat or the speaker seems impatient.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Don't worry about it — it's not a big deal."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"It doesn't matter"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">The topic or issue has no real importance.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Neutral, but can signal mild resignation or disappointment — especially when said quietly.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"It doesn't matter now. The moment has passed."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Not now"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I can't or don't want to talk about this at this moment — but maybe later.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Softer than most expressions here because it <em>postpones</em> rather than ends the conversation. Often said by a parent to a child, or between colleagues who are busy.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Not now — I'm in a meeting. Can we talk later?"</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Let it go"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop thinking or worrying about something — usually from the past.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Usually said with some warmth; an advice-giving tone. More of a gentle suggestion than a command to stop talking.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"You need to let it go — it was years ago."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── TIER 2 ── -->
+  <div class="tier-section t2">
+    <div class="tier-heading">
+      <div class="tier-badge">T2</div>
+      <span class="tier-title">Mildly Dismissive / Impatient</span>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Forget it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Don't think about it any more / abandon the idea.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Genuinely ambiguous — can be generous (<em>"Forget it, I'll pay"</em>) or the beginning of frustration (<em>"Forget it, I'll do it myself"</em>). Tone of voice decides the meaning entirely.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Forget it — it's not worth arguing over."</div></span></div>
+      </div>
+    </details>
+
+    <div class="dual-note">
+      <p class="note-label">⚠ Dual use — same words, different meaning</p>
+      <p><em>"Forget it"</em> is unusual because it can appear at <strong>Tier 2 and Tier 3</strong> depending entirely on tone. A generous <em>"Forget it, I'll cover the bill"</em> is warm and kind. A frustrated <em>"Forget it — I should never have brought it up"</em> signals the speaker feels unheard and is giving up. Listen for the sigh.</p>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Leave it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop dealing with or discussing this.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Slightly more commanding than <em>never mind</em>. Common in British English. Often signals mild irritation — the topic has already come up once too often.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Just leave it, okay? I don't want to talk about it."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Move on"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop dwelling on this topic and go forward.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Common in meetings or group discussions. Can feel brusque if said while someone is still mid-sentence. More professional than personal in register.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Let's move on — we've been on this point for twenty minutes."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── TIER 3 ── -->
+  <div class="tier-section t3">
+    <div class="tier-heading">
+      <div class="tier-badge">T3</div>
+      <span class="tier-title">Clearly Dismissive / Frustrated</span>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Drop it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop raising this topic — immediately.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Firm and direct. The speaker has almost certainly heard this topic more than once. Signals real irritation. Softened slightly by <em>"can you just drop it?"</em> but still strong.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I said I don't want to talk about it. Drop it."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Just drop it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">The same as <em>drop it</em>, but sharper.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">The word <em>just</em> implies the other person has <em>already</em> been asked to stop. It signals this is not the first time — the speaker is running out of patience.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Can you just drop it? Please?"</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"That's enough"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am telling you to stop — right now.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Can range from parental/firm to quite aggressive depending on context and volume. A teacher saying it to a class sits at Tier 2; a partner saying it in an argument sits at Tier 4.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"That's enough. I don't want to hear another word about it."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"We're done talking about this"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">This conversation is over — I am declaring it closed.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Declarative and final. Sounds controlling because the speaker decides unilaterally that the conversation has ended. Common in tense domestic or workplace arguments.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"We're done talking about this. End of discussion."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I don't want to hear it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am refusing to listen before the other person has even started.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Pre-emptive dismissal — shuts the other person down before they speak. This makes it particularly cutting. Often used when someone has heard too many excuses.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I don't want to hear it. Just fix the problem."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── TIER 4 ── -->
+  <div class="tier-section t4">
+    <div class="tier-heading">
+      <div class="tier-badge">T4</div>
+      <span class="tier-title">Rude / Aggressive</span>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Give it a rest"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop bringing this up — you've said it far too many times.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Rude. Implies the other person is repetitive and tiresome. Common in British English. Often accompanied by an exasperated tone.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Give it a rest, will you? You've been complaining for an hour."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Get over it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop being upset / stop dwelling on this — it's not that serious.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Dismissive and often hurtful. It denies the other person's feelings and implies they are overreacting. Quite rude in any emotional situation — even when said lightly.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"It happened weeks ago. Get over it."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"End of" / "End of story"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">There is nothing more to discuss — my decision or statement is final.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">British English. Very final and brooking no argument. Can sound parental or authoritarian. Often follows a declaration the speaker is refusing to debate.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"You're not going, and that's that. End of story."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Just leave it, will you?" / "Leave it, yeah?"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">Stop — I am very close to losing patience.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Adding a tag question (<em>will you / yeah</em>) in an irritated tone is almost a warning rather than a genuine question. The speaker is signalling that the next response will be much angrier.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Just leave it, will you? I mean it."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Register note -->
+  <div class="register-note">
+    <p class="note-label">📌 Register &amp; context reminder</p>
+    <p>All of these expressions are <strong>spoken</strong> English. You will rarely see them in formal writing. The tier rankings above assume a <em>neutral</em> tone of voice — real emotion can push any expression up the scale. A whispered <em>"drop it"</em> at a dinner table can be more alarming than a shouted <em>"never mind."</em> Context, relationship, and tone always matter more than the words alone.</p>
+  </div>
+
+  <footer class="lesson-footer">
+    <span>Language Focus · Dismissive Expressions</span>
+    <span>Level: B1–B2</span>
+    <span>© English Learning Magazine</span>
+  </footer>
+
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = d.scrollTop / (d.scrollHeight - d.clientHeight);
+    document.getElementById('prog').style.width = (pct * 100) + '%';
+  });
+</script>
+</body>
+</html>

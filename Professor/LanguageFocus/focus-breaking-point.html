@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus: At the Breaking Point</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #f7f4f0;
+    --card:       #ffffff;
+    --ink:        #1a1614;
+    --muted:      #7a706a;
+    --rule:       #e0d8d0;
+    --purple:     #5c3d7a;
+    --purple-lt:  #ede5f5;
+    --amber:      #b5722a;
+    --shadow:     rgba(30,15,5,0.07);
+
+    /* group colours */
+    --g1: #3a6b9e;   --g1-lt: #eaf1f8;   --g1-rule: #c0d8ee;
+    --g2: #7a4f9e;   --g2-lt: #f2ecfb;   --g2-rule: #d8c8ee;
+    --g3: #2e7a5c;   --g3-lt: #e8f5ef;   --g3-rule: #b8ddd0;
+    --g4: #b5400a;   --g4-lt: #fdf0e8;   --g4-rule: #f0c8a8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  #prog {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: linear-gradient(to right, var(--g1), var(--g2), var(--g3), var(--g4));
+    z-index: 200;
+    transition: width 0.08s linear;
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* ── HEADER ── */
+  .lesson-header { margin-bottom: 2.5rem; }
+
+  .label-row {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pill {
+    background: var(--purple); color: #fff;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.2rem 0.7rem; border-radius: 999px;
+  }
+
+  .level-pill {
+    border: 1px solid var(--purple); color: var(--purple);
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.18rem 0.6rem; border-radius: 999px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.9rem, 5.5vw, 2.75rem);
+    font-weight: 700; line-height: 1.12;
+    margin-bottom: 0.4rem;
+  }
+
+  h1 em { color: var(--g4); font-style: italic; }
+
+  .subtitle {
+    color: var(--muted); font-size: 0.93rem; font-style: italic;
+  }
+
+  /* ── INTRO ── */
+  .intro-box {
+    background: var(--purple-lt);
+    border-left: 4px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 0.95rem 1.15rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.96rem; line-height: 1.75;
+  }
+
+  .axis-note {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    display: flex; gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .axis-item { flex: 1; min-width: 200px; }
+  .axis-label {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+  .axis-inward  .axis-label { color: var(--g3); }
+  .axis-outward .axis-label { color: var(--g1); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none; border-top: 1px solid var(--rule);
+    margin: 2rem 0;
+  }
+
+  /* ── GROUP HEADER ── */
+  .group-header {
+    display: flex; align-items: flex-start; gap: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .group-num {
+    width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: #fff;
+    flex-shrink: 0; margin-top: 0.1rem;
+  }
+
+  .g1 .group-num { background: var(--g1); }
+  .g2 .group-num { background: var(--g2); }
+  .g3 .group-num { background: var(--g3); }
+  .g4 .group-num { background: var(--g4); }
+
+  .group-title-wrap {}
+  .group-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    line-height: 1.25;
+  }
+  .g1 .group-title { color: var(--g1); }
+  .g2 .group-title { color: var(--g2); }
+  .g3 .group-title { color: var(--g3); }
+  .g4 .group-title { color: var(--g4); }
+
+  .group-subtitle {
+    font-size: 0.82rem; color: var(--muted);
+    font-style: italic; margin-top: 0.1rem;
+  }
+
+  /* ── EXPRESSION CARDS ── */
+  .expr-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--card);
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 1px 5px var(--shadow);
+    transition: box-shadow 0.15s;
+  }
+
+  .expr-card:hover { box-shadow: 0 3px 10px var(--shadow); }
+
+  details.expr-card > summary {
+    list-style: none;
+    padding: 0.72rem 1rem;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 0.5rem; user-select: none;
+  }
+  details.expr-card > summary::-webkit-details-marker { display: none; }
+
+  .expr-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1.05rem; font-weight: 700;
+    flex: 1;
+  }
+
+  .g1 .expr-name { color: var(--g1); }
+  .g2 .expr-name { color: var(--g2); }
+  .g3 .expr-name { color: var(--g3); }
+  .g4 .expr-name { color: var(--g4); }
+
+  .var-tag {
+    font-size: 0.68rem; font-weight: 600; font-style: normal;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--rule); color: var(--muted);
+    padding: 0.1rem 0.45rem; border-radius: 4px;
+    margin-left: 0.4rem; vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .chevron {
+    font-size: 0.75rem; color: var(--muted);
+    transition: transform 0.2s; flex-shrink: 0;
+  }
+
+  details[open] .chevron { transform: rotate(180deg); }
+
+  /* open state tinting */
+  .g1 details[open] { background: var(--g1-lt); border-color: var(--g1-rule); }
+  .g2 details[open] { background: var(--g2-lt); border-color: var(--g2-rule); }
+  .g3 details[open] { background: var(--g3-lt); border-color: var(--g3-rule); }
+  .g4 details[open] { background: var(--g4-lt); border-color: var(--g4-rule); }
+
+  .expr-body {
+    padding: 0 1rem 0.95rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.93rem; line-height: 1.72;
+  }
+
+  .row {
+    display: flex; gap: 0.6rem;
+    margin-top: 0.55rem; align-items: baseline;
+  }
+
+  .row-label {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted);
+    min-width: 4.5rem; flex-shrink: 0;
+    padding-top: 0.05rem;
+  }
+
+  .row-content { flex: 1; }
+
+  .example-line {
+    background: rgba(255,255,255,0.7);
+    border-left: 3px solid var(--rule);
+    padding: 0.28rem 0.65rem;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+
+  /* variant card (no disclosure) */
+  .variant-card {
+    border: 1px dashed var(--rule);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.5);
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.92rem;
+  }
+
+  .variant-card .expr-name {
+    display: block; margin-bottom: 0.25rem;
+    font-size: 1rem;
+  }
+
+  /* ── NOTES SECTION ── */
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 520px) {
+    .notes-grid { grid-template-columns: 1fr; }
+  }
+
+  .note-card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 0.8rem 0.95rem;
+    font-size: 0.88rem; line-height: 1.65;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+
+  .note-card .note-label {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.3rem; display: block;
+  }
+
+  .nc-colloc .note-label { color: var(--g2); }
+  .nc-register .note-label { color: var(--g1); }
+  .nc-bre .note-label { color: var(--g3); }
+  .nc-axis .note-label { color: var(--g4); }
+
+  /* ── FOOTER ── */
+  .lesson-footer {
+    margin-top: 3rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.8rem;
+    font-size: 0.77rem; color: var(--muted);
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.3rem;
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 1.5rem 1rem 4rem; }
+    h1 { font-size: 1.75rem; }
+    .axis-note { flex-direction: column; gap: 0.75rem; }
+  }
+
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--purple);
+    padding-left: 0.65rem;
+    border-left: 3px solid var(--amber);
+    margin-bottom: 0.75rem;
+  }
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="page">
+
+  <!-- Header -->
+  <header class="lesson-header">
+    <div class="label-row">
+      <span class="pill">Language Focus</span>
+      <span class="level-pill">B2–C1</span>
+    </div>
+    <h1><em>"I can't take it anymore."</em><br>Expressions for reaching your limit</h1>
+    <p class="subtitle">Exhaustion, frustration, and the breaking point — in everyday English</p>
+  </header>
+
+  <!-- Intro -->
+  <div class="intro-box">
+    <p>All of these expressions describe a person who has been pushed to their limit — a state mixing exhaustion, frustration, and the feeling that things simply cannot continue as they are. But they differ in important ways: some describe <strong>emotional collapse</strong>, others signal <strong>angry refusal</strong>, and others describe the <strong>exact moment the limit is crossed</strong>.</p>
+  </div>
+
+  <div class="axis-note">
+    <div class="axis-item axis-inward">
+      <div class="axis-label">⬇ Facing inward</div>
+      <div>Exhaustion, collapse, running out of resources — <em>burned out, running on empty, at my wit's end</em></div>
+    </div>
+    <div class="axis-item axis-outward">
+      <div class="axis-label">⬆ Facing outward</div>
+      <div>Anger, refusal, decision to act — <em>I've had enough, that's it, I'm done</em></div>
+    </div>
+  </div>
+
+  <!-- ── GROUP 1 ── -->
+  <div class="g1">
+    <div class="group-header">
+      <div class="group-num">1</div>
+      <div class="group-title-wrap">
+        <div class="group-title">"I can't continue like this"</div>
+        <div class="group-subtitle">The situation is unbearable and must stop</div>
+      </div>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I can't take it anymore"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">This situation has become too difficult, painful, or frustrating to endure.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Very common in everyday speech. Works for major crises and minor frustrations alike. Can be completely sincere or mildly dramatic — context decides.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"The noise from the construction is constant. I can't take it anymore."</div></span></div>
+      </div>
+    </details>
+
+    <div class="variant-card g1">
+      <span class="expr-name">"I can't take <em>this</em> anymore" <span class="var-tag">variant</span></span>
+      <span>Slightly more pointed — <em>this</em> refers to something specific and present, whereas <em>it</em> is more general and open.</span>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I've had enough"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I have reached the point where I refuse to tolerate any more.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Firm and decisive. Often signals that action will follow — a decision, a confrontation, a change. Less about despair, more about resolve.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I've had enough. I'm going to talk to the manager."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"That's it"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">This is the moment I stop tolerating the situation.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Short and explosive. Often the moment just before action. Can be said quietly — which is often more alarming — or loudly. Frequently followed by a declaration.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"That's it. I quit."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm done"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I have finished tolerating this / I am no longer willing to engage.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Modern and colloquial, very common in American English. Can refer to a situation, a relationship, or a person. Cold and final-sounding despite its brevity.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"You lied to me again. I'm done."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── GROUP 2 ── -->
+  <div class="g2">
+    <div class="group-header">
+      <div class="group-num">2</div>
+      <div class="group-title-wrap">
+        <div class="group-title">Idioms: rope, limit, edge, wall</div>
+        <div class="group-subtitle">Reaching a boundary — there is nothing left</div>
+      </div>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm at the end of my rope" <span class="var-tag">AmE</span> / "…tether" <span class="var-tag">BrE</span></span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I have used up all my patience, resources, or ability to cope.</span></div>
+        <div class="row"><span class="row-label">Image</span><span class="row-content">An animal tied to a post — it can move freely until the rope runs out. At the end, there is nowhere left to go. Formal enough for writing, natural enough for speech.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I've been dealing with this for months. I'm at the end of my rope."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I've reached my limit"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I cannot go any further — I have hit the maximum I can endure.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">More measured and direct than the rope idioms. Sounds considered rather than explosive. Works well in professional contexts where open emotional language feels uncomfortable.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I've reached my limit with this project. Something needs to change."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm at my wit's end"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I have run out of ideas and don't know what to do next.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Subtly different from the others — the emphasis is on <em>not knowing what to do</em>, not purely on frustration. Often describes a parent with a difficult child, or someone facing an unsolvable problem.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I've tried everything. I'm at my wit's end."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm on the edge"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am close to losing control emotionally — about to break down or explode.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Can refer to tears, anger, or a full breakdown. Suggests the person is barely holding it together. Often a quiet warning to someone who is pushing too hard.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"Please don't push me right now. I'm on the edge."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── GROUP 3 ── -->
+  <div class="g3">
+    <div class="group-header">
+      <div class="group-num">3</div>
+      <div class="group-title-wrap">
+        <div class="group-title">Physical &amp; mental exhaustion</div>
+        <div class="group-subtitle">The body or mind has nothing left</div>
+      </div>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm burned out"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am exhausted from sustained stress, overwork, or emotional demands.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Originally a workplace term, now used broadly. Implies deeper, longer-term depletion than simple tiredness. Common in discussions of mental health. Collocates strongly with <em>completely, totally, utterly</em>.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I haven't had a day off in three months. I'm completely burned out."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I'm running on empty"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am continuing to function but have no energy or resources left.</span></div>
+        <div class="row"><span class="row-label">Image</span><span class="row-content">A car with no fuel — still moving, but barely. Suggests the person is going through the motions. Sympathetic in tone; not angry like the Group 1 expressions.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I haven't slept properly in a week. I'm running on empty."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I can't go on like this"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">The current situation is unsustainable — I cannot continue this way.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">More serious and emotional than most expressions here. Suggests real distress rather than frustration. Can be said about a job, a relationship, or a health situation. Use carefully — it carries weight.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I'm exhausted and I'm not getting anywhere. I can't go on like this."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── GROUP 4 ── -->
+  <div class="g4">
+    <div class="group-header">
+      <div class="group-num">4</div>
+      <div class="group-title-wrap">
+        <div class="group-title">The breaking point itself</div>
+        <div class="group-subtitle">The moment the limit is crossed</div>
+      </div>
+    </div>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I've hit a wall"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I have suddenly stopped making progress — I cannot go any further.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Originally from sport — marathon runners describe the sudden exhaustion at around 30 km. Now used widely for work, creativity, and emotional endurance. Describes the moment of stopping, not an ongoing state.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I was fine all morning, then I just hit a wall."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"I've reached breaking point" <span class="var-tag">BrE</span> / "I'm at my breaking point" <span class="var-tag">AmE</span></span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">I am at the exact moment where I can no longer cope — something is about to give.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Serious and urgent. Often used to explain a dramatic reaction or to warn someone that the situation is critical. Carries more gravity than most expressions on this page.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I've reached breaking point. I need help."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"That's the last straw"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">This last thing — added to everything else — is what finally makes the situation unbearable.</span></div>
+        <div class="row"><span class="row-label">Image</span><span class="row-content">From the proverb <em>"the straw that broke the camel's back"</em> — a camel can carry a heavy load, but eventually one last straw tips the balance. The breaking thing itself may be small; what matters is the accumulation.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">Always refers to the <em>last in a series</em> of problems, not a single event in isolation. The speaker is making clear that patience has been building for a long time before this moment.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"My boss yelled at me again today. That was the last straw — I quit."</div></span></div>
+      </div>
+    </details>
+
+    <details class="expr-card">
+      <summary><span class="expr-name">"Something's got to give"</span><span class="chevron">▼</span></summary>
+      <div class="expr-body">
+        <div class="row"><span class="row-label">Meaning</span><span class="row-content">The current situation is unsustainable — one of the pressures must change or collapse.</span></div>
+        <div class="row"><span class="row-label">Context</span><span class="row-content">A slightly different angle from the others: the speaker is observing that the <em>situation itself</em> cannot continue, rather than expressing personal collapse. Thoughtful rather than explosive. Often said about workload, relationships, or systems.</span></div>
+        <div class="row"><span class="row-label">Example</span><span class="row-content"><div class="example-line">"I'm working sixteen-hour days and barely seeing my family. Something's got to give."</div></span></div>
+      </div>
+    </details>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Notes -->
+  <h2>Language notes</h2>
+  <div class="notes-grid">
+    <div class="note-card nc-colloc">
+      <span class="note-label">📌 Collocation</span>
+      <p><em>Burned out</em> collocates naturally with <em>completely, totally, utterly</em>. The rope and tether idioms don't take degree adverbs as easily — you wouldn't normally say <em>"I'm very at the end of my rope."</em></p>
+    </div>
+    <div class="note-card nc-register">
+      <span class="note-label">🎚 Register</span>
+      <p><em>"I'm done"</em> and <em>"That's it"</em> are very informal. <em>"I've reached my limit"</em> and <em>"I've reached breaking point"</em> are neutral enough for semi-formal writing or professional conversations.</p>
+    </div>
+    <div class="note-card nc-bre">
+      <span class="note-label">🇬🇧 / 🇺🇸 BrE vs AmE</span>
+      <p><em>Tether</em> is strongly British; <em>rope</em> is strongly American. <em>"I've reached breaking point"</em> is more common in British English; <em>"I'm at my breaking point"</em> in American English. Both are understood globally.</p>
+    </div>
+    <div class="note-card nc-axis">
+      <span class="note-label">↔ Inward vs Outward</span>
+      <p>Some expressions face <em>inward</em> — exhaustion, collapse (<em>burned out, running on empty</em>). Others face <em>outward</em> — anger, refusal (<em>I've had enough, that's it</em>). The same situation can produce either depending on personality.</p>
+    </div>
+  </div>
+
+  <footer class="lesson-footer">
+    <span>Language Focus · Expressions of Exhaustion &amp; Frustration</span>
+    <span>Level: B2–C1</span>
+    <span>© English Learning Magazine</span>
+  </footer>
+
+</div>
+<script>
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('prog').style.width =
+      (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>
