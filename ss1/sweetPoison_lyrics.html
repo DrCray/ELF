@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweet Poison – Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── mtv_dark_purple theme ── */
+  :root {
+    --bg: #1a1228;
+    --surface: #241a38;
+    --surface2: #2d2145;
+    --border: #3d2f5e;
+    --text: #ede8f5;
+    --text-muted: #9e8fc0;
+    --accent: #c084fc;
+    --accent2: #a78bfa;
+    --chorus-bg: #1f1630;
+    --chorus-border: #c084fc;
+    --chorus-text: #f3e8ff;
+  }
+
+  /* episode-tag gold → soft lavender */
+  .episode-tag {
+    color: #d8b4fe;
+  }
+
+  /* ── Base styles (from music_links_lyrics.html) ── */
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: #c8c2b8;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #1e1c17;
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Player */
+  .player-wrap {
+    margin-bottom: 1.25rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #2a1f40;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #1a1228;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-fill.p22 { width: 22%; }
+  .progress-fill.p35 { width: 35%; }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .progress-dot.p22 { left: 22%; }
+  .progress-dot.p35 { left: 35%; }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* players section label */
+  .players-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    animation: fadeUp 0.6s 0.25s ease both;
+  }
+
+  .players-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .players-section {
+    margin-bottom: 2.5rem;
+  }
+
+  /* Lyrics */
+  .lyrics-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .lyrics-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lyrics-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Verse block */
+  .verse {
+    padding: 0.25rem 0 1rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: .5rem;
+  }
+
+  .verse:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .lyric-line {
+    font-size: 0.92rem;
+    color: #cdc7be;
+    line-height: 1.65;
+  }
+
+  .lyric-line-spacer {
+    line-height: .80;
+    visibility: hidden;
+  }
+
+  /* Chorus block */
+  .chorus {
+    background: var(--chorus-bg);
+    padding: 1rem 0rem;
+    margin-bottom: .5rem;
+    position: relative;
+  }
+
+  .chorus-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chorus-label::before {
+    content: '♪';
+    font-size: 0.85em;
+  }
+
+  .chorus .lyric-line {
+    color: var(--chorus-text);
+    font-style: italic;
+  }
+
+  .verse::before,
+  .chorus::before {
+    content: '\266B';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Music audioVid</p>
+    <h1>Sweet Poison</h1>
+    <h2>Linka Kulla</h2>
+    <p class="episode-tag">Song &amp; Lyrics</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">For the article Murderer Fiancé — a dark, gripping ballad told from inside the nightmare. She sees through the smile, the velvet promises, the locked door. This is the voice of the one who got out.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="Unit11MurdererFianceCore.html" class="article" target="_blank">Read the Article</a>
+    <a href="murdererFianceLyricsScramble.html" class="quiz">Take the Quiz</a>
+  </nav>
+
+  <!-- Players -->
+  <div class="players-section">
+    <div class="players-label">Music Videos</div>
+
+    <div class="player-wrap">
+      <a href="https://youtu.be/Dy8hw5Pta8M" target="_blank" rel="noopener">
+        <div class="player">
+          <div class="play-btn"></div>
+          <div class="player-info">
+            <div class="player-title">Sweet Poison (MV1) — Linka Kulla</div>
+            <div class="progress-track">
+              <div class="progress-fill p22"></div>
+              <div class="progress-dot p22"></div>
+            </div>
+            <div class="player-times">
+              <span>0:00</span>
+              <span>3:47</span>
+            </div>
+          </div>
+          <span class="ext-icon">↗</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="player-wrap">
+      <a href="https://youtu.be/o-EKYX51Ugg" target="_blank" rel="noopener">
+        <div class="player">
+          <div class="play-btn"></div>
+          <div class="player-info">
+            <div class="player-title">Sweet Poison (MV2) — Linka Kulla</div>
+            <div class="progress-track">
+              <div class="progress-fill p35"></div>
+              <div class="progress-dot p35"></div>
+            </div>
+            <div class="player-times">
+              <span>0:00</span>
+              <span>3:47</span>
+            </div>
+          </div>
+          <span class="ext-icon">↗</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Lyrics -->
+  <section class="lyrics-section">
+    <div class="lyrics-label">Lyrics</div>
+    <div class="lyrics">
+
+      <div class="verse">
+        <p class="lyric-line">In a quiet town where the girls all fade</p>
+        <p class="lyric-line">No goodbye, just a trail that breaks</p>
+        <p class="lyric-line">Whispers hanging in the midnight air</p>
+        <p class="lyric-line">But nobody sees, no one knows where</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">He wore a smile like a perfect lie</p>
+        <p class="lyric-line">Gold and promises, cold inside</p>
+        <p class="lyric-line">Said "I love you" with a velvet tongue</p>
+        <p class="lyric-line">But something in me said run, run, run</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Empty halls and a silent room</p>
+        <p class="lyric-line">Moving slowly through the gloom</p>
+        <p class="lyric-line">Breathing in there's a foul smell</p>
+        <p class="lyric-line">Walking in this lair from hell</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">You're the poison, you're the rot in the bone</p>
+        <p class="lyric-line">Sweet on the outside, deadly alone</p>
+        <p class="lyric-line">You stalk them down, then snatch your prey</p>
+        <p class="lyric-line">Forced to your lair, for their final day</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">I see the truth, I won't be your prize</p>
+        <p class="lyric-line">I hear their screams behind your eyes</p>
+        <p class="lyric-line">You tried to bury me just like them</p>
+        <p class="lyric-line">But I escaped your lair's den</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">In the kitchen, there's a blood-red dress</p>
+        <p class="lyric-line">A broken shoe, place wreaks of death</p>
+        <p class="lyric-line">Footsteps coming from outside,</p>
+        <p class="lyric-line">Voices nearing, I run and hide</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">Minions dragging her inside,</p>
+        <p class="lyric-line">Drunken monsters, no place to hide</p>
+        <p class="lyric-line">I held my breath in the darkest night</p>
+        <p class="lyric-line">While evil slept in plain sight</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Ticking time, don't make a sound</p>
+        <p class="lyric-line">A scream is rising, push it down</p>
+        <p class="lyric-line">If I move, I disappear</p>
+        <p class="lyric-line">If I stay, I die right here</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">You're the poison, you're the rot in the bone</p>
+        <p class="lyric-line">Sweet on the outside, deadly alone</p>
+        <p class="lyric-line">You stalk them down, then snatch your prey</p>
+        <p class="lyric-line">Forced to your lair, for their final day</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">I see the truth, I won't be your prize</p>
+        <p class="lyric-line">I hear their screams behind your eyes</p>
+        <p class="lyric-line">You tried to bury me just like them</p>
+        <p class="lyric-line">But I escaped your lair's den</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">Bones in the garden</p>
+        <p class="lyric-line">Bones on the ground</p>
+        <p class="lyric-line">All of your secrets</p>
+        <p class="lyric-line">Have now been found</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">You thought just like them</p>
+        <p class="lyric-line">My life you'd drown</p>
+        <p class="lyric-line">But I'm the witness</p>
+        <p class="lyric-line">I'll bring you down</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">You're the monster, now the town's awake</p>
+        <p class="lyric-line">Fire and fury, your walls will break</p>
+        <p class="lyric-line">No more silence, no more disguise</p>
+        <p class="lyric-line">You've been exposed for what's inside</p>
+        <p class="lyric-line-spacer">~</p>
+        <p class="lyric-line">They're coming for you, feel the ground shake</p>
+        <p class="lyric-line">This is the end of your mistake</p>
+        <p class="lyric-line">You tried to bury them underneath</p>
+        <p class="lyric-line">And now you're under six feet deep</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories &nbsp;·&nbsp; Sweet Poison — Linka Kulla</div>
+
+</div>
+</body>
+</html>
