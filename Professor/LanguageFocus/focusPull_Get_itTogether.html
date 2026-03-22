@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Mini‑lesson · pull / get it together</title>
+  <style>
+    /* MOBILE-FIRST RESET & BASE */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f4f7fb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 12px 40px;
+      line-height: 1.5;
+      color: #1e2b37;
+    }
+
+    /* main card – fits any mobile screen, expands on tablet/desktop */
+    .lesson-card {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 36px 36px 32px 32px;
+      box-shadow: 0 10px 25px -8px rgba(0,20,30,0.15), 0 4px 8px rgba(0,0,0,0.03);
+      overflow: hidden;
+      padding: 28px 22px 32px;
+      transition: all 0.2s;
+      border: 1px solid #ffffff50;
+      backdrop-filter: blur(2px);
+    }
+
+    /* headings */
+    h1 {
+      font-size: 2.2rem;        /* ≈ 35px on 16px base – big but readable */
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0d2b3e;
+      margin-bottom: 0.2rem;
+      padding-bottom: 6px;
+      border-bottom: 4px solid #ffeec2;
+      display: inline-block;
+      /* keeps border only under text */
+    }
+
+    .sub-header {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #3a5468;
+      margin-top: 8px;
+      margin-bottom: 28px;
+      background: #eaf0f6;
+      padding: 12px 16px;
+      border-radius: 44px;
+      display: inline-block;
+      width: auto;
+      backdrop-ilter: blur(4px);
+    }
+
+    /* sections */
+    .phrase-block {
+      margin-bottom: 32px;
+      border-radius: 28px;
+      background: #fafdff;
+      padding: 18px 18px 22px 18px;
+      transition: background 0.2s;
+      border: 1px solid #e3eef9;
+    }
+
+    .phrase-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .phrase-head h2 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #124263;
+      line-height: 1.2;
+      background: #e9f2fa;
+      padding: 4px 18px 6px 18px;
+      border-radius: 60px;
+      letter-spacing: -0.01em;
+      box-shadow: inset 0 -1px 0 #cbdae7;
+    }
+
+    .example-box {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 18px 18px 14px 18px;
+      margin: 16px 0 12px;
+      border: 1px solid #cde1ed;
+      box-shadow: 0 4px 10px -4px #d6e2ec;
+    }
+
+    .example-box p {
+      font-size: 1.12rem;
+      margin-bottom: 10px;
+      font-weight: 450;
+      color: #17445f;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .example-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      min-width: 34px;
+      text-align: center;
+    }
+
+    .emphasis-note {
+      background: #fdefcb;
+      border-radius: 24px;
+      padding: 16px 22px;
+      margin: 28px 0 16px;
+      border-left: 6px solid #e0a82b;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #2f3e2b;
+    }
+
+    .emphasis-note strong {
+      font-size: 1.3rem;
+      display: inline-block;
+      margin-right: 4px;
+      color: #864c1f;
+    }
+
+    .special-note {
+      background: #dde9f5;
+      border-radius: 28px;
+      padding: 22px 22px 20px;
+      margin: 36px 0 16px;
+    }
+
+    .special-note h3 {
+      font-size: 1.8rem;
+      font-weight: 620;
+      color: #083452;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .small-print {
+      font-size: 0.95rem;
+      color: #2c4a62;
+      background: #ffffffca;
+      padding: 10px 16px;
+      border-radius: 40px;
+      margin-top: 20px;
+      border: 1px dashed #8bb3cc;
+      text-align: center;
+    }
+
+    hr {
+      border: 1px solid #cbdae7;
+      margin: 28px 0 12px;
+      opacity: 0.4;
+      border-radius: 4px;
+    }
+
+    /* subtle hover / active for readability */
+    .phrase-block:hover, .special-note:hover {
+      background: #f3faff;
+      border-color: #b5d1e2;
+      transition: 0.15s;
+    }
+
+    /* responsive adjustments: even on tiny screens, text stays comfortable */
+    @media (max-width: 380px) {
+      h1 {
+        font-size: 1.9rem;
+      }
+      .phrase-head h2 {
+        font-size: 1.6rem;
+      }
+      .lesson-card {
+        padding: 20px 16px;
+      }
+      .emphasis-note {
+        font-size: 1.1rem;
+        padding: 14px 18px;
+      }
+    }
+
+    /* larger screens (tablets) – keep centered, max width 600px */
+    @media (min-width: 600px) {
+      body {
+        justify-content: center;
+        padding: 24px;
+      }
+      .lesson-card {
+        padding: 36px 32px;
+      }
+      .phrase-head h2 {
+        font-size: 2.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="lesson-card">
+    <h1>✨ pull it together <span style="font-weight:300; font-size:0.9em; color:#54728c;"> vs. </span> get it together</h1>
+    <div class="sub-header">two essential phrasal verbs for composure & organisation</div>
+
+    <!-- main mini‑lesson content: pull it together -->
+    <div class="phrase-block">
+      <div class="phrase-head">
+        <h2>💪 pull it together</h2>
+      </div>
+      <div class="example-box">
+        <p><span class="example-icon">🗣️</span> <em>“I know you’re nervous, but you need to <strong>pull it together</strong> before the presentation.”</em></p>
+        <p><span class="example-icon">🧘</span> <strong>meaning :</strong> to calm down, collect your emotions, and regain control — especially after being upset, panicked, or unfocused.</p>
+      </div>
+      <p style="padding:0 8px; color:#1d3d57;">🔹 Often used when someone is emotional or stressed and needs to <strong>regain composure</strong>.</p>
+    </div>
+<!-- More examples: PULL IT TOGETHER -->
+<div style="margin-top: 30px; padding: 16px 18px 20px; background: #f2f0fe; border-radius: 32px;">
+  <h3 style="font-size: 1.7rem; font-weight: 600; color: #2b2b5c; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+    <span>📌</span> more examples · pull it together
+  </h3>
+  <div style="display: flex; flex-direction: column; gap: 14px;">
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #cfdbea;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">🎭 <strong>after a shock</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3445;"><em>“She was trembling after the news, but she took three deep breaths and <strong>pulled it together</strong>.”</em></p>
+    </div>
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #cfdbea;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">🎤 <strong>stage fright</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3445;"><em>“I almost forgot my lines, but I managed to <strong>pull it together</strong> and finish the scene.”</em></p>
+    </div>
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #cfdbea;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">😤 <strong>anger / frustration</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3445;"><em>“He was about to yell at the referee, but he <strong>pulled it together</strong> and walked away.”</em></p>
+    </div>
+  </div>
+</div>
+
+
+    <!-- get it together block -->
+    <div class="phrase-block">
+      <div class="phrase-head">
+        <h2>⚙️ get it together</h2>
+      </div>
+      <div class="example-box">
+        <p><span class="example-icon">🗣️</span> <em>“He keeps missing deadlines — he really needs to <strong>get it together</strong> at work.”</em></p>
+        <p><span class="example-icon">📋</span> <strong>meaning :</strong> to organise yourself, become more efficient, or stop messing up. It’s broader: it can mean sort your life out, make a plan, or fix disorganisation.</p>
+      </div>
+      <p style="padding:0 8px; color:#1d3d57;">🔹 Often focuses on <strong>organisation, responsibility, and long-term behaviour</strong> (not just emotions).</p>
+    </div>
+<!-- More examples: GET IT TOGETHER -->
+<div style="margin-top: 30px; padding: 16px 18px 20px; background: #e1f2ed; border-radius: 32px;">
+  <h3 style="font-size: 1.7rem; font-weight: 600; color: #195442; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+    <span>📌</span> more examples · get it together
+  </h3>
+  <div style="display: flex; flex-direction: column; gap: 14px;">
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #b7d3cb;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">📚 <strong>study habits</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3a32;"><em>“If you want to pass the exam, you really need to <strong>get it together</strong> and study every day.”</em></p>
+    </div>
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #b7d3cb;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">💼 <strong>work / organisation</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3a32;"><em>“Our team keeps missing deadlines — we have to <strong>get it together</strong> and make a schedule.”</em></p>
+    </div>
+    <div style="background: white; border-radius: 26px; padding: 18px 20px; box-shadow: 0 2px 6px #b7d3cb;">
+      <p style="font-size: 1.2rem; margin-bottom: 6px;">🧹 <strong>life / chores</strong></p>
+      <p style="font-size: 1.1rem; color: #1e3a32;"><em>“My apartment is a mess, my bills are late — I need to <strong>get it together</strong>.”</em></p>
+    </div>
+  </div>
+</div>
+    <!-- key comparison note with nuance -->
+    <div class="emphasis-note">
+      <strong>🎯 nuance snapshot</strong><br>
+      • <strong>pull it together</strong> = regain emotional control (short term, often in the moment).<br>
+      • <strong>get it together</strong> = become organised / stop being chaotic (habits, projects, life).
+    </div>
+
+    <!-- SPECIAL NOTE: PULL YOURSELF TOGETHER (explicit requirement) -->
+    <div class="special-note">
+      <h3>🧩 “pull yourself together”</h3>
+      <div style="background: white; border-radius: 24px; padding: 18px; margin: 10px 0 8px; border-left: 5px solid #1d5b8e;">
+        <p style="font-size:1.25rem; margin-bottom:12px;"><i>“After the argument, she took a moment to <strong>pull herself together</strong> before going inside.”</i></p>
+        <p style="font-size:1.1rem;"><span style="font-weight:600;">✅ exactly the same as “pull it together”</span> — but the reflexive form <strong>“pull <em>yourself</em> together”</strong> is extremely common. It emphasises that you are the one collecting your own emotions. You’ll often hear:</p>
+        <ul style="margin: 16px 0 6px 28px; font-size:1.1rem;">
+          <li><em>“Pull yourself together!”</em> (command, firm but caring)</li>
+          <li><em>“I need to pull myself together.”</em> (internal realisation)</li>
+        </ul>
+      </div>
+      <p style="margin-top:16px; background:#ffffffb8; border-radius:30px; padding:10px 18px; font-size:1.05rem;">
+        ⭐ <strong>key point:</strong> “pull it together” and “pull yourself together” are interchangeable – the reflexive just makes the subject explicit.
+      </p>
+    </div>
+
+    <!-- extra comparison summary / examples -->
+    <hr>
+    <div style="margin: 14px 0 6px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+      <div style="flex:1 1 200px; background:#ecf3f9; border-radius: 24px; padding: 16px;">
+        <div style="font-size: 1.8rem; margin-bottom: 2px;">😭 → 🙂</div>
+        <h4 style="color:#14394f;">pull it together</h4>
+        <p style="font-size:1rem;">emotional recovery / stop crying, panicking, shaking. Use in stressful moments.</p>
+      </div>
+      <div style="flex:1 1 200px; background:#ecf3f9; border-radius: 24px; padding: 16px;">
+        <div style="font-size: 1.8rem; margin-bottom: 2px;">📂 → ✅</div>
+        <h4 style="color:#14394f;">get it together</h4>
+        <p style="font-size:1rem;">sort out your mess, be on time, focus on tasks, stop being scatterbrained.</p>
+      </div>
+    </div>
+
+    <!-- mini summary with common situations -->
+    <div class="small-print">
+      💬 “I’m a mess today… I need to <strong>get it together</strong> and finish this report.”<br>
+      “Just breathe and <strong>pull yourself together</strong> — you’ve got this!”
+    </div>
+
+    <!-- subtle footer / mnemonic -->
+    <p style="text-align: right; font-size:0.95rem; margin-top: 28px; color:#607e96; border-top: 1px dashed #aac3d5; padding-top: 16px;">
+      mini‑lesson · mobile friendly · 🇺🇸 everyday English
+    </p>
+  </div>
+</body>
+</html>

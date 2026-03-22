@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Lessons: Give Notice & Noted</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 100%;
+            margin: 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+        .lesson {
+            background: white;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .lesson h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .meaning {
+            font-style: italic;
+            background: #e8f4f8;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        .examples {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-left: 4px solid #27ae60;
+            margin-bottom: 1rem;
+        }
+        .exercise {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .quiz-options {
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .quiz-option {
+            background: white;
+            padding: 0.75rem;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+        .quiz-option.correct {
+            border-color: #27ae60;
+            background: #d4edda;
+        }
+        .quiz-option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            .quiz-options {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .quiz-option {
+                flex: 1 1 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>English Idioms Mini-Lessons<br><small>Give Notice & Noted (B2-C1 Level)</small></h1>
+
+    <div class="lesson">
+        <h2>1. Give Notice</h2>
+        <div class="meaning">
+            To formally inform your employer that you are resigning from your job, usually with advance warning (e.g., two weeks' notice).
+        </div>
+        <div class="examples">
+            <strong>Examples:</strong>
+            <ul>
+                <li>She gave her two weeks' notice yesterday and starts her new job next month.</li>
+                <li>I'll give notice at the end of the month if they don't improve my working conditions.</li>
+            </ul>
+        </div>
+        <div class="exercise">
+            <p><strong>Quick Quiz:</strong> What does "give notice" mean in a work context?</p>
+            <div class="quiz-options">
+                <div class="quiz-option" data-correct="false">To warn about a problem</div>
+                <div class="quiz-option" data-correct="true">To resign from a job</div>
+                <div class="quiz-option" data-correct="false">To start a new job</div>
+                <div class="quiz-option" data-correct="false">To give a presentation</div>
+            </div>
+            <button onclick="checkQuiz(this.parentElement)">Check Answer</button>
+            <p class="feedback" style="margin-top:1rem;"></p>
+        </div>
+    </div>
+
+    <div class="lesson">
+        <h2>2. Noted</h2>
+        <div class="meaning">
+            A concise way to say "I understand" or "got it" in professional or casual conversations.
+        </div>
+        <div class="examples">
+            <strong>Examples:</strong>
+            <ul>
+                <li>Boss: Meeting at 3 PM. <br> Employee: Noted.</li>
+                <li>Friend: The party starts at 8. <br> You: Noted, see you then!</li>
+            </ul>
+        </div>
+        <div class="exercise">
+            <p><strong>Quick Quiz:</strong> How would you reply to "Deadline is Friday" using "noted"?</p>
+            <div class="quiz-options">
+                <div class="quiz-option" data-correct="true">Noted.</div>
+                <div class="quiz-option" data-correct="false">I don't agree.</div>
+                <div class="quiz-option" data-correct="false">Not possible.</div>
+                <div class="quiz-option" data-correct="false">What deadline?</div>
+            </div>
+            <button onclick="checkQuiz(this.parentElement)">Check Answer</button>
+            <p class="feedback" style="margin-top:1rem;"></p>
+        </div>
+    </div>
+
+    <script>
+        function checkQuiz(exercise) {
+            const options = exercise.querySelectorAll('.quiz-option');
+            const feedback = exercise.querySelector('.feedback');
+            let correctCount = 0;
+            options.forEach(opt => {
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                    correctCount++;
+                } else {
+                    opt.classList.add('incorrect');
+                }
+            });
+            feedback.textContent = correctCount === 1 ? 'Correct! 👍 "Give notice" means to resign professionally.' :
+                                   correctCount === 2 ? 'Correct! 👍 "Noted" is a quick acknowledgment.' :
+                                   'Try again!';
+            feedback.style.color = correctCount === options.length ? '#28a745' : '#dc3545';
+        }
+    </script>
+</body>
+</html>
