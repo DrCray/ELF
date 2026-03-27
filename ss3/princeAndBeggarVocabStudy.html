@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Lesson – Prince and Beggar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&amp;family=DM+Sans:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #f5f0e8;
+    --card-bg:   #fffdf7;
+    --border:    #e0d8c8;
+    --text:      #2c2c2c;
+    --subtle:    #6b6560;
+    --context-bg:#f0ece2;
+
+    --c-noun:    #6b21a8;
+    --c-verb:    #1d4ed8;
+    --c-adj:     #c2410c;
+    --c-adv:     #92400e;
+    --c-idiom:   #166534;
+    --c-colloc:  #be123c;
+
+    --accent:    #7c3aed;
+    --gold:      #b8860b;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    padding: 2rem 1rem 3rem;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .page-header p {
+    font-size: 0.88rem;
+    color: var(--subtle);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.7rem;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .legend-item {
+    font-size: 0.78rem;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .legend-item.noun   { color: var(--c-noun);  }
+  .legend-item.verb   { color: var(--c-verb);  }
+  .legend-item.adj    { color: var(--c-adj);   }
+  .legend-item.adv    { color: var(--c-adv);   }
+  .legend-item.idiom  { color: var(--c-idiom); }
+  .legend-item.colloc { color: var(--c-colloc);}
+
+  /* ── Cards ── */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.4rem 1.6rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  .card-number {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  /* ── Headword line ── */
+  .headword {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .headword strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .pos {
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+  }
+
+  .pos.noun   { color: var(--c-noun);  }
+  .pos.verb   { color: var(--c-verb);  }
+  .pos.adj    { color: var(--c-adj);   }
+  .pos.adv    { color: var(--c-adv);   }
+  .pos.idiom  { color: var(--c-idiom); }
+  .pos.colloc { color: var(--c-colloc);}
+
+  /* ── Definition ── */
+  .definition {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.9rem;
+    color: var(--text);
+  }
+
+  /* ── Note box ── */
+  .note {
+    background: #fdf6e3;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #5a4a1e;
+    margin-bottom: 1rem;
+  }
+
+  .note strong { font-weight: 600; }
+
+  /* ── In context ── */
+  .context-block {
+    background: var(--context-bg);
+    border-radius: 7px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .context-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 0.3rem;
+  }
+
+  .context-block p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* ── Examples ── */
+  .examples-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    margin-bottom: 0.55rem;
+  }
+
+  .example-item {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .example-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dialog-line {
+    display: block;
+    padding-left: 0.3rem;
+  }
+
+  .speaker {
+    font-weight: 500;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body contenteditable="false" style="padding: 30px 30px 120px; font-size: 16px; min-height: calc(100px + 100vh);">
+
+<div class="page-header">
+  <h1>Prince and Beggar</h1>
+  <p>Vocabulary &amp; Expressions — CEFR B1</p>
+</div>
+
+<div class="cards">
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="card-number">01</div>
+    <div class="headword">
+      <strong>look alike</strong>
+      <span class="pos verb">verb phrase</span>
+    </div>
+    <p class="definition">To appear very similar to another person; to have almost the same physical appearance.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Prince Daniel and Sam look alike — they could pass for the same person, which is what makes the life swap possible.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">My brother and I look so alike that people often think we're twins.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Do you think those two students look alike?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> A little — they have the same hair and height.</span>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="card-number">02</div>
+    <div class="headword">
+      <strong>switch places</strong>
+      <span class="pos verb">verb phrase</span>
+    </div>
+    <p class="definition">To exchange your position, role, or situation with another person.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel and Sam decide to switch places — Daniel lives on the streets and Sam lives in the castle.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The two drivers switched places at the rest stop so the other could drive.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> I've been driving for 2 hours straight.</span>
+      <span class="dialog-line"><span class="speaker">B:</span>&nbsp;Why don't you pull over and we'll switch placces. Let me drive for a while.&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="card-number">03</div>
+    <div class="headword">
+      <strong>privilege</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">A special advantage or benefit that not everyone has, often because of wealth, family, or social position.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel was born into privilege — he had servants, toys, and a horse — but this didn't make him happy.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">Growing up with access to good schools and healthcare is a privilege many people don't have.</div>
+    <div class="example-item">It's a privilege to study abroad — not every student gets that opportunity.</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="card-number">04</div>
+    <div class="headword">
+      <strong>drawbacks</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">The disadvantages or negative aspects of something.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Both boys discover that each lifestyle has its own drawbacks — even a life of luxury comes with problems.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">Living in the city center is convenient, but one of the drawbacks is the noise.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> What are the drawbacks of working from home?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Well, it's really hard to separate work from regular life, so it's easy to get distracted.</span>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <div class="card-number">05</div>
+    <div class="headword">
+      <strong>ultimately</strong>
+      <span class="pos adv">adverb</span>
+    </div>
+    <p class="definition">In the end; after everything else has been considered.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Ultimately, both boys stay friends and return to their own lives — the experience brought them together rather than apart.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">We looked at several apartments, but ultimately decided to stay where we were.</div>
+    <div class="example-item">The project had many problems, but ultimately the team finished it on time.</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="card-number">06</div>
+    <div class="headword">
+      <strong>swapping</strong>
+      <span class="pos verb">verb phrase</span>
+    </div>
+    <p class="definition">Exchanging one thing for another; trading places or items with someone.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>The boys enjoy swapping lives whenever they want a change — it becomes a fun and regular thing for them.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">We've been swapping books with our neighbors — it's a great way to read more and pay less.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Are you two swapping seats again?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Yes — she can see the board better from here.</span>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card">
+    <div class="card-number">07</div>
+    <div class="headword">
+      <strong>crave</strong>
+      <span class="pos verb">verb</span>
+    </div>
+    <p class="definition">To have a very strong desire for something.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>The boys swap lives whenever they crave change — when their current life starts to feel boring or limiting.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">After weeks at university, I was craving my mom's home cooking.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Why did you move to a new city?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> I craved something different — I needed a new start.</span>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card">
+    <div class="card-number">08</div>
+    <div class="headword">
+      <strong>at first glance</strong>
+      <span class="pos idiom">fixed expression</span>
+    </div>
+    <p class="definition">When you first look at something, before knowing all the details; based on an initial impression.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>At first glance, Daniel's life looks perfect — but once you look closer, you see he wasn't happy at all.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">At first glance, the exam looked easy, but there were some very tricky questions.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> What did you think of the new student?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> At first glance, she seemed quiet, but she's actually very funny.</span>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card">
+    <div class="card-number">09</div>
+    <div class="headword">
+      <strong>luxury</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">Great comfort and wealth; having expensive or very pleasant things that most people don't have.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel lived in luxury — servants, a horse, beautiful rooms — but still felt something was missing.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The hotel was pure luxury — there was a pool, a spa, and a private beach.</div>
+    <div class="example-item">Not everyone can afford the luxury of taking a month off work.</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card">
+    <div class="card-number">10</div>
+    <div class="headword">
+      <strong>the grass is greener</strong>
+      <span class="pos idiom">idiom</span>
+    </div>
+    <p class="definition">The belief that other people's situations are better than your own; always wanting what you don't have.</p>
+    <div class="note"><strong>Note:</strong> The full expression is <em>"the grass is always greener on the other side."</em> It is often shortened in everyday use.&nbsp;</div><div class="note">It's a play on how cows put their heads through fences to reach the "grass on the other side."</div>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Both boys thought the other's life would be better — a classic example of the "grass is greener" mindset.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">He left his stable job for a startup, thinking it would be better — but it failed. Goes to show that the grass is not always greener on the other side. [often used in this negative sense]</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span>&nbsp;He's never satisfied with the things he has.&nbsp;</span>
+      <span class="dialog-line"><span class="speaker">B:</span> I know — he always believes the grass is greener somewhere else.</span>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="card">
+    <div class="card-number">11</div>
+    <div class="headword">
+      <strong>break down</strong>
+      <span class="pos verb">phrasal verb</span>
+    </div>
+    <p class="definition">To examine or explain something by separating it into smaller, clearer parts.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>The podcasters say they'll "break down" each boy's life — meaning they'll look at the details carefully and explain each part.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The teacher broke down the grammar rule into three simple steps.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Can you break down the main points of the report for me?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Sure — there are basically three key ideas.</span>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="card">
+    <div class="card-number">12</div>
+    <div class="headword">
+      <strong>walking in each other's shoes</strong>
+      <span class="pos idiom">idiom</span>
+    </div>
+    <p class="definition">Experiencing or trying to understand another person's life or situation from their point of view.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel and Sam literally walk in each other's shoes — they live each other's lives and develop real empathy.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">After volunteering at the shelter, I felt like I'd walked in someone else's shoes for a week.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> I can't believe he did that again. What's wrong with him?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Try walking in his shoes before judging him — his situation is really difficult.</span>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="card">
+    <div class="card-number">13</div>
+    <div class="headword">
+      <strong>perspective</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">A particular way of thinking about or understanding something, especially one shaped by your own experiences and background.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>After the swap, both boys gained a new perspective — they understood their own lives differently.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">Traveling to another country really changes your perspective on life.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Why do you think it's good to talk to older people?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> They give you a different perspective — they've seen a lot more than we have.</span>
+    </div>
+  </div>
+
+  <!-- 14 -->
+  <div class="card">
+    <div class="card-number">14</div>
+    <div class="headword">
+      <strong>stark contrast</strong>
+      <span class="pos colloc">collocation</span>
+    </div>
+    <p class="definition">A very clear and obvious difference between two things.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel's castle life and Sam's street life are a stark contrast — they couldn't be more different.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The rich neighborhood and the poor neighborhood next to it were a stark contrast.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Have you been to both the north and south of the country?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Yes — they're a stark contrast. Different weather, different culture, different food.</span>
+    </div>
+  </div>
+
+  <!-- 15 -->
+  <div class="card">
+    <div class="card-number">15</div>
+    <div class="headword">
+      <strong>resilience</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">The ability to recover quickly from difficulties; the inner strength to keep going even in hard situations.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Sam showed resilience — despite his difficult life, he still found moments of joy and made the most of what he had.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The community showed great resilience after the earthquake — people helped each other and rebuilt quickly.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> How does she stay so positive?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> She's always had resilience — even as a child, she never gave up.</span>
+    </div>
+  </div>
+
+  <!-- 16 -->
+  <div class="card">
+    <div class="card-number">16</div>
+    <div class="headword">
+      <strong>weighed down</strong>
+      <span class="pos colloc">collocation</span>
+    </div>
+    <p class="definition">To feel burdened or overwhelmed by responsibilities, problems, or pressure.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel was weighed down by duties and lessons — the pressure of royal life made him feel stuck and unhappy.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">She was weighed down by all her deadlines and hadn't slept properly in days.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> You look stressed.</span>
+      <span class="dialog-line"><span class="speaker">B:</span> I am — I'm completely weighed down by all these responsibilities right now.</span>
+    </div>
+  </div>
+
+  <!-- 17 -->
+  <div class="card">
+    <div class="card-number">17</div>
+    <div class="headword">
+      <strong>fancy</strong>
+      <span class="pos adj">adjective</span>
+    </div>
+    <p class="definition">Expensive-looking, stylish, or more impressive than usual.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>When Sam moves into the castle, he gets a fancy bedroom — something far more comfortable than anything he'd had before.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">They went to a fancy restaurant to celebrate their anniversary.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Is that a new bag?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Yes — it looks fancy, but it wasn't actually that expensive.</span>
+    </div>
+  </div>
+
+  <!-- 18 -->
+  <div class="card">
+    <div class="card-number">18</div>
+    <div class="headword">
+      <strong>running around</strong>
+      <span class="pos colloc">collocation</span>
+    </div>
+    <p class="definition">Moving or going from place to place; being active and free, often without a fixed purpose.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Daniel loved running around town as a commoner — exploring freely without rules or royal duties.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The kids spent the whole afternoon running around in the park.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> What did you do on your day off?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Nothing special — just running around the city, exploring new streets.</span>
+    </div>
+  </div>
+
+  <!-- 19 -->
+  <div class="card">
+    <div class="card-number">19</div>
+    <div class="headword">
+      <strong>adventure</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">An exciting or unusual experience, often involving some risk or the unknown.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>The boys' spirit of adventure — their willingness to try something completely new — is what makes their friendship so special.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">Backpacking through Southeast Asia was the biggest adventure of her life.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Why did you say yes to the job in another country?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Because I was ready for a new adventure — I wanted to see what I was capable of.</span>
+    </div>
+  </div>
+
+  <!-- 20 -->
+  <div class="card">
+    <div class="card-number">20</div>
+    <div class="headword">
+      <strong>stick around</strong>
+      <span class="pos verb">phrasal verb</span>
+    </div>
+    <p class="definition">To stay in a place or continue doing something, especially to find out what happens next.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Maria says "stick around" to the listeners — she's encouraging them to keep listening because interesting content is coming.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">If you stick around after the class, the teacher usually answers individual questions.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> I'm leaving now. This meeting is boring. And you?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> No, I'll stick around — I want to hear about last quater's sales report..</span>
+    </div>
+  </div>
+
+  <!-- 21 -->
+  <div class="card">
+    <div class="card-number">21</div>
+    <div class="headword">
+      <strong>bridge</strong>
+      <span class="pos verb">verb</span>
+    </div>
+    <p class="definition">To reduce or close a gap or difference between two people, groups, or ideas.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>The boys' friendship bridges their very different backgrounds — it connects two worlds that would otherwise have nothing in common.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">The exchange program was designed to bridge cultural differences between the two countries.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> How do you think we can bridge the gap between the older and younger staff?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Regular team meetings might help — get everyone talking.</span>
+    </div>
+  </div>
+
+  <!-- 22 -->
+  <div class="card">
+    <div class="card-number">22</div>
+    <div class="headword">
+      <strong>takeaways</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">The key lessons or most important points that you can learn or remember from an experience, talk, or story.</p>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Billy lists three takeaways from the podcast — the main lessons listeners should remember.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">What were your main takeaways from the conference?</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> That was a great presentation.</span>
+      <span class="dialog-line"><span class="speaker">B:</span> Thanks! I hope the three takeaways were clear — those are the points I really wanted people to remember.</span>
+    </div>
+  </div>
+
+  <!-- 23 -->
+  <div class="card">
+    <div class="card-number">23</div>
+    <div class="headword">
+      <strong>empathy</strong>
+      <span class="pos noun">noun</span>
+    </div>
+    <p class="definition">The ability to understand and share the feelings of another person based on one's own same or very similar experiences.</p>
+    <div class="note"><strong>Note:</strong> This differs from <em>sympathy</em>, where one feels sorry&nbsp;<em>for</em> another's situation but has not necessarily experienced anything similar themselves--making it more difficult to truly relate. Empathy means you've been there or in a very similar situation.&nbsp;&nbsp;</div>
+    <div class="context-block">
+      <div class="context-label">In context</div>
+      <p>Both boys develop empathy by living each other's lives — they don't just feel sorry for each other, they truly understand what the other went through.</p>
+    </div>
+    <div class="examples-label">Examples</div>
+    <div class="example-item">Good teachers show empathy — they remember what it's like to be confused or nervous.</div>
+    <div class="example-item">
+      <span class="dialog-line"><span class="speaker">A:</span> Why do you think she's such a great manager?</span>
+      <span class="dialog-line"><span class="speaker">B:</span> She has a lot of empathy — she experienced a lot in life and she really listens and tries to understand how people feel.</span>
+    </div>
+  </div>
+
+</div><!-- /cards -->
+
+
+
+</body></html>

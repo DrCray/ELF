@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prince and Beggar – Podcast</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1228;
+    --surface: #241a38;
+    --surface2: #2d2145;
+    --border: #3d2f5e;
+    --text: #ede8f5;
+    --text-muted: #9e8fc0;
+    --accent: #c084fc;
+    --accent2: #a78bfa;
+    --billy: #a5f3d0;   /* mint pastel */
+    --maria: #fda4af;   /* rose pastel */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: #c8c2b8;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #1e1c17;
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Fake player */
+  .player-wrap {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #1c1a14;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #0f0f0f;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 18%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 18%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* Script */
+  .script-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .script-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .script-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Section headings within script */
+  .script-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent2);
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .script-heading:first-child {
+    margin-top: 0;
+  }
+
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .speaker {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.05em;
+    text-align: right;
+  }
+
+  .speaker.billy { color: var(--billy); }
+  .speaker.maria { color: var(--maria); }
+
+  .speech {
+    font-size: 0.92rem;
+    color: #cdc7be;
+    line-height: 1.65;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .line:last-child .speech {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 400px) {
+    .line {
+      grid-template-columns: 44px 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Everyday Stories &nbsp;·&nbsp; Podcast</p>
+    <h1>Prince and Beggar: A Tale of Swapped Lives</h1>
+    <p class="episode-tag">Podcast</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">Today's podcast discusses a story about Prince Daniel and a poor boy named Sam who look alike and decide to switch places. Both boys experience the joys and challenges of each other's lives, realizing that both privilege and freedom have their own drawbacks. Ultimately, they remain best friends and continue swapping lives whenever they crave change.<br><br> If it sounds familiar, that's because it was inspired by Mark Twain's classic 1881 novel <em>The Prince and the Pauper.</em></p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="SS3Unit07PrinceAndBeggar.html" class="article" target="_blank">Read the Article</a>
+    <a href="princeAndBeggarVocabStudy.html" class="article">Vocab study guide</a>
+    <a href="princeAndBeggarPodcastQuiz.html" class="quiz">Take the Quiz</a>
+  </nav>
+
+  <!-- Fake player -->
+  <div class="player-wrap">
+    <a href="https://youtu.be/Wg5cV1JBQao" target="_blank" rel="noopener">
+      <div class="player">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Prince and Beggar: A Tale of Swapped Lives — Everyday Stories</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:26</span>
+            <span>4:15</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Script -->
+  <section class="script-section">
+    <div class="script-label">Podcast Script</div>
+
+    <div class="dialogue">
+
+      <p class="script-heading">Trading Places: A Tale of Two Boys</p>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">Imagine waking up tomorrow and suddenly living someone else's life — one with a castle, a horse, and a royal title. That's exactly what happened in this story of Prince Daniel and Sam, and I have to say, it got me thinking.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">That story caught me off guard! I mean, at first glance, Prince Daniel seems to have it all — servants, toys, a horse. But the twist is, even with all that luxury, he wasn't happy. Both boys felt like something was missing in their lives.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">I'm glad you mentioned that, because today we're diving into the real meaning of happiness, privilege, and the old "grass is greener" idea. We'll break down each boy's life, what happens when they switch, and dig into what they learn from walking in each other's shoes.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">We'll also talk about how freedom, friendship, and a little bit of curiosity can completely shift your perspective. So if you've ever wished you could swap places with someone else, stick around — we've got some interesting insights coming your way!</p>
+      </div>
+
+      <p class="script-heading">From Castle to Streets: Daniel and Sam's Worlds</p>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">So, Daniel's life in the castle looked perfect from the outside, but the story made it clear — he was actually weighed down by duties, lessons, and hardly got to enjoy his own horse. That's definitely not the fairytale most people imagine.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">Totally! And Sam's reality, on the other hand, was heartbreaking. Living with an uncle who didn't care, having to beg just to survive — it's a stark contrast. Yet, Sam still found ways to have fun with his street friends. There's a kind of resilience there that you can't ignore.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">You're right, and what struck me is how quickly Daniel feels trapped by his own privilege, while Sam, despite everything, manages to carve out moments of joy with almost nothing. It really flips the whole "rich kid, happy kid" stereotype upside down.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">Exactly! I kept thinking — sometimes having less means appreciating the good even more. And sometimes having it all just means you notice everything you're missing.</p>
+      </div>
+
+      <p class="script-heading">The Switch: Walking in Each Other's Shoes</p>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">Their swap is where things get really interesting. Suddenly Sam is living Daniel's life — he's got a fancy bedroom, endless toys, a weekly horse ride, and he even enjoys the lessons. Things were going really good.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">Meanwhile, Daniel is loving his new freedom, running around town and making friends, but eventually he begins to miss his parents, and his horse. Sam was also missing his way of life — the street food, his street friends.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">It's almost like both boys had a taste of something new, only to realize each life has its own hidden challenges. The castle's comfort came with rules, while the freedom of the streets came with its own risks.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">And the coolest part? They didn't just go back to their own lives — they stayed friends and kept swapping whenever they needed a change! That sense of adventure and understanding between them is so heartwarming.</p>
+      </div>
+
+      <p class="script-heading">Lessons Learned: Happiness, Empathy, and What Matters</p>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">What stands out to me is how both Daniel and Sam learned that every situation has both good and bad. Neither boy found perfect happiness in the other's world — they just found a new perspective.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">And that friendship! It's proof that real connection can bridge totally different backgrounds. Plus, their courage to try something wild — literally swapping lives — helped them understand themselves and each other so much better.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker billy">Billy</span>
+        <p class="speech">So if you're looking for takeaways from the story, here's three: First, the grass isn't always greener — every life has its ups and downs. Second, empathy grows when you step into someone else's shoes, even briefly. Third, good friendships and relationships is what it's all about.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maria">Maria</span>
+        <p class="speech">If you want to put this into practice, try reaching out to someone with a totally different perspective this week. Ask questions. Swap stories. You might be surprised what you learn, and who you connect with. That's it for today! See you next podcast.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories Podcast &nbsp;·&nbsp; Prince and Beggar: A Tale of Swapped Lives</div>
+
+</div>
+</body>
+</html>

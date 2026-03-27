@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prince and Beggar: A Tale of Swapped Lives</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @media print {
+            .print-section { display: none; }
+            body { background-color: white; }
+        }
+        footer { margin-top: 15rem; }
+        .toggle-button {
+            padding: 5px 10px;
+            font-size: .8rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover { background-color: #0056b3; }
+        .output {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            word-wrap: break-word;
+            text-align: left;
+        }
+        .output.column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .output.column span {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        #theWordList { display: none; }
+        .show-hide-button {
+            margin: 0 0 1rem 0;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .show-hide-button:hover { background-color: #218838; }
+        #subtitle { font-size: 120%; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Prince and Beggar</h1>
+        <p id="subtitle">A Tale of Swapped Lives</p>
+        <p>Vocabulary Quiz — Fill in the Blank</p>
+    </div>
+
+    <div class="student-info">
+        <label for="studentName"><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your name">
+        <label for="studentID"><strong>Student ID:</strong></label>
+        <input type="text" id="studentID" placeholder="Enter your student ID number">
+    </div>
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode <small>(show answers)</small></button>
+
+    <!-- Section 1 -->
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. The two boys <select data-answer="look alike">
+                <option value="">-- Select --</option>
+                <option value="look alike">look alike</option>
+                <option value="switch places">switch places</option>
+                <option value="privilege">privilege</option>
+                <option value="drawbacks">drawbacks</option>
+                <option value="swapping">swapping</option>
+            </select>, meaning they have a very similar appearance.
+        </div>
+        <div class="sentence">
+            2. They decide to <select data-answer="switch places">
+                <option value="">-- Select --</option>
+                <option value="look alike">look alike</option>
+                <option value="switch places">switch places</option>
+                <option value="crave">crave</option>
+                <option value="drawbacks">drawbacks</option>
+                <option value="swapping">swapping</option>
+            </select>, meaning each boy will live in the other's world for a while.
+        </div>
+        <div class="sentence">
+            3. Having a castle and servants is a sign of <select data-answer="privilege">
+                <option value="">-- Select --</option>
+                <option value="look alike">look alike</option>
+                <option value="privilege">privilege</option>
+                <option value="drawbacks">drawbacks</option>
+                <option value="ultimately">ultimately</option>
+                <option value="crave">crave</option>
+            </select>, which means having special advantages that others don't have.
+        </div>
+        <div class="sentence">
+            4. Both lifestyles have <select data-answer="drawbacks">
+                <option value="">-- Select --</option>
+                <option value="switch places">switch places</option>
+                <option value="drawbacks">drawbacks</option>
+                <option value="privilege">privilege</option>
+                <option value="ultimately">ultimately</option>
+                <option value="swapping">swapping</option>
+            </select>, meaning disadvantages or negative aspects.
+        </div>
+        <div class="sentence">
+            5. <select data-answer="ultimately">
+                <option value="">-- Select --</option>
+                <option value="look alike">look alike</option>
+                <option value="swapping">swapping</option>
+                <option value="ultimately">ultimately</option>
+                <option value="privilege">privilege</option>
+                <option value="crave">crave</option>
+            </select>, the boys remain best friends, which means in the end, or finally.
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            6. They keep <select data-answer="swapping">
+                <option value="">-- Select --</option>
+                <option value="ultimately">ultimately</option>
+                <option value="swapping">swapping</option>
+                <option value="crave">crave</option>
+                <option value="at first glance">at first glance</option>
+                <option value="luxury">luxury</option>
+            </select> lives whenever they want a change, meaning exchanging or trading.
+        </div>
+        <div class="sentence">
+            7. Sometimes people <select data-answer="crave">
+                <option value="">-- Select --</option>
+                <option value="swapping">swapping</option>
+                <option value="crave">crave</option>
+                <option value="at first glance">at first glance</option>
+                <option value="luxury">luxury</option>
+                <option value="grass is greener">grass is greener</option>
+            </select> change, meaning they have a very strong desire for something different.
+        </div>
+        <div class="sentence">
+            8. <select data-answer="at first glance">
+                <option value="">-- Select --</option>
+                <option value="crave">crave</option>
+                <option value="at first glance">at first glance</option>
+                <option value="luxury">luxury</option>
+                <option value="grass is greener">grass is greener</option>
+                <option value="break down">break down</option>
+            </select>, the prince seems to have everything, meaning when you look quickly without knowing the full story.
+        </div>
+        <div class="sentence">
+            9. Even with all that <select data-answer="luxury">
+                <option value="">-- Select --</option>
+                <option value="at first glance">at first glance</option>
+                <option value="luxury">luxury</option>
+                <option value="grass is greener">grass is greener</option>
+                <option value="break down">break down</option>
+                <option value="swapping">swapping</option>
+            </select>, the prince wasn't happy — the word means great comfort and expensive living conditions.
+        </div>
+        <div class="sentence">
+            10. This story is a perfect example of the "<select data-answer="grass is greener">
+                <option value="">-- Select --</option>
+                <option value="luxury">luxury</option>
+                <option value="grass is greener">grass is greener</option>
+                <option value="break down">break down</option>
+                <option value="at first glance">at first glance</option>
+                <option value="crave">crave</option>
+            </select>" idea, which means the belief that other people's situations are better than your own.
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            11. The hosts will <select data-answer="break down">
+                <option value="">-- Select --</option>
+                <option value="grass is greener">grass is greener</option>
+                <option value="break down">break down</option>
+                <option value="walking in each other's shoes">walking in each other's shoes</option>
+                <option value="perspective">perspective</option>
+                <option value="stick around">stick around</option>
+            </select> each boy's life, meaning to explain something step by step in detail.
+        </div>
+        <div class="sentence">
+            12. The boys learn from <select data-answer="walking in each other's shoes">
+                <option value="">-- Select --</option>
+                <option value="break down">break down</option>
+                <option value="walking in each other's shoes">walking in each other's shoes</option>
+                <option value="perspective">perspective</option>
+                <option value="swap places">swap places</option>
+                <option value="insights">insights</option>
+            </select>, meaning experiencing life from another person's point of view.
+        </div>
+        <div class="sentence">
+            13. The experience shifts your <select data-answer="perspective">
+                <option value="">-- Select --</option>
+                <option value="walking in each other's shoes">walking in each other's shoes</option>
+                <option value="perspective">perspective</option>
+                <option value="swap places">swap places</option>
+                <option value="stick around">stick around</option>
+                <option value="insights">insights</option>
+            </select>, which means the way you see or think about things.
+        </div>
+        <div class="sentence">
+            14. If you've ever wanted to <select data-answer="swap places">
+                <option value="">-- Select --</option>
+                <option value="perspective">perspective</option>
+                <option value="swap places">swap places</option>
+                <option value="stick around">stick around</option>
+                <option value="insights">insights</option>
+                <option value="break down">break down</option>
+            </select> with someone, this story is for you — it means to exchange positions or situations with another person.
+        </div>
+        <div class="sentence">
+            15. <select data-answer="stick around">
+                <option value="">-- Select --</option>
+                <option value="swap places">swap places</option>
+                <option value="stick around">stick around</option>
+                <option value="insights">insights</option>
+                <option value="walking in each other's shoes">walking in each other's shoes</option>
+                <option value="perspective">perspective</option>
+            </select> for more interesting ideas, meaning stay and keep listening or watching.
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">
+            16. The podcast promises some great <select data-answer="insights">
+                <option value="">-- Select --</option>
+                <option value="stick around">stick around</option>
+                <option value="insights">insights</option>
+                <option value="weighed down">weighed down</option>
+                <option value="stark contrast">stark contrast</option>
+                <option value="resilience">resilience</option>
+            </select>, meaning deep and useful understandings about a topic.
+        </div>
+        <div class="sentence">
+            17. Daniel felt <select data-answer="weighed down">
+                <option value="">-- Select --</option>
+                <option value="insights">insights</option>
+                <option value="weighed down">weighed down</option>
+                <option value="stark contrast">stark contrast</option>
+                <option value="resilience">resilience</option>
+                <option value="fancy">fancy</option>
+            </select> by duties and lessons, meaning burdened or stressed by responsibilities.
+        </div>
+        <div class="sentence">
+            18. Sam's difficult life is a <select data-answer="stark contrast">
+                <option value="">-- Select --</option>
+                <option value="weighed down">weighed down</option>
+                <option value="stark contrast">stark contrast</option>
+                <option value="resilience">resilience</option>
+                <option value="fancy">fancy</option>
+                <option value="running around">running around</option>
+            </select> to Daniel's comfortable life, meaning a very clear and obvious difference.
+        </div>
+        <div class="sentence">
+            19. Sam showed great <select data-answer="resilience">
+                <option value="">-- Select --</option>
+                <option value="stark contrast">stark contrast</option>
+                <option value="resilience">resilience</option>
+                <option value="fancy">fancy</option>
+                <option value="running around">running around</option>
+                <option value="weighed down">weighed down</option>
+            </select> despite his hard life, meaning the ability to recover and keep going after difficulties.
+        </div>
+        <div class="sentence">
+            20. Sam got to enjoy a <select data-answer="fancy">
+                <option value="">-- Select --</option>
+                <option value="resilience">resilience</option>
+                <option value="fancy">fancy</option>
+                <option value="running around">running around</option>
+                <option value="way of life">way of life</option>
+                <option value="insights">insights</option>
+            </select> bedroom in the castle, meaning very nice, elegant, and expensive.
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section">
+        <h3>Section 5</h3>
+        <div class="sentence">
+            21. Daniel enjoyed <select data-answer="running around">
+                <option value="">-- Select --</option>
+                <option value="fancy">fancy</option>
+                <option value="running around">running around</option>
+                <option value="way of life">way of life</option>
+                <option value="adventure">adventure</option>
+                <option value="bridge">bridge</option>
+            </select> town freely, meaning moving about actively without restrictions.
+        </div>
+        <div class="sentence">
+            22. Sam missed his <select data-answer="way of life">
+                <option value="">-- Select --</option>
+                <option value="running around">running around</option>
+                <option value="way of life">way of life</option>
+                <option value="adventure">adventure</option>
+                <option value="bridge">bridge</option>
+                <option value="takeaways">takeaways</option>
+            </select> on the streets, meaning his usual habits, routines, and lifestyle.
+        </div>
+        <div class="sentence">
+            23. The swap gave both boys a sense of <select data-answer="adventure">
+                <option value="">-- Select --</option>
+                <option value="way of life">way of life</option>
+                <option value="adventure">adventure</option>
+                <option value="bridge">bridge</option>
+                <option value="takeaways">takeaways</option>
+                <option value="empathy">empathy</option>
+            </select>, meaning exciting new experiences and exploration.
+        </div>
+        <div class="sentence">
+            24. Their friendship can <select data-answer="bridge">
+                <option value="">-- Select --</option>
+                <option value="adventure">adventure</option>
+                <option value="bridge">bridge</option>
+                <option value="takeaways">takeaways</option>
+                <option value="empathy">empathy</option>
+                <option value="running around">running around</option>
+            </select> totally different backgrounds, meaning to connect or close the gap between very different things.
+        </div>
+        <div class="sentence">
+            25. The main <select data-answer="takeaways">
+                <option value="">-- Select --</option>
+                <option value="bridge">bridge</option>
+                <option value="takeaways">takeaways</option>
+                <option value="empathy">empathy</option>
+                <option value="way of life">way of life</option>
+                <option value="adventure">adventure</option>
+            </select> from the story are lessons about happiness and friendship, meaning the key points or lessons learned.
+        </div>
+        <div class="sentence">
+            26. Walking in someone's shoes builds <select data-answer="empathy">
+                <option value="">-- Select --</option>
+                <option value="takeaways">takeaways</option>
+                <option value="empathy">empathy</option>
+                <option value="bridge">bridge</option>
+                <option value="adventure">adventure</option>
+                <option value="resilience">resilience</option>
+            </select>, which means the ability to understand and share the feelings of another person.
+        </div>
+    </div>
+
+    <div class="print-section">
+        <button onclick="printQuiz()">Print to PDF</button>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div style="color:blue; background:ivory; margin: 1rem 3rem 1rem 3rem; padding:1rem;">
+            Instructions:<br>
+            1. Save as PDF file<br>
+            2. Upload to the E-class<br>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        function printQuiz() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentID = document.getElementById('studentID').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            if (studentName === '' || studentName === 'Enter your full name') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            if (studentID === '' || studentID === 'Enter your student ID number') {
+                errorMessage.textContent = 'You forgot your name or ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            errorMessage.style.display = 'none';
+            window.print();
+        }
+
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });
+
+        let answersVisible = false;
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            document.querySelectorAll('select').forEach(select => {
+                if (answersVisible) {
+                    const correctAnswer = select.getAttribute('data-answer');
+                    select.value = correctAnswer;
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                } else {
+                    select.selectedIndex = 0;
+                    select.classList.remove('correct', 'incorrect');
+                }
+            });
+            button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+        }
+    </script>
+
+    <script>
+        function updateOutput() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            const output = document.getElementById('output');
+            const isColumnView = output.classList.contains('column');
+            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+            if (isColumnView) {
+                output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+            } else {
+                output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column') ? 'Close Column View' : 'View as Column';
+            updateOutput();
+        }
+
+        updateOutput();
+    </script>
+
+    <script>
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const showHideButton = document.querySelector('.show-hide-button');
+            if (wordList.style.display === 'none' || wordList.style.display === '') {
+                wordList.style.display = 'block';
+                showHideButton.textContent = 'Hide Word List';
+            } else {
+                wordList.style.display = 'none';
+                showHideButton.textContent = 'Show Word List';
+            }
+        }
+    </script>
+
+    <footer>...</footer>
+</body>
+</html>
