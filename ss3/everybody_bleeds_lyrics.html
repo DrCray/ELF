@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everybody Bleeds – Linka Kulla</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Base theme (from music_links_lyrics.html) ── */
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --text: #e8e2d9;
+    --text-muted: #888880;
+    --accent: #c8a96e;
+    --accent2: #7eb8c8;
+    --chorus-bg: #1e1a10;
+    --chorus-border: #c8a96e;
+    --chorus-text: #f0e6cc;
+  }
+
+  /* ── mtv_claudeTheme overrides ── */
+  :root {
+    --bg: #f7f4f0;
+    --surface: #efebe5;
+    --surface2: #e8e3dc;
+    --border: #d4ccc2;
+    --text: #1a1814;
+    --text-muted: #7a7168;
+    --accent: #c96a2a;
+    --accent2: #6a8faf;
+    --chorus-bg: #e4ddd4;
+    --chorus-border: #c96a2a;
+    --chorus-text: #1a1814;
+  }
+
+  .lede {
+    color: var(--text);
+    background: var(--surface);
+    border-left-color: var(--accent);
+  }
+
+  .lyric-line {
+    color: #2a2420;
+  }
+
+  .chorus .lyric-line {
+    color: var(--chorus-text);
+    font-style: italic;
+  }
+
+  .chorus {
+    background: var(--chorus-bg);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06),
+                0 2px 8px rgba(201,106,42,0.10);
+  }
+
+  .episode-tag {
+    color: #c96a2a;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #4a3f35;
+    margin-top: 0.2rem;
+  }
+
+  .play-btn::after {
+    border-left-color: #ffffff;
+  }
+
+  .player {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  }
+
+  .player:hover {
+    background: var(--surface2);
+    border-color: var(--accent);
+    box-shadow: 0 4px 14px rgba(201,106,42,0.14);
+  }
+
+  .nav-links a {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text-muted);
+  }
+
+  .nav-links a:hover {
+    background: #dfd8ce;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .lyrics-label::after {
+    background: var(--border);
+  }
+
+  .verse {
+    border-bottom-color: var(--border);
+  }
+
+  .footer {
+    border-top-color: var(--border);
+  }
+
+  .header {
+    background: #1a1814;
+    padding: 1.5rem 1.25rem;
+    border-radius: 8px;
+    border-bottom: none;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+  }
+
+  .show-label  { color: #c96a2a; }
+  h1           { color: #f7f4f0; }
+  h2           { color: #a8c4a0; }
+  .episode-tag { color: #f0c98a; }
+
+  /* ── Structural styles ── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  /* For-article sub-label */
+  .for-article {
+    font-size: 0.75rem;
+    color: #a8c4a0;
+    margin-top: 0.3rem;
+    font-style: normal;
+    letter-spacing: 0.02em;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Players section */
+  .players-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #ffffff;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* Video badge */
+  .mv-badge {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(201,106,42,0.10);
+    border: 1px solid rgba(201,106,42,0.25);
+    border-radius: 3px;
+    padding: 0.15rem 0.45rem;
+    flex-shrink: 0;
+  }
+
+  /* Lyrics */
+  .lyrics-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .lyrics-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lyrics-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+  }
+
+  .lyrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .verse {
+    padding: 0.25rem 0 1rem 0;
+    border-bottom: 1px solid;
+    margin-bottom: .5rem;
+  }
+
+  .verse:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .lyric-line {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .lyric-line-spacer {
+    line-height: .80;
+    visibility: hidden;
+  }
+
+  .chorus {
+    margin-bottom: .5rem;
+    position: relative;
+  }
+
+  .chorus-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chorus-label::before {
+    content: '♪';
+    font-size: 0.85em;
+  }
+
+  .verse::before,
+  .chorus::before {
+    content: '\266B';
+    display: block;
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Animations */
+  .header { animation: fadeUp 0.6s ease both; }
+  .lede   { animation: fadeUp 0.6s 0.1s ease both; }
+  .nav-links { animation: fadeUp 0.6s 0.2s ease both; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Music audioVid</p>
+    <h1>Everybody Bleeds</h1>
+    <h2>Linka Kulla</h2>
+    <p class="episode-tag">Song &amp; Lyrics</p>
+    <p class="for-article">For the article: The Prince and the Beggar</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">A prince with every comfort and a beggar with nothing but freedom — two lives worlds apart, until a chance meeting at the gate changes everything. A song about seeing past the surface and finding what we all share.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="SS3Unit07PrinceAndBeggar.html" class="article" target="_blank">Read the Article</a>
+    <a href="placeholder.html" class="quiz">Take the Quiz</a>
+  </nav>
+
+  <!-- Two Players -->
+  <div class="players-wrap">
+
+    <!-- MV1 -->
+    <div class="player-wrap">
+      <a href="https://youtu.be/zlwUn1nMfT8" target="_blank" rel="noopener">
+        <div class="player">
+          <div class="play-btn"></div>
+          <div class="player-info">
+            <div class="player-title">Everybody Bleeds (MV1) — Linka Kulla</div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:0%"></div>
+              <div class="progress-dot" style="left:0%"></div>
+            </div>
+            <div class="player-times">
+              <span>0:00</span>
+              <span>3:42</span>
+            </div>
+          </div>
+          <span class="mv-badge">MV1</span>
+          <span class="ext-icon">↗</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- MV2 -->
+    <div class="player-wrap">
+      <a href="https://youtu.be/H9zmoIRmU6o" target="_blank" rel="noopener">
+        <div class="player">
+          <div class="play-btn"></div>
+          <div class="player-info">
+            <div class="player-title">Everybody Bleeds (MV2) — Linka Kulla</div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:0%"></div>
+              <div class="progress-dot" style="left:0%"></div>
+            </div>
+            <div class="player-times">
+              <span>0:00</span>
+              <span>3:42</span>
+            </div>
+          </div>
+          <span class="mv-badge">MV2</span>
+          <span class="ext-icon">↗</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Lyrics -->
+  <section class="lyrics-section">
+    <div class="lyrics-label">Lyrics</div>
+    <div class="lyrics">
+
+      <div class="verse">
+        <p class="lyric-line">All the world was at my feet,</p>
+        <p class="lyric-line">Every comfort I could need</p>
+        <p class="lyric-line">All the love my parents gave,</p>
+        <p class="lyric-line">In a room with too much space,</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">But the children in the streets,</p>
+        <p class="lyric-line">Seemed to live more wild and free</p>
+        <p class="lyric-line">Laughing loud and chasing days,</p>
+        <p class="lyric-line">I would gladly trade my place</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">One shirt and a pair of shoes,</p>
+        <p class="lyric-line">Begging all day just for food</p>
+        <p class="lyric-line">Or I'll face the wrath inside,</p>
+        <p class="lyric-line">Of my uncle's foolish pride.</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">There's a castle on the hill</p>
+        <p class="lyric-line">Dream of shirts made out of silk</p>
+        <p class="lyric-line">And a horse to call my own,</p>
+        <p class="lyric-line">And a place to call my home.</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">Welcome to my world,</p>
+        <p class="lyric-line">step inside and see</p>
+        <p class="lyric-line">Castles made of stone</p>
+        <p class="lyric-line">or living on the streets</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">No life is what it seems</p>
+        <p class="lyric-line">no one can ever tell</p>
+        <p class="lyric-line">What's hidden in the heart,</p>
+        <p class="lyric-line">who's living inside hell</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">Everybody bleeds,</p>
+        <p class="lyric-line">everybody dreams</p>
+        <p class="lyric-line">Everybody cries,</p>
+        <p class="lyric-line">it's never what it seems</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">No matter who you are,</p>
+        <p class="lyric-line">No matter where you've been</p>
+        <p class="lyric-line">No matter what you have</p>
+        <p class="lyric-line">everybody needs a friend</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">When I saw you at the gate,</p>
+        <p class="lyric-line">I knew I could change our fate</p>
+        <p class="lyric-line">I saw things I never knew</p>
+        <p class="lyric-line">And it's all because of you</p>
+      </div>
+
+      <div class="verse">
+        <p class="lyric-line">And we both began to see</p>
+        <p class="lyric-line">that the happiness we seek</p>
+        <p class="lyric-line">It was in us all along</p>
+        <p class="lyric-line">now together we are strong.</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">Welcome to my world,</p>
+        <p class="lyric-line">step inside and see</p>
+        <p class="lyric-line">Castles made of stone</p>
+        <p class="lyric-line">or living on the streets</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">No life is what it seems</p>
+        <p class="lyric-line">no one can ever tell</p>
+        <p class="lyric-line">What's hidden in the heart,</p>
+        <p class="lyric-line">who's living inside hell</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">Everybody bleeds,</p>
+        <p class="lyric-line">everybody dreams</p>
+        <p class="lyric-line">Everybody cries,</p>
+        <p class="lyric-line">it's never what it seems</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">No matter who you are,</p>
+        <p class="lyric-line">No matter where you've been</p>
+        <p class="lyric-line">No matter what you have</p>
+        <p class="lyric-line">everybody needs a friend</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">Everybody bleeds,</p>
+        <p class="lyric-line">everybody dreams</p>
+        <p class="lyric-line">Everybody cries,</p>
+        <p class="lyric-line">it's never what it seems</p>
+      </div>
+
+      <div class="chorus">
+        <p class="lyric-line">No matter who you are,</p>
+        <p class="lyric-line">No matter where you've been</p>
+        <p class="lyric-line">No matter what you have</p>
+        <p class="lyric-line">everybody needs a friend</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories &nbsp;·&nbsp; Everybody Bleeds — Linka Kulla</div>
+
+</div>
+</body>
+</html>
