@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Live Editor</title>
+
+<style id="app-styles">
+  /* Toolbar — explicit values so target file styles can't clobber it */
+  #app-toolbar {
+    all: revert;
+    font-family: 'Segoe UI', sans-serif !important;
+    background: #2c2c3e !important;
+    padding: .5rem .75rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .4rem !important;
+    flex-wrap: wrap !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; right: 0 !important;
+    z-index: 99999 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
+    box-sizing: border-box !important;
+  }
+  #app-toolbar * {
+    box-sizing: border-box !important;
+  }
+  .tb-btn {
+    padding: .3rem .65rem !important;
+    border: none !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    font-size: .82rem !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+  }
+  .tb-btn:hover { filter: brightness(1.2) !important; }
+  #btn-open  { background: #4a90d9 !important; color: #fff !important; }
+  #btn-save  { background: #e05c5c !important; color: #fff !important; display: none; }
+  #btn-close { background: #666    !important; color: #fff !important; display: none; }
+
+  .se-btn {
+    background: #D4E6F1 !important; color: #111 !important;
+    border: none !important; border-radius: 3px !important;
+    padding: .25rem .45rem !important; cursor: pointer !important;
+    font-size: .8rem !important;
+    box-shadow: 2px 2px 4px rgba(0,0,0,.35) !important;
+    display: none;
+    line-height: normal !important;
+  }
+  .se-btn:hover { filter: brightness(.9) !important; }
+
+  #file-name {
+    font-size: .75rem !important; color: #8fd9a8 !important;
+    max-width: 200px !important; overflow: hidden !important;
+    text-overflow: ellipsis !important; white-space: nowrap !important;
+  }
+
+  /* Drop zone */
+  #drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: calc(100vh - 48px);
+    margin-top: 48px;
+    color: #888;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1.1rem;
+    border: 3px dashed #444;
+    border-radius: 10px;
+  }
+  #drop-zone.drag-over { border-color: #4a90d9; color: #4a90d9; }
+
+  /* Editor — just clears the toolbar, no other styling */
+  #liveEditorCanvas {
+    display: none;
+    outline: none;
+    margin-top: 48px;
+  }
+
+  #file-input { display: none; }
+
+  /* Font size classes for wrapSpan — !important to override target file styles */
+  #liveEditorCanvas .fsSmall   { font-size: small    !important; }
+  #liveEditorCanvas .fsMedium  { font-size: medium   !important; }
+  #liveEditorCanvas .fsLarge   { font-size: large    !important; }
+  #liveEditorCanvas .fsXlarge  { font-size: x-large  !important; }
+  #liveEditorCanvas .fsXxlarge { font-size: xx-large !important; }
+  #liveEditorCanvas b, #liveEditorCanvas strong { font-weight: bold !important; }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div id="app-toolbar">
+  <button class="tb-btn" id="btn-open" onclick="document.getElementById('file-input').click()">📂 Open</button>
+  <input type="file" id="file-input" accept=".html,.htm">
+  <span id="file-name"></span>
+
+  <button class="se-btn" onclick="wrapTag('b')"><strong>B</strong></button>
+  <button class="se-btn" onclick="wrapTag('i')"><em>I</em></button>
+  <button class="se-btn" onclick="wrapTag('u')"><u>U</u></button>
+  <button class="se-btn" onclick="insertPlain()">Plain</button>
+  <button class="se-btn" onclick="wrapSpan('fsSmall')"   style="font-size:small !important">sm</button>
+  <button class="se-btn" onclick="wrapSpan('fsMedium')"  style="font-size:medium !important">md</button>
+  <button class="se-btn" onclick="wrapSpan('fsLarge')"   style="font-size:large !important">Lg</button>
+  <button class="se-btn" onclick="wrapSpan('fsXlarge')"  style="font-size:x-large !important">xL</button>
+  <button class="se-btn" onclick="wrapSpan('fsXxlarge')" style="font-size:xx-large !important">xxL</button>
+
+  <button class="tb-btn" id="btn-save"  onclick="saveFile()">💾 Save</button>
+  <button class="tb-btn" id="btn-close" onclick="closeFile()">✕ Close</button>
+</div>
+
+<!-- LANDING -->
+<div id="drop-zone">
+  <p>Drop an HTML file here, or click <strong>Open</strong></p>
+  <p style="font-size:.85rem;color:#666">Fully local — nothing uploaded.</p>
+</div>
+
+<!-- EDITOR: just a contenteditable div, styles apply from <head> -->
+<div id="liveEditorCanvas" contenteditable="true" spellcheck="false"></div>
+
+<input type="file" id="file-input" accept=".html,.htm" style="display:none">
+
+<script>
+  let savedHead     = '';
+  let savedDoctype  = '';
+  let savedFileName = 'edited.html';
+
+  document.getElementById('file-input').addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (f) loadFile(f);
+    e.target.value = '';
+  });
+
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', ()  => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && /\.html?$/i.test(f.name)) loadFile(f);
+  });
+
+  function loadFile(file) {
+    savedFileName = file.name;
+    const reader  = new FileReader();
+    reader.onload = e => parseAndLoad(e.target.result);
+    reader.readAsText(file);
+  }
+
+  function parseAndLoad(raw) {
+    // 1. Doctype
+    const dtMatch = raw.match(/^\s*(<!DOCTYPE[^>]*>)/i);
+    savedDoctype  = dtMatch ? dtMatch[1] : '<!DOCTYPE html>';
+
+    // 2. Parse
+    const parser = new DOMParser();
+    const doc    = parser.parseFromString(raw, 'text/html');
+
+    // 3. Save head for reassembly on save
+    savedHead = doc.head.innerHTML;
+
+    // 4. Inject all styles and linked stylesheets from the target file into our <head>
+    //    First clear any previously injected ones
+    document.querySelectorAll('.injected-target-style').forEach(el => el.remove());
+
+    // 4a. <style> blocks — extracted from raw string (DOMParser loses their content)
+    const styleRe = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+    let styleMatch;
+    while ((styleMatch = styleRe.exec(raw)) !== null) {
+      const el = document.createElement('style');
+      el.className = 'injected-target-style';
+      el.textContent = styleMatch[1];
+      document.head.appendChild(el);
+    }
+
+    // 4b. <link rel="stylesheet"> tags — clone from parsed doc and append to our head
+    //     Relative hrefs will resolve if the editor is in the same folder as the target
+    [...doc.querySelectorAll('link[rel="stylesheet"]')].forEach(link => {
+      const el = document.createElement('link');
+      el.rel       = 'stylesheet';
+      el.className = 'injected-target-style';
+      el.href      = link.href;   // DOMParser resolves relative hrefs to absolute file:// paths
+      document.head.appendChild(el);
+      console.log('Injected link:', el.href);
+    });
+
+    // 5. Body innerHTML into the contenteditable editor
+    document.getElementById('liveEditorCanvas').innerHTML = doc.body.innerHTML;
+
+    // 6. Show UI
+    dz.style.display = 'none';
+    document.getElementById('liveEditorCanvas').style.display = 'block';
+    document.querySelectorAll('.se-btn').forEach(b => b.style.display = 'inline-block');
+    document.getElementById('btn-save').style.display  = 'inline-block';
+    document.getElementById('btn-close').style.display = 'inline-block';
+    document.getElementById('file-name').textContent   = savedFileName;
+
+    document.getElementById('liveEditorCanvas').focus();
+  }
+
+  // These classes must travel with the saved file
+  const EDITOR_STYLES = `<style>
+  b, strong { font-weight: bold; }
+  .fsSmall   { font-size: small; }
+  .fsMedium  { font-size: medium; }
+  .fsLarge   { font-size: large; }
+  .fsXlarge  { font-size: x-large; }
+  .fsXxlarge { font-size: xx-large; }
+</style>`;
+
+  function saveFile() {
+    const bodyHTML = document.getElementById('liveEditorCanvas').innerHTML;
+
+    const output =
+`${savedDoctype}
+<html>
+<head>
+${savedHead}
+${EDITOR_STYLES}
+</head>
+<body>
+${bodyHTML}
+</body>
+</html>`;
+
+    const blob = new Blob([output], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = savedFileName;
+    a.style.display = 'none';
+    document.head.appendChild(a);
+    a.click();
+    document.head.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function closeFile() {
+    document.querySelectorAll('.injected-target-style').forEach(el => el.remove());
+    document.getElementById('liveEditorCanvas').innerHTML          = '';
+    document.getElementById('liveEditorCanvas').style.display      = 'none';
+    dz.style.display = 'flex';
+    document.querySelectorAll('.se-btn').forEach(b => b.style.display = 'none');
+    document.getElementById('btn-save').style.display  = 'none';
+    document.getElementById('btn-close').style.display = 'none';
+    document.getElementById('file-name').textContent   = '';
+    savedHead = ''; savedDoctype = ''; savedFileName = 'edited.html';
+  }
+
+  function wrapTag(tag) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const el = document.createElement(tag);
+    try {
+      range.surroundContents(el);
+    } catch(e) {
+      const frag = range.extractContents();
+      el.appendChild(frag);
+      range.insertNode(el);
+    }
+  }
+
+  function insertPlain() {
+    const span = document.createElement('span');
+    span.style.cssText = 'font-weight:initial;font-size:initial;font-style:initial;text-decoration:revert';
+    span.innerHTML = '-plain-';
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    sel.getRangeAt(0).insertNode(span);
+  }
+
+  function wrapSpan(cls) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const span  = document.createElement('span');
+    span.className = cls;
+    try {
+      range.surroundContents(span);
+    } catch(e) {
+      const frag = range.extractContents();
+      span.appendChild(frag);
+      range.insertNode(span);
+    }
+  }
+</script>
+</body>
+</html>
