@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Editor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #1a1a1e;
+      --surface:   #232329;
+      --border:    #35353f;
+      --accent:    #7c6af7;
+      --accent2:   #a594f9;
+      --text:      #e8e6f0;
+      --muted:     #6b6880;
+      --toolbar-h: 48px;
+      --status-h:  28px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+    }
+
+    /* ── TOOLBAR ─────────────────────────────────────── */
+    #toolbar {
+      position: fixed;
+      top: var(--status-h);
+      left: 0; right: 0;
+      height: var(--toolbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 4px;
+      z-index: 100;
+      user-select: none;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 6px;
+      border-right: 1px solid var(--border);
+    }
+    .toolbar-group:last-of-type { border-right: none; }
+
+    .tb-btn {
+      width: 32px; height: 32px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: black; color: white;
+      font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .tb-btn:hover  { background: rgba(124,106,247,0.15); border-color: var(--border); color: var(--accent2); }
+    .tb-btn.active { background: rgba(124,106,247,0.25); border-color: var(--accent); color: var(--accent2); }
+    .tb-btn[data-cmd="bold"]      { font-weight: 700; font-size: 15px; }
+    .tb-btn[data-cmd="italic"]    { font-style: italic; font-size: 15px; }
+    .tb-btn[data-cmd="underline"] { text-decoration: underline; font-size: 14px; }
+    #btn-fontsize { font-size: 11px; letter-spacing: -1px; width: 36px; }
+    #btn-plain    { font-size: 10px; letter-spacing: -0.5px; width: 42px; }
+    #btn-img      { font-size: 11px; font-weight: 700; width: 36px; }
+
+    #btn-h1-wrap { position: relative; display: flex; }
+    #h1-dropdown {
+      display: none; position: absolute; top: 36px; left: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; z-index: 200;
+    }
+    #h1-dropdown button {
+      display: block; width: 100%; padding: 6px 14px;
+      background: none; border: none; color: white;
+      font-family: 'Georgia', serif; text-align: left; cursor: pointer;
+    }
+    #h1-dropdown button:hover { background: rgba(124,106,247,0.15); color: var(--accent2); }
+
+    #btn-color-wrap { position: relative; display: flex; }
+    #color-dropdown {
+      display: none; position: absolute; top: 36px; left: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; z-index: 200; min-width: 110px;
+    }
+    #color-dropdown button {
+      display: block; width: 100%; padding: 6px;
+      background: none; border: none; color: white;
+      font-family: 'Georgia', serif; text-align: left; cursor: pointer; white-space: nowrap;
+    }
+    #color-dropdown button:hover { background: rgba(124,106,247,0.15); color: var(--accent2); }
+    #color-picker { display: none; }
+
+    #file-label {
+      margin-left: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 11px; font-weight: 700; color: white;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 340px; padding-right: 8px;
+    }
+
+    #dirty-dot {
+      margin-left: auto; visibility: hidden;
+      color: red; font-size: 20px; line-height: 1; margin-right: 4px;
+    }
+    #dirty-dot.show { visibility: visible; }
+
+    /* ── EDITOR AREA ─────────────────────────────────── */
+    #editor-wrap {
+      position: fixed;
+      top: calc(var(--toolbar-h) + var(--status-h));
+      bottom: 0; left: 0; right: 0;
+      overflow-y: auto;
+    }
+    #editor {
+      max-width: 820px; margin: 0 auto;
+      min-height: 100%; padding: 48px 56px 120px;
+      outline: none; font-weight: normal;
+    }
+    #editor strong, #editor b { font-weight: bold !important; }
+    #editor em,     #editor i { font-style: italic !important; }
+    #editor u                 { text-decoration: underline !important; }
+    #editor:empty::before {
+      content: 'Open an HTML file to begin editing…';
+      color: var(--muted); pointer-events: none;
+      font-family: 'Georgia', serif; font-size: 17px;
+    }
+
+    /* ── STATUS BAR ──────────────────────────────────── */
+    #statusbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--status-h); background: var(--surface);
+      display: flex; align-items: center; padding: 0 14px;
+      font-family: 'Courier New', monospace; font-size: 11px; color: white;
+      gap: 16px; z-index: 100;
+    }
+    #status-msg { margin-left: auto; transition: color 0.3s; }
+    #status-msg.ok  { color: white; }
+    #status-msg.err { color: yellow; }
+
+    .sb-btn {
+      border-radius: 4px; font-family: 'Courier New', monospace;
+      font-size: 11px; padding: 3px 10px; cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    #btn-open { background: var(--accent); border: none; color: #fff; }
+    #btn-open:hover { background: var(--accent2); }
+    #btn-save { background: none; border: 1px solid var(--border); color: white; }
+    #btn-save:hover { color: white; border-color: var(--accent); }
+    #btn-reload { background: none; border: 1px solid var(--border); color: white; }
+    #btn-reload:not(:disabled):hover { color: white; border-color: var(--accent); }
+    #btn-reload:disabled { opacity: 0.35; cursor: default; }
+
+    /* ── SAVE FLASH ──────────────────────────────────── */
+    #save-flash {
+      position: fixed; bottom: 40px; right: 32px;
+      background: var(--accent); color: #fff;
+      font-family: 'Courier New', monospace; font-size: 13px;
+      padding: 10px 20px; border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(124,106,247,0.4);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none; z-index: 200;
+    }
+    #save-flash.show { opacity: 1; transform: translateY(0); }
+
+    /* ── HARVEST IFRAME ──────────────────────────────── */
+    #harvest-frame {
+      position: absolute; left: -9999px; top: -9999px;
+      width: 1280px; height: 900px; border: none; visibility: hidden;
+    }
+
+    /* ── RECENT DROPDOWN ─────────────────────────────── */
+    #recent-wrap { position: relative; }
+    #btn-recent {
+      background: none; border: 1px solid var(--border); border-radius: 4px;
+      color: white; font-family: 'Courier New', monospace;
+      font-size: 10px; padding: 2px 8px; cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    #btn-recent:hover { color: var(--text); border-color: var(--accent); }
+    #recent-dropdown {
+      display: none; position: absolute; top: 26px; left: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; z-index: 300;
+      min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      list-style: none; padding: 4px 0;
+    }
+    #recent-dropdown.show { display: block; }
+    #recent-dropdown li {
+      padding: 7px 14px; cursor: pointer; color: var(--text);
+      font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.12s, color 0.12s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #recent-dropdown li:last-child { border-bottom: none; }
+    #recent-dropdown li:hover { background: rgba(124,106,247,0.15); color: var(--accent2); }
+    #recent-dropdown li.empty-msg { color: var(--muted); cursor: default; font-style: italic; }
+    #recent-dropdown li.empty-msg:hover { background: none; color: var(--muted); }
+
+    /* ── CSS FOLDER PROMPT ───────────────────────────── */
+    #css-prompt-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 600;
+      align-items: center; justify-content: center;
+    }
+    #css-prompt-overlay.show { display: flex; }
+    #css-prompt {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 28px 32px 22px; width: 460px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column; gap: 16px;
+      font-family: 'Courier New', monospace; font-size: 13px; color: var(--text);
+    }
+    #css-prompt h3 {
+      font-family: 'Georgia', serif; font-size: 15px; color: var(--accent2);
+      margin: 0; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    #css-prompt p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    #css-prompt-files {
+      font-size: 11px; color: var(--text);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 12px; line-height: 1.8;
+    }
+    #css-prompt-btns {
+      display: flex; justify-content: flex-end; gap: 10px;
+      padding-top: 4px; border-top: 1px solid var(--border);
+    }
+
+    /* ── SHARED DIALOG STYLES ────────────────────────── */
+    .dlg-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 500;
+      align-items: center; justify-content: center;
+    }
+    .dlg-overlay.show { display: flex; }
+    .dlg-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px 28px 20px; width: 400px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column; gap: 18px;
+      font-family: 'Courier New', monospace; font-size: 13px; color: var(--text);
+    }
+    .dlg-box h3 {
+      font-family: 'Georgia', serif; font-size: 15px; color: var(--accent2);
+      margin: 0; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .dlg-row { display: flex; flex-direction: column; gap: 7px; }
+    .dlg-label { font-size: 11px; color: white; text-transform: uppercase; letter-spacing: 0.06em; }
+    .dlg-input {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      color: var(--text); font-family: 'Courier New', monospace; font-size: 13px;
+      padding: 8px 10px; outline: none; transition: border-color 0.15s;
+    }
+    .dlg-input:focus { border-color: var(--accent); }
+    .dlg-input::placeholder { color: var(--muted); }
+    .dlg-btns {
+      display: flex; justify-content: flex-end; gap: 10px;
+      padding-top: 4px; border-top: 1px solid var(--border);
+    }
+    .dlg-btn {
+      padding: 8px 22px; border-radius: 6px; border: 1px solid var(--border);
+      font-family: 'Courier New', monospace; font-size: 13px; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .dlg-btn-cancel { background: var(--bg); color: var(--muted); }
+    .dlg-btn-cancel:hover { color: var(--text); }
+    .dlg-btn-ok { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .dlg-btn-ok:hover { background: var(--accent2); border-color: var(--accent2); }
+
+    .align-group { display: flex; gap: 6px; }
+    .align-btn {
+      flex: 1; padding: 8px 0; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg); color: var(--text); font-family: 'Courier New', monospace;
+      font-size: 12px; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .align-btn:hover  { background: rgba(124,106,247,0.15); color: var(--accent2); }
+    .align-btn.active { background: rgba(124,106,247,0.25); border-color: var(--accent); color: var(--accent2); }
+
+
+
+    /* HR options */
+    #hr-options { display: flex; flex-direction: column; gap: 18px; }
+    #hr-options.disabled { opacity: 0.4; pointer-events: none; }
+    #hr-default-label, #wrap-label {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      font-size: 13px; color: white; user-select: none;
+    }
+    #hr-default, #img-wrap {
+      width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Hidden inputs -->
+  <input type="file" id="file-input"        accept=".html,.htm" style="display:none">
+  <input type="file" id="reload-input"      accept=".html,.htm" style="display:none">
+  <input type="file" id="css-folder-input"  webkitdirectory    style="display:none">
+
+  <div id="toolbar">
+    <div class="toolbar-group">
+      <button class="tb-btn" data-cmd="bold"      title="Bold (Ctrl+B)">B</button>
+      <button class="tb-btn" data-cmd="italic"    title="Italic (Ctrl+I)">I</button>
+      <button class="tb-btn" data-cmd="underline" title="Underline (Ctrl+U)">U</button>
+      <button class="tb-btn" id="btn-fontsize"    title="Font Size: 1.5rem|selected text">⌃A⌄</button>
+      <button class="tb-btn" id="btn-plain"       title="Plain text insert">^[ X ]</button>
+    </div>
+    <div class="toolbar-group">
+      <button class="tb-btn" id="btn-link" title="Link (Ctrl+K): text|source.html">🔗</button>
+    </div>
+    <div class="toolbar-group">
+      <button class="tb-btn" id="btn-ul"     title="Insert Unordered List">⋮•</button>
+      <button class="tb-btn" id="btn-ol"     title="Insert Ordered List">⋮#</button>
+      <button class="tb-btn" id="btn-indent" title="Indent: 1.4rem|selected text">⇥</button>
+    </div>
+    <div id="btn-h1-wrap">
+      <button class="tb-btn" id="btn-h1" title="Insert Heading">H1</button>
+      <div id="h1-dropdown">
+        <button data-h="h1">H1</button><button data-h="h2">H2</button>
+        <button data-h="h3">H3</button><button data-h="h4">H4</button>
+        <button data-h="h5">H5</button><button data-h="h6">H6</button>
+      </div>
+    </div>
+    <div class="toolbar-group">
+      <div id="btn-color-wrap">
+        <button class="tb-btn" id="btn-color" title="Text / Background Color" style="color:blue;background:yellow;font-weight:700;">A</button>
+        <div id="color-dropdown">
+          <button id="color-opt-text">Text</button>
+          <button id="color-opt-bg">Background</button>
+        </div>
+      </div>
+      <input type="color" id="color-picker">
+    </div>
+    <div class="toolbar-group">
+      <button class="tb-btn" id="btn-img" title="Insert Image">IMG</button>
+    </div>
+    <div class="toolbar-group">
+      <button class="tb-btn" id="btn-hr" title="Insert Horizontal Rule" style="font-size:10px;width:36px;">hr</button>
+    </div>
+
+    <div class="toolbar-group">
+      <div style="position:relative;display:flex;">
+        <button class="tb-btn" id="btn-br" title="Insert Break" style="font-size:11px;width:32px;">BR</button>
+        <div id="br-dropdown" style="display:none;position:absolute;top:36px;left:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;z-index:200;min-width:80px;">
+          <button data-break="soft" style="display:block;width:100%;padding:6px 14px;background:none;border:none;color:white;font-family:'Courier New',monospace;font-size:12px;text-align:left;cursor:pointer;">soft</button>
+          <button data-break="hard" style="display:block;width:100%;padding:6px 14px;background:none;border:none;color:white;font-family:'Courier New',monospace;font-size:12px;text-align:left;cursor:pointer;">hard</button>
+        </div>
+      </div>
+    </div>
+    <span id="dirty-dot">•</span>
+    <span id="file-label">No file open</span>
+  </div>
+
+  <div id="editor-wrap">
+    <div id="editor" contenteditable="false" spellcheck="true"></div>
+  </div>
+
+  <iframe id="harvest-frame" sandbox="allow-same-origin allow-scripts"></iframe>
+
+  <div id="statusbar">
+    <button id="btn-open"   class="sb-btn" title="Open HTML file">Open</button>
+    <div id="recent-wrap">
+      <button id="btn-recent">Recent ▾</button>
+      <ul id="recent-dropdown"></ul>
+    </div>
+    <button id="btn-save"   class="sb-btn" title="Save / Download (Ctrl+S)">Save ↓</button>
+    <button id="btn-reload" class="sb-btn" title="↺ from disk-no CSS load" disabled><span style="font-size:110%">↺</span>file</button>
+    <span id="word-count">0 words</span>
+    <span id="status-msg"></span>
+  </div>
+
+  <div id="save-flash">✓ Downloaded</div>
+
+  <!-- ── CSS FOLDER PROMPT ──────────────────────────── -->
+  <div id="css-prompt-overlay">
+    <div id="css-prompt">
+      <h3>External Stylesheet Detected</h3>
+      <p>This file uses local CSS files. Pick the folder containing them so the editor can render your styles. Your saved file will still use the original &lt;link&gt; tags — nothing changes on disk.</p>
+      <div id="css-prompt-files"></div>
+      <div id="css-prompt-btns">
+        <button class="dlg-btn dlg-btn-cancel" id="css-prompt-skip">Skip</button>
+        <button class="dlg-btn dlg-btn-ok"     id="css-prompt-pick">Pick Folder…</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── IMAGE INSERT DIALOG ──────────────────────── -->
+  <div id="img-dialog-overlay" class="dlg-overlay">
+    <div class="dlg-box">
+      <h3>Insert Image</h3>
+      <div class="dlg-row">
+        <label class="dlg-label">Alignment</label>
+        <div class="align-group" id="img-align-group">
+          <button class="align-btn active" data-align="center">Center</button>
+          <button class="align-btn"        data-align="left">Left</button>
+          <button class="align-btn"        data-align="right">Right</button>
+        </div>
+      </div>
+      <div class="dlg-row">
+        <label class="dlg-label" for="img-width">Width</label>
+        <input type="text" id="img-width" class="dlg-input" placeholder="e.g. 80%, 300px, 20rem">
+      </div>
+      <div class="dlg-row">
+        <label class="dlg-label" for="img-src">Image src</label>
+        <input type="text" id="img-src" class="dlg-input" placeholder="path/to/image.jpg or URL">
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-btn dlg-btn-cancel" id="dlg-img-cancel">Cancel</button>
+        <button class="dlg-btn dlg-btn-ok"     id="dlg-img-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HR INSERT DIALOG ─────────────────────────── -->
+  <div id="hr-dialog-overlay" class="dlg-overlay">
+    <div class="dlg-box">
+      <h3>Insert Horizontal Rule</h3>
+      <div class="dlg-row">
+        <label id="hr-default-label" for="hr-default">
+          <input type="checkbox" id="hr-default" checked>
+          Default (browser native style)
+        </label>
+      </div>
+      <div id="hr-options" class="disabled">
+        <div class="dlg-row">
+          <label class="dlg-label" style="color:white;">Alignment</label>
+          <div class="align-group" id="hr-align-group">
+            <button class="align-btn active" data-align="center">Center</button>
+            <button class="align-btn"        data-align="left">Left</button>
+            <button class="align-btn"        data-align="right">Right</button>
+          </div>
+        </div>
+        <div class="dlg-row">
+          <label class="dlg-label" style="color:white;" for="hr-width">Width</label>
+          <input type="text" id="hr-width" class="dlg-input" value="100%" placeholder="e.g. 80%, 300px">
+        </div>
+        <div class="dlg-row">
+          <label class="dlg-label" style="color:white;" for="hr-thickness">Thickness</label>
+          <input type="text" id="hr-thickness" class="dlg-input" value="4px" placeholder="e.g. 2px, 0.5rem">
+        </div>
+        <div class="dlg-row">
+          <label class="dlg-label" style="color:white;" for="hr-color">Color</label>
+          <input type="color" id="hr-color" value="#999999" style="width:100%;height:36px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;">
+        </div>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-btn dlg-btn-cancel" id="dlg-hr-cancel">Cancel</button>
+        <button class="dlg-btn dlg-btn-ok"     id="dlg-hr-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+
+  // ═══════════════════════════════════════════════════════
+  //  CORE STATE
+  // ═══════════════════════════════════════════════════════
+  const editor         = document.getElementById('editor');
+  const fileLabel      = document.getElementById('file-label');
+  const statusMsg      = document.getElementById('status-msg');
+  const wordCountEl    = document.getElementById('word-count');
+  const saveFlash      = document.getElementById('save-flash');
+  const tbBtns         = document.querySelectorAll('.tb-btn[data-cmd]');
+  const harvestFrame   = document.getElementById('harvest-frame');
+  const dirtyDot       = document.getElementById('dirty-dot');
+  const fileInput      = document.getElementById('file-input');
+  const reloadInput    = document.getElementById('reload-input');
+  const cssFolderInput = document.getElementById('css-folder-input');
+
+  let dirty           = false;
+  let currentFileName = null;
+  let originalHead    = '';
+  let pendingRawHTML  = '';
+  let pendingLinks    = [];
+
+  function setDirty(val) {
+    dirty = val;
+    dirtyDot.classList.toggle('show', val);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  RECENT FILES  (localStorage)
+  // ═══════════════════════════════════════════════════════
+  const RECENT_KEY = 'htmlEditor_recent';
+  const RECENT_MAX = 10;
+
+  function loadRecent() {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function addRecent(name) {
+    let list = loadRecent().filter(n => n !== name);
+    list.unshift(name);
+    if (list.length > RECENT_MAX) list.length = RECENT_MAX;
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch(e) {}
+    renderRecentDropdown();
+  }
+
+  function renderRecentDropdown() {
+    const ul   = document.getElementById('recent-dropdown');
+    const list = loadRecent();
+    ul.innerHTML = '';
+    if (!list.length) {
+      const li = document.createElement('li');
+      li.textContent = 'No recent files'; li.className = 'empty-msg';
+      ul.appendChild(li); return;
+    }
+    list.forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name; li.title = name;
+      li.addEventListener('click', () => {
+        ul.classList.remove('show');
+        setStatus(`Re-open "${name}" via the Open button`, 'ok');
+      });
+      ul.appendChild(li);
+    });
+  }
+
+  document.getElementById('btn-recent').addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('recent-dropdown').classList.toggle('show');
+  });
+  document.addEventListener('click', () => {
+    document.getElementById('recent-dropdown').classList.remove('show');
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  OPEN FILE
+  // ═══════════════════════════════════════════════════════
+  document.getElementById('btn-open').addEventListener('click', () => {
+    fileInput.value = '';
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    await processFile(file.name, await file.text());
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  RELOAD FROM DISK
+  // ═══════════════════════════════════════════════════════
+  document.getElementById('btn-reload').addEventListener('click', () => {
+    reloadInput.value = '';
+    reloadInput.click();
+  });
+
+  reloadInput.addEventListener('change', async () => {
+    const file = reloadInput.files[0];
+    if (!file) return;
+    reloadInput.value = '';                   // release FileList immediately
+
+    const raw        = await file.text();
+    const headMatch  = raw.match(/<head[\s\S]*?<\/head>/i);
+    originalHead     = headMatch ? headMatch[0] : '<head><meta charset="UTF-8"></head>';
+    const bodyMatch  = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    editor.innerHTML = bodyMatch ? bodyMatch[1] : raw;
+
+    updateWordCount();
+    setDirty(false);
+    editor.focus();
+    setStatus('Reloaded from disk', 'ok');
+  });
+
+  async function processFile(fileName, raw) {
+    currentFileName = fileName;
+
+    // Preserve <head> verbatim for saving
+    const headMatch = raw.match(/<head[\s\S]*?<\/head>/i);
+    originalHead = headMatch ? headMatch[0] : '<head><meta charset="UTF-8"></head>';
+
+    // Extract <body>
+    const bodyMatch   = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    const bodyContent = bodyMatch ? bodyMatch[1] : raw;
+
+    editor.innerHTML       = bodyContent;
+    editor.contentEditable = 'true';
+    fileLabel.textContent  = fileName;
+    fileLabel.classList.add('loaded');
+    document.getElementById('btn-reload').disabled = false;
+    updateWordCount();
+    setDirty(false);
+    addRecent(fileName);
+
+    // Detect local <link rel="stylesheet"> tags
+    const localLinks = detectLocalCSS(raw);
+
+    if (localLinks.length > 0) {
+      pendingRawHTML = raw;
+      pendingLinks   = localLinks;
+      showCSSPrompt(localLinks);
+    } else {
+      setStatus('Loading styles…');
+      const css = await buildAndHarvestCSS(raw, {});
+      injectCSS(css);
+      editor.focus();
+      setStatus('');
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  CSS DETECTION
+  // ═══════════════════════════════════════════════════════
+  function detectLocalCSS(html) {
+    // Match <link rel="stylesheet" href="..."> in either attribute order
+    const re = /<link[^>]+>/gi;
+    const found = [];
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const tag = m[0];
+      if (!/rel=["']stylesheet["']/i.test(tag)) continue;
+      const hm = tag.match(/href=["']([^"']+)["']/i);
+      if (!hm) continue;
+      const href = hm[1];
+      if (/^https?:\/\//i.test(href) || /^\/\//i.test(href)) continue; // skip web URLs
+      found.push(href);
+    }
+    return found;
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  CSS PROMPT
+  // ═══════════════════════════════════════════════════════
+  const cssPromptOverlay = document.getElementById('css-prompt-overlay');
+
+  function showCSSPrompt(links) {
+    document.getElementById('css-prompt-files').innerHTML =
+      links.map(l => `📄 ${l}`).join('<br>');
+    cssPromptOverlay.classList.add('show');
+  }
+
+  document.getElementById('css-prompt-skip').addEventListener('click', async () => {
+    cssPromptOverlay.classList.remove('show');
+    setStatus('Loading styles (no external CSS loaded)…');
+    const css = await buildAndHarvestCSS(pendingRawHTML, {});
+    injectCSS(css);
+    pendingRawHTML = ''; pendingLinks = [];   // release raw HTML string
+    editor.focus();
+    setStatus('');
+  });
+
+  document.getElementById('css-prompt-pick').addEventListener('click', () => {
+    cssPromptOverlay.classList.remove('show');
+    cssFolderInput.value = '';
+    cssFolderInput.click();
+  });
+
+  cssFolderInput.addEventListener('change', async () => {
+    if (!cssFolderInput.files.length) return;
+    const cssMap = {};
+    for (const f of cssFolderInput.files) {
+      if (/\.css$/i.test(f.name)) cssMap[f.name] = await f.text();
+    }
+    cssFolderInput.value = '';                // release FileList / folder reference
+    setStatus('Loading styles…');
+    const css = await buildAndHarvestCSS(pendingRawHTML, cssMap);
+    injectCSS(css);
+    pendingRawHTML = ''; pendingLinks = [];   // release raw HTML string
+    editor.focus();
+    setStatus('');
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  CSS HARVESTING  via Blob + iframe
+  // ═══════════════════════════════════════════════════════
+  function buildAndHarvestCSS(rawHTML, cssMap) {
+    return new Promise(resolve => {
+      // Inline any local CSS files we resolved from the folder
+      let processed = rawHTML.replace(/<link[^>]+>/gi, tag => {
+        if (!/rel=["']stylesheet["']/i.test(tag)) return tag;
+        const hm = tag.match(/href=["']([^"']+)["']/i);
+        if (!hm) return tag;
+        const href = hm[1];
+        if (/^https?:\/\//i.test(href) || /^\/\//i.test(href)) return tag; // keep web links
+        const fname = href.split(/[/\\]/).pop();
+        if (cssMap[fname]) return `<style>/* inlined: ${fname} */\n${cssMap[fname]}</style>`;
+        return tag; // not found — leave as-is
+      });
+
+      const blob    = new Blob([processed], { type: 'text/html' });
+      const blobURL = URL.createObjectURL(blob);
+
+      const onLoad = () => {
+        harvestFrame.removeEventListener('load', onLoad);
+        try {
+          const iDoc      = harvestFrame.contentDocument;
+          const cssChunks = [];
+
+          for (const sheet of iDoc.styleSheets) {
+            try {
+              const rules = sheet.cssRules || sheet.rules;
+              if (!rules) continue;
+              for (const rule of rules) cssChunks.push(rule.cssText);
+            } catch(e) {
+              console.warn('Could not read stylesheet:', sheet.href, e.message);
+            }
+          }
+
+          // Capture CSS custom properties
+          const rootStyle = iDoc.defaultView.getComputedStyle(iDoc.documentElement);
+          const varLines  = [];
+          for (const prop of rootStyle) {
+            if (prop.startsWith('--')) {
+              varLines.push(`  ${prop}: ${rootStyle.getPropertyValue(prop).trim()};`);
+            }
+          }
+          if (varLines.length) cssChunks.unshift(`:root {\n${varLines.join('\n')}\n}`);
+
+          resolve(cssChunks.join('\n\n'));
+        } catch(e) {
+          console.error('CSS harvest failed:', e);
+          resolve('');
+        } finally {
+          URL.revokeObjectURL(blobURL);
+          harvestFrame.src = 'about:blank'; // release the parsed iframe document
+        }
+      };
+
+      harvestFrame.addEventListener('load', onLoad);
+      harvestFrame.src = blobURL;
+    });
+  }
+
+  function injectCSS(cssText) {
+    let tag = document.getElementById('injected-target-css');
+    if (!tag) {
+      tag = document.createElement('style');
+      tag.id = 'injected-target-css';
+      document.head.appendChild(tag);
+    }
+    // Scope html/body rules into #editor so editor UI is not affected
+    tag.textContent = cssText.replace(/(?:^|\n)(html|body)\b([^{]*)\{/g, '\n#editor$2{');
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  SAVE / DOWNLOAD
+  // ═══════════════════════════════════════════════════════
+  function save() {
+    if (!fileLabel.classList.contains('loaded')) return;
+    // originalHead is preserved verbatim — <link> tags stay intact
+    const full = `<!DOCTYPE html>\n<html>\n${originalHead}\n<body>\n${editor.innerHTML}\n</body>\n</html>`;
+    const blob = new Blob([full], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = currentFileName || 'document.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    flashSaved(); setDirty(false);
+    setStatus('Downloaded: ' + (currentFileName || 'document.html'), 'ok');
+  }
+
+  document.getElementById('btn-save').addEventListener('click', save);
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); save(); }
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  FORMAT HELPERS
+  // ═══════════════════════════════════════════════════════
+  const FORMAT = {
+    bold:      { tag: 'strong', prop: 'fontWeight',     val: 'bold',      query: 'bold'      },
+    italic:    { tag: 'em',     prop: 'fontStyle',      val: 'italic',    query: 'italic'    },
+    underline: { tag: 'u',      prop: 'textDecoration', val: 'underline', query: 'underline' }
+  };
+
+  function applyFormat(cmd) {
+    const fmt = FORMAT[cmd];
+    if (!fmt) return;
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+    const range  = sel.getRangeAt(0);
+    const active = document.queryCommandState(fmt.query);
+    if (active) {
+      let node = sel.anchorNode;
+      while (node && node !== editor) {
+        if (node.nodeType === 1 && node.tagName.toLowerCase() === fmt.tag) {
+          const p = node.parentNode;
+          while (node.firstChild) p.insertBefore(node.firstChild, node);
+          p.removeChild(node); break;
+        }
+        node = node.parentNode;
+      }
+    } else {
+      const el = document.createElement(fmt.tag);
+      el.style[fmt.prop] = fmt.val;
+      try { range.surroundContents(el); }
+      catch(e) { const frag = range.extractContents(); el.appendChild(frag); range.insertNode(el); }
+      const nr = document.createRange(); nr.selectNodeContents(el);
+      sel.removeAllRanges(); sel.addRange(nr);
+    }
+  }
+
+  function applyLink(raw) {
+    if (!raw || !raw.includes('|')) { setStatus('Format: link text|url', 'err'); return; }
+    const bar = raw.indexOf('|');
+    const label = raw.slice(0, bar).trim();
+    const href  = raw.slice(bar + 1).trim();
+    if (!label || !href) { setStatus('Format: link text|url', 'err'); return; }
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    const a = document.createElement('a');
+    a.href = href; a.target = '_blank';
+a.textContent = label; a.style.cssText = 'color:inherit;text-decoration:underline;';
+    range.deleteContents(); range.insertNode(a);
+    sel.removeAllRanges();
+    const after = document.createRange(); after.setStartAfter(a); after.collapse(true); sel.addRange(after);
+  }
+
+  document.getElementById('btn-link').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const raw = window.getSelection().toString();
+    setTimeout(() => { applyLink(raw); editor.focus(); }, 0);
+  });
+
+  function applyFontSize(raw) {
+    if (!raw || !raw.includes('|')) { setStatus('Format: 1.5rem|your text', 'err'); return; }
+    const bar = raw.indexOf('|');
+    const size = raw.slice(0, bar).trim();
+    const text = raw.slice(bar + 1).trim();
+    if (!size || !text) { setStatus('Format: 1.5rem|your text', 'err'); return; }
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const span = document.createElement('span');
+    span.style.fontSize = size; span.textContent = text;
+    const range = sel.getRangeAt(0);
+    range.deleteContents(); range.insertNode(span);
+    sel.removeAllRanges();
+    const after = document.createRange(); after.setStartAfter(span); after.collapse(true); sel.addRange(after);
+  }
+
+  document.getElementById('btn-fontsize').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const raw = window.getSelection().toString();
+    setTimeout(() => { applyFontSize(raw); editor.focus(); }, 0);
+  });
+
+  function insertList(type) {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0); range.collapse(true);
+    const list = document.createElement(type);
+    const li1 = document.createElement('li'); li1.textContent = 'apples';
+    const li2 = document.createElement('li'); li2.textContent = 'bananas';
+    list.appendChild(li1); list.appendChild(li2);
+    range.insertNode(list);
+    const nr = document.createRange(); nr.setStart(li1, 0); nr.collapse(true);
+    sel.removeAllRanges(); sel.addRange(nr);
+  }
+
+  document.getElementById('btn-ul').addEventListener('mousedown', e => { e.preventDefault(); setTimeout(() => { insertList('ul'); editor.focus(); }, 0); });
+  document.getElementById('btn-ol').addEventListener('mousedown', e => { e.preventDefault(); setTimeout(() => { insertList('ol'); editor.focus(); }, 0); });
+
+  function applyIndent(raw) {
+    if (!raw || !raw.includes('|')) { setStatus('Format: 1.4rem|content', 'err'); return; }
+    const bar = raw.indexOf('|');
+    const size = raw.slice(0, bar).trim();
+    if (!size) { setStatus('Format: 1.4rem|content', 'err'); return; }
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    const frag = range.extractContents();
+    const walker = document.createTreeWalker(frag, NodeFilter.SHOW_TEXT);
+    const ft = walker.nextNode();
+    if (ft) ft.textContent = ft.textContent.replace(/^[^|]*\|/, '');
+    const div = document.createElement('div'); div.style.marginLeft = size; div.appendChild(frag);
+    range.insertNode(div);
+    sel.removeAllRanges();
+    const after = document.createRange(); after.setStartAfter(div); after.collapse(true); sel.addRange(after);
+  }
+
+  document.getElementById('btn-indent').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const raw = window.getSelection().toString();
+    setTimeout(() => { applyIndent(raw); editor.focus(); }, 0);
+  });
+
+  function insertPlainText() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const span = document.createElement('span');
+    span.style.fontWeight = 'normal'; span.style.fontSize = 'initial'; span.textContent = '[ X ]';
+    const range = sel.getRangeAt(0); range.insertNode(span);
+    sel.removeAllRanges();
+    const after = document.createRange(); after.setStartAfter(span); after.collapse(true); sel.addRange(after);
+  }
+
+  document.getElementById('btn-plain').addEventListener('mousedown', e => {
+    e.preventDefault(); setTimeout(() => { insertPlainText(); editor.focus(); }, 0);
+  });
+
+  // ── HEADINGS ────────────────────────────────────────────
+  const h1Dropdown = document.getElementById('h1-dropdown');
+  document.getElementById('btn-h1').addEventListener('click', e => {
+    e.stopPropagation();
+    h1Dropdown.style.display = h1Dropdown.style.display === 'block' ? 'none' : 'block';
+  });
+  h1Dropdown.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault(); h1Dropdown.style.display = 'none';
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return;
+      const el = document.createElement(btn.dataset.h); el.textContent = 'Heading';
+      const range = sel.getRangeAt(0); range.insertNode(el);
+      sel.removeAllRanges();
+      const after = document.createRange(); after.setStartAfter(el); after.collapse(true); sel.addRange(after);
+      editor.focus();
+    });
+  });
+  document.addEventListener('click', () => { h1Dropdown.style.display = 'none'; });
+
+  // ── COLOR ───────────────────────────────────────────────
+  const colorDropdown = document.getElementById('color-dropdown');
+  const colorPicker   = document.getElementById('color-picker');
+  let   colorMode     = null;
+
+  document.getElementById('btn-color').addEventListener('click', e => {
+    e.stopPropagation();
+    colorDropdown.style.display = colorDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+  document.getElementById('color-opt-text').addEventListener('mousedown', e => {
+    e.preventDefault(); colorDropdown.style.display = 'none';
+    if (window.getSelection().isCollapsed) { setStatus('Select text first', 'err'); return; }
+    colorMode = 'text'; colorPicker.click();
+  });
+  document.getElementById('color-opt-bg').addEventListener('mousedown', e => {
+    e.preventDefault(); colorDropdown.style.display = 'none';
+    if (window.getSelection().isCollapsed) { setStatus('Select text first', 'err'); return; }
+    colorMode = 'bg'; colorPicker.click();
+  });
+  colorPicker.addEventListener('change', () => {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    if (colorMode === 'text') span.style.color = colorPicker.value;
+    else span.style.backgroundColor = colorPicker.value;
+    try { range.surroundContents(span); }
+    catch(e) { const frag = range.extractContents(); span.appendChild(frag); range.insertNode(span); }
+    sel.removeAllRanges();
+    const after = document.createRange(); after.setStartAfter(span); after.collapse(true); sel.addRange(after);
+    editor.focus();
+  });
+  document.addEventListener('click', () => { colorDropdown.style.display = 'none'; });
+
+  // ── FORMAT BUTTONS ──────────────────────────────────────
+  tbBtns.forEach(btn => {
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault(); applyFormat(btn.dataset.cmd); updateToolbarState(); editor.focus();
+    });
+  });
+
+  // ── IMAGE INSERT ────────────────────────────────────────
+  const imgOverlay  = document.getElementById('img-dialog-overlay');
+  const imgAlignBtns = document.querySelectorAll('#img-align-group .align-btn');
+  const imgWidthInp = document.getElementById('img-width');
+  const imgSrcInp   = document.getElementById('img-src');
+  let imgSavedRange = null;
+  let imgAlign      = 'center';
+
+  imgAlignBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      imgAlignBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); imgAlign = btn.dataset.align;
+    });
+  });
+
+  document.getElementById('btn-img').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection();
+    imgSavedRange = (sel && sel.rangeCount > 0) ? sel.getRangeAt(0).cloneRange() : null;
+    imgAlignBtns.forEach(b => b.classList.remove('active'));
+    document.querySelector('#img-align-group .align-btn[data-align="center"]').classList.add('active');
+    imgAlign = 'center'; imgWidthInp.value = ''; imgSrcInp.value = '';
+    imgOverlay.classList.add('show');
+    setTimeout(() => imgWidthInp.focus(), 50);
+  });
+
+  function closeImgDialog() { imgOverlay.classList.remove('show'); imgSavedRange = null; editor.focus(); }
+  document.getElementById('dlg-img-cancel').addEventListener('click', closeImgDialog);
+  imgOverlay.addEventListener('click', e => { if (e.target === imgOverlay) closeImgDialog(); });
+  imgSrcInp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doInsertImage(); } });
+  document.getElementById('dlg-img-ok').addEventListener('click', doInsertImage);
+
+  function doInsertImage() {
+    const src   = imgSrcInp.value.trim();
+    const width = imgWidthInp.value.trim() || 'auto';
+    if (!src) {
+      imgSrcInp.focus(); imgSrcInp.style.borderColor = 'yellow';
+      setTimeout(() => imgSrcInp.style.borderColor = '', 1400); return;
+    }
+    imgOverlay.classList.remove('show');
+    const img = document.createElement('img'); img.src = src;
+    if      (imgAlign === 'center') img.style.cssText = `width:${width};display:block;margin:.5rem auto;`;
+    else if (imgAlign === 'left')   img.style.cssText = `width:${width};display:block;margin:.5rem auto .5rem .5rem;`;
+    else                            img.style.cssText = `width:${width};display:block;margin:.5rem .5rem .5rem auto;`;
+    editor.focus();
+    const sel = window.getSelection(); sel.removeAllRanges();
+    if (imgSavedRange) { sel.addRange(imgSavedRange); }
+    else { const er = document.createRange(); er.selectNodeContents(editor); er.collapse(false); sel.addRange(er); }
+    imgSavedRange = null;                     // release range / DOM node refs
+    const range = sel.getRangeAt(0); range.collapse(true); range.insertNode(img);
+    const after = document.createRange(); after.setStartAfter(img); after.collapse(true);
+    sel.removeAllRanges(); sel.addRange(after);
+    editor.focus(); updateWordCount(); setDirty(true);
+  }
+
+  // ── KEYBOARD SHORTCUTS ──────────────────────────────────
+  editor.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault(); applyLink(window.getSelection().toString());
+    }
+  });
+
+  // Global Escape handler for all dialogs
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      imgOverlay.classList.remove('show'); imgSavedRange = null;
+      document.getElementById('hr-dialog-overlay').classList.remove('show'); hrSavedRange = null;
+      cssPromptOverlay.classList.remove('show');
+      editor.focus();
+    }
+  });
+
+  // ── TOOLBAR STATE ───────────────────────────────────────
+  document.addEventListener('selectionchange', updateToolbarState);
+  function updateToolbarState() {
+    tbBtns.forEach(btn => {
+      try { btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd)); } catch(_) {}
+    });
+        updateWordCount();
+  }
+
+// ── WORD COUNT ──────────────────────────────────────────
+  editor.addEventListener('input', () => { setDirty(true); updateWordCount(); });
+  function updateWordCount() {
+    const total = editor.innerText.trim();
+    const totalWords = total ? total.split(/\s+/).length : 0;
+    const sel = window.getSelection();
+    const selText = (sel && !sel.isCollapsed) ? sel.toString().trim() : '';
+    if (selText) {
+      const selWords = selText.split(/\s+/).length;
+      wordCountEl.textContent = `${totalWords} words (sel: ${selWords})`;
+    } else {
+      wordCountEl.textContent = totalWords + (totalWords === 1 ? ' word' : ' words');
+    }
+  }
+
+  // ── HELPERS ─────────────────────────────────────────────
+  let statusTimer;
+  function setStatus(msg, type = '') {
+    clearTimeout(statusTimer);
+    statusMsg.textContent = msg; statusMsg.classList.remove('ok', 'err');
+    if (type) statusMsg.classList.add(type);
+    if (msg) statusTimer = setTimeout(() => { statusMsg.textContent = ''; statusMsg.classList.remove('ok', 'err'); }, 9000);
+  }
+
+  let flashTimer;
+  function flashSaved() {
+    saveFlash.classList.add('show'); clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => saveFlash.classList.remove('show'), 1800);
+  }
+
+  // ═══════════════════════════════════════════════════════
+  //  HR INSERT
+  // ═══════════════════════════════════════════════════════
+  const hrOverlay    = document.getElementById('hr-dialog-overlay');
+  const hrDefault    = document.getElementById('hr-default');
+  const hrOptions    = document.getElementById('hr-options');
+  const hrAlignBtns  = document.querySelectorAll('#hr-align-group .align-btn');
+  const hrWidthInp   = document.getElementById('hr-width');
+  const hrThickInp   = document.getElementById('hr-thickness');
+  const hrColorInp   = document.getElementById('hr-color');
+  let hrSavedRange   = null;
+  let hrAlign        = 'center';
+
+  hrDefault.addEventListener('change', () => { hrOptions.classList.toggle('disabled', hrDefault.checked); });
+
+  hrAlignBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      hrAlignBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active'); hrAlign = btn.dataset.align;
+    });
+  });
+
+  document.getElementById('btn-hr').addEventListener('mousedown', e => {
+    e.preventDefault();
+    const sel = window.getSelection();
+    hrSavedRange = (sel && sel.rangeCount > 0) ? sel.getRangeAt(0).cloneRange() : null;
+    hrDefault.checked = true; hrOptions.classList.add('disabled');
+    hrAlignBtns.forEach(b => b.classList.remove('active'));
+    document.querySelector('#hr-align-group .align-btn[data-align="center"]').classList.add('active');
+    hrAlign = 'center'; hrWidthInp.value = '100%'; hrThickInp.value = '4px'; hrColorInp.value = '#999999';
+    hrOverlay.classList.add('show');
+  });
+
+  document.getElementById('dlg-hr-cancel').addEventListener('click', () => { hrOverlay.classList.remove('show'); hrSavedRange = null; editor.focus(); });
+  hrOverlay.addEventListener('click', e => { if (e.target === hrOverlay) { hrOverlay.classList.remove('show'); hrSavedRange = null; editor.focus(); } });
+  document.getElementById('dlg-hr-ok').addEventListener('click', doInsertHr);
+
+  function doInsertHr() {
+    hrOverlay.classList.remove('show'); editor.focus();
+    const sel = window.getSelection(); sel.removeAllRanges();
+    if (hrSavedRange) { sel.addRange(hrSavedRange); }
+    else { const er = document.createRange(); er.selectNodeContents(editor); er.collapse(false); sel.addRange(er); }
+    hrSavedRange = null;                      // release range / DOM node refs
+    const range = sel.getRangeAt(0); range.collapse(true);
+
+    if (hrDefault.checked) {
+      const hr = document.createElement('hr'); range.insertNode(hr);
+      const after = document.createRange(); after.setStartAfter(hr); after.collapse(true);
+      sel.removeAllRanges(); sel.addRange(after);
+    } else {
+      const width = hrWidthInp.value.trim() || '100%';
+      const thickness = hrThickInp.value.trim() || '4px';
+      const color = hrColorInp.value || '#999999';
+      let ml, mr;
+      if      (hrAlign === 'center') { ml = 'auto'; mr = 'auto'; }
+      else if (hrAlign === 'left')   { ml = '0';    mr = 'auto'; }
+      else                           { ml = 'auto'; mr = '0';    }
+      const wrapper = document.createElement('div'); wrapper.style.width = '100%';
+      const hr = document.createElement('hr');
+      hr.style.cssText = `width:${width};height:${thickness};background-color:${color};border:none;margin-left:${ml};margin-right:${mr};box-shadow:0 2px 4px rgba(0,0,0,0.5),inset 0 1px 2px rgba(255,255,255,0.4);`;
+      wrapper.appendChild(hr); range.insertNode(wrapper);
+      const after = document.createRange(); after.setStartAfter(wrapper); after.collapse(true);
+      sel.removeAllRanges(); sel.addRange(after);
+    }
+    editor.focus();
+  }
+
+
+
+  // ═══════════════════════════════════════════════════════
+  //  BREAK INSERT
+  // ═══════════════════════════════════════════════════════
+  const brDropdown = document.getElementById('br-dropdown');
+  document.getElementById('btn-br').addEventListener('click', e => {
+    e.stopPropagation();
+    brDropdown.style.display = brDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+  document.addEventListener('click', () => { brDropdown.style.display = 'none'; });
+
+  function softBreak() {
+    const sel = window.getSelection(); if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0); range.collapse(true);
+    const br = document.createElement('br'); range.insertNode(br);
+    const after = document.createRange(); after.setStartAfter(br); after.collapse(true);
+    sel.removeAllRanges(); sel.addRange(after); editor.focus();
+  }
+
+  function hardBreak(anchorNode, anchorOffset) {
+    const parent = anchorNode ? anchorNode.parentNode : null;
+    if (!parent || parent === editor) { softBreak(); return; }
+    const clone    = parent.cloneNode(false);
+    const leftText = anchorNode.textContent.slice(0, anchorOffset);
+    const rightText = anchorNode.textContent.slice(anchorOffset);
+    anchorNode.textContent = leftText;
+    if (rightText) clone.appendChild(document.createTextNode(rightText));
+    let sib = anchorNode.nextSibling;
+    while (sib) { const next = sib.nextSibling; clone.appendChild(sib); sib = next; }
+    parent.parentNode.insertBefore(clone, parent.nextSibling);
+    const sel = window.getSelection(); sel.removeAllRanges();
+    const nr = document.createRange();
+    const fc = clone.firstChild;
+    if (fc) nr.setStart(fc, 0); else nr.setStart(clone, 0);
+    nr.collapse(true); sel.addRange(nr); editor.focus();
+  }
+
+  brDropdown.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const sel = window.getSelection();
+      const an = sel && sel.anchorNode;
+      const ao = sel ? sel.anchorOffset : 0;
+      brDropdown.style.display = 'none';
+      setTimeout(() => { if (btn.dataset.break === 'soft') softBreak(); else hardBreak(an, ao); }, 0);
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  INIT
+  // ═══════════════════════════════════════════════════════
+  renderRecentDropdown();
+
+  </script>
+</body>
+</html>
