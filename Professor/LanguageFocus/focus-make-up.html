@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus: Make Up</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    background: #e8e0d5;
+    color: #3d3530;
+    min-height: 100vh;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2rem 1.5rem 1.8rem;
+    background: #3d3530;
+    border-radius: 14px;
+  }
+  .page-header .tag {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #c9b89a;
+    margin-bottom: 0.6rem;
+  }
+  .page-header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.6rem;
+    color: #f5ede0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .page-header .subtitle {
+    font-size: 14px;
+    color: #a89880;
+    margin-top: 0.5rem;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    background: #f5f0e8;
+    border-radius: 12px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1.4rem;
+    border: 1px solid #d6cdc0;
+  }
+  .section-alt  { background: #eae4da; }
+  .section-alt2 { background: #f0ebe0; }
+
+  .section-label {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8a7a68;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .section h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.25rem;
+    color: #3d3530;
+    font-weight: 700;
+    margin-bottom: 1.1rem;
+    border-bottom: 1.5px solid #d0c8b8;
+    padding-bottom: 0.5rem;
+  }
+
+  /* ── MEANING BLOCKS ── */
+  .meaning-block { margin-bottom: 1.4rem; }
+  .meaning-block:last-child { margin-bottom: 0; }
+
+  .phrase-tag {
+    display: inline-block;
+    background: #3d3530;
+    color: #f5ede0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    padding: 3px 10px;
+    border-radius: 5px;
+    margin-bottom: 0.3rem;
+  }
+  .pos {
+    font-size: 12px;
+    color: #8F2719;
+    margin-left: 6px;
+    font-style: italic;
+  }
+
+  /* alternating definition colors */
+  .def-d { color: #7c3faf; font-size: 14px; margin-bottom: 0.55rem; font-weight: 500; }
+  .def-e { color: #a8358a; font-size: 14px; margin-bottom: 0.55rem; font-weight: 500; }
+
+  .examples { list-style: none; padding-left: 0; }
+  .examples li {
+    font-size: 14px;
+    color: #3d3530;
+    padding: 4px 0 4px 14px;
+    border-left: 2.5px solid #b5a896;
+    margin-bottom: 3px;
+    line-height: 1.55;
+  }
+  .examples li em { color: #5a3e2b; font-style: italic; }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed #c5bdb0;
+    margin: 1.2rem 0;
+  }
+
+  /* ── IDIOM GRID ── */
+  .idiom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 560px) { .idiom-grid { grid-template-columns: 1fr; } }
+
+  .idiom-card {
+    background: #ede6d8;
+    border-radius: 9px;
+    padding: 1rem 1.1rem;
+    border: 1px solid #d0c4b0;
+  }
+  .idiom-card .idiom-phrase {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #3d3530;
+    margin-bottom: 0.2rem;
+  }
+  .idiom-card .idiom-def-d { font-size: 13px; color: #7c3faf; margin-bottom: 0.5rem; font-style: italic; font-weight: 500; }
+  .idiom-card .idiom-def-e { font-size: 13px; color: #a8358a; margin-bottom: 0.5rem; font-style: italic; font-weight: 500; }
+  .idiom-card .examples li { font-size: 13px; }
+
+  /* ── COLLOCATIONS ── */
+  .colloc-row { margin-bottom: 1rem; }
+  .colloc-row:last-child { margin-bottom: 0; }
+
+  .colloc-head {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #3d3530;
+    margin-bottom: 0.3rem;
+  }
+  .colloc-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0.4rem; }
+  .pill {
+    background: #d4c9b8;
+    color: #3d3530;
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  /* ── SAYINGS ── */
+  .saying-block {
+    background: #e4ddd0;
+    border-left: 4px solid #8a7a68;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .saying-block:last-child { margin-bottom: 0; }
+  .saying-phrase {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #3d3530;
+    margin-bottom: 0.15rem;
+  }
+  .saying-note-d { font-size: 13px; color: #7c3faf; font-weight: 500; margin-bottom: 0.4rem; }
+  .saying-note-e { font-size: 13px; color: #a8358a; font-weight: 500; margin-bottom: 0.4rem; }
+
+  /* ── BONUS SECTION ── */
+  .bonus-section {
+    background: #ddd5c5;
+    border: 2px dashed #b5a890;
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+  }
+  .bonus-badge {
+    position: absolute;
+    top: -13px;
+    left: 20px;
+    background: #8a7a68;
+    color: #f5ede0;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .bonus-section h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.1rem;
+    color: #3d3530;
+    margin-bottom: 0.6rem;
+    margin-top: 0.4rem;
+    border-bottom: 1.5px solid #c8bfb0;
+    padding-bottom: 0.4rem;
+  }
+  .bonus-intro {
+    font-size: 13.5px;
+    color: #5a4e42;
+    margin-bottom: 1rem;
+  }
+  .spelling-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 0.9rem;
+  }
+  .spell-card {
+    background: #ede6d8;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #c8bfb0;
+  }
+  .spell-form {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #3d3530;
+    margin-bottom: 0.15rem;
+  }
+  .spell-use {
+    font-size: 12px;
+    color: #7a6a58;
+    font-style: italic;
+    margin-bottom: 0.3rem;
+  }
+  .spell-ex { font-size: 12.5px; color: #4a3f35; }
+  .spell-ex em { font-style: italic; color: #5a3e2b; }
+
+  .bonus-note {
+    font-size: 12.5px;
+    color: #6a5c4e;
+    font-style: italic;
+  }
+  .bonus-note strong { font-style: normal; }
+</style>
+</head>
+<body>
+<div class="inner">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="tag">Language Focus &nbsp;·&nbsp; Phrasal Verb</div>
+    <h1>Make Up</h1>
+    <div class="subtitle">B1 – B2 &nbsp;|&nbsp; Meanings, idioms, collocations &amp; common expressions</div>
+  </div>
+
+  <!-- PART 1: CORE MEANINGS -->
+  <div class="section">
+    <div class="section-label">Part 1</div>
+    <h2>Core Meanings</h2>
+
+    <!-- 1. Reconcile -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up</span><span class="pos"> — to reconcile</span>
+      <p class="def-d">To end an argument and become friendly again.</p>
+      <ul class="examples">
+        <li>Barb and John <em>made up</em> again after their fight.</li>
+        <li>They always argue, but they always <em>make up</em> quickly.</li>
+        <li>It took a week, but the two friends finally <em>made up</em>.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 2. Fabricate -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up / made up</span><span class="pos"> — to invent or fabricate</span>
+      <p class="def-e">To invent a story, excuse, or reason — often one that isn't true.</p>
+      <ul class="examples">
+        <li>That whole story sounds completely <em>made up</em>.</li>
+        <li>He <em>made up</em> an excuse for being late.</li>
+        <li>She's not sick — I think she just <em>made that up</em>.</li>
+        <li>The kids <em>made up</em> their own game with new rules.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 3. Constitute -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up</span><span class="pos"> — to constitute or form</span>
+      <p class="def-d">To be the parts that form a whole.</p>
+      <ul class="examples">
+        <li>Women <em>make up</em> over 60% of the workforce here.</li>
+        <li>Small businesses <em>make up</em> the majority of the economy.</li>
+        <li>What <em>makes up</em> a balanced diet?</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 4. Compensate / do later -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up</span><span class="pos"> — to compensate / do later</span>
+      <p class="def-e">To do something that was missed, or to compensate for a loss or absence.</p>
+      <ul class="examples">
+        <li>Students who were absent need to <em>make up</em> the exam.</li>
+        <li>Can I <em>make up</em> the class I missed on Friday?</li>
+        <li>She worked overtime to <em>make up</em> the hours she lost.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 5. Make it up to someone -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make it up to someone</span><span class="pos"> — to compensate emotionally</span>
+      <p class="def-d">To do something kind or special for someone after you have let them down.</p>
+      <ul class="examples">
+        <li>I'm sorry I missed your birthday — I'll <em>make it up to you</em>.</li>
+        <li>He felt guilty and wanted to <em>make it up to her</em> somehow.</li>
+        <li>"Don't worry," she said. "I'll <em>make it up to you</em> next time."</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 6. Make up for -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up for</span><span class="pos"> — to compensate for something</span>
+      <p class="def-e">To balance or cancel out something negative.</p>
+      <ul class="examples">
+        <li>Nothing can fully <em>make up for</em> lost time.</li>
+        <li>His enthusiasm more than <em>makes up for</em> his lack of experience.</li>
+        <li>A great ending doesn't always <em>make up for</em> a slow start.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 7. Cosmetics -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up</span><span class="pos"> — to apply cosmetics</span>
+      <p class="def-d">To put on cosmetics; also used as a noun.</p>
+      <ul class="examples">
+        <li>She took thirty minutes to <em>make up</em> before the event.</li>
+        <li>He was already dressed but hadn't finished <em>making up</em> yet.</li>
+        <li>She barely wears any <em>makeup</em> on normal days.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 8. Prepare / assemble -->
+    <div class="meaning-block">
+      <span class="phrase-tag">make up</span><span class="pos"> — to prepare or assemble</span>
+      <p class="def-e">To prepare or put together something, such as a bed or a package.</p>
+      <ul class="examples">
+        <li>Can you <em>make up</em> the guest room before they arrive?</li>
+        <li>The pharmacist <em>made up</em> the prescription in about ten minutes.</li>
+        <li>She <em>made up</em> a package of snacks for the road trip.</li>
+      </ul>
+    </div>
+
+  </div><!-- /section -->
+
+  <!-- PART 2: IDIOMS -->
+  <div class="section section-alt">
+    <div class="section-label">Part 2</div>
+    <h2>Idioms</h2>
+    <div class="idiom-grid">
+
+      <div class="idiom-card">
+        <div class="idiom-phrase">make up your mind</div>
+        <div class="idiom-def-d">to decide</div>
+        <ul class="examples">
+          <li>Just <em>make up your mind</em> — we're waiting.</li>
+          <li>She couldn't <em>make up her mind</em> which dress to wear.</li>
+          <li>Have you <em>made up your mind</em> about the job offer yet?</li>
+        </ul>
+      </div>
+
+      <div class="idiom-card">
+        <div class="idiom-phrase">make up the difference</div>
+        <div class="idiom-def-e">to cover what is still missing</div>
+        <ul class="examples">
+          <li>I only had $40, so my dad <em>made up the difference</em>.</li>
+          <li>The company will <em>make up the difference</em> in your salary.</li>
+        </ul>
+      </div>
+
+      <div class="idiom-card">
+        <div class="idiom-phrase">make up lost ground</div>
+        <div class="idiom-def-d">to recover after falling behind</div>
+        <ul class="examples">
+          <li>After a slow start, the team <em>made up lost ground</em>.</li>
+          <li>She studied hard to <em>make up lost ground</em> after her illness.</li>
+        </ul>
+      </div>
+
+      <div class="idiom-card">
+        <div class="idiom-phrase">make up the numbers</div>
+        <div class="idiom-def-e">to be there just to fill a spot, without real purpose</div>
+        <ul class="examples">
+          <li>I felt like I was just <em>making up the numbers</em> at that meeting.</li>
+          <li>He wasn't really needed — he was only there to <em>make up the numbers</em>.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div><!-- /section -->
+
+  <!-- PART 3: COLLOCATIONS -->
+  <div class="section">
+    <div class="section-label">Part 3</div>
+    <h2>Key Collocations</h2>
+
+    <div class="colloc-row">
+      <div class="colloc-head">Fabrication — what people make up</div>
+      <div class="colloc-pills">
+        <span class="pill">make up a story</span>
+        <span class="pill">make up an excuse</span>
+        <span class="pill">make up a lie</span>
+        <span class="pill">make up a reason</span>
+        <span class="pill">make up a name</span>
+      </div>
+      <ul class="examples">
+        <li>Kids love to <em>make up stories</em> about dragons and heroes.</li>
+        <li>He <em>made up an excuse</em> so he wouldn't have to go.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <div class="colloc-row">
+      <div class="colloc-head">Intensifiers — how made-up something is</div>
+      <div class="colloc-pills">
+        <span class="pill">completely made up</span>
+        <span class="pill">totally made up</span>
+        <span class="pill">just making it up</span>
+        <span class="pill">partly made up</span>
+      </div>
+      <ul class="examples">
+        <li>That statistic is <em>completely made up</em> — don't believe it.</li>
+        <li>I think he's <em>just making it up</em> as he goes.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <div class="colloc-row">
+      <div class="colloc-head">Constitute — what things are made up of</div>
+      <div class="colloc-pills">
+        <span class="pill">make up most of</span>
+        <span class="pill">make up the majority of</span>
+        <span class="pill">make up the bulk of</span>
+        <span class="pill">make up X%</span>
+      </div>
+      <ul class="examples">
+        <li>Young voters <em>made up the majority of</em> the audience.</li>
+        <li>Carbohydrates <em>make up the bulk of</em> most people's diets.</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <div class="colloc-row">
+      <div class="colloc-head">Reconcile — how quickly people make up</div>
+      <div class="colloc-pills">
+        <span class="pill">quickly made up</span>
+        <span class="pill">eventually made up</span>
+        <span class="pill">never made up</span>
+      </div>
+      <ul class="examples">
+        <li>They argued badly, but they <em>quickly made up</em>.</li>
+        <li>As far as I know, they <em>never made up</em> after that.</li>
+      </ul>
+    </div>
+
+  </div><!-- /section -->
+
+  <!-- PART 4: COMMON SAYINGS -->
+  <div class="section section-alt2">
+    <div class="section-label">Part 4</div>
+    <h2>Common Sayings &amp; Expressions</h2>
+
+    <div class="saying-block">
+      <div class="saying-phrase">"You can't make this stuff up."</div>
+      <div class="saying-note-d">Used when reality is so strange it sounds fictional. Very common in American English, especially in news and casual conversation.</div>
+      <ul class="examples">
+        <li>The cat somehow ordered $300 of food online. <em>You can't make this stuff up.</em></li>
+        <li>A clown showed up to the board meeting by mistake. <em>I swear, you can't make this stuff up.</em></li>
+      </ul>
+    </div>
+
+    <div class="saying-block">
+      <div class="saying-phrase">"Kissing and making up"</div>
+      <div class="saying-note-e">A vivid way to describe reconciling after a conflict. Often used informally or humorously.</div>
+      <ul class="examples">
+        <li>After a week of silence, they were <em>kissing and making up</em> by Friday.</li>
+        <li>The two rivals surprised everyone by <em>kissing and making up</em> at the press conference.</li>
+      </ul>
+    </div>
+
+    <div class="saying-block">
+      <div class="saying-phrase">"Make up or break up"</div>
+      <div class="saying-note-d">An informal expression used when a relationship has reached a turning point — either fix it or end it.</div>
+      <ul class="examples">
+        <li>They've been arguing for months. It's time to <em>make up or break up</em>.</li>
+        <li>Friends told her: "<em>Make up or break up</em> — this can't go on forever."</li>
+      </ul>
+    </div>
+
+    <div class="saying-block">
+      <div class="saying-phrase">"makeup artist"</div>
+      <div class="saying-note-e">A professional who applies cosmetics for film, TV, theater, or events. Commonly abbreviated as MUA.</div>
+      <ul class="examples">
+        <li>The <em>makeup artist</em> spent two hours on the actor's costume look.</li>
+        <li>She trained as a <em>makeup artist</em> before moving into fashion.</li>
+      </ul>
+    </div>
+
+  </div><!-- /section -->
+
+  <!-- BONUS: WORD FORMS -->
+  <div class="bonus-section">
+    <div class="bonus-badge">Bonus — Word Forms</div>
+    <h2>Makeup, Make-up, or Make Up?</h2>
+    <p class="bonus-intro">The spelling changes depending on how the word is used. This is common in English when verbs become nouns or adjectives.</p>
+    <div class="spelling-row">
+      <div class="spell-card">
+        <div class="spell-form">make up</div>
+        <div class="spell-use">two words → verb</div>
+        <div class="spell-ex">They need to <em>make up</em> after the fight.</div>
+      </div>
+      <div class="spell-card">
+        <div class="spell-form">makeup</div>
+        <div class="spell-use">one word → noun (cosmetics)</div>
+        <div class="spell-ex">She never wears much <em>makeup</em>.</div>
+      </div>
+      <div class="spell-card">
+        <div class="spell-form">make-up</div>
+        <div class="spell-use">hyphenated → modifier / noun</div>
+        <div class="spell-ex">He needs a <em>make-up</em> exam.</div>
+      </div>
+      <div class="spell-card">
+        <div class="spell-form">made-up</div>
+        <div class="spell-use">hyphenated → adjective</div>
+        <div class="spell-ex">That's a completely <em>made-up</em> word.</div>
+      </div>
+    </div>
+    <p class="bonus-note">Note: American English generally prefers <strong>makeup</strong> (one word) for the cosmetics noun. British English often uses <strong>make-up</strong> (hyphenated).</p>
+  </div>
+
+</div><!-- /inner -->
+</body>
+</html>
