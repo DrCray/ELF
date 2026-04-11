@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stand — Cloze Exercise</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Source+Serif+4:ital,wght@0,300;0,400;1,300&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #FAF7F2;
+    --ruled: #d6cfc2;
+    --accent: #14400F;
+    --gold: #b8860b;
+    --card-bg: white;
+    --shadow: rgba(107,63,160,0.10);
+    --correct-bg: #d4edda;
+    --correct-border: #7dc99a;
+    --wrong-bg: #fcd9df;
+    --wrong-border: #f0929f;
+    --neutral-bg: #f5f5f5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  header::before {
+    content: '❧';
+    display: block;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #601F4D;
+    margin-top: 0.5rem;
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  .instructions {
+    font-size: 0.85rem;
+    color: #555;
+    background: white;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .score-bar {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .score-bar span {
+    font-weight: 700;
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  /* ── sentence cards ── */
+  .sentence-card {
+    background: var(--card-bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 2px 3px 12px var(--shadow);
+    line-height: 1.8;
+    font-style: italic;
+    font-weight: 500;
+    color: #35192D;
+    font-size: 0.97rem;
+  }
+
+  .sentence-card .num {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--gold);
+    font-style: normal;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .speaker {
+    font-style: normal;
+    font-weight: 400;
+    color: purple;
+    font-size: 0.78rem;
+    margin-right: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .dialog-line {
+    display: block;
+  }
+
+  /* ── select element ── */
+  select.cloze {
+    font-family: Helvetica, sans-serif;
+    font-size: 0.9rem;
+    font-style: normal;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1.5px solid var(--ruled);
+    background: var(--neutral-bg);
+    color: var(--ink);
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background 0.25s, border-color 0.25s;
+    -webkit-appearance: auto;
+  }
+
+  select.cloze.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+  }
+
+  select.cloze.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong-border);
+  }
+
+  /* colour the options themselves */
+  select.cloze option.opt-correct { background: var(--correct-bg); }
+  select.cloze option.opt-wrong   { background: var(--wrong-bg); }
+
+  /* ── student info ── */
+  .student-section {
+    margin-top: 2.5rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 2px 3px 12px var(--shadow);
+  }
+
+  .student-section h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .field-group {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .field-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #777;
+    margin-bottom: 0.3rem;
+  }
+
+  .field-group input {
+    width: 100%;
+    font-family: Helvetica, sans-serif;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.7rem;
+    border: 1.5px solid var(--ruled);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .field-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .btn-print {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--accent);
+    color: white;
+    font-family: Helvetica, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, background 0.2s;
+  }
+
+  .btn-print:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .btn-print:not(:disabled):hover {
+    background: #1e6018;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  /* ── print styles ── */
+  @media print {
+    body { background: white; padding: 1rem; }
+    .instructions, .score-bar { display: none; }
+    .btn-print { display: none; }
+    .sentence-card { box-shadow: none; border-left: 3px solid #333; page-break-inside: avoid; }
+    select.cloze { border: 1px solid #999; }
+    .student-section { box-shadow: none; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body contenteditable="false" style="padding: 30px 30px 120px; font-size: 16px; min-height: calc(100px + 100vh);">
+<div class="page-wrap">
+
+  <header>
+    <h1>Everyday Spoken English</h1>
+    <p class="subtitle">Expressions with <em>Stand</em> — Choose the correct expression</p>
+  </header>
+
+  <div class="instructions">
+    Choose the correct expression from the drop-down menu to complete each sentence. Green means correct; pink means try again.
+  </div>
+
+  <div class="score-bar">Score: <span id="scoreDisplay">0</span> / <span id="totalDisplay">48</span></div>
+
+  <div id="exerciseArea"><div class="sentence-card"><span class="num">01 </span><span class="dialog-line"><span class="speaker">A:</span> <span>What did you think of the candidates?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Most were average, but one really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="standout" class="opt-wrong">standout</option><option value="stood out" class="opt-correct">stood out</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option></select> from the rest.</span></span></div><div class="sentence-card"><span class="num">02 </span><span>It takes courage to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="stand up to" class="opt-correct">stand up to</option></select> a boss who's out of line.</span></div><div class="sentence-card"><span class="num">03 </span><span>I said the report was due Friday, but <select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="I stand corrected" class="opt-correct">I stand corrected</option></select> — it's Thursday at noon.</span></div><div class="sentence-card"><span class="num">04 </span><span>The company finally <select class="cloze" data-answer="took a stand"><option value="" disabled="">— choices —</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option><option value="took a stand" class="opt-correct">took a stand</option><option value="stand firm" class="opt-wrong">stand firm</option></select> against the new regulations, issuing a public statement.</span></div><div class="sentence-card"><span class="num">05 </span><span>It was a <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="standout" class="opt-correct">standout</option><option value="stand in for" class="opt-wrong">stand in for</option></select> performance — easily the best of the night.</span></div><div class="sentence-card"><span class="num">06 </span><span>Can you <select class="cloze" data-answer="stand in for"><option value="" disabled="">— choices —</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="stand in for" class="opt-correct">stand in for</option></select> me at Thursday's meeting? I'll be out of town.</span></div><div class="sentence-card"><span class="num">07 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did Maya show up last night?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, she <select class="cloze" data-answer="stood me up"><option value="" disabled="">— choices —</option><option value="standout" class="opt-wrong">standout</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="stood me up" class="opt-correct">stood me up</option></select>. I waited for an hour.</span></span></div><div class="sentence-card"><span class="num">08 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think this approach will still work in ten years?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>If it's solid, it'll <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-correct">stand the test of time</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="stood her up" class="opt-wrong">stood her up</option></select>.</span></span></div><div class="sentence-card"><span class="num">09 </span><span>The manager asked both employees to <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="stand down" class="opt-correct">stand down</option><option value="can't stand" class="opt-wrong">can't stand</option></select> and let HR handle it.</span></div><div class="sentence-card"><span class="num">10 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's still threatening to go to the press.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>He'll <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-correct">stand down</option><option value="stand aside" class="opt-wrong">stand aside</option><option value="standoff" class="opt-wrong">standoff</option></select> once he realizes how little he has.</span></span></div><div class="sentence-card"><span class="num">11 </span><span>She made it clear she <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-correct">won't stand for</option><option value="stand down" class="opt-wrong">stand down</option><option value="stood her up" class="opt-wrong">stood her up</option></select> that kind of behavior in her classroom.</span></div><div class="sentence-card"><span class="num">12 </span><span>The chairman agreed to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="stand aside" class="opt-correct">stand aside</option></select> and let the new leadership take over.</span></div><div class="sentence-card"><span class="num">13 </span><span><select class="cloze" data-answer="Stand by"><option value="" disabled="">— choices —</option><option value="stood by" class="opt-wrong">stood by</option><option value="Stand by" class="opt-correct">Stand by</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option></select> — we're just waiting for the connection to go through.</span></div><div class="sentence-card"><span class="num">14 </span><span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option></select> the proposed changes to the schedule?</span></div><div class="sentence-card"><span class="num">15 </span><span>If you ever need a place to stay, you have a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="standout" class="opt-wrong">standout</option><option value="standing offer" class="opt-correct">standing offer</option></select> — our guest room is always open.</span></div><div class="sentence-card"><span class="num">16 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you still leading the project?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I've decided to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="stand aside" class="opt-correct">stand aside</option><option value="standing in for" class="opt-wrong">standing in for</option></select> — someone with fresher ideas should run it.</span></span></div><div class="sentence-card"><span class="num">17 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Actually, the meeting is on Wednesday, not Thursday.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-correct">I stand corrected</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="won't stand for" class="opt-wrong">won't stand for</option></select> — thanks for catching that.</span></span></div><div class="sentence-card"><span class="num">18 </span><span>Nobody else said anything, so she <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="stood up for" class="opt-correct">stood up for</option><option value="won't stand for" class="opt-wrong">won't stand for</option></select> him herself.</span></div><div class="sentence-card"><span class="num">19 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're pushing back hard on our terms.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="Stand your ground"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-correct">Stand your ground</option><option value="stand in for" class="opt-wrong">stand in for</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select> — we don't need this deal more than they do.</span></span></div><div class="sentence-card"><span class="num">20 </span><span>After years of support from his parents, he finally <select class="cloze" data-answer="stood on his own two feet"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="stood on his own two feet" class="opt-correct">stood on his own two feet</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option></select>.</span></div><div class="sentence-card"><span class="num">21 </span><span>The board voted to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="stand firm" class="opt-correct">stand firm</option><option value="stood her up" class="opt-wrong">stood her up</option></select> on the original decision despite the backlash.</span></div><div class="sentence-card"><span class="num">22 </span><span>Without more funding, the project <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="standoff" class="opt-wrong">standoff</option></select>.</span></div><div class="sentence-card"><span class="num">23 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Any progress on the contract dispute?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Not really. It's a complete <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="standoff" class="opt-correct">standoff</option><option value="stood up for" class="opt-wrong">stood up for</option></select>.</span></span></div><div class="sentence-card"><span class="num">24 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you okay working with Greg?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="stand aside" class="opt-wrong">stand aside</option><option value="can't stand" class="opt-correct">can't stand</option></select> him. But I'll manage.</span></span></div><div class="sentence-card"><span class="num">25 </span><span><select class="cloze" data-answer="It stands to reason"><option value="" disabled="">— choices —</option><option value="It stands to reason" class="opt-correct">It stands to reason</option><option value="standoff" class="opt-wrong">standoff</option><option value="stand down" class="opt-wrong">stand down</option></select> that if you cut the budget, the quality will drop.</span></div><div class="sentence-card"><span class="num">26 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you just going to let this keep happening?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No. It's time to <select class="cloze" data-answer="take a stand"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-correct">take a stand</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="stood me up" class="opt-wrong">stood me up</option></select>.</span></span></div><div class="sentence-card"><span class="num">27 </span><span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="As things stand" class="opt-correct">As things stand</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option></select>, we won't be ready to launch until March.</span></div><div class="sentence-card"><span class="num">28 </span><span class="dialog-line"><span class="speaker">A:</span> <span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option><option value="stood her ground" class="opt-wrong">stood her ground</option></select> working weekends?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I'm flexible if there's a real need, but it shouldn't be the norm.</span></span></div><div class="sentence-card"><span class="num">29 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did you just let them blame him for everything?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, I <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="stood up for" class="opt-correct">stood up for</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option></select> him. I told them what actually happened.</span></span></div><div class="sentence-card"><span class="num">30 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Who's leading the class today?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Mr. Davies is <select class="cloze" data-answer="standing in for"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="standing in for" class="opt-correct">standing in for</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select> Ms. Chen — she's sick.</span></span></div><div class="sentence-card"><span class="num">31 </span><span>He <select class="cloze" data-answer="stood her up"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option><option value="stood her up" class="opt-correct">stood her up</option></select> on their first date and never even texted to apologize.</span></div><div class="sentence-card"><span class="num">32 </span><span>The negotiation ended in a <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="standoff" class="opt-correct">standoff</option><option value="stood by" class="opt-wrong">stood by</option><option value="stood me up" class="opt-wrong">stood me up</option></select> — neither side was willing to compromise.</span></div><div class="sentence-card"><span class="num">33 </span><span>The whole project <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="came to a standstill" class="opt-correct">came to a standstill</option><option value="stand down" class="opt-wrong">stand down</option></select> when funding was suddenly cut.</span></div><div class="sentence-card"><span class="num">34 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's been taking credit for your work for months.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I know. I need to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="stand up to" class="opt-correct">stand up to</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option></select> him.</span></span></div><div class="sentence-card"><span class="num">35 </span><span>Her family <select class="cloze" data-answer="stood by"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="stood by" class="opt-correct">stood by</option></select> her through the entire trial.</span></div><div class="sentence-card"><span class="num">36 </span><span>Some design trends fade quickly; others <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-correct">stand the test of time</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option><option value="stood up for" class="opt-wrong">stood up for</option></select>.</span></div><div class="sentence-card"><span class="num">37 </span><span class="dialog-line"><span class="speaker">A:</span> <span>I thought they withdrew the proposal.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, it's a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-correct">standing offer</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option></select>. You can take them up on it anytime.</span></span></div><div class="sentence-card"><span class="num">38 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think he'll win the appeal?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? He <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="stand aside" class="opt-wrong">stand aside</option></select>.</span></span></div><div class="sentence-card"><span class="num">39 </span><span class="dialog-line"><span class="speaker">A:</span> <span>She's been leaning on her sister for everything.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>At some point, she's going to have to <select class="cloze" data-answer="stand on her own two feet"><option value="" disabled="">— choices —</option><option value="stand on her own two feet" class="opt-correct">stand on her own two feet</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option></select>.</span></span></div><div class="sentence-card"><span class="num">40 </span><span>Her presentation really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-correct">stood out</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="stood up for" class="opt-wrong">stood up for</option></select> — it was the only one with actual data to back up the claims.</span></div><div class="sentence-card"><span class="num">41 </span><span>He tried to pressure her into accepting less, but she <select class="cloze" data-answer="stood her ground"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-wrong">I stand corrected</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stood her ground" class="opt-correct">stood her ground</option></select>.</span></div><div class="sentence-card"><span class="num">42 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Can we still hit the deadline?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="As things stand" class="opt-correct">As things stand</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option></select>, no — but that could change if we get more support.</span></span></div><div class="sentence-card"><span class="num">43 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Why do you think sales are down?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Well, <select class="cloze" data-answer="it stands to reason"><option value="" disabled="">— choices —</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="it stands to reason" class="opt-correct">it stands to reason</option></select> — we've barely done any marketing this quarter.</span></span></div><div class="sentence-card"><span class="num">44 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're asking for another extension.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>We need to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="standout" class="opt-wrong">standout</option><option value="stand firm" class="opt-correct">stand firm</option></select> — we've already given them two.</span></span></div><div class="sentence-card"><span class="num">45 </span><span>I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-correct">can't stand</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option></select> it when people talk loudly on their phone in public.</span></div><div class="sentence-card"><span class="num">46 </span><span>Among all the applicants, she was the clear <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="standout" class="opt-correct">standout</option><option value="stand aside" class="opt-wrong">stand aside</option></select>.</span></div><div class="sentence-card"><span class="num">47 </span><span>Traffic <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="came to a standstill" class="opt-correct">came to a standstill</option></select> after the accident blocked all three lanes.</span></div><div class="sentence-card"><span class="num">48 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He keeps showing up late with no explanation.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>The director <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-correct">won't stand for</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="As things stand" class="opt-wrong">As things stand</option></select> it much longer.</span></span></div><div class="sentence-card"><span class="num">01 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Actually, the meeting is on Wednesday, not Thursday.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="I stand corrected" class="opt-correct">I stand corrected</option></select> — thanks for catching that.</span></span></div><div class="sentence-card"><span class="num">02 </span><span>I said the report was due Friday, but <select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-correct">I stand corrected</option><option value="stand aside" class="opt-wrong">stand aside</option><option value="stood out" class="opt-wrong">stood out</option></select> — it's Thursday at noon.</span></div><div class="sentence-card"><span class="num">03 </span><span>Traffic <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-correct">came to a standstill</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="I stand corrected" class="opt-wrong">I stand corrected</option></select> after the accident blocked all three lanes.</span></div><div class="sentence-card"><span class="num">04 </span><span>Some design trends fade quickly; others <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="stand the test of time" class="opt-correct">stand the test of time</option></select>.</span></div><div class="sentence-card"><span class="num">05 </span><span>I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-correct">can't stand</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="stood by" class="opt-wrong">stood by</option></select> it when people talk loudly on their phone in public.</span></div><div class="sentence-card"><span class="num">06 </span><span>The whole project <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="standoff" class="opt-wrong">standoff</option><option value="came to a standstill" class="opt-correct">came to a standstill</option><option value="won't stand for" class="opt-wrong">won't stand for</option></select> when funding was suddenly cut.</span></div><div class="sentence-card"><span class="num">07 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Can we still hit the deadline?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="As things stand" class="opt-correct">As things stand</option></select>, no — but that could change if we get more support.</span></span></div><div class="sentence-card"><span class="num">08 </span><span>The company finally <select class="cloze" data-answer="took a stand"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="took a stand" class="opt-correct">took a stand</option></select> against the new regulations, issuing a public statement.</span></div><div class="sentence-card"><span class="num">09 </span><span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="As things stand" class="opt-correct">As things stand</option></select>, we won't be ready to launch until March.</span></div><div class="sentence-card"><span class="num">10 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think he'll win the appeal?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? He <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="stood by" class="opt-wrong">stood by</option></select>.</span></span></div><div class="sentence-card"><span class="num">11 </span><span>Without more funding, the project <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option></select>.</span></div><div class="sentence-card"><span class="num">12 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Why do you think sales are down?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Well, <select class="cloze" data-answer="it stands to reason"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="it stands to reason" class="opt-correct">it stands to reason</option><option value="stood out" class="opt-wrong">stood out</option></select> — we've barely done any marketing this quarter.</span></span></div><div class="sentence-card"><span class="num">13 </span><span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option></select> the proposed changes to the schedule?</span></div><div class="sentence-card"><span class="num">14 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's still threatening to go to the press.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>He'll <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="stand down" class="opt-correct">stand down</option><option value="can't stand" class="opt-wrong">can't stand</option></select> once he realizes how little he has.</span></span></div><div class="sentence-card"><span class="num">15 </span><span>Nobody else said anything, so she <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="stood up for" class="opt-correct">stood up for</option><option value="As things stand" class="opt-wrong">As things stand</option></select> him herself.</span></div><div class="sentence-card"><span class="num">16 </span><span class="dialog-line"><span class="speaker">A:</span> <span>What did you think of the candidates?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Most were average, but one really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stood out" class="opt-correct">stood out</option></select> from the rest.</span></span></div><div class="sentence-card"><span class="num">17 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're pushing back hard on our terms.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="Stand your ground"><option value="" disabled="">— choices —</option><option value="stand in for" class="opt-wrong">stand in for</option><option value="Stand your ground" class="opt-correct">Stand your ground</option><option value="stood her ground" class="opt-wrong">stood her ground</option></select> — we don't need this deal more than they do.</span></span></div><div class="sentence-card"><span class="num">18 </span><span class="dialog-line"><span class="speaker">A:</span> <span>She's been leaning on her sister for everything.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>At some point, she's going to have to <select class="cloze" data-answer="stand on her own two feet"><option value="" disabled="">— choices —</option><option value="stand on her own two feet" class="opt-correct">stand on her own two feet</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="standing in for" class="opt-wrong">standing in for</option></select>.</span></span></div><div class="sentence-card"><span class="num">19 </span><span>Her family <select class="cloze" data-answer="stood by"><option value="" disabled="">— choices —</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stood by" class="opt-correct">stood by</option><option value="stood me up" class="opt-wrong">stood me up</option></select> her through the entire trial.</span></div><div class="sentence-card"><span class="num">20 </span><span>If you ever need a place to stay, you have a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="standing offer" class="opt-correct">standing offer</option></select> — our guest room is always open.</span></div><div class="sentence-card"><span class="num">21 </span><span>The chairman agreed to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="stand aside" class="opt-correct">stand aside</option></select> and let the new leadership take over.</span></div><div class="sentence-card"><span class="num">22 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think this approach will still work in ten years?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>If it's solid, it'll <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="stand the test of time" class="opt-correct">stand the test of time</option><option value="stand down" class="opt-wrong">stand down</option></select>.</span></span></div><div class="sentence-card"><span class="num">23 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you still leading the project?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I've decided to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-wrong">stood out</option><option value="stand aside" class="opt-correct">stand aside</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option></select> — someone with fresher ideas should run it.</span></span></div><div class="sentence-card"><span class="num">24 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you okay working with Greg?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="stood by" class="opt-wrong">stood by</option><option value="can't stand" class="opt-correct">can't stand</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option></select> him. But I'll manage.</span></span></div><div class="sentence-card"><span class="num">25 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did Maya show up last night?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, she <select class="cloze" data-answer="stood me up"><option value="" disabled="">— choices —</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="stood me up" class="opt-correct">stood me up</option><option value="stand down" class="opt-wrong">stand down</option></select>. I waited for an hour.</span></span></div><div class="sentence-card"><span class="num">26 </span><span>The manager asked both employees to <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="stand down" class="opt-correct">stand down</option><option value="stood out" class="opt-wrong">stood out</option></select> and let HR handle it.</span></div><div class="sentence-card"><span class="num">27 </span><span class="dialog-line"><span class="speaker">A:</span> <span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option></select> working weekends?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I'm flexible if there's a real need, but it shouldn't be the norm.</span></span></div><div class="sentence-card"><span class="num">28 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did you just let them blame him for everything?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, I <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="stood up for" class="opt-correct">stood up for</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option></select> him. I told them what actually happened.</span></span></div><div class="sentence-card"><span class="num">29 </span><span>She made it clear she <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-correct">won't stand for</option><option value="stood me up" class="opt-wrong">stood me up</option><option value="standing offer" class="opt-wrong">standing offer</option></select> that kind of behavior in her classroom.</span></div><div class="sentence-card"><span class="num">30 </span><span>The board voted to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="stood by" class="opt-wrong">stood by</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="stand firm" class="opt-correct">stand firm</option></select> on the original decision despite the backlash.</span></div><div class="sentence-card"><span class="num">31 </span><span>The negotiation ended in a <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="stand in for" class="opt-wrong">stand in for</option><option value="standoff" class="opt-correct">standoff</option></select> — neither side was willing to compromise.</span></div><div class="sentence-card"><span class="num">32 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's been taking credit for your work for months.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I know. I need to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="stand up to" class="opt-correct">stand up to</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select> him.</span></span></div><div class="sentence-card"><span class="num">33 </span><span class="dialog-line"><span class="speaker">A:</span> <span>I thought they withdrew the proposal.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, it's a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="standing offer" class="opt-correct">standing offer</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option></select>. You can take them up on it anytime.</span></span></div><div class="sentence-card"><span class="num">34 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Who's leading the class today?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Mr. Davies is <select class="cloze" data-answer="standing in for"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-wrong">I stand corrected</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="standing in for" class="opt-correct">standing in for</option></select> Ms. Chen — she's sick.</span></span></div><div class="sentence-card"><span class="num">35 </span><span>Among all the applicants, she was the clear <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="standout" class="opt-correct">standout</option></select>.</span></div><div class="sentence-card"><span class="num">36 </span><span>It was a <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-wrong">I stand corrected</option><option value="stood her ground" class="opt-wrong">stood her ground</option><option value="standout" class="opt-correct">standout</option></select> performance — easily the best of the night.</span></div><div class="sentence-card"><span class="num">37 </span><span>After years of support from his parents, he finally <select class="cloze" data-answer="stood on his own two feet"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-wrong">stood out</option><option value="stood on his own two feet" class="opt-correct">stood on his own two feet</option><option value="stand down" class="opt-wrong">stand down</option></select>.</span></div><div class="sentence-card"><span class="num">38 </span><span>Can you <select class="cloze" data-answer="stand in for"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="stand in for" class="opt-correct">stand in for</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select> me at Thursday's meeting? I'll be out of town.</span></div><div class="sentence-card"><span class="num">39 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you just going to let this keep happening?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No. It's time to <select class="cloze" data-answer="take a stand"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-correct">take a stand</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option></select>.</span></span></div><div class="sentence-card"><span class="num">40 </span><span><select class="cloze" data-answer="Stand by"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option><option value="Stand by" class="opt-correct">Stand by</option></select> — we're just waiting for the connection to go through.</span></div><div class="sentence-card"><span class="num">41 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Any progress on the contract dispute?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Not really. It's a complete <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="standoff" class="opt-correct">standoff</option><option value="stood out" class="opt-wrong">stood out</option></select>.</span></span></div><div class="sentence-card"><span class="num">42 </span><span>It takes courage to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="stand up to" class="opt-correct">stand up to</option></select> a boss who's out of line.</span></div><div class="sentence-card"><span class="num">43 </span><span><select class="cloze" data-answer="It stands to reason"><option value="" disabled="">— choices —</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="It stands to reason" class="opt-correct">It stands to reason</option></select> that if you cut the budget, the quality will drop.</span></div><div class="sentence-card"><span class="num">44 </span><span>He <select class="cloze" data-answer="stood her up"><option value="" disabled="">— choices —</option><option value="stood her up" class="opt-correct">stood her up</option><option value="stood on his own two feet" class="opt-wrong">stood on his own two feet</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option></select> on their first date and never even texted to apologize.</span></div><div class="sentence-card"><span class="num">45 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're asking for another extension.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>We need to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stand firm" class="opt-correct">stand firm</option></select> — we've already given them two.</span></span></div><div class="sentence-card"><span class="num">46 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He keeps showing up late with no explanation.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>The director <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="stand in for" class="opt-wrong">stand in for</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="won't stand for" class="opt-correct">won't stand for</option></select> it much longer.</span></span></div><div class="sentence-card"><span class="num">47 </span><span>He tried to pressure her into accepting less, but she <select class="cloze" data-answer="stood her ground"><option value="" disabled="">— choices —</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="stand in for" class="opt-wrong">stand in for</option><option value="stood her ground" class="opt-correct">stood her ground</option></select>.</span></div><div class="sentence-card"><span class="num">48 </span><span>Her presentation really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-correct">stood out</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option></select> — it was the only one with actual data to back up the claims.</span></div><div class="sentence-card"><span class="num">01 </span><span>If you ever need a place to stay, you have a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="stand down" class="opt-wrong">stand down</option><option value="standing offer" class="opt-correct">standing offer</option></select> — our guest room is always open.</span></div><div class="sentence-card"><span class="num">02 </span><span><select class="cloze" data-answer="Stand by"><option value="" disabled="">— choices —</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="Stand by" class="opt-correct">Stand by</option></select> — we're just waiting for the connection to go through.</span></div><div class="sentence-card"><span class="num">03 </span><span>The whole project <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-correct">came to a standstill</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="stood by" class="opt-wrong">stood by</option></select> when funding was suddenly cut.</span></div><div class="sentence-card"><span class="num">04 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Any progress on the contract dispute?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Not really. It's a complete <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="standoff" class="opt-correct">standoff</option><option value="stand aside" class="opt-wrong">stand aside</option></select>.</span></span></div><div class="sentence-card"><span class="num">05 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's been taking credit for your work for months.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I know. I need to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option><option value="stand up to" class="opt-correct">stand up to</option><option value="stood up for" class="opt-wrong">stood up for</option></select> him.</span></span></div><div class="sentence-card"><span class="num">06 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did you just let them blame him for everything?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, I <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="stood up for" class="opt-correct">stood up for</option><option value="stood out" class="opt-wrong">stood out</option><option value="stood by" class="opt-wrong">stood by</option></select> him. I told them what actually happened.</span></span></div><div class="sentence-card"><span class="num">07 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He keeps showing up late with no explanation.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>The director <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="standout" class="opt-wrong">standout</option><option value="won't stand for" class="opt-correct">won't stand for</option><option value="stand up to" class="opt-wrong">stand up to</option></select> it much longer.</span></span></div><div class="sentence-card"><span class="num">08 </span><span>Can you <select class="cloze" data-answer="stand in for"><option value="" disabled="">— choices —</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="stand in for" class="opt-correct">stand in for</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select> me at Thursday's meeting? I'll be out of town.</span></div><div class="sentence-card"><span class="num">09 </span><span>The board voted to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="stand firm" class="opt-correct">stand firm</option><option value="stood by" class="opt-wrong">stood by</option><option value="stood her ground" class="opt-wrong">stood her ground</option></select> on the original decision despite the backlash.</span></div><div class="sentence-card"><span class="num">10 </span><span>He <select class="cloze" data-answer="stood her up"><option value="" disabled="">— choices —</option><option value="stood her up" class="opt-correct">stood her up</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="standing in for" class="opt-wrong">standing in for</option></select> on their first date and never even texted to apologize.</span></div><div class="sentence-card"><span class="num">11 </span><span>I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="can't stand" class="opt-correct">can't stand</option><option value="won't stand for" class="opt-wrong">won't stand for</option></select> it when people talk loudly on their phone in public.</span></div><div class="sentence-card"><span class="num">12 </span><span>I said the report was due Friday, but <select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="I stand corrected" class="opt-correct">I stand corrected</option><option value="standout" class="opt-wrong">standout</option><option value="stood her up" class="opt-wrong">stood her up</option></select> — it's Thursday at noon.</span></div><div class="sentence-card"><span class="num">13 </span><span class="dialog-line"><span class="speaker">A:</span> <span>What did you think of the candidates?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Most were average, but one really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="standing in for" class="opt-wrong">standing in for</option><option value="stood out" class="opt-correct">stood out</option></select> from the rest.</span></span></div><div class="sentence-card"><span class="num">14 </span><span>After years of support from his parents, he finally <select class="cloze" data-answer="stood on his own two feet"><option value="" disabled="">— choices —</option><option value="As things stand" class="opt-wrong">As things stand</option><option value="stood on his own two feet" class="opt-correct">stood on his own two feet</option><option value="standing in for" class="opt-wrong">standing in for</option></select>.</span></div><div class="sentence-card"><span class="num">15 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think he'll win the appeal?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? He <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="standout" class="opt-wrong">standout</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option></select>.</span></span></div><div class="sentence-card"><span class="num">16 </span><span>She made it clear she <select class="cloze" data-answer="won't stand for"><option value="" disabled="">— choices —</option><option value="standoff" class="opt-wrong">standoff</option><option value="won't stand for" class="opt-correct">won't stand for</option><option value="standing offer" class="opt-wrong">standing offer</option></select> that kind of behavior in her classroom.</span></div><div class="sentence-card"><span class="num">17 </span><span class="dialog-line"><span class="speaker">A:</span> <span>He's still threatening to go to the press.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>He'll <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="stand down" class="opt-correct">stand down</option><option value="stood her up" class="opt-wrong">stood her up</option></select> once he realizes how little he has.</span></span></div><div class="sentence-card"><span class="num">18 </span><span class="dialog-line"><span class="speaker">A:</span> <span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option></select> working weekends?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I'm flexible if there's a real need, but it shouldn't be the norm.</span></span></div><div class="sentence-card"><span class="num">19 </span><span>The company finally <select class="cloze" data-answer="took a stand"><option value="" disabled="">— choices —</option><option value="took a stand" class="opt-correct">took a stand</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option></select> against the new regulations, issuing a public statement.</span></div><div class="sentence-card"><span class="num">20 </span><span>It takes courage to <select class="cloze" data-answer="stand up to"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="stand up to" class="opt-correct">stand up to</option></select> a boss who's out of line.</span></div><div class="sentence-card"><span class="num">21 </span><span>Without more funding, the project <select class="cloze" data-answer="doesn't stand a chance"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-wrong">stood out</option><option value="doesn't stand a chance" class="opt-correct">doesn't stand a chance</option><option value="stood by" class="opt-wrong">stood by</option></select>.</span></div><div class="sentence-card"><span class="num">22 </span><span class="dialog-line"><span class="speaker">A:</span> <span>I thought they withdrew the proposal.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, it's a <select class="cloze" data-answer="standing offer"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-correct">standing offer</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="standing in for" class="opt-wrong">standing in for</option></select>. You can take them up on it anytime.</span></span></div><div class="sentence-card"><span class="num">23 </span><span><select class="cloze" data-answer="Where do you stand on"><option value="" disabled="">— choices —</option><option value="took a stand" class="opt-wrong">took a stand</option><option value="Where do you stand on" class="opt-correct">Where do you stand on</option><option value="I stand corrected" class="opt-wrong">I stand corrected</option></select> the proposed changes to the schedule?</span></div><div class="sentence-card"><span class="num">24 </span><span><select class="cloze" data-answer="It stands to reason"><option value="" disabled="">— choices —</option><option value="stood me up" class="opt-wrong">stood me up</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="It stands to reason" class="opt-correct">It stands to reason</option></select> that if you cut the budget, the quality will drop.</span></div><div class="sentence-card"><span class="num">25 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Who's leading the class today?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Mr. Davies is <select class="cloze" data-answer="standing in for"><option value="" disabled="">— choices —</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="standing in for" class="opt-correct">standing in for</option><option value="stand in for" class="opt-wrong">stand in for</option></select> Ms. Chen — she's sick.</span></span></div><div class="sentence-card"><span class="num">26 </span><span>It was a <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="standout" class="opt-correct">standout</option><option value="stand aside" class="opt-wrong">stand aside</option></select> performance — easily the best of the night.</span></div><div class="sentence-card"><span class="num">27 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Do you think this approach will still work in ten years?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>If it's solid, it'll <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="standing offer" class="opt-wrong">standing offer</option><option value="stand the test of time" class="opt-correct">stand the test of time</option><option value="stood her up" class="opt-wrong">stood her up</option></select>.</span></span></div><div class="sentence-card"><span class="num">28 </span><span>Among all the applicants, she was the clear <select class="cloze" data-answer="standout"><option value="" disabled="">— choices —</option><option value="standout" class="opt-correct">standout</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option></select>.</span></div><div class="sentence-card"><span class="num">29 </span><span>He tried to pressure her into accepting less, but she <select class="cloze" data-answer="stood her ground"><option value="" disabled="">— choices —</option><option value="can't stand" class="opt-wrong">can't stand</option><option value="stood her ground" class="opt-correct">stood her ground</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option></select>.</span></div><div class="sentence-card"><span class="num">30 </span><span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="As things stand" class="opt-correct">As things stand</option></select>, we won't be ready to launch until March.</span></div><div class="sentence-card"><span class="num">31 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Why do you think sales are down?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Well, <select class="cloze" data-answer="it stands to reason"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option><option value="it stands to reason" class="opt-correct">it stands to reason</option><option value="stand down" class="opt-wrong">stand down</option></select> — we've barely done any marketing this quarter.</span></span></div><div class="sentence-card"><span class="num">32 </span><span>The chairman agreed to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="it stands to reason" class="opt-wrong">it stands to reason</option><option value="stand aside" class="opt-correct">stand aside</option></select> and let the new leadership take over.</span></div><div class="sentence-card"><span class="num">33 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you still leading the project?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>I've decided to <select class="cloze" data-answer="stand aside"><option value="" disabled="">— choices —</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="stand up to" class="opt-wrong">stand up to</option><option value="stand aside" class="opt-correct">stand aside</option></select> — someone with fresher ideas should run it.</span></span></div><div class="sentence-card"><span class="num">34 </span><span>Traffic <select class="cloze" data-answer="came to a standstill"><option value="" disabled="">— choices —</option><option value="came to a standstill" class="opt-correct">came to a standstill</option><option value="stand firm" class="opt-wrong">stand firm</option><option value="can't stand" class="opt-wrong">can't stand</option></select> after the accident blocked all three lanes.</span></div><div class="sentence-card"><span class="num">35 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Did Maya show up last night?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No, she <select class="cloze" data-answer="stood me up"><option value="" disabled="">— choices —</option><option value="doesn't stand a chance" class="opt-wrong">doesn't stand a chance</option><option value="stood me up" class="opt-correct">stood me up</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option></select>. I waited for an hour.</span></span></div><div class="sentence-card"><span class="num">36 </span><span>Some design trends fade quickly; others <select class="cloze" data-answer="stand the test of time"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-correct">stand the test of time</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="stand firm" class="opt-wrong">stand firm</option></select>.</span></div><div class="sentence-card"><span class="num">37 </span><span class="dialog-line"><span class="speaker">A:</span> <span>She's been leaning on her sister for everything.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>At some point, she's going to have to <select class="cloze" data-answer="stand on her own two feet"><option value="" disabled="">— choices —</option><option value="Where do you stand on" class="opt-wrong">Where do you stand on</option><option value="stood me up" class="opt-wrong">stood me up</option><option value="stand on her own two feet" class="opt-correct">stand on her own two feet</option></select>.</span></span></div><div class="sentence-card"><span class="num">38 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you okay working with Greg?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>Honestly? I <select class="cloze" data-answer="can't stand"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="can't stand" class="opt-correct">can't stand</option><option value="won't stand for" class="opt-wrong">won't stand for</option></select> him. But I'll manage.</span></span></div><div class="sentence-card"><span class="num">39 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Actually, the meeting is on Wednesday, not Thursday.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="I stand corrected"><option value="" disabled="">— choices —</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option><option value="take a stand" class="opt-wrong">take a stand</option><option value="I stand corrected" class="opt-correct">I stand corrected</option></select> — thanks for catching that.</span></span></div><div class="sentence-card"><span class="num">40 </span><span>Nobody else said anything, so she <select class="cloze" data-answer="stood up for"><option value="" disabled="">— choices —</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="stood up for" class="opt-correct">stood up for</option><option value="standoff" class="opt-wrong">standoff</option></select> him herself.</span></div><div class="sentence-card"><span class="num">41 </span><span>The negotiation ended in a <select class="cloze" data-answer="standoff"><option value="" disabled="">— choices —</option><option value="standoff" class="opt-correct">standoff</option><option value="Stand by" class="opt-wrong">Stand by</option><option value="stood her up" class="opt-wrong">stood her up</option></select> — neither side was willing to compromise.</span></div><div class="sentence-card"><span class="num">42 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're pushing back hard on our terms.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="Stand your ground"><option value="" disabled="">— choices —</option><option value="Stand your ground" class="opt-correct">Stand your ground</option><option value="stand on her own two feet" class="opt-wrong">stand on her own two feet</option><option value="took a stand" class="opt-wrong">took a stand</option></select> — we don't need this deal more than they do.</span></span></div><div class="sentence-card"><span class="num">43 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Can we still hit the deadline?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span><select class="cloze" data-answer="As things stand"><option value="" disabled="">— choices —</option><option value="stand the test of time" class="opt-wrong">stand the test of time</option><option value="As things stand" class="opt-correct">As things stand</option><option value="came to a standstill" class="opt-wrong">came to a standstill</option></select>, no — but that could change if we get more support.</span></span></div><div class="sentence-card"><span class="num">44 </span><span>Her presentation really <select class="cloze" data-answer="stood out"><option value="" disabled="">— choices —</option><option value="stood out" class="opt-correct">stood out</option><option value="won't stand for" class="opt-wrong">won't stand for</option><option value="stand firm" class="opt-wrong">stand firm</option></select> — it was the only one with actual data to back up the claims.</span></div><div class="sentence-card"><span class="num">45 </span><span>Her family <select class="cloze" data-answer="stood by"><option value="" disabled="">— choices —</option><option value="stood by" class="opt-correct">stood by</option><option value="stood up for" class="opt-wrong">stood up for</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option></select> her through the entire trial.</span></div><div class="sentence-card"><span class="num">46 </span><span class="dialog-line"><span class="speaker">A:</span> <span>Are you just going to let this keep happening?</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>No. It's time to <select class="cloze" data-answer="take a stand"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-wrong">stand down</option><option value="take a stand" class="opt-correct">take a stand</option><option value="stood her up" class="opt-wrong">stood her up</option></select>.</span></span></div><div class="sentence-card"><span class="num">47 </span><span class="dialog-line"><span class="speaker">A:</span> <span>They're asking for another extension.</span></span><span class="dialog-line"><span class="speaker">B:</span> <span>We need to <select class="cloze" data-answer="stand firm"><option value="" disabled="">— choices —</option><option value="stand firm" class="opt-correct">stand firm</option><option value="It stands to reason" class="opt-wrong">It stands to reason</option><option value="stood by" class="opt-wrong">stood by</option></select> — we've already given them two.</span></span></div><div class="sentence-card"><span class="num">48 </span><span>The manager asked both employees to <select class="cloze" data-answer="stand down"><option value="" disabled="">— choices —</option><option value="stand down" class="opt-correct">stand down</option><option value="stood her up" class="opt-wrong">stood her up</option><option value="Stand your ground" class="opt-wrong">Stand your ground</option></select> and let HR handle it.</span></div></div>
+
+  <div class="student-section">
+    <h2>Student Information</h2>
+    <div class="field-row">
+      <div class="field-group">
+        <label for="studentName">Name</label>
+        <input type="text" id="studentName" placeholder="Your full name" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" placeholder="Your ID number" autocomplete="off">
+      </div>
+    </div>
+    <button class="btn-print" id="printBtn" disabled="">Print / Save as PDF</button>
+  </div>
+
+  <footer>Expressions with <em>Stand</em> &nbsp;·&nbsp; Spoken English Series</footer>
+
+</div>
+
+<script>
+// ── RAW SENTENCE DATA ──────────────────────────────────────────────
+// Each entry: { parts: [...], answer: "exact phrase", id: unique key }
+// Parts is an array — strings are plain text, null marks where the select goes.
+
+const rawSentences = [
+  // 01 stood out
+  {
+    id: "s01a",
+    answer: "stood out",
+    parts: ["Her presentation really ", null, " — it was the only one with actual data to back up the claims."],
+    dialog: false
+  },
+  {
+    id: "s01b",
+    answer: "stood out",
+    parts: [
+      { speaker: "A", text: "What did you think of the candidates?" },
+      { speaker: "B", text: ["Most were average, but one really ", null, " from the rest."] }
+    ],
+    dialog: true
+  },
+  // 02 stood her up / stood me up
+  {
+    id: "s02a",
+    answer: "stood her up",
+    parts: ["He ", null, " on their first date and never even texted to apologize."],
+    dialog: false
+  },
+  {
+    id: "s02b",
+    answer: "stood me up",
+    parts: [
+      { speaker: "A", text: "Did Maya show up last night?" },
+      { speaker: "B", text: ["No, she ", null, ". I waited for an hour."] }
+    ],
+    dialog: true
+  },
+  // 03 stand down
+  {
+    id: "s03a",
+    answer: "stand down",
+    parts: ["The manager asked both employees to ", null, " and let HR handle it."],
+    dialog: false
+  },
+  {
+    id: "s03b",
+    answer: "stand down",
+    parts: [
+      { speaker: "A", text: "He's still threatening to go to the press." },
+      { speaker: "B", text: ["He'll ", null, " once he realizes how little he has."] }
+    ],
+    dialog: true
+  },
+  // 04 stand in for
+  {
+    id: "s04a",
+    answer: "stand in for",
+    parts: ["Can you ", null, " me at Thursday's meeting? I'll be out of town."],
+    dialog: false
+  },
+  {
+    id: "s04b",
+    answer: "standing in for",
+    parts: [
+      { speaker: "A", text: "Who's leading the class today?" },
+      { speaker: "B", text: ["Mr. Davies is ", null, " Ms. Chen — she's sick."] }
+    ],
+    dialog: true
+  },
+  // 05 stand by
+  {
+    id: "s05a",
+    answer: "stood by",
+    parts: ["Her family ", null, " her through the entire trial."],
+    dialog: false
+  },
+  {
+    id: "s05b",
+    answer: "Stand by",
+    parts: [null, " — we're just waiting for the connection to go through."],
+    dialog: false
+  },
+  // 06 stood up for
+  {
+    id: "s06a",
+    answer: "stood up for",
+    parts: ["Nobody else said anything, so she ", null, " him herself."],
+    dialog: false
+  },
+  {
+    id: "s06b",
+    answer: "stood up for",
+    parts: [
+      { speaker: "A", text: "Did you just let them blame him for everything?" },
+      { speaker: "B", text: ["No, I ", null, " him. I told them what actually happened."] }
+    ],
+    dialog: true
+  },
+  // 07 stand up to
+  {
+    id: "s07a",
+    answer: "stand up to",
+    parts: ["It takes courage to ", null, " a boss who's out of line."],
+    dialog: false
+  },
+  {
+    id: "s07b",
+    answer: "stand up to",
+    parts: [
+      { speaker: "A", text: "He's been taking credit for your work for months." },
+      { speaker: "B", text: ["I know. I need to ", null, " him."] }
+    ],
+    dialog: true
+  },
+  // 08 stand aside
+  {
+    id: "s08a",
+    answer: "stand aside",
+    parts: ["The chairman agreed to ", null, " and let the new leadership take over."],
+    dialog: false
+  },
+  {
+    id: "s08b",
+    answer: "stand aside",
+    parts: [
+      { speaker: "A", text: "Are you still leading the project?" },
+      { speaker: "B", text: ["I've decided to ", null, " — someone with fresher ideas should run it."] }
+    ],
+    dialog: true
+  },
+  // 09 can't stand
+  {
+    id: "s09a",
+    answer: "can't stand",
+    parts: ["I ", null, " it when people talk loudly on their phone in public."],
+    dialog: false
+  },
+  {
+    id: "s09b",
+    answer: "can't stand",
+    parts: [
+      { speaker: "A", text: "Are you okay working with Greg?" },
+      { speaker: "B", text: ["Honestly? I ", null, " him. But I'll manage."] }
+    ],
+    dialog: true
+  },
+  // 10 won't stand for
+  {
+    id: "s10a",
+    answer: "won't stand for",
+    parts: ["She made it clear she ", null, " that kind of behavior in her classroom."],
+    dialog: false
+  },
+  {
+    id: "s10b",
+    answer: "won't stand for",
+    parts: [
+      { speaker: "A", text: "He keeps showing up late with no explanation." },
+      { speaker: "B", text: ["The director ", null, " it much longer."] }
+    ],
+    dialog: true
+  },
+  // 11 standing offer
+  {
+    id: "s11a",
+    answer: "standing offer",
+    parts: ["If you ever need a place to stay, you have a ", null, " — our guest room is always open."],
+    dialog: false
+  },
+  {
+    id: "s11b",
+    answer: "standing offer",
+    parts: [
+      { speaker: "A", text: "I thought they withdrew the proposal." },
+      { speaker: "B", text: ["No, it's a ", null, ". You can take them up on it anytime."] }
+    ],
+    dialog: true
+  },
+  // 12 standoff
+  {
+    id: "s12a",
+    answer: "standoff",
+    parts: ["The negotiation ended in a ", null, " — neither side was willing to compromise."],
+    dialog: false
+  },
+  {
+    id: "s12b",
+    answer: "standoff",
+    parts: [
+      { speaker: "A", text: "Any progress on the contract dispute?" },
+      { speaker: "B", text: ["Not really. It's a complete ", null, "."] }
+    ],
+    dialog: true
+  },
+  // 13 came to a standstill
+  {
+    id: "s13a",
+    answer: "came to a standstill",
+    parts: ["Traffic ", null, " after the accident blocked all three lanes."],
+    dialog: false
+  },
+  {
+    id: "s13b",
+    answer: "came to a standstill",
+    parts: ["The whole project ", null, " when funding was suddenly cut."],
+    dialog: false
+  },
+  // 14 standout
+  {
+    id: "s14a",
+    answer: "standout",
+    parts: ["Among all the applicants, she was the clear ", null, "."],
+    dialog: false
+  },
+  {
+    id: "s14b",
+    answer: "standout",
+    parts: ["It was a ", null, " performance — easily the best of the night."],
+    dialog: false
+  },
+  // 15 take a stand / took a stand
+  {
+    id: "s15a",
+    answer: "took a stand",
+    parts: ["The company finally ", null, " against the new regulations, issuing a public statement."],
+    dialog: false
+  },
+  {
+    id: "s15b",
+    answer: "take a stand",
+    parts: [
+      { speaker: "A", text: "Are you just going to let this keep happening?" },
+      { speaker: "B", text: ["No. It's time to ", null, "."] }
+    ],
+    dialog: true
+  },
+  // 16 stood her ground / stand your ground
+  {
+    id: "s16a",
+    answer: "stood her ground",
+    parts: ["He tried to pressure her into accepting less, but she ", null, "."],
+    dialog: false
+  },
+  {
+    id: "s16b",
+    answer: "Stand your ground",
+    parts: [
+      { speaker: "A", text: "They're pushing back hard on our terms." },
+      { speaker: "B", text: [null, " — we don't need this deal more than they do."] }
+    ],
+    dialog: true
+  },
+  // 17 doesn't stand a chance
+  {
+    id: "s17a",
+    answer: "doesn't stand a chance",
+    parts: ["Without more funding, the project ", null, "."],
+    dialog: false
+  },
+  {
+    id: "s17b",
+    answer: "doesn't stand a chance",
+    parts: [
+      { speaker: "A", text: "Do you think he'll win the appeal?" },
+      { speaker: "B", text: ["Honestly? He ", null, "."] }
+    ],
+    dialog: true
+  },
+  // 18 stood on his own two feet / stand on her own two feet
+  {
+    id: "s18a",
+    answer: "stood on his own two feet",
+    parts: ["After years of support from his parents, he finally ", null, "."],
+    dialog: false
+  },
+  {
+    id: "s18b",
+    answer: "stand on her own two feet",
+    parts: [
+      { speaker: "A", text: "She's been leaning on her sister for everything." },
+      { speaker: "B", text: ["At some point, she's going to have to ", null, "."] }
+    ],
+    dialog: true
+  },
+  // 19 I stand corrected
+  {
+    id: "s19a",
+    answer: "I stand corrected",
+    parts: [
+      { speaker: "A", text: "Actually, the meeting is on Wednesday, not Thursday." },
+      { speaker: "B", text: [null, " — thanks for catching that."] }
+    ],
+    dialog: true
+  },
+  {
+    id: "s19b",
+    answer: "I stand corrected",
+    parts: ["I said the report was due Friday, but ", null, " — it's Thursday at noon."],
+    dialog: false
+  },
+  // 20 stand the test of time
+  {
+    id: "s20a",
+    answer: "stand the test of time",
+    parts: ["Some design trends fade quickly; others ", null, "."],
+    dialog: false
+  },
+  {
+    id: "s20b",
+    answer: "stand the test of time",
+    parts: [
+      { speaker: "A", text: "Do you think this approach will still work in ten years?" },
+      { speaker: "B", text: ["If it's solid, it'll ", null, "."] }
+    ],
+    dialog: true
+  },
+  // 21 it stands to reason
+  {
+    id: "s21a",
+    answer: "It stands to reason",
+    parts: [null, " that if you cut the budget, the quality will drop."],
+    dialog: false
+  },
+  {
+    id: "s21b",
+    answer: "it stands to reason",
+    parts: [
+      { speaker: "A", text: "Why do you think sales are down?" },
+      { speaker: "B", text: ["Well, ", null, " — we've barely done any marketing this quarter."] }
+    ],
+    dialog: true
+  },
+  // 22 stand firm
+  {
+    id: "s22a",
+    answer: "stand firm",
+    parts: ["The board voted to ", null, " on the original decision despite the backlash."],
+    dialog: false
+  },
+  {
+    id: "s22b",
+    answer: "stand firm",
+    parts: [
+      { speaker: "A", text: "They're asking for another extension." },
+      { speaker: "B", text: ["We need to ", null, " — we've already given them two."] }
+    ],
+    dialog: true
+  },
+  // 23 where do you stand on
+  {
+    id: "s23a",
+    answer: "Where do you stand on",
+    parts: [null, " the proposed changes to the schedule?"],
+    dialog: false
+  },
+  {
+    id: "s23b",
+    answer: "Where do you stand on",
+    parts: [
+      { speaker: "A", text: [null, " working weekends?"] },
+      { speaker: "B", text: "I'm flexible if there's a real need, but it shouldn't be the norm." }
+    ],
+    dialog: true
+  },
+  // 24 as things stand
+  {
+    id: "s24a",
+    answer: "As things stand",
+    parts: [null, ", we won't be ready to launch until March."],
+    dialog: false
+  },
+  {
+    id: "s24b",
+    answer: "As things stand",
+    parts: [
+      { speaker: "A", text: "Can we still hit the deadline?" },
+      { speaker: "B", text: [null, ", no — but that could change if we get more support."] }
+    ],
+    dialog: true
+  }
+];
+
+// ── All unique answers pool (canonical forms for distractors) ──────
+const answerPool = [
+  "stood out","stood her up","stood me up","stand down","stand in for",
+  "standing in for","stood by","Stand by","stood up for","stand up to",
+  "stand aside","can't stand","won't stand for","standing offer","standoff",
+  "came to a standstill","standout","took a stand","take a stand",
+  "stood her ground","Stand your ground","doesn't stand a chance",
+  "stood on his own two feet","stand on her own two feet",
+  "I stand corrected","stand the test of time","It stands to reason",
+  "it stands to reason","stand firm","Where do you stand on",
+  "As things stand"
+];
+
+// ── Shuffle helper ─────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── Pick 2 random distractors ──────────────────────────────────────
+function getDistractors(correct, count = 2) {
+  const pool = answerPool.filter(a => a.toLowerCase() !== correct.toLowerCase());
+  return shuffle(pool).slice(0, count);
+}
+
+// ── Build options for a select ─────────────────────────────────────
+function buildOptions(correct) {
+  const distractors = getDistractors(correct);
+  const choices = shuffle([correct, ...distractors]);
+  return choices;
+}
+
+// ── Render a sentence (parts array) with a select injected ────────
+function renderParts(parts, selectEl) {
+  const span = document.createElement('span');
+  parts.forEach(p => {
+    if (p === null) {
+      span.appendChild(selectEl);
+    } else {
+      span.appendChild(document.createTextNode(p));
+    }
+  });
+  return span;
+}
+
+// ── Score tracking ─────────────────────────────────────────────────
+let total = 0;
+let correct_count = 0;
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = correct_count;
+  document.getElementById('totalDisplay').textContent = total;
+}
+
+// ── Build exercise ─────────────────────────────────────────────────
+function buildExercise() {
+  const area = document.getElementById('exerciseArea');
+  const sentences = shuffle(rawSentences);
+  total = sentences.length;
+  updateScore();
+
+  sentences.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'sentence-card';
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'num';
+    numSpan.textContent = String(idx + 1).padStart(2, '0') + ' ';
+    card.appendChild(numSpan);
+
+    // Build select
+    const sel = document.createElement('select');
+    sel.className = 'cloze';
+    sel.dataset.answer = item.answer;
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— choices —';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    sel.appendChild(placeholder);
+
+    const opts = buildOptions(item.answer);
+    opts.forEach(optVal => {
+      const opt = document.createElement('option');
+      opt.value = optVal;
+      opt.textContent = optVal;
+      const isCorrect = optVal.toLowerCase() === item.answer.toLowerCase();
+      opt.className = isCorrect ? 'opt-correct' : 'opt-wrong';
+      sel.appendChild(opt);
+    });
+
+    let answered = false;
+    sel.addEventListener('change', () => {
+      const chosen = sel.value.toLowerCase();
+      const correct = item.answer.toLowerCase();
+      if (!answered) {
+        answered = true;
+        correct_count += chosen === correct ? 1 : 0;
+        total_answered++;
+      } else {
+        // changing after answering — adjust score
+        const wasCorrect = sel.dataset.wasCorrect === 'true';
+        const nowCorrect = chosen === correct;
+        if (wasCorrect && !nowCorrect) correct_count--;
+        if (!wasCorrect && nowCorrect) correct_count++;
+      }
+      sel.dataset.wasCorrect = (chosen === correct).toString();
+      sel.classList.toggle('correct', chosen === correct);
+      sel.classList.toggle('wrong', chosen !== correct);
+      updateScore();
+    });
+
+    // Render sentence
+    if (!item.dialog) {
+      const rendered = renderParts(item.parts, sel);
+      card.appendChild(rendered);
+    } else {
+      item.parts.forEach(line => {
+        const lineSpan = document.createElement('span');
+        lineSpan.className = 'dialog-line';
+        if (line.speaker) {
+          const spk = document.createElement('span');
+          spk.className = 'speaker';
+          spk.textContent = line.speaker + ':';
+          lineSpan.appendChild(spk);
+          lineSpan.appendChild(document.createTextNode(' '));
+        }
+        const textParts = Array.isArray(line.text) ? line.text : [line.text];
+        const rendered = renderParts(textParts, sel);
+        lineSpan.appendChild(rendered);
+        card.appendChild(lineSpan);
+      });
+    }
+
+    area.appendChild(card);
+  });
+}
+
+let total_answered = 0;
+
+// ── Print button logic ─────────────────────────────────────────────
+const nameInput = document.getElementById('studentName');
+const idInput   = document.getElementById('studentId');
+const printBtn  = document.getElementById('printBtn');
+
+function checkPrintReady() {
+  const ready = nameInput.value.trim().length >= 2 && idInput.value.trim().length >= 2;
+  printBtn.disabled = !ready;
+}
+
+nameInput.addEventListener('input', checkPrintReady);
+idInput.addEventListener('input', checkPrintReady);
+
+printBtn.addEventListener('click', () => {
+  window.print();
+});
+
+// ── Init ───────────────────────────────────────────────────────────
+buildExercise();
+</script>
+
+
+</body></html>
