@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prince_and_Beggar</title>
+    <style>
+@page {
+    size: A4;
+    margin: 15mm;
+    background-color: #ffffff;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: #f4f7fb;
+    color: #1e2a3e;
+    line-height: 1.45;
+    margin: 0;
+    padding: 20px 16px 48px;
+}
+
+.container {
+    max-width: 880px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+h1 {
+    background: linear-gradient(135deg, #1e3c2c, #2a5a3a);
+    margin-bottom: 0;
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    font-size: 2rem;
+    letter-spacing: -0.3px;
+    border-bottom: 5px solid #f5c542;
+}
+
+h2 {
+    background: #1e3c2c;
+    margin: 0;
+    padding: .5rem 2rem 1.5rem .3rem;
+    text-align: center;
+    color: #f5e7c8;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-bottom: none;
+}
+
+.question-block {
+    margin-bottom: 1.25rem;
+    padding: 0.8rem 1.5rem;
+    background: #ffffff;
+    border-radius: 20px;
+    page-break-inside: avoid;
+    display: list-item;
+    list-style-type: decimal;
+    list-style-position: outside;
+    margin-left: 2rem;
+    border: 1px solid #eef2f5;
+    transition: all 0.2s;
+}
+
+.question-block:hover {
+    border-color: #cfdfcd;
+    background: #fefefc;
+}
+
+.question-text {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1f2f3c;
+    display: block;
+    margin-bottom: 10px;
+}
+
+select {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    border: 1.5px solid #dce3e9;
+    border-radius: 60px;
+    background-color: white;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234b6e4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+select:focus {
+    outline: none;
+    border-color: #2a6b47;
+    box-shadow: 0 0 0 3px rgba(42, 107, 71, 0.1);
+}
+
+.correct {
+    background-color: #e0f2e4 !important;
+    border-color: #2b7a4b !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%232b7a4b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') !important;
+}
+
+.incorrect {
+    background-color: #ffe6e5 !important;
+    border-color: #cf5c56 !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23cf5c56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>') !important;
+}
+
+.user-info-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8fafd;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: inline-block;
+    width: 80px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #5b6e8c;
+}
+
+input[type="text"] {
+    padding: 10px 14px;
+    width: 250px;
+    border: 1.5px solid #dce3e9;
+    border-radius: 60px;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2a6b47;
+    box-shadow: 0 0 0 3px rgba(42, 107, 71, 0.1);
+}
+
+.button-section {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+button {
+    padding: 10px 28px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    cursor: not-allowed;
+    transition: 0.2s;
+}
+
+button:enabled {
+    background-color: #2a6b47;
+    cursor: pointer;
+}
+
+button:enabled:hover {
+    background-color: #1f543b;
+    transform: scale(0.97);
+}
+
+.note {
+    display: block;
+    font-size: 0.9rem;
+    font-weight:bold;
+    color: #c26b5e;
+    background: #fff3f0;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+@media print {
+    .button-section, .note {
+        display: none;
+    }
+    body {
+        background: white;
+        padding: 0;
+    }
+    .container {
+        box-shadow: none;
+        border-radius: 0;
+    }
+    h1 {
+        background: #2c5e3f;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .correct {
+        background-color: #e0f2e4 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .incorrect {
+        background-color: #ffe6e5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #8ba0b5;
+    padding-bottom: 1rem;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 12px;
+    }
+    .container {
+        border-radius: 20px;
+    }
+    h1 {
+        font-size: 1.6rem;
+        padding: 1.5rem 1rem 0.8rem;
+    }
+    h2 {
+        font-size: 0.85rem;
+        padding: 0 1rem 1.2rem;
+    }
+    .question-block {
+        margin-left: 1.2rem;
+        padding: 0.7rem 1rem;
+    }
+    input[type="text"] {
+        width: 100%;
+        max-width: 100%;
+    }
+    .button-section {
+        text-align: center;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comprehension Quiz</h1>
+        <h2>Prince and the Beggar</h2>
+
+        <div id="quizForm">
+            <!-- Question 1 -->
+            <div class="question-block">
+                <span class="question-text">Where did Prince Daniel live?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">In a small house in the village</option>
+                    <option value="b">In a large, spacious castle on a hill</option>
+                    <option value="c">In a stable with his horse</option>
+                    <option value="d">In a classroom with his tutors</option>
+                </select>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-block">
+                <span class="question-text">Why was Daniel not always happy being a prince?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">He didn't have any toys to play with</option>
+                    <option value="b">He was afraid of his father, the King</option>
+                    <option value="c">He felt restricted by his many duties and lessons</option>
+                    <option value="d">He wanted to live in a smaller bedroom</option>
+                </select>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-block">
+                <span class="question-text">What can we infer about Sam’s life with his uncle?</span>
+                <select onchange="checkAnswer(this, 'a')">
+                    <option value="">Choose one...</option>
+                    <option value="a">It was difficult and unsafe</option>
+                    <option value="b">It was lazy but comfortable</option>
+                    <option value="c">His uncle was kind but very poor</option>
+                    <option value="d">Sam enjoyed begging for money</option>
+                </select>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-block">
+                <span class="question-text">What first brought Daniel and Sam together?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">They went to the same school</option>
+                    <option value="b">They were cousins who hadn't met</option>
+                    <option value="c">Daniel saw Sam begging near the castle gates</option>
+                    <option value="d">They met while playing cricket in the town</option>
+                </select>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-block">
+                <span class="question-text">Why did Daniel give Sam coins when they first became friends?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">To pay Sam for his clothes</option>
+                    <option value="b">So Sam wouldn't have to beg and they could play more</option>
+                    <option value="c">Because the King told him to help the poor</option>
+                    <option value="d">To show Sam how rich he was</option>
+                </select>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-block">
+                <span class="question-text">What prompted the boys to switch places?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">The King suggested it as a lesson</option>
+                    <option value="b">Sam was curious about being a prince and Daniel wanted a change</option>
+                    <option value="c">They wanted to trick Sam’s uncle</option>
+                    <option value="d">The horse belonged to both of them</option>
+                </select>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-block">
+                <span class="question-text">How did Sam feel about the prince’s lessons?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">He hated them because they were too hard</option>
+                    <option value="b">He found them boring and fell asleep</option>
+                    <option value="c">He enjoyed them because he liked learning new things</option>
+                    <option value="d">He refused to do them and went to the playroom instead</option>
+                </select>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-block">
+                <span class="question-text">What was Daniel’s favorite part about being "Sam"?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">Having a new uncle</option>
+                    <option value="b">Begging for coins at the gate</option>
+                    <option value="c">The freedom to walk around and play games</option>
+                    <option value="d">Sleeping in a small room</option>
+                </select>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-block">
+                <span class="question-text">How did Daniel deal with Sam’s uncle?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">He cleaned the house for him</option>
+                    <option value="b">He ignored him because he didn't feel a real connection to him</option>
+                    <option value="c">He gave him all of the King's gold</option>
+                    <option value="d">He fought with him every day</option>
+                </select>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-block">
+                <span class="question-text">After a month, why was Sam ready to switch back?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">The King found out the truth</option>
+                    <option value="b">He was tired of riding the horse</option>
+                    <option value="c">He missed his friends and the life he was used to</option>
+                    <option value="d">He failed his lessons with the tutor</option>
+                </select>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-block">
+                <span class="question-text">What did Daniel miss most while living as Sam?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">His toys and his large bed</option>
+                    <option value="b">His parents and his horse</option>
+                    <option value="c">Being able to tell people what to do</option>
+                    <option value="d">The fancy food in the castle</option>
+                </select>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-block">
+                <span class="question-text">"Daniel and Sam looked very similar." Which word is a synonym for "similar"?</span>
+                <select onchange="checkAnswer(this, 'b')">
+                    <option value="">Choose one...</option>
+                    <option value="a">Different</option>
+                    <option value="b">Alike</option>
+                    <option value="c">Strange</option>
+                    <option value="d">Identical</option>
+                </select>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-block">
+                <span class="question-text">Why did the boys choose to give each other "tips" before switching?</span>
+                <select onchange="checkAnswer(this, 'a')">
+                    <option value="">Choose one...</option>
+                    <option value="a">To make sure they didn't get caught</option>
+                    <option value="b">To show off who was smarter</option>
+                    <option value="c">Because they were afraid of the horse</option>
+                    <option value="d">To earn extra money</option>
+                </select>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question-block">
+                <span class="question-text">What is the main theme of the story's ending?</span>
+                <select onchange="checkAnswer(this, 'e')">
+                    <option value="">Choose one...</option>
+                    <option value="a">Empathy is gained when walking in another's shoes</option>
+                    <option value="b">People from completely different worlds can become friends</option>
+                    <option value="c">Poeple's lives aren't always as they seem</option>
+                    <option value="d">The grass isn't always greener on the other side</option>
+                    <option value="e">All the above</option>
+                </select>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question-block">
+                <span class="question-text">How did their relationship change by the end of the story?</span>
+                <select onchange="checkAnswer(this, 'c')">
+                    <option value="">Choose one...</option>
+                    <option value="a">They stopped talking to each other</option>
+                    <option value="b">They became brothers</option>
+                    <option value="c">They remained best friends and continued to swap lives occasionally</option>
+                    <option value="d">Sam moved into the castle permanently</option>
+                </select>
+            </div>
+
+            <div class="user-info-section">
+                <div class="input-group">
+                    <label for="studentName">Name:</label>
+                    <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
+                </div>
+                <div class="input-group">
+                    <label for="studentID">ID#:</label>
+                    <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+                </div>
+            </div>
+
+            <div class="button-section">
+             <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
+                <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print/Save PDF</button>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+    let studentName = "";
+    let studentId = "";
+
+    function checkAnswer(selectElement, correctValue) {
+        const selectedValue = selectElement.value;
+        selectElement.classList.remove('correct', 'incorrect');
+        if (selectedValue === "") return;
+        selectElement.classList.add(selectedValue === correctValue ? 'correct' : 'incorrect');
+    }
+
+    function validateForm() {
+        studentName = document.getElementById('studentName').value.trim().replace(/\s+/g, '_');
+        studentId = document.getElementById('studentID').value.trim().replace(/\s+/g, '_');
+
+        const btn = document.getElementById('printBtn');
+        const note = document.getElementById('printNote');
+        const isValid = studentName.length >= 2 && studentId.length >= 2;
+
+        btn.disabled = !isValid;
+        btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
+        note.style.display = isValid ? 'none' : 'block';
+    }
+
+function prepareAndPrint() {
+    const originalTitle = document.title;
+
+    document.title = studentId + "_" + studentName + "_" + originalTitle;
+
+    setTimeout(() => {
+        window.print();
+        document.title = originalTitle; // restore after
+    }, 90); // 50–200ms works
+}
+</script>
+    <footer>...</footer>
+</body>
+</html>
