@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Vocabulary Practice Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #1e40af;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        button#toggleBtn {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button#toggleBtn:hover {
+            background-color: #2563eb;
+        }
+        button#toggleBtn.active {
+            background-color: #10b981;
+        }
+        .question {
+            background: white;
+            padding: 8px 15px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #3b82f6;
+        }
+        .question-text {
+            font-size: 1.15rem;
+            margin-bottom: 5px;
+            color: #111827;
+        }
+        /* Style the select box itself */
+        select.blank {
+            font-size: 1.05rem;
+            padding: 8px 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            background-color: white;
+            min-width: 220px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Pastel colors for the select element */
+        select.is-correct {
+            background-color: #d1fae5 !important; /* Pastel Green */
+            border-color: #10b981 !important;
+            color: #065f46;
+        }
+        select.is-incorrect {
+            background-color: #fee2e2 !important; /* Pastel Pink */
+            border-color: #ef4444 !important;
+            color: #991b1b;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+
+
+        /* 1. Initialize the counter on the container */
+        #quizContainer {
+            counter-reset: question-counter;
+        }
+
+        /* 2. Increment and display the counter before each question text */
+        .question-text::before {
+            counter-increment: question-counter;
+            content: counter(question-counter) ". ";
+            font-weight: bold;
+            color: #1e40af; /* Matches your header blue */
+            margin-right: 8px;
+        }
+
+
+
+.print-section {
+        background: #ffffff;
+        padding: 30px;
+        margin-top: 40px;
+        border-top: 2px solid #e5e7eb;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .input-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .print-input {
+        padding: 10px 15px;
+        border: 2px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 200px;
+    }
+    .print-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+    }
+    #printBtn {
+        padding: 12px 30px;
+        background-color: #1f2937;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    #printBtn:hover {
+        background-color: #111827;
+    }
+    /* Hide this section and the toggle button when printing */
+    @media print {
+        .print-section, #toggleBtn, .header {
+            display: none !important;
+        }
+        body {
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .question {
+            box-shadow: none;
+            border: 1px solid #eee;
+            break-inside: avoid;
+        }
+    }
+
+
+
+    </style>
+</head>
+
+<body>
+    <h1>Business English Vocabulary Final Exam</h1>
+
+    <div class="header">
+        <button id="toggleBtn">Study Mode</button>
+        <div style="color: #6b7280; font-style: italic;">66 Questions • Select the best word to fill in the blank</div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+
+    <div class="print-section">
+        <div class="input-group">
+            <input type="text" id="userName" class="print-input" placeholder="Full Name">
+            <input type="text" id="userId" class="print-input" placeholder="ID Number">
+        </div>
+        <button id="printBtn">Print / Save to PDF</button>
+    </div>
+
+
+    <div class="footer">
+        Practice Test • Made for studying
+    </div>
+
+    <script>
+        // Data truncated for brevity - use your full list here
+        const questions = [
+    {
+        "q": "She works in the _____ industry, developing new skincare products.",
+        "opts": ["cosmetics", "fashion", "finance"],
+        "correct": 0
+    },
+    {
+        "q": "Many celebrities _____ products in exchange for payment.",
+        "opts": ["distribute", "ignore", "endorse"],
+        "correct": 2
+    },
+    {
+        "q": "The company offers _____ service to each customer based on their preferences.",
+        "opts": ["generic", "personalized", "standard"],
+        "correct": 1
+    },
+    {
+        "q": "The new restaurant has created quite a _____ on social media.",
+        "opts": ["buzz", "debate", "complaint"],
+        "correct": 0
+    },
+    {
+        "q": "The café's success is mainly due to positive _____ from satisfied customers.",
+        "opts": ["advertising", "word-of-mouth", "discounts"],
+        "correct": 1
+    },
+    {
+        "q": "Our marketing _____ this year focus on social media engagement.",
+        "opts": ["campaigns", "budgets", "complaints"],
+        "correct": 0
+    },
+    {
+        "q": "Members receive _____ access to new products before they launch.",
+        "opts": ["delayed", "limited", "exclusive"],
+        "correct": 2
+    },
+    {
+        "q": "Customer _____ is our top priority.",
+        "opts": ["satisfaction", "turnover", "spending"],
+        "correct": 0
+    },
+    {
+        "q": "The company is known for its _____ approach to sustainable packaging.",
+        "opts": ["outdated", "cautious", "innovative"],
+        "correct": 2
+    },
+    {
+        "q": "The website features customer _____ highlighting their positive experiences.",
+        "opts": ["testimonials", "complaints", "invoices"],
+        "correct": 0
+    },
+    {
+        "q": "Our brand _____ help promote our products on college campuses.",
+        "opts": ["managers", "ambassadors", "competitors"],
+        "correct": 1
+    },
+    {
+        "q": "Don't _____ the importance of good customer service.",
+        "opts": ["underestimate", "celebrate", "overlook"],
+        "correct": 0
+    },
+    {
+        "q": "You need to be _____ when building a successful business.",
+        "opts": ["passive", "persistent", "flexible"],
+        "correct": 1
+    },
+    {
+        "q": "The company was _____ in 1985 and has been growing ever since.",
+        "opts": ["established", "dissolved", "purchased"],
+        "correct": 0
+    },
+    {
+        "q": "We can _____ our existing customer base to expand into new markets.",
+        "opts": ["ignore", "replace", "leverage"],
+        "correct": 2
+    },
+    {
+        "q": "Please _____ about our upcoming charity event.",
+        "opts": ["spread the word", "keep quiet", "file a report"],
+        "correct": 0
+    },
+    {
+        "q": "We need to _____ the effectiveness of our current marketing strategy.",
+        "opts": ["discard", "duplicate", "evaluate"],
+        "correct": 2
+    },
+    {
+        "q": "The CEO presented a _____ argument for why we should expand into Asia.",
+        "opts": ["confusing", "compelling", "confounding"],
+        "correct": 1
+    },
+    {
+        "q": "The company's mission statement _____ with employees who value social responsibility.",
+        "opts": ["resonates", "conflicts", "disappoints"],
+        "correct": 0
+    },
+    {
+        "q": "Successful businesses must _____ quickly to changing market conditions.",
+        "opts": ["resist", "delay", "adapt"],
+        "correct": 2
+    },
+    {
+        "q": "The free concert is the main _____ at this year's festival.",
+        "opts": ["complaint", "attraction", "expense"],
+        "correct": 1
+    },
+    {
+        "q": "The new store location has much higher _____ than our previous one.",
+        "opts": ["foot traffic", "rent", "staff turnover"],
+        "correct": 0
+    },
+    {
+        "q": "The program offers mentorship for _____ entrepreneurs.",
+        "opts": ["retired", "reluctant", "aspiring"],
+        "correct": 2
+    },
+    {
+        "q": "The media coverage gave the startup valuable _____ to potential investors.",
+        "opts": ["debt", "liability", "exposure"],
+        "correct": 2
+    },
+    {
+        "q": "We hired a consultant with _____ in digital marketing.",
+        "opts": ["expertise", "hesitation", "criticism"],
+        "correct": 0
+    },
+    {
+        "q": "Employee _____ in decision-making improves workplace morale.",
+        "opts": ["avoidance", "involvement", "resistance"],
+        "correct": 1
+    },
+    {
+        "q": "There is growing _____ for the product launch next month.",
+        "opts": ["anticipation", "disappointment", "confusion"],
+        "correct": 0
+    },
+    {
+        "q": "Customer feedback is _____ for improving our service quality.",
+        "opts": ["optional", "crucial", "irrelevant"],
+        "correct": 1
+    },
+    {
+        "q": "The team is _____ a multi-city promotional tour.",
+        "opts": ["canceling", "reviewing", "orchestrating"],
+        "correct": 2
+    },
+    {
+        "q": "The limited-time offer creates a sense of _____ among shoppers.",
+        "opts": ["urgency", "comfort", "hesitation"],
+        "correct": 0
+    },
+    {
+        "q": "The new technology had a _____ effect on the industry.",
+        "opts": ["minimal", "transformative", "negative"],
+        "correct": 1
+    },
+    {
+        "q": "Customers can make _____ choices when they have all the necessary information.",
+        "opts": ["random", "informed", "rushed"],
+        "correct": 1
+    },
+    {
+        "q": "Hotel guests receive _____ breakfast each morning.",
+        "opts": ["expensive", "delayed", "complimentary"],
+        "correct": 2
+    },
+    {
+        "q": "We offer _____ solutions to meet each client's specific needs.",
+        "opts": ["tailored", "uniform", "generic"],
+        "correct": 0
+    },
+    {
+        "q": "The sponsorship deal increased the brand's _____ among younger consumers.",
+        "opts": ["debt", "complaints", "visibility"],
+        "correct": 2
+    },
+    {
+        "q": "The athlete's _____ helped boost sales of the sports drink.",
+        "opts": ["endorsement", "resignation", "criticism"],
+        "correct": 0
+    },
+    {
+        "q": "The company achieved _____ growth in just two years.",
+        "opts": ["disappointing", "remarkable", "expected"],
+        "correct": 1
+    },
+    {
+        "q": "She _____ the values of dedication and professionalism.",
+        "opts": ["ignores", "questions", "embodies"],
+        "correct": 2
+    },
+    {
+        "q": "The luxury brand uses _____ marketing to attract customers.",
+        "opts": ["fearful", "traditional", "aspirational"],
+        "correct": 2
+    },
+    {
+        "q": "The new product will _____ appeal to our target demographic.",
+        "opts": ["undoubtedly", "rarely", "occasionally"],
+        "correct": 0
+    },
+    {
+        "q": "The successful campaign will _____ the company to market leadership.",
+        "opts": ["slow", "confuse", "propel"],
+        "correct": 2
+    },
+    {
+        "q": "The new software provides a _____ user experience across all devices.",
+        "opts": ["frustrating", "seamless", "complicated"],
+        "correct": 1
+    },
+    {
+        "q": "The company maintains _____ communication with all stakeholders.",
+        "opts": ["transparent", "secretive", "occasional"],
+        "correct": 0
+    },
+    {
+        "q": "Regular _____ with clients help maintain strong relationships.",
+        "opts": ["arguments", "follow-ups", "delays"],
+        "correct": 1
+    },
+    {
+        "q": "There is a strong _____ that the merger will be approved.",
+        "opts": ["doubt", "likelihood", "opposition"],
+        "correct": 1
+    },
+    {
+        "q": "We need to be more _____ in addressing customer concerns.",
+        "opts": ["passive", "indifferent", "proactive"],
+        "correct": 2
+    },
+    {
+        "q": "Our customer service team always _____ to ensure clients are satisfied with their purchases.",
+        "opts": ["goes the extra mile", "cuts corners", "takes a break"],
+        "correct": 0
+    },
+    {
+        "q": "We need to _____ if we want to attract younger customers to our traditional brand.",
+        "opts": ["play it safe", "think outside the box", "follow the rules"],
+        "correct": 1
+    },
+    {
+        "q": "The company's new advertising campaign _____ on social media with millions of views in the first week.",
+        "opts": ["made a big splash", "fell flat", "caused problems"],
+        "correct": 0
+    },
+    {
+        "q": "All those late nights studying really _____ when she received the promotion.",
+        "opts": ["fell through", "paid off", "backfired"],
+        "correct": 1
+    },
+    {
+        "q": "The product launch was a _____, with sales exceeding our projections by 200%.",
+        "opts": ["minor setback", "disappointment", "roaring success"],
+        "correct": 2
+    },
+    {
+        "q": "If we _____, I'm sure we can find a solution to this budget problem.",
+        "opts": ["put our heads together", "go our separate ways", "take a vacation"],
+        "correct": 0
+    },
+    {
+        "q": "Management cannot _____ employee complaints about workplace safety.",
+        "opts": ["celebrate", "turn a blind eye to", "overreact to"],
+        "correct": 1
+    },
+    {
+        "q": "After months of trying to fix the old car, he finally _____ and bought a new one.",
+        "opts": ["stayed the course", "doubled down", "threw in the towel"],
+        "correct": 2
+    },
+    {
+        "q": "When you said our pricing was too high, you really _____—that's exactly why sales have been slow.",
+        "opts": ["missed the point", "hit the nail on the head", "changed the subject"],
+        "correct": 1
+    },
+    {
+        "q": "The company plans to _____ the growing market for sustainable products.",
+        "opts": ["tap into", "walk away from", "ignore"],
+        "correct": 0
+    },
+    {
+        "q": "Once we _____ from the board, we can start hiring new staff.",
+        "opts": ["face opposition", "receive a warning", "get the green light"],
+        "correct": 2
+    },
+    {
+        "q": "The partnership created a _____ where both companies increased their market share.",
+        "opts": ["power struggle", "win-win situation", "legal dispute"],
+        "correct": 1
+    },
+    {
+        "q": "Please _____ the client if you have any questions about their requirements.",
+        "opts": ["reach out to", "avoid", "report"],
+        "correct": 0
+    },
+    {
+        "q": "Investing in employee training provides _____ for the company.",
+        "opts": ["immediate losses", "long-term benefits", "short-term confusion"],
+        "correct": 1
+    },
+    {
+        "q": "This partnership will _____ to new markets in Asia.",
+        "opts": ["close access", "open doors", "add barriers"],
+        "correct": 1
+    },
+    {
+        "q": "The company's stock price has reached _____ after the product launch.",
+        "opts": ["new heights", "a standstill", "its lowest point"],
+        "correct": 0
+    },
+    {
+        "q": "Before the meeting, we _____ and analyzed all the competitor data.",
+        "opts": ["did our homework", "wasted our time", "lost our focus"],
+        "correct": 0
+    },
+    {
+        "q": "A simple thank you note can _____ in building client relationships.",
+        "opts": ["do very little", "go a long way", "cause misunderstandings"],
+        "correct": 1
+    },
+    {
+        "q": "Despite initial differences, the negotiators found _____ on pricing.",
+        "opts": ["serious conflict", "common ground", "no resolution"],
+        "correct": 1
+    },
+    {
+        "q": "The senior manager will _____ the restructuring process.",
+        "opts": ["step away from", "take charge of", "criticize"],
+        "correct": 1
+    }
+];
+
+        // Global State
+        let isStudyMode = false;
+        let userSelections = new Array(questions.length).fill("");
+
+        const container = document.getElementById('quizContainer');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        function renderQuiz() {
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+
+                const parts = q.q.split('_____');
+
+                // Create Select Element
+                const select = document.createElement('select');
+                select.className = 'blank';
+                select.id = `q-${index}`;
+
+                // Default Option
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = "";
+                defaultOpt.textContent = "— choices —";
+                select.appendChild(defaultOpt);
+
+                q.opts.forEach((opt, i) => {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = opt;
+                    select.appendChild(option);
+                });
+
+                // Event Listener for visual feedback
+                select.addEventListener('change', (e) => {
+                    if (isStudyMode) return; // Prevent changes in study mode
+
+                    const val = e.target.value;
+                    userSelections[index] = val; // Capture state
+                    updateSelectStyle(select, val, q.correct);
+                });
+
+                // Build the question HTML
+                qText.appendChild(document.createTextNode(parts[0]));
+                qText.appendChild(select);
+                qText.appendChild(document.createTextNode(parts[1] || ""));
+
+                div.appendChild(qText);
+                container.appendChild(div);
+
+                // Set initial value from state (important for "Back to Practice")
+                if (userSelections[index] !== "") {
+                    select.value = userSelections[index];
+                    updateSelectStyle(select, userSelections[index], q.correct);
+                }
+            });
+        }
+
+        function updateSelectStyle(selectEl, selectedVal, correctVal) {
+            selectEl.classList.remove('is-correct', 'is-incorrect');
+
+            if (selectedVal === "") return;
+
+            if (parseInt(selectedVal) === correctVal) {
+                selectEl.classList.add('is-correct');
+            } else {
+                selectEl.classList.add('is-incorrect');
+            }
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            isStudyMode = !isStudyMode;
+
+            if (isStudyMode) {
+                toggleBtn.textContent = 'Back to Practice Test';
+                toggleBtn.classList.add('active');
+
+                // Show all correct answers but don't overwrite userSelections array
+                questions.forEach((q, index) => {
+                    const select = document.getElementById(`q-${index}`);
+                    select.value = q.correct;
+                    select.disabled = true;
+                    updateSelectStyle(select, q.correct, q.correct);
+                });
+            } else {
+                toggleBtn.textContent = 'Study Mode';
+                toggleBtn.classList.remove('active');
+
+                // Revert to user selections
+                questions.forEach((q, index) => {
+                    const select = document.getElementById(`q-${index}`);
+                    select.disabled = false;
+                    select.value = userSelections[index];
+                    updateSelectStyle(select, userSelections[index], q.correct);
+                });
+            }
+        });
+
+        // Start
+        renderQuiz();
+    </script>
+    <script>
+document.getElementById('printBtn').addEventListener('click', () => {
+    const name = document.getElementById('userName').value.trim();
+    const id = document.getElementById('userId').value.trim();
+
+    if (name.length < 2 || id.length < 2) {
+        alert("Name and ID required for Print/Save to PDF");
+        return;
+    }
+
+    // Set the document title dynamically so the "Save as PDF"
+    // dialog uses the correct filename automatically.
+    const originalTitle = document.title;
+    document.title = `${name}-${id}-biz-exam-study-guide`;
+
+    // Trigger print
+    window.print();
+
+    // Restore original title after print dialog closes
+    setTimeout(() => {
+        document.title = originalTitle;
+    }, 100);
+});
+    </script>
+</body>
+</html>
