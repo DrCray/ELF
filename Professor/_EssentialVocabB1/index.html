@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essential High Frequency Vocabulary – Section 1</title>
+  <link rel="stylesheet" href="essential-vocab.css">
+<link rel="stylesheet" href="nav.css">
+<script src="nav.js" defer></script>
+  <link rel="stylesheet" href="nav.css">
+  <script src="nav.js" defer></script>
+</head>
+<body data-pagename="essential-vocab-1">
+
+<header class="site-header">
+  Learn English &mdash; Essential High Frequency Vocabulary
+</header>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="section-badge">Navigation Menu</div>
+    <h1>Essential High Frequency<br>Vocabulary</h1>
+    <p class="subtitle" style="font-size:160%">Click a page number in the top menu.</p>
+  </div>
+
+  <p style="text-align:center; font-size:140%; margin-bottom:24px;color:var(--text-muted);font-size:0.92rem;">
+    Navigatin Menu
+  </p>
+
+</div>
+<script>
+document.querySelectorAll('select.blank').forEach(function(sel){
+  sel.addEventListener('change', function(){
+    var ans = this.dataset.answer.trim().toLowerCase();
+    var val = this.value.trim().toLowerCase();
+    if(!val){ this.className='blank'; return; }
+    this.className = (val===ans) ? 'blank correct' : 'blank incorrect';
+    Array.from(this.options).forEach(function(opt){
+      if(!opt.value){opt.className='';return;}
+      opt.className = (opt.value.trim().toLowerCase()===ans) ? 'opt-correct' : 'opt-incorrect';
+    });
+  });
+});
+document.getElementById('btnPrint').addEventListener('click',function(){
+  var name=document.getElementById('studentName').value.trim();
+  var id=document.getElementById('studentId').value.trim();
+  if(name.length<2||id.length<2){alert('Name and ID required for PDF.');return;}
+  var pn=document.body.dataset.pagename||'vocab';
+  document.title=name+'-'+id+'-'+pn;
+  window.print();
+});
+</script>
+</body>
+</html>
