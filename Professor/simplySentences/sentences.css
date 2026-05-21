@@ -1,0 +1,702 @@
+/* ============================================================
+   sentences.css — Simply Sentences shared stylesheet
+   All pages in the Simply Sentences series link to this file.
+   ============================================================ */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap');
+
+/* --- CSS Variables --- */
+:root {
+  /* Brand palette */
+  --color-bg:           #F7F4EF;   /* warm off-white page */
+  --color-surface:      #FFFFFF;   /* card / panel surface */
+  --color-surface-alt:  #F0EDE8;   /* slightly darker surface for alternating */
+  --color-border:       #DDD8D0;   /* subtle border */
+  --color-ink:          #1A1814;   /* near-black body text */
+  --color-ink-mid:      #4A4540;   /* secondary text */
+  --color-ink-light:    #8A8480;   /* captions, labels */
+
+  /* Brand accent — deep teal-ink */
+  --color-accent:       #1E4D5C;   /* nav, h1 accent, strong links */
+  --color-accent-mid:   #2E7A8A;   /* hover states */
+  --color-accent-light: #C8E4EB;   /* tinted backgrounds */
+
+  /* Heading colors */
+  --color-h1:           #1A1814;
+  --color-h2:           #1E4D5C;
+  --color-h3:           #2E7A8A;
+  --color-h4:           #4A4540;
+
+  /* Sentence annotation colors — muted, magazine-quality */
+  --hl-subject:         #C8D8F0;   /* slate blue   — subject */
+  --hl-verb:            #FFE4A0;   /* amber        — verb / main verb */
+  --hl-direct-obj:      #C8E8D0;   /* sage green   — direct object */
+  --hl-indirect-obj:    #F0D0D8;   /* dusty rose   — indirect object */
+  --hl-prep:            #DDD0F0;   /* soft lavender — prepositional phrase */
+  --hl-verbal:          #FFD8B8;   /* warm peach   — verbal phrase */
+  --hl-conjunction:     #C0E0E8;   /* steel teal   — conjunction */
+  --hl-note:            #FFFACC;   /* pale yellow  — general highlight / note */
+
+  /* Typography */
+  --font-main:          'Nunito', sans-serif;
+  --font-mono:          'Courier New', Courier, monospace;
+
+  /* Spacing scale */
+  --space-xs:   0.25rem;
+  --space-sm:   0.5rem;
+  --space-md:   1rem;
+  --space-lg:   1.75rem;
+  --space-xl:   2.5rem;
+  --space-2xl:  4rem;
+
+  /* Layout */
+  --max-width:      720px;
+  --border-radius:  6px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 17px;
+}
+
+body {
+  font-family:      var(--font-main);
+  font-weight:      400;
+  line-height:      1.75;
+  color:            var(--color-ink);
+  background-color: var(--color-bg);
+  /* padding-top is set dynamically by sentences.js to match
+     the actual rendered nav height at any screen width */
+}
+
+/* ============================================================
+   STICKY NAV
+   Fully wrapping — no hamburger. Brand sits on the first row,
+   links wrap naturally to additional rows on smaller screens.
+   JS (sentences.js) sets body padding-top to match actual
+   nav height after layout, so content is never hidden behind it.
+   ============================================================ */
+.site-nav {
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  background:      var(--color-accent);
+  z-index:         1000;
+  display:         flex;
+  flex-wrap:       wrap;
+  align-items:     center;
+  padding:         0.4rem var(--space-lg);
+  gap:             0.2rem 0;
+  box-shadow:      0 2px 8px rgba(0,0,0,0.18);
+}
+
+.nav-brand {
+  font-size:       1rem;
+  font-weight:     800;
+  color:           #FFFFFF;
+  letter-spacing:  0.03em;
+  text-decoration: none;
+  white-space:     nowrap;
+  padding:         0.35rem 0;
+  margin-right:    var(--space-lg);
+  flex-shrink:     0;
+  line-height:     1;
+}
+
+.nav-brand span {
+  font-weight: 400;
+  opacity:     0.65;
+  font-size:   0.85em;
+}
+
+.nav-links {
+  display:     flex;
+  flex-wrap:   wrap;          /* links wrap to next row when space is tight */
+  align-items: center;
+  gap:         0.15rem;
+  list-style:  none;
+}
+
+.nav-links a {
+  display:         block;
+  font-size:       0.76rem;
+  font-weight:     700;
+  color:           rgba(255,255,255,0.78);
+  text-decoration: none;
+  padding:         0.3rem 0.55rem;
+  border-radius:   4px;
+  transition:      background 0.18s, color 0.18s;
+  letter-spacing:  0.02em;
+  white-space:     nowrap;
+  line-height:     1.3;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: rgba(255,255,255,0.18);
+  color:      #FFFFFF;
+}
+
+/* ============================================================
+   PAGE LAYOUT
+   ============================================================ */
+.page-wrapper {
+  max-width:  var(--max-width);
+  margin:     0 auto;
+  padding:    var(--space-xl) var(--space-lg) var(--space-2xl);
+}
+
+/* ============================================================
+   PAGE HEADER (hero band at top of each lesson page)
+   ============================================================ */
+.page-header {
+  padding:        var(--space-xl) 0 var(--space-lg);
+  border-bottom:  3px solid var(--color-accent);
+  margin-bottom:  var(--space-xl);
+}
+
+.page-header .page-label {
+  font-size:      0.72rem;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--color-accent-mid);
+  margin-bottom:  var(--space-xs);
+}
+
+.page-header h1 {
+  font-size:      2.2rem;
+  font-weight:    900;
+  color:          var(--color-h1);
+  line-height:    1.15;
+  margin-bottom:  var(--space-sm);
+}
+
+.page-header .page-subtitle {
+  font-size:      1rem;
+  font-weight:    500;
+  color:          var(--color-ink-mid);
+  max-width:      520px;
+}
+
+/* ============================================================
+   TYPOGRAPHY — HEADINGS
+   ============================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family:    var(--font-main);
+  line-height:    1.2;
+  color:          var(--color-ink);
+}
+
+/* Section heading — large, accent-colored, with bottom rule */
+h2 {
+  font-size:      1.55rem;
+  font-weight:    800;
+  color:          var(--color-h2);
+  margin-top:     var(--space-xl);
+  margin-bottom:  var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom:  2px solid var(--color-accent-light);
+}
+
+/* Sub-section heading — left accent bar */
+h3 {
+  font-size:      1.15rem;
+  font-weight:    800;
+  color:          var(--color-h3);
+  margin-top:     var(--space-lg);
+  margin-bottom:  var(--space-sm);
+  padding-left:   var(--space-md);
+  border-left:    3px solid var(--color-accent-mid);
+}
+
+/* Tertiary heading */
+h4 {
+  font-size:      0.95rem;
+  font-weight:    700;
+  color:          var(--color-h4);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top:     var(--space-lg);
+  margin-bottom:  var(--space-xs);
+}
+
+/* ============================================================
+   BODY CONTENT
+   ============================================================ */
+p {
+  margin-bottom: var(--space-md);
+  color:         var(--color-ink);
+}
+
+ul, ol {
+  margin-left:   var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+li {
+  margin-bottom: var(--space-xs);
+  line-height:   1.7;
+}
+
+strong {
+  font-weight: 700;
+}
+
+em {
+  font-style: italic;
+}
+
+a {
+  color:           var(--color-accent-mid);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset:     2px;
+  transition:      color 0.15s;
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Intro / lead paragraph */
+.lead {
+  font-size:   1.08rem;
+  font-weight: 500;
+  color:       var(--color-ink-mid);
+  line-height: 1.8;
+  margin-bottom: var(--space-lg);
+}
+
+/* Rule / note callout */
+.note {
+  background:    var(--color-surface-alt);
+  border-left:   3px solid var(--color-accent-light);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  padding:       var(--space-sm) var(--space-md);
+  margin:        var(--space-md) 0;
+  font-size:     0.88rem;
+  color:         var(--color-ink-mid);
+}
+
+.note strong {
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   EXAMPLE SENTENCE DISPLAY
+   ============================================================ */
+
+/* Plain sentence before annotation */
+.sentence-plain {
+  font-size:     1.05rem;
+  font-weight:   600;
+  color:         var(--color-ink-mid);
+  margin-bottom: var(--space-xs);
+  padding-left:  var(--space-md);
+}
+
+/* Annotated / color-coded sentence */
+.sentence {
+  font-size:     1.05rem;
+  font-weight:   500;
+  line-height:   1.9;
+  padding:       var(--space-sm) var(--space-md);
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-sm);
+}
+
+/* A group of related sentences */
+.sentence-group {
+  margin:        var(--space-md) 0 var(--space-lg);
+  display:       flex;
+  flex-direction: column;
+  gap:           var(--space-xs);
+}
+
+/* Sentence with a label (e.g. "Add a prepositional phrase:") */
+.sentence-block {
+  margin: var(--space-md) 0 var(--space-lg);
+}
+
+.sentence-block .sentence-label {
+  font-size:      0.78rem;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--color-ink-light);
+  margin-bottom:  var(--space-xs);
+}
+
+/* ============================================================
+   SENTENCE ANNOTATION HIGHLIGHTS
+   These span-level classes mark grammatical roles inline.
+   Usage: <span class="hl-subject">Suzie</span>
+   ============================================================ */
+[class^="hl-"] {
+  border-radius: 3px;
+  padding:       0.05em 0.2em;
+  font-weight:   600;
+}
+
+.hl-subject      { background: var(--hl-subject);      }
+.hl-verb         { background: var(--hl-verb);          }
+.hl-direct-obj   { background: var(--hl-direct-obj);    }
+.hl-indirect-obj { background: var(--hl-indirect-obj);  }
+.hl-prep         { background: var(--hl-prep);          }
+.hl-verbal       { background: var(--hl-verbal);        }
+.hl-conjunction  { background: var(--hl-conjunction);   }
+.hl-note         { background: var(--hl-note);          }
+
+/* ============================================================
+   ANNOTATION LEGEND
+   A compact color key — include once per page, near the top.
+   ============================================================ */
+.annotation-legend {
+  display:       flex;
+  flex-wrap:     wrap;
+  gap:           var(--space-sm) var(--space-md);
+  margin:        var(--space-md) 0 var(--space-lg);
+  padding:       var(--space-md);
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size:     0.82rem;
+}
+
+.legend-item {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-xs);
+  font-weight: 600;
+  color:       var(--color-ink-mid);
+}
+
+.legend-swatch {
+  display:       inline-block;
+  width:         1.4em;
+  height:        1.1em;
+  border-radius: 3px;
+  flex-shrink:   0;
+}
+
+/* ============================================================
+   SECTION PANEL — for grammar rules / key concept boxes
+   ============================================================ */
+.rule-box {
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-top:    3px solid var(--color-accent);
+  border-radius: var(--border-radius);
+  padding:       var(--space-md) var(--space-lg);
+  margin:        var(--space-lg) 0;
+}
+
+.rule-box h4 {
+  margin-top: 0;
+  color:      var(--color-accent);
+}
+
+/* ============================================================
+   INDEX PAGE — LESSON CARD GRID
+   ============================================================ */
+.lesson-grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  gap:                   var(--space-md);
+  margin-top:            var(--space-xl);
+}
+
+.lesson-card {
+  display:         flex;
+  align-items:     stretch;
+  background:      var(--color-surface);
+  border:          1px solid var(--color-border);
+  border-radius:   var(--border-radius);
+  text-decoration: none;
+  color:           inherit;
+  overflow:        hidden;
+  transition:      box-shadow 0.2s, transform 0.2s;
+}
+
+.lesson-card:hover {
+  box-shadow: 0 4px 18px rgba(30,77,92,0.13);
+  transform:  translateY(-2px);
+}
+
+.card-number {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       56px;
+  background:      var(--color-accent);
+  color:           #FFFFFF;
+  font-size:       1.1rem;
+  font-weight:     900;
+  flex-shrink:     0;
+}
+
+.card-body {
+  padding: var(--space-md) var(--space-lg);
+}
+
+.card-body h3 {
+  font-size:    1rem;
+  font-weight:  800;
+  color:        var(--color-h2);
+  margin:       0 0 var(--space-xs);
+  padding:      0;
+  border:       none;
+}
+
+.card-body p {
+  font-size:    0.85rem;
+  color:        var(--color-ink-mid);
+  margin:       0;
+  line-height:  1.5;
+}
+
+/* ============================================================
+   PAGE NAVIGATION (prev / next links at bottom)
+   ============================================================ */
+.page-nav {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-top:      var(--space-2xl);
+  padding-top:     var(--space-lg);
+  border-top:      1px solid var(--color-border);
+  gap:             var(--space-md);
+}
+
+.page-nav a {
+  display:         flex;
+  align-items:     center;
+  gap:             var(--space-sm);
+  font-size:       0.88rem;
+  font-weight:     700;
+  color:           var(--color-accent);
+  text-decoration: none;
+  padding:         var(--space-sm) var(--space-md);
+  border:          1px solid var(--color-accent-light);
+  border-radius:   var(--border-radius);
+  transition:      background 0.18s;
+}
+
+.page-nav a:hover {
+  background: var(--color-accent-light);
+}
+
+.page-nav a.next {
+  margin-left: auto;
+}
+
+/* ============================================================
+   EXAMPLE TOGGLE  [ more … | close ]
+   .example-overflow holds the hidden sentences.
+   .toggle-btn is the minimal text trigger.
+   ============================================================ */
+.example-overflow {
+  display: none;
+}
+
+.example-overflow.open {
+  display: contents; /* renders children inline with siblings */
+}
+
+.toggle-btn {
+  display:         inline-block;
+  margin-top:      var(--space-xs);
+  font-size:       0.78rem;
+  font-weight:     700;
+  letter-spacing:  0.06em;
+  color:           var(--color-accent-mid);
+  cursor:          pointer;
+  background:      none;
+  border:          none;
+  padding:         0;
+  text-decoration: none;
+  transition:      color 0.15s;
+  user-select:     none;
+}
+
+.toggle-btn:hover {
+  color: var(--color-accent);
+}
+
+/* ============================================================
+   TERMINOLOGY NOTE
+   Small muted line for "in traditional grammar this is called
+   X — but you don't need to remember that" asides.
+   ============================================================ */
+.term-note {
+  font-size:     0.82rem;
+  color:         var(--color-ink-light);
+  font-style:    italic;
+  margin-top:    calc(var(--space-xs) * -0.5);
+  margin-bottom: var(--space-md);
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   JS positions this flush below the nav after measuring it.
+   ============================================================ */
+#scroll-progress {
+  position:   fixed;
+  top:        0;     /* overridden by JS */
+  left:       0;
+  height:     3px;
+  width:      0%;
+  background: var(--color-accent-mid);
+  z-index:    999;
+  transition: width 0.1s linear;
+}
+
+/* ============================================================
+   PREPOSITION WORD CLOUD
+   Flex-wrap panel for the 73 prepositions list.
+   ============================================================ */
+.prep-cloud {
+  display:        flex;
+  flex-wrap:      wrap;
+  gap:            var(--space-xs) var(--space-sm);
+  padding:        var(--space-md);
+  background:     var(--color-surface);
+  border:         1px solid var(--color-border);
+  border-radius:  var(--border-radius);
+  margin:         var(--space-md) 0 var(--space-lg);
+  font-size:      0.9rem;
+  line-height:    1;
+}
+
+.prep-cloud span,
+.prep-cloud {
+  /* words are just text nodes split by whitespace */
+  word-spacing: 0;
+}
+
+/* Each word in the cloud gets a subtle pill treatment */
+.prep-cloud::after { content: none; }
+
+/* We render the cloud as a single text block, styled like a tag list */
+.prep-cloud {
+  font-weight:    600;
+  color:          var(--color-accent);
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   LINKING VERB GRID
+   Two-column flex grid for descriptive (linking) verbs.
+   ============================================================ */
+.linking-grid {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   var(--space-sm);
+  margin:                var(--space-md) 0 var(--space-lg);
+}
+
+.linking-item {
+  display:       flex;
+  flex-direction: column;
+  gap:           2px;
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding:       var(--space-sm) var(--space-md);
+}
+
+.linking-verb {
+  font-size:    0.78rem;
+  font-weight:  800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:        var(--color-accent);
+}
+
+.linking-example {
+  font-size:  0.88rem;
+  color:      var(--color-ink-mid);
+  line-height: 1.4;
+}
+
+@media (max-width: 500px) {
+  .linking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   No hamburger. The nav wraps naturally at any screen width.
+   JS measures the real nav height after wrapping and sets
+   body padding-top accordingly (see sentences.js).
+   ============================================================ */
+@media (max-width: 700px) {
+  html {
+    font-size: 16px;
+  }
+
+  .site-nav {
+    padding: 0.4rem var(--space-md);
+  }
+
+  .page-wrapper {
+    padding: var(--space-lg) var(--space-md) var(--space-2xl);
+  }
+
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.05rem; }
+
+  /* Annotated sentences: extra breathing room on narrow screens
+     so colored spans don't feel cramped when they wrap mid-line */
+  .sentence {
+    font-size:   0.97rem;
+    line-height: 2.1;
+  }
+
+  .card-number {
+    min-width: 44px;
+    font-size: 0.95rem;
+  }
+
+  .lesson-card .card-body {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .page-nav {
+    flex-direction: column;
+    align-items:    stretch;
+  }
+
+  .page-nav a.next {
+    margin-left: 0;
+  }
+
+  .annotation-legend {
+    gap: var(--space-xs) var(--space-sm);
+  }
+}
+
+@media (min-width: 600px) {
+  .lesson-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
