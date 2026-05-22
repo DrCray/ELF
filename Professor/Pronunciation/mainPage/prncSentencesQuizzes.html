@@ -1,0 +1,2645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Practice Quizzes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+        .quiz-set {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .quiz-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .sentence {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        select {
+            padding: 4px 8px;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+            margin: 0 4px;
+        }
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        /* Color states for answers */
+        select.default-state {
+            background-color: #ffffff;
+        }
+        select.correct-state {
+            background-color: #d4edda !important; /* Pale pastel green */
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        select.incorrect-state {
+            background-color: #f8d7da !important; /* Pale pastel pink */
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+
+/* 1. Tell each quiz section to reset the dropdown number back to 0 */
+.quiz-set {
+    counter-reset: select-counter;
+}
+
+/* 2. Create a space for the number and inject it right before each dropdown */
+.sentence select {
+    counter-increment: select-counter; /* Add 1 to the count */
+    position: relative;
+}
+
+/* 3. Inject the clean number at 75% font size with no period */
+.sentence select::before {
+    /* Note: If your current layout structure isolates selects, we can use
+       a wrapping span. If standard pseudo-elements on select exhibit browser quirks,
+       the CSS below handles it smoothly when selects are inline elements. */
+}
+
+/* Alternative highly-compatible CSS approach for inline text layout: */
+.sentence {
+    counter-reset: select-counter;
+}
+
+.sentence select {
+    counter-increment: select-counter;
+}
+
+/* Injects the number cleanly right before the select dropdown box */
+.sentence select {
+    display: inline-block;
+    margin-left: 1.8em; /* Make room for the number */
+}
+
+.sentence select::before {
+    /* Basic modern browsers support content on form controls, but a wrapper is safer.
+       To keep your HTML exactly as-is without adding <span> wrappers, we can use this
+       clever trick using standard CSS sibling generation if available, or simply style
+       the select label.
+
+       However, since we want zero HTML changes, we can use JavaScript to inject the
+       numbers inline on load, completely matching your 75% size rule flawlessly! */
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <h1>Vocabulary Practice Quizzes</h1>
+
+    <div class="quiz-set" id="set1">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 1</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set1')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            When you wax a car, you should be
+            <select data-correct="careful">
+                <option value="">choices</option>
+                <option value="fake">fake</option>
+                <option value="careful">careful</option>
+                <option value="parliament">parliament</option>
+            </select>
+            not to
+            <select data-correct="damage">
+                <option value="">choices</option>
+                <option value="damage">damage</option>
+                <option value="cushion">cushion</option>
+                <option value="universal">universal</option>
+            </select>
+            the paint.
+        </div>
+        <div class="sentence">
+            You should use soft
+            <select data-correct="materials">
+                <option value="">choices</option>
+                <option value="governor">governor</option>
+                <option value="materials">materials</option>
+                <option value="messenger">messenger</option>
+            </select>
+            like cotton rags.
+        </div>
+        <div class="sentence">
+            International relations are
+            <select data-correct="complex">
+                <option value="">choices</option>
+                <option value="complex">complex</option>
+                <option value="substance">substance</option>
+                <option value="preparation">preparation</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            It is not
+            <select data-correct="realistic">
+                <option value="">choices</option>
+                <option value="conflicts">conflicts</option>
+                <option value="realistic">realistic</option>
+                <option value="establishment">establishment</option>
+            </select>
+            to expect there will be no
+            <select data-correct="conflicts">
+                <option value="">choices</option>
+                <option value="conflicts">conflicts</option>
+                <option value="tulips">tulips</option>
+                <option value="opponent">opponent</option>
+            </select>
+            in the world.
+        </div>
+        <div class="sentence">
+            <select data-correct="Victory">
+                <option value="">choices</option>
+                <option value="elections">elections</option>
+                <option value="artificial">artificial</option>
+                <option value="Victory">Victory</option>
+            </select>
+            over your
+            <select data-correct="opponent">
+                <option value="">choices</option>
+                <option value="opponent">opponent</option>
+                <option value="criminal">criminal</option>
+                <option value="desirable">desirable</option>
+            </select>
+            doesn't come easily. You can't just sit on a
+            <select data-correct="cushion">
+                <option value="">choices</option>
+                <option value="cushion">cushion</option>
+                <option value="arrangement">arrangement</option>
+                <option value="survived">survived</option>
+            </select>
+            and expect to win.
+        </div>
+        <div class="sentence">
+            It takes a lot of
+            <select data-correct="preparation">
+                <option value="">choices</option>
+                <option value="collection">collection</option>
+                <option value="preparation">preparation</option>
+                <option value="captured">captured</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="messenger">
+                <option value="">choices</option>
+                <option value="messenger">messenger</option>
+                <option value="materials">materials</option>
+                <option value="complex">complex</option>
+            </select>
+            said that the policeman
+            <select data-correct="survived">
+                <option value="">choices</option>
+                <option value="careful">careful</option>
+                <option value="survived">survived</option>
+                <option value="universal">universal</option>
+            </select>
+            the shoot-out and
+            <select data-correct="captured">
+                <option value="">choices</option>
+                <option value="captured">captured</option>
+                <option value="governor">governor</option>
+                <option value="damage">damage</option>
+            </select>
+            the criminal.
+        </div>
+        <div class="sentence">
+            Next week will be the
+            <select data-correct="elections">
+                <option value="">choices</option>
+                <option value="elections">elections</option>
+                <option value="substance">substance</option>
+                <option value="parliament">parliament</option>
+            </select>
+            for
+            <select data-correct="parliament">
+                <option value="">choices</option>
+                <option value="parliament">parliament</option>
+                <option value="establishment">establishment</option>
+                <option value="opponent">opponent</option>
+            </select>. It would be
+            <select data-correct="desirable">
+                <option value="">choices</option>
+                <option value="desirable">desirable</option>
+                <option value="conflicts">conflicts</option>
+                <option value="realistic">realistic</option>
+            </select>
+            to have a new governor.
+        </div>
+        <div class="sentence">
+            I like the
+            <select data-correct="arrangement">
+                <option value="">choices</option>
+                <option value="arrangement">arrangement</option>
+                <option value="artificial">artificial</option>
+                <option value="cushion">cushion</option>
+            </select>
+            of your
+            <select data-correct="artificial">
+                <option value="">choices</option>
+                <option value="artificial">artificial</option>
+                <option value="Victory">Victory</option>
+                <option value="tulips">tulips</option>
+            </select>
+            flowers. You have a nice
+            <select data-correct="collection">
+                <option value="">choices</option>
+                <option value="collection">collection</option>
+                <option value="fake">fake</option>
+                <option value="criminal">criminal</option>
+            </select>
+            of fake
+            <select data-correct="tulips">
+                <option value="">choices</option>
+                <option value="tulips">tulips</option>
+                <option value="survived">survived</option>
+                <option value="preparation">preparation</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The need to eat, sleep, and drink water is a
+            <select data-correct="universal">
+                <option value="">choices</option>
+                <option value="universal">universal</option>
+                <option value="messenger">messenger</option>
+                <option value="careful">careful</option>
+            </select>
+            need.
+        </div>
+        <div class="sentence">
+            This
+            <select data-correct="establishment">
+                <option value="">choices</option>
+                <option value="materials">materials</option>
+                <option value="establishment">establishment</option>
+                <option value="damage">damage</option>
+            </select>
+            tries to help by providing shelter and
+            <select data-correct="substance">
+                <option value="">choices</option>
+                <option value="substance">substance</option>
+                <option value="complex">complex</option>
+                <option value="governor">governor</option>
+            </select>
+            to the needy.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set2">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 2</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set2')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            Amid the
+            <select data-correct="widespread">
+                <option value="">choices</option>
+                <option value="widespread">widespread</option>
+                <option value="broke">broke</option>
+                <option value="negotiate">negotiate</option>
+            </select>
+            <select data-correct="hostilities">
+                <option value="">choices</option>
+                <option value="hostilities">hostilities</option>
+                <option value="quantity">quantity</option>
+                <option value="pretended">pretended</option>
+            </select>, the President sent in the military.
+        </div>
+        <div class="sentence">
+            What caused the
+            <select data-correct="nuclear">
+                <option value="">choices</option>
+                <option value="nuclear">nuclear</option>
+                <option value="treaty">treaty</option>
+                <option value="violate">violate</option>
+            </select>
+            <select data-correct="explosion">
+                <option value="">choices</option>
+                <option value="explosion">explosion</option>
+                <option value="suggestion">suggestion</option>
+                <option value="automatic">automatic</option>
+            </select>
+            remains a
+            <select data-correct="mystery">
+                <option value="">choices</option>
+                <option value="mystery">mystery</option>
+                <option value="tropical">tropical</option>
+                <option value="obedient">obedient</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The official
+            <select data-correct="representative">
+                <option value="">choices</option>
+                <option value="representative">representative</option>
+                <option value="suspicious">suspicious</option>
+                <option value="afford">afford</option>
+            </select>
+            tried to
+            <select data-correct="negotiate">
+                <option value="">choices</option>
+                <option value="negotiate">negotiate</option>
+                <option value="observation">observation</option>
+                <option value="widespread">widespread</option>
+            </select>
+            a
+            <select data-correct="treaty">
+                <option value="">choices</option>
+                <option value="treaty">treaty</option>
+                <option value="broke">broke</option>
+                <option value="hostilities">hostilities</option>
+            </select>
+            that would not
+            <select data-correct="violate">
+                <option value="">choices</option>
+                <option value="violate">violate</option>
+                <option value="quantity">quantity</option>
+                <option value="pretended">pretended</option>
+            </select>
+            international rights.
+        </div>
+        <div class="sentence">
+            <select data-correct="Several">
+                <option value="">choices</option>
+                <option value="Several">Several</option>
+                <option value="nuclear">nuclear</option>
+                <option value="explosion">explosion</option>
+            </select>
+            years ago, I could
+            <select data-correct="afford">
+                <option value="">choices</option>
+                <option value="afford">afford</option>
+                <option value="suggestion">suggestion</option>
+                <option value="automatic">automatic</option>
+            </select>
+            a
+            <select data-correct="tropical">
+                <option value="">choices</option>
+                <option value="tropical">tropical</option>
+                <option value="mystery">mystery</option>
+                <option value="obedient">obedient</option>
+            </select>
+            vacation—but not now, I'm broke.
+        </div>
+        <div class="sentence">
+            Peace in society is not
+            <select data-correct="automatic">
+                <option value="">choices</option>
+                <option value="automatic">automatic</option>
+                <option value="representative">representative</option>
+                <option value="suspicious">suspicious</option>
+            </select>, it requires
+            <select data-correct="ordinary">
+                <option value="">choices</option>
+                <option value="ordinary">ordinary</option>
+                <option value="negotiate">negotiate</option>
+                <option value="widespread">widespread</option>
+            </select>
+            citizens to be
+            <select data-correct="obedient">
+                <option value="">choices</option>
+                <option value="obedient">obedient</option>
+                <option value="treaty">treaty</option>
+                <option value="hostilities">hostilities</option>
+            </select>
+            to the law.
+        </div>
+        <div class="sentence">
+            After closer
+            <select data-correct="observation">
+                <option value="">choices</option>
+                <option value="observation">observation</option>
+                <option value="violate">violate</option>
+                <option value="quantity">quantity</option>
+            </select>
+            of the
+            <select data-correct="suspicious">
+                <option value="">choices</option>
+                <option value="suspicious">suspicious</option>
+                <option value="pretended">pretended</option>
+                <option value="Several">Several</option>
+            </select>
+            activities of gang members, there seems to be an increase in the
+            <select data-correct="quantity">
+                <option value="">choices</option>
+                <option value="quantity">quantity</option>
+                <option value="nuclear">nuclear</option>
+                <option value="explosion">explosion</option>
+            </select>
+            of gun sales.
+        </div>
+        <div class="sentence">
+            There was a
+            <select data-correct="suggestion">
+                <option value="">choices</option>
+                <option value="suggestion">suggestion</option>
+                <option value="suggestion">suggestion</option>
+                <option value="suggestion">suggestion</option>
+            </select>
+            by an official that the mayor was not telling the truth.
+        </div>
+        <div class="sentence">
+            <select data-correct="Afterwards">
+                <option value="">choices</option>
+                <option value="Afterwards">Afterwards</option>
+                <option value="mystery">mystery</option>
+                <option value="ordinary">ordinary</option>
+            </select>, the mayor
+            <select data-correct="pretended">
+                <option value="">choices</option>
+                <option value="pretended">pretended</option>
+                <option value="afford">afford</option>
+                <option value="tropical">tropical</option>
+            </select>
+            as if nothing had happened.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set3">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 3</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set3')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            At the medical
+            <select data-correct="convention">
+                <option value="">choices</option>
+                <option value="convention">convention</option>
+                <option value="awkward">awkward</option>
+                <option value="defend">defend</option>
+            </select>, Dr. Selby, the
+            <select data-correct="surgeon">
+                <option value="">choices</option>
+                <option value="surgeon">surgeon</option>
+                <option value="persuade">persuade</option>
+                <option value="mixture">mixture</option>
+            </select>, received
+            <select data-correct="recognition">
+                <option value="">choices</option>
+                <option value="recognition">recognition</option>
+                <option value="apparatus">apparatus</option>
+                <option value="favorable">favorable</option>
+            </select>
+            for his great work.
+        </div>
+        <div class="sentence">
+            Most people in
+            <select data-correct="society">
+                <option value="">choices</option>
+                <option value="society">society</option>
+                <option value="clever">clever</option>
+                <option value="distribution">distribution</option>
+            </select>
+            are
+            <select data-correct="conscious">
+                <option value="">choices</option>
+                <option value="conscious">conscious</option>
+                <option value="federal">federal</option>
+                <option value="careless">careless</option>
+            </select>
+            of the fact that Hollywood movies are just
+            <select data-correct="sensation">
+                <option value="">choices</option>
+                <option value="sensation">sensation</option>
+                <option value="campaign">campaign</option>
+                <option value="incident">incident</option>
+            </select>, not
+            <select data-correct="reality">
+                <option value="">choices</option>
+                <option value="reality">reality</option>
+                <option value="convention">convention</option>
+                <option value="awkward">awkward</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The terrible
+            <select data-correct="incident">
+                <option value="">choices</option>
+                <option value="defend">defend</option>
+                <option value="incident">incident</option>
+                <option value="surgeon">surgeon</option>
+            </select>
+            put a dent in his recent
+            <select data-correct="campaign">
+                <option value="">choices</option>
+                <option value="persuade">persuade</option>
+                <option value="campaign">campaign</option>
+                <option value="mixture">mixture</option>
+            </select>. His
+            <select data-correct="careless">
+                <option value="">choices</option>
+                <option value="recognition">recognition</option>
+                <option value="apparatus">apparatus</option>
+                <option value="careless">careless</option>
+            </select>
+            action showed him to be irresponsible.
+        </div>
+        <div class="sentence">
+            <select data-correct="Citizens">
+                <option value="">choices</option>
+                <option value="favorable">favorable</option>
+                <option value="society">society</option>
+                <option value="Citizens">Citizens</option>
+            </select>
+            can go to the
+            <select data-correct="federal">
+                <option value="">choices</option>
+                <option value="clever">clever</option>
+                <option value="federal">federal</option>
+                <option value="distribution">distribution</option>
+            </select>
+            <select data-correct="distribution">
+                <option value="">choices</option>
+                <option value="conscious">conscious</option>
+                <option value="distribution">distribution</option>
+                <option value="sensation">sensation</option>
+            </select>
+            center to get food supplies.
+        </div>
+        <div class="sentence">
+            Reviews of the new
+            <select data-correct="apparatus">
+                <option value="">choices</option>
+                <option value="apparatus">apparatus</option>
+                <option value="reality">reality</option>
+                <option value="convention">convention</option>
+            </select>
+            were
+            <select data-correct="favorable">
+                <option value="">choices</option>
+                <option value="awkward">awkward</option>
+                <option value="favorable">favorable</option>
+                <option value="defend">defend</option>
+            </select>
+            because of its
+            <select data-correct="clever">
+                <option value="">choices</option>
+                <option value="surgeon">surgeon</option>
+                <option value="persuade">persuade</option>
+                <option value="clever">clever</option>
+            </select>
+            design.
+        </div>
+        <div class="sentence">
+            Although it was an
+            <select data-correct="awkward">
+                <option value="">choices</option>
+                <option value="mixture">mixture</option>
+                <option value="recognition">recognition</option>
+                <option value="awkward">awkward</option>
+            </select>
+            situation, the mother was able to
+            <select data-correct="persuade">
+                <option value="">choices</option>
+                <option value="persuade">persuade</option>
+                <option value="careless">careless</option>
+                <option value="society">society</option>
+            </select>
+            the
+            <select data-correct="suspect">
+                <option value="">choices</option>
+                <option value="suspect">suspect</option>
+                <option value="conscious">conscious</option>
+                <option value="sensation">sensation</option>
+            </select>
+            to turn himself in.
+        </div>
+        <div class="sentence">
+            After finding the drug
+            <select data-correct="mixture">
+                <option value="">choices</option>
+                <option value="reality">reality</option>
+                <option value="mixture">mixture</option>
+                <option value="incident">incident</option>
+            </select>
+            in his home, the evidence against the suspect was strong.
+        </div>
+        <div class="sentence">
+            He could not
+            <select data-correct="defend">
+                <option value="">choices</option>
+                <option value="defend">defend</option>
+                <option value="campaign">campaign</option>
+                <option value="federal">federal</option>
+            </select>
+            himself in court.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set4">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 4</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set4')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="majority">
+                <option value="">choices</option>
+                <option value="majority">majority</option>
+                <option value="cooperate">cooperate</option>
+                <option value="supervise">supervise</option>
+            </select>
+            of the citizens are trying to
+            <select data-correct="influence">
+                <option value="">choices</option>
+                <option value="demonstrate">demonstrate</option>
+                <option value="influence">influence</option>
+                <option value="cabinet">cabinet</option>
+            </select>
+            the City Development Committee to
+            <select data-correct="preserve">
+                <option value="">choices</option>
+                <option value="preserve">preserve</option>
+                <option value="authority">authority</option>
+                <option value="foreign">foreign</option>
+            </select>
+            the old building because of its historical significance.
+        </div>
+        <div class="sentence">
+            He has the highest
+            <select data-correct="authority">
+                <option value="">choices</option>
+                <option value="guarantee">guarantee</option>
+                <option value="authority">authority</option>
+                <option value="decrease">decrease</option>
+            </select>
+            in the
+            <select data-correct="foreign">
+                <option value="">choices</option>
+                <option value="treasure">treasure</option>
+                <option value="border">border</option>
+                <option value="foreign">foreign</option>
+            </select>
+            affairs office.
+        </div>
+        <div class="sentence">
+            The politician said he would
+            <select data-correct="guarantee">
+                <option value="">choices</option>
+                <option value="guarantee">guarantee</option>
+                <option value="investigate">investigate</option>
+                <option value="submarine">submarine</option>
+            </select>
+            a
+            <select data-correct="decrease">
+                <option value="">choices</option>
+                <option value="explosive">explosive</option>
+                <option value="decrease">decrease</option>
+                <option value="judicial">judicial</option>
+            </select>
+            in taxes for the middle class.
+        </div>
+        <div class="sentence">
+            The map shows there is buried
+            <select data-correct="treasure">
+                <option value="">choices</option>
+                <option value="cooperate">cooperate</option>
+                <option value="treasure">treasure</option>
+                <option value="supervise">supervise</option>
+            </select>
+            near the
+            <select data-correct="border">
+                <option value="">choices</option>
+                <option value="demonstrate">demonstrate</option>
+                <option value="border">border</option>
+                <option value="cabinet">cabinet</option>
+            </select>
+            of Mexico. We should go
+            <select data-correct="investigate">
+                <option value="">choices</option>
+                <option value="preserve">preserve</option>
+                <option value="investigate">investigate</option>
+                <option value="authority">authority</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="submarine">
+                <option value="">choices</option>
+                <option value="foreign">foreign</option>
+                <option value="guarantee">guarantee</option>
+                <option value="submarine">submarine</option>
+            </select>
+            uses the element of surprise. The
+            <select data-correct="explosive">
+                <option value="">choices</option>
+                <option value="explosive">explosive</option>
+                <option value="decrease">decrease</option>
+                <option value="treasure">treasure</option>
+            </select>
+            hits and you never see where it came from.
+        </div>
+        <div class="sentence">
+            The judicial selection committee will
+            <select data-correct="cooperate">
+                <option value="">choices</option>
+                <option value="cooperate">cooperate</option>
+                <option value="border">border</option>
+                <option value="submarine">submarine</option>
+            </select>
+            with the Prime Minister in making their choice for the new judges.
+        </div>
+        <div class="sentence">
+            I want you to
+            <select data-correct="supervise">
+                <option value="">choices</option>
+                <option value="explosive">explosive</option>
+                <option value="supervise">supervise</option>
+                <option value="judicial">judicial</option>
+            </select>
+            the making of the
+            <select data-correct="cabinet">
+                <option value="">choices</option>
+                <option value="majority">majority</option>
+                <option value="cabinet">cabinet</option>
+                <option value="influence">influence</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            You can
+            <select data-correct="demonstrate">
+                <option value="">choices</option>
+                <option value="preserve">preserve</option>
+                <option value="authority">authority</option>
+                <option value="demonstrate">demonstrate</option>
+            </select>
+            this new product at tomorrow's new product convention.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set5">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 5</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set5')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="criminal">
+                <option value="">choices</option>
+                <option value="criminal">criminal</option>
+                <option value="recession">recession</option>
+                <option value="furious">furious</option>
+            </select>
+            <select data-correct="tortured">
+                <option value="">choices</option>
+                <option value="tendency">tendency</option>
+                <option value="tortured">tortured</option>
+                <option value="disguises">disguises</option>
+            </select>
+            his victims. Fortunately, the
+            <select data-correct="police">
+                <option value="">choices</option>
+                <option value="police">police</option>
+                <option value="recognize">recognize</option>
+                <option value="curtain">curtain</option>
+            </select>
+            finally caught him.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="mysterious">
+                <option value="">choices</option>
+                <option value="mysterious">mysterious</option>
+                <option value="judgment">judgment</option>
+                <option value="opposition">opposition</option>
+            </select>
+            spy
+            <select data-correct="satellite">
+                <option value="">choices</option>
+                <option value="criminal">criminal</option>
+                <option value="satellite">satellite</option>
+                <option value="recession">recession</option>
+            </select>
+            floats in space where no one
+            <select data-correct="notices">
+                <option value="">choices</option>
+                <option value="furious">furious</option>
+                <option value="tendency">tendency</option>
+                <option value="notices">notices</option>
+            </select>
+            it.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="institution">
+                <option value="">choices</option>
+                <option value="institution">institution</option>
+                <option value="tortured">tortured</option>
+                <option value="disguises">disguises</option>
+            </select>
+            gave
+            <select data-correct="notice">
+                <option value="">choices</option>
+                <option value="police">police</option>
+                <option value="recognize">recognize</option>
+                <option value="notice">notice</option>
+            </select>
+            (n.) that because of the
+            <select data-correct="recession">
+                <option value="">choices</option>
+                <option value="curtain">curtain</option>
+                <option value="recession">recession</option>
+                <option value="mysterious">mysterious</option>
+            </select>
+            and other
+            <select data-correct="practical">
+                <option value="">choices</option>
+                <option value="practical">practical</option>
+                <option value="judgment">judgment</option>
+                <option value="opposition">opposition</option>
+            </select>
+            concerns, it would be laying off many of its employees.
+        </div>
+        <div class="sentence">
+            The angry criminal can get
+            <select data-correct="furious">
+                <option value="">choices</option>
+                <option value="criminal">criminal</option>
+                <option value="furious">furious</option>
+                <option value="recession">recession</option>
+            </select>
+            over any small thing. He has a
+            <select data-correct="violent">
+                <option value="">choices</option>
+                <option value="furious">furious</option>
+                <option value="violent">violent</option>
+                <option value="tendency">tendency</option>
+            </select>
+            <select data-correct="tendency">
+                <option value="">choices</option>
+                <option value="disguises">disguises</option>
+                <option value="tendency">tendency</option>
+                <option value="police">police</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The private detective has a
+            <select data-correct="variety">
+                <option value="">choices</option>
+                <option value="variety">variety</option>
+                <option value="recognize">recognize</option>
+                <option value="curtain">curtain</option>
+            </select>
+            of disguises so that no one can
+            <select data-correct="recognize">
+                <option value="">choices</option>
+                <option value="mysterious">mysterious</option>
+                <option value="judgment">judgment</option>
+                <option value="recognize">recognize</option>
+            </select>
+            him.
+        </div>
+        <div class="sentence">
+            At the moment, he is hiding behind a
+            <select data-correct="curtain">
+                <option value="">choices</option>
+                <option value="opposition">opposition</option>
+                <option value="criminal">criminal</option>
+                <option value="curtain">curtain</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The success of the
+            <select data-correct="conference">
+                <option value="">choices</option>
+                <option value="conference">conference</option>
+                <option value="recession">recession</option>
+                <option value="furious">furious</option>
+            </select>
+            is
+            <select data-correct="dependent">
+                <option value="">choices</option>
+                <option value="tendency">tendency</option>
+                <option value="dependent">dependent</option>
+                <option value="disguises">disguises</option>
+            </select>
+            on our ability to
+            <select data-correct="organize">
+                <option value="">choices</option>
+                <option value="police">police</option>
+                <option value="recognize">recognize</option>
+                <option value="organize">organize</option>
+            </select>
+            it efficiently.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="judgment">
+                <option value="">choices</option>
+                <option value="curtain">curtain</option>
+                <option value="judgment">judgment</option>
+                <option value="mysterious">mysterious</option>
+            </select>
+            of the jobs committee was in
+            <select data-correct="opposition">
+                <option value="">choices</option>
+                <option value="opposition">opposition</option>
+                <option value="judgment">judgment</option>
+                <option value="opposition">opposition</option>
+            </select>
+            to the needs of the unemployed.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set6">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 6</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set6')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            Although the
+            <select data-correct="champion">
+                <option value="">choices</option>
+                <option value="champion">champion</option>
+                <option value="timetable">timetable</option>
+                <option value="anxiety">anxiety</option>
+            </select>
+            is the
+            <select data-correct="favorite">
+                <option value="">choices</option>
+                <option value="chemical">chemical</option>
+                <option value="favorite">favorite</option>
+                <option value="analysis">analysis</option>
+            </select>
+            to win in today's competition, the underdog
+            <select data-correct="defeated">
+                <option value="">choices</option>
+                <option value="defeated">defeated</option>
+                <option value="minerals">minerals</option>
+                <option value="patience">patience</option>
+            </select>
+            her on the
+            <select data-correct="previous">
+                <option value="">choices</option>
+                <option value="serious">serious</option>
+                <option value="previous">previous</option>
+                <option value="policy">policy</option>
+            </select>
+            <select data-correct="occasion">
+                <option value="">choices</option>
+                <option value="broadcasts">broadcasts</option>
+                <option value="surface">surface</option>
+                <option value="occasion">occasion</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="officials">
+                <option value="">choices</option>
+                <option value="disappear">disappear</option>
+                <option value="delegates">delegates</option>
+                <option value="officials">officials</option>
+            </select>
+            doing the
+            <select data-correct="experiment">
+                <option value="">choices</option>
+                <option value="accustomed">accustomed</option>
+                <option value="experiment">experiment</option>
+                <option value="neutral">neutral</option>
+            </select>
+            were on a short
+            <select data-correct="timetable">
+                <option value="">choices</option>
+                <option value="champion">champion</option>
+                <option value="timetable">timetable</option>
+                <option value="anxiety">anxiety</option>
+            </select>. It caused them a lot of
+            <select data-correct="anxiety">
+                <option value="">choices</option>
+                <option value="chemical">chemical</option>
+                <option value="analysis">analysis</option>
+                <option value="anxiety">anxiety</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="chemical">
+                <option value="">choices</option>
+                <option value="defeated">defeated</option>
+                <option value="chemical">chemical</option>
+                <option value="minerals">minerals</option>
+            </select>
+            <select data-correct="analysis">
+                <option value="">choices</option>
+                <option value="patience">patience</option>
+                <option value="analysis">analysis</option>
+                <option value="serious">serious</option>
+            </select>
+            on the water showed it contained only
+            <select data-correct="minerals">
+                <option value="">choices</option>
+                <option value="policy">policy</option>
+                <option value="broadcasts">broadcasts</option>
+                <option value="minerals">minerals</option>
+            </select>. The water is safe to drink.
+        </div>
+        <div class="sentence">
+            The President showed his
+            <select data-correct="ability">
+                <option value="">choices</option>
+                <option value="ability">ability</option>
+                <option value="surface">surface</option>
+                <option value="disappear">disappear</option>
+            </select>
+            to have
+            <select data-correct="patience">
+                <option value="">choices</option>
+                <option value="delegates">delegates</option>
+                <option value="accustomed">accustomed</option>
+                <option value="patience">patience</option>
+            </select>
+            under the most
+            <select data-correct="serious">
+                <option value="">choices</option>
+                <option value="neutral">neutral</option>
+                <option value="serious">serious</option>
+                <option value="champion">champion</option>
+            </select>
+            <select data-correct="situations">
+                <option value="">choices</option>
+                <option value="timetable">timetable</option>
+                <option value="situations">situations</option>
+                <option value="anxiety">anxiety</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            It is the
+            <select data-correct="policy">
+                <option value="">choices</option>
+                <option value="chemical">chemical</option>
+                <option value="policy">policy</option>
+                <option value="analysis">analysis</option>
+            </select>
+            of this company to make all our radio
+            <select data-correct="broadcasts">
+                <option value="">choices</option>
+                <option value="defeated">defeated</option>
+                <option value="minerals">minerals</option>
+                <option value="broadcasts">broadcasts</option>
+            </select>
+            available free to the public.
+        </div>
+        <div class="sentence">
+            The frozen
+            <select data-correct="surface">
+                <option value="">choices</option>
+                <option value="patience">patience</option>
+                <option value="surface">surface</option>
+                <option value="serious">serious</option>
+            </select>
+            of the ocean will soon
+            <select data-correct="disappear">
+                <option value="">choices</option>
+                <option value="policy">policy</option>
+                <option value="broadcasts">broadcasts</option>
+                <option value="disappear">disappear</option>
+            </select>
+            if we don't stop global warming.
+        </div>
+        <div class="sentence">
+            The Swiss
+            <select data-correct="delegates">
+                <option value="">choices</option>
+                <option value="delegates">delegates</option>
+                <option value="surface">surface</option>
+                <option value="disappear">disappear</option>
+            </select>
+            to the international finance conference are
+            <select data-correct="accustomed">
+                <option value="">choices</option>
+                <option value="accustomed">accustomed</option>
+                <option value="delegates">delegates</option>
+                <option value="neutral">neutral</option>
+            </select>
+            to being
+            <select data-correct="neutral">
+                <option value="">choices</option>
+                <option value="neutral">neutral</option>
+                <option value="champion">champion</option>
+                <option value="timetable">timetable</option>
+            </select>
+            on financial matters.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set7">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 7</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set7')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            A
+            <select data-correct="subversion">
+                <option value="">choices</option>
+                <option value="subversion">subversion</option>
+                <option value="expression">expression</option>
+                <option value="coalition">coalition</option>
+            </select>
+            of the law by the general
+            <select data-correct="population">
+                <option value="">choices</option>
+                <option value="condition">condition</option>
+                <option value="population">population</option>
+                <option value="severe">severe</option>
+            </select>
+            leads to a
+            <select data-correct="destruction">
+                <option value="">choices</option>
+                <option value="probability">probability</option>
+                <option value="pamphlet">pamphlet</option>
+                <option value="destruction">destruction</option>
+            </select>
+            of civilization.
+        </div>
+        <div class="sentence">
+            The angry
+            <select data-correct="expression">
+                <option value="">choices</option>
+                <option value="behavior">behavior</option>
+                <option value="adventure">adventure</option>
+                <option value="expression">expression</option>
+            </select>
+            on his face indicated that he disagreed with the
+            <select data-correct="coalition">
+                <option value="">choices</option>
+                <option value="reasonable">reasonable</option>
+                <option value="coalition">coalition</option>
+                <option value="sensible">sensible</option>
+            </select>
+            decision.
+        </div>
+        <div class="sentence">
+            The doctor said the patient's medical
+            <select data-correct="condition">
+                <option value="">choices</option>
+                <option value="cardboard">cardboard</option>
+                <option value="condition">condition</option>
+                <option value="resolution">resolution</option>
+            </select>
+            was
+            <select data-correct="severe">
+                <option value="">choices</option>
+                <option value="compromise">compromise</option>
+                <option value="multiply">multiply</option>
+                <option value="severe">severe</option>
+            </select>
+            and her
+            <select data-correct="probability">
+                <option value="">choices</option>
+                <option value="probability">probability</option>
+                <option value="expansion">expansion</option>
+                <option value="subversion">subversion</option>
+            </select>
+            of survival was uncertain.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="pamphlet">
+                <option value="">choices</option>
+                <option value="expression">expression</option>
+                <option value="coalition">coalition</option>
+                <option value="pamphlet">pamphlet</option>
+            </select>
+            <select data-correct="criticized">
+                <option value="">choices</option>
+                <option value="condition">condition</option>
+                <option value="criticized">criticized</option>
+                <option value="severe">severe</option>
+            </select>
+            the governor for his poor
+            <select data-correct="behavior">
+                <option value="">choices</option>
+                <option value="probability">probability</option>
+                <option value="destruction">destruction</option>
+                <option value="behavior">behavior</option>
+            </select>
+            during his time in office.
+        </div>
+        <div class="sentence">
+            It
+            <select data-correct="mentioned">
+                <option value="">choices</option>
+                <option value="adventure">adventure</option>
+                <option value="mentioned">mentioned</option>
+                <option value="reasonable">reasonable</option>
+            </select>
+            his many
+            <select data-correct="adventure">
+                <option value="">choices</option>
+                <option value="sensible">sensible</option>
+                <option value="cardboard">cardboard</option>
+                <option value="adventure">adventure</option>
+            </select>
+            tours and said that it was not
+            <select data-correct="reasonable">
+                <option value="">choices</option>
+                <option value="resolution">resolution</option>
+                <option value="compromise">compromise</option>
+                <option value="reasonable">reasonable</option>
+            </select>
+            that he should be spending money and travelling the world.
+        </div>
+        <div class="sentence">
+            It is not
+            <select data-correct="sensible">
+                <option value="">choices</option>
+                <option value="multiply">multiply</option>
+                <option value="expansion">expansion</option>
+                <option value="sensible">sensible</option>
+            </select>
+            to try to make a boat out of
+            <select data-correct="cardboard">
+                <option value="">choices</option>
+                <option value="subversion">subversion</option>
+                <option value="cardboard">cardboard</option>
+                <option value="expression">expression</option>
+            </select>
+            boxes.
+        </div>
+        <div class="sentence">
+            Two committee members remain
+            <select data-correct="neutral">
+                <option value="">choices</option>
+                <option value="coalition">coalition</option>
+                <option value="condition">condition</option>
+                <option value="neutral">neutral</option>
+            </select>
+            on the
+            <select data-correct="resolution">
+                <option value="">choices</option>
+                <option value="severe">severe</option>
+                <option value="resolution">resolution</option>
+                <option value="probability">probability</option>
+            </select>
+            and will not vote yes or no.
+        </div>
+        <div class="sentence">
+            It seems, a
+            <select data-correct="compromise">
+                <option value="">choices</option>
+                <option value="destruction">destruction</option>
+                <option value="behavior">behavior</option>
+                <option value="compromise">compromise</option>
+            </select>
+            can not be reached.
+        </div>
+        <div class="sentence">
+            As the killer bees continue to
+            <select data-correct="multiply">
+                <option value="">choices</option>
+                <option value="adventure">adventure</option>
+                <option value="reasonable">reasonable</option>
+                <option value="multiply">multiply</option>
+            </select>
+            in numbers, their
+            <select data-correct="expansion">
+                <option value="">choices</option>
+                <option value="sensible">sensible</option>
+                <option value="cardboard">cardboard</option>
+                <option value="expansion">expansion</option>
+            </select>
+            is causing more deaths.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set8">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 8</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set8')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            A political
+            <select data-correct="fanatic">
+                <option value="">choices</option>
+                <option value="fanatic">fanatic</option>
+                <option value="attention">attention</option>
+                <option value="enforce">enforce</option>
+            </select>
+            launched a SAM* <select data-correct="missile">
+                <option value="">choices</option>
+                <option value="environment">environment</option>
+                <option value="missile">missile</option>
+                <option value="approval">approval</option>
+            </select>
+            at a commercial airliner.
+        </div>
+        <div class="sentence">
+            Fortunately, it missed, but it got the
+            <select data-correct="attention">
+                <option value="">choices</option>
+                <option value="candidate">candidate</option>
+                <option value="popularity">popularity</option>
+                <option value="attention">attention</option>
+            </select>
+            of Homeland Security who are considering ways to better protect our airliners.
+        </div>
+        <div class="sentence">
+            If we don't
+            <select data-correct="enforce">
+                <option value="">choices</option>
+                <option value="celebrate">celebrate</option>
+                <option value="enforce">enforce</option>
+                <option value="ambassador">ambassador</option>
+            </select>
+            stronger laws for protecting our
+            <select data-correct="environment">
+                <option value="">choices</option>
+                <option value="encouraged">encouraged</option>
+                <option value="moderate">moderate</option>
+                <option value="environment">environment</option>
+            </select>, there may be no
+            <select data-correct="civilization">
+                <option value="">choices</option>
+                <option value="useful">useful</option>
+                <option value="emergency">emergency</option>
+                <option value="civilization">civilization</option>
+            </select>
+            left in the near future.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="approval">
+                <option value="">choices</option>
+                <option value="communicate">communicate</option>
+                <option value="circumstances">circumstances</option>
+                <option value="approval">approval</option>
+            </select>
+            ratings of the Mayoral
+            <select data-correct="candidate">
+                <option value="">choices</option>
+                <option value="companion">companion</option>
+                <option value="candidate">candidate</option>
+                <option value="imagination">imagination</option>
+            </select>
+            show that his
+            <select data-correct="popularity">
+                <option value="">choices</option>
+                <option value="transparent">transparent</option>
+                <option value="social">social</option>
+                <option value="popularity">popularity</option>
+            </select>
+            is high. He will
+            <select data-correct="celebrate">
+                <option value="">choices</option>
+                <option value="fanatic">fanatic</option>
+                <option value="attention">attention</option>
+                <option value="celebrate">celebrate</option>
+            </select>
+            his probable victory tonight.
+        </div>
+        <div class="sentence">
+            In his speech, the
+            <select data-correct="ambassador">
+                <option value="">choices</option>
+                <option value="enforce">enforce</option>
+                <option value="ambassador">ambassador</option>
+                <option value="environment">environment</option>
+            </select>
+            of Brazil
+            <select data-correct="encouraged">
+                <option value="">choices</option>
+                <option value="approval">approval</option>
+                <option value="candidate">candidate</option>
+                <option value="encouraged">encouraged</option>
+            </select>
+            us to be
+            <select data-correct="moderate">
+                <option value="">choices</option>
+                <option value="popularity">popularity</option>
+                <option value="celebrate">celebrate</option>
+                <option value="moderate">moderate</option>
+            </select>
+            in our spending and more
+            <select data-correct="useful">
+                <option value="">choices</option>
+                <option value="useful">useful</option>
+                <option value="communicated">communicated</option>
+                <option value="circumstances">circumstances</option>
+            </select>
+            in serving others.
+        </div>
+        <div class="sentence">
+            In an
+            <select data-correct="emergency">
+                <option value="">choices</option>
+                <option value="companion">companion</option>
+                <option value="imagination">imagination</option>
+                <option value="emergency">emergency</option>
+            </select>
+            such as a natural disaster, it is difficult to
+            <select data-correct="communicate">
+                <option value="">choices</option>
+                <option value="communicate">communicate</option>
+                <option value="transparent">transparent</option>
+                <option value="social">social</option>
+            </select>
+            under those
+            <select data-correct="circumstances">
+                <option value="">choices</option>
+                <option value="fanatic">fanatic</option>
+                <option value="attention">attention</option>
+                <option value="circumstances">circumstances</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            My travelling
+            <select data-correct="companion">
+                <option value="">choices</option>
+                <option value="enforce">enforce</option>
+                <option value="companion">companion</option>
+                <option value="environment">environment</option>
+            </select>
+            has very little
+            <select data-correct="imagination">
+                <option value="">choices</option>
+                <option value="approval">approval</option>
+                <option value="candidate">candidate</option>
+                <option value="imagination">imagination</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            My emotions and thoughts are very
+            <select data-correct="transparent">
+                <option value="">choices</option>
+                <option value="popularity">popularity</option>
+                <option value="celebrate">celebrate</option>
+                <option value="transparent">transparent</option>
+            </select>. I always speak my mind even if it's not popular.
+        </div>
+        <div class="sentence">
+            This means I'm not good conversation at
+            <select data-correct="social">
+                <option value="">choices</option>
+                <option value="useful">useful</option>
+                <option value="social">social</option>
+                <option value="emergency">emergency</option>
+            </select>
+            gatherings.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set9">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 9</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set9')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            One of the greatest
+            <select data-correct="scientific">
+                <option value="">choices</option>
+                <option value="scientific">scientific</option>
+                <option value="century">century</option>
+                <option value="microscope">microscope</option>
+            </select>
+            advances in the 17th
+            <select data-correct="century">
+                <option value="">choices</option>
+                <option value="characters">characters</option>
+                <option value="century">century</option>
+                <option value="stubborn">stubborn</option>
+            </select>
+            was the
+            <select data-correct="microscope">
+                <option value="">choices</option>
+                <option value="generous">generous</option>
+                <option value="accordance">accordance</option>
+                <option value="microscope">microscope</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The brothers are of two different
+            <select data-correct="characters">
+                <option value="">choices</option>
+                <option value="appropriate">appropriate</option>
+                <option value="headquarters">headquarters</option>
+                <option value="characters">characters</option>
+            </select>. One is
+            <select data-correct="stubborn">
+                <option value="">choices</option>
+                <option value="stubborn">stubborn</option>
+                <option value="target">target</option>
+                <option value="department">department</option>
+            </select>
+            and mean, the other, kind and
+            <select data-correct="generous">
+                <option value="">choices</option>
+                <option value="associations">associations</option>
+                <option value="generous">generous</option>
+                <option value="pressure">pressure</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The decision to give government employees a large raise was not in
+            <select data-correct="accordance">
+                <option value="">choices</option>
+                <option value="sacrifices">sacrifices</option>
+                <option value="transport">transport</option>
+                <option value="accordance">accordance</option>
+            </select>
+            with the voters wishes.
+        </div>
+        <div class="sentence">
+            It was not
+            <select data-correct="appropriate">
+                <option value="">choices</option>
+                <option value="standard">standard</option>
+                <option value="appropriate">appropriate</option>
+                <option value="confirm">confirm</option>
+            </select>
+            during this time of recession where many are poor and jobless.
+        </div>
+        <div class="sentence">
+            According to the company's
+            <select data-correct="headquarters">
+                <option value="">choices</option>
+                <option value="decorate">decorate</option>
+                <option value="headquarters">headquarters</option>
+                <option value="radiation">radiation</option>
+            </select>, the
+            <select data-correct="target">
+                <option value="">choices</option>
+                <option value="scientific">scientific</option>
+                <option value="target">target</option>
+                <option value="century">century</option>
+            </select>
+            market of their new clothing
+            <select data-correct="department">
+                <option value="">choices</option>
+                <option value="microscope">microscope</option>
+                <option value="characters">characters</option>
+                <option value="department">department</option>
+            </select>
+            are teenagers.
+        </div>
+        <div class="sentence">
+            Government
+            <select data-correct="associations">
+                <option value="">choices</option>
+                <option value="stubborn">stubborn</option>
+                <option value="associations">associations</option>
+                <option value="generous">generous</option>
+            </select>
+            are under a lot of
+            <select data-correct="pressure">
+                <option value="">choices</option>
+                <option value="accordance">accordance</option>
+                <option value="pressure">pressure</option>
+                <option value="appropriate">appropriate</option>
+            </select>
+            to protect the environment.
+        </div>
+        <div class="sentence">
+            <select data-correct="Sacrifices">
+                <option value="">choices</option>
+                <option value="headquarters">headquarters</option>
+                <option value="target">target</option>
+                <option value="Sacrifices">Sacrifices</option>
+            </select>
+            must be made to ensure a good future for our children.
+        </div>
+        <div class="sentence">
+            We will
+            <select data-correct="transport">
+                <option value="">choices</option>
+                <option value="department">department</option>
+                <option value="transport">transport</option>
+                <option value="associations">associations</option>
+            </select>
+            the products to you at the
+            <select data-correct="standard">
+                <option value="">choices</option>
+                <option value="pressure">pressure</option>
+                <option value="standard">standard</option>
+                <option value="sacrifices">sacrifices</option>
+            </select>
+            delivery rate. Please
+            <select data-correct="confirm">
+                <option value="">choices</option>
+                <option value="confirm">confirm</option>
+                <option value="decorate">decorate</option>
+                <option value="radiation">radiation</option>
+            </select>
+            your order.
+        </div>
+        <div class="sentence">
+            The nuclear plant employees were ready to
+            <select data-correct="decorate">
+                <option value="">choices</option>
+                <option value="decorate">decorate</option>
+                <option value="scientific">scientific</option>
+                <option value="century">century</option>
+            </select>
+            for Christmas. Suddenly the alarm sounded. There was a
+            <select data-correct="radiation">
+                <option value="">choices</option>
+                <option value="microscope">microscope</option>
+                <option value="radiation">radiation</option>
+                <option value="characters">characters</option>
+            </select>
+            leak; they all exited the building quickly.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set10">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 10</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set10')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            My uncle is on
+            <select data-correct="medication">
+                <option value="">choices</option>
+                <option value="medication">medication</option>
+                <option value="digestion">digestion</option>
+                <option value="medicine">medicine</option>
+            </select>
+            for poor
+            <select data-correct="digestion">
+                <option value="">choices</option>
+                <option value="profession">profession</option>
+                <option value="digestion">digestion</option>
+                <option value="publication">publication</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            His
+            <select data-correct="medicine">
+                <option value="">choices</option>
+                <option value="property">property</option>
+                <option value="design">design</option>
+                <option value="medicine">medicine</option>
+            </select>
+            is very expensive.
+        </div>
+        <div class="sentence">
+            Many people in the legal
+            <select data-correct="profession">
+                <option value="">choices</option>
+                <option value="upright">upright</option>
+                <option value="profession">profession</option>
+                <option value="production">production</option>
+            </select>
+            read a
+            <select data-correct="publication">
+                <option value="">choices</option>
+                <option value="immediate">immediate</option>
+                <option value="crisis">crisis</option>
+                <option value="publication">publication</option>
+            </select>
+            called the Harvard Law Review.
+        </div>
+        <div class="sentence">
+            There are articles on
+            <select data-correct="property">
+                <option value="">choices</option>
+                <option value="propaganda">propaganda</option>
+                <option value="property">property</option>
+                <option value="principle">principle</option>
+            </select>
+            law, criminal law, and my other issues.
+        </div>
+        <div class="sentence">
+            The bed
+            <select data-correct="design">
+                <option value="">choices</option>
+                <option value="innocent">innocent</option>
+                <option value="design">design</option>
+                <option value="familiar">familiar</option>
+            </select>
+            was first used for astronauts, so the bed stands
+            <select data-correct="upright">
+                <option value="">choices</option>
+                <option value="descriptions">descriptions</option>
+                <option value="deserve">deserve</option>
+                <option value="upright">upright</option>
+            </select>
+            against the wall.
+        </div>
+        <div class="sentence">
+            The company will begin
+            <select data-correct="production">
+                <option value="">choices</option>
+                <option value="discourage">discourage</option>
+                <option value="capital">capital</option>
+                <option value="production">production</option>
+            </select>
+            of it's new beds next week.
+        </div>
+        <div class="sentence">
+            The state again faces an
+            <select data-correct="immediate">
+                <option value="">choices</option>
+                <option value="medication">medication</option>
+                <option value="immediate">immediate</option>
+                <option value="digestion">digestion</option>
+            </select>
+            <select data-correct="crisis">
+                <option value="">choices</option>
+                <option value="medicine">medicine</option>
+                <option value="crisis">crisis</option>
+                <option value="profession">profession</option>
+            </select>
+            of high crime rates.
+        </div>
+        <div class="sentence">
+            Their
+            <select data-correct="propaganda">
+                <option value="">choices</option>
+                <option value="publication">publication</option>
+                <option value="propaganda">propaganda</option>
+                <option value="property">property</option>
+            </select>
+            of a tougher and more active police force is meant to deter criminals.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="principle">
+                <option value="">choices</option>
+                <option value="design">design</option>
+                <option value="principle">principle</option>
+                <option value="upright">upright</option>
+            </select>
+            of “
+            <select data-correct="innocent">
+                <option value="">choices</option>
+                <option value="production">production</option>
+                <option value="innocent">innocent</option>
+                <option value="immediate">immediate</option>
+            </select>
+            until proven guilty” is
+            <select data-correct="familiar">
+                <option value="">choices</option>
+                <option value="crisis">crisis</option>
+                <option value="propaganda">propaganda</option>
+                <option value="familiar">familiar</option>
+            </select>
+            to all Americans.
+        </div>
+        <div class="sentence">
+            Based on the
+            <select data-correct="various">
+                <option value="">choices</option>
+                <option value="various">various</option>
+                <option value="property">property</option>
+                <option value="principle">principle</option>
+            </select>
+            <select data-correct="descriptions">
+                <option value="">choices</option>
+                <option value="innocent">innocent</option>
+                <option value="descriptions">descriptions</option>
+                <option value="familiar">familiar</option>
+            </select>
+            given by the witnesses, I think the suspect does not
+            <select data-correct="deserve">
+                <option value="">choices</option>
+                <option value="deserve">deserve</option>
+                <option value="discourage">discourage</option>
+                <option value="capital">capital</option>
+            </select>
+            to be arrested, they should let him go.
+        </div>
+        <div class="sentence">
+            The government should
+            <select data-correct="consider">
+                <option value="">choices</option>
+                <option value="consider">consider</option>
+                <option value="medication">medication</option>
+                <option value="digestion">digestion</option>
+            </select>
+            ways to
+            <select data-correct="discourage">
+                <option value="">choices</option>
+                <option value="medicine">medicine</option>
+                <option value="discourage">discourage</option>
+                <option value="profession">profession</option>
+            </select>
+            <select data-correct="capital">
+                <option value="">choices</option>
+                <option value="publication">publication</option>
+                <option value="property">property</option>
+                <option value="capital">capital</option>
+            </select>
+            investments abroad.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set11">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 11</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set11')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            <select data-correct="According">
+                <option value="">choices</option>
+                <option value="According">According</option>
+                <option value="machinery">Affording</option>
+                <option value="useless">Aborting</option>
+            </select>
+            to the workers, this
+            <select data-correct="machinery">
+                <option value="">choices</option>
+                <option value="intelligent">intelligent</option>
+                <option value="machinery">machinery</option>
+                <option value="confidence">confidence</option>
+            </select>
+            is always breaking down. They say it's
+            <select data-correct="useless">
+                <option value="">choices</option>
+                <option value="independent">independent</option>
+                <option value="vicious">vicious</option>
+                <option value="useless">useless</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            An
+            <select data-correct="intelligent">
+                <option value="">choices</option>
+                <option value="struggle">struggle</option>
+                <option value="territory">territory</option>
+                <option value="intelligent">intelligent</option>
+            </select>
+            person with
+            <select data-correct="confidence">
+                <option value="">choices</option>
+                <option value="beneath">beneath</option>
+                <option value="deliver">deliver</option>
+                <option value="confidence">confidence</option>
+            </select>
+            is usually an
+            <select data-correct="independent">
+                <option value="">choices</option>
+                <option value="uniforms">uniforms</option>
+                <option value="calculate">calculate</option>
+                <option value="independent">independent</option>
+            </select>
+            person.
+        </div>
+        <div class="sentence">
+            The two countries are having a
+            <select data-correct="vicious">
+                <option value="">choices</option>
+                <option value="vicious">vicious</option>
+                <option value="execute">execute</option>
+                <option value="substitute">substitute</option>
+            </select>
+            <select data-correct="struggle">
+                <option value="">choices</option>
+                <option value="disappointed">disappointed</option>
+                <option value="struggle">struggle</option>
+                <option value="parallel">parallel</option>
+            </select>
+            over the neutral
+            <select data-correct="territory">
+                <option value="">choices</option>
+                <option value="sensitive">sensitive</option>
+                <option value="advertising">advertising</option>
+                <option value="territory">territory</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            Joe feels it is
+            <select data-correct="beneath">
+                <option value="">choices</option>
+                <option value="According">According</option>
+                <option value="machinery">machinery</option>
+                <option value="beneath">beneath</option>
+            </select>
+            him to
+            <select data-correct="deliver">
+                <option value="">choices</option>
+                <option value="useless">useless</option>
+                <option value="deliver">deliver</option>
+                <option value="intelligent">intelligent</option>
+            </select>
+            pizzas. Also, he doesn't like the pizza man
+            <select data-correct="uniforms">
+                <option value="">choices</option>
+                <option value="confidence">confidence</option>
+                <option value="independent">independent</option>
+                <option value="uniforms">uniforms</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            We should
+            <select data-correct="calculate">
+                <option value="">choices</option>
+                <option value="vicious">vicious</option>
+                <option value="struggle">struggle</option>
+                <option value="calculate">calculate</option>
+            </select>
+            the amount of money that will be needed to
+            <select data-correct="execute">
+                <option value="">choices</option>
+                <option value="territory">territory</option>
+                <option value="beneath">beneath</option>
+                <option value="execute">execute</option>
+            </select>
+            this plan.
+        </div>
+        <div class="sentence">
+            Today we will have a
+            <select data-correct="substitute">
+                <option value="">choices</option>
+                <option value="substitute">substitute</option>
+                <option value="deliver">deliver</option>
+                <option value="uniforms">uniforms</option>
+            </select>
+            teacher. We are
+            <select data-correct="disappointed">
+                <option value="">choices</option>
+                <option value="calculate">calculate</option>
+                <option value="execute">execute</option>
+                <option value="disappointed">disappointed</option>
+            </select>. We really like our regular teacher.
+        </div>
+        <div class="sentence">
+            Their stories are quite
+            <select data-correct="parallel">
+                <option value="">choices</option>
+                <option value="parallel">parallel</option>
+                <option value="substitute">substitute</option>
+                <option value="disappointed">disappointed</option>
+            </select>. They are both
+            <select data-correct="sensitive">
+                <option value="">choices</option>
+                <option value="According">According</option>
+                <option value="sensitive">sensitive</option>
+                <option value="machinery">machinery</option>
+            </select>
+            to other's needs, both women lost their mom, and they both went into
+            <select data-correct="advertising">
+                <option value="">choices</option>
+                <option value="useless">useless</option>
+                <option value="intelligent">intelligent</option>
+                <option value="advertising">advertising</option>
+            </select>.
+        </div>
+    </div>
+
+
+    <div class="quiz-set" id="set12">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 12</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set12')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="passengers">
+                <option value="">choices</option>
+                <option value="passengers">passengers</option>
+                <option value="groceries">groceries</option>
+                <option value="proposes">proposes</option>
+            </select>
+            had great
+            <select data-correct="admiration">
+                <option value="">choices</option>
+                <option value="specialist">specialist</option>
+                <option value="admiration">admiration</option>
+                <option value="creatures">creatures</option>
+            </select>
+            for the pilot. He saved their lives.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="message">
+                <option value="">choices</option>
+                <option value="ammunition">ammunition</option>
+                <option value="temporary">temporary</option>
+                <option value="message">message</option>
+            </select>
+            from the military
+            <select data-correct="security">
+                <option value="">choices</option>
+                <option value="security">security</option>
+                <option value="conscience">conscience</option>
+                <option value="analysis">analysis</option>
+            </select>
+            <select data-correct="specialist">
+                <option value="">choices</option>
+                <option value="purchase">purchase</option>
+                <option value="specialist">specialist</option>
+                <option value="effective">effective</option>
+            </select>
+            said that
+            <select data-correct="violence">
+                <option value="">choices</option>
+                <option value="violence">violence</option>
+                <option value="nonsense">nonsense</option>
+                <option value="passengers">passengers</option>
+            </select>
+            against
+            <select data-correct="civilians">
+                <option value="">choices</option>
+                <option value="admiration">admiration</option>
+                <option value="groceries">groceries</option>
+                <option value="civilians">civilians</option>
+            </select>
+            is up.
+        </div>
+        <div class="sentence">
+            An
+            <select data-correct="analysis">
+                <option value="">choices</option>
+                <option value="analysis">analysis</option>
+                <option value="proposes">proposes</option>
+                <option value="creatures">creatures</option>
+            </select>
+            by the National Security Agency (NSA) showed that there has been a
+            <select data-correct="significant">
+                <option value="">choices</option>
+                <option value="message">message</option>
+                <option value="significant">significant</option>
+                <option value="temporary">temporary</option>
+            </select>
+            increase in the
+            <select data-correct="purchase">
+                <option value="">choices</option>
+                <option value="security">security</option>
+                <option value="conscience">conscience</option>
+                <option value="purchase">purchase</option>
+            </select>
+            of
+            <select data-correct="ammunition">
+                <option value="">choices</option>
+                <option value="ammunition">ammunition</option>
+                <option value="violence">violence</option>
+                <option value="effective">effective</option>
+            </select>
+            by terrorists.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="purchase">
+                <option value="">choices</option>
+                <option value="nonsense">nonsense</option>
+                <option value="civilians">civilians</option>
+                <option value="purchase">purchase</option>
+            </select>
+            of
+            <select data-correct="groceries">
+                <option value="">choices</option>
+                <option value="groceries">groceries</option>
+                <option value="proposes">proposes</option>
+                <option value="creatures">creatures</option>
+            </select>
+            was up before the typhoon hit.
+        </div>
+        <div class="sentence">
+            It is
+            <select data-correct="nonsense">
+                <option value="">choices</option>
+                <option value="message">message</option>
+                <option value="nonsense">nonsense</option>
+                <option value="temporary">temporary</option>
+            </select>
+            to know that while most
+            <select data-correct="creatures">
+                <option value="">choices</option>
+                <option value="security">security</option>
+                <option value="creatures">creatures</option>
+                <option value="conscience">conscience</option>
+            </select>
+            kill to survive, only humans kill for political gains and personal profit.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="temporary">
+                <option value="">choices</option>
+                <option value="analysis">analysis</option>
+                <option value="significant">significant</option>
+                <option value="temporary">temporary</option>
+            </select>
+            subsidies to farmers has not been
+            <select data-correct="effective">
+                <option value="">choices</option>
+                <option value="specialist">specialist</option>
+                <option value="violence">violence</option>
+                <option value="effective">effective</option>
+            </select>
+            in bringing down
+            <select data-correct="grocery">
+                <option value="">choices</option>
+                <option value="passengers">passengers</option>
+                <option value="admiration">admiration</option>
+                <option value="grocery">grocery</option>
+            </select>
+            prices.
+        </div>
+        <div class="sentence">
+            His
+            <select data-correct="conscience">
+                <option value="">choices</option>
+                <option value="ammunition">ammunition</option>
+                <option value="conscience">conscience</option>
+                <option value="civilians">civilians</option>
+            </select>
+            led him to change his mind. He now
+            <select data-correct="proposes">
+                <option value="">choices</option>
+                <option value="proposes">proposes</option>
+                <option value="significant">significant</option>
+                <option value="effective">effective</option>
+            </select>
+            lower taxes for everyone, not just the rich.
+        </div>
+    </div>
+
+
+    <div class="quiz-set" id="set13">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 13</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set13')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="laboratory">
+                <option value="">choices</option>
+                <option value="laboratory">laboratory</option>
+                <option value="disaster">disaster</option>
+                <option value="betray">betray</option>
+            </select>
+            in the research and
+            <select data-correct="development">
+                <option value="">choices</option>
+                <option value="development">development</option>
+                <option value="reaction">reaction</option>
+                <option value="dreadful">dreadful</option>
+            </select>
+            department is responsible for creating higher
+            <select data-correct="quality">
+                <option value="">choices</option>
+                <option value="quality">quality</option>
+                <option value="senseless">senseless</option>
+                <option value="convenient">convenient</option>
+            </select>
+            products.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="satisfaction">
+                <option value="">choices</option>
+                <option value="satisfaction">satisfaction</option>
+                <option value="donations">donations</option>
+                <option value="surrounded">surrounded</option>
+            </select>
+            of killing animals just for
+            <select data-correct="pleasure">
+                <option value="">choices</option>
+                <option value="pleasure">pleasure</option>
+                <option value="adjustment">adjustment</option>
+                <option value="destroy">destroy</option>
+            </select>
+            is rather
+            <select data-correct="senseless">
+                <option value="">choices</option>
+                <option value="laboratory">laboratory</option>
+                <option value="development">development</option>
+                <option value="senseless">senseless</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            After the
+            <select data-correct="disaster">
+                <option value="">choices</option>
+                <option value="disaster">disaster</option>
+                <option value="minority">minority</option>
+                <option value="consequences">consequences</option>
+            </select>, the
+            <select data-correct="medical">
+                <option value="">choices</option>
+                <option value="medical">medical</option>
+                <option value="reaction">reaction</option>
+                <option value="betray">betray</option>
+            </select>
+            community is calling for more
+            <select data-correct="donations">
+                <option value="">choices</option>
+                <option value="donations">donations</option>
+                <option value="quality">quality</option>
+                <option value="convenient">convenient</option>
+            </select>
+            of blankets.
+        </div>
+        <div class="sentence">
+            In
+            <select data-correct="reaction">
+                <option value="">choices</option>
+                <option value="satisfaction">satisfaction</option>
+                <option value="pleasure">pleasure</option>
+                <option value="reaction">reaction</option>
+            </select>
+            to the bad news, the
+            <select data-correct="minority">
+                <option value="">choices</option>
+                <option value="minority">minority</option>
+                <option value="adjustment">adjustment</option>
+                <option value="destroy">destroy</option>
+            </select>
+            groups
+            <select data-correct="surrounded">
+                <option value="">choices</option>
+                <option value="surrounded">surrounded</option>
+                <option value="dreadful">dreadful</option>
+                <option value="consequences">consequences</option>
+            </select>
+            the capital building in protest.
+        </div>
+        <div class="sentence">
+            To
+            <select data-correct="betray">
+                <option value="">choices</option>
+                <option value="betray">betray</option>
+                <option value="laboratory">laboratory</option>
+                <option value="quality">quality</option>
+            </select>
+            a friend is to
+            <select data-correct="destroy">
+                <option value="">choices</option>
+                <option value="development">development</option>
+                <option value="destroy">destroy</option>
+                <option value="senseless">senseless</option>
+            </select>
+            a friendship.
+        </div>
+        <div class="sentence">
+            It is not
+            <select data-correct="convenient">
+                <option value="">choices</option>
+                <option value="disaster">disaster</option>
+                <option value="medical">medical</option>
+                <option value="convenient">convenient</option>
+            </select>
+            to make an
+            <select data-correct="adjustment">
+                <option value="">choices</option>
+                <option value="adjustment">adjustment</option>
+                <option value="donations">donations</option>
+                <option value="minority">minority</option>
+            </select>
+            to the schedule at this time.
+        </div>
+        <div class="sentence">
+            <select data-correct="Slippery">
+                <option value="">choices</option>
+                <option value="satisfaction">satisfaction</option>
+                <option value="pleasure">pleasure</option>
+                <option value="Slippery">Slippery</option>
+            </select>
+            roads lead to
+            <select data-correct="dreadful">
+                <option value="">choices</option>
+                <option value="reaction">reaction</option>
+                <option value="surrounded">surrounded</option>
+                <option value="dreadful">dreadful</option>
+            </select>
+            <select data-correct="consequences">
+                <option value="">choices</option>
+                <option value="consequences">consequences</option>
+                <option value="betray">betray</option>
+                <option value="destroy">destroy</option>
+            </select>.
+        </div>
+    </div>
+
+    <div class="quiz-set" id="set14">
+        <div class="quiz-header">
+            <h2 class="quiz-title">Vocabulary Quiz: Set 14</h2>
+            <button class="toggle-btn" onclick="toggleAnswers('set14')">Show Answers</button>
+        </div>
+        <div class="sentence">
+            After the inaugural
+            <select data-correct="ceremony">
+                <option value="">choices</option>
+                <option value="ceremony">ceremony</option>
+                <option value="particular">particular</option>
+                <option value="surrender">surrender</option>
+            </select>, many
+            <select data-correct="diplomats">
+                <option value="">choices</option>
+                <option value="diplomats">diplomats</option>
+                <option value="glance">glance</option>
+                <option value="hardship">hardship</option>
+            </select>
+            attended the President and First Lady's 40th
+            <select data-correct="anniversary">
+                <option value="">choices</option>
+                <option value="anniversary">anniversary</option>
+                <option value="ingredients">ingredients</option>
+                <option value="suppress">suppress</option>
+            </select>
+            party.
+        </div>
+        <div class="sentence">
+            <select data-correct="Oxygen">
+                <option value="">choices</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="precious">precious</option>
+                <option value="substance">substance</option>
+            </select>
+            is a very
+            <select data-correct="precious">
+                <option value="">choices</option>
+                <option value="provisions">provisions</option>
+                <option value="precious">precious</option>
+                <option value="satisfied">satisfied</option>
+            </select>
+            thing. Without this
+            <select data-correct="particular">
+                <option value="">choices</option>
+                <option value="ceremony">ceremony</option>
+                <option value="diplomats">diplomats</option>
+                <option value="particular">particular</option>
+            </select>
+            element, we would all die.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="captain">
+                <option value="">choices</option>
+                <option value="captain">captain</option>
+                <option value="anniversary">anniversary</option>
+                <option value="sympathy">sympathy</option>
+            </select>
+            had
+            <select data-correct="sympathy">
+                <option value="">choices</option>
+                <option value="surrender">surrender</option>
+                <option value="sympathy">sympathy</option>
+                <option value="glance">glance</option>
+            </select>
+            for soldiers and accepted their
+            <select data-correct="surrender">
+                <option value="">choices</option>
+                <option value="hardship">hardship</option>
+                <option value="provisions">provisions</option>
+                <option value="surrender">surrender</option>
+            </select>.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="substance">
+                <option value="">choices</option>
+                <option value="substance">substance</option>
+                <option value="suppress">suppress</option>
+                <option value="ingredients">ingredients</option>
+            </select>
+            found at the crime scene turned out to be blood.
+        </div>
+        <div class="sentence">
+            It is hard to
+            <select data-correct="suppress">
+                <option value="">choices</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="precious">precious</option>
+                <option value="suppress">suppress</option>
+            </select>
+            a
+            <select data-correct="sideways">
+                <option value="">choices</option>
+                <option value="sideways">sideways</option>
+                <option value="satisfied">satisfied</option>
+                <option value="captain">captain</option>
+            </select>
+            <select data-correct="glance">
+                <option value="">choices</option>
+                <option value="glance">glance</option>
+                <option value="particular">particular</option>
+                <option value="sympathy">sympathy</option>
+            </select>
+            when people next to you are being loud and rude.
+        </div>
+        <div class="sentence">
+            After the
+            <select data-correct="hardship">
+                <option value="">choices</option>
+                <option value="hardship">hardship</option>
+                <option value="anniversary">anniversary</option>
+                <option value="substance">substance</option>
+            </select>
+            of many days without food, the relief helicopter finally dropped them a crate full of
+            <select data-correct="provisions">
+                <option value="">choices</option>
+                <option value="diplomats">diplomats</option>
+                <option value="provisions">provisions</option>
+                <option value="ingredients">ingredients</option>
+            </select>—food, blankets and clothing.
+        </div>
+        <div class="sentence">
+            The
+            <select data-correct="original">
+                <option value="">choices</option>
+                <option value="original">original</option>
+                <option value="ceremony">ceremony</option>
+                <option value="sideways">sideways</option>
+            </select>
+            Coca Cola had cocaine as one of its
+            <select data-correct="ingredients">
+                <option value="">choices</option>
+                <option value="ingredients">ingredients</option>
+                <option value="suppress">suppress</option>
+                <option value="hardship">hardship</option>
+            </select>. No wonder there were so many
+            <select data-correct="satisfied">
+                <option value="">choices</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="precious">precious</option>
+                <option value="satisfied">satisfied</option>
+            </select>
+            customers.
+        </div>
+    </div>
+
+<script>
+        // Real-time checking logic
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const selectedValue = this.value;
+                const correctAnswer = this.getAttribute('data-correct');
+
+                if (selectedValue === "") {
+                    // Reset to default look if user chooses "choices"
+                    this.className = 'default-state';
+                } else if (selectedValue.toLowerCase() === correctAnswer.toLowerCase()) {
+                    this.className = 'correct-state';
+                } else {
+                    this.className = 'incorrect-state';
+                }
+            });
+        });
+
+        // Toggle button logic to show/hide final answers
+/**
+ * THE RE-EVALUATOR
+ * Loops through all dropdowns in a specific quiz set, looks at their current
+ * value, and applies the correct background color state.
+ */
+function checkSetColors(quizSet) {
+    const selects = quizSet.querySelectorAll('select');
+
+    selects.forEach(select => {
+        const correctValue = select.getAttribute('data-correct');
+        const currentValue = select.value;
+
+        // Reset classes first
+        select.classList.remove('correct-state', 'incorrect-state', 'default-state');
+
+        if (currentValue === "") {
+            // No selection -> neutral state
+            select.classList.add('default-state');
+        } else if (currentValue.toLowerCase() === correctValue.toLowerCase()) {
+            // Correct choice -> green
+            select.classList.add('correct-state');
+        } else {
+            // Incorrect choice -> pink
+            select.classList.add('incorrect-state');
+        }
+    });
+}
+
+/**
+ * THE TOGGLE BUTTON
+ * Handles updating the data state, then hands off the work to the re-evaluator.
+ */
+function toggleAnswers(setId) {
+    const quizSet = document.getElementById(setId);
+    const toggleBtn = quizSet.querySelector('.toggle-btn');
+    const selects = quizSet.querySelectorAll('select');
+
+    const isShowingAnswers = toggleBtn.textContent === "Hide Answers";
+
+    if (isShowingAnswers) {
+        // --- GOING TO HIDE ANSWERS ---
+        selects.forEach(select => {
+            // Restore whatever was saved, or set to empty/default if nothing was saved
+            select.value = select.getAttribute('data-user-select') || "";
+        });
+        toggleBtn.textContent = "Show Answers";
+    } else {
+        // --- GOING TO SHOW ANSWERS ---
+        selects.forEach(select => {
+            // Save current state, then force the dropdown to display the correct answer
+            select.setAttribute('data-user-select', select.value);
+            select.value = select.getAttribute('data-correct');
+        });
+        toggleBtn.textContent = "Hide Answers";
+    }
+
+    // ACTIVATE COLOR CHECKER: Run the master color logic after changing the data values
+    checkSetColors(quizSet);
+}
+
+/**
+ * LIVE CLICK LISTENER & ON-LOAD SHUFFLE WITH DE-CLUSTERING
+ * Randomizes options using a pre-balanced blueprint to prevent correct answer clustering.
+ */
+/**
+ * LIVE CLICK LISTENER, ON-LOAD SHUFFLE WITH DE-CLUSTERING & NUMBERING
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. PROCESS EACH QUIZ SET INDEPENDENTLY FOR NUMBER RESETTING
+    document.querySelectorAll('.quiz-set').forEach(quizSet => {
+        const selects = quizSet.querySelectorAll('select');
+        const totalSelects = selects.length;
+        const blueprint = [];
+
+        // Build the balanced distribution blueprint (1, 2, 3...)
+        for (let i = 0; i < totalSelects; i++) {
+            blueprint.push((i % 3) + 1);
+        }
+        blueprint.sort(() => Math.random() - 0.5);
+
+        // Process each dropdown inside this specific section
+        selects.forEach((select, index) => {
+
+            // --- NEW: INJECT SECTION NUMBER (75% Font Size, No Period) ---
+            const numberLabel = document.createElement('span');
+            numberLabel.textContent = (index + 1); // Number plus a small space
+            numberLabel.style.fontSize = "75%";
+            numberLabel.style.fontWeight = "bold";
+            numberLabel.style.marginRight = "4px";
+            numberLabel.style.display = "inline-block";
+            select.style.marginLeft = "0px";
+
+            // Insert the number directly into the sentence right before the dropdown box
+            select.parentNode.insertBefore(numberLabel, select);
+            // -------------------------------------------------------------
+
+            // Shuffle & Scramble Logic
+            const options = Array.from(select.options);
+            const placeholder = options.shift();
+            const correctOption = options.shift();
+            const targetSlot = blueprint[index] - 1;
+
+            options.splice(targetSlot, 0, correctOption);
+
+            select.innerHTML = '';
+            select.appendChild(placeholder);
+            options.forEach(opt => select.appendChild(opt));
+
+            // Fix pre-fill glitch
+            select.value = "";
+        });
+    });
+
+    // 2. LIVE CLICK LISTENER
+    document.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', function() {
+            const parentSet = this.closest('.quiz-set');
+            checkSetColors(parentSet);
+        });
+    });
+});
+    </script>
+</body>
+</html>
