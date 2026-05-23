@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="en"><head>
 
-    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+    <meta charset="utf-8">
+		<meta name="description" content="Dr Ray EFL ESL, English learning">
 
 		<!-- content attribute is for search engines -->
 		<meta name="quizMaker" content="English Learning Management Method">
@@ -9,12 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<!-- xxxx  NO Cache  xxx   -->
-		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
-
-
-		<title>prncDrRayV2</title>
+		<title>fileName</title>
 
 		<!-- link rel="stylesheet" href="style.css" -->
 
@@ -97,7 +93,7 @@
         .fake-button-no-hover {
                 background-color: #E9E9ED; 
                 border-style:solid; border-width:thin; border-radius: 5px;
-                box-shadow: 1ppx 1px; margin: 0 1ex 0 1ex; padding: 0 1ex 0 1ex; font-size: 0.80em;
+                box-shadow: 1px 1px; margin: 0 1ex 0 1ex; padding: 0 1ex 0 1ex; font-size: 0.80em;
 
         }
 
@@ -258,12 +254,64 @@
         .chapterSection {
             /* nothing yet */
         }
+
+        #chapterNav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 40rem;
+            background-color: #1a1a4e;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            padding: 4px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        #chapterNav a {
+            flex: 1 1 auto;
+            min-width: 3rem;
+            text-align: center;
+            background-color: #2d3a6e;
+            color: #ccd6f6;
+            font-size: 0.72rem;
+            font-weight: bold;
+            padding: 5px 2px;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            user-select: none;
+            border: 1px solid #3a4a8a;
+            transition: background-color 0.15s;
+        }
+
+        #chapterNav a:hover {
+            background-color: #4a5aaa;
+            color: white;
+        }
+
+        #chapterNav a.active {
+            background-color: darkblue;
+            color: white;
+            border-color: #88aaff;
+            box-shadow: inset 0 0 6px rgba(136,170,255,0.4);
+        }
+
+        /* Push page content down so sticky nav doesn't cover it */
+        #innerPageBorder {
+            margin-top: 2.5rem;
+        }
         
         .chapterSectSumry {
             background-color:darkblue; color: white; font-weight:bold; font-size: 1.5rem;
             border-radius: 5px; margin: .3rem 0 .7rem 0; border:thin solid gray;
             padding:1.5rem 1rem;
-             box-shadow: 0 3px 10px rgba(45, 58, 94, 0.35), 0 1px 3px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 10px rgba(45, 58, 94, 0.35), 0 1px 3px rgba(0,0,0,0.15);
+            cursor: pointer; user-select: none;
         }
         .showBtn{
           margin: .7rem 0 .7rem 0;
@@ -365,7 +413,7 @@ input, textarea, select {
 
 
 
-ol, ul {
+ol {
   /* Automatically creates columns that are at least 200px wide */
   column-width: 200px;
 
@@ -401,10 +449,38 @@ li {
     background: white;
 }
 
+
+
+menu { list-style-type: decimal; }
+
+
+.chapterSectSumry {
+    scroll-margin-top: 4rem;
+}
+
 	</style>
 </head>
 
-<body id="zbody" onload="ztopFalse()"><div id="innerPageBorder">
+<body id="zbody" onload="ztopFalse()">
+
+<nav id="chapterNav">
+  <a href="#ch1"  onclick="toggleChapter('chBody1')"  id="nav1">Ch 1</a>
+  <a href="#ch2"  onclick="toggleChapter('chBody2')"  id="nav2">Ch 2</a>
+  <a href="#ch3"  onclick="toggleChapter('chBody3')"  id="nav3">Ch 3</a>
+  <a href="#ch4"  onclick="toggleChapter('chBody4')"  id="nav4">Ch 4</a>
+  <a href="#ch5"  onclick="toggleChapter('chBody5')"  id="nav5">Ch 5</a>
+  <a href="#ch6"  onclick="toggleChapter('chBody6')"  id="nav6">Ch 6</a>
+  <a href="#ch7"  onclick="toggleChapter('chBody7')"  id="nav7">Ch 7</a>
+  <a href="#ch8"  onclick="toggleChapter('chBody8')"  id="nav8">Ch 8</a>
+  <a href="#ch9"  onclick="toggleChapter('chBody9')"  id="nav9">Ch 9</a>
+  <a href="#ch10" onclick="toggleChapter('chBody10')" id="nav10">Ch 10</a>
+  <a href="#ch11" onclick="toggleChapter('chBody11')" id="nav11">Ch 11</a>
+  <a href="#ch12" onclick="toggleChapter('chBody12')" id="nav12">Ch 12</a>
+  <a href="#ch13" onclick="toggleChapter('chBody13')" id="nav13">Ch 13</a>
+  <a href="#ch14" onclick="toggleChapter('chBody14')" id="nav14">Ch 14</a>
+</nav>
+
+<div id="innerPageBorder">
     
     <div id="warnLeavePage" style="display:none">off</div>
     
@@ -627,27 +703,27 @@ li {
                 </div>
                  
                 <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                    <button id="btnQuSmAbc" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
                 </div>    
                  
                 <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                    <button id="btnQuMedAbc" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
                 </div>
                                   
                 <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                    <button id="btnQuLgAbc" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
                 </div>
                                   
                 <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                    <button id="btnQuXlAbc" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
                 </div>
                                   
                 <div class="styleBtn">
-                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                    <button id="btnQuXxlAbc" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
                 </div>
                  <br>
                 <div class="styleBtn">
-                 <br>   <button id="btnQuUndl" class="hlBtn" onclick="insPlainText()"><span> insert plain text </span></button>
+                 <br>   <button id="btnQuInsPlain" class="hlBtn" onclick="insPlainText()"><span> insert plain text </span></button>
                 </div>  
             </div>
 
@@ -862,7 +938,7 @@ function zztop(){
 
 
     <header id="zzpageHeader"> 
-        <img class="center" src="topImage.jpg" alt="" width="100%">
+        <img class="center" src="topImage.jpg" alt="" style="width:100%;">
         
         <section id="zztitle" contenteditable="false">
             <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
@@ -883,7 +959,7 @@ function zztop(){
         <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
         <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
        
-    <button id="showAnswers" class="toggleAllAnsBtn" style="display: none;" onclick="showAnswers()">
+    <button id="showAnswers" class="toggleAllAnsBtn" style="display: block;" onclick="showAnswers()">
                 &nbsp;Show All Chapter Sections&nbsp;</button>
     <button id="hideAnswers" class="toggleAllAnsBtn" onclick="hideAnswers()" style="display: none;">
                 &nbsp;Hide All Chapter Sections&nbsp;</button>
@@ -966,7 +1042,7 @@ function zztop(){
     </script>
     
 <button id="addCard" class="addCard" onclick="addCard()" style="display: none;">add article</button>
-    <textarea id="fakeTextarea" type="text" rows="2" cols="30" style="display: none;" disabled="">click on "add article" to get an active editing area</textarea>
+    <textarea id="fakeTextarea" rows="2" cols="30" style="display: none;" disabled="">click on "add article" to get an active editing area</textarea>
     
     
 <div id="allCards">
@@ -999,7 +1075,8 @@ function zztop(){
   Close Study Mode
 </button>     
 
-<details class="chapterSection"><summary class="chapterSectSumry">Chapter One</summary>
+<div class="chapterSection"><div class="chapterSectSumry" id="ch1" onclick="toggleChapter('chBody1')">Chapter One</div>
+<div class="chapterBody" id="chBody1" style="display:none;">
 <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
 </button>
@@ -1063,14 +1140,14 @@ function zztop(){
 		<div id="answer10" class="answer" data-idx="1" contenteditable="false" style="display: none;">
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set1" target="_blank">Go to Vocabulary Quiz: Set 1</a>
-<ol>
+<menu>
 <li>When you wax a car, you should be careful not to damage the paint. You should use soft materials like cotton rags.</li>
 <li>International relations are complex. It is not realistic to expect there will be no conflicts in the world.</li>
 <li>Victory over your opponent doesn't come easily. You can't just sit on a cushion and expect to win. It takes a lot of preparation.</li>
 <li>The messenger said that the policeman survived the shoot-out and captured the criminal.</li>
 <li>Next week will be the elections for parliament. It would be desirable to have a new governor.</li>
 <li>I like the arrangement of your artificial flowers. You have a nice collection of fake tulips.</li>
-<li>The need to eat, sleep, and drink water is a universal need. This establishment tries to help by providing shelter and substance to the needy.</li></ol></section>
+<li>The need to eat, sleep, and drink water is a universal need. This establishment tries to help by providing shelter and substance to the needy.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1138,7 +1215,7 @@ function zztop(){
 	
 	
 	
-	Compuonds List 1&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -wide&nbsp; -worthy&nbsp; -wise<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></span></span></section>
+	Compuonds List 1&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -wide&nbsp; -worthy&nbsp; -wise</span></span></section>
 		</div>
 
  
@@ -1177,7 +1254,7 @@ function zztop(){
 	
 	
 	
-	Syllabic List 1a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stress on 1st&nbsp; of 3 syllables&nbsp; <style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></span></span></section>
+	Syllabic List 1a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stress on 1st&nbsp; of 3 syllables&nbsp; </span></span></section>
 		</div>
 
  
@@ -1222,7 +1299,15 @@ function zztop(){
 
  
 		<div id="answer15" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section>t&nbsp; +&nbsp; you&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t&nbsp; +&nbsp; your <br>-cha/u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -chur&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br>d&nbsp; +&nbsp; you&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d&nbsp; +&nbsp; your&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -ja/u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -jur &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; <br><br><span style="font-style: italic;">can’t you&nbsp; =&nbsp; cancha/u <br>&nbsp;&nbsp;&nbsp; &nbsp;<br>get&nbsp; you&nbsp;&nbsp; =&nbsp;&nbsp; getcha<br>get your = getchur<br><br>meet your&nbsp; =&nbsp; meechur<br>meet you&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; meecha/u<br><br>need you&nbsp; =&nbsp; neeja/u<br>need your = neejur</span><br><br><span style="font-weight: bold;">examples</span>:<br><ul>
+		   <section>t&nbsp; +&nbsp; you &nbsp;&nbsp;&nbsp; t&nbsp; +&nbsp; your 
+-cha/u  &nbsp;&nbsp;&nbsp; -chur  &nbsp; <p></p><p>d&nbsp; +&nbsp; you &nbsp; d&nbsp; +&nbsp; your&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+    -ja/u   &nbsp; -jur &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; </p><p><span style="font-style: italic;">can’t you&nbsp; =&nbsp; cancha/u 
+&nbsp;&nbsp;&nbsp; &nbsp;
+get&nbsp; you&nbsp;&nbsp; =&nbsp;&nbsp; getcha
+get your = getchur</span></p><p>meet your&nbsp; =&nbsp; meechur
+meet you  =&nbsp; meecha/u</p><p>need you&nbsp; =&nbsp; neeja/u
+need your = neejur</p><p><span style="font-weight: bold;">examples</span>:
+</p><ul>
 <li>Can't you wait a few minutes longer&nbsp; =&nbsp; Cancha/u wait a few minutes longer?</li>
 <li>I will get you sooner or later&nbsp; =&nbsp; I'll getcha/u sooner or later.</li>
 <li>Get your coat, we are leaving&nbsp; =&nbsp; Getchur coat, we're leaving.</li>
@@ -1230,7 +1315,16 @@ function zztop(){
 <li>I would like to meet your mother&nbsp; =&nbsp; I'd like to meechur mother.</li>
 <li>I need you to get something for me&nbsp; =&nbsp; I neeja/u to get som'n for me.</li>
 <li>I do not need your money&nbsp; =&nbsp; I don't neejur money.</li>
-<li>I will pretend you didn't say that.&nbsp;&nbsp; =&nbsp; I'll pretendja din't say that.</li></ul><br><span style="font-weight: bold;">Tongue Twister <br><br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Shippers in slippers ship six sleeping sheep. Six sleeping sheep do shippers in slippers ship.<br><br><span style="font-weight: bold;">Rhymes</span><br><br><span style="font-style: italic;">1.&nbsp;&nbsp; &nbsp;Young Lady of Norway</span><br><br>&nbsp;&nbsp;&nbsp; There was a Young Lady of Norway,<br>&nbsp;&nbsp;&nbsp; who casually sat in a doorway.<br>&nbsp; &nbsp; &nbsp; &nbsp; When the door squeezed her flat,<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; She exclaimed, 'What was that?'<br>&nbsp;&nbsp;&nbsp; The flattened Young Lady of Norway. <br><br><span style="font-style: italic;">2.&nbsp;&nbsp; &nbsp;Young Lady of Turkey</span><br><br>&nbsp;&nbsp;&nbsp;&nbsp; There was a Young Lady of Turkey,<br>&nbsp;&nbsp;&nbsp;&nbsp; Who wept when the weather was murky;<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; When the day turned out fine,<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; She ceased to repine,<br>&nbsp;&nbsp;&nbsp;&nbsp; That capricious Young Lady of Turkey. <br><br></section>
+<li>I will pretend you didn't say that.&nbsp;&nbsp; =&nbsp; I'll pretendja din't say that.</li></ul>
+<span style="font-weight: bold;">Tongue Twister</span><p></p><p> &nbsp; Shippers in slippers ship six sleeping sheep. Six sleeping sheep do shippers in slippers ship.</p><p><span style="font-weight: bold;">Rhymes</span></p><p><span style="font-style: italic;">1.&nbsp;&nbsp; &nbsp;Young Lady of Norway</span></p><p>&nbsp;&nbsp;&nbsp; There was a Young Lady of Norway,
+&nbsp;&nbsp;&nbsp; who casually sat in a doorway.
+&nbsp; &nbsp; &nbsp; &nbsp; When the door squeezed her flat,
+&nbsp;&nbsp;   She exclaimed, 'What was that?'
+&nbsp;&nbsp;&nbsp; The flattened Young Lady of Norway. </p><p><span style="font-style: italic;">2.&nbsp;&nbsp; &nbsp;Young Lady of Turkey</span></p><p>  There was a Young Lady of Turkey,
+  Who wept when the weather was murky;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; When the day turned out fine,
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; She ceased to repine,
+  That capricious Young Lady of Turkey. </p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1250,8 +1344,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Two</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch2" onclick="toggleChapter('chBody2')">Chapter Two</div>
+<div class="chapterBody" id="chBody2" style="display:none;">
  <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
 </button>
@@ -1315,14 +1410,15 @@ function zztop(){
 		<div id="answer5" class="answer" data-idx="1" contenteditable="false" style="display: none;">
 		   <section>
 		   <a class="sentQuiz" href="prncSentencesQuizzes.html#set2" target="_blank">Go to Vocabulary Quiz: Set 2</a>
-		   <ol>
+		   <menu>
 <li>Amid the widespread hostilities, the President sent in the military.</li>
 <li>What caused the nuclear explosion remains a mystery.</li>
 <li>The official representative tried to negotiate a treaty that would not violate international rights.</li>
 <li>Several years ago, I could afford a tropical vacation—but not now, I'm broke.</li>
 <li>Peace in society is not automatic, it requires ordinary citizens to be obedient to the law.</li>
 <li>After closer observation of the suspicious activities of gang members, there seems to be an increase in the quantity of gun sales.</li>
-<li>There was a suggestion by an official that the mayor was not telling the truth. Afterwards, the mayor pretended as if nothing had happened. <br></li></ol></section>
+<li>There was a suggestion by an official that the mayor was not telling the truth. Afterwards, the mayor pretended as if nothing had happened. 
+</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1355,21 +1451,24 @@ function zztop(){
         <button id="moveDown7" class="moveDownBtn" onclick="zmoveDown('quSet7')" style="display: none;"> Move Down </button>
 	    <div id="question7" class="question" onclick="toggleText('answer7')" contenteditable="false">
 
-		  <section><span class="fsLarge"><span style="font-weight: bold;">Ch. 2&nbsp; <font face="FreeSans, sans-serif">Word Patterns List 2	-ion -ior -ian
--iar    (yən/yər)</font>
+		  <section><span class="fsLarge"><span style="font-weight: bold;">Ch. 2&nbsp; <span style="font-family:FreeSans, sans-serif;">Word Patterns List 2	-ion -ior -ian
+-iar    (yən/yər)</span>
 
-<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></span></span></section>
+</span></span></section>
 		</div>
 
  
 		<div id="answer7" class="answer" data-idx="1" contenteditable="false" style="display: none;"><ol>
 <li>onion</li>
-<li>union&nbsp;&nbsp;&nbsp; <br></li>
+<li>union&nbsp;&nbsp;&nbsp; 
+</li>
 <li>opinion</li>
 <li>dominion</li>
-<li>billion&nbsp;&nbsp;&nbsp; <br></li>
+<li>billion&nbsp;&nbsp;&nbsp; 
+</li>
 <li>million</li>
-<li>trillion&nbsp;&nbsp;&nbsp; <br></li>
+<li>trillion&nbsp;&nbsp;&nbsp; 
+</li>
 <li>rebellion</li>
 <li>battalion</li>
 <li>senior</li>
@@ -1419,7 +1518,8 @@ function zztop(){
 <li>entryways</li>
 <li>stairways</li>
 <li>breezeways</li>
-<li>expressways <br></li></ol></div></div>
+<li>expressways 
+</li></ol></div></div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
@@ -1439,7 +1539,7 @@ function zztop(){
 	
 	
 	
-	Syllabic. List 1b&nbsp;&nbsp;&nbsp;&nbsp; stress on 1st&nbsp; of 3 syllables&nbsp;&nbsp; <style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></span></span></section>
+	Syllabic. List 1b&nbsp;&nbsp;&nbsp;&nbsp; stress on 1st&nbsp; of 3 syllables&nbsp;&nbsp; </span></span></section>
 		</div>
 
  
@@ -1472,8 +1572,10 @@ function zztop(){
 <li>happiness</li>
 <li>mineral</li>
 <li>different</li>
-<li>minister <br></li>
-<li>difficult<br></li></ol><style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></section>
+<li>minister 
+</li>
+<li>difficult
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1499,7 +1601,23 @@ function zztop(){
 	
 	
 	
-	s + your&nbsp;&nbsp;&nbsp; s(as z) + your&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>-shur&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br><br> s(as z) + your<br>-zhur&nbsp; (zhur as in pleasure, measure)<br><br><span style="font-weight: bold;">examples</span>: <br><br>Do not press your luck&nbsp; =&nbsp; Don't preshur luck.<br>Do not mess your hair up&nbsp; =&nbsp; Don't meshur hair up.<br><br>He has your money&nbsp; =&nbsp; He hazhur money.<br>I need to size your coat for tomorrow&nbsp; =&nbsp; I needa sizhur coat&nbsp; for tomorrow.<br>Please, close your window&nbsp; =&nbsp; Please, clozhur window.<br><br><br><span style="font-weight: bold;">Tongue Twister<br><br></span>These thick things think that those thin things think that these things are their things.<br><br><br><span style="font-weight: bold;">Rhymes</span><br><br><br>3.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Young Lady Whose Bonnet</span><br><br>There was a Young Lady whose bonnet,<br>Came untied when the birds sat upon it;<br>&nbsp;&nbsp; &nbsp;But she said: 'I don't care!<br>&nbsp;&nbsp; &nbsp;All the birds in the air,<br>Are welcome to sit on my bonnet!' <br><br>4.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Old Man on a Hill</span><br><br>There was an Old Man on a hill,<br>Who seldom, if ever, stood still;<br>&nbsp;&nbsp; &nbsp;He ran up and down,<br>&nbsp;&nbsp; &nbsp;In his Grandmother's gown,<br>Which adorned that Old Man on a hill. <br><br><style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></section>
+	s + your&nbsp;&nbsp;&nbsp; s(as z) + your   &nbsp;&nbsp; 
+-shur&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; <p></p><p> s(as z) + your
+-zhur&nbsp; (zhur as in pleasure, measure)</p><p><span style="font-weight: bold;">examples</span>: </p><p>Do not press your luck&nbsp; =&nbsp; Don't preshur luck.
+Do not mess your hair up&nbsp; =&nbsp; Don't meshur hair up.</p><p>He has your money&nbsp; =&nbsp; He hazhur money.
+I need to size your coat for tomorrow&nbsp; =&nbsp; I needa sizhur coat&nbsp; for tomorrow.
+Please, close your window&nbsp; =&nbsp; Please, clozhur window.</p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>These thick things think that those thin things think that these things are their things.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>
+3.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Young Lady Whose Bonnet</span></p><p>There was a Young Lady whose bonnet,
+Came untied when the birds sat upon it;
+&nbsp;&nbsp; &nbsp;But she said: 'I don't care!
+&nbsp;&nbsp; &nbsp;All the birds in the air,
+Are welcome to sit on my bonnet!' </p><p>4.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Old Man on a Hill</span></p><p>There was an Old Man on a hill,
+Who seldom, if ever, stood still;
+&nbsp;&nbsp; &nbsp;He ran up and down,
+&nbsp;&nbsp; &nbsp;In his Grandmother's gown,
+Which adorned that Old Man on a hill. </p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1517,8 +1635,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Three</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch3" onclick="toggleChapter('chBody3')">Chapter Three</div>
+<div class="chapterBody" id="chBody3" style="display:none;">
         
 <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -1554,14 +1673,15 @@ function zztop(){
 <li>apparatus</li>
 <li>federal</li>
 <li>distribution</li>
-<li>incident<br></li></ol></div><style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style>
+<li>incident
+</li></ol></div>
 		   <section>
 
 
 	
 	
 	
-	<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style></section>
+	</section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1580,14 +1700,14 @@ function zztop(){
 		<div id="answer18" class="answer" data-idx="1" contenteditable="false" style="display: none;">
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set3" target="_blank">Go to Vocabulary Quiz: Set 3</a>
-<ol>
+<menu>
 <li>At the medical convention, Dr. Selby, the surgeon, received recognition for his great work.</li>
 <li>Most people in society are conscious of the fact that Hollywood movies are just sensation, not reality.</li>
 <li>The terrible incident put a dent in his recent campaign. His careless action showed him to be irresponsible.</li>
 <li>Citizens can go to the federal distribution center to get food supplies.</li>
 <li>Reviews of the new apparatus&nbsp; were favorable because of its clever design.</li>
 <li>Although it was an awkward situation, the mother was able to persuade the suspect to turn himself in.</li>
-<li>After finding the drug mixture in his home, the evidence against the suspect was strong. He could not defend himself in court.</li></ol></section>
+<li>After finding the drug mixture in his home, the evidence against the suspect was strong. He could not defend himself in court.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1701,28 +1821,45 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>apparent&nbsp;&nbsp; <br></li>
-<li>agreement&nbsp; <br></li>
-<li>arrival&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>apparent&nbsp;&nbsp; 
+</li>
+<li>agreement&nbsp; 
+</li>
+<li>arrival  
+</li>
 <li>confinement</li>
-<li>amazement&nbsp; <br></li>
+<li>amazement&nbsp; 
+</li>
 <li>decipher</li>
-<li>affected&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>affected  
+</li>
 <li>encampment</li>
-<li>denial&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>amendment&nbsp;&nbsp; <br></li>
+<li>denial &nbsp; 
+</li>
+<li>amendment&nbsp;&nbsp; 
+</li>
 <li>establish</li>
-<li>assassin&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>enrollment&nbsp;&nbsp;&nbsp; <br></li>
-<li>assembly&nbsp;&nbsp;&nbsp; <br></li>
-<li>attachment&nbsp;&nbsp; <br></li>
-<li>attendant&nbsp;&nbsp; <br></li>
-<li>heroic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>beginning&nbsp;&nbsp;&nbsp; <br></li>
-<li>illegal&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>assassin  
+</li>
+<li>enrollment&nbsp;&nbsp;&nbsp; 
+</li>
+<li>assembly&nbsp;&nbsp;&nbsp; 
+</li>
+<li>attachment&nbsp;&nbsp; 
+</li>
+<li>attendant&nbsp;&nbsp; 
+</li>
+<li>heroic &nbsp;&nbsp; 
+</li>
+<li>beginning&nbsp;&nbsp;&nbsp; 
+</li>
+<li>illegal  
+</li>
 <li>invalid</li>
-<li>opponent&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>consider&nbsp;&nbsp; <br></li></ol></section>
+<li>opponent  
+</li>
+<li>consider&nbsp;&nbsp; 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1742,7 +1879,26 @@ function zztop(){
 
  
 		<div id="answer23" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>going to&nbsp; =&nbsp; gonna &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;want to&nbsp;&nbsp; =&nbsp; wanna&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;got to&nbsp; =&nbsp;&nbsp; godda&nbsp; &nbsp;<br>have to&nbsp; =&nbsp; hafta &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;has to&nbsp; =&nbsp; hasta&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;used to = usta<br>supposed to&nbsp; =&nbsp; sposta&nbsp; (supposta)<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br><span style="font-weight: bold;">examples</span>:<br><br>Are we going to go the movies&nbsp; =&nbsp; Are we gonna go to the movies?<br>Are we going to do this or not&nbsp;&nbsp; =&nbsp;&nbsp; Are we gonna do this or not?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br><br>I want to buy a coat&nbsp;&nbsp; =&nbsp; I wanna buy a coat.<br><br>We have got to hurry&nbsp; =&nbsp; We've godda hurry.<br><br>We have to hurry&nbsp; =&nbsp; We hafta hurry?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<br>John has to get up early&nbsp;&nbsp; =&nbsp; John hasta geddup early.<br>She has to leave now&nbsp; =&nbsp; She hasta leave now.<br><br>I am used to the cold weather&nbsp; =&nbsp; I'm usta the cold weather.<br>I used to jog a lot&nbsp; =&nbsp; I usta jog a lot. <br><br>Mark is supposed to bring the drinks&nbsp; =&nbsp; Mark is sposta bring the drinks.<br>It is supposed to rain today&nbsp; =&nbsp; It's sposta rain today. <br><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>Larry Lionel licked little Lola Loni's lilac like lollipop.<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>5.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Man with a Beard</span><br><br>There was an Old Man with a beard,<br>Who said, 'It is just as I feared!<br>&nbsp;&nbsp; &nbsp;Two Owls and a Hen,<br>&nbsp;&nbsp; &nbsp;Four Larks and a Wren,<br>Have all built their nests in my beard!' <br><br>6.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;For every evil</span><br><br>For every evil under the sun<br>&nbsp;&nbsp; &nbsp;There is a remedy or there is none.<br>If there be one, seek till you find it.<br>&nbsp;&nbsp; &nbsp;If there be none,&nbsp; never mind it.<br><br></section>
+		   <section>
+going to&nbsp; =&nbsp; gonna &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;want to&nbsp;&nbsp; =&nbsp; wanna&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;got to&nbsp; =&nbsp;&nbsp; godda&nbsp; &nbsp;
+have to&nbsp; =&nbsp; hafta &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;has to&nbsp; =&nbsp; hasta&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;used to = usta
+supposed to&nbsp; =&nbsp; sposta&nbsp; (supposta)
+  &nbsp;
+<span style="font-weight: bold;">examples</span>:<p></p><p>Are we going to go the movies&nbsp; =&nbsp; Are we gonna go to the movies?
+Are we going to do this or not&nbsp;&nbsp; =&nbsp;&nbsp; Are we gonna do this or not? &nbsp; &nbsp;</p><p>I want to buy a coat&nbsp;&nbsp; =&nbsp; I wanna buy a coat.</p><p>We have got to hurry&nbsp; =&nbsp; We've godda hurry.</p><p>We have to hurry&nbsp; =&nbsp; We hafta hurry?
+ &nbsp;&nbsp; &nbsp;
+John has to get up early&nbsp;&nbsp; =&nbsp; John hasta geddup early.
+She has to leave now&nbsp; =&nbsp; She hasta leave now.</p><p>I am used to the cold weather&nbsp; =&nbsp; I'm usta the cold weather.
+I used to jog a lot&nbsp; =&nbsp; I usta jog a lot. </p><p>Mark is supposed to bring the drinks&nbsp; =&nbsp; Mark is sposta bring the drinks.
+It is supposed to rain today&nbsp; =&nbsp; It's sposta rain today. </p><p></p><p><span style="font-weight: bold;">Tongue Twister</span></p><p>Larry Lionel licked little Lola Loni's lilac like lollipop.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>5.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Man with a Beard</span></p><p>There was an Old Man with a beard,
+Who said, 'It is just as I feared!
+&nbsp;&nbsp; &nbsp;Two Owls and a Hen,
+&nbsp;&nbsp; &nbsp;Four Larks and a Wren,
+Have all built their nests in my beard!' </p><p>6.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;For every evil</span></p><p>For every evil under the sun
+&nbsp;&nbsp; &nbsp;There is a remedy or there is none.
+If there be one, seek till you find it.
+&nbsp;&nbsp; &nbsp;If there be none,&nbsp; never mind it.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1760,8 +1916,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Four</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch4" onclick="toggleChapter('chBody4')">Chapter Four</div>
+<div class="chapterBody" id="chBody4" style="display:none;">
         
       <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -1825,14 +1982,15 @@ function zztop(){
 		<div id="answer25" class="answer" data-idx="1" contenteditable="false" style="display: none;">
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set4" target="_blank">Go to Vocabulary Quiz: Set 4</a>
-<ol>
+<menu>
 <li>The majority of the citizens are trying to influence the City Development Committee to preserve the old building because of its historical significance.</li>
 <li>He has the highest authority in the organization's foreign affairs office.</li>
 <li>The politician said he would guarantee a decrease in taxes for the middle class.</li>
 <li>The map shows there is buried treasure near the border of Mexico. We should go investigate.</li>
 <li>The submarine uses the element of surprise.&nbsp; The explosive hits and you never see where it came from.</li>
-<li>The judicial selection committee will cooperate with the Prime Minister in making their choice for the new judges.&nbsp; <br></li>
-<li>I want you to supervise the making of the cabinet. You can demonstrate this new product at tomorrow's new product convention.</li></ol></section>
+<li>The judicial selection committee will cooperate with the Prime Minister in making their choice for the new judges.&nbsp; 
+</li>
+<li>I want you to supervise the making of the cabinet. You can demonstrate this new product at tomorrow's new product convention.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1948,26 +2106,39 @@ function zztop(){
 <ol>
 <li>deliver</li>
 <li>prohibit</li>
-<li>subscriber&nbsp;&nbsp; <br></li>
+<li>subscriber&nbsp;&nbsp; 
+</li>
 <li>protector</li>
 <li>astonish</li>
-<li>survivor&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>diminish&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>survivor  
+</li>
+<li>diminish  
+</li>
 <li>refreshment</li>
-<li>transparent&nbsp; <br></li>
-<li>distinguish&nbsp; <br></li>
+<li>transparent&nbsp; 
+</li>
+<li>distinguish&nbsp; 
+</li>
 <li>reluctant</li>
 <li>remember</li>
-<li>volcano&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>domestic&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>unequal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>dramatic&nbsp;&nbsp;&nbsp; <br></li>
-<li>abandon&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>volcano &nbsp; 
+</li>
+<li>domestic  
+</li>
+<li>unequal &nbsp; 
+</li>
+<li>dramatic&nbsp;&nbsp;&nbsp; 
+</li>
+<li>abandon  
+</li>
 <li>specific</li>
-<li>surrender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>surrender   
+</li>
 <li>impostor</li>
-<li>accomplish&nbsp;&nbsp;&nbsp; <br></li>
-<li>improper <br></li></ol></section>
+<li>accomplish&nbsp;&nbsp;&nbsp; 
+</li>
+<li>improper 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -1987,7 +2158,28 @@ function zztop(){
 
  
 		<div id="answer30" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>What do you want to do&nbsp; =&nbsp; Waddaya wanna do?<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =&nbsp; Whatcha wanna do?<br><br>What do you want&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Waddaya want? / &nbsp;<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Whatcha want?<br><br>What does he want&nbsp;&nbsp; &nbsp;= Wadduzzee want?<br><br>What did you want&nbsp; =&nbsp; Whaja want?<br><br>What are you doing&nbsp; =&nbsp; Whaddaya doin'?<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Whatcha doing?<br><br>What would you like&nbsp; =&nbsp; Wawuja like? <br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>When Battle Beetles battle, it's a Battle Beetle battle, when they battle with a bottle, it's a Battle Beetle bottle battle. <br><br><span style="font-weight: bold;">Rhyme</span><br><br>7.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Man in his office</span><br><br>The man was in his office,<br>&nbsp;&nbsp;&nbsp; counting out his money.<br>The wife was in the parlor, <br>&nbsp;&nbsp;&nbsp; eating bread and honey.<br>The maid was in the garden,<br>&nbsp;&nbsp;&nbsp; hanging out the clothes;<br>when down came a blackbird<br>&nbsp;&nbsp;&nbsp; and snapped off her nose.<br><span style="font-style: italic;"><br>8.&nbsp;&nbsp; &nbsp;</span>Simple Simon<br><br>Simple Simon met a pieman,<br>&nbsp;&nbsp;&nbsp; going to the fair.<br>Says Simple Simon to the pieman,<br>&nbsp;&nbsp;&nbsp; “let me taste your ware.”<br>Says the pieman to Simple Simon<br>&nbsp;&nbsp;&nbsp; “Show me first your penny.”<br>Says Simple Simon to the pieman,<br>&nbsp;&nbsp;&nbsp; “Indeed, I don't have any.”<br><br></section>
+		   <section>
+What do you want to do&nbsp; =&nbsp; Waddaya wanna do?
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; =&nbsp; Whatcha wanna do?<p></p><p>What do you want&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Waddaya want? / &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Whatcha want?</p><p>What does he want&nbsp;&nbsp; &nbsp;= Wadduzzee want?</p><p>What did you want&nbsp; =&nbsp; Whaja want?</p><p>What are you doing&nbsp; =&nbsp; Whaddaya doin'?
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;=&nbsp; Whatcha doing?</p><p>What would you like&nbsp; =&nbsp; Wawuja like? </p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>When Battle Beetles battle, it's a Battle Beetle battle, when they battle with a bottle, it's a Battle Beetle bottle battle. </p><p><span style="font-weight: bold;">Rhyme</span></p><p>7.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Man in his office</span></p><p>The man was in his office,
+&nbsp;&nbsp;&nbsp; counting out his money.
+The wife was in the parlor, 
+&nbsp;&nbsp;&nbsp; eating bread and honey.
+The maid was in the garden,
+&nbsp;&nbsp;&nbsp; hanging out the clothes;
+when down came a blackbird
+&nbsp;&nbsp;&nbsp; and snapped off her nose.
+<span style="font-style: italic;">
+8.&nbsp;&nbsp; &nbsp;</span>Simple Simon</p><p>Simple Simon met a pieman,
+&nbsp;&nbsp;&nbsp; going to the fair.
+Says Simple Simon to the pieman,
+&nbsp;&nbsp;&nbsp; “let me taste your ware.”
+Says the pieman to Simple Simon
+&nbsp;&nbsp;&nbsp; “Show me first your penny.”
+Says Simple Simon to the pieman,
+&nbsp;&nbsp;&nbsp; “Indeed, I don't have any.”</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2005,8 +2197,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Five</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch5" onclick="toggleChapter('chBody5')">Chapter Five</div>
+<div class="chapterBody" id="chBody5" style="display:none;">
   <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
 </button>
@@ -2071,14 +2264,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set5" target="_blank">Go to Vocabulary Quiz: Set 5</a>
 
-<ol>
+<menu>
 <li>The criminal tortured his victims. Fortunately, the police finally caught him.</li>
 <li>The mysterious spy satellite floats in space where no one notices it.</li>
 <li>The institution gave notice (n.) that because of the recession and other practical concerns, it would be laying off many of its employees.</li>
 <li>The angry criminal can get furious over any small thing. He has a violent tendency.</li>
 <li>The private detective has a variety of disguises so that no one can recognize him. At the moment, he is hiding behind a curtain.</li>
 <li>The success of the conference is dependent on our ability to organize it efficiently.</li>
-<li>The judgment of the jobs committee was in opposition to the needs of the unemployed.</li></ol></section>
+<li>The judgment of the jobs committee was in opposition to the needs of the unemployed.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2116,12 +2309,18 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>nation&nbsp;&nbsp;&nbsp; <br></li>
-<li>station&nbsp;&nbsp;&nbsp; <br></li>
-<li>lotion&nbsp;&nbsp;&nbsp; <br></li>
-<li>motion&nbsp;&nbsp;&nbsp; <br></li>
-<li>notion&nbsp;&nbsp;&nbsp; <br></li>
-<li>potion&nbsp;&nbsp;&nbsp; <br></li>
+<li>nation&nbsp;&nbsp;&nbsp; 
+</li>
+<li>station&nbsp;&nbsp;&nbsp; 
+</li>
+<li>lotion&nbsp;&nbsp;&nbsp; 
+</li>
+<li>motion&nbsp;&nbsp;&nbsp; 
+</li>
+<li>notion&nbsp;&nbsp;&nbsp; 
+</li>
+<li>potion&nbsp;&nbsp;&nbsp; 
+</li>
 <li>portion</li>
 <li>cessation</li>
 <li>collation</li>
@@ -2208,17 +2407,24 @@ function zztop(){
 		<div id="answer36" class="answer" data-idx="1" contenteditable="false" style="display: none;"><ol>
 <li>indirect</li>
 <li>overtake</li>
-<li>misbehave&nbsp;&nbsp;&nbsp; <br></li>
+<li>misbehave&nbsp;&nbsp;&nbsp; 
+</li>
 <li>incorrect</li>
-<li>refugee&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>refugee  
+</li>
 <li>intermix</li>
-<li>disagree&nbsp;&nbsp;&nbsp; <br></li>
-<li>intercede&nbsp;&nbsp; <br></li>
+<li>disagree&nbsp;&nbsp;&nbsp; 
+</li>
+<li>intercede&nbsp;&nbsp; 
+</li>
 <li>overturn</li>
-<li>domineer&nbsp;&nbsp;&nbsp; <br></li>
+<li>domineer&nbsp;&nbsp;&nbsp; 
+</li>
 <li>overrun</li>
-<li>immature&nbsp; <br></li>
-<li>volunteer <br></li></ol></div>
+<li>immature&nbsp; 
+</li>
+<li>volunteer 
+</li></ol></div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
@@ -2234,7 +2440,27 @@ function zztop(){
 
  
 		<div id="answer37" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>should have&nbsp; =&nbsp; shooda&nbsp;&nbsp; &nbsp; <br>could have&nbsp; =&nbsp; cooda&nbsp;&nbsp; &nbsp;<br>would have&nbsp; =&nbsp; wooda<br>must have&nbsp; =&nbsp; musta &nbsp;&nbsp; &nbsp;<br>may have&nbsp; =maya &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>might have&nbsp; =&nbsp; myda<br><br>should not have&nbsp; =&nbsp; shoodna&nbsp;&nbsp; &nbsp;<br>could not have&nbsp; =&nbsp; coodna<br>would not have&nbsp; =&nbsp; woodna<br><br><br><span style="font-weight: bold;">examples</span>:<br><br>You should have been here sooner&nbsp; =&nbsp; You shoulda been hear sooner.<br><br>I could have slept all day&nbsp; =&nbsp; I coulda slept all day.<br><br>I would have helped if you had asked&nbsp; =&nbsp; I wooda helped if you'd asked.<br><br>He must have known&nbsp; =&nbsp; He musta' known.<br><br>She may have lost it&nbsp; =&nbsp; She maya lost it.<br><br>I might have seen it in the back&nbsp; =&nbsp; I myda seen it in the back.<br><br>You should not have come here&nbsp; =&nbsp; You shouldna come here.<br><br>He could not have done it&nbsp;&nbsp; =&nbsp; He couldna dunit.<br><br>I would not have told her&nbsp; =&nbsp; I woodna told'er.<br><br><span style="font-weight: bold;"><br>Tongue Twister</span><br><br>A tutor who tooted a flute, tried to tutor two tooters to toot. Said the tutor to the tooters, "It is harder to toot than tutor two tooters to toot."<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>9.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Mother Hubbard</span><br><br>Old Mother Hubbard<br>Went to the cupboard,<br>&nbsp;&nbsp; &nbsp;to get her poor dog a bone.<br>But when she got there, <br>The cupboard was bare, <br>&nbsp;&nbsp; &nbsp;And so the poor dog had none.<br><br><br>10.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Crooked Man</span><br><br>There was a crooked man and he walked a crooked mile.<br>He found a crooked dollar and he gave a crooked smile.<br>He bought a crooked cat, which caught a crooked mouse,<br>and they all lived together in a little crooked house.<br><br></section>
+		   <section>
+should have&nbsp; =&nbsp; shooda&nbsp;&nbsp; &nbsp; 
+could have&nbsp; =&nbsp; cooda&nbsp;&nbsp; &nbsp;
+would have&nbsp; =&nbsp; wooda
+must have&nbsp; =&nbsp; musta &nbsp;&nbsp; &nbsp;
+may have&nbsp; =maya &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+might have&nbsp; =&nbsp; myda<p></p><p>should not have&nbsp; =&nbsp; shoodna&nbsp;&nbsp; &nbsp;
+could not have&nbsp; =&nbsp; coodna
+would not have&nbsp; =&nbsp; woodna</p><p>
+<span style="font-weight: bold;">examples</span>:</p><p>You should have been here sooner&nbsp; =&nbsp; You shoulda been hear sooner.</p><p>I could have slept all day&nbsp; =&nbsp; I coulda slept all day.</p><p>I would have helped if you had asked&nbsp; =&nbsp; I wooda helped if you'd asked.</p><p>He must have known&nbsp; =&nbsp; He musta' known.</p><p>She may have lost it&nbsp; =&nbsp; She maya lost it.</p><p>I might have seen it in the back&nbsp; =&nbsp; I myda seen it in the back.</p><p>You should not have come here&nbsp; =&nbsp; You shouldna come here.</p><p>He could not have done it&nbsp;&nbsp; =&nbsp; He couldna dunit.</p><p>I would not have told her&nbsp; =&nbsp; I woodna told'er.</p><p><span style="font-weight: bold;">
+Tongue Twister</span></p><p>A tutor who tooted a flute, tried to tutor two tooters to toot. Said the tutor to the tooters, "It is harder to toot than tutor two tooters to toot."</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>9.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Mother Hubbard</span></p><p>Old Mother Hubbard
+Went to the cupboard,
+&nbsp;&nbsp; &nbsp;to get her poor dog a bone.
+But when she got there, 
+The cupboard was bare, 
+&nbsp;&nbsp; &nbsp;And so the poor dog had none.</p><p>
+10.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Crooked Man</span></p><p>There was a crooked man and he walked a crooked mile.
+He found a crooked dollar and he gave a crooked smile.
+He bought a crooked cat, which caught a crooked mouse,
+and they all lived together in a little crooked house.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2252,8 +2478,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Six</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch6" onclick="toggleChapter('chBody6')">Chapter Six</div>
+<div class="chapterBody" id="chBody6" style="display:none;">
   <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
 </button>
@@ -2318,14 +2545,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set6" target="_blank">Go to Vocabulary Quiz: Set 6</a>
 
-<ol>
+<menu>
 <li>Although the champion is the favorite to win in today's competition, the underdog defeated her on the previous occasion.</li>
 <li>The officials doing the experiment were on a short timetable. It caused them a lot of anxiety.</li>
 <li>The chemical analysis on the water showed it contained only minerals. The water is safe to drink.</li>
 <li>The President showed his ability to have patience under the most serious situations.</li>
 <li>It is the policy of this company to make all our radio broadcasts available free to the public.</li>
 <li>The frozen surface of the ocean will soon disappear if we don't stop global warming.</li>
-<li>The Swiss delegates to the international finance conference are accustomed to being neutral on financial matters.</li></ol></section>
+<li>The Swiss delegates to the international finance conference are accustomed to being neutral on financial matters.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2371,8 +2598,10 @@ function zztop(){
 <li>leisure</li>
 <li>disclosure</li>
 <li>composure</li>
-<li>exposure&nbsp; <br></li>
-<li>enclosure <br></li></ol></section>
+<li>exposure&nbsp; 
+</li>
+<li>enclosure 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2435,18 +2664,25 @@ function zztop(){
 
 <ol>
 <li>recollect</li>
-<li>importune&nbsp;&nbsp; <br></li>
+<li>importune&nbsp;&nbsp; 
+</li>
 <li>undermine</li>
 <li>recommend</li>
 <li>reprehend</li>
 <li>intercede</li>
-<li>apprehend&nbsp;&nbsp; <br></li>
-<li>introduce&nbsp;&nbsp; <br></li>
-<li>condescend&nbsp; <br></li>
+<li>apprehend&nbsp;&nbsp; 
+</li>
+<li>introduce&nbsp;&nbsp; 
+</li>
+<li>condescend&nbsp; 
+</li>
 <li>understand</li>
-<li>misapply&nbsp;&nbsp;&nbsp; <br></li>
-<li>contradict&nbsp; <br></li>
-<li>undersell <br></li></ol></section>
+<li>misapply&nbsp;&nbsp;&nbsp; 
+</li>
+<li>contradict&nbsp; 
+</li>
+<li>undersell 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2466,7 +2702,20 @@ function zztop(){
 
  
 		<div id="answer44" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>What is your&nbsp; =&nbsp; whatcher&nbsp;&nbsp;&nbsp;&nbsp; What is her&nbsp; =&nbsp; whatser&nbsp;&nbsp;&nbsp;&nbsp; What is his&nbsp; =&nbsp; whatsiz<br><br>&nbsp;&nbsp; &nbsp;What is your name&nbsp; =&nbsp; Whatcher name?<br><br>&nbsp;&nbsp; &nbsp;What is her name&nbsp; =&nbsp; Whatser name?<br><br>&nbsp;&nbsp; &nbsp;What is his name&nbsp; =&nbsp; Whatsiz name?<br><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>The furry thistle first thought the fiery thimble was fairly thirsty.<br><br><br><span style="font-weight: bold;">Rhymes</span><br><br>11.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Sticks and Stones</span><br><br>Sticks and stones will break my bones<br>But words will never hurt me. <br><br><br>12. <span style="font-style: italic;">Solomon Grundy</span><br><br>Solomon Grundy,<br>Born on&nbsp; Monday,<br>Slept on Tuesday,<br>Married on Wednesday,<br>Sick on Thursday,<br>Worse on Friday,<br>Died on Saturday,<br>Buried on Sunday.<br>That was the end,<br>Of Solomon Grundy<br><br></section>
+		   <section>
+What is your&nbsp; =&nbsp; whatcher  What is her&nbsp; =&nbsp; whatser  What is his&nbsp; =&nbsp; whatsiz<p></p><p>&nbsp;&nbsp; &nbsp;What is your name&nbsp; =&nbsp; Whatcher name?</p><p>&nbsp;&nbsp; &nbsp;What is her name&nbsp; =&nbsp; Whatser name?</p><p>&nbsp;&nbsp; &nbsp;What is his name&nbsp; =&nbsp; Whatsiz name?</p><p></p><p><span style="font-weight: bold;">Tongue Twister</span></p><p>The furry thistle first thought the fiery thimble was fairly thirsty.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>11.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Sticks and Stones</span></p><p>Sticks and stones will break my bones
+But words will never hurt me. </p><p>
+12. <span style="font-style: italic;">Solomon Grundy</span></p><p>Solomon Grundy,
+Born on&nbsp; Monday,
+Slept on Tuesday,
+Married on Wednesday,
+Sick on Thursday,
+Worse on Friday,
+Died on Saturday,
+Buried on Sunday.
+That was the end,
+Of Solomon Grundy</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2484,8 +2733,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Seven</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch7" onclick="toggleChapter('chBody7')">Chapter Seven</div>
+<div class="chapterBody" id="chBody7" style="display:none;">
         
         <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -2549,14 +2799,14 @@ function zztop(){
 		<div id="answer46" class="answer" data-idx="1" contenteditable="false" style="display: none;"><div>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set7" target="_blank">Go to Vocabulary Quiz: Set 7</a>
 
-		<ol>
+		<menu>
 <li>A subversion of the law by the general population leads to a destruction of civilization.</li>
 <li>The angry expression on his face indicated that he disagreed with the coalition's decision.</li>
 <li>The doctor said the patient's medical condition was severe and her probability of survival was uncertain.</li>
 <li>The pamphlet criticized the governor for his poor behavior during his time in office. It mentioned his many adventure tours and said that it was not reasonable that he should be spending money and traveling the world.</li>
 <li>It is not sensible to try to make a boat out of cardboard boxes.</li>
 <li>Two committee members remain neutral on the resolution and will not vote yes or no. It seems, a compromise can not be reached.</li>
-<li>As the killer bees continue to multiply in numbers, their expansion is causing more deaths.</li></ol></div></div>
+<li>As the killer bees continue to multiply in numbers, their expansion is causing more deaths.</li></menu></div></div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
@@ -2570,7 +2820,7 @@ function zztop(){
         <button id="moveDown47" class="moveDownBtn" onclick="zmoveDown('quSet47')" style="display: none;"> Move Down </button>
 	    <div id="question47" class="question" onclick="toggleText('answer47')" contenteditable="false">
 
-		  <span class="fsLarge"><span style="font-weight: bold;"><section>Ch. 7&nbsp; Vocabulary Sentences FIB<br></section></span></span>
+		  <span class="fsLarge"><span style="font-weight: bold;">Ch. 7&nbsp; Vocabulary Sentences FIB<br></span></span>
 		</div>
 
  
@@ -2676,19 +2926,25 @@ function zztop(){
 <ol>
 <li>ceremony</li>
 <li>customary</li>
-<li>momentary&nbsp; <br></li>
+<li>momentary&nbsp; 
+</li>
 <li>adversary</li>
 <li>delicacy</li>
 <li>alimony</li>
 <li>difficulty</li>
-<li>allegory&nbsp; <br></li>
+<li>allegory&nbsp; 
+</li>
 <li>epilepsy</li>
 <li>accuracy</li>
-<li>emissary&nbsp;&nbsp; <br></li>
-<li>purgatory&nbsp;&nbsp; <br></li>
+<li>emissary&nbsp;&nbsp; 
+</li>
+<li>purgatory&nbsp;&nbsp; 
+</li>
 <li>commentary</li>
-<li>intimacy&nbsp;&nbsp; <br></li>
-<li>salutary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>intimacy&nbsp;&nbsp; 
+</li>
+<li>salutary &nbsp; 
+</li>
 <li>commissary</li>
 <li>sanctuary</li></ol></section>
 		</div>
@@ -2710,7 +2966,33 @@ function zztop(){
 
  
 		<div id="answer51" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>need some&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp; neesum <br>I need some money&nbsp; =&nbsp; I neesum money.<br><br>let me =&nbsp;&nbsp; lemme&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>Let me give you a hand&nbsp; =&nbsp; Lemme give ya a hand<br><br>give me =&nbsp; gimme&nbsp;&nbsp; &nbsp;<br>Give me your money, or die&nbsp; =&nbsp; Gimmee your money, or die!<br><br>because&nbsp; =&nbsp;&nbsp; ‘cause<br>I do not like it because it is too sweet&nbsp; =&nbsp; I don't like it 'cause it's too sweet.&nbsp; &nbsp;<br><br>come on&nbsp; =&nbsp;&nbsp; c’mon&nbsp; (hurry)&nbsp;&nbsp; &nbsp;<br>Come on, let's go&nbsp; =&nbsp; C'mon, lessgo.<br><br>&nbsp;miss your&nbsp; =&nbsp; mishur<br>I really miss your great pies&nbsp; =&nbsp; I really mishur great pies.<br><br>called you&nbsp; =&nbsp; cawju &nbsp;&nbsp; &nbsp;<br>I called you yesterday = I cawdju yesterday.<br><br>how did you&nbsp;&nbsp; =&nbsp; howja/u&nbsp;&nbsp; &nbsp;<br>How did you know where to find me&nbsp; =&nbsp; Howja know where to find me?<br>&nbsp;&nbsp; &nbsp;<br>get out of&nbsp; =&nbsp; gedouda <br>Let's get out of here&nbsp; =&nbsp; Let's gedouda here.<br>&nbsp;&nbsp; &nbsp;<br><br><span style="font-weight: bold;"><br>Tongue Twister</span><br><br>How many cookies could a good cook cook If a good cook could cook cookies? <br><br><br><span style="font-weight: bold;">Rhymes</span><br>13.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Eeper Weeper</span><br><br>Eeper Weeper, chimney sweeper,<br>&nbsp;&nbsp; &nbsp;Had a wife but couldn't keep her.<br>Had another, didn't love her,<br>&nbsp;&nbsp; &nbsp;Up the chimney he did shove her<br><br><br>14.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Going to St. Ives</span><br><br>As I was going to St. Ives,<br>&nbsp;&nbsp; &nbsp;I met a man with seven wives,<br>Each wife had seven sacks,<br>&nbsp;&nbsp; &nbsp;Each sack had seven cats,<br>Each cat had seven kits:<br>Kits, cats, sacks, and wives,<br>&nbsp;&nbsp; &nbsp;How many were there going to St. Ives?<br><br></section>
+		   <section>
+need some&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp; neesum 
+I need some money&nbsp; =&nbsp; I neesum money.<p></p><p>let me =&nbsp;&nbsp; lemme&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+Let me give you a hand&nbsp; =&nbsp; Lemme give ya a hand</p><p>give me =&nbsp; gimme&nbsp;&nbsp; &nbsp;
+Give me your money, or die&nbsp; =&nbsp; Gimmee your money, or die!</p><p>because&nbsp; =&nbsp;&nbsp; ‘cause
+I do not like it because it is too sweet&nbsp; =&nbsp; I don't like it 'cause it's too sweet.&nbsp; &nbsp;</p><p>come on&nbsp; =&nbsp;&nbsp; c’mon&nbsp; (hurry)&nbsp;&nbsp; &nbsp;
+Come on, let's go&nbsp; =&nbsp; C'mon, lessgo.</p><p>&nbsp;miss your&nbsp; =&nbsp; mishur
+I really miss your great pies&nbsp; =&nbsp; I really mishur great pies.</p><p>called you&nbsp; =&nbsp; cawju &nbsp;&nbsp; &nbsp;
+I called you yesterday = I cawdju yesterday.</p><p>how did you&nbsp;&nbsp; =&nbsp; howja/u&nbsp;&nbsp; &nbsp;
+How did you know where to find me&nbsp; =&nbsp; Howja know where to find me?
+&nbsp;&nbsp; &nbsp;
+get out of&nbsp; =&nbsp; gedouda 
+Let's get out of here&nbsp; =&nbsp; Let's gedouda here.
+&nbsp;&nbsp; &nbsp;</p><p><span style="font-weight: bold;">
+Tongue Twister</span></p><p>How many cookies could a good cook cook If a good cook could cook cookies? </p><p>
+<span style="font-weight: bold;">Rhymes</span>
+13.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Eeper Weeper</span></p><p>Eeper Weeper, chimney sweeper,
+&nbsp;&nbsp; &nbsp;Had a wife but couldn't keep her.
+Had another, didn't love her,
+&nbsp;&nbsp; &nbsp;Up the chimney he did shove her</p><p>
+14.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Going to St. Ives</span></p><p>As I was going to St. Ives,
+&nbsp;&nbsp; &nbsp;I met a man with seven wives,
+Each wife had seven sacks,
+&nbsp;&nbsp; &nbsp;Each sack had seven cats,
+Each cat had seven kits:
+Kits, cats, sacks, and wives,
+&nbsp;&nbsp; &nbsp;How many were there going to St. Ives?</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2728,8 +3010,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Eight</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch8" onclick="toggleChapter('chBody8')">Chapter Eight</div>
+<div class="chapterBody" id="chBody8" style="display:none;">
         
     <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -2771,7 +3054,7 @@ function zztop(){
 <li>imagination</li>
 <li>candidate</li>
 <li>transparent</li>
-<li>civilization</li></ol></div>
+<li>civilization</li></ol></section></div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
             <button onclick="biu('allCards')">set biu code</button>
@@ -2793,14 +3076,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set8" target="_blank">Go to Vocabulary Quiz: Set 8</a>
 
-<ol>
+<menu>
 <li>A political fanatic launched a SAM* missile at a commercial airliner. Fortunately, it missed, but it got the attention of Homeland Security who are considering ways to better protect our airliners. (* SAM – Surface to Air Missile)</li>
 <li>If we don't enforce stronger laws for protecting our environment, there may be no civilization left in the near future.</li>
 <li>The approval ratings of the Mayoral candidate show that his popularity is high. He will celebrate his probable victory tonight.</li>
 <li>In his speech, the ambassador of Brazil encouraged us to be moderate in our spending and more useful in serving others.</li>
 <li>In an emergency such as a natural disaster, it is difficult to communicate under those circumstances. Usually, power is out and cell towers are down.</li>
 <li>My traveling companion has very little imagination. He just wants to sit on the beach, but I have lots of ideas for interesting things to do.</li>
-<li>My emotions and thoughts are very transparent. I always speak my mind even if it's not popular. This means I'm not good conversation at social gatherings.</li></ol></section>
+<li>My emotions and thoughts are very transparent. I always speak my mind even if it's not popular. This means I'm not good conversation at social gatherings.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2839,8 +3122,10 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>cautious&nbsp;&nbsp;&nbsp; <br></li>
-<li>gracious&nbsp;&nbsp;&nbsp; <br></li>
+<li>cautious&nbsp;&nbsp;&nbsp; 
+</li>
+<li>gracious&nbsp;&nbsp;&nbsp; 
+</li>
 <li>spacious</li>
 <li>specious</li>
 <li>precious</li>
@@ -2852,12 +3137,16 @@ function zztop(){
 <li>impression</li>
 <li>oppression</li>
 <li>succession</li>
-<li>transgression&nbsp;&nbsp;&nbsp; <br></li>
-<li>mansion&nbsp;&nbsp;&nbsp; <br></li>
-<li>pension&nbsp;&nbsp;&nbsp; <br></li>
+<li>transgression&nbsp;&nbsp;&nbsp; 
+</li>
+<li>mansion&nbsp;&nbsp;&nbsp; 
+</li>
+<li>pension&nbsp;&nbsp;&nbsp; 
+</li>
 <li>tension</li>
 <li>pretension</li>
-<li>ocean&nbsp;&nbsp;&nbsp; <br></li>
+<li>ocean&nbsp;&nbsp;&nbsp; 
+</li>
 <li>logician</li>
 <li>magician</li>
 <li>musician</li>
@@ -2930,20 +3219,29 @@ function zztop(){
 
 <ol>
 <li>controversy</li>
-<li>inventory&nbsp; <br></li>
-<li>secretary&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>inventory&nbsp; 
+</li>
+<li>secretary  
+</li>
 <li>monastery</li>
-<li>mandatory&nbsp; <br></li>
-<li>sedentary&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>matrimony&nbsp; <br></li>
+<li>mandatory&nbsp; 
+</li>
+<li>sedentary  
+</li>
+<li>matrimony&nbsp; 
+</li>
 <li>promissory</li>
 <li>military</li>
 <li>territory</li>
 <li>voluntary</li>
-<li>testimony&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>planetary&nbsp; <br></li>
-<li>tributary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>mercenary <br></li></ol></section>
+<li>testimony &nbsp;&nbsp; 
+</li>
+<li>planetary&nbsp; 
+</li>
+<li>tributary &nbsp; 
+</li>
+<li>mercenary 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2963,7 +3261,31 @@ function zztop(){
 
  
 		<div id="answer58" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>do you want to&nbsp; =&nbsp; jawanna | yawanna<br>Do you want to come along?&nbsp; = &nbsp;&nbsp;&nbsp; &nbsp;Jawanna come along?<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; &nbsp;Yawanna come along?&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp;<br>what will&nbsp; =&nbsp; whad'll<br>What will he do next&nbsp; =&nbsp; Whad'll he do next?&nbsp;&nbsp; &nbsp;<br><br>ought to&nbsp; =&nbsp; otta <br>We ought to pack early&nbsp; =&nbsp; We otta pack early.&nbsp;&nbsp; &nbsp;<br><br>when do you&nbsp; =&nbsp; When d'ya <br>When do you think you will come&nbsp; =&nbsp; When d'ya think you'll come?<br><br>did you ever&nbsp; =&nbsp; ja/u ever<br>did you ever see that movie = Ja ever see that movie?<br><br>kind of&nbsp; =&nbsp; kinda<br>I kind of thought so&nbsp; =&nbsp; I kinda thought so.<br><br>sort of&nbsp; =&nbsp; sorta<br>I sort of got lost&nbsp; =&nbsp; I sorta' got lost. <br><br>a lot of =&nbsp; alotta<br>We are having a lot of fun&nbsp; =&nbsp; W'ere havin' alotta fun. <br><br><br><span class="fsLarge"><span style="font-weight: bold;">Tongue Twister</span></span><br><br>Moses supposes his toes are roses, but Moses supposes erroneously. If Moses' toes were roses in rows, his toes to his nose would smell wonderfully.<br><br><br><span style="font-weight: bold;"><span style="font-weight: bold;">Rhymes</span></span><br><br>15.<span style="font-style: italic;"> Peter Peter Pumpkin</span><br><br>Peter, Peter pumpkin eater,<br>&nbsp;&nbsp; &nbsp;Had a wife but couldn't keep her;<br>He put her in a pumpkin shell<br>&nbsp;&nbsp; &nbsp;And there he kept her very well.<br><br>16.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Baa Baa Black Sheep</span><br><br>Baa, baa, black sheep,<br>&nbsp;&nbsp; &nbsp;Have you any wool?<br>Yes, sir, yes, sir,<br>&nbsp;&nbsp; &nbsp;three bags full;<br>One for the master,<br>&nbsp;&nbsp; &nbsp;and one for the dame,<br>And one for the little boy<br>&nbsp;&nbsp; &nbsp;who lives down the lane.<br><br></section>
+		   <section>
+do you want to&nbsp; =&nbsp; jawanna | yawanna
+Do you want to come along?&nbsp; = &nbsp;&nbsp;&nbsp; &nbsp;Jawanna come along?
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;       &nbsp;&nbsp;&nbsp; OR &nbsp;&nbsp;&nbsp; &nbsp;Yawanna come along?&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;
+what will&nbsp; =&nbsp; whad'll
+What will he do next&nbsp; =&nbsp; Whad'll he do next?&nbsp;&nbsp; &nbsp;<p></p><p>ought to&nbsp; =&nbsp; otta 
+We ought to pack early&nbsp; =&nbsp; We otta pack early.&nbsp;&nbsp; &nbsp;</p><p>when do you&nbsp; =&nbsp; When d'ya 
+When do you think you will come&nbsp; =&nbsp; When d'ya think you'll come?</p><p>did you ever&nbsp; =&nbsp; ja/u ever
+did you ever see that movie = Ja ever see that movie?</p><p>kind of&nbsp; =&nbsp; kinda
+I kind of thought so&nbsp; =&nbsp; I kinda thought so.</p><p>sort of&nbsp; =&nbsp; sorta
+I sort of got lost&nbsp; =&nbsp; I sorta' got lost. </p><p>a lot of =&nbsp; alotta
+We are having a lot of fun&nbsp; =&nbsp; W'ere havin' alotta fun. </p><p>
+<span class="fsLarge"><span style="font-weight: bold;">Tongue Twister</span></span></p><p>Moses supposes his toes are roses, but Moses supposes erroneously. If Moses' toes were roses in rows, his toes to his nose would smell wonderfully.</p><p>
+<span style="font-weight: bold;"><span style="font-weight: bold;">Rhymes</span></span></p><p>15.<span style="font-style: italic;"> Peter Peter Pumpkin</span></p><p>Peter, Peter pumpkin eater,
+&nbsp;&nbsp; &nbsp;Had a wife but couldn't keep her;
+He put her in a pumpkin shell
+&nbsp;&nbsp; &nbsp;And there he kept her very well.</p><p>16.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Baa Baa Black Sheep</span></p><p>Baa, baa, black sheep,
+&nbsp;&nbsp; &nbsp;Have you any wool?
+Yes, sir, yes, sir,
+&nbsp;&nbsp; &nbsp;three bags full;
+One for the master,
+&nbsp;&nbsp; &nbsp;and one for the dame,
+And one for the little boy
+&nbsp;&nbsp; &nbsp;who lives down the lane.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -2981,8 +3303,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Nine</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch9" onclick="toggleChapter('chBody9')">Chapter Nine</div>
+<div class="chapterBody" id="chBody9" style="display:none;">
         
        <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -3043,14 +3366,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set9" target="_blank">Go to Vocabulary Quiz: Set 9</a>
 
-<ol>
+<menu>
 <li>One of the greatest scientific advances in the 17th century was the microscope.</li>
 <li>The brothers are of two different characters. One is stubborn and mean, the other, kind and generous.</li>
 <li>The decision to give government employees a large raise was not in accordance with the voters wishes. It was not appropriate during this time of recession where many are poor and jobless.</li>
 <li>According to the company's headquarters, the target market of their new clothing department are teenagers.</li>
 <li>Government associations are under a lot of pressure to protect the environment. Sacrifices must be made to ensure a good future for our children.</li>
 <li>We will transport the products to you at the standard delivery rate. Please confirm your order.</li>
-<li>The nuclear plant employees were getting ready to decorate for Christmas when suddenly the&nbsp; alarm sounded. There was a radiation leak; they all exited the building quickly.</li></ol></section>
+<li>The nuclear plant employees were getting ready to decorate for Christmas when suddenly the&nbsp; alarm sounded. There was a radiation leak; they all exited the building quickly.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3140,28 +3463,41 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>grammarian&nbsp; <br></li>
+<li>grammarian&nbsp; 
+</li>
 <li>variety</li>
 <li>historian</li>
 <li>activity</li>
-<li>centurion&nbsp;&nbsp; <br></li>
-<li>librarian&nbsp;&nbsp; <br></li>
-<li>material&nbsp;&nbsp;&nbsp; <br></li>
+<li>centurion&nbsp;&nbsp; 
+</li>
+<li>librarian&nbsp;&nbsp; 
+</li>
+<li>material&nbsp;&nbsp;&nbsp; 
+</li>
 <li>accessory</li>
 <li>communicate</li>
-<li>maturity&nbsp;&nbsp;&nbsp; <br></li>
-<li>community&nbsp;&nbsp; <br></li>
-<li>memorial&nbsp;&nbsp;&nbsp; <br></li>
+<li>maturity&nbsp;&nbsp;&nbsp; 
+</li>
+<li>community&nbsp;&nbsp; 
+</li>
+<li>memorial&nbsp;&nbsp;&nbsp; 
+</li>
 <li>adversity</li>
 <li>analogy</li>
 <li>anatomy</li>
-<li>security&nbsp;&nbsp;&nbsp; <br></li>
+<li>security&nbsp;&nbsp;&nbsp; 
+</li>
 <li>antagonist</li>
-<li>formality&nbsp;&nbsp; <br></li>
-<li>brutality&nbsp;&nbsp; <br></li>
+<li>formality&nbsp;&nbsp; 
+</li>
+<li>brutality&nbsp;&nbsp; 
+</li>
 <li>grammatical</li>
-<li>habitual&nbsp;&nbsp; <br></li>
-<li>significant <br></li></ol><br></section>
+<li>habitual&nbsp;&nbsp; 
+</li>
+<li>significant 
+</li></ol>
+</section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3181,7 +3517,37 @@ function zztop(){
 
  
 		<div id="answer64" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>&nbsp;&nbsp;&nbsp; 1. This has got to be the best we have ever done.&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-style: italic;"> Thisaz gotta </span>be the best we’ve ever done<br><br>&nbsp;&nbsp;&nbsp; 2. There's got to be a better way to do this.&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There’s<span style="font-style: italic;"> gotta </span>be a better way <span style="font-style: italic;">ta</span> do this. <br><br>&nbsp;&nbsp;&nbsp; 3. Just as I thought, he is not coming.&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Justaz</span> I thought he isn’t coming.&nbsp; <br><br>&nbsp;&nbsp;&nbsp; 4. Cup of coffee when you have a minute? &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Cup-a-coffee</span> when <span style="font-style: italic;">you-av-a minute</span>?<br><br>&nbsp;&nbsp;&nbsp; 5. Could have been the postman ringing the doorbell. &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Cud-a-bin </span>the postman ringing the doorbell.<br><br>&nbsp;&nbsp;&nbsp; 6. Peace and quiet.&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Peace-n-quiet.<br><br></span>&nbsp;&nbsp;&nbsp; 7. Is her brother going to come to the party?&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Izzer</span>&nbsp; brother <span style="font-style: italic;">gonna</span> come to the party?<br><br>&nbsp;&nbsp;&nbsp; 8. What do you think will happen to her?&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Whachu</span> think will happen <span style="font-style: italic;">to ‘er</span>?<br><br>&nbsp;&nbsp;&nbsp; 9. Give me the keys. &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Gimme</span> the keys.<br><br>&nbsp;&nbsp;&nbsp; 10. I don't know. &nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; I <span style="font-style: italic;">dunno</span>.<br>&nbsp;&nbsp;&nbsp; 11. What do you want to eat? &nbsp;<br>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">Waddaya</span> <span style="font-style: italic;">wanna</span> eat?<br><br>&nbsp;&nbsp;&nbsp; 12. Would you like a banana? &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; <span style="font-style: italic;">Wujalike</span> a banana?<br><br>&nbsp;&nbsp;&nbsp; 13. Don't you know? &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="font-style: italic;">Doncha</span> know?<br><br>&nbsp;&nbsp;&nbsp; 14. Would you go?&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="font-style: italic;">Wuju</span> go?<br><br>&nbsp;&nbsp;&nbsp; 15. A: Did you eat?&nbsp; B: No, did You?<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; A:<span style="font-style: italic;"> Ja eat?</span>&nbsp; B: <span style="font-style: italic;">No, ju?<br><br></span><br><span style="font-weight: bold;">Tongue Twister</span><br><br>In the chicken's kitchen were chicken's kittens. In the kitten's kitchen were kitten's chickens.<br><br><br><span style="font-weight: bold;">Rhymes</span><br><br>17. <span style="font-style: italic;">Georgie Porgie</span><br><br>Georgie Porgie, Puddin' and Pie,<br>&nbsp;&nbsp; &nbsp;Kissed the girls and made them cry,<br>When the boys came out to play<br>&nbsp;&nbsp; &nbsp;Georgie Porgie ran away.<br><br><br>18.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Little Boy Blue</span><br><br>Little Boy Blue,<br>&nbsp;&nbsp; &nbsp;come blow your horn,<br>The sheep's in the meadow,<br>&nbsp;&nbsp; &nbsp;the cow's in the corn.<br>Where is that boy<br>&nbsp;&nbsp; &nbsp;who looks after the sheep?<br>Under the haystack<br>&nbsp;&nbsp; &nbsp;fast asleep.<br><br></section>
+		   <section>
+&nbsp;&nbsp;&nbsp; 1. This has got to be the best we have ever done.&nbsp; 
+  &nbsp;&nbsp;<span style="font-style: italic;"> Thisaz gotta </span>be the best we’ve ever done<p></p><p>&nbsp;&nbsp;&nbsp; 2. There's got to be a better way to do this.&nbsp;&nbsp;&nbsp; 
+  &nbsp;&nbsp; There’s<span style="font-style: italic;"> gotta </span>be a better way <span style="font-style: italic;">ta</span> do this. </p><p>&nbsp;&nbsp;&nbsp; 3. Just as I thought, he is not coming.&nbsp; &nbsp;
+  &nbsp;&nbsp; <span style="font-style: italic;">Justaz</span> I thought he isn’t coming.&nbsp; </p><p>&nbsp;&nbsp;&nbsp; 4. Cup of coffee when you have a minute? &nbsp;
+  &nbsp;&nbsp; <span style="font-style: italic;">Cup-a-coffee</span> when <span style="font-style: italic;">you-av-a minute</span>?</p><p>&nbsp;&nbsp;&nbsp; 5. Could have been the postman ringing the doorbell. &nbsp;
+  &nbsp;&nbsp; <span style="font-style: italic;">Cud-a-bin </span>the postman ringing the doorbell.</p><p>&nbsp;&nbsp;&nbsp; 6. Peace and quiet.&nbsp;&nbsp; &nbsp;
+  &nbsp;&nbsp; <span style="font-style: italic;">Peace-n-quiet.</span></p><p>&nbsp;&nbsp;&nbsp; 7. Is her brother going to come to the party?&nbsp; 
+  &nbsp;&nbsp; <span style="font-style: italic;">Izzer</span>&nbsp; brother <span style="font-style: italic;">gonna</span> come to the party?</p><p>&nbsp;&nbsp;&nbsp; 8. What do you think will happen to her?&nbsp; 
+  &nbsp; <span style="font-style: italic;">Whachu</span> think will happen <span style="font-style: italic;">to ‘er</span>?</p><p>&nbsp;&nbsp;&nbsp; 9. Give me the keys. &nbsp;
+  &nbsp; <span style="font-style: italic;">Gimme</span> the keys.</p><p>&nbsp;&nbsp;&nbsp; 10. I don't know. &nbsp;
+  &nbsp; &nbsp; &nbsp;&nbsp; I <span style="font-style: italic;">dunno</span>.
+&nbsp;&nbsp;&nbsp; 11. What do you want to eat? &nbsp;
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">Waddaya</span> <span style="font-style: italic;">wanna</span> eat?</p><p>&nbsp;&nbsp;&nbsp; 12. Would you like a banana? &nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; <span style="font-style: italic;">Wujalike</span> a banana?</p><p>&nbsp;&nbsp;&nbsp; 13. Don't you know? &nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="font-style: italic;">Doncha</span> know?</p><p>&nbsp;&nbsp;&nbsp; 14. Would you go?&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="font-style: italic;">Wuju</span> go?</p><p>&nbsp;&nbsp;&nbsp; 15. A: Did you eat?&nbsp; B: No, did You?
+  &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; A:<span style="font-style: italic;"> Ja eat?</span>&nbsp; B: <span style="font-style: italic;">No, ju?</span></p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>In the chicken's kitchen were chicken's kittens. In the kitten's kitchen were kitten's chickens.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>17. <span style="font-style: italic;">Georgie Porgie</span></p><p>Georgie Porgie, Puddin' and Pie,
+&nbsp;&nbsp; &nbsp;Kissed the girls and made them cry,
+When the boys came out to play
+&nbsp;&nbsp; &nbsp;Georgie Porgie ran away.</p><p>
+18.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Little Boy Blue</span></p><p>Little Boy Blue,
+&nbsp;&nbsp; &nbsp;come blow your horn,
+The sheep's in the meadow,
+&nbsp;&nbsp; &nbsp;the cow's in the corn.
+Where is that boy
+&nbsp;&nbsp; &nbsp;who looks after the sheep?
+Under the haystack
+&nbsp;&nbsp; &nbsp;fast asleep.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3199,8 +3565,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Ten</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch10" onclick="toggleChapter('chBody10')">Chapter Ten</div>
+<div class="chapterBody" id="chBody10" style="display:none;">
         
         <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -3262,14 +3629,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set10" target="_blank">Go to Vocabulary Quiz: Set 10</a>
 
-<ol>
+<menu>
 <li>My Uncle is on medication for poor digestion.&nbsp; His medicine is very expensive.</li>
 <li>Many people in the legal profession read a publication called the Harvard Law Review. There are articles on property law, criminal law, and many other issues.</li>
 <li>The bed design was first used for astronauts, so the bed stands upright against the wall. The company will begin production of it's new beds next week.</li>
 <li>The state again faces an immediate crisis of high crime rates. Their propaganda of a tougher and more active police force is meant to deter criminals.</li>
 <li>The principle of “innocent until proven guilty” is familiar to all Americans.</li>
 <li>Based on the various descriptions given by the witnesses, I think the suspect does not deserve to be arrested, they should let him go.</li>
-<li>The government should consider ways to discourage capital investments abroad.</li></ol></section>
+<li>The government should consider ways to discourage capital investments abroad.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3342,27 +3709,38 @@ function zztop(){
 
 <ol>
 <li>significant</li>
-<li>coincident&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>identity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>comparison&nbsp;&nbsp;&nbsp; <br></li>
-<li>competitor&nbsp;&nbsp;&nbsp; <br></li>
-<li>conspiracy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>coincident &nbsp; 
+</li>
+<li>identity &nbsp;&nbsp; 
+</li>
+<li>comparison&nbsp;&nbsp;&nbsp; 
+</li>
+<li>competitor&nbsp;&nbsp;&nbsp; 
+</li>
+<li>conspiracy &nbsp; 
+</li>
 <li>validity</li>
 <li>vicinity</li>
-<li>morality&nbsp;&nbsp; <br></li>
+<li>morality&nbsp;&nbsp; 
+</li>
 <li>apology</li>
-<li>necessity&nbsp;&nbsp;&nbsp; <br></li>
+<li>necessity&nbsp;&nbsp;&nbsp; 
+</li>
 <li>astrology</li>
 <li>astronomy</li>
 <li>biography</li>
-<li>electrical&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>electrical  
+</li>
 <li>particular</li>
 <li>democracy</li>
-<li>political&nbsp;&nbsp;&nbsp; <br></li>
-<li>equivalent&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>political&nbsp;&nbsp;&nbsp; 
+</li>
+<li>equivalent  
+</li>
 <li>economy</li>
 <li>geometry</li>
-<li>monopoly <br></li></ol></section>
+<li>monopoly 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3382,7 +3760,29 @@ function zztop(){
 
  
 		<div id="answer70" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br><br>&nbsp;&nbsp;&nbsp; 1. Did you go?&nbsp;&nbsp; dijew<br>&nbsp;&nbsp;&nbsp; 2. Would you help?&nbsp;&nbsp; wujew/ja<br>&nbsp;&nbsp;&nbsp; 3. How could you?&nbsp;&nbsp;&nbsp; cujew/ja<br>&nbsp;&nbsp;&nbsp; 4. Did you quit your job?&nbsp; diju &nbsp;&nbsp; <span style="font-style: italic;">quichur</span><br>&nbsp;&nbsp;&nbsp; 5. Put your hat on and let's go.&nbsp;&nbsp; <span style="font-style: italic;">putcher</span> &nbsp; <span style="font-style: italic;">lessgo</span><br>&nbsp;&nbsp;&nbsp; 6. I got your email. <span style="font-style: italic;">gotcher</span><br>&nbsp;&nbsp;&nbsp; 7. Can't you see?&nbsp;&nbsp; <span style="font-style: italic;">cancha </span><br>&nbsp;&nbsp;&nbsp; 8. Did you miss your chance?&nbsp;&nbsp; dija&nbsp; <span style="font-style: italic;">mishur</span><br>&nbsp;&nbsp;&nbsp; 9. Weren't you at the restaurant last night?&nbsp; <span style="font-style: italic;">Werncha/u</span><br>&nbsp;&nbsp;&nbsp; 10. I'll see you in a minute.&nbsp;&nbsp; <span style="font-style: italic;">yuwina</span><br>&nbsp;&nbsp;&nbsp; 11. Are you free on Sunday?&nbsp;&nbsp; <span style="font-style: italic;">freeyon</span><br>&nbsp;&nbsp;&nbsp; 12. When should we go out?&nbsp; <span style="font-style: italic;">gowout</span><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>Peter Piper picked a peck of pickled peppers. A peck of pickled peppers, Peter Piper Picked.<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>19.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Hey Diddle Diddle</span><br><br>Hey diddle diddle,<br>&nbsp;&nbsp; &nbsp;The cat and the fiddle,<br>The cow jumped over the moon.<br>&nbsp;&nbsp; &nbsp;The little dog laughed,<br>To see such sport,<br>&nbsp;&nbsp; &nbsp;And the dish ran away with the spoon<br><br><br>20.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Humpty Dumpty</span><br><br>Humpty Dumpty sat on a wall,<br>&nbsp;&nbsp; &nbsp;Humpty Dumpty had a great fall.<br>All the king's horses and all the king's men<br>&nbsp;&nbsp; &nbsp;Couldn't put Humpty together again.<br><br></section>
+		   <section><p></p><p>&nbsp;&nbsp;&nbsp; 1. Did you go?&nbsp;&nbsp; dijew
+&nbsp;&nbsp;&nbsp; 2. Would you help?&nbsp;&nbsp; wujew/ja
+&nbsp;&nbsp;&nbsp; 3. How could you?&nbsp;&nbsp;&nbsp; cujew/ja
+&nbsp;&nbsp;&nbsp; 4. Did you quit your job?&nbsp; diju &nbsp;&nbsp; <span style="font-style: italic;">quichur</span>
+&nbsp;&nbsp;&nbsp; 5. Put your hat on and let's go.&nbsp;&nbsp; <span style="font-style: italic;">putcher</span> &nbsp; <span style="font-style: italic;">lessgo</span>
+&nbsp;&nbsp;&nbsp; 6. I got your email. <span style="font-style: italic;">gotcher</span>
+&nbsp;&nbsp;&nbsp; 7. Can't you see?&nbsp;&nbsp; <span style="font-style: italic;">cancha </span>
+&nbsp;&nbsp;&nbsp; 8. Did you miss your chance?&nbsp;&nbsp; dija&nbsp; <span style="font-style: italic;">mishur</span>
+&nbsp;&nbsp;&nbsp; 9. Weren't you at the restaurant last night?&nbsp; <span style="font-style: italic;">Werncha/u</span>
+&nbsp;&nbsp;&nbsp; 10. I'll see you in a minute.&nbsp;&nbsp; <span style="font-style: italic;">yuwina</span>
+&nbsp;&nbsp;&nbsp; 11. Are you free on Sunday?&nbsp;&nbsp; <span style="font-style: italic;">freeyon</span>
+&nbsp;&nbsp;&nbsp; 12. When should we go out?&nbsp; <span style="font-style: italic;">gowout</span></p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>Peter Piper picked a peck of pickled peppers. A peck of pickled peppers, Peter Piper Picked.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>19.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Hey Diddle Diddle</span></p><p>Hey diddle diddle,
+&nbsp;&nbsp; &nbsp;The cat and the fiddle,
+The cow jumped over the moon.
+&nbsp;&nbsp; &nbsp;The little dog laughed,
+To see such sport,
+&nbsp;&nbsp; &nbsp;And the dish ran away with the spoon</p><p>
+20.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Humpty Dumpty</span></p><p>Humpty Dumpty sat on a wall,
+&nbsp;&nbsp; &nbsp;Humpty Dumpty had a great fall.
+All the king's horses and all the king's men
+&nbsp;&nbsp; &nbsp;Couldn't put Humpty together again.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3400,8 +3800,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Eleven</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch11" onclick="toggleChapter('chBody11')">Chapter Eleven</div>
+<div class="chapterBody" id="chBody11" style="display:none;">
         
   <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -3465,14 +3866,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set11" target="_blank">Go to Vocabulary Quiz: Set 11</a>
 
-<ol>
+<menu>
 <li>According to the workers, this machinery is always breaking down. They say it's useless.</li>
 <li>An intelligent person with confidence is usually an independent person.</li>
 <li>The two countries are having a vicious struggle over the neutral territory.</li>
 <li>Joe feels it is beneath him to deliver pizzas. Also, he doesn't like the pizza man uniforms.</li>
 <li>We should calculate the amount of money that will be needed to execute this plan.</li>
 <li>Today we will have a substitute teacher. We are disappointed. We really like our regular teacher.</li>
-<li>Their stories are quite parallel. They are both sensitive to other's needs, both women lost their mom when they were children, and they both went into advertising.</li></ol></section>
+<li>Their stories are quite parallel. They are both sensitive to other's needs, both women lost their mom when they were children, and they both went into advertising.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3555,23 +3956,35 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>antecedent&nbsp; <br></li>
+<li>antecedent&nbsp; 
+</li>
 <li>manifesto</li>
-<li>apparatus&nbsp;&nbsp; <br></li>
-<li>memorandum&nbsp; <br></li>
-<li>oriental&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>ornamental&nbsp;&nbsp; <br></li>
+<li>apparatus&nbsp;&nbsp; 
+</li>
+<li>memorandum&nbsp; 
+</li>
+<li>oriental  
+</li>
+<li>ornamental&nbsp;&nbsp; 
+</li>
 <li>scientific</li>
-<li>accidental&nbsp; <br></li>
+<li>accidental&nbsp; 
+</li>
 <li>systematic</li>
-<li>aromatic&nbsp;&nbsp;&nbsp; <br></li>
+<li>aromatic&nbsp;&nbsp;&nbsp; 
+</li>
 <li>correspondent</li>
-<li>detrimental&nbsp; <br></li>
+<li>detrimental&nbsp; 
+</li>
 <li>horizontal</li>
-<li>energetic&nbsp;&nbsp;&nbsp; <br></li>
-<li>fundamental&nbsp;&nbsp; <br></li>
+<li>energetic&nbsp;&nbsp;&nbsp; 
+</li>
+<li>fundamental&nbsp;&nbsp; 
+</li>
 <li>universal</li>
-<li>innuendo <br></li></ol><br></section>
+<li>innuendo 
+</li></ol>
+</section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3588,7 +4001,21 @@ function zztop(){
 
  
 		<div id="answer76" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br><span class="fsLarge"><span style="font-weight: bold;">noun/adj vs. verb</span></span><br><br>advocate &nbsp; &nbsp; advocate <br>appropriate &nbsp; &nbsp; appropriate <br>approximate &nbsp; &nbsp; approximate <br>associate&nbsp;&nbsp;&nbsp;&nbsp; associate <br>degenerate&nbsp;&nbsp;&nbsp;&nbsp; degenerate <br>delegate &nbsp; &nbsp; delegate <br>deliberate (adj) &nbsp; &nbsp; deliberate <br>duplicate&nbsp;&nbsp;&nbsp;&nbsp; duplicate <br>elaborate(adj) &nbsp; &nbsp; elaborate <br>estimate &nbsp; &nbsp; estimate <br>graduate &nbsp; &nbsp; graduate <br>moderate (adj) &nbsp; &nbsp; moderate <br>subordinate &nbsp; &nbsp; subordinate <br></section>
+		   <section>
+<span class="fsLarge"><span style="font-weight: bold;">noun/adj vs. verb</span></span><p></p><p>advocate &nbsp; &nbsp; advocate 
+appropriate &nbsp; &nbsp; appropriate 
+approximate &nbsp; &nbsp; approximate 
+associate  associate 
+degenerate  degenerate 
+delegate &nbsp; &nbsp; delegate 
+deliberate (adj) &nbsp; &nbsp; deliberate 
+duplicate  duplicate 
+elaborate(adj) &nbsp; &nbsp; elaborate 
+estimate &nbsp; &nbsp; estimate 
+graduate &nbsp; &nbsp; graduate 
+moderate (adj) &nbsp; &nbsp; moderate 
+subordinate &nbsp; &nbsp; subordinate 
+</p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3608,7 +4035,25 @@ function zztop(){
 
  
 		<div id="answer77" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>&nbsp;&nbsp;&nbsp; 1.&nbsp; I need your help.&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">neejur</span>&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; 2.&nbsp; Don't you like chocolate?&nbsp;&nbsp; <span style="font-style: italic;">doncha/chu</span><br>&nbsp;&nbsp;&nbsp; 3.&nbsp; Here's your change.&nbsp;&nbsp; <span style="font-style: italic;">Heerzhur</span><br>&nbsp;&nbsp;&nbsp; 4.&nbsp; I'll let you know.&nbsp;&nbsp; <span style="font-style: italic;">lecha/chu</span><br>&nbsp;&nbsp;&nbsp; 5.&nbsp; Close your eyes.&nbsp;&nbsp; <span style="font-style: italic;">clozhur</span><br>&nbsp;&nbsp;&nbsp; 6.&nbsp; Could you pass the salt please?&nbsp;&nbsp; <span style="font-style: italic;">cuju</span><br>&nbsp;&nbsp;&nbsp; 7.&nbsp; I hope you pass your test.&nbsp;&nbsp; <span style="font-style: italic;">pashur</span><br>&nbsp;&nbsp;&nbsp; 8.&nbsp; Don't miss your deadline.&nbsp;&nbsp; <span style="font-style: italic;">mishur</span><br>&nbsp;&nbsp;&nbsp; 9.&nbsp; Did you hear about Sam?&nbsp;&nbsp; <span style="font-style: italic;">diju/ja</span><br>&nbsp;&nbsp;&nbsp; 10.&nbsp; Have you got your ticket?&nbsp;&nbsp; <span style="font-style: italic;">gochur</span><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>Thirty-three Finns found thirty free things.<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>21.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Jack and Jill</span><br><br>Jack and Jill went up the hill<br>&nbsp;&nbsp; &nbsp;To fetch a pail of water.<br>Jack fell down and broke his crown,<br>&nbsp;&nbsp; &nbsp;And Jill came tumbling after.<br><br>22.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Little Bo-Peep</span><br><br>Little Bo-Peep has lost her sheep,<br>&nbsp;&nbsp; &nbsp;and can't tell where to find them;<br>leave them alone, And they'll come home,<br>&nbsp;&nbsp; &nbsp;wagging their tails behind them.<br><br></section>
+		   <section>
+&nbsp;&nbsp;&nbsp; 1.&nbsp; I need your help.&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-style: italic;">neejur</span>&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; 2.&nbsp; Don't you like chocolate?&nbsp;&nbsp; <span style="font-style: italic;">doncha/chu</span>
+&nbsp;&nbsp;&nbsp; 3.&nbsp; Here's your change.&nbsp;&nbsp; <span style="font-style: italic;">Heerzhur</span>
+&nbsp;&nbsp;&nbsp; 4.&nbsp; I'll let you know.&nbsp;&nbsp; <span style="font-style: italic;">lecha/chu</span>
+&nbsp;&nbsp;&nbsp; 5.&nbsp; Close your eyes.&nbsp;&nbsp; <span style="font-style: italic;">clozhur</span>
+&nbsp;&nbsp;&nbsp; 6.&nbsp; Could you pass the salt please?&nbsp;&nbsp; <span style="font-style: italic;">cuju</span>
+&nbsp;&nbsp;&nbsp; 7.&nbsp; I hope you pass your test.&nbsp;&nbsp; <span style="font-style: italic;">pashur</span>
+&nbsp;&nbsp;&nbsp; 8.&nbsp; Don't miss your deadline.&nbsp;&nbsp; <span style="font-style: italic;">mishur</span>
+&nbsp;&nbsp;&nbsp; 9.&nbsp; Did you hear about Sam?&nbsp;&nbsp; <span style="font-style: italic;">diju/ja</span>
+&nbsp;&nbsp;&nbsp; 10.&nbsp; Have you got your ticket?&nbsp;&nbsp; <span style="font-style: italic;">gochur</span><p></p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>Thirty-three Finns found thirty free things.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>21.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Jack and Jill</span></p><p>Jack and Jill went up the hill
+&nbsp;&nbsp; &nbsp;To fetch a pail of water.
+Jack fell down and broke his crown,
+&nbsp;&nbsp; &nbsp;And Jill came tumbling after.</p><p>22.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Little Bo-Peep</span></p><p>Little Bo-Peep has lost her sheep,
+&nbsp;&nbsp; &nbsp;and can't tell where to find them;
+leave them alone, And they'll come home,
+&nbsp;&nbsp; &nbsp;wagging their tails behind them.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3626,8 +4071,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Twelve</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch12" onclick="toggleChapter('chBody12')">Chapter Twelve</div>
+<div class="chapterBody" id="chBody12" style="display:none;">
         
   <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -3688,14 +4134,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set12" target="_blank">Go to Vocabulary Quiz: Set 12</a>
 
-<ol>
+<menu>
 <li>The passengers had great admiration for the helicopter pilot. He saved their lives.</li>
 <li>The message from the military security specialist said that violence against civilians is up.</li>
 <li>An analysis by the National Security Agency (NSA) showed that there has been a significant increase in the purchase of ammunition by terrorists.</li>
 <li>The purchase of groceries was up before the typhoon hit.</li>
 <li>It is nonsense to know that while most creatures kill to survive, only humans kill for political gains and personal profit.</li>
 <li>The temporary subsidies to farmers has not been effective in bringing down grocery prices.</li>
-<li>His conscience led him to change his mind. He now proposes lower taxes for everyone, not just the rich.</li></ol></section>
+<li>His conscience led him to change his mind. He now proposes lower taxes for everyone, not just the rich.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3740,7 +4186,8 @@ function zztop(){
 <li>assassinate</li>
 <li>capacitate</li>
 <li>coagulate</li>
-<li>concatenate&nbsp;&nbsp;&nbsp; <br></li>
+<li>concatenate&nbsp;&nbsp;&nbsp; 
+</li>
 <li>confabulate</li>
 <li>congratulate</li>
 <li>contaminate</li>
@@ -3753,7 +4200,8 @@ function zztop(){
 <li>invalidate</li>
 <li>procrastinate</li>
 <li>retaliate</li>
-<li>evaporate <br></li></ol></section>
+<li>evaporate 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3776,24 +4224,35 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>contemporary&nbsp;&nbsp; <br></li>
+<li>contemporary&nbsp;&nbsp; 
+</li>
 <li>prohibitory</li>
-<li>declamatory&nbsp;&nbsp; <br></li>
-<li>defamatory&nbsp;&nbsp;&nbsp; <br></li>
+<li>declamatory&nbsp;&nbsp; 
+</li>
+<li>defamatory&nbsp;&nbsp;&nbsp; 
+</li>
 <li>vocabulary</li>
-<li>exclamatory&nbsp;&nbsp; <br></li>
+<li>exclamatory&nbsp;&nbsp; 
+</li>
 <li>consolatory</li>
-<li>explanatory&nbsp;&nbsp; <br></li>
+<li>explanatory&nbsp;&nbsp; 
+</li>
 <li>depository</li>
-<li>extemporary&nbsp;&nbsp; <br></li>
+<li>extemporary&nbsp;&nbsp; 
+</li>
 <li>derogatory</li>
-<li>hereditary&nbsp;&nbsp;&nbsp; <br></li>
+<li>hereditary&nbsp;&nbsp;&nbsp; 
+</li>
 <li>involuntary</li>
-<li>incendiary&nbsp;&nbsp;&nbsp; <br></li>
+<li>incendiary&nbsp;&nbsp;&nbsp; 
+</li>
 <li>repository</li>
-<li>inflammatory&nbsp; <br></li>
-<li>preliminary&nbsp;&nbsp; <br></li>
-<li>observatory<br></li></ol>&nbsp;<style type="text/css">p { line-height: 120%; margin-bottom: 0.1in; background: transparent }</style></section>
+<li>inflammatory&nbsp; 
+</li>
+<li>preliminary&nbsp;&nbsp; 
+</li>
+<li>observatory
+</li></ol>&nbsp;</section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3813,7 +4272,29 @@ function zztop(){
 
  
 		<div id="answer83" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>&nbsp;&nbsp;&nbsp; 1. Would you call me when you get there.&nbsp;&nbsp; <span style="font-style: italic;">wooja/ju</span><br>&nbsp;&nbsp;&nbsp; 2. Here's your passport.&nbsp;&nbsp; <span style="font-style: italic;">Heerzhur</span><br>&nbsp;&nbsp;&nbsp; 3. I'll meet you Sunday.&nbsp;&nbsp; <span style="font-style: italic;">meecha</span><br>&nbsp;&nbsp;&nbsp; 4. Don't miss your plane.&nbsp;&nbsp; <span style="font-style: italic;">mishur</span><br>&nbsp;&nbsp;&nbsp; 5. He likes it hot.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">likesit</span><br>&nbsp;&nbsp;&nbsp; 6. She laughed at me.&nbsp; <span style="font-style: italic;">lafftat</span><br>&nbsp;&nbsp;&nbsp; 7. Please explain it to me.&nbsp;&nbsp; <span style="font-style: italic;">explay nit</span><br>&nbsp;&nbsp;&nbsp; 8. He woke up too early.&nbsp;&nbsp; <span style="font-style: italic;">too werly</span><br>&nbsp;&nbsp;&nbsp; 9. Who is it?&nbsp;&nbsp; <span style="font-style: italic;">whowizit</span><br>&nbsp;&nbsp;&nbsp; 10. Are you hungry?&nbsp; I am.&nbsp; <span style="font-style: italic;">arya&nbsp;&nbsp; Iyam</span><br><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>Rubber baby buggy bumpers&nbsp; (repeat 3 times fast)<br><br><br><span style="font-weight: bold;">Rhymes</span><br><br>23.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old King Cole</span><br><br>Old King Cole was a merry old soul<br>And a merry old soul was he;<br>He called for his pipe, and he called for his bowl<br>And he called for his fiddlers three.<br><br><br>24.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Pop Goes the Weasel</span><br><br>Every night when I get home<br>The monkey's on the table,<br>Take a stick and knock it off,<br>Pop! goes the weasel<br><br><br>25.&nbsp;&nbsp;&nbsp;<span style="font-style: italic;"> Wise Old Owl</span><br><br>A wise old owl lived in an oak<br>The more he saw the less he spoke<br>The less he spoke the more he heard.<br>Why can't we all be like that wise old bird?<br><br></section>
+		   <section>
+&nbsp;&nbsp;&nbsp; 1. Would you call me when you get there.&nbsp;&nbsp; <span style="font-style: italic;">wooja/ju</span>
+&nbsp;&nbsp;&nbsp; 2. Here's your passport.&nbsp;&nbsp; <span style="font-style: italic;">Heerzhur</span>
+&nbsp;&nbsp;&nbsp; 3. I'll meet you Sunday.&nbsp;&nbsp; <span style="font-style: italic;">meecha</span>
+&nbsp;&nbsp;&nbsp; 4. Don't miss your plane.&nbsp;&nbsp; <span style="font-style: italic;">mishur</span>
+&nbsp;&nbsp;&nbsp; 5. He likes it hot.&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">likesit</span>
+&nbsp;&nbsp;&nbsp; 6. She laughed at me.&nbsp; <span style="font-style: italic;">lafftat</span>
+&nbsp;&nbsp;&nbsp; 7. Please explain it to me.&nbsp;&nbsp; <span style="font-style: italic;">explay nit</span>
+&nbsp;&nbsp;&nbsp; 8. He woke up too early.&nbsp;&nbsp; <span style="font-style: italic;">too werly</span>
+&nbsp;&nbsp;&nbsp; 9. Who is it?&nbsp;&nbsp; <span style="font-style: italic;">whowizit</span>
+&nbsp;&nbsp;&nbsp; 10. Are you hungry?&nbsp; I am.&nbsp; <span style="font-style: italic;">arya&nbsp;&nbsp; Iyam</span><p></p><p></p><p><span style="font-weight: bold;">Tongue Twister</span></p><p>Rubber baby buggy bumpers&nbsp; (repeat 3 times fast)</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>23.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old King Cole</span></p><p>Old King Cole was a merry old soul
+And a merry old soul was he;
+He called for his pipe, and he called for his bowl
+And he called for his fiddlers three.</p><p>
+24.&nbsp;&nbsp; <span style="font-style: italic;">&nbsp;Pop Goes the Weasel</span></p><p>Every night when I get home
+The monkey's on the table,
+Take a stick and knock it off,
+Pop! goes the weasel</p><p>
+25.&nbsp;&nbsp;&nbsp;<span style="font-style: italic;"> Wise Old Owl</span></p><p>A wise old owl lived in an oak
+The more he saw the less he spoke
+The less he spoke the more he heard.
+Why can't we all be like that wise old bird?</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3831,8 +4312,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Thirteen</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch13" onclick="toggleChapter('chBody13')">Chapter Thirteen</div>
+<div class="chapterBody" id="chBody13" style="display:none;">
     <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
 </button>
@@ -3895,14 +4377,14 @@ function zztop(){
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set13" target="_blank">Go to Vocabulary Quiz: Set 13</a>
 
-<ol>
+<menu>
 <li>The laboratory in the research and development department is responsible for creating higher quality products.</li>
 <li>The satisfaction of killing animals just for pleasure is rather senseless.</li>
 <li>After the disaster, the medical community is calling for more donations of blankets.</li>
 <li>In reaction to the bad news, the minority groups surrounded the capital building in protest.</li>
 <li>To betray a friend is to destroy a friendship.</li>
 <li>It is not convenient to make an adjustment to the schedule at this time.</li>
-<li>Slippery roads lead to dreadful consequences.</li></ol></section>
+<li>Slippery roads lead to dreadful consequences.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -3980,34 +4462,46 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>ambiguity&nbsp; <br></li>
+<li>ambiguity&nbsp; 
+</li>
 <li>contradictory</li>
-<li>credibility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>credibility    &nbsp;&nbsp;&nbsp; 
+</li>
 <li>dictatorial</li>
-<li>epicurean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>epicurean &nbsp;&nbsp; 
+</li>
 <li>elementary</li>
-<li>importunity&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>epidemical&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>importunity  
+</li>
+<li>epidemical    &nbsp;&nbsp;&nbsp; 
+</li>
 <li>notoriety</li>
-<li>opportunity&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+<li>opportunity  
+</li>
 <li>falibility</li>
-<li>perpetuity&nbsp;&nbsp;&nbsp; <br></li>
+<li>perpetuity&nbsp;&nbsp;&nbsp; 
+</li>
 <li>genealogy</li>
-<li>perspicuity&nbsp;&nbsp; <br></li>
+<li>perspicuity&nbsp;&nbsp; 
+</li>
 <li>hospitality</li>
 <li>illegitimate</li>
 <li>imperceptible</li>
 <li>intellectual</li>
-<li>testimonial&nbsp;&nbsp; <br></li>
+<li>testimonial&nbsp;&nbsp; 
+</li>
 <li>introductory</li>
 <li>irresistible</li>
 <li>magnanimity</li>
-<li>alphabetical&nbsp; <br></li>
+<li>alphabetical&nbsp; 
+</li>
 <li>metaphysical</li>
-<li>analytical&nbsp;&nbsp;&nbsp; <br></li>
+<li>analytical&nbsp;&nbsp;&nbsp; 
+</li>
 <li>monosyllable</li>
 <li>argumentative</li>
-<li>plausibility <br></li></ol></section>
+<li>plausibility 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4027,7 +4521,57 @@ function zztop(){
 
  
 		<div id="answer89" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><br>&nbsp;&nbsp; 1.&nbsp; I have got to go.<br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I've gotta go.</span><br>&nbsp;&nbsp; 2.&nbsp; I have got a book.<br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I've gotta book. </span><br>&nbsp;&nbsp; 3.&nbsp; Do you want to dance? <br><span style="font-style: italic;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Wanna dance? </span><br>&nbsp;&nbsp; 4.&nbsp; Do you want a banana?<br><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Wanna banana?</span><br>&nbsp;&nbsp; 5.&nbsp; Let me in.<br><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Lemme in.</span><br>&nbsp;&nbsp; 6.&nbsp; Let me go.<br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lemme go.</span><br>&nbsp;&nbsp; 7.&nbsp; I'll let you know.<br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I letcha know </span><br>&nbsp;&nbsp; 8.&nbsp; Did you do it? <br><span style="font-style: italic;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Dija do it?&nbsp; (or Diju)</span><br>&nbsp;&nbsp; 9.&nbsp; Not yet. <br><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Nä chet.</span><br>&nbsp;&nbsp; 10. I'll meet you later. <br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I'll meechu layder. </span><br>&nbsp;&nbsp; 11. What do you think? <br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Whacha think? </span><br>&nbsp;&nbsp; 12. What did you do with it? <br><span style="font-style: italic;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Whaju do with it? </span><br>&nbsp;&nbsp; 13. How did you like it? <br><span style="font-style: italic;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Howja like it? </span><br>&nbsp;&nbsp; 14. When did you get it? <br><span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Whenja geddit? </span><br>&nbsp;&nbsp; 15. Why did you take it?<br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wyju tay kit? </span><br>&nbsp;&nbsp; 16. Why don't you try it? <br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Why-n-cha try it? </span><br>&nbsp;&nbsp; 17. What are you waiting for? <br><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Whaddya waitin' for?</span><br><br><br><span style="font-weight: bold;">Tongue Twister</span><br><br>Brim brings Ben's broom. Ben brings Brim's broom.<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>26.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Mary had a Little Lamb</span><br><br>Mary had a little lamb,<br>&nbsp;&nbsp; &nbsp;His fleece was white as snow,<br>And everywhere that Mary went,<br>&nbsp;&nbsp; &nbsp;The lamb was sure to go.<br><br>He followed her to school one day,<br>&nbsp;&nbsp; &nbsp;Which was against the rule,<br>It made the children laugh and play<br>&nbsp;&nbsp; &nbsp;To see a lamb at school.<br><br><br>27.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Woman Who Lived in a Shoe</span><br><br>There was an old woman who lived in a shoe.<br>She had so many children, she didn't know what to do;<br>She gave them some broth without any bread;<br>Then sang them a song and put them to bed.<br><br><br>28. <span style="font-style: italic;">To Market</span><br><br>To market, to market, to buy a fat pig,<br>&nbsp;&nbsp; &nbsp;Home again, home again, jiggety-jig.<br>To market, to market, to buy a fat hog,<br>&nbsp;&nbsp; &nbsp;Home again, home again, jiggety-jog.<br><br></section>
+		   <section>
+&nbsp;&nbsp; 1.&nbsp; I have got to go.
+<span style="font-style: italic;"> &nbsp;&nbsp; I've gotta go.</span>
+&nbsp;&nbsp; 2.&nbsp; I have got a book.
+<span style="font-style: italic;"> &nbsp;&nbsp; I've gotta book. </span>
+&nbsp;&nbsp; 3.&nbsp; Do you want to dance? 
+<span style="font-style: italic;">&nbsp;   Wanna dance? </span>
+&nbsp;&nbsp; 4.&nbsp; Do you want a banana?
+<span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Wanna banana?</span>
+&nbsp;&nbsp; 5.&nbsp; Let me in.
+<span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Lemme in.</span>
+&nbsp;&nbsp; 6.&nbsp; Let me go.
+<span style="font-style: italic;"> &nbsp;&nbsp; Lemme go.</span>
+&nbsp;&nbsp; 7.&nbsp; I'll let you know.
+<span style="font-style: italic;"> &nbsp;&nbsp; I letcha know </span>
+&nbsp;&nbsp; 8.&nbsp; Did you do it? 
+<span style="font-style: italic;">&nbsp;   Dija do it?&nbsp; (or Diju)</span>
+&nbsp;&nbsp; 9.&nbsp; Not yet. 
+<span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Nä chet.</span>
+&nbsp;&nbsp; 10. I'll meet you later. 
+<span style="font-style: italic;"> &nbsp; I'll meechu layder. </span>
+&nbsp;&nbsp; 11. What do you think? 
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Whacha think? </span>
+&nbsp;&nbsp; 12. What did you do with it? 
+<span style="font-style: italic;">&nbsp;   Whaju do with it? </span>
+&nbsp;&nbsp; 13. How did you like it? 
+<span style="font-style: italic;">&nbsp;   Howja like it? </span>
+&nbsp;&nbsp; 14. When did you get it? 
+<span style="font-style: italic;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Whenja geddit? </span>
+&nbsp;&nbsp; 15. Why did you take it?
+<span style="font-style: italic;"> &nbsp;&nbsp; Wyju tay kit? </span>
+&nbsp;&nbsp; 16. Why don't you try it? 
+<span style="font-style: italic;"> &nbsp;&nbsp; Why-n-cha try it? </span>
+&nbsp;&nbsp; 17. What are you waiting for? 
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Whaddya waitin' for?</span><p></p><p>
+<span style="font-weight: bold;">Tongue Twister</span></p><p>Brim brings Ben's broom. Ben brings Brim's broom.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>26.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Mary had a Little Lamb</span></p><p>Mary had a little lamb,
+&nbsp;&nbsp; &nbsp;His fleece was white as snow,
+And everywhere that Mary went,
+&nbsp;&nbsp; &nbsp;The lamb was sure to go.</p><p>He followed her to school one day,
+&nbsp;&nbsp; &nbsp;Which was against the rule,
+It made the children laugh and play
+&nbsp;&nbsp; &nbsp;To see a lamb at school.</p><p>
+27.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Woman Who Lived in a Shoe</span></p><p>There was an old woman who lived in a shoe.
+She had so many children, she didn't know what to do;
+She gave them some broth without any bread;
+Then sang them a song and put them to bed.</p><p>
+28. <span style="font-style: italic;">To Market</span></p><p>To market, to market, to buy a fat pig,
+&nbsp;&nbsp; &nbsp;Home again, home again, jiggety-jig.
+To market, to market, to buy a fat hog,
+&nbsp;&nbsp; &nbsp;Home again, home again, jiggety-jog.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4045,8 +4589,9 @@ function zztop(){
   Close all sections
 </button>     
     
-    </details>
-    <details class="chapterSection"><summary class="chapterSectSumry">Chapter Fourteen</summary>
+</div></div>
+    <div class="chapterSection"><div class="chapterSectSumry" id="ch14" onclick="toggleChapter('chBody14')">Chapter Fourteen</div>
+<div class="chapterBody" id="chBody14" style="display:none;">
         
 <button class="showBtn" onclick="showAnswers('answer');">
   Open all sections
@@ -4086,7 +4631,7 @@ function zztop(){
 <li>sideways</li>
 <li>suppress</li>
 <li>anniversary</li>
-<li><style type="text/css">p { line-height: 120%; margin-bottom:1in; background: transparent }</style></li></ol></section>
+<li></li></ol></section>
 		</div>
 
 
@@ -4109,14 +4654,14 @@ function zztop(){
 		<div id="answer91" class="answer" data-idx="1" contenteditable="false" style="display: none;">
 		   <section>
 <a class="sentQuiz" href="prncSentencesQuizzes.html#set14" target="_blank">Go to Vocabulary Quiz: Set 14</a>
-<ol>
+<menu>
 <li>After the inaugural ceremony, many diplomats attended the President and First Lady's 40th anniversary party.</li>
 <li>Oxygen is a very precious thing. Without this particular element, we would all die.</li>
 <li>The captain had sympathy for the soldiers and accepted their surrender.</li>
 <li>The substance found at the crime scene turned out to be blood.</li>
 <li>It is hard to suppress a sideways glance when people next to you are being loud and rude.</li>
 <li>After the hardship of many days without food, the relief helicopter finally dropped them a crate full of provisions—food, blankets and clothing.</li>
-<li>The original Coca Cola had cocaine as one of its ingredients. No wonder there were so many satisfied customers.</li></ol></section>
+<li>The original Coca Cola had cocaine as one of its ingredients. No wonder there were so many satisfied customers.</li></menu></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4152,29 +4697,43 @@ function zztop(){
 
  
 		<div id="answer93" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><span style="font-weight: bold;"><br>Word Patterns List 13&nbsp;&nbsp; &nbsp;-al&nbsp; &nbsp;</span><br><ol>
-<li>additional &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
+		   <section><span style="font-weight: bold;">
+Word Patterns List 13&nbsp;&nbsp; &nbsp;-al&nbsp; &nbsp;</span>
+<ol>
+<li>additional   
+</li>
 <li>exceptional</li>
-<li>medical&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>national&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>occasional &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>personal&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>seasonal&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>sensational &nbsp;<br></li></ol><span style="font-weight: bold;">Word Patterns List 14&nbsp;&nbsp; &nbsp;-ic </span><br><ol>
+<li>medical&nbsp;&nbsp;&nbsp;   
+</li>
+<li>national&nbsp;&nbsp;   
+</li>
+<li>occasional   
+</li>
+<li>personal&nbsp;&nbsp;   
+</li>
+<li>seasonal&nbsp;&nbsp;   
+</li>
+<li>sensational &nbsp;
+</li></ol><span style="font-weight: bold;">Word Patterns List 14&nbsp;&nbsp; &nbsp;-ic </span>
+<ol>
 <li>acidic</li>
 <li>allergic</li>
 <li>analytic</li>
 <li>dramatic</li>
 <li>energetic</li>
-<li>horrific&nbsp;&nbsp;&nbsp; <br></li>
+<li>horrific&nbsp;&nbsp;&nbsp; 
+</li>
 <li>scientific</li>
-<li>terrific&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>photographic</li></ol><span style="font-weight: bold;">Word Patterns List 15&nbsp;&nbsp; &nbsp;-ary</span><br><ol>
+<li>terrific   &nbsp; 
+</li>
+<li>photographic</li></ol><span style="font-weight: bold;">Word Patterns List 15&nbsp;&nbsp; &nbsp;-ary</span>
+<ol>
 <li>dictionary</li>
 <li>missionary</li>
 <li>necessary</li>
 <li>revolutionary</li>
-<li>stationary</li></ol><br></section>
+<li>stationary</li></ol>
+</section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4197,11 +4756,16 @@ function zztop(){
 		   <section>
 
 <ol>
-<li>edification&nbsp; <br></li>
-<li>amplification&nbsp;&nbsp; <br></li>
-<li>association&nbsp;&nbsp;&nbsp; <br></li>
-<li>qualification&nbsp;&nbsp;&nbsp;&nbsp; <br></li>
-<li>multiplication <br></li></ol></section>
+<li>edification&nbsp; 
+</li>
+<li>amplification&nbsp;&nbsp; 
+</li>
+<li>association&nbsp;&nbsp;&nbsp; 
+</li>
+<li>qualification  
+</li>
+<li>multiplication 
+</li></ol></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4221,7 +4785,28 @@ function zztop(){
 
  
 		<div id="answer95" class="answer" data-idx="1" contenteditable="false" style="display: none;">
-		   <section><span style="font-weight: bold;">Tongue Twister</span><br><br>Through three cheese trees three free fleas flew.<br><br><br><span style="font-weight: bold;">Rhymes<br><br></span>29.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Rub a dub</span><br><br>Rub a dub dub<br>&nbsp;&nbsp; &nbsp;Three men in a tub<br>The butcher, the baker,<br>&nbsp;&nbsp; &nbsp;the candlestick maker.<br><br><br>30.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Woman Under the Hill</span><br><br>There was an old woman <br>&nbsp;&nbsp; &nbsp;who lived under the hill,<br>And if she's not gone, <br>&nbsp;&nbsp; &nbsp;she lives there still.<br>She sold baked apples<br>&nbsp;&nbsp; &nbsp;and cranberry pies,<br>And she is the old woman <br>&nbsp;&nbsp; &nbsp;that never told lies<br><br>31.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Grand Old Duke of York</span><br><br>The grand old Duke of York,<br>&nbsp;&nbsp; &nbsp;He had ten thousand men;<br>He marched them up <br>&nbsp;&nbsp; &nbsp;to the top of the hill,<br>And he marched them down again.<br><br>And when they were up, <br>&nbsp;&nbsp; &nbsp;they were up,<br>And when they were down, <br>&nbsp;&nbsp; &nbsp;they were down,<br>And when they were only half-way up,<br>&nbsp;&nbsp; &nbsp;They were neither up nor down.<br><br></section>
+		   <section><span style="font-weight: bold;">Tongue Twister</span><p></p><p>Through three cheese trees three free fleas flew.</p><p>
+<span style="font-weight: bold;">Rhymes</span></p><p>29.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Rub a dub</span></p><p>Rub a dub dub
+&nbsp;&nbsp; &nbsp;Three men in a tub
+The butcher, the baker,
+&nbsp;&nbsp; &nbsp;the candlestick maker.</p><p>
+30.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Old Woman Under the Hill</span></p><p>There was an old woman 
+&nbsp;&nbsp; &nbsp;who lived under the hill,
+And if she's not gone, 
+&nbsp;&nbsp; &nbsp;she lives there still.
+She sold baked apples
+&nbsp;&nbsp; &nbsp;and cranberry pies,
+And she is the old woman 
+&nbsp;&nbsp; &nbsp;that never told lies</p><p>31.&nbsp;&nbsp; &nbsp;<span style="font-style: italic;">Grand Old Duke of York</span></p><p>The grand old Duke of York,
+&nbsp;&nbsp; &nbsp;He had ten thousand men;
+He marched them up 
+&nbsp;&nbsp; &nbsp;to the top of the hill,
+And he marched them down again.</p><p>And when they were up, 
+&nbsp;&nbsp; &nbsp;they were up,
+And when they were down, 
+&nbsp;&nbsp; &nbsp;they were down,
+And when they were only half-way up,
+&nbsp;&nbsp; &nbsp;They were neither up nor down.</p><p></p></section>
 		</div>
 
         <!--div class="biuCode" style="margin:1ex 0 1ex 0;">
@@ -4239,7 +4824,7 @@ function zztop(){
   Close all sections
 </button>     
        
-    </details>
+</div></div>
 <button class="showBtn" onclick="openAllDetails();showAnswers('answer');">
   Study Mode (full page view)
 </button>
@@ -4310,6 +4895,35 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
         } //end if...else
     } //end if toggleTextStatus
 } //end toggleText()
+
+
+function toggleChapter(bodyId) {
+    // Close all other chapters first
+    document.querySelectorAll(".chapterBody").forEach(function(el) {
+        if (el.id !== bodyId) {
+            el.style.display = "none";
+        }
+    });
+
+    // Toggle the clicked chapter
+    let body = document.getElementById(bodyId);
+    let navNum = bodyId.replace("chBody", "");
+    let navLink = document.getElementById("nav" + navNum);
+
+    if (body.style.display === "none") {
+        body.style.display = "block";
+        // Highlight active nav link
+        document.querySelectorAll("#chapterNav a").forEach(a => a.classList.remove("active"));
+        if (navLink) navLink.classList.add("active");
+        // Navigate to header anchor
+        let headerId = bodyId.replace("chBody", "ch");
+        window.location.hash = headerId;
+    } else {
+        body.style.display = "none";
+        // Remove active highlight
+        if (navLink) navLink.classList.remove("active");
+    }
+} //end toggleChapter()
 </script>
 
 </div>
@@ -4474,7 +5088,16 @@ showAnswer.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "s
 
 // here we are setting up for the save as study mode
            
-        
+        // One-time cleanup helper
+document.querySelectorAll('.answer').forEach(answer => {
+    answer.innerHTML = answer.innerHTML
+        .replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g, ' ')
+        .replace(/<br>\s*<br>/g, '</p><p>')
+        .replace(/<br>/g, '\n');
+});
+
+
+
     toggleEditOff(); //preview
     document.getElementById("toggleTextStatus").innerHTML = "on";
     toggleTextStatus = "on"; console.log(toggleTextStatus);
@@ -4966,7 +5589,43 @@ function replaceNlines() {
 
 <!-- ======== //end Toggle/Close Disclosure/Details Widgets =============== -->
     
-    
+<script>
+function convertLongOls() {
+  document.querySelectorAll('ol').forEach(ol => {
+    // Get the first DIRECT <li> child
+    const firstLi = ol.querySelector(':scope > li');
+    if (!firstLi) return;
+
+    // textCount includes NBSP (\u00A0) as 1 character
+    if (firstLi.textContent.length > 20) {
+      console.log(`✅ Converted OL (length: ${firstLi.textContent.length})`);
+
+      const newDiv = document.createElement('menu');
+
+      // Copy all attributes (id, class, style, data-*, etc.)
+      Array.from(ol.attributes).forEach(attr => {
+        newDiv.setAttribute(attr.name, attr.value);
+      });
+
+      // Move children from <ol> to <div>
+      while (ol.firstChild) {
+        newDiv.appendChild(ol.firstChild);
+      }
+
+      // Replace <ol> with <div> in the DOM
+      ol.replaceWith(newDiv);
+    }
+  });
+}
+
+// Run after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', convertLongOls);
+} else {
+  convertLongOls();
+}
+
+</script>
     
     
 <footer style="margin:4em; display: block;">     
@@ -4978,5 +5637,6 @@ function replaceNlines() {
 
 
 </div>
+
 
 </body></html>
