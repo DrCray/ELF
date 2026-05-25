@@ -63,6 +63,14 @@
         background: #c8e6c9;
         width:fit-content;
     }
+
+    .studentSubmission { display:block; background: lightblue; padding:1.5rem; margin:1.5rem; color: red;}
+
+    .studentName, .studentID, .printPDF {
+       line-height: 1.5;
+    }
+
+    footer { margin-top:8rem; }
 </style>
 </head>
 
@@ -266,6 +274,38 @@ Study Mode
 </select>
 , but it wasn’t actually very good.</p>
 </div>
+
+<div class="studentSubmission"><p>Name and ID required for Print/Save as PDF</p>
+  <input type="text" placeholder="Name" id="studentName">
+  <input type="text" placeholder="ID" id="studentID"><br>
+  <button id="printPDF" disabled>Print/Save as PDF</button>
+</div>
+
+<footer>...</footer>
+
+
+
+<script>
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentID');
+  const printBtn = document.getElementById('printPDF');
+
+  function updateButtonState() {
+    const nameOk = nameInput.value.trim().length >= 2;
+    const idOk = idInput.value.trim().length >= 2;
+    printBtn.disabled = !(nameOk && idOk);
+  }
+
+  nameInput.addEventListener('input', updateButtonState);
+  idInput.addEventListener('input', updateButtonState);
+
+  printBtn.addEventListener('click', () => {
+    if (printBtn.disabled) return;
+    window.print();
+  });
+
+  updateButtonState();
+</script>
 
 
 <script>
