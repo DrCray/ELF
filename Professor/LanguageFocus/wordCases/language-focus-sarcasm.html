@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus – English Sarcasm</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #18120e;
+    --paper:       #faf7f2;
+    --cream:       #f0e9d8;
+    --rule:        #ddd0b8;
+    --gold:        #b8820a;
+    --gold-light:  #f5e4a8;
+    --slate:       #2c3e50;
+    --slate-light: #c8d8e8;
+    --red:         #9b2335;
+    --red-light:   #f5c8ce;
+    --green:       #3a6e3a;
+    --green-light: #d4ecd4;
+    --muted:       #7a6a52;
+    --shadow:      0 2px 14px rgba(24,18,14,.10), 0 1px 4px rgba(24,18,14,.07);
+    --r:           5px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16.5px;
+    line-height: 1.72;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 27px,
+      var(--rule) 27px, var(--rule) 28px
+    );
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-bottom: 64px;
+  }
+
+  #prog {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: var(--gold);
+    z-index: 200;
+    transition: width .1s linear;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 30px 22px 24px;
+    border-bottom: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '😑';
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 4.5rem;
+    opacity: .07;
+    pointer-events: none;
+  }
+
+  .hdr-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.7rem, 5.5vw, 2.4rem);
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  header h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-light);
+  }
+
+  header p {
+    font-size: 0.87rem;
+    color: #b0a088;
+    margin-top: 7px;
+    font-style: italic;
+  }
+
+  /* ══ SHARED DISCLOSURE STYLES ══ */
+  details {
+    margin: 20px 14px 0;
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: up .5s ease both;
+  }
+
+  details:nth-of-type(2) { animation-delay: .08s; }
+  details:nth-of-type(3) { animation-delay: .16s; }
+
+  /* ══ PART 1 — light card with always-visible paragraph ══ */
+  details.part1 > summary {
+    background: #fff;
+    color: var(--ink);
+    border-left: 5px solid var(--gold);
+    padding: 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    display: block; /* override flex so inner layout controls itself */
+  }
+
+  details.part1 > summary::-webkit-details-marker { display: none; }
+
+  .sum1-always {
+    padding: 18px 18px 14px;
+  }
+
+  .part-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .sum1-always h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 9px;
+  }
+
+  .sum1-always p {
+    font-size: 0.93rem;
+    color: #3a2e20;
+    line-height: 1.65;
+  }
+
+  .sum1-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px 11px;
+    border-top: 1px dashed var(--rule);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.71rem;
+    letter-spacing: .07em;
+    color: var(--gold);
+  }
+
+  .sum1-toggle svg {
+    width: 14px; height: 14px;
+    transition: transform .28s ease;
+    flex-shrink: 0;
+  }
+
+  details.part1[open] .sum1-toggle svg { transform: rotate(180deg); }
+  details.part1[open] > summary { border-bottom: 2px solid var(--gold-light); }
+
+  .part1-body {
+    background: #fff;
+    padding: 14px 18px 20px;
+    border-left: 5px solid var(--gold);
+    border-top: 1px solid var(--cream);
+  }
+
+  .part1-body p {
+    font-size: 0.93rem;
+    color: #3a2e20;
+    margin-bottom: 10px;
+    line-height: 1.65;
+  }
+
+  .part1-body p:last-child { margin-bottom: 0; }
+
+  .callout {
+    background: var(--cream);
+    border-radius: var(--r);
+    padding: 11px 14px;
+    font-size: 0.88rem;
+    color: #5a4020;
+    margin-top: 8px;
+    border-left: 3px solid var(--gold);
+    line-height: 1.6;
+  }
+
+  .callout strong { color: var(--gold); }
+
+  /* ══ PARTS 2 & 3 — dark summary bars ══ */
+  details.part2 > summary,
+  details.part3 > summary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 15px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    user-select: none;
+    transition: background .2s;
+  }
+
+  details.part2 > summary::-webkit-details-marker,
+  details.part3 > summary::-webkit-details-marker { display: none; }
+
+  details.part2 > summary:hover,
+  details.part3 > summary:hover { background: #2a201a; }
+
+  details.part2[open] > summary,
+  details.part3[open] > summary { border-bottom: 3px solid var(--gold); }
+
+  .sum-icon {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .sum-text { flex: 1; }
+
+  .sum-text strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .sum-text span {
+    font-size: 0.77rem;
+    color: #a09070;
+    font-style: italic;
+  }
+
+  .sum-arrow {
+    width: 20px; height: 20px;
+    color: #a09070;
+    transition: transform .3s ease;
+    flex-shrink: 0;
+  }
+
+  details.part2[open] .sum-arrow,
+  details.part3[open] .sum-arrow { transform: rotate(180deg); }
+
+  /* ══ PART 2 body ══ */
+  .part2-body {
+    background: #f8f4ed;
+    padding: 18px 14px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .part2-intro {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Expression cards */
+  .expr-card {
+    background: #fff;
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .expr-card:nth-child(2) { border-top: 4px solid var(--gold); }
+  .expr-card:nth-child(3) { border-top: 4px solid var(--slate); }
+  .expr-card:nth-child(4) { border-top: 4px solid var(--red); }
+  .expr-card:nth-child(5) { border-top: 4px solid var(--green); }
+
+  .expr-head {
+    padding: 13px 15px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    user-select: none;
+  }
+
+  .expr-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.02rem, 3.5vw, 1.25rem);
+    font-style: italic;
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .expr-card:nth-child(2) .expr-quote { color: #7a5500; }
+  .expr-card:nth-child(3) .expr-quote { color: var(--slate); }
+  .expr-card:nth-child(4) .expr-quote { color: var(--red); }
+  .expr-card:nth-child(5) .expr-quote { color: var(--green); }
+
+  .chev {
+    width: 17px; height: 17px;
+    color: #bbb; flex-shrink: 0;
+    margin-top: 4px;
+    transition: transform .26s ease;
+  }
+
+  .expr-head.open .chev { transform: rotate(180deg); }
+
+  .expr-body {
+    display: none;
+    padding: 0 15px 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .expr-body.open { display: block; animation: fadein .25s ease; }
+
+  .meaning-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 12px;
+    margin-bottom: 10px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: .06em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .expr-card:nth-child(2) .pill { background: var(--gold-light);  color: #6a4000; }
+  .expr-card:nth-child(3) .pill { background: var(--slate-light); color: #1a2c3a; }
+  .expr-card:nth-child(4) .pill { background: var(--red-light);   color: #6b0f1e; }
+  .expr-card:nth-child(5) .pill { background: var(--green-light); color: #1a4a1a; }
+
+  .meaning-text {
+    font-size: 0.9rem;
+    color: #3a2e20;
+    line-height: 1.55;
+  }
+
+  .delivery-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    padding: 7px 12px;
+    border-left: 2px solid var(--rule);
+    margin-bottom: 13px;
+    line-height: 1.5;
+  }
+
+  .ex-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+
+  .ex-sentences {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ex-sent {
+    font-size: 0.9rem;
+    line-height: 1.58;
+    padding: 9px 12px;
+    background: var(--paper);
+    border-radius: var(--r);
+    color: #2e2216;
+  }
+
+  .expr-card:nth-child(2) .ex-sent { border-left: 3px solid var(--gold); }
+  .expr-card:nth-child(3) .ex-sent { border-left: 3px solid var(--slate); }
+  .expr-card:nth-child(4) .ex-sent { border-left: 3px solid var(--red); }
+  .expr-card:nth-child(5) .ex-sent { border-left: 3px solid var(--green); }
+
+  .ex-sent em { font-style: italic; color: #4a3a22; }
+
+  .key-phrase {
+    font-style: italic;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .expr-card:nth-child(2) .key-phrase { background: var(--gold-light); }
+  .expr-card:nth-child(3) .key-phrase { background: var(--slate-light); }
+  .expr-card:nth-child(4) .key-phrase { background: var(--red-light); }
+  .expr-card:nth-child(5) .key-phrase { background: var(--green-light); }
+
+  /* ══ PART 3 body ══ */
+  .examples-panel {
+    background: #211810;
+    padding: 22px 14px 28px;
+  }
+
+  .panel-intro {
+    font-size: 0.87rem;
+    color: #b0a080;
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #3a2c1e;
+    line-height: 1.6;
+  }
+
+  .ex-group { margin-bottom: 26px; }
+  .ex-group:last-child { margin-bottom: 0; }
+
+  .group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .group-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: .25;
+  }
+
+  .ex-group:nth-child(1) .group-label { color: var(--gold-light); }
+  .ex-group:nth-child(2) .group-label { color: #8ecae6; }
+  .ex-group:nth-child(3) .group-label { color: #f4a0aa; }
+
+  .ex-item {
+    background: #2e221a;
+    border-radius: var(--r);
+    padding: 12px 13px 13px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+    transition: border-color .2s;
+  }
+
+  .ex-item:last-child { margin-bottom: 0; }
+
+  .ex-group:nth-child(1) .ex-item { border-left-color: #c9860a44; }
+  .ex-group:nth-child(2) .ex-item { border-left-color: #2a6a8044; }
+  .ex-group:nth-child(3) .ex-item { border-left-color: #8b223444; }
+
+  .ex-group:nth-child(1) .ex-item:hover { border-left-color: var(--gold); }
+  .ex-group:nth-child(2) .ex-item:hover { border-left-color: #8ecae6; }
+  .ex-group:nth-child(3) .ex-item:hover { border-left-color: #f4a0aa; }
+
+  .ex-scene {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 5px;
+  }
+
+  .ex-context {
+    font-size: 0.84rem;
+    color: #c0a880;
+    font-style: italic;
+    margin-bottom: 7px;
+    line-height: 1.5;
+  }
+
+  .ex-line {
+    font-size: 0.93rem;
+    color: #ede0c8;
+    line-height: 1.6;
+  }
+
+  .sarcastic-phrase {
+    font-style: italic;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(201,134,10,.22);
+    border-radius: 2px;
+    padding: 0 3px;
+  }
+
+  .ex-group:nth-child(2) .sarcastic-phrase { background: rgba(142,202,230,.18); }
+  .ex-group:nth-child(3) .sarcastic-phrase { background: rgba(244,160,170,.18); }
+
+  .real-meaning {
+    margin-top: 7px;
+    font-size: 0.78rem;
+    color: gold;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    line-height: 1.45;
+  }
+
+  .real-meaning::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .ex-group:nth-child(2) .real-meaning::before { color: #8ecae6; }
+  .ex-group:nth-child(3) .real-meaning::before { color: #f4a0aa; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: #b0a080;
+    letter-spacing: .1em;
+    padding: 0 16px;
+  }
+
+  @keyframes up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @media (max-width: 460px) {
+    details { margin-left: 8px; margin-right: 8px; }
+  }
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="page">
+
+<!-- ══ HEADER ══ -->
+<header>
+  <span class="hdr-label">Language Focus · Spoken English</span>
+  <h1>The Art of <em>Sarcasm</em></h1>
+  <p>Informal English — B1–B2 · Movies, TV &amp; Daily Life</p>
+</header>
+
+<!-- ══ PART 1 ══ -->
+<details class="part1">
+  <summary>
+    <div class="sum1-always">
+      <span class="part-label">Part 1 — Understanding Sarcasm</span>
+      <h2>What is sarcasm?</h2>
+      <p>Sarcasm is when someone says the <strong>opposite of what they really mean</strong> — usually to express frustration, disbelief, or dry humour. The words sound positive or neutral, but the real message is negative or critical. In English, sarcasm is extremely common — at work, among friends, and especially in movies and TV.</p>
+    </div>
+    <div class="sum1-toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <span>More about sarcasm — tone, usage &amp; caution</span>
+    </div>
+  </summary>
+  <div class="part1-body">
+    <p>The key is <strong>tone of voice</strong>. A sarcastic comment is usually delivered slowly, flatly, or with exaggerated emphasis. The speaker's face often stays neutral or completely expressionless — the bigger the contrast between the words and the delivery, the sharper the sarcasm. In written English or subtitles, you need context to recognise it.</p>
+    <p>Sarcasm is also highly cultural. It is especially common in British and American English, where understatement and irony are valued forms of humour. In other cultures, the same comment might sound confusing, rude, or simply strange.</p>
+    <p>You will hear sarcasm constantly in TV shows like <em>The Office</em>, <em>Friends</em>, <em>Succession</em>, and <em>Ted Lasso</em> — often used between colleagues or close friends to signal shared frustration or shared humour.</p>
+    <div class="callout">
+      <strong>A word of caution:</strong> Sarcasm between people who know each other well is usually friendly and funny. But used with the wrong person — a new colleague, a customer, or someone who is genuinely upset — it can easily sound dismissive or rude. Always read the room before using it yourself.
+    </div>
+  </div>
+</details>
+
+<!-- ══ PART 2 ══ -->
+<details class="part2">
+  <summary>
+    <div class="sum-icon">🎯</div>
+    <div class="sum-text">
+      <strong>Part 2 — Four Key Expressions</strong>
+      <span>Meaning, delivery tips &amp; example sentences · tap to open</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+
+  <div class="part2-body">
+    <p class="part2-intro">Each expression includes its meaning, a tip on how to deliver it, and three example sentences showing it used naturally in sarcastic context.</p>
+
+    <!-- 1: Brilliant -->
+    <div class="expr-card">
+      <div class="expr-head" onclick="toggleExpr(this)">
+        <div class="expr-quote">"Brilliant."</div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="expr-body">
+        <div class="meaning-row">
+          <span class="pill">dry sarcasm</span>
+          <p class="meaning-text">Said flatly after something goes wrong or a bad decision is made. One word does all the work. Literal meaning: excellent. Sarcastic meaning: <em>this is a disaster.</em></p>
+        </div>
+        <p class="delivery-note">Delivery tip: Say it slowly with a completely flat, falling tone. No smile, no energy. The more deadpan, the sharper the sarcasm.</p>
+        <p class="ex-label">Example Sentences</p>
+        <div class="ex-sentences">
+          <div class="ex-sent">The server crashed five minutes before the big presentation. Dan stared at the screen and said quietly: <span class="key-phrase">"Brilliant."</span></div>
+          <div class="ex-sent">You locked your keys in the car on the coldest day of the year — and your friend who warned you not to rush looks at you and says: <span class="key-phrase">"Brilliant. Absolutely brilliant."</span></div>
+          <div class="ex-sent">The team spent three weeks on a report, then sent the wrong version to the client. The manager closed her laptop and said flatly: <span class="key-phrase">"Brilliant."</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: And how's that working out -->
+    <div class="expr-card">
+      <div class="expr-head" onclick="toggleExpr(this)">
+        <div class="expr-quote">"And how's that working out for you?"</div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="expr-body">
+        <div class="meaning-row">
+          <span class="pill">rhetorical / sarcastic</span>
+          <p class="meaning-text">Said when someone is following a plan or habit that is clearly failing. The speaker already knows the answer is "not well." The question points out the obvious without stating it directly.</p>
+        </div>
+        <p class="delivery-note">Delivery tip: Slow and deliberate. Slight rise in pitch on "working." Raised eyebrows help. Don't wait for an answer.</p>
+        <p class="ex-label">Example Sentences</p>
+        <div class="ex-sentences">
+          <div class="ex-sent">He's been skipping every lecture and studying only the night before exams — and failing them all. His classmate looks at his latest grade and asks: <span class="key-phrase">"And how's that working out for you?"</span></div>
+          <div class="ex-sent">She's been replying to work emails at midnight every night and is now completely burnt out. Her colleague raises an eyebrow: <span class="key-phrase">"So… how's that working out for you?"</span></div>
+          <div class="ex-sent">He insisted on fixing the office Wi-Fi himself instead of calling IT. Now nothing works at all. His officemate glances over and says: <span class="key-phrase">"And how's that working out for you?"</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: Oh great just what I needed -->
+    <div class="expr-card">
+      <div class="expr-head" onclick="toggleExpr(this)">
+        <div class="expr-quote">"Oh great. Just what I needed."</div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="expr-body">
+        <div class="meaning-row">
+          <span class="pill">frustrated sarcasm</span>
+          <p class="meaning-text">Said when another problem arrives in an already bad situation. "Great" and "needed" are both ironic — the speaker means the exact opposite. Often said quietly, almost to oneself.</p>
+        </div>
+        <p class="delivery-note">Delivery tip: Slow, weary, drawn-out tone on "great." A tired pause before "just what I needed" adds weight to the frustration.</p>
+        <p class="ex-label">Example Sentences</p>
+        <div class="ex-sentences">
+          <div class="ex-sent">You're already late, stuck in traffic, and your phone battery just hit 2%. You mutter to yourself: <span class="key-phrase">"Oh great. Just what I needed."</span></div>
+          <div class="ex-sent">The week before final exams, the university portal goes down and no one can access their materials. Someone in the library groans: <span class="key-phrase">"Oh great. Just what I needed right now."</span></div>
+          <div class="ex-sent">In the middle of a busy lunch service, the kitchen printer breaks down. The chef stares at it and says flatly: <span class="key-phrase">"Great. Just what I needed."</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: I'm shocked. Truly shocked. -->
+    <div class="expr-card">
+      <div class="expr-head" onclick="toggleExpr(this)">
+        <div class="expr-quote">"I'm shocked. Truly shocked."</div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="expr-body">
+        <div class="meaning-row">
+          <span class="pill">deadpan / dry humour</span>
+          <p class="meaning-text">Used when something completely predictable happens and you are, of course, not shocked at all. "Truly" pushes the sarcasm further. Implies: <em>"Anyone could have seen this coming."</em></p>
+        </div>
+        <p class="delivery-note">Delivery tip: Completely deadpan. Flat voice, zero expression on your face. Say it slowly, almost robotically. The emptier, the funnier.</p>
+        <p class="ex-label">Example Sentences</p>
+        <div class="ex-sentences">
+          <div class="ex-sent">The colleague who never meets deadlines has missed another one. Nobody is surprised. Someone in the office says: <span class="key-phrase">"I'm shocked. Truly shocked."</span></div>
+          <div class="ex-sent">The sequel that everyone said would be terrible just got terrible reviews. Your friend reads the score aloud and adds: <span class="key-phrase">"I'm shocked. Truly shocked. No one saw that coming."</span></div>
+          <div class="ex-sent">The overconfident team that skipped every safety check had a major equipment failure on day one. The senior engineer walks past and says dryly: <span class="key-phrase">"Shocked. Truly shocked."</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</details>
+
+<!-- ══ PART 3 ══ -->
+<details class="part3">
+  <summary>
+    <div class="sum-icon">💬</div>
+    <div class="sum-text">
+      <strong>Part 3 — Sarcasm in Context</strong>
+      <span>9 real-life examples across work, life &amp; social settings · tap to open</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+
+  <div class="examples-panel">
+    <p class="panel-intro">Each example uses a different sarcastic expression. Notice how the situation, the relationship, and the tone all shape the meaning — the words alone are never the whole story.</p>
+
+    <!-- GROUP A -->
+    <div class="ex-group">
+      <p class="group-label">At Work</p>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scene · Post-meeting email</p>
+        <p class="ex-context">The team just sat through a two-hour meeting that could have been a single email. A colleague hits reply-all and writes:</p>
+        <p class="ex-line"><span class="sarcastic-phrase">"Well, that was a great use of everyone's time."</span></p>
+        <p class="real-meaning">The meeting was a complete waste of time. "Great use" is the opposite of what she means — and everyone reading it knows it.</p>
+      </div>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scene · Open-plan office</p>
+        <p class="ex-context">A colleague who's always playing games in his phone says loudly that he is "absolutely swamped" and "basically living at the office."</p>
+        <p class="ex-line">Someone replies: <span class="sarcastic-phrase">"Yeah, you look really slammed."</span></p>
+        <p class="real-meaning">He clearly isn't slammed at all. The flat tone makes the sarcasm obvious to anyone who hears it.</p>
+      </div>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scene · Performance review season</p>
+        <p class="ex-context">The company has just announced record profits. The staff bonus has been cancelled "due to budget constraints." A colleague reads the memo aloud in the break room.</p>
+        <p class="ex-line">Your coworker says: <span class="sarcastic-phrase">"Well, that makes perfect sense."</span></p>
+        <p class="real-meaning">It makes no sense at all. The calm, flat delivery makes the absurdity land harder than any angry response would.</p>
+      </div>
+    </div>
+
+    <!-- GROUP B -->
+    <div class="ex-group">
+      <p class="group-label">Everyday Life</p>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scenario · When you get an “F” on an exam.</p>
+        <p class="ex-line">Your friend says: <span class="sarcastic-phrase">Nice job, Einstein.</span></p>
+      </div>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scenario: Mark knocks over their drink and it spills on the table and into another persons lap.</p>
+        <p class="ex-line"><span class="sarcastic-phrase">Smooth move, Mark.</span></p>
+
+      </div>
+
+      <div class="ex-item">
+        <p class="ex-scene">Scenario: The boss sends out a confusing memo.</p>
+        <p class="ex-line">A coworker says: <span class="sarcastic-phrase">Well that cleared things up niecly.</span></p>
+      </div>
+    </div>
+  </div>
+</details>
+
+<footer>
+  <p>Language Focus · English Sarcasm · B1–B2 · Spoken &amp; Informal</p>
+</footer>
+
+</div>
+
+<script>
+  function toggleExpr(head) {
+    const body = head.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.expr-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.expr-head').forEach(h => h.classList.remove('open'));
+    if (!isOpen) {
+      body.classList.add('open');
+      head.classList.add('open');
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = d.scrollTop / (d.scrollHeight - d.clientHeight) * 100;
+    document.getElementById('prog').style.width = pct + '%';
+  });
+</script>
+</body>
+</html>

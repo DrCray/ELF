@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Focus – The Word "Table"</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:          #1a1209;
+    --paper:        #faf6ef;
+    --cream:        #f2ead8;
+    --rule:         #d4c5a9;
+    --amber:        #c9860a;
+    --amber-light:  #f5d78e;
+    --teal:         #1d7a72;
+    --teal-light:   #c2e8e5;
+    --rose:         #b03a2e;
+    --rose-light:   #f5ccc8;
+    --shadow:       0 2px 12px rgba(26,18,9,.10), 0 1px 3px rgba(26,18,9,.07);
+    --r:            5px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.72;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 27px,
+      var(--rule) 27px, var(--rule) 28px
+    );
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding-bottom: 64px;
+  }
+
+  /* Progress bar */
+  #progress {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: var(--amber);
+    z-index: 200;
+    transition: width .1s linear;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 28px 24px 22px;
+    border-bottom: 4px solid var(--amber);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '🗂️';
+    position: absolute;
+    right: 18px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 4rem;
+    opacity: .06;
+    pointer-events: none;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--amber-light);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 5vw, 2.3rem);
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  header h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--amber-light);
+  }
+
+  header p {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #c9bfad;
+    margin-top: 6px;
+  }
+
+  /* ── Intro strip ── */
+  .intro {
+    margin: 24px 14px 0;
+    padding: 14px 18px;
+    background: var(--cream);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--r) var(--r) 0;
+    font-size: 0.93rem;
+    color: #5a4a30;
+    line-height: 1.65;
+  }
+
+  /* ── Shared disclosure styles ── */
+  details {
+    margin: 20px 14px 0;
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: up .45s ease both;
+  }
+
+  details:nth-of-type(2) { animation-delay: .07s; }
+  details:nth-of-type(3) { animation-delay: .14s; }
+  details:nth-of-type(4) { animation-delay: .21s; }
+
+  /* ── Dark summary bars (Parts 1–4) ── */
+  details > summary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none;
+    user-select: none;
+    transition: background .18s;
+  }
+
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary:hover { background: #2e2010; }
+  details[open] > summary { border-bottom: 3px solid var(--amber); }
+
+  .sum-icon {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    background: var(--amber);
+  }
+
+  /* teal icon for Part 2 UK, rose for Part 3, muted for Part 4 */
+  details:nth-of-type(2) .sum-icon { background: var(--teal); }
+  details:nth-of-type(3) .sum-icon { background: var(--rose); }
+  details:nth-of-type(4) .sum-icon { background: #5a4a30; }
+
+  details:nth-of-type(2)[open] > summary { border-bottom-color: var(--teal); }
+  details:nth-of-type(3)[open] > summary { border-bottom-color: var(--rose); }
+  details:nth-of-type(4)[open] > summary { border-bottom-color: #8a7050; }
+
+  .sum-text { flex: 1; }
+
+  .sum-text strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .sum-text span {
+    font-size: 0.76rem;
+    color: gold;
+    font-style: italic;
+  }
+
+  .sum-arrow {
+    width: 19px; height: 19px;
+    color: gold;
+    flex-shrink: 0;
+    transition: transform .28s ease;
+  }
+
+  details[open] .sum-arrow { transform: rotate(180deg); }
+
+  /* ── Part bodies — light ── */
+  .part-body {
+    background: #fff;
+    padding: 18px 18px 22px;
+    border-left: 4px solid var(--amber);
+  }
+
+  details:nth-of-type(2) .part-body { border-left-color: var(--teal); }
+  details:nth-of-type(3) .part-body { border-left-color: var(--rose); }
+  details:nth-of-type(4) .part-body { border-left-color: #8a7050; }
+
+  .part-body p {
+    font-size: 0.93rem;
+    color: #3a2e20;
+    line-height: 1.68;
+    margin-bottom: 10px;
+  }
+
+  .part-body p:last-child { margin-bottom: 0; }
+
+  /* Part label inside body */
+  .body-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  details:nth-of-type(2) .body-label { color: var(--teal); }
+  details:nth-of-type(3) .body-label { color: var(--rose); }
+  details:nth-of-type(4) .body-label { color: #8a7050; }
+
+  /* ── USA / UK comparison cards ── */
+  .compare-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+  }
+
+  .compare-card {
+    border-radius: var(--r);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(26,18,9,.07);
+  }
+
+  .compare-card .cc-head {
+    padding: 10px 14px 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .compare-card.usa .cc-head { background: var(--amber-light); }
+  .compare-card.uk  .cc-head { background: var(--teal-light); }
+
+  .flag {
+    font-size: 1.3rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .cc-head-text strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .compare-card.usa .cc-head-text strong { color: #7a5000; }
+  .compare-card.uk  .cc-head-text strong { color: #0f4a46; }
+
+  .cc-head-text em {
+    font-size: 0.82rem;
+    color: #5a4a30;
+  }
+
+  .compare-card.uk .cc-head-text em { color: #1a4a46; }
+
+  .cc-body {
+    background: var(--paper);
+    padding: 12px 14px 14px;
+  }
+
+  .cc-body p {
+    font-size: 0.88rem !important;
+    color: #3a2e20 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .ex-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .ex-list li {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #2e2010;
+    padding: 7px 11px;
+    background: #fff;
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--r) var(--r) 0;
+    line-height: 1.5;
+  }
+
+  .compare-card.uk .ex-list li { border-left-color: var(--teal); }
+
+  /* ── Danger zone callout ── */
+  .danger-box {
+    margin-top: 16px;
+    background: #fff8ee;
+    border: 1px solid var(--amber-light);
+    border-left: 4px solid var(--amber);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    color: #5a3a08;
+    line-height: 1.65;
+  }
+
+  .danger-box .dz-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* ── On/Off the table — paired cards ── */
+  .on-off-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+  }
+
+  .oo-card {
+    border-radius: var(--r);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(26,18,9,.07);
+  }
+
+  .oo-card .oo-head {
+    padding: 10px 14px 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .oo-card.on  .oo-head { background: var(--teal-light); }
+  .oo-card.off .oo-head { background: var(--rose-light); }
+
+  .oo-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: .07em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .oo-card.on  .oo-badge { background: var(--teal); color: #fff; }
+  .oo-card.off .oo-badge { background: var(--rose); color: #fff; }
+
+  .oo-head p {
+    font-size: 0.84rem !important;
+    color: #2a2a2a !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  .oo-card.on  .oo-head p { color: #0f3a36 !important; }
+  .oo-card.off .oo-head p { color: #5a1a12 !important; }
+
+  .oo-body {
+    background: var(--paper);
+    padding: 11px 14px 13px;
+  }
+
+  .oo-body .ex-list li { border-left-color: var(--teal); }
+  .oo-card.off .oo-body .ex-list li { border-left-color: var(--rose); }
+
+  /* ── Shelved recommendation box ── */
+  .shelve-box {
+    margin-top: 4px;
+    background: #fff;
+    border-radius: var(--r);
+    box-shadow: 0 1px 6px rgba(26,18,9,.07);
+    overflow: hidden;
+  }
+
+  .shelve-head {
+    background: var(--ink);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rec-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background: var(--amber);
+    color: var(--ink);
+    padding: 2px 9px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .shelve-head span {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--paper);
+  }
+
+  .shelve-body {
+    padding: 12px 14px 14px;
+    background: var(--paper);
+  }
+
+  .shelve-body p {
+    font-size: 0.88rem !important;
+    color: #3a2e20 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .tip-strip {
+    margin-top: 12px;
+    padding: 10px 13px;
+    background: var(--cream);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--r) var(--r) 0;
+    font-size: 0.86rem;
+    color: #5a4020;
+    line-height: 1.6;
+  }
+
+  .tip-strip strong { color: var(--amber); }
+
+  /* ── Additional idioms ── */
+  .idiom-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 4px;
+  }
+
+  .idiom-card {
+    background: var(--paper);
+    border-radius: var(--r);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(26,18,9,.07);
+  }
+
+  .idiom-card:nth-child(1) { border-top: 4px solid #5a4a30; }
+  .idiom-card:nth-child(2) { border-top: 4px solid #3a6e3a; }
+
+  .idiom-head {
+    padding: 12px 14px 8px;
+    background: #fff;
+  }
+
+  .idiom-phrase {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+    font-style: italic;
+    color: #5a4a30;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .idiom-card:nth-child(2) .idiom-phrase { color: #2a5a2a; }
+
+  .idiom-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: .07em;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #ede0c0;
+    color: #5a4a20;
+  }
+
+  .idiom-card:nth-child(2) .idiom-tag { background: #d4ecd4; color: #1a4a1a; }
+
+  .idiom-body {
+    padding: 10px 14px 14px;
+    background: #fff;
+    border-top: 1px solid var(--rule);
+  }
+
+  .idiom-body p {
+    font-size: 0.9rem;
+    color: #3a2e20;
+    line-height: 1.62;
+    margin-bottom: 11px;
+  }
+
+  .idiom-body .ex-list li { border-left-color: #8a7050; }
+  .idiom-card:nth-child(2) .idiom-body .ex-list li { border-left-color: #3a6e3a; }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 44px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #696969;
+    letter-spacing: .1em;
+    padding: 0 16px;
+  }
+
+  /* ── Animations ── */
+  @keyframes up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    details, .intro { margin-left: 8px; margin-right: 8px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="page">
+
+<!-- ══ HEADER ══ -->
+<header>
+  <span class="header-label">Language Focus · Business &amp; Professional English</span>
+  <h1>The Expressions <br> <em>to table, on/off the table, and shelved</em></h1>
+
+</header>
+
+<!-- ── Intro ── -->
+<div class="intro">
+  <em>To table</em> in it's verbal sense means <strong>opposite things</strong> in American and British English.
+</div>
+
+<!-- ══ PART 1 — TO TABLE (USA) ══ -->
+<details>
+  <summary>
+    <div class="sum-icon">🇺🇸</div>
+    <div class="sum-text">
+      <strong>Part 1 — "To Table" · American English</strong>
+      <span>To postpone · set aside · delay</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+  <div class="part-body">
+    <span class="body-label">American English Usage</span>
+    <p>In American English, <strong>to table</strong> something means to <strong>postpone it</strong> — to remove it from the current agenda and deal with it at a later time.</p>
+
+    <div class="compare-card usa" style="margin-top:14px;">
+      <div class="cc-head">
+        <span class="flag">🇺🇸</span>
+        <div class="cc-head-text">
+          <strong>American English</strong>
+          <em>to table = to postpone / set aside</em>
+        </div>
+      </div>
+      <div class="cc-body">
+        <ul class="ex-list">
+          <li>"We don't have enough data yet. Let's <strong>table this discussion</strong> for now."</li>
+          <li>"The committee voted to <strong>table the proposal</strong> until next quarter."</li>
+          <li>"Can we <strong>table that issue</strong>? We're running out of time."</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</details>
+
+<!-- ══ PART 2 — TO TABLE (UK) ══ -->
+<details>
+  <summary>
+    <div class="sum-icon">🇬🇧</div>
+    <div class="sum-text">
+      <strong>Part 2 — "To Table" · British English</strong>
+      <span>To bring forward · introduce for discussion · act now</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+  <div class="part-body">
+    <span class="body-label">British English Usage</span>
+    <p>In British English, <strong>to table</strong> something means to introduce it for discussion <em>right now</em>.</p>
+
+    <div class="compare-card uk" style="margin-top:14px;">
+      <div class="cc-head">
+        <span class="flag">🇬🇧</span>
+        <div class="cc-head-text">
+          <strong>British English</strong>
+          <em>to table = to bring forward / introduce now</em>
+        </div>
+      </div>
+      <div class="cc-body">
+        <ul class="ex-list">
+          <li>"The finance director has <strong>tabled a new proposal</strong> for the board to review."</li>
+          <li>"Several concerns were <strong>tabled at yesterday's meeting</strong>."</li>
+          <li>"We need to <strong>table this issue</strong> before the deadline passes."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="danger-box">
+      <span class="dz-label">⚠ The danger zone</span>
+      Imagine a British manager saying <em>"I'd like to table the budget discussion"</em> in a meeting with American colleagues. The British manager means: <em>let's deal with it right now.</em> The Americans hear: <em>we're skipping it.</em> Nobody corrects anyone. The budget never gets discussed. This happens in real international workplaces — regularly.
+    </div>
+  </div>
+</details>
+
+<!-- ══ PART 3 — ON / OFF THE TABLE ══ -->
+<details>
+  <summary>
+    <div class="sum-icon">🤝</div>
+    <div class="sum-text">
+      <strong>Part 3 — "On the Table" &amp; "Off the Table"</strong>
+      <span>Using the noun form, however, is the same in both American and British English</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+  <div class="part-body">
+    <span class="body-label">Shared Expressions · USA &amp; UK</span>
+
+    <div class="on-off-grid">
+
+      <div class="oo-card on">
+        <div class="oo-head">
+          <span class="oo-badge">on the table</span>
+          <p>available · being considered · still an option</p>
+        </div>
+        <div class="oo-body">
+          <ul class="ex-list">
+            <li>"A salary increase is <strong>on the table</strong>, but nothing has been confirmed yet."</li>
+            <li>"All options are <strong>on the table</strong> at this point — including redundancies."</li>
+            <li>"The merger is still <strong>on the table</strong> despite last week's difficulties."</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="oo-card off">
+        <div class="oo-head">
+          <span class="oo-badge">off the table</span>
+          <p>no longer an option · removed · the door is closed</p>
+        </div>
+        <div class="oo-body">
+          <ul class="ex-list">
+            <li>"After the leak to the press, the partnership deal is completely <strong>off the table</strong>."</li>
+            <li>"Remote working is <strong>off the table</strong> for new hires under the new policy."</li>
+            <li>"His offer went <strong>off the table</strong> the moment they rejected it."</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Shelved -->
+    <div style="margin-top:20px;">
+      <p style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);margin-bottom:10px;">Safe Alternative · USA &amp; UK</p>
+
+      <div class="shelve-box">
+        <div class="shelve-head">
+          <span class="rec-badge">Recommended</span>
+          <span>"to shelve" / "shelved"</span>
+        </div>
+        <div class="shelve-body">
+          <p>Because <em>to table</em> causes confusion between American and British speakers, many international professionals now use <strong>to shelve</strong> or <strong>shelved</strong> instead. It means exactly the same thing in both varieties — to postpone, set aside, or put on hold indefinitely — with zero ambiguity.</p>
+          <ul class="ex-list">
+            <li>"The project has been <strong>shelved</strong> until further funding is available."</li>
+            <li>"We've decided to <strong>shelve</strong> the idea for now — it's not the right time."</li>
+            <li>"The proposal was <strong>shelved</strong> after the CEO raised concerns."</li>
+          </ul>
+          <div class="tip-strip">
+            <strong>Tip:</strong> In international meetings or written communication, <em>shelved</em> is always the safer, clearer choice when you mean "postponed or set aside." Save <em>table</em> for contexts where you are certain which variety of English your audience uses.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</details>
+
+<!-- ══ PART 4 — ADDITIONAL IDIOMS ══ -->
+<details>
+  <summary>
+    <div class="sum-icon">📖</div>
+    <div class="sum-text">
+      <strong>Part 4 — Additional Table Idioms</strong>
+      <span>Under the table · Turn the tables</span>
+    </div>
+    <svg class="sum-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+  <div class="part-body">
+    <span class="body-label">Idioms · Both Varieties</span>
+    <p>These two idioms are used in both American and British English with the same meaning. They are common in news, business writing, and everyday conversation.</p>
+
+    <div class="idiom-cards">
+
+      <div class="idiom-card">
+        <div class="idiom-head">
+          <span class="idiom-phrase">"Under the table"</span>
+          <span class="idiom-tag">secret · unofficial · illegal</span>
+        </div>
+        <div class="idiom-body">
+          <p>Something done <em>under the table</em> is hidden from official view — usually involving money paid secretly to avoid taxes, records, or legal oversight. The image is of a handshake happening below the table where no one watching can see it.</p>
+          <ul class="ex-list">
+            <li>"He was paid <strong>under the table</strong> — no contract, no tax record, no paper trail."</li>
+            <li>"The deal was done <strong>under the table</strong> to avoid regulatory approval."</li>
+            <li>"Paying workers <strong>under the table</strong> is illegal in most countries."</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="idiom-card">
+        <div class="idiom-head">
+          <span class="idiom-phrase">"Turn the tables"</span>
+          <span class="idiom-tag">reverse a situation · gain the advantage</span>
+        </div>
+        <div class="idiom-body">
+          <p>When someone <em>turns the tables</em>, a situation that was going against them suddenly reverses — they go from losing to winning, from weak to strong, from accused to accuser. The origin is thought to come from board games, where physically rotating the table would swap each player's position.</p>
+          <ul class="ex-list">
+            <li>"The defence lawyer <strong>turned the tables</strong> by presenting evidence the prosecution hadn't expected."</li>
+            <li>"Down 2–0 at half time, the team <strong>turned the tables</strong> completely in the second half."</li>
+            <li>"She <strong>turned the tables</strong> on her critics by publishing the full data herself."</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</details>
+
+<footer>
+  <p>Language Focus · The Word "Table" · B2 · Business &amp; Professional English</p>
+</footer>
+
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = d.scrollTop / (d.scrollHeight - d.clientHeight) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+</script>
+</body>
+</html>
