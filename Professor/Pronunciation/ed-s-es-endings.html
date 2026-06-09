@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Endings Lab | -ED, -S, -ES Pronunciation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f9fc;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      color: #1a2c3e;
+      line-height: 1.5;
+      padding: 1rem;
+    }
+
+    /* mobile-first container */
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+
+    /* header & intro */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #e7edf2;
+      padding-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0b4f6c, #2c7da0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .sub {
+      font-size: 1rem;
+      color: #5e7c8c;
+      font-weight: 500;
+    }
+
+    /* instruction panel — new */
+    .instruction-card {
+      background: #eef6fa;
+      border-left: 6px solid #2c7da0;
+      border-radius: 20px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .instruction-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: #0b4f6c;
+    }
+    .instruction-title span {
+      font-size: 1.3rem;
+    }
+    .instruction-text {
+      font-size: 0.95rem;
+      color: #1f5068;
+      line-height: 1.4;
+    }
+    .instruction-example {
+      background: white;
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      color: #2c7da0;
+      border: 1px solid #cde3ec;
+    }
+
+    /* sound badges */
+    .sound-tag {
+      display: inline-block;
+      background: #eef2f5;
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      color: #1f5068;
+      margin-bottom: 0.75rem;
+    }
+
+    /* rule cards */
+    .rule-card {
+      background: #ffffff;
+      border-radius: 28px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s;
+      border: 1px solid #e2edf2;
+      overflow: hidden;
+    }
+
+    .rule-header {
+      padding: 1rem 1.2rem 0.6rem;
+      background: #ffffff;
+      border-bottom: 2px solid #f0f4f7;
+    }
+
+    .rule-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .ending {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: #1e2f3a;
+      color: white;
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .pronounce {
+      background: #fde6c9;
+      color: #b85c00;
+      font-family: monospace;
+      font-size: 0.9rem;
+      padding: 0.2rem 0.9rem;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+
+    .rule-desc {
+      padding: 0.3rem 1.2rem 0.8rem;
+      color: #4a6572;
+      font-size: 0.85rem;
+      border-bottom: 1px dashed #e9f0f3;
+    }
+
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 0.7rem;
+      padding: 1.2rem 1.2rem 1.4rem;
+    }
+
+    .word-item {
+      background: #f8fcfd;
+      border-radius: 60px;
+      padding: 0.55rem 0.2rem;
+      text-align: center;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      border: 1px solid #dee9ef;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      color: #1e4a62;
+    }
+
+    .word-item:active {
+      transform: scale(0.97);
+      background: #eaf3f8;
+    }
+
+    /* interactive speaker effect */
+    .word-item.speak-highlight {
+      background: #c3e2f0;
+      border-color: #2c7da0;
+      box-shadow: 0 2px 8px rgba(44,125,160,0.2);
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, #cfe3ec, transparent);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #8aa0ab;
+      margin-top: 1.8rem;
+      border-top: 1px solid #e2edf2;
+      padding-top: 1.2rem;
+    }
+
+    /* small screen adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem 0.9rem 1.8rem;
+      }
+      .word-grid {
+        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+        gap: 0.6rem;
+      }
+      .rule-title {
+        font-size: 1.4rem;
+      }
+      .instruction-text {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (hover: hover) {
+      .word-item:hover {
+        background: #e3f0f5;
+        border-color: #97c3d6;
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1>📘 -ED · -S · -ES</h1>
+    <div class="sub">tap any word → hear the ending sound</div>
+  </div>
+
+  <!-- INSTRUCTION BLOCK (added at the top) -->
+  <div class="instruction-card">
+    <div class="instruction-title">
+      <span>🎧</span> Repeat after your instructor (or the audio)
+    </div>
+    <div class="instruction-text">
+      First, say the <strong>base word</strong>, then say the word with its appropriate ending.<br>
+      <span class="instruction-example">✨ example: walk → walked &nbsp;&nbsp;|&nbsp;&nbsp; play → plays &nbsp;&nbsp;|&nbsp;&nbsp; watch → watches</span>
+    </div>
+  </div>
+
+  <!-- ED SECTION -->
+  <!-- ED /t/ aspirated -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-ED</span>
+        <span class="pronounce">/t/</span>
+      </div>
+      <div class="rule-desc">🔊 aspirated endings · unvoiced consonants (p, k, f, s, ʃ, tʃ ...)</div>
+    </div>
+    <div class="word-grid" data-sound-type="t">
+      <div class="word-item" data-word="walked">walked</div>
+      <div class="word-item" data-word="helped">helped</div>
+      <div class="word-item" data-word="laughed">laughed</div>
+      <div class="word-item" data-word="kissed">kissed</div>
+      <div class="word-item" data-word="watched">watched</div>
+      <div class="word-item" data-word="stopped">stopped</div>
+      <div class="word-item" data-word="jumped">jumped</div>
+      <div class="word-item" data-word="talked">talked</div>
+      <div class="word-item" data-word="fixed">fixed</div>
+      <div class="word-item" data-word="pushed">pushed</div>
+      <div class="word-item" data-word="washed">washed</div>
+      <div class="word-item" data-word="danced">danced</div>
+      <div class="word-item" data-word="mixed">mixed</div>
+      <div class="word-item" data-word="locked">locked</div>
+      <div class="word-item" data-word="packed">packed</div>
+    </div>
+  </div>
+
+  <!-- ED /d/ voiced endings or vowel endings -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-ED</span>
+        <span class="pronounce">/d/</span>
+      </div>
+      <div class="rule-desc">🎤 voiced endings or after vowels · (b, g, v, ð, z, ʒ, m, n, ŋ, l, r, w, j + vowels)</div>
+    </div>
+    <div class="word-grid" data-sound-type="d">
+      <div class="word-item" data-word="played">played</div>
+      <div class="word-item" data-word="cleaned">cleaned</div>
+      <div class="word-item" data-word="opened">opened</div>
+      <div class="word-item" data-word="called">called</div>
+      <div class="word-item" data-word="lived">lived</div>
+      <div class="word-item" data-word="answered">answered</div>
+      <div class="word-item" data-word="arrived">arrived</div>
+      <div class="word-item" data-word="believed">believed</div>
+      <div class="word-item" data-word="carried">carried</div>
+      <div class="word-item" data-word="enjoyed">enjoyed</div>
+      <div class="word-item" data-word="followed">followed</div>
+      <div class="word-item" data-word="learned">learned</div>
+      <div class="word-item" data-word="moved">moved</div>
+      <div class="word-item" data-word="showed">showed</div>
+      <div class="word-item" data-word="used">used</div>
+    </div>
+  </div>
+
+  <!-- ED /ɪd/ after t or d endings -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-ED</span>
+        <span class="pronounce">/ɪd/</span>
+      </div>
+      <div class="rule-desc">📌 extra syllable · after <strong>t</strong> or <strong>d</strong> sounds</div>
+    </div>
+    <div class="word-grid" data-sound-type="id">
+      <div class="word-item" data-word="wanted">wanted</div>
+      <div class="word-item" data-word="needed">needed</div>
+      <div class="word-item" data-word="decided">decided</div>
+      <div class="word-item" data-word="started">started</div>
+      <div class="word-item" data-word="visited">visited</div>
+      <div class="word-item" data-word="waited">waited</div>
+      <div class="word-item" data-word="invited">invited</div>
+      <div class="word-item" data-word="avoided">avoided</div>
+      <div class="word-item" data-word="counted">counted</div>
+      <div class="word-item" data-word="printed">printed</div>
+      <div class="word-item" data-word="landed">landed</div>
+      <div class="word-item" data-word="painted">painted</div>
+      <div class="word-item" data-word="folded">folded</div>
+      <div class="word-item" data-word="recorded">recorded</div>
+      <div class="word-item" data-word="repeated">repeated</div>
+    </div>
+  </div>
+
+  <!-- -S SECTION -->
+  <!-- S → /s/ aspirated endings -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-S</span>
+        <span class="pronounce">/s/</span>
+      </div>
+      <div class="rule-desc">💨 unvoiced: after p, t, k, f, θ (voiceless consonants)</div>
+    </div>
+    <div class="word-grid" data-sound-type="s">
+      <div class="word-item" data-word="sleeps">sleeps</div>
+      <div class="word-item" data-word="cats">cats</div>
+      <div class="word-item" data-word="books">books</div>
+      <div class="word-item" data-word="cups">cups</div>
+      <div class="word-item" data-word="hats">hats</div>
+      <div class="word-item" data-word="laughs">laughs</div>
+      <div class="word-item" data-word="stops">stops</div>
+      <div class="word-item" data-word="maps">maps</div>
+      <div class="word-item" data-word="hits">hits</div>
+      <div class="word-item" data-word="kicks">kicks</div>
+      <div class="word-item" data-word="fits">fits</div>
+      <div class="word-item" data-word="drops">drops</div>
+      <div class="word-item" data-word="cliffs">cliffs</div>
+      <div class="word-item" data-word="graphs">graphs</div>
+      <div class="word-item" data-word="beliefs">beliefs</div>
+    </div>
+  </div>
+
+  <!-- S → /z/ voiced endings or vowel endings -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-S</span>
+        <span class="pronounce">/z/</span>
+      </div>
+      <div class="rule-desc">🐝 voiced / vowels, b, g, l, m, n, r, w, y, ð, etc.</div>
+    </div>
+    <div class="word-grid" data-sound-type="z">
+      <div class="word-item" data-word="goes">goes</div>
+      <div class="word-item" data-word="dogs">dogs</div>
+      <div class="word-item" data-word="plays">plays</div>
+      <div class="word-item" data-word="runs">runs</div>
+      <div class="word-item" data-word="lives">lives</div>
+      <div class="word-item" data-word="frogs">frogs</div>
+      <div class="word-item" data-word="sees">sees</div>
+      <div class="word-item" data-word="says">says</div>
+      <div class="word-item" data-word="hears">hears</div>
+      <div class="word-item" data-word="calls">calls</div>
+      <div class="word-item" data-word="drives">drives</div>
+      <div class="word-item" data-word="comes">comes</div>
+      <div class="word-item" data-word="feels">feels</div>
+      <div class="word-item" data-word="stands">stands</div>
+      <div class="word-item" data-word="brings">brings</div>
+    </div>
+  </div>
+
+  <!-- -ES → /ɪz/ (s, z, sh, ch, j, zh) -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <div class="rule-title">
+        <span class="ending">-ES</span>
+        <span class="pronounce">/ɪz/</span>
+      </div>
+      <div class="rule-desc">➕ extra syllable: s, z, ʃ, tʃ, dʒ, ʒ sounds</div>
+    </div>
+    <div class="word-grid" data-sound-type="iz">
+      <div class="word-item" data-word="loses">loses</div>
+      <div class="word-item" data-word="watches">watches</div>
+      <div class="word-item" data-word="buses">buses</div>
+      <div class="word-item" data-word="dishes">dishes</div>
+      <div class="word-item" data-word="boxes">boxes</div>
+      <div class="word-item" data-word="teaches">teaches</div>
+      <div class="word-item" data-word="rises">rises</div>
+      <div class="word-item" data-word="washes">washes</div>
+      <div class="word-item" data-word="pushes">pushes</div>
+      <div class="word-item" data-word="matches">matches</div>
+      <div class="word-item" data-word="judges">judges</div>
+      <div class="word-item" data-word="sizes">sizes</div>
+      <div class="word-item" data-word="phrases">phrases</div>
+      <div class="word-item" data-word="garages">garages</div>
+      <div class="word-item" data-word="messages">messages</div>
+    </div>
+  </div>
+  <div class="footer-note">
+    🎧 Tap any word — listen & learn pronunciation rules. Repeat aloud: base → ending form.
+  </div>
+</div>
+
+<script>
+  (function () {
+    const synth = window.speechSynthesis;
+    let chosenVoice = null;
+
+    // Preferred voices ranked best-first.
+    // The first match found on the device wins.
+    const VOICE_PREFS = [
+      // --- Windows: modern online neural voices (Chrome/Edge) ---
+      'Microsoft Aria Online (Natural) - English (United States)',
+      'Microsoft Jenny Online (Natural) - English (United States)',
+      'Microsoft Guy Online (Natural) - English (United States)',
+      'Microsoft Ana Online (Natural) - English (United States)',
+      // --- Windows: offline neural fallbacks ---
+      'Microsoft Aria - English (United States)',
+      'Microsoft Jenny - English (United States)',
+      'Microsoft Guy - English (United States)',
+      // --- macOS / iOS: built-in Siri-quality voices ---
+      'Samantha',           // macOS & iOS — best free option on Apple devices
+      'Karen',              // Australian but clear and modern
+      'Moira',              // Irish — decent fallback
+      // --- Android / Chrome OS: Google voices ---
+      'Google US English',
+      'Google UK English Female',
+      'Google UK English Male',
+    ];
+
+    function pickBestVoice(voices) {
+      // Filter to English voices only
+      const enVoices = voices.filter(v =>
+        v.lang.startsWith('en') || v.lang === ''
+      );
+
+      // Try each preferred name in order
+      for (const name of VOICE_PREFS) {
+        const match = enVoices.find(v =>
+          v.name === name || v.name.startsWith(name)
+        );
+        if (match) return match;
+      }
+
+      // Fallback: prefer any en-US voice over the default
+      const usVoice = enVoices.find(v => v.lang === 'en-US');
+      if (usVoice) return usVoice;
+
+      // Last resort: whatever the browser gives us
+      return voices[0] || null;
+    }
+
+    function initVoice() {
+      const voices = synth.getVoices();
+      if (voices.length > 0) {
+        chosenVoice = pickBestVoice(voices);
+      }
+    }
+
+    // Voices load asynchronously — must listen for the event AND try immediately
+    if (synth) {
+      initVoice();
+      synth.addEventListener('voiceschanged', initVoice);
+    }
+
+    function speakWord(word) {
+      if (!synth) return;
+      synth.cancel();
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.88;
+      utterance.pitch = 1.0;
+      if (chosenVoice) utterance.voice = chosenVoice;
+      synth.speak(utterance);
+    }
+
+    function addHighlight(el) {
+      if (!el) return;
+      el.classList.add('speak-highlight');
+      setTimeout(() => el.classList.remove('speak-highlight'), 280);
+    }
+
+    document.querySelectorAll('.word-item').forEach(item => {
+      if (!item.getAttribute('data-word')) {
+        item.setAttribute('data-word', item.innerText.trim());
+      }
+      const handleTap = (e) => {
+        e.stopPropagation();
+        speakWord(item.getAttribute('data-word') || item.innerText.trim());
+        addHighlight(item);
+      };
+      item.addEventListener('click', handleTap);
+      item.addEventListener('touchstart', handleTap, { passive: false });
+    });
+
+  })();
+</script>
+</body>
+</html>
