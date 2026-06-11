@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentence Intonation &amp; Stress Patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ────────────────────────────────────────── */
+  :root {
+    --ink:        #1a1830;
+    --ink-mid:    #3d3a5c;
+    --ink-soft:   #6b6890;
+    --page:       #faf9f6;
+    --paper:      #ffffff;
+    --rule:       #e4e2f0;
+    --accent:     #d44f2e;       /* coral-red for section letter */
+    --navy:       #26215c;       /* deep purple – Carl's brand color */
+    --navy-light: #ede9f8;
+    --badge-bg:   #f0eefc;
+    --mono:       "Courier New", monospace;
+    --r:          6px;
+    --shadow:     0 1px 4px rgba(38,33,92,.08), 0 4px 16px rgba(38,33,92,.06);
+  }
+
+  /* ── RESET / BASE ───────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Literata', Georgia, serif;
+    font-size: clamp(15px, 2.2vw, 17px);
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--page);
+    padding: clamp(16px, 4vw, 40px) clamp(14px, 5vw, 32px);
+  }
+
+  /* ── PAGE HEADER ────────────────────────────────────── */
+  .page-header {
+    text-align: center;
+    padding: clamp(28px, 6vw, 56px) clamp(16px, 5vw, 48px) clamp(20px, 4vw, 36px);
+    margin-bottom: clamp(28px, 5vw, 48px);
+    background: var(--navy);
+    border-radius: calc(var(--r) * 2);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: "𝄞";
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-size: clamp(80px, 20vw, 180px);
+    opacity: .06;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .page-header h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: clamp(22px, 5.5vw, 44px);
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    color: #fff;
+  }
+  .page-header p {
+    margin-top: 10px;
+    font-size: clamp(13px, 2vw, 15px);
+    color: rgba(255,255,255,.65);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  /* ── KEY LEGEND ─────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    background: var(--navy-light);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    margin-bottom: clamp(24px, 4vw, 40px);
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(12px, 1.8vw, 14px);
+    color: var(--ink-mid);
+  }
+  .legend strong { color: var(--navy); font-weight: 700; }
+  .legend-item { white-space: nowrap; }
+
+  /* ── SECTION CARD ───────────────────────────────────── */
+  .section {
+    background: var(--paper);
+    border-radius: calc(var(--r) * 1.5);
+    box-shadow: var(--shadow);
+    margin-bottom: clamp(22px, 4vw, 36px);
+    overflow: hidden;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: clamp(12px, 2.5vw, 18px) clamp(16px, 3vw, 28px);
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .section-head::after {
+    content: attr(data-letter);
+    position: absolute;
+    right: 10px;
+    top: -8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 10vw, 88px);
+    color: rgba(255,255,255,.08);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .section-letter {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+    font-size: clamp(18px, 4vw, 26px);
+    color: var(--accent);
+    background: rgba(255,255,255,.1);
+    width: clamp(34px, 6vw, 46px);
+    height: clamp(34px, 6vw, 46px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12.5px, 2.2vw, 15px);
+    color: #fff;
+    line-height: 1.35;
+  }
+  .section-title em {
+    display: block;
+    font-weight: 400;
+    font-style: italic;
+    font-size: .88em;
+    color: rgba(255,255,255,.6);
+    margin-top: 1px;
+  }
+
+  .section-body {
+    padding: clamp(16px, 3vw, 28px) clamp(16px, 3.5vw, 32px);
+  }
+
+  /* ── NOTE BOX ───────────────────────────────────────── */
+  .note {
+    background: #fff8f0;
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r);
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    font-size: .9em;
+    color: var(--ink-mid);
+    font-style: italic;
+  }
+
+  /* ── TWO-COLUMN LISTS (sections A, B, C, etc.) ──────── */
+  .two-col {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 clamp(24px, 4vw, 48px);
+  }
+  .col {
+    flex: 1 1 min(100%, 280px);
+    min-width: 0;
+  }
+  .col-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.8vw, 13px);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--rule);
+  }
+
+  /* ── SENTENCE LIST ──────────────────────────────────── */
+  ol, ul { list-style: none; }
+  .sent-list { padding: 0; }
+  .sent-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: clamp(14px, 2.1vw, 16px);
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .sent-list li:last-child { border-bottom: none; }
+
+  /* number badge */
+  .sent-list li::before {
+    content: attr(data-n) ".";
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: .8em;
+    color: var(--ink-soft);
+    min-width: 2em;
+    margin-right: 4px;
+  }
+
+  /* bold stress marks */
+  .sent-list b { color: var(--navy); font-weight: 700; }
+
+  /* slash divider */
+  .slash {
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 1px;
+  }
+
+  /* rising arrow */
+  .arrow {
+    color: var(--accent);
+    font-size: .9em;
+    margin-left: 3px;
+  }
+
+  /* ── PRACTICE GRID (fill-in exercises) ──────────────── */
+  .practice-header {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.8vw, 13px);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--rule);
+  }
+
+  .examples-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    background: var(--navy-light);
+    border-radius: var(--r);
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    font-size: clamp(13px, 1.9vw, 15px);
+  }
+  .ex-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: .78em;
+    color: var(--navy);
+    background: var(--badge-bg);
+    border: 1px solid #c9c4ef;
+    border-radius: 4px;
+    padding: 1px 7px;
+    margin-right: 4px;
+  }
+  .examples-row b { color: var(--navy); }
+  .examples-row u { text-decoration-color: var(--navy); }
+
+  .practice-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 clamp(24px, 4vw, 48px);
+  }
+  .practice-col {
+    flex: 1 1 min(100%, 260px);
+    min-width: 0;
+  }
+
+  .practice-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: clamp(14px, 2.1vw, 16px);
+  }
+  .practice-item:last-child { border-bottom: none; }
+  .practice-num {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: .8em;
+    color: var(--ink-soft);
+    min-width: 2em;
+    flex-shrink: 0;
+  }
+  .blank {
+    display: inline-block;
+    width: clamp(28px, 5vw, 38px);
+    border-bottom: 2px solid var(--navy);
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  .practice-item b { color: var(--navy); font-weight: 700; }
+
+  /* ── PATTERN DEMO (Section L / N / R / S) ───────────── */
+  .pattern-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px clamp(16px, 3vw, 32px);
+    margin-bottom: 8px;
+  }
+  .pattern-block {
+    flex: 1 1 min(100%, 220px);
+    background: var(--navy-light);
+    border-radius: var(--r);
+    padding: 12px 14px;
+    font-size: clamp(13.5px, 2vw, 15px);
+  }
+  .pattern-block p { margin-bottom: 3px; }
+  .pattern-block b { color: var(--navy); }
+  .pattern-block u { text-decoration-color: var(--navy); }
+
+  /* ── EXTENDED VERB TABLE (Section S) ────────────────── */
+  .extended-table {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 0;
+    margin-top: 14px;
+  }
+  .ext-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  .ext-row:nth-child(odd) { background: var(--navy-light); }
+  .ext-name { font-weight: 700; color: var(--navy); min-width: 3.5em; }
+  .ext-row b { color: var(--navy); font-weight: 700; }
+
+  /* ── FOOTER ─────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: clamp(28px, 5vw, 48px);
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (max-width: 420px) {
+    .two-col, .practice-grid, .pattern-grid { gap: 0; }
+    .col, .practice-col { flex: 1 1 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <h1>Sentence Intonation &amp; Stress Patterns</h1>
+  <p>Content words, pronouns, and the rhythm of spoken English</p>
+</header>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><strong>Bold word</strong> = stressed syllable / content word</div>
+  <div class="legend-item"><strong>/</strong> = stress-group boundary</div>
+  <div class="legend-item"><strong>↗</strong> = rising intonation on verb</div>
+  <div class="legend-item"><strong>____</strong> = write a, b, or c in practice exercises</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION A
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="A">
+    <div class="section-letter">A</div>
+    <div class="section-title">
+      SVO and SVC sentences that begin/end with Content words
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <div class="col-label">SVO</div>
+        <ol class="sent-list">
+          <li data-n="1"><b>Mike</b> <span class="slash">/</span> likes <b>bikes</b>.</li>
+          <li data-n="2"><b>Elsa</b> <span class="slash">/</span> wants a <b>book</b>.</li>
+          <li data-n="3"><b>Adam</b> <span class="slash">/</span> plays <b>pool</b>.</li>
+          <li data-n="4"><b>Music</b> <span class="slash">/</span> soothes the <b>soul</b>.</li>
+          <li data-n="5"><b>Bobby</b> <span class="slash">/</span> needs some <b>money</b>.</li>
+          <li data-n="6"><b>Susie</b> <span class="slash">/</span> combs her <b>hair</b>.</li>
+          <li data-n="7"><b>Clouds</b> <span class="slash">/</span> make <b>rain</b>.</li>
+          <li data-n="8"><b>Nelly</b> <span class="slash">/</span> teaches <b>French</b>.</li>
+          <li data-n="9"><b>Ben</b> <span class="slash">/</span> writes <b>articles</b>.</li>
+          <li data-n="10"><b>Keys</b> <span class="slash">/</span> open <b>locks</b>.</li>
+          <li data-n="11"><b>Jerry</b> <span class="slash">/</span> makes <b>music</b>.</li>
+          <li data-n="12"><b>Carol</b> <span class="slash">/</span> paints the <b>car</b>.</li>
+          <li data-n="13">The <b>boys</b> <span class="slash">/</span> need some <b>help</b>.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <div class="col-label">SVC</div>
+        <ol class="sent-list">
+          <li data-n="1"><b>Joey</b> <span class="slash">/</span> is at <b>school</b>.</li>
+          <li data-n="2"><b>Mary</b> <span class="slash">/</span> is <b>sick</b>.</li>
+          <li data-n="3"><b>Bananas</b> <span class="slash">/</span> are <b>healthy</b>.</li>
+          <li data-n="4">The <b>book</b> <span class="slash">/</span> is <b>lost</b>.</li>
+          <li data-n="5">The <b>cat</b> <span class="slash">/</span> is <b>scared</b>.</li>
+          <li data-n="6">The <b>dog</b> <span class="slash">/</span> is <b>barking</b>.</li>
+          <li data-n="7">The <b>fish</b> <span class="slash">/</span> are <b>swimming</b>.</li>
+          <li data-n="8"><b>Mary</b> <span class="slash">/</span> is a nurse.</li>
+          <li data-n="9"><b>Pete</b> <span class="slash">/</span> is the <b>winner</b>.</li>
+          <li data-n="10"><b>Singing</b> <span class="slash">/</span> is <b>fun</b>.</li>
+          <li data-n="11"><b>Jogging</b> <span class="slash">/</span> is <b>exercise</b>.</li>
+          <li data-n="12"><b>Traveling</b> <span class="slash">/</span> is <b>expensive</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION B
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="B">
+    <div class="section-letter">B</div>
+    <div class="section-title">
+      SVO sentences that begin/end with Pronouns
+      <em>Verb gets the stress <span class="arrow">↗</span></em>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1">It <b>sees</b> her. <span class="arrow">↗</span></li>
+          <li data-n="2">She <b>knows</b> him. <span class="arrow">↗</span></li>
+          <li data-n="3">They <b>call</b> them. <span class="arrow">↗</span></li>
+          <li data-n="4">She <b>sells</b> some. <span class="arrow">↗</span></li>
+          <li data-n="5">It <b>finds</b> one. <span class="arrow">↗</span></li>
+          <li data-n="6">We <b>fix</b> them. <span class="arrow">↗</span></li>
+          <li data-n="7">He <b>hears</b> us. <span class="arrow">↗</span></li>
+          <li data-n="8">They <b>eat</b> them. <span class="arrow">↗</span></li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="9">They <b>have</b> one. <span class="arrow">↗</span></li>
+          <li data-n="10">They <b>like</b> it. <span class="arrow">↗</span></li>
+          <li data-n="11">They <b>need</b> something. <span class="arrow">↗</span></li>
+          <li data-n="12">She should <b>call</b> someone. <span class="arrow">↗</span></li>
+          <li data-n="13">He <b>killed</b> it. <span class="arrow">↗</span></li>
+          <li data-n="14">They <b>bought</b> some. <span class="arrow">↗</span></li>
+          <li data-n="15">She <b>forgot</b> something. <span class="arrow">↗</span></li>
+          <li data-n="16">She <b>lost</b> it. <span class="arrow">↗</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION C
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="C">
+    <div class="section-letter">C</div>
+    <div class="section-title">
+      SVC — begin with Pronouns, end with Content words
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1">She was <b>tired</b>. <span class="arrow">↗</span></li>
+          <li data-n="2">He's a <b>policeman</b>. <span class="arrow">↗</span></li>
+          <li data-n="3">They were <b>excited</b>. <span class="arrow">↗</span></li>
+          <li data-n="4">We are <b>scared</b>. <span class="arrow">↗</span></li>
+          <li data-n="5">She was <b>leaving</b>. <span class="arrow">↗</span></li>
+          <li data-n="6">We are <b>students</b>. <span class="arrow">↗</span></li>
+          <li data-n="7">It was <b>raining</b>. <span class="arrow">↗</span></li>
+          <li data-n="8">She is a <b>lawyer</b>. <span class="arrow">↗</span></li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="9">They are <b>soldiers</b>. <span class="arrow">↗</span></li>
+          <li data-n="10">He is my <b>friend</b>. <span class="arrow">↗</span></li>
+          <li data-n="11">They are <b>lost</b>. <span class="arrow">↗</span></li>
+          <li data-n="12">You are <b>wrong</b>. <span class="arrow">↗</span></li>
+          <li data-n="13">It is <b>ugly</b>. <span class="arrow">↗</span></li>
+          <li data-n="14">They are <b>gone</b>. <span class="arrow">↗</span></li>
+          <li data-n="15">It was <b>amazing</b>. <span class="arrow">↗</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION D — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="D">
+    <div class="section-letter">D</div>
+    <div class="section-title">
+      Practice — identify the stress pattern
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="examples-row">
+      <span><span class="ex-badge">a</span> <b>Mike</b> <span class="slash">/</span> likes <b>bikes</b>.</span>
+      <span><span class="ex-badge">b</span> She <b>knows</b> him. <span class="arrow">↗</span></span>
+      <span><span class="ex-badge">c</span> She was <b>tired</b>. <span class="arrow">↗</span></span>
+    </div>
+    <div class="practice-grid">
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">1.</span><span class="blank"></span>Sam sees Bill.</div>
+        <div class="practice-item"><span class="practice-num">2.</span><span class="blank"></span>He sees him.</div>
+        <div class="practice-item"><span class="practice-num">3.</span><span class="blank"></span>It was snowing.</div>
+        <div class="practice-item"><span class="practice-num">4.</span><span class="blank"></span>She wants one.</div>
+        <div class="practice-item"><span class="practice-num">5.</span><span class="blank"></span>She was ill.</div>
+        <div class="practice-item"><span class="practice-num">6.</span><span class="blank"></span>Mary wants a car.</div>
+        <div class="practice-item"><span class="practice-num">7.</span><span class="blank"></span>Betty likes English.</div>
+        <div class="practice-item"><span class="practice-num">8.</span><span class="blank"></span>She likes it.</div>
+        <div class="practice-item"><span class="practice-num">9.</span><span class="blank"></span>He is angry.</div>
+        <div class="practice-item"><span class="practice-num">10.</span><span class="blank"></span>They play them.</div>
+        <div class="practice-item"><span class="practice-num">11.</span><span class="blank"></span>They eat some.</div>
+        <div class="practice-item"><span class="practice-num">12.</span><span class="blank"></span>They were upset.</div>
+      </div>
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">13.</span><span class="blank"></span>Children play games.</div>
+        <div class="practice-item"><span class="practice-num">14.</span><span class="blank"></span>We are going.</div>
+        <div class="practice-item"><span class="practice-num">15.</span><span class="blank"></span>We call you.</div>
+        <div class="practice-item"><span class="practice-num">16.</span><span class="blank"></span>She is a baker.</div>
+        <div class="practice-item"><span class="practice-num">17.</span><span class="blank"></span>Bill read the news.</div>
+        <div class="practice-item"><span class="practice-num">18.</span><span class="blank"></span>You read it.</div>
+        <div class="practice-item"><span class="practice-num">19.</span><span class="blank"></span>It was funny.</div>
+        <div class="practice-item"><span class="practice-num">20.</span><span class="blank"></span>It tells one.</div>
+        <div class="practice-item"><span class="practice-num">21.</span><span class="blank"></span>The news tells a story.</div>
+        <div class="practice-item"><span class="practice-num">22.</span><span class="blank"></span>You were right.</div>
+        <div class="practice-item"><span class="practice-num">23.</span><span class="blank"></span>He lived there.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION E
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="E">
+    <div class="section-letter">E</div>
+    <div class="section-title">
+      SVO — begin with Pronouns, end with Content words
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1">He <b>plays</b> <span class="slash">/</span> the <b>violin</b>.</li>
+          <li data-n="2">She <b>bakes</b> <span class="slash">/</span> <b>pies</b>.</li>
+          <li data-n="3">They <b>swim</b> <span class="slash">/</span> very <b>fast</b>.</li>
+          <li data-n="4">We <b>drive</b> <span class="slash">/</span> to <b>London</b>.</li>
+          <li data-n="5">She <b>cooks</b> <span class="slash">/</span> the <b>chicken</b>.</li>
+          <li data-n="6">We <b>ate</b> <span class="slash">/</span> the <b>cake</b>.</li>
+          <li data-n="7">He <b>parked</b> <span class="slash">/</span> over <b>there</b>.</li>
+          <li data-n="8">We <b>walked</b> <span class="slash">/</span> to <b>school</b>.</li>
+          <li data-n="9">We <b>sang</b> <span class="slash">/</span> at <b>KTV</b>.</li>
+          <li data-n="10">They <b>worked</b> <span class="slash">/</span> <b>overtime</b>.</li>
+          <li data-n="11">He <b>caught</b> <span class="slash">/</span> the <b>ball</b>.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="12">They <b>flew</b> <span class="slash">/</span> a <b>kite</b>.</li>
+          <li data-n="13">It <b>attacked</b> <span class="slash">/</span> the <b>lady</b>.</li>
+          <li data-n="14">She <b>slept</b> <span class="slash">/</span> on the <b>couch</b>.</li>
+          <li data-n="15">It <b>crawled</b> <span class="slash">/</span> over the <b>fence</b>.</li>
+          <li data-n="16">She <b>walked</b> <span class="slash">/</span> the <b>dog</b>.</li>
+          <li data-n="17">She is <b>walking</b> <span class="slash">/</span> the <b>dog</b>.</li>
+          <li data-n="18">She has been <b>baking</b> <span class="slash">/</span> all <b>morning</b>.</li>
+          <li data-n="19">He had been <b>playing</b> <span class="slash">/</span> the <b>violin</b>.</li>
+          <li data-n="21">We will be <b>driving</b> <span class="slash">/</span> to <b>London</b>.</li>
+          <li data-n="22">We can <b>catch</b> <span class="slash">/</span> the <b>ball</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION F
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="F">
+    <div class="section-letter">F</div>
+    <div class="section-title">
+      SVO — begin with Content words, end with Pronouns
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1"><b>Mark</b> <span class="slash">/</span> <b>likes</b> it.</li>
+          <li data-n="2"><b>Mary</b> <span class="slash">/</span> <b>sees</b> him.</li>
+          <li data-n="3"><b>John</b> <span class="slash">/</span> will <b>meet</b> them.</li>
+          <li data-n="4"><b>Harry</b> <span class="slash">/</span> <b>hates</b> us.</li>
+          <li data-n="5"><b>Mark</b> <span class="slash">/</span> <b>calls</b> her.</li>
+          <li data-n="6"><b>Martha</b> <span class="slash">/</span> will <b>find</b> us.</li>
+          <li data-n="7">The <b>goat</b> <span class="slash">/</span> will <b>eat</b> them.</li>
+          <li data-n="8">The <b>machine</b> <span class="slash">/</span> is <b>making</b> it.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="9"><b>Mark</b> <span class="slash">/</span> <b>forgot</b> it.</li>
+          <li data-n="10"><b>Jane</b> <span class="slash">/</span> <b>sings</b> it.</li>
+          <li data-n="11"><b>Martin</b> <span class="slash">/</span> <b>sells</b> some.</li>
+          <li data-n="12"><b>Tabatha</b> <span class="slash">/</span> <b>finds</b> one.</li>
+          <li data-n="13">The <b>company</b> <span class="slash">/</span> <b>fires</b> them.</li>
+          <li data-n="14"><b>Kelly</b> <span class="slash">/</span> <b>hears</b> her.</li>
+          <li data-n="15"><b>Caroline</b> <span class="slash">/</span> should <b>call</b> someone.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION G
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="G">
+    <div class="section-letter">G</div>
+    <div class="section-title">
+      SVO — begin with Pronouns, object is pronoun + adverb/phrase
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1">He <b>saw</b> her <span class="slash">/</span> at the <b>mall</b>.</li>
+          <li data-n="2">She <b>knew</b> him <span class="slash">/</span> from <b>college</b>.</li>
+          <li data-n="3">They <b>call</b> them <span class="slash">/</span> on <b>weekends</b>.</li>
+          <li data-n="4">He <b>sells</b> them <span class="slash">/</span> at the <b>market</b>.</li>
+          <li data-n="5">We <b>fix</b> them <span class="slash">/</span> at the <b>shop</b>.</li>
+          <li data-n="6">He <b>hears</b> us <span class="slash">/</span> at <b>night</b>.</li>
+          <li data-n="7">They <b>eat</b> them <span class="slash">/</span> at the <b>diner</b>.</li>
+          <li data-n="8">We <b>have</b> one <span class="slash">/</span> in the <b>back</b>.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="9">They <b>like</b> it <span class="slash">/</span> with <b>chocolate</b>.</li>
+          <li data-n="10">They <b>need</b> some <span class="slash">/</span> <b>today</b>.</li>
+          <li data-n="11">She should <b>call</b> someone <span class="slash">/</span> <b>now</b>.</li>
+          <li data-n="12">He <b>killed</b> a man <span class="slash">/</span> over <b>there</b>.</li>
+          <li data-n="13">They <b>bought</b> some <span class="slash">/</span> after <b>work</b>.</li>
+          <li data-n="14">She <b>forgot</b> something <span class="slash">/</span> <b>again</b>.</li>
+          <li data-n="15">She <b>lost</b> it <span class="slash">/</span> <b>yesterday</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION H — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="H">
+    <div class="section-letter">H</div>
+    <div class="section-title">
+      Practice — identify the stress pattern
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="examples-row">
+      <span><span class="ex-badge">a</span> He <b>plays</b> <span class="slash">/</span> the <b>violin</b></span>
+      <span><span class="ex-badge">b</span> <b>Mark</b> <span class="slash">/</span> <b>likes</b> it.</span>
+      <span><span class="ex-badge">c</span> He <b>saw</b> her <span class="slash">/</span> at the <b>mall</b>.</span>
+    </div>
+    <div class="practice-grid">
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">1.</span><span class="blank"></span>She expected him last night.</div>
+        <div class="practice-item"><span class="practice-num">2.</span><span class="blank"></span>The machine twists it.</div>
+        <div class="practice-item"><span class="practice-num">3.</span><span class="blank"></span>He shipped it to the company.</div>
+        <div class="practice-item"><span class="practice-num">4.</span><span class="blank"></span>Larry wastes it.</div>
+        <div class="practice-item"><span class="practice-num">5.</span><span class="blank"></span>Mark carries it.</div>
+        <div class="practice-item"><span class="practice-num">6.</span><span class="blank"></span>She delivered it to the bank.</div>
+        <div class="practice-item"><span class="practice-num">7.</span><span class="blank"></span>They encouraged her to go.</div>
+        <div class="practice-item"><span class="practice-num">8.</span><span class="blank"></span>We joined the group.</div>
+        <div class="practice-item"><span class="practice-num">9.</span><span class="blank"></span>The feather tickles her.</div>
+        <div class="practice-item"><span class="practice-num">10.</span><span class="blank"></span>It scratched her on the cheek.</div>
+        <div class="practice-item"><span class="practice-num">11.</span><span class="blank"></span>He requested a menu.</div>
+        <div class="practice-item"><span class="practice-num">12.</span><span class="blank"></span>She noticed the flowers.</div>
+      </div>
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">13.</span><span class="blank"></span>Fred embarrasses them.</div>
+        <div class="practice-item"><span class="practice-num">14.</span><span class="blank"></span>The magician tricks him.</div>
+        <div class="practice-item"><span class="practice-num">15.</span><span class="blank"></span>We employed them for a year.</div>
+        <div class="practice-item"><span class="practice-num">16.</span><span class="blank"></span>The child touches it.</div>
+        <div class="practice-item"><span class="practice-num">17.</span><span class="blank"></span>Susie tastes some.</div>
+        <div class="practice-item"><span class="practice-num">18.</span><span class="blank"></span>They followed the path.</div>
+        <div class="practice-item"><span class="practice-num">19.</span><span class="blank"></span>He explained the plan.</div>
+        <div class="practice-item"><span class="practice-num">20.</span><span class="blank"></span>They spared the child.</div>
+        <div class="practice-item"><span class="practice-num">21.</span><span class="blank"></span>She trusted them with her life.</div>
+        <div class="practice-item"><span class="practice-num">22.</span><span class="blank"></span>He crushed the can.</div>
+        <div class="practice-item"><span class="practice-num">23.</span><span class="blank"></span>They arrested the criminal.</div>
+        <div class="practice-item"><span class="practice-num">24.</span><span class="blank"></span>We arranged it yesterday.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION I
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="I">
+    <div class="section-letter">I</div>
+    <div class="section-title">
+      SVO — begin with Content words, object is pronoun + adverb/phrase
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="1"><b>Tommy</b> <span class="slash">/</span> <b>saw</b> her <span class="slash">/</span> at the <b>mall</b>.</li>
+          <li data-n="2"><b>Jane</b> <span class="slash">/</span> <b>knew</b> him <span class="slash">/</span> from <b>college</b>.</li>
+          <li data-n="3">Their <b>parents</b> <span class="slash">/</span> <b>call</b> them <span class="slash">/</span> on <b>weekends</b>.</li>
+          <li data-n="4">The <b>company</b> <span class="slash">/</span> <b>sells</b> them <span class="slash">/</span> at the <b>market</b>.</li>
+          <li data-n="5">The <b>repairman</b> <span class="slash">/</span> <b>fixes</b> them <span class="slash">/</span> at the <b>shop</b>.</li>
+          <li data-n="6">The <b>cat</b> <span class="slash">/</span> can <b>hear</b> us <span class="slash">/</span> at <b>night</b>.</li>
+          <li data-n="7">The <b>Smith's</b> <span class="slash">/</span> <b>eat</b> them <span class="slash">/</span> at the <b>diner</b>.</li>
+          <li data-n="8"><b>Grandma</b> <span class="slash">/</span> <b>has</b> one <span class="slash">/</span> in the <b>back</b>.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="9">The <b>girls</b> <span class="slash">/</span> <b>like</b> it <span class="slash">/</span> with <b>chocolate</b>.</li>
+          <li data-n="10">Our <b>club</b> <span class="slash">/</span> <b>needs</b> some <span class="slash">/</span> <b>today</b>.</li>
+          <li data-n="11"><b>Martin</b> <span class="slash">/</span> should <b>call</b> someone <span class="slash">/</span> <b>quickly</b>.</li>
+          <li data-n="12">The <b>criminal</b> <span class="slash">/</span> <b>killed</b> him <span class="slash">/</span> over <b>there</b>.</li>
+          <li data-n="13">The <b>ladies</b> <span class="slash">/</span> <b>bought</b> some <span class="slash">/</span> after <b>work</b>.</li>
+          <li data-n="14"><b>Tammy</b> <span class="slash">/</span> <b>forgot</b> something <span class="slash">/</span> <b>again</b>.</li>
+          <li data-n="15"><b>Joe</b> <span class="slash">/</span> <b>lost</b> it <span class="slash">/</span> <b>yesterday</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION J
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="J">
+    <div class="section-letter">J</div>
+    <div class="section-title">
+      SVO — begin with Content words, object is noun + adverb/phrase
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="two-col">
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="16"><b>Tommy</b> <span class="slash">/</span> saw <b>Martha</b> <span class="slash">/</span> at the <b>mall</b>.</li>
+          <li data-n="17"><b>Jane</b> <span class="slash">/</span> knew <b>Benjamin</b> <span class="slash">/</span> from <b>college</b>.</li>
+          <li data-n="18">The <b>parents</b> <span class="slash">/</span> call the <b>children</b> <span class="slash">/</span> on <b>weekends</b>.</li>
+          <li data-n="19">The <b>company</b> <span class="slash">/</span> sells their <b>products</b> <span class="slash">/</span> at the <b>market</b>.</li>
+          <li data-n="20">The <b>repairman</b> <span class="slash">/</span> fixes <b>radios</b> <span class="slash">/</span> at the <b>shop</b>.</li>
+          <li data-n="21">The <b>cat</b> <span class="slash">/</span> hears his <b>owners</b> <span class="slash">/</span> at <b>night</b>.</li>
+          <li data-n="22">The <b>Smith's</b> <span class="slash">/</span> eat <b>spaghetti</b> <span class="slash">/</span> at the <b>diner</b>.</li>
+          <li data-n="23"><b>Grandma</b> <span class="slash">/</span> has some <b>bananas</b> <span class="slash">/</span> in the <b>back</b>.</li>
+        </ol>
+      </div>
+      <div class="col">
+        <ol class="sent-list">
+          <li data-n="24">The <b>girls</b> <span class="slash">/</span> like the <b>cake</b> <span class="slash">/</span> with <b>chocolate</b>.</li>
+          <li data-n="25">Our <b>club</b> <span class="slash">/</span> needs the <b>tables</b> <span class="slash">/</span> <b>today</b>.</li>
+          <li data-n="26"><b>Martin</b> <span class="slash">/</span> should call <b>911</b> <span class="slash">/</span> <b>quickly</b>.</li>
+          <li data-n="27">The <b>criminal</b> <span class="slash">/</span> killed <b>Gretel</b> <span class="slash">/</span> over <b>there</b>.</li>
+          <li data-n="28">The <b>ladies</b> <span class="slash">/</span> bought <b>coffee</b> <span class="slash">/</span> after <b>work</b>.</li>
+          <li data-n="29"><b>Tammy</b> <span class="slash">/</span> forgot her <b>purse</b> <span class="slash">/</span> <b>again</b>.</li>
+          <li data-n="30"><b>Joe</b> <span class="slash">/</span> lost the <b>card</b> <span class="slash">/</span> <b>yesterday</b>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION K — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="K">
+    <div class="section-letter">K</div>
+    <div class="section-title">
+      Practice — identify the stress pattern
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="examples-row">
+      <span><span class="ex-badge">a</span> <b>Tommy</b> <span class="slash">/</span> <b>saw</b> her <span class="slash">/</span> at the <b>mall</b></span>
+      <span><span class="ex-badge">b</span> <b>Tommy</b> <span class="slash">/</span> saw <b>Martha</b> <span class="slash">/</span> at the <b>mall</b></span>
+    </div>
+    <div class="practice-grid">
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">1.</span><span class="blank"></span>The tailor measured it from the bottom.</div>
+        <div class="practice-item"><span class="practice-num">2.</span><span class="blank"></span>The news channel shocked them with their report.</div>
+        <div class="practice-item"><span class="practice-num">3.</span><span class="blank"></span>The weatherman observed the storm in the east.</div>
+        <div class="practice-item"><span class="practice-num">4.</span><span class="blank"></span>Martha smelled them at the florist.</div>
+        <div class="practice-item"><span class="practice-num">5.</span><span class="blank"></span>Jerry milked the cow in the barn.</div>
+        <div class="practice-item"><span class="practice-num">6.</span><span class="blank"></span>Yolanda completed the assignment in one day.</div>
+        <div class="practice-item"><span class="practice-num">7.</span><span class="blank"></span>The factory produces parts for computers.</div>
+        <div class="practice-item"><span class="practice-num">8.</span><span class="blank"></span>Sherry practiced it for three hours.</div>
+        <div class="practice-item"><span class="practice-num">9.</span><span class="blank"></span>The police prevented the crime from happening.</div>
+        <div class="practice-item"><span class="practice-num">10.</span><span class="blank"></span>Tony borrowed money from the bank.</div>
+      </div>
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">11.</span><span class="blank"></span>The monkey snatched the purse from the woman.</div>
+        <div class="practice-item"><span class="practice-num">12.</span><span class="blank"></span>The gentleman rescued her from the tiger.</div>
+        <div class="practice-item"><span class="practice-num">13.</span><span class="blank"></span>Her mother permitted her to go.</div>
+        <div class="practice-item"><span class="practice-num">14.</span><span class="blank"></span>Hank teased her all night.</div>
+        <div class="practice-item"><span class="practice-num">15.</span><span class="blank"></span>Her parents surprised her with a visit.</div>
+        <div class="practice-item"><span class="practice-num">16.</span><span class="blank"></span>The driver stopped the taxi in the street.</div>
+        <div class="practice-item"><span class="practice-num">17.</span><span class="blank"></span>Susan listens to music at night.</div>
+        <div class="practice-item"><span class="practice-num">18.</span><span class="blank"></span>The alligators surrounded the old man in the lake.</div>
+        <div class="practice-item"><span class="practice-num">19.</span><span class="blank"></span>The company supplied them with the parts.</div>
+        <div class="practice-item"><span class="practice-num">20.</span><span class="blank"></span>Tabatha memorized the vocabulary in one week.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION L
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="L">
+    <div class="section-letter">L</div>
+    <div class="section-title">
+      SV + adverb/phrase (intransitive verbs — no objects)
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="note">
+      Note: phrasal verbs are different from prepositional phrases.<br>
+      <b>Mark</b> <span class="slash">/</span> <b>ran</b> <span class="slash">/</span> over the <b>mountain</b>. <em>(prep. phrase — where he ran)</em><br>
+      <b>Mark</b> <span class="slash">/</span> <b>ran over</b> <span class="slash">/</span> the <b>cat</b>. <em>(phrasal verb — he hit the cat with his car)</em>
+    </div>
+    <div class="pattern-grid">
+      <div class="pattern-block">
+        <p>The <b>lion</b> <span class="slash">/</span> <b>roared</b> <span class="slash">/</span> at the <b>mouse</b>.</p>
+        <p>It <b>roared</b> <span class="slash">/</span> at the <b>mouse</b>.</p>
+        <p>The <b>lion</b> <span class="slash">/</span> <b>roared</b> at it.</p>
+        <p>It <b>roared</b> at it.</p>
+      </div>
+      <div class="pattern-block">
+        <p><b>Joan</b> <span class="slash">/</span> <b>swims</b> <span class="slash">/</span> in the <b>river</b>.</p>
+        <p>She <b>swims</b> <span class="slash">/</span> in the <b>river</b>.</p>
+        <p><b>Joan</b> <span class="slash">/</span> <b>swims</b> in it.</p>
+        <p>She <b>swims</b> in it.</p>
+      </div>
+      <div class="pattern-block">
+        <p><b>Mother</b> <span class="slash">/</span> <b>looked</b> <span class="slash">/</span> for her <b>shoes</b>.</p>
+        <p>She <b>looked</b> <span class="slash">/</span> for her <b>shoes</b>.</p>
+        <p><b>Mother</b> <span class="slash">/</span> <b>looked</b> for them.</p>
+        <p>She <b>looked</b> for them.</p>
+      </div>
+      <div class="pattern-block">
+        <p><b>Rebecca</b> <span class="slash">/</span> <b>hunted</b> <span class="slash">/</span> for her <b>belt</b>.</p>
+        <p>She <b>hunted</b> <span class="slash">/</span> for her <b>belt</b>.</p>
+        <p><b>Rebecca</b> <span class="slash">/</span> <b>hunted</b> for it.</p>
+        <p>She <b>hunted</b> for it.</p>
+      </div>
+      <div class="pattern-block">
+        <p><b>Jim</b> <span class="slash">/</span> <b>sat</b> <span class="slash">/</span> beside the <b>tree</b>.</p>
+        <p>He <b>sat</b> <span class="slash">/</span> beside the <b>tree</b>.</p>
+        <p><b>Jim</b> <span class="slash">/</span> <b>sat</b> beside it.</p>
+        <p>He <b>sat</b> beside it.</p>
+      </div>
+      <div class="pattern-block">
+        <p><b>Jonathan</b> <span class="slash">/</span> <b>calls</b> <span class="slash">/</span> every <b>morning</b>.</p>
+        <p>He <b>calls</b> <span class="slash">/</span> every <b>morning</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION M — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="M">
+    <div class="section-letter">M</div>
+    <div class="section-title">
+      Practice — mark the sentences
+      <em>e.g. <u>Joan</u> <b>swims</b> in the <b>river</b>.</em>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="practice-grid">
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">1.</span>The parade began on time.</div>
+        <div class="practice-item"><span class="practice-num">2.</span>The children hid under the table.</div>
+        <div class="practice-item"><span class="practice-num">3.</span>The two of them met in the park.</div>
+        <div class="practice-item"><span class="practice-num">4.</span>This winter lasted for too long.</div>
+        <div class="practice-item"><span class="practice-num">5.</span>The beach was used by everyone.</div>
+      </div>
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">6.</span>It began on time.</div>
+        <div class="practice-item"><span class="practice-num">7.</span>He waited despite the rain.</div>
+        <div class="practice-item"><span class="practice-num">8.</span>Samantha rode by the river.</div>
+        <div class="practice-item"><span class="practice-num">9.</span>Kimberly slept near the fire.</div>
+        <div class="practice-item"><span class="practice-num">10.</span>John jumped over the log.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION N
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="N">
+    <div class="section-letter">N</div>
+    <div class="section-title">
+      S + be verb + PP (adverb/phrase)
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="pattern-grid">
+      <div class="pattern-block">
+        <p><b>Bill</b> <span class="slash">/</span> was <b>under</b> <span class="slash">/</span> the <b>bridge</b>.</p>
+        <p>He was <b>under</b> <span class="slash">/</span> the <b>bridge</b>.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>radio</b> <span class="slash">/</span> was <b>on</b> <span class="slash">/</span> the <b>shelf</b>.</p>
+        <p>It was <b>on</b> <span class="slash">/</span> the <b>shelf</b>.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>tiger</b> <span class="slash">/</span> is <b>beside</b> <span class="slash">/</span> the <b>tree</b>.</p>
+        <p>It is <b>beside</b> <span class="slash">/</span> the tree.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>criminal</b> <span class="slash">/</span> was <b>about</b> to <b>run</b>.</p>
+        <p>He was <b>about</b> <span class="slash">/</span> to <b>run</b>.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>police</b> <span class="slash">/</span> were <b>about</b> <span class="slash">/</span> to <b>shoot</b>.</p>
+        <p>They were <b>about</b> <span class="slash">/</span> to <b>shoot</b>.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>chicken</b> <span class="slash">/</span> was <b>across</b> <span class="slash">/</span> the <b>road</b>.</p>
+        <p>It was <b>across</b> <span class="slash">/</span> the <b>road</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION O — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="O">
+    <div class="section-letter">O</div>
+    <div class="section-title">
+      Practice — mark the sentences (S + be verb + PP)
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="practice-grid">
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">1.</span>The lady was among strangers.</div>
+        <div class="practice-item"><span class="practice-num">2.</span>The gift was inside the box.</div>
+        <div class="practice-item"><span class="practice-num">3.</span>It was among the stars.</div>
+        <div class="practice-item"><span class="practice-num">4.</span>It was inside the box.</div>
+        <div class="practice-item"><span class="practice-num">5.</span>The kids were behind the sofa.</div>
+        <div class="practice-item"><span class="practice-num">6.</span>It was during rehearsal.</div>
+      </div>
+      <div class="practice-col">
+        <div class="practice-item"><span class="practice-num">7.</span>They were behind the sofa.</div>
+        <div class="practice-item"><span class="practice-num">8.</span>The rainbow was in the east.</div>
+        <div class="practice-item"><span class="practice-num">9.</span>The children were without food.</div>
+        <div class="practice-item"><span class="practice-num">10.</span>The shovel was against the fence.</div>
+        <div class="practice-item"><span class="practice-num">11.</span>The exit was towards the front.</div>
+        <div class="practice-item"><span class="practice-num">12.</span>Flowers were along the path.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION P
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="P">
+    <div class="section-letter">P</div>
+    <div class="section-title">
+      SV IO DO — subject + verb + indirect object + direct object
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="note">
+      The verb always groups with the IO <em>unless</em> the subject is a pronoun.<br>
+      If the IO is a pronoun, the verb gets the stress.<br>
+      *Words like <b>"medical bill"</b> and <b>"birthday cake"</b> are specific and are pronounced like compound nouns — different from general words like "exciting story," "her ring," or "some stock."
+    </div>
+    <ol class="sent-list">
+      <li data-n="•"><b>John</b> <span class="slash">/</span> read his <b>nephew</b> <span class="slash">/</span> an exciting <b>story</b>.</li>
+      <li data-n="•">Our <b>father</b> <span class="slash">/</span> built the <b>family</b> <span class="slash">/</span> a <b>picnic</b> table.</li>
+      <li data-n="•">The <b>doctor</b> <span class="slash">/</span> <b>sent</b> me <span class="slash">/</span> a <b>medical</b> bill. <em style="font-size:.85em;color:var(--ink-soft)">(IO is a pronoun)</em></li>
+      <li data-n="•">We <b>gave</b> <span class="slash">/</span> my <b>mother</b> <span class="slash">/</span> a <b>birthday</b> cake. <em style="font-size:.85em;color:var(--ink-soft)">(S is pronoun)</em></li>
+      <li data-n="•"><b>Terri</b> <span class="slash">/</span> <b>showed</b> them <span class="slash">/</span> her <b>ring</b>. <em style="font-size:.85em;color:var(--ink-soft)">(IO is a pronoun)</em></li>
+      <li data-n="•">The new <b>highway</b> <span class="slash">/</span> saved the <b>travelers</b> <span class="slash">/</span> several <b>miles</b>.</li>
+      <li data-n="•">I <b>bought</b> <span class="slash">/</span> <b>Amanda</b> <span class="slash">/</span> two <b>pieces</b> of cake. <em style="font-size:.85em;color:var(--ink-soft)">(S is pronoun)</em></li>
+      <li data-n="•">The new <b>manager</b> <span class="slash">/</span> offered <b>Jay</b> <span class="slash">/</span> a higher <b>position</b>.</li>
+      <li data-n="•"><b>Carl</b> <span class="slash">/</span> <b>told</b> us <span class="slash">/</span> his <b>plans</b>. <em style="font-size:.85em;color:var(--ink-soft)">(IO is a pronoun)</em></li>
+      <li data-n="•">Many <b>companies</b> <span class="slash">/</span> don't pay their <b>employees</b> <span class="slash">/</span> much <b>money</b>.</li>
+      <li data-n="•">Mr. <b>Blower</b> <span class="slash">/</span> read the <b>children</b> <span class="slash">/</span> some interesting <b>stories</b>.</li>
+      <li data-n="•">Mr. <b>Smith</b> <span class="slash">/</span> sold my <b>parents</b> <span class="slash">/</span> some <b>stock</b> <span class="slash">/</span> <b>yesterday</b>.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION Q — Practice
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="Q">
+    <div class="section-letter">Q</div>
+    <div class="section-title">
+      Practice — mark stress in SV IO DO sentences
+    </div>
+  </div>
+  <div class="section-body">
+    <ol class="sent-list">
+      <li data-n="1">I asked my mother an important question.</li>
+      <li data-n="2">Grandpa read the grandchildren the nursery rhymes.</li>
+      <li data-n="3">She bought herself a new dress.</li>
+      <li data-n="4">He did the whole town a great favor.</li>
+      <li data-n="5">The artist showed the viewers his most famous painting.</li>
+      <li data-n="6">Pam bought her children two new toys at the mall.</li>
+      <li data-n="7">You should send your friend a thank you card tomorrow.</li>
+      <li data-n="8">The veteran pitcher threw the rookie hitter a fast-breaking curve ball.</li>
+      <li data-n="9">The public defender gave her client her best advice.</li>
+      <li data-n="10">Eric showed his math teacher a problem with the question.</li>
+      <li data-n="11">The car dealer gave Jim a low price for his old car.</li>
+      <li data-n="12">Will wanted a job at the ranger station.</li>
+      <li data-n="13">My neighbors brought me some candy and a basket of fruit for my birthday.</li>
+      <li data-n="14">We gave the man the name of a lodge near Trial Lake.</li>
+      <li data-n="15">An unknown donor gave the hospital a million dollars for research.</li>
+      <li data-n="16">The frightening experience taught the child some important lessons.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION R
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="R">
+    <div class="section-letter">R</div>
+    <div class="section-title">
+      SVC + adverb phrase
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="pattern-grid">
+      <div class="pattern-block">
+        <p><b>Martha</b> <span class="slash">/</span> was <b>sick</b> <span class="slash">/</span> on <b>Friday</b>.</p>
+        <p>She was <b>sick</b> <span class="slash">/</span> on <b>Friday</b>.</p>
+      </div>
+      <div class="pattern-block">
+        <p>The <b>weather</b> <span class="slash">/</span> was <b>warm</b> <span class="slash">/</span> in <b>November</b>.</p>
+        <p>It was <b>warm</b> <span class="slash">/</span> in <b>November</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION S
+════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-head" data-letter="S">
+    <div class="section-letter">S</div>
+    <div class="section-title">
+      Extended objects and extended verbs
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="note">
+      Extended objects and extended verbs change the <em>rhythm</em> of spoken patterns.<br>
+      object = <em>bikes</em> &nbsp;→&nbsp; extended object = <em>big blue bikes</em><br>
+      verb = <em>likes</em> &nbsp;→&nbsp; extended verb = <em>really likes</em>
+    </div>
+    <div class="extended-table">
+      <div class="ext-row"><span class="ext-name">Mike</span> likes <b>bikes</b>.</div>
+      <div class="ext-row"><span class="ext-name">Mike</span> <b>likes</b> big blue <b>bikes</b>.</div>
+      <div class="ext-row"><span class="ext-name">Mike</span> really <b>likes</b> <b>bikes</b>.</div>
+      <div class="ext-row"><span class="ext-name">Mike</span> really <b>likes</b> big blue <b>bikes</b>.</div>
+    </div>
+  </div>
+</section>
+
+<footer>Sentence Intonation &amp; Stress Patterns — EFL Pronunciation Practice</footer>
+
+</body>
+</html>
