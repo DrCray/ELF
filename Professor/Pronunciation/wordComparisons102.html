@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Comparisons – Pronunciation 102 Supplement</title>
+<style>
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+:focus { outline: none; }
+p { margin-bottom: 1em; }
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s;
+    margin: .7rem 0;
+}
+button:hover { background-color: #2980b9; }
+a { color: #3498db; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ol { column-width: 200px; column-gap: 2.5rem; column-rule: 1px solid #ddd; padding-left: 1.5rem; }
+li { break-inside: avoid; padding-bottom: 0.5rem; }
+
+
+        #zzpageHeader {
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px;
+        }
+
+        #zztitle {
+            background-color:#F7F5EF;
+            border-style:solid;  border-width: medium;
+            border-color:darkslategray; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex; overflow:auto;
+        }
+
+
+
+#chapterNav {
+    position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 800px; background-color: #1a1a4e;
+    z-index: 1000; display: flex; flex-wrap: wrap; gap: 3px;
+    padding: 4px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+#chapterNav a {
+    flex: 1 1 auto; min-width: 3rem; text-align: center;
+    background-color: #2d3a6e; color: #ccd6f6; font-size: 0.72rem;
+    font-weight: bold; padding: 5px 2px; border-radius: 3px;
+    cursor: pointer; text-decoration: none; user-select: none;
+    border: 1px solid #3a4a8a; transition: background-color 0.15s;
+}
+#chapterNav a:hover { background-color: #4a5aaa; color: white; }
+#chapterNav a.active {
+    background-color: darkblue; color: white; border-color: #88aaff;
+    box-shadow: inset 0 0 6px rgba(136,170,255,0.4);
+}
+#innerPageBorder {
+    margin-top: 2.5rem; border: thin solid gray; border-radius: 8px;
+    padding: .2rem 1.2rem; box-shadow: 1px 2px 15px 5px rgba(99,99,151,1);
+    background: white;
+}
+.chapterSectSumry {
+    background-color: #DEEACF; color: blue; font-weight: bold; font-size: 1.5rem;
+    border-radius: 5px; margin: .3rem 0 .7rem 0; border: thin solid gray;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 3px 10px rgba(45,58,94,0.35), 0 1px 3px rgba(0,0,0,0.15);
+    cursor: pointer; user-select: none; scroll-margin-top: 4rem;
+}
+
+.chapterSectSumry {
+    position: relative;
+    padding-left: 2.5rem;
+    cursor: pointer;
+}
+
+.chapterSectSumry::before {
+    content: "▶";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.15rem;
+    color: #2d3a6e;
+    transition: transform 0.25s ease;
+}
+
+/* Arrow points down when chapter is open */
+.chapterSectSumry:has(+ .chapterBody[style*="block"])::before {
+    content: "▼";
+}
+
+.chapterBody { display: none; }
+.quSet {
+    background-color: #E6EBEB; border-width: thin; border-style: solid;
+    border-color: darkslategray; border-radius: 10px; box-shadow: 0 3px 3px 0;
+    padding: .75ex; margin: .3rem 0 .9rem 0; overflow: auto;
+}
+.question {
+    cursor: pointer; padding: 3ex 0 3ex 0;
+    width: fit-content; min-width: 3em; overflow: auto;
+}
+.answer {
+    background-color: #F5F3ED; border-width: thin; border-style: solid;
+    border-color: darkslategray; padding: .5ex; border-radius: 10px;
+    overflow: auto; min-width: 3em;
+}
+.fsLarge { font-size: 1.1rem; }
+.wc-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem 2.5rem;
+    background-color: #fdfcff;
+    border: 1px solid #d4cef0;
+    border-radius: 9px;
+    box-shadow: 0 2px 6px rgba(80,60,160,0.10);
+    padding: .55rem .9rem;
+    margin: 0 0 .6rem 0;
+}
+.wc-card span {
+    color: #26215C;
+    font-size: .97rem;
+    white-space: nowrap;
+}
+
+.word-chip {
+    display: inline-block;
+    background-color: #fdfcff;
+    border: 1px solid #d4cef0;
+    border-radius: 9px;
+    box-shadow: 0 2px 6px rgba(80,60,160,0.10);
+    padding: .4rem .9rem;
+    margin: 0 .4rem .5rem 0;
+    color: #26215C;
+    font-size: .97rem;
+    white-space: nowrap;
+}
+
+
+.study-mode-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.2rem;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 1rem 0;
+    transition: all 0.3s;
+}
+
+.study-mode-btn:hover {
+    background-color: #219653;
+}
+
+.study-mode-btn.active {
+    background-color: #e67e22;
+}
+
+
+</style>
+</head>
+<body>
+<nav id="chapterNav">
+  <a href="#ch1"  onclick="toggleChapter('chBody1')"  id="nav1">Ch 1</a>
+  <a href="#ch2"  onclick="toggleChapter('chBody2')"  id="nav2">Ch 2</a>
+  <a href="#ch3"  onclick="toggleChapter('chBody3')"  id="nav3">Ch 3</a>
+  <a href="#ch4"  onclick="toggleChapter('chBody4')"  id="nav4">Ch 4</a>
+  <a href="#ch5"  onclick="toggleChapter('chBody5')"  id="nav5">Ch 5</a>
+  <a href="#ch6"  onclick="toggleChapter('chBody6')"  id="nav6">Ch 6</a>
+  <a href="#ch7"  onclick="toggleChapter('chBody7')"  id="nav7">Ch 7</a>
+  <a href="#ch8"  onclick="toggleChapter('chBody8')"  id="nav8">Ch 8</a>
+  <a href="#ch9"  onclick="toggleChapter('chBody9')"  id="nav9">Ch 9</a>
+  <a href="#ch10" onclick="toggleChapter('chBody10')" id="nav10">Ch 10</a>
+  <a href="#ch11" onclick="toggleChapter('chBody11')" id="nav11">Ch 11</a>
+  <a href="#ch12" onclick="toggleChapter('chBody12')" id="nav12">Ch 12</a>
+  <a href="#ch13" onclick="toggleChapter('chBody13')" id="nav13">Ch 13</a>
+  <a href="#ch14" onclick="toggleChapter('chBody14')" id="nav14">Ch 14</a>
+</nav>
+<div id="innerPageBorder">
+
+
+    <header id="zzpageHeader">
+        <img class="center" src="topImage.jpg" alt="" style="width:100%;">
+
+        <section id="zztitle" contenteditable="false">
+            <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--************************ Type title here ******************-->
+
+
+            <div id="zheaderTitle"><span class="fsLarge"><span style="font-weight: bold;">Dr Ray </span></span><br></div><div><br></div><div><span style="font-weight: bold;"><span class="fsXxlarge">Word Comparisons: Pronunciation Drills</span></span><br></div>
+
+
+            <!--     ***************** End title ****************************-->
+            <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--     ------ Don’t type Title content past this line ---  -->
+
+        </section>
+    </header>
+
+<div style="box-shadow:0 0 0 3px #D1CDBF; background:#F4F2EC; padding:.2rem 2rem; border-radius:6px; margin-bottom: .8rem;">
+<button id="studyModeBtn" class="study-mode-btn">
+    Open All Chapters
+</button>
+</div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch1" onclick="toggleChapter('chBody1')">Chapter One</div>
+<div class="chapterBody" id="chBody1">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet101" class="quSet" style="display:block;">
+  <div id="question101" class="question" onclick="toggleText('answer101')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 1&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer101" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>authentic</span><span>authenticity</span></div>
+<div class="wc-card"><span>mature</span><span>maturity</span></div>
+<div class="wc-card"><span>curious</span><span>curiosity</span></div>
+<div class="wc-card"><span>generous</span><span>generosity</span></div>
+<div class="wc-card"><span>serious</span><span>seriousness</span></div>
+<div class="wc-card"><span>conscious</span><span>consciousness</span></div>
+<div class="wc-card"><span>anonymous</span><span>anonymity</span></div>
+<div class="wc-card"><span>diverse</span><span>diversity</span></div>
+<div class="wc-card"><span>intense</span><span>intensity</span></div>
+<div class="wc-card"><span>valid</span><span>validity</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch2" onclick="toggleChapter('chBody2')">Chapter Two</div>
+<div class="chapterBody" id="chBody2">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet102" class="quSet" style="display:block;">
+  <div id="question102" class="question" onclick="toggleText('answer102')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 2&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer102" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>appear</span><span>disappear</span><span>reappear</span></div>
+<div class="wc-card"><span>connect</span><span>disconnect</span><span>reconnect</span></div>
+<div class="wc-card"><span>approve</span><span>disapprove</span><span>preapprove</span></div>
+<div class="wc-card"><span>cover</span><span>discover</span><span>recover</span><span>recovery</span></div>
+<div class="wc-card"><span>engage</span><span>disengage</span><span>re-engage</span></div>
+<div class="wc-card"><span>place</span><span>replace</span><span>displacement</span></div>
+<div class="wc-card"><span>act</span><span>react</span><span>interact</span><span>interaction</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch3" onclick="toggleChapter('chBody3')">Chapter Three</div>
+<div class="chapterBody" id="chBody3">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet103" class="quSet" style="display:block;">
+  <div id="question103" class="question" onclick="toggleText('answer103')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 3&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer103" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>place</span><span>replace</span><span>irreplaceable</span></div>
+<div class="wc-card"><span>cover</span><span>discover</span><span>undiscovered</span></div>
+<div class="wc-card"><span>act</span><span>overreact</span><span>overreaction</span></div>
+<div class="wc-card"><span>form</span><span>inform</span><span>misinformation</span></div>
+<div class="wc-card"><span>connect</span><span>disconnect</span><span>interconnected</span></div>
+<div class="wc-card"><span>personal</span><span>impersonal</span><span>interpersonal</span></div>
+<div class="wc-card"><span>dependent</span><span>independent</span><span>interdependent</span></div>
+<div class="wc-card"><span>calculate</span><span>miscalculate</span><span>miscalculation</span></div>
+<div class="wc-card"><span>balance</span><span>imbalance</span><span>overbalanced</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch4" onclick="toggleChapter('chBody4')">Chapter Four</div>
+<div class="chapterBody" id="chBody4">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet104" class="quSet" style="display:block;">
+  <div id="question104" class="question" onclick="toggleText('answer104')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 4&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer104" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>order</span><span>disorder</span><span>disorderly</span></div>
+<div class="wc-card"><span>legal</span><span>illegal</span><span>illegality</span></div>
+<div class="wc-card"><span>regular</span><span>irregular</span><span>irregularity</span></div>
+<div class="wc-card"><span>stable</span><span>unstable</span><span>instability</span></div>
+<div class="wc-card"><span>literate</span><span>illiterate</span><span>illiteracy</span></div>
+<div class="wc-card"><span>rational</span><span>irrational</span><span>irrationality</span></div>
+<div class="wc-card"><span>visible</span><span>invisible</span><span>invisibility</span></div>
+<div class="wc-card"><span>possible</span><span>impossible</span><span>impossibility</span></div>
+<div class="wc-card"><span>mobile</span><span>immobile</span><span>immobility</span></div>
+<div class="wc-card"><span>mature</span><span>immature</span><span>immaturity</span></div>
+<div class="wc-card"><span>active</span><span>inactive</span><span>inactivity</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch5" onclick="toggleChapter('chBody5')">Chapter Five</div>
+<div class="chapterBody" id="chBody5">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet105" class="quSet" style="display:block;">
+  <div id="question105" class="question" onclick="toggleText('answer105')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 5&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer105" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>position</span><span>composition</span><span>decomposition</span></div>
+<div class="wc-card"><span>mission</span><span>commission</span><span>decommission</span></div>
+<div class="wc-card"><span>tribute</span><span>distribute</span><span>redistribute</span></div>
+<div class="wc-card"><span>solution</span><span>resolution</span><span>irresolution</span></div>
+<div class="wc-card"><span>location</span><span>allocation</span><span>reallocation</span></div>
+<div class="wc-card"><span>formation</span><span>information</span><span>misinformation</span></div>
+<div class="wc-card"><span>presentation</span><span>representation</span><span>misrepresentation</span></div>
+<div class="wc-card"><span>valuation</span><span>evaluation</span><span>reevaluation</span></div>
+<div class="wc-card"><span>tension</span><span>extension</span><span>overextension</span></div>
+<div class="wc-card"><span>action</span><span>reaction</span><span>overreaction</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch6" onclick="toggleChapter('chBody6')">Chapter Six</div>
+<div class="chapterBody" id="chBody6">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet106" class="quSet" style="display:block;">
+  <div id="question106" class="question" onclick="toggleText('answer106')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 6&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer106" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>use</span><span>usable</span><span>usability</span></div>
+<div class="wc-card"><span>analyze</span><span>analysis</span><span>analytical</span></div>
+<div class="wc-card"><span>organize</span><span>organization</span><span>organizational</span></div>
+<div class="wc-card"><span>recognize</span><span>recognition</span><span>recognizable</span></div>
+<div class="wc-card"><span>standard</span><span>standardize</span><span>standardization</span></div>
+<div class="wc-card"><span>industry</span><span>industrial</span><span>industrialized</span></div>
+<div class="wc-card"><span>origin</span><span>original</span><span>originality</span></div>
+<div class="wc-card"><span>person</span><span>personal</span><span>personality</span></div>
+<div class="wc-card"><span>respect</span><span>respectable</span><span>respectability</span></div>
+<div class="wc-card"><span>individual</span><span>individualize</span><span>individuality</span></div>
+<div class="wc-card"><span>stable</span><span>stabilize</span><span>stability</span></div>
+<div class="wc-card"><span>response</span><span>responsive</span><span>responsible</span></div>
+<div class="wc-card"><span>familiar</span><span>familiarize</span><span>familiarity</span></div>
+<div class="wc-card"><span>popular</span><span>popularized</span><span>popularity</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch7" onclick="toggleChapter('chBody7')">Chapter Seven</div>
+<div class="chapterBody" id="chBody7">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet107" class="quSet" style="display:block;">
+  <div id="question107" class="question" onclick="toggleText('answer107')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 7&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer107" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>form</span><span>formal</span><span>formation</span><span>formative</span></div>
+<div class="wc-card"><span>function</span><span>functional</span><span>functionality</span></div>
+<div class="wc-card"><span>structure</span><span>structural</span><span>restructuring</span></div>
+<div class="wc-card"><span>system</span><span>systematic</span><span>systematization</span></div>
+<div class="wc-card"><span>concept</span><span>conceptual</span><span>conceptualization</span></div>
+<div class="wc-card"><span>logic</span><span>logical</span><span>logically</span><span>logic-based</span></div>
+<div class="wc-card"><span>context</span><span>contextual</span><span>contextualize</span></div>
+<div class="wc-card"><span>strategy</span><span>strategic</span><span>strategically</span></div>
+<div class="wc-card"><span>culture</span><span>cultural</span><span>culturally</span></div>
+<div class="wc-card"><span>economy</span><span>economic</span><span>economics</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch8" onclick="toggleChapter('chBody8')">Chapter Eight</div>
+<div class="chapterBody" id="chBody8">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet108" class="quSet" style="display:block;">
+  <div id="question108" class="question" onclick="toggleText('answer108')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 8&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer108" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>define</span><span>definition</span><span>definitive</span></div>
+<div class="wc-card"><span>describe</span><span>description</span><span>descriptive</span></div>
+<div class="wc-card"><span>explain</span><span>explanation</span><span>explanatory</span></div>
+<div class="wc-card"><span>analyze</span><span>analysis</span><span>analytical</span></div>
+<div class="wc-card"><span>classify</span><span>classification</span><span>classificatory</span></div>
+<div class="wc-card"><span>interpret</span><span>interpretation</span><span>interpretive</span></div>
+<div class="wc-card"><span>evaluate</span><span>evaluation</span><span>evaluative</span></div>
+<div class="wc-card"><span>justify</span><span>justification</span><span>justifiable</span></div>
+<div class="wc-card"><span>identify</span><span>identification</span><span>identifiable</span></div>
+<div class="wc-card"><span>compare</span><span>comparison</span><span>comparative</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch9" onclick="toggleChapter('chBody9')">Chapter Nine</div>
+<div class="chapterBody" id="chBody9">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet109" class="quSet" style="display:block;">
+  <div id="question109" class="question" onclick="toggleText('answer109')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 9&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer109" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>develop</span><span>development</span><span>developmental</span></div>
+<div class="wc-card"><span>establish</span><span>establishment</span><span>established</span></div>
+<div class="wc-card"><span>enable</span><span>enabling</span><span>enablement</span></div>
+<div class="wc-card"><span>improve</span><span>improvise</span><span>improvement</span></div>
+<div class="wc-card"><span>expand</span><span>expansive</span><span>expansion</span></div>
+<div class="wc-card"><span>strength</span><span>strengthened</span><span>strengthening</span></div>
+<div class="wc-card"><span>transform</span><span>transformative</span><span>transformation</span></div>
+<div class="wc-card"><span>organize</span><span>organization</span><span>organizational</span></div>
+<div class="wc-card"><span>implement</span><span>implemented</span><span>implementation</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch10" onclick="toggleChapter('chBody10')">Chapter Ten</div>
+<div class="chapterBody" id="chBody10">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet110" class="quSet" style="display:block;">
+  <div id="question110" class="question" onclick="toggleText('answer110')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 10&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer110" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>possible</span><span>possibility</span><span>impossibility</span></div>
+<div class="wc-card"><span>probable</span><span>probability</span><span>improbability</span></div>
+<div class="wc-card"><span>stable</span><span>stability</span><span>instability</span></div>
+<div class="wc-card"><span>visible</span><span>visibility</span><span>invisibility</span></div>
+<div class="wc-card"><span>responsible</span><span>responsibility</span><span>irresponsibility</span></div>
+<div class="wc-card"><span>legal</span><span>legality</span><span>illegality</span></div>
+<div class="wc-card"><span>moral</span><span>morality</span><span>immorality</span></div>
+<div class="wc-card"><span>formal</span><span>formality</span><span>informality</span></div>
+<div class="wc-card"><span>logic</span><span>logical</span><span>illogical</span></div>
+<div class="wc-card"><span>correct</span><span>correctness</span><span>incorrectness</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch11" onclick="toggleChapter('chBody11')">Chapter Eleven</div>
+<div class="chapterBody" id="chBody11">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet111" class="quSet" style="display:block;">
+  <div id="question111" class="question" onclick="toggleText('answer111')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 11&nbsp; Advanced Vocabulary – Read Aloud</span></span></section></div>
+  <div id="answer111" class="answer" style="display:block;"><section>
+<span class="word-chip">contentious</span>
+<span class="word-chip">discerning</span>
+<span class="word-chip">paradoxical</span>
+<span class="word-chip">pragmatic</span>
+<span class="word-chip">benevolent</span>
+<span class="word-chip">judicious</span>
+<span class="word-chip">resilient</span>
+<span class="word-chip">eloquent</span>
+<span class="word-chip">conscientious</span>
+<span class="word-chip">tenacious</span>
+<span class="word-chip">meticulous</span>
+<span class="word-chip">unequivocally</span>
+<span class="word-chip">fortuitous</span>
+<span class="word-chip">magnanimous</span>
+<span class="word-chip">astute</span>
+<span class="word-chip">incongruous</span>
+<span class="word-chip">altruistic</span>
+<span class="word-chip">ubiquitous</span>
+<span class="word-chip">prescient</span>
+<span class="word-chip">sagacious</span>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch12" onclick="toggleChapter('chBody12')">Chapter Twelve</div>
+<div class="chapterBody" id="chBody12">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet112" class="quSet" style="display:block;">
+  <div id="question112" class="question" onclick="toggleText('answer112')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 12&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer112" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>photograph</span><span>photography</span><span>photographic</span></div>
+<div class="wc-card"><span>economy</span><span>economic</span><span>economics</span></div>
+<div class="wc-card"><span>industry</span><span>industrial</span><span>industrialization</span></div>
+<div class="wc-card"><span>history</span><span>historic</span><span>historical</span><span>historically</span></div>
+<div class="wc-card"><span>nation</span><span>national</span><span>nationalize</span><span>nationality</span></div>
+<div class="wc-card"><span>educate</span><span>education</span><span>educational</span></div>
+<div class="wc-card"><span>communicate</span><span>communication</span><span>communicative</span></div>
+<div class="wc-card"><span>create</span><span>creation</span><span>creative</span><span>creativity</span></div>
+<div class="wc-card"><span>develop</span><span>development</span><span>developmental</span></div>
+<div class="wc-card"><span>decide</span><span>decision</span><span>decisive</span></div>
+<div class="wc-card"><span>explain</span><span>explanation</span><span>explanatory</span></div>
+<div class="wc-card"><span>inform</span><span>information</span><span>informative</span></div>
+<div class="wc-card"><span>act</span><span>action</span><span>active</span><span>activity</span></div>
+<div class="wc-card"><span>relate</span><span>relation</span><span>relationship</span></div>
+<div class="wc-card"><span>connect</span><span>connection</span><span>connective</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch13" onclick="toggleChapter('chBody13')">Chapter Thirteen</div>
+<div class="chapterBody" id="chBody13">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet113" class="quSet" style="display:block;">
+  <div id="question113" class="question" onclick="toggleText('answer113')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 13&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer113" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>object</span><span>objection</span><span>objective</span></div>
+<div class="wc-card"><span>produce</span><span>production</span><span>productive</span></div>
+<div class="wc-card"><span>reduce</span><span>reduction</span><span>reductive</span></div>
+<div class="wc-card"><span>govern</span><span>government</span><span>governmental</span></div>
+<div class="wc-card"><span>science</span><span>scientific</span><span>scientifically</span></div>
+<div class="wc-card"><span>finance</span><span>financial</span><span>financier</span></div>
+<div class="wc-card"><span>culture</span><span>cultural</span><span>culturally</span></div>
+<div class="wc-card"><span>nature</span><span>natural</span><span>naturally</span></div>
+<div class="wc-card"><span>energy</span><span>energize</span><span>energetic</span></div>
+<div class="wc-card"><span>memory</span><span>memorize</span><span>memorial</span></div>
+<div class="wc-card"><span>possible</span><span>possibility</span><span>impossible</span></div>
+<div class="wc-card"><span>probable</span><span>probability</span><span>improbable</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+
+<div class="chapterSection">
+<div class="chapterSectSumry" id="ch14" onclick="toggleChapter('chBody14')">Chapter Fourteen</div>
+<div class="chapterBody" id="chBody14">
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+
+<div id="quSet114" class="quSet" style="display:block;">
+  <div id="question114" class="question" onclick="toggleText('answer114')"><section><span class="fsLarge"><span style="font-weight:bold;">Ch. 14&nbsp; Word Comparisons</span></span></section></div>
+  <div id="answer114" class="answer" style="display:block;"><section>
+<div class="wc-card"><span>attract</span><span>attraction</span><span>attractive</span></div>
+<div class="wc-card"><span>prefer</span><span>preference</span><span>preferential</span></div>
+<div class="wc-card"><span>compete</span><span>competition</span><span>competitive</span></div>
+<div class="wc-card"><span>import</span><span>important</span><span>importation</span></div>
+<div class="wc-card"><span>insult</span><span>insulted</span><span>insulting</span></div>
+<div class="wc-card"><span>address</span><span>addressed</span><span>addressing</span></div>
+<div class="wc-card"><span>conflict</span><span>conflicted</span><span>conflicting</span></div>
+<div class="wc-card"><span>permit</span><span>permitted</span><span>permission</span><span>permissive</span></div>
+<div class="wc-card"><span>present</span><span>presented</span><span>presenting</span><span>presentation</span></div>
+<div class="wc-card"><span>conduct</span><span>conducted</span><span>conducting</span><span>conduction</span></div>
+<div class="wc-card"><span>subject</span><span>subjected</span><span>subjecting</span><span>subjection</span></div>
+<div class="wc-card"><span>transport</span><span>transported</span><span>transporting</span><span>transportation</span></div>
+</section></div>
+</div>
+
+<button class="showBtn" style="display:none;" onclick="showAnswers('answer');">Open all sections</button>
+<button class="hideBtn" onclick="hideAnswers('answer');" style="display:none;">Close all sections</button>
+</div></div>
+</div><!-- end innerPageBorder -->
+
+<script>
+window.addEventListener('load', () => {
+    history.replaceState(null, '', window.location.pathname);
+    window.scrollTo(0, 0);
+});
+function toggleText(id2toggle) {
+    event.preventDefault();
+    let el = document.getElementById(id2toggle);
+    if (el.style.display === "block") { el.style.display = "none"; }
+    else {
+        document.querySelectorAll(".answer").forEach(a => a.style.display = "none");
+        el.style.display = "block";
+        el.previousElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+}
+function toggleChapter(bodyId) {
+    document.querySelectorAll(".chapterBody").forEach(el => { if (el.id !== bodyId) el.style.display = "none"; });
+    let body = document.getElementById(bodyId);
+    let num = bodyId.replace("chBody","");
+    let link = document.getElementById("nav"+num);
+    if (body.style.display === "none" || body.style.display === "") {
+        body.style.display = "block";
+        document.querySelectorAll("#chapterNav a").forEach(a => a.classList.remove("active"));
+        if (link) link.classList.add("active");
+        window.location.hash = "ch"+num;
+    } else {
+        body.style.display = "none";
+        if (link) link.classList.remove("active");
+    }
+}
+function showAnswers(c) {
+    document.querySelectorAll("."+c).forEach(el => el.style.display = "block");
+    document.querySelectorAll(".hideBtn").forEach(el => el.style.display = "block");
+    document.querySelectorAll(".showBtn").forEach(el => el.style.display = "none");
+}
+function hideAnswers(c) {
+    document.querySelectorAll("."+c).forEach(el => el.style.display = "none");
+    document.querySelectorAll(".hideBtn").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".showBtn").forEach(el => el.style.display = "block");
+}
+
+
+// Open All Chapters functionality
+let studyModeActive = false;
+let previousChapterStates = {};
+let previousAnswerStates = {};
+
+function toggleStudyMode() {
+    const btn = document.getElementById('studyModeBtn');
+
+    if (!studyModeActive) {
+        // === ENTER STUDY MODE ===
+        studyModeActive = true;
+        btn.textContent = "Close All Chapters";
+        btn.classList.add('active');
+
+        // Save current states and open everything
+        document.querySelectorAll('.chapterBody').forEach(body => {
+            previousChapterStates[body.id] = body.style.display;
+            body.style.display = 'block';
+        });
+
+        document.querySelectorAll('.answer').forEach(answer => {
+            previousAnswerStates[answer.id] = answer.style.display;
+            answer.style.display = 'block';
+        });
+
+    } else {
+        // === EXIT STUDY MODE - Restore previous state ===
+        studyModeActive = false;
+        btn.textContent = "Open All Chapters";
+        btn.classList.remove('active');
+
+        // Restore chapter bodies
+        document.querySelectorAll('.chapterBody').forEach(body => {
+            if (previousChapterStates[body.id] !== undefined) {
+                body.style.display = previousChapterStates[body.id];
+            }
+        });
+
+        // Restore answer sections
+        document.querySelectorAll('.answer').forEach(answer => {
+            if (previousAnswerStates[answer.id] !== undefined) {
+                answer.style.display = previousAnswerStates[answer.id];
+            }
+        });
+
+        // Clear saved states
+        previousChapterStates = {};
+        previousAnswerStates = {};
+    }
+}
+
+// Add this line at the end of your existing script (after the other functions)
+document.getElementById('studyModeBtn').addEventListener('click', toggleStudyMode);
+
+</script>
+</body>
+</html>
