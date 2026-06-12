@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Vol. 2 - Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #1A3A4A;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-top: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+        }
+        footer { margin-top: 15rem; }
+
+        .toggle-button {
+            padding: 5px 10px;
+            font-size: .8rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            word-wrap: break-word;
+            text-align: left;
+        }
+        .output.column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .output.column span {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        #toggleAnswersBtn {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        #theWordList {
+            display: none;
+        }
+        .show-hide-button {
+            margin: 0 0 1rem 0;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .show-hide-button:hover {
+            background-color: #218838;
+        }
+        #subtitle {
+            font-size: 120%;
+        }
+        .student-info-container {
+            max-width: 30rem;
+            margin: 2rem auto;
+            background: #E6F2EE;
+            padding: 2rem;
+            border-radius: 6px;
+            box-shadow: 0 0 2px 5px gray;
+        }
+        .inputZ {
+            padding: .3rem;
+            border-radius: 6px;
+        }
+        #pdfButton {
+            padding: .7rem;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .note {
+            font-size: .85rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Pronunciation Vol. 2</h1>
+        <p id="subtitle">Ch. 1 Vocabulary Sentences – Quiz</p>
+        <p>Complete the sentences by selecting the correct vocabulary word.</p>
+    </div>
+
+    <button class="show-hide-button no-print" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList" class="no-print">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <button id="toggleAnswersBtn" class="no-print" onclick="toggleAnswers()">Study Mode</button>
+
+    <div class="section">
+        <h3>Section 1</h3>
+
+        <div class="sentence">
+            1. The manager had to
+            <select data-answer="clarify">
+                <option value="">-- Select --</option>
+                <option value="clarify">clarify</option>
+                <option value="maintain">maintain</option>
+                <option value="examine">examine</option>
+                <option value="discipline">discipline</option>
+                <option value="disruption">disruption</option>
+            </select>
+            the new safety
+            <select data-answer="regulations">
+                <option value="">-- Select --</option>
+                <option value="regulations">regulations</option>
+                <option value="settlement">settlement</option>
+                <option value="complaint">complaint</option>
+                <option value="discussion">discussion</option>
+                <option value="reduction">reduction</option>
+            </select>
+            because the staff found them incredibly
+            <select data-answer="confusing">
+                <option value="">-- Select --</option>
+                <option value="confusing">confusing</option>
+                <option value="deliberate">deliberate</option>
+                <option value="maintain">maintain</option>
+                <option value="appointment">appointment</option>
+                <option value="employee">employee</option>
+            </select>.
+        </div>
+
+        <div class="sentence">
+            2. It takes a lot of personal
+            <select data-answer="discipline">
+                <option value="">-- Select --</option>
+                <option value="discipline">discipline</option>
+                <option value="reduction">reduction</option>
+                <option value="discussion">discussion</option>
+                <option value="complaint">complaint</option>
+                <option value="clarify">clarify</option>
+            </select>
+            to
+            <select data-answer="maintain">
+                <option value="">-- Select --</option>
+                <option value="maintain">maintain</option>
+                <option value="examine">examine</option>
+                <option value="clarify">clarify</option>
+                <option value="confusing">confusing</option>
+                <option value="deliberate">deliberate</option>
+            </select>
+            a healthy diet when you are under constant stress.
+        </div>
+
+        <div class="sentence">
+            3. The technician made a
+            <select data-answer="deliberate">
+                <option value="">-- Select --</option>
+                <option value="deliberate">deliberate</option>
+                <option value="confusing">confusing</option>
+                <option value="disruption">disruption</option>
+                <option value="settlement">settlement</option>
+                <option value="appointment">appointment</option>
+            </select>
+            attempt to fix the
+            <select data-answer="computer">
+                <option value="">-- Select --</option>
+                <option value="computer">computer</option>
+                <option value="employee">employee</option>
+                <option value="complaint">complaint</option>
+                <option value="regulations">regulations</option>
+                <option value="discussion">discussion</option>
+            </select>
+            system before the data was permanently lost.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+
+        <div class="sentence">
+            4. The customer decided to make a formal
+            <select data-answer="complaint">
+                <option value="">-- Select --</option>
+                <option value="complaint">complaint</option>
+                <option value="reduction">reduction</option>
+                <option value="settlement">settlement</option>
+                <option value="discussion">discussion</option>
+                <option value="disruption">disruption</option>
+            </select>
+            about the
+            <select data-answer="employee">
+                <option value="">-- Select --</option>
+                <option value="employee">employee</option>
+                <option value="computer">computer</option>
+                <option value="appointment">appointment</option>
+                <option value="clarify">clarify</option>
+                <option value="regulations">regulations</option>
+            </select>
+            who handled her account so poorly.
+        </div>
+
+        <div class="sentence">
+            5. We need to
+            <select data-answer="examine">
+                <option value="">-- Select --</option>
+                <option value="examine">examine</option>
+                <option value="maintain">maintain</option>
+                <option value="clarify">clarify</option>
+                <option value="discipline">discipline</option>
+                <option value="deliberate">deliberate</option>
+            </select>
+            our monthly expenses carefully to see where we can make a significant
+            <select data-answer="reduction">
+                <option value="">-- Select --</option>
+                <option value="reduction">reduction</option>
+                <option value="complaint">complaint</option>
+                <option value="disruption">disruption</option>
+                <option value="appointment">appointment</option>
+                <option value="settlement">settlement</option>
+            </select>.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+
+        <div class="sentence">
+            6. The lawyers finally reached a legal
+            <select data-answer="settlement">
+                <option value="">-- Select --</option>
+                <option value="settlement">settlement</option>
+                <option value="reduction">reduction</option>
+                <option value="disruption">disruption</option>
+                <option value="complaint">complaint</option>
+                <option value="appointment">appointment</option>
+            </select>
+            after a very long and intense
+            <select data-answer="discussion">
+                <option value="">-- Select --</option>
+                <option value="discussion">discussion</option>
+                <option value="regulations">regulations</option>
+                <option value="discipline">discipline</option>
+                <option value="computer">computer</option>
+                <option value="employee">employee</option>
+            </select>
+            about the data leak.
+        </div>
+
+        <div class="sentence">
+            7. The heavy traffic caused a major
+            <select data-answer="disruption">
+                <option value="">-- Select --</option>
+                <option value="disruption">disruption</option>
+                <option value="discussion">discussion</option>
+                <option value="reduction">reduction</option>
+                <option value="settlement">settlement</option>
+                <option value="complaint">complaint</option>
+            </select>
+            to our schedule, so we missed our initial
+            <select data-answer="appointment">
+                <option value="">-- Select --</option>
+                <option value="appointment">appointment</option>
+                <option value="employee">employee</option>
+                <option value="computer">computer</option>
+                <option value="regulations">regulations</option>
+                <option value="discipline">discipline</option>
+            </select>.
+        </div>
+    </div>
+
+    <div class="student-info-container no-print">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" class="inputZ" value="ID" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <footer>...</footer>
+
+    <script>
+        // Student info / PDF button
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+        function validateInput(input, fieldName) {
+            const s = sanitizeInput(input.trim());
+            if (s.length < 2) { alert(`${fieldName} must be at least 2 characters.`); return false; }
+            if (s.length > 25) { alert(`${fieldName} must be no more than 25 characters.`); return false; }
+            return true;
+        }
+        function checkEnablePDF() {
+            const n = nameInput.value.trim(), i = idInput.value.trim();
+            pdfButton.disabled = !(n !== DEFAULTS.name && i !== DEFAULTS.id && n.length >= 2 && i.length >= 2);
+        }
+        nameInput.addEventListener('blur', function() {
+            const v = this.value.trim();
+            if (v !== DEFAULTS.name && v.length > 0) {
+                this.value = validateInput(v, 'Name') ? sanitizeInput(v) : DEFAULTS.name;
+            }
+            checkEnablePDF();
+        });
+        idInput.addEventListener('blur', function() {
+            const v = this.value.trim();
+            if (v !== DEFAULTS.id && v.length > 0) {
+                this.value = validateInput(v, 'ID') ? sanitizeInput(v) : DEFAULTS.id;
+            }
+            checkEnablePDF();
+        });
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+        nameInput.addEventListener('focus', function() { if (this.value === DEFAULTS.name) this.value = ''; });
+        idInput.addEventListener('focus', function() { if (this.value === DEFAULTS.id) this.value = ''; });
+        pdfButton.addEventListener('click', () => window.print());
+    </script>
+
+    <script>
+        // Shuffle all options then prepend -- Select -- fresh
+        document.querySelectorAll('select').forEach(select => {
+            const options = Array.from(select.options).slice(1);
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            select.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = '-- Select --';
+            placeholder.selected = true;
+            select.appendChild(placeholder);
+            options.forEach(opt => select.appendChild(opt));
+            select.value = '';
+        });
+
+        // Check answers on change
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correct = this.getAttribute('data-answer');
+                if (this.value === correct) {
+                    this.classList.remove('incorrect'); this.classList.add('correct');
+                } else if (this.value !== '') {
+                    this.classList.remove('correct'); this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        // Clear on page unload
+        window.addEventListener('beforeunload', () => {
+            document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+        });
+
+        // Study Mode — saves and restores student selections
+        let answersVisible = false;
+        let savedSelections = [];
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            const selects = document.querySelectorAll('select');
+
+            if (answersVisible) {
+                savedSelections = Array.from(selects).map(select => ({
+                    value: select.value,
+                    correct: select.classList.contains('correct'),
+                    incorrect: select.classList.contains('incorrect')
+                }));
+                selects.forEach(select => {
+                    select.value = select.getAttribute('data-answer');
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                });
+            } else {
+                selects.forEach((select, i) => {
+                    const saved = savedSelections[i];
+                    if (saved) {
+                        select.value = saved.value;
+                        select.classList.toggle('correct', saved.correct);
+                        select.classList.toggle('incorrect', saved.incorrect);
+                    }
+                });
+                savedSelections = [];
+            }
+            button.textContent = answersVisible ? ' Close Study Mode ' : ' Study Mode ';
+        }
+    </script>
+
+    <script>
+        // Word list display
+        const wordListAnswers = [
+            'clarify','regulations','confusing','discipline','maintain',
+            'deliberate','computer','complaint','employee','examine',
+            'reduction','settlement','discussion','disruption','appointment'
+        ];
+
+        function updateOutput() {
+            const output = document.getElementById('output');
+            const isColumn = output.classList.contains('column');
+            if (isColumn) {
+                output.innerHTML = wordListAnswers.map(w => `<span>${w}</span>`).join('');
+            } else {
+                output.innerHTML = wordListAnswers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column') ? 'Close Column View' : 'View as Column';
+            updateOutput();
+        }
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const btn = document.querySelector('.show-hide-button');
+            const isHidden = wordList.style.display === 'none' || wordList.style.display === '';
+            wordList.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Hide Word List' : 'Show Word List';
+        }
+        updateOutput();
+    </script>
+
+</body>
+</html>
