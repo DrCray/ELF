@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatchMaker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 15px;
+      background-color: #f5f7fb;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #025C0E;
+      margin-bottom: 5px;
+    }
+
+    .main-instructions {
+      background: #F5EBF7;
+      text-align: center;
+      margin-bottom: 25px;
+      padding: .2rem;
+      box-shadow: 0 0 2px 2px gray;
+      border-radius: 7px;
+    }
+
+    .main-instructions #subHeading {
+      font-weight: bold;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: #025C0E;
+      margin-bottom: 5px;
+    }
+
+    .main-instructions p {
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+
+    .exercise-container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ── Authoring toolbar ── */
+    #authoring-panel {
+      margin-bottom: 1rem;
+    }
+
+    #inputData {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: monospace;
+      font-size: 0.9rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      resize: vertical;
+      background: #fff;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 0;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    #makeBtn {
+      background: #025C0E;
+      color: #fff;
+    }
+
+    #makeBtn:hover {
+      background: #037a14;
+    }
+
+    #downloadBtn {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    #downloadBtn:hover:not(:disabled) {
+      background: #2563eb;
+    }
+
+    #downloadBtn:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* ── Exercise UI (identical to matching.html) ── */
+    .sentence-card {
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+      font-size: 1.1rem;
+    }
+
+    .sentence-card.active {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+      cursor: default;
+    }
+
+    .sentence-card.completed {
+      border-color: #10b981;
+      background-color: #ecfdf5;
+      cursor: default;
+    }
+
+    .choice-box {
+      position: relative;
+      margin-top: 15px;
+      padding: 15px 10px 5px 10px;
+      border-top: 1px dashed #cbd5e1;
+      background: #ffffff;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      cursor: pointer;
+      line-height: 1;
+      padding: 5px;
+    }
+
+    .close-btn:hover { color: #64748b; }
+
+    .choice-item {
+      background: #f3f4f6;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .choice-item.incorrect {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #f87171;
+      animation: shake 0.2s ease-in-out 2;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-4px); }
+      75%       { transform: translateX(4px); }
+    }
+
+    /* ── Parse error banner ── */
+    #parse-error {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+<!-- TEACHER Ideas
+
+**Language learning**
+- synonyms
+- 2 sentence dialog
+- word/definition
+- phrase/meaning
+- lyrics stuff
+- FIB sentence with blank ^^ missing word
+- Word ↔ translation (English ^^ Spanish)
+- Formal ↔ informal/casual
+- Textbook - casual, spoken
+- Base word ↔ colocation ("make" ^^ "a decision")
+- Question ^^ natural answer
+
+**Grammar & usage**
+- Error ↔ correction
+- Active ↔ passive voice version
+
+**General knowledge**
+- Country ↔ capital
+- Date ↔ historical event
+- Symbol ↔ element (Au ^^ Gold)
+- Inventor ↔ invention
+
+**Literature & culture**
+- Quote ↔ author
+- Character ↔ novel
+- Lyric line ↔ song title
+
+**Science & math**
+- Formula ↔ what it calculates
+- Term ↔ definition
+- Cause ↔ effect
+
+**Professional / business**
+- Acronym ↔ full form (ROI ^^ Return on Investment)
+- Problem ↔ solution scenario
+- Job title ↔ responsibility
+
+The sweet spot is anything that has a **clean one-to-one relationship** that can be expressed in a short phrase. The `^^` format naturally enforces that discipline.-->
+
+
+
+<div class="exercise-container">
+
+  <!-- AUTHORING PANEL (hidden in downloaded file) -->
+  <div id="authoring-panel">
+    <p id="restore-title" style="display:none">MatchMaker</p>
+    <textarea id="inputData" rows="18">#Runaway Bride
+
+## Sentence Halves
+Every morning, he drinks ^^ a hot cup of coffee.
+Right now, they are studying ^^ for their final exams.
+She usually walks to school, ^^ but today she is taking the bus.
+
+## Phrase/Meaning
+To bite the bullet means ^^ to face a difficult situation with courage.
+To break a leg means ^^ to wish someone good luck before a performance.
+To spill the beans means ^^ to reveal a secret prematurely.</textarea>
+
+    <div class="btn-row">
+      <button class="btn" id="makeBtn">▶ Make</button>
+      <button class="btn" id="downloadBtn" disabled>⬇ Download</button>
+    </div>
+  </div>
+
+  <!-- PARSE ERROR (shown only on bad input) -->
+  <div id="parse-error" class="hidden"></div>
+
+  <!-- EXERCISE HEADER (populated by Make) -->
+  <div class="main-instructions hidden" id="exercise-header">
+    <h1 id="exercise-title"></h1>
+    <div id="subHeading">Matching Exercise</div>
+    <p>Tap a card below, then select its correct matching counterpart.</p>
+  </div>
+
+  <!-- EXERCISE BODY -->
+  <div id="dynamic-exercise-root"></div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let exerciseData = [];
+let activeCard    = null;
+let activeChoiceBox = null;
+
+// ─────────────────────────────────────────────
+// 1. MARKDOWN PARSER
+// ─────────────────────────────────────────────
+function parseMarkdown(raw) {
+  const lines    = raw.split('\n');
+  const sections = [];
+  let title      = '';
+  let currentSection = null;
+  let sectionIndex   = 0;
+
+  for (let raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+
+    if (/^#(?!#)/.test(line)) {
+      // # Title
+      title = line.replace(/^#+\s*/, '').trim();
+
+    } else if (/^##/.test(line)) {
+      // ## Section heading
+      if (currentSection) sections.push(currentSection);
+      sectionIndex++;
+      currentSection = {
+        sectionId:    String.fromCharCode(64 + sectionIndex), // A, B, C …
+        sectionTitle: line.replace(/^#+\s*/, '').trim(),
+        items:        []
+      };
+
+    } else if (line.includes('^^')) {
+      // Matching pair
+      if (!currentSection) {
+        // Pairs before any ## heading → auto-create a section
+        sectionIndex++;
+        currentSection = {
+          sectionId:    String.fromCharCode(64 + sectionIndex),
+          sectionTitle: '',
+          items:        []
+        };
+      }
+      const [first, second] = line.split('^^');
+      if (first && second) {
+        const itemIndex = currentSection.items.length + 1;
+        currentSection.items.push({
+          id:     currentSection.sectionId + itemIndex,
+          first:  first.trim(),
+          second: second.trim()
+        });
+      }
+    }
+  }
+
+  if (currentSection && currentSection.items.length) sections.push(currentSection);
+
+  return { title, sections };
+}
+
+// ─────────────────────────────────────────────
+// 2. UI GENERATOR  (same logic as matching.html)
+// ─────────────────────────────────────────────
+function generateExerciseUI(data) {
+  const root = document.getElementById('dynamic-exercise-root');
+  root.innerHTML = '';
+  activeCard = null;
+  activeChoiceBox = null;
+
+  data.forEach((section, idx) => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'exercise-section';
+    sectionEl.dataset.sectionId = section.sectionId;
+
+    if (section.sectionTitle) {
+      const titleEl = document.createElement('h2');
+      titleEl.textContent = section.sectionTitle;
+      sectionEl.appendChild(titleEl);
+    }
+
+    section.items.forEach(item => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'sentence-card';
+      cardEl.dataset.sentenceId = item.id;
+      cardEl.innerHTML = `
+        <div class="card-text">
+          <span class="first-half">${item.first}</span>
+          <span class="second-half"></span>
+        </div>`;
+      sectionEl.appendChild(cardEl);
+    });
+
+    const choiceBoxEl = document.createElement('div');
+    choiceBoxEl.className = 'choice-box hidden';
+    choiceBoxEl.innerHTML = `
+      <button class="close-btn" aria-label="Close choices">&times;</button>
+      <ul class="choices-list"></ul>`;
+    sectionEl.appendChild(choiceBoxEl);
+
+    root.appendChild(sectionEl);
+    if (idx < data.length - 1) root.appendChild(document.createElement('hr'));
+  });
+
+  setupCardEventListeners();
+}
+
+// ─────────────────────────────────────────────
+// 3. INTERACTION ENGINE
+// ─────────────────────────────────────────────
+function setupCardEventListeners() {
+  document.querySelectorAll('.sentence-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (card.classList.contains('completed') ||
+          card.classList.contains('active')    ||
+          e.target.closest('.choice-box')) return;
+
+      if (activeCard) closeMenu();
+
+      activeCard = card;
+      activeCard.classList.add('active');
+
+      const parentSection = card.closest('.exercise-section');
+      const sectionId     = parentSection.dataset.sectionId;
+
+      activeChoiceBox = parentSection.querySelector('.choice-box');
+      const choicesList = parentSection.querySelector('.choices-list');
+
+      const sectionData = exerciseData.find(sec => sec.sectionId === sectionId);
+      renderShuffledChoices(choicesList, sectionData.items);
+
+      activeCard.appendChild(activeChoiceBox);
+      activeChoiceBox.classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('dynamic-exercise-root').addEventListener('click', e => {
+    if (e.target.classList.contains('close-btn')) {
+      e.stopPropagation();
+      closeMenu();
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+// 4. SHUFFLE ENGINE
+// ─────────────────────────────────────────────
+function renderShuffledChoices(listElement, itemsArray) {
+  listElement.innerHTML = '';
+  const shuffled = [...itemsArray];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  shuffled.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'choice-item';
+    li.textContent = item.second;
+    li.addEventListener('click', () => handleSelection(li, item));
+    listElement.appendChild(li);
+  });
+}
+
+// ─────────────────────────────────────────────
+// 5. VALIDATION ENGINE
+// ─────────────────────────────────────────────
+function handleSelection(element, item) {
+  const correctId = activeCard.dataset.sentenceId;
+
+  if (item.id === correctId) {
+    activeCard.querySelector('.second-half').textContent = item.second;
+    activeCard.classList.remove('active');
+    activeCard.classList.add('completed');
+
+    const parentSection = activeCard.closest('.exercise-section');
+    parentSection.appendChild(activeChoiceBox);
+    activeChoiceBox.classList.add('hidden');
+
+    activeCard = null;
+    activeChoiceBox = null;
+  } else {
+    element.classList.add('incorrect');
+    setTimeout(() => element.classList.remove('incorrect'), 800);
+  }
+}
+
+function closeMenu() {
+  if (!activeCard) return;
+  activeCard.classList.remove('active');
+  const parentSection = activeCard.closest('.exercise-section');
+  parentSection.appendChild(activeChoiceBox);
+  activeChoiceBox.classList.add('hidden');
+  activeCard = null;
+  activeChoiceBox = null;
+}
+
+// ─────────────────────────────────────────────
+// 6. MAKE BUTTON
+// ─────────────────────────────────────────────
+document.getElementById('makeBtn').addEventListener('click', () => {
+  const raw     = document.getElementById('inputData').value;
+  const errorEl = document.getElementById('parse-error');
+  const header  = document.getElementById('exercise-header');
+
+  errorEl.classList.add('hidden');
+  errorEl.textContent = '';
+
+  const parsed = parseMarkdown(raw);
+
+  if (!parsed.sections.length) {
+    errorEl.textContent = 'No matching pairs found. Make sure each pair is separated by ^^.';
+    errorEl.classList.remove('hidden');
+    header.classList.add('hidden');
+    document.getElementById('downloadBtn').disabled = true;
+    return;
+  }
+
+  // Check every section has at least 2 items (for a meaningful exercise)
+  for (const sec of parsed.sections) {
+    if (sec.items.length < 2) {
+      errorEl.textContent = `Section "${sec.sectionTitle || sec.sectionId}" needs at least 2 pairs.`;
+      errorEl.classList.remove('hidden');
+      document.getElementById('downloadBtn').disabled = true;
+      return;
+    }
+  }
+
+  exerciseData = parsed.sections;
+
+  // Update header
+  document.getElementById('exercise-title').textContent = parsed.title || 'Matching Exercise';
+  document.title = parsed.title || 'MatchMaker';
+  header.classList.remove('hidden');
+
+  generateExerciseUI(exerciseData);
+
+  document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('makeBtn').textContent = '▶ Edit / Remake';
+});
+
+// ─────────────────────────────────────────────
+// 7. DOWNLOAD BUTTON
+// ─────────────────────────────────────────────
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const authoringPanel = document.getElementById('authoring-panel');
+  const markdownText   = document.getElementById('inputData').value;
+
+  // ── Temporarily mutate DOM for snapshot ──
+  authoringPanel.style.display = 'none';
+
+  // Capture the full page HTML
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // ── Restore DOM immediately ──
+  authoringPanel.style.display = '';
+  document.title = document.getElementById('restore-title').textContent;
+
+  // ── Build a self-contained file with markdown preserved + authoring hidden ──
+  // We need to inject the hidden panel back with display:none as a permanent state.
+  // Strategy: do a string replacement on the captured HTML.
+  const safeHtml = html.replace(
+    'id="authoring-panel"',
+    'id="authoring-panel" style="display:none"'
+  ).replace(
+    '</textarea>',
+    // Preserve markdown as the textarea value
+    ''
+  );
+
+  // Rebuild cleanly: replace textarea contents with current markdown,
+  // and mark the authoring panel permanently hidden.
+  const finalHtml = buildDownloadHtml(markdownText);
+
+  const blob = new Blob([finalHtml], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const title = (document.getElementById('exercise-title').textContent || 'exercise')
+    .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+  a.href     = url;
+  a.download = title + '.html';
+  a.click();
+  alert('Check browser\'s default download folder.');
+  URL.revokeObjectURL(url);
+});
+
+// Builds the final download HTML: authoring panel hidden, markdown preserved
+function buildDownloadHtml(markdown) {
+  // Escape markdown for safe embedding inside a textarea tag
+  const escaped = markdown
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Grab current rendered exercise HTML (cards already reset to unanswered)
+  // We re-generate a clean exercise root string from exerciseData
+  const tempDiv = document.createElement('div');
+  generateExerciseUIInto(tempDiv, exerciseData);
+  const exerciseHTML = tempDiv.innerHTML;
+
+  const title = document.getElementById('exercise-title').textContent || 'Matching Exercise';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title}</title>
+  <style>
+    body { font-family: sans-serif; padding: 15px; background-color: #f5f7fb; }
+    h1 { font-size: 2rem; color: #025C0E; margin-bottom: 5px; }
+    .main-instructions { background:#F5EBF7; text-align:center; margin-bottom:25px; padding:.2rem; box-shadow:0 0 2px 2px gray; border-radius:7px; }
+    .main-instructions #subHeading { font-weight:bold; font-style:italic; font-size:1.5rem; color:#025C0E; margin-bottom:5px; }
+    .main-instructions p { font-size:0.95rem; color:#64748b; }
+    .exercise-container { max-width:500px; margin:0 auto; }
+    .sentence-card { background:#fff; border:2px solid #e0e0e0; border-radius:8px; padding:15px; margin-bottom:12px; cursor:pointer; transition:border-color 0.2s ease,background-color 0.2s ease; font-size:1.1rem; }
+    .sentence-card.active { border-color:#3b82f6; background-color:#eff6ff; cursor:default; }
+    .sentence-card.completed { border-color:#10b981; background-color:#ecfdf5; cursor:default; }
+    .choice-box { position:relative; margin-top:15px; padding:15px 10px 5px 10px; border-top:1px dashed #cbd5e1; background:#ffffff; }
+    .close-btn { position:absolute; top:5px; right:8px; background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; line-height:1; padding:5px; }
+    .close-btn:hover { color:#64748b; }
+    .choice-item { background:#f3f4f6; padding:12px; margin-bottom:8px; border-radius:6px; cursor:pointer; font-size:1rem; transition:background 0.2s; }
+    .choice-item.incorrect { background:#fee2e2; color:#dc2626; border:1px solid #f87171; animation:shake 0.2s ease-in-out 2; }
+    .hidden { display:none !important; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+  </style>
+</head>
+<body>
+
+<!-- AUTHORING PANEL: hidden in exercise view; unhide via DevTools to edit -->
+<div id="authoring-panel" style="display:none">
+  <textarea id="inputData">${escaped}</textarea>
+</div>
+
+<div class="exercise-container">
+  <div class="main-instructions" id="exercise-header">
+    <h1 id="exercise-title">${title}</h1>
+    <div id="subHeading">Matching Exercise</div>
+    <p>Tap a card below, then select its correct matching counterpart.</p>
+  </div>
+  <div id="dynamic-exercise-root">${exerciseHTML}</div>
+</div>
+
+<script>
+const exerciseData = ${JSON.stringify(exerciseData)};
+let activeCard = null;
+let activeChoiceBox = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupCardEventListeners();
+});
+
+function setupCardEventListeners() {
+  document.querySelectorAll('.sentence-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (card.classList.contains('completed') || card.classList.contains('active') || e.target.closest('.choice-box')) return;
+      if (activeCard) closeMenu();
+      activeCard = card;
+      activeCard.classList.add('active');
+      const parentSection = card.closest('.exercise-section');
+      const sectionId = parentSection.dataset.sectionId;
+      activeChoiceBox = parentSection.querySelector('.choice-box');
+      const choicesList = parentSection.querySelector('.choices-list');
+      const sectionData = exerciseData.find(sec => sec.sectionId === sectionId);
+      renderShuffledChoices(choicesList, sectionData.items);
+      activeCard.appendChild(activeChoiceBox);
+      activeChoiceBox.classList.remove('hidden');
+    });
+  });
+  document.getElementById('dynamic-exercise-root').addEventListener('click', e => {
+    if (e.target.classList.contains('close-btn')) { e.stopPropagation(); closeMenu(); }
+  });
+}
+
+function renderShuffledChoices(listElement, itemsArray) {
+  listElement.innerHTML = '';
+  const shuffled = [...itemsArray];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  shuffled.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'choice-item';
+    li.textContent = item.second;
+    li.addEventListener('click', () => handleSelection(li, item));
+    listElement.appendChild(li);
+  });
+}
+
+function handleSelection(element, item) {
+  const correctId = activeCard.dataset.sentenceId;
+  if (item.id === correctId) {
+    activeCard.querySelector('.second-half').textContent = item.second;
+    activeCard.classList.remove('active');
+    activeCard.classList.add('completed');
+    const parentSection = activeCard.closest('.exercise-section');
+    parentSection.appendChild(activeChoiceBox);
+    activeChoiceBox.classList.add('hidden');
+    activeCard = null;
+    activeChoiceBox = null;
+  } else {
+    element.classList.add('incorrect');
+    setTimeout(() => element.classList.remove('incorrect'), 800);
+  }
+}
+
+function closeMenu() {
+  if (!activeCard) return;
+  activeCard.classList.remove('active');
+  const parentSection = activeCard.closest('.exercise-section');
+  parentSection.appendChild(activeChoiceBox);
+  activeChoiceBox.classList.add('hidden');
+  activeCard = null;
+  activeChoiceBox = null;
+}
+<\/script>
+</body></html>`;
+}
+
+// Generates exercise DOM into a given container element (for download snapshot)
+function generateExerciseUIInto(container, data) {
+  container.innerHTML = '';
+  data.forEach((section, idx) => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'exercise-section';
+    sectionEl.dataset.sectionId = section.sectionId;
+
+    if (section.sectionTitle) {
+      const titleEl = document.createElement('h2');
+      titleEl.textContent = section.sectionTitle;
+      sectionEl.appendChild(titleEl);
+    }
+
+    section.items.forEach(item => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'sentence-card';
+      cardEl.dataset.sentenceId = item.id;
+      cardEl.innerHTML = `<div class="card-text"><span class="first-half">${item.first}</span><span class="second-half"></span></div>`;
+      sectionEl.appendChild(cardEl);
+    });
+
+    const choiceBoxEl = document.createElement('div');
+    choiceBoxEl.className = 'choice-box hidden';
+    choiceBoxEl.innerHTML = `<button class="close-btn" aria-label="Close choices">&times;</button><ul class="choices-list"></ul>`;
+    sectionEl.appendChild(choiceBoxEl);
+
+    container.appendChild(sectionEl);
+    if (idx < data.length - 1) container.appendChild(document.createElement('hr'));
+  });
+}
+</script>
+</body>
+</html>
