@@ -597,6 +597,18 @@ function buildDownloadHtml(markdown) {
     .choice-item.incorrect { background:#fee2e2; color:#dc2626; border:1px solid #f87171; animation:shake 0.2s ease-in-out 2; }
     .hidden { display:none !important; }
     @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+    .print-section { margin-top:2.5rem; padding:16px; background:#fff; border:2px solid #e0e0e0; border-radius:10px; }
+    .print-section .section-label { font-size:0.8rem; font-weight:bold; color:#64748b; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; }
+    .user-info-section { display:flex; gap:12px; margin-bottom:12px; }
+    .input-group { display:flex; flex-direction:column; gap:4px; flex:1; }
+    .input-group label { font-size:0.85rem; font-weight:bold; color:#475569; }
+    .input-group input { padding:8px 10px; border:2px solid #cbd5e1; border-radius:7px; font-size:0.95rem; background:#f8fafc; color:#1e293b; transition:border-color 0.2s; }
+    .input-group input:focus { outline:none; border-color:#3b82f6; background:#fff; }
+    .button-section { display:flex; flex-direction:column; align-items:stretch; gap:6px; }
+    .note { font-size:0.82rem; color:#94a3b8; text-align:center; }
+    #printBtn { padding:11px 0; font-size:1rem; font-weight:bold; border:none; border-radius:8px; background:#95a5a6; color:#fff; cursor:not-allowed; transition:background 0.2s; }
+    #print-header { display:none; }
+    @media print { .print-section { display:none !important; } body { background:#fff; padding:0; } .sentence-card { break-inside:avoid; } #print-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #025C0E; padding-bottom:6px; margin-bottom:14px; font-size:0.95rem; } }
   </style>
 </head>
 <body>
@@ -607,12 +619,34 @@ function buildDownloadHtml(markdown) {
 </div>
 
 <div class="exercise-container">
+  <div id="print-header">
+    <span id="print-name"></span>
+    <span id="print-id"></span>
+  </div>
   <div class="main-instructions" id="exercise-header">
     <h1 id="exercise-title">${title}</h1>
     <div id="subHeading">Matching Exercise</div>
     <p>Tap a card below, then select its correct matching counterpart.</p>
   </div>
   <div id="dynamic-exercise-root">${exerciseHTML}</div>
+
+  <div class="print-section">
+    <div class="section-label">🖨 Print / Save PDF</div>
+    <div class="user-info-section">
+      <div class="input-group">
+        <label for="studentName">Name:</label>
+        <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
+      </div>
+      <div class="input-group">
+        <label for="studentID">ID#:</label>
+        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+      </div>
+    </div>
+    <div class="button-section">
+      <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
+      <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print / Save PDF</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -688,7 +722,30 @@ function closeMenu() {
   activeCard = null;
   activeChoiceBox = null;
 }
+
+let studentName = "";
+let studentId   = "";
+function validateForm() {
+  studentName = document.getElementById('studentName').value.trim().replace(/\\s+/g, '_');
+  studentId   = document.getElementById('studentID').value.trim().replace(/\\s+/g, '_');
+  const btn     = document.getElementById('printBtn');
+  const note    = document.getElementById('printNote');
+  const isValid = studentName.length >= 2 && studentId.length >= 2;
+  btn.disabled              = !isValid;
+  btn.style.cursor          = isValid ? 'pointer' : 'not-allowed';
+  btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
+  note.style.display        = isValid ? 'none' : 'block';
+}
+function prepareAndPrint() {
+  const originalTitle = document.title;
+  document.getElementById('print-name').textContent = 'Name: ' + document.getElementById('studentName').value.trim();
+  document.getElementById('print-id').textContent   = 'ID: '   + document.getElementById('studentID').value.trim();
+  document.title = studentId + "_" + studentName + "_" + originalTitle;
+  setTimeout(() => { window.print(); document.title = originalTitle; }, 90);
+}
 <\/script>
+<footer style="margin-top:8rem;">... end</footer>
+
 </body></html>`;
 }
 
@@ -723,6 +780,8 @@ function generateExerciseUIInto(container, data) {
     if (idx < data.length - 1) container.appendChild(document.createElement('hr'));
   });
 }
+
 </script>
+<footer style="margin-top:8rem;">... end</footer>
 </body>
 </html>
