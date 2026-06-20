@@ -188,49 +188,6 @@
   </style>
 </head>
 <body>
-<!-- TEACHER Ideas
-
-**Language learning**
-- synonyms
-- 2 sentence dialog
-- word/definition
-- phrase/meaning
-- lyrics stuff
-- FIB sentence with blank ^^ missing word
-- Word ↔ translation (English ^^ Spanish)
-- Formal ↔ informal/casual
-- Textbook - casual, spoken
-- Base word ↔ colocation ("make" ^^ "a decision")
-- Question ^^ natural answer
-
-**Grammar & usage**
-- Error ↔ correction
-- Active ↔ passive voice version
-
-**General knowledge**
-- Country ↔ capital
-- Date ↔ historical event
-- Symbol ↔ element (Au ^^ Gold)
-- Inventor ↔ invention
-
-**Literature & culture**
-- Quote ↔ author
-- Character ↔ novel
-- Lyric line ↔ song title
-
-**Science & math**
-- Formula ↔ what it calculates
-- Term ↔ definition
-- Cause ↔ effect
-
-**Professional / business**
-- Acronym ↔ full form (ROI ^^ Return on Investment)
-- Problem ↔ solution scenario
-- Job title ↔ responsibility
-
-The sweet spot is anything that has a **clean one-to-one relationship** that can be expressed in a short phrase. The `^^` format naturally enforces that discipline.-->
-
-
 
 <div class="exercise-container">
 
@@ -239,12 +196,12 @@ The sweet spot is anything that has a **clean one-to-one relationship** that can
     <p id="restore-title" style="display:none">MatchMaker</p>
     <textarea id="inputData" rows="18">#Runaway Bride
 
-## Sentence Halves
+## Present Tenses
 Every morning, he drinks ^^ a hot cup of coffee.
 Right now, they are studying ^^ for their final exams.
 She usually walks to school, ^^ but today she is taking the bus.
 
-## Phrase/Meaning
+## Past Tenses
 To bite the bullet means ^^ to face a difficult situation with courage.
 To break a leg means ^^ to wish someone good luck before a performance.
 To spill the beans means ^^ to reveal a secret prematurely.</textarea>
@@ -335,7 +292,7 @@ function parseMarkdown(raw) {
 }
 
 // ─────────────────────────────────────────────
-// 2. UI GENERATOR  (same logic as matching.html)
+// 2. UI GENERATOR
 // ─────────────────────────────────────────────
 function generateExerciseUI(data) {
   const root = document.getElementById('dynamic-exercise-root');
@@ -443,7 +400,7 @@ function handleSelection(element, item) {
   const correctId = activeCard.dataset.sentenceId;
 
   if (item.id === correctId) {
-    activeCard.querySelector('.second-half').textContent = item.second;
+    activeCard.querySelector('.second-half').textContent = ' ' + item.second;
     activeCard.classList.remove('active');
     activeCard.classList.add('completed');
 
@@ -515,36 +472,46 @@ document.getElementById('makeBtn').addEventListener('click', () => {
 
 // ─────────────────────────────────────────────
 // 7. DOWNLOAD BUTTON
+//    Captures outerHTML directly — no separate template.
 // ─────────────────────────────────────────────
 document.getElementById('downloadBtn').addEventListener('click', () => {
   const authoringPanel = document.getElementById('authoring-panel');
-  const markdownText   = document.getElementById('inputData').value;
+  const makeBtn        = document.getElementById('makeBtn');
+  const downloadBtn     = document.getElementById('downloadBtn');
 
   // ── Temporarily mutate DOM for snapshot ──
   authoringPanel.style.display = 'none';
 
-  // Capture the full page HTML
+  // Capture the full page HTML as-is
   const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
 
   // ── Restore DOM immediately ──
   authoringPanel.style.display = '';
   document.title = document.getElementById('restore-title').textContent;
 
-  // ── Build a self-contained file with markdown preserved + authoring hidden ──
-  // We need to inject the hidden panel back with display:none as a permanent state.
-  // Strategy: do a string replacement on the captured HTML.
-  const safeHtml = html.replace(
-    'id="authoring-panel"',
+  // ── Make the authoring panel's hidden state permanent in the captured copy ──
+  // (handles both 'display: none;' and 'display:none' serialization forms)
+  let finalHtml = html.replace(
+    /id="authoring-panel"\s+style="display:\s*none;?"/,
     'id="authoring-panel" style="display:none"'
-  ).replace(
-    '</textarea>',
-    // Preserve markdown as the textarea value
-    ''
   );
 
-  // Rebuild cleanly: replace textarea contents with current markdown,
-  // and mark the authoring panel permanently hidden.
-  const finalHtml = buildDownloadHtml(markdownText);
+  // ── Stamp the live exerciseData into the captured script ──
+  // (pretty-printed so the downloaded file stays readable in a text editor,
+  //  not one giant line of JSON)
+  finalHtml = finalHtml.replace(
+    'let exerciseData = [];',
+    'let exerciseData = ' + JSON.stringify(exerciseData, null, 2) + ';'
+  );
+
+  // ── Wire up card click listeners on load ──
+  // (the downloaded file's cards already exist in the DOM, but the listeners
+  //  are normally only attached when Make is clicked, which never happens
+  //  in the downloaded file — so we add that call here)
+  finalHtml = finalHtml.replace(
+    '<\/script>',
+    'document.addEventListener("DOMContentLoaded", setupCardEventListeners);\n<\/script>'
+  );
 
   const blob = new Blob([finalHtml], { type: 'text/html' });
   const url  = URL.createObjectURL(blob);
@@ -554,234 +521,9 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   a.href     = url;
   a.download = title + '.html';
   a.click();
-  alert('Check browser\'s default download folder.');
+  alert('File downloaded to your browser\'s default download folder.');
   URL.revokeObjectURL(url);
 });
-
-// Builds the final download HTML: authoring panel hidden, markdown preserved
-function buildDownloadHtml(markdown) {
-  // Escape markdown for safe embedding inside a textarea tag
-  const escaped = markdown
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  // Grab current rendered exercise HTML (cards already reset to unanswered)
-  // We re-generate a clean exercise root string from exerciseData
-  const tempDiv = document.createElement('div');
-  generateExerciseUIInto(tempDiv, exerciseData);
-  const exerciseHTML = tempDiv.innerHTML;
-
-  const title = document.getElementById('exercise-title').textContent || 'Matching Exercise';
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
-  <style>
-    body { font-family: sans-serif; padding: 15px; background-color: #f5f7fb; }
-    h1 { font-size: 2rem; color: #025C0E; margin-bottom: 5px; }
-    .main-instructions { background:#F5EBF7; text-align:center; margin-bottom:25px; padding:.2rem; box-shadow:0 0 2px 2px gray; border-radius:7px; }
-    .main-instructions #subHeading { font-weight:bold; font-style:italic; font-size:1.5rem; color:#025C0E; margin-bottom:5px; }
-    .main-instructions p { font-size:0.95rem; color:#64748b; }
-    .exercise-container { max-width:500px; margin:0 auto; }
-    .sentence-card { background:#fff; border:2px solid #e0e0e0; border-radius:8px; padding:15px; margin-bottom:12px; cursor:pointer; transition:border-color 0.2s ease,background-color 0.2s ease; font-size:1.1rem; }
-    .sentence-card.active { border-color:#3b82f6; background-color:#eff6ff; cursor:default; }
-    .sentence-card.completed { border-color:#10b981; background-color:#ecfdf5; cursor:default; }
-    .choice-box { position:relative; margin-top:15px; padding:15px 10px 5px 10px; border-top:1px dashed #cbd5e1; background:#ffffff; }
-    .close-btn { position:absolute; top:5px; right:8px; background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; line-height:1; padding:5px; }
-    .close-btn:hover { color:#64748b; }
-    .choice-item { background:#f3f4f6; padding:12px; margin-bottom:8px; border-radius:6px; cursor:pointer; font-size:1rem; transition:background 0.2s; }
-    .choice-item.incorrect { background:#fee2e2; color:#dc2626; border:1px solid #f87171; animation:shake 0.2s ease-in-out 2; }
-    .hidden { display:none !important; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
-    .print-section { margin-top:2.5rem; padding:16px; background:#fff; border:2px solid #e0e0e0; border-radius:10px; }
-    .print-section .section-label { font-size:0.8rem; font-weight:bold; color:#64748b; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; }
-    .user-info-section { display:flex; gap:12px; margin-bottom:12px; }
-    .input-group { display:flex; flex-direction:column; gap:4px; flex:1; }
-    .input-group label { font-size:0.85rem; font-weight:bold; color:#475569; }
-    .input-group input { padding:8px 10px; border:2px solid #cbd5e1; border-radius:7px; font-size:0.95rem; background:#f8fafc; color:#1e293b; transition:border-color 0.2s; }
-    .input-group input:focus { outline:none; border-color:#3b82f6; background:#fff; }
-    .button-section { display:flex; flex-direction:column; align-items:stretch; gap:6px; }
-    .note { font-size:0.82rem; color:#94a3b8; text-align:center; }
-    #printBtn { padding:11px 0; font-size:1rem; font-weight:bold; border:none; border-radius:8px; background:#95a5a6; color:#fff; cursor:not-allowed; transition:background 0.2s; }
-    #print-header { display:none; }
-    @media print { .print-section { display:none !important; } body { background:#fff; padding:0; } .sentence-card { break-inside:avoid; } #print-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #025C0E; padding-bottom:6px; margin-bottom:14px; font-size:0.95rem; } }
-  </style>
-</head>
-<body>
-
-<!-- AUTHORING PANEL: hidden in exercise view; unhide via DevTools to edit -->
-<div id="authoring-panel" style="display:none">
-  <textarea id="inputData">${escaped}</textarea>
-</div>
-
-<div class="exercise-container">
-  <div id="print-header">
-    <span id="print-name"></span>
-    <span id="print-id"></span>
-  </div>
-  <div class="main-instructions" id="exercise-header">
-    <h1 id="exercise-title">${title}</h1>
-    <div id="subHeading">Matching Exercise</div>
-    <p>Tap a card below, then select its correct matching counterpart.</p>
-  </div>
-  <div id="dynamic-exercise-root">${exerciseHTML}</div>
-
-  <div class="print-section">
-    <div class="section-label">🖨 Print / Save PDF</div>
-    <div class="user-info-section">
-      <div class="input-group">
-        <label for="studentName">Name:</label>
-        <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
-      </div>
-      <div class="input-group">
-        <label for="studentID">ID#:</label>
-        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
-      </div>
-    </div>
-    <div class="button-section">
-      <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
-      <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print / Save PDF</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const exerciseData = ${JSON.stringify(exerciseData)};
-let activeCard = null;
-let activeChoiceBox = null;
-
-document.addEventListener("DOMContentLoaded", () => {
-  setupCardEventListeners();
-});
-
-function setupCardEventListeners() {
-  document.querySelectorAll('.sentence-card').forEach(card => {
-    card.addEventListener('click', e => {
-      if (card.classList.contains('completed') || card.classList.contains('active') || e.target.closest('.choice-box')) return;
-      if (activeCard) closeMenu();
-      activeCard = card;
-      activeCard.classList.add('active');
-      const parentSection = card.closest('.exercise-section');
-      const sectionId = parentSection.dataset.sectionId;
-      activeChoiceBox = parentSection.querySelector('.choice-box');
-      const choicesList = parentSection.querySelector('.choices-list');
-      const sectionData = exerciseData.find(sec => sec.sectionId === sectionId);
-      renderShuffledChoices(choicesList, sectionData.items);
-      activeCard.appendChild(activeChoiceBox);
-      activeChoiceBox.classList.remove('hidden');
-    });
-  });
-  document.getElementById('dynamic-exercise-root').addEventListener('click', e => {
-    if (e.target.classList.contains('close-btn')) { e.stopPropagation(); closeMenu(); }
-  });
-}
-
-function renderShuffledChoices(listElement, itemsArray) {
-  listElement.innerHTML = '';
-  const shuffled = [...itemsArray];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  shuffled.forEach(item => {
-    const li = document.createElement('li');
-    li.className = 'choice-item';
-    li.textContent = item.second;
-    li.addEventListener('click', () => handleSelection(li, item));
-    listElement.appendChild(li);
-  });
-}
-
-function handleSelection(element, item) {
-  const correctId = activeCard.dataset.sentenceId;
-  if (item.id === correctId) {
-    activeCard.querySelector('.second-half').textContent = item.second;
-    activeCard.classList.remove('active');
-    activeCard.classList.add('completed');
-    const parentSection = activeCard.closest('.exercise-section');
-    parentSection.appendChild(activeChoiceBox);
-    activeChoiceBox.classList.add('hidden');
-    activeCard = null;
-    activeChoiceBox = null;
-  } else {
-    element.classList.add('incorrect');
-    setTimeout(() => element.classList.remove('incorrect'), 800);
-  }
-}
-
-function closeMenu() {
-  if (!activeCard) return;
-  activeCard.classList.remove('active');
-  const parentSection = activeCard.closest('.exercise-section');
-  parentSection.appendChild(activeChoiceBox);
-  activeChoiceBox.classList.add('hidden');
-  activeCard = null;
-  activeChoiceBox = null;
-}
-
-let studentName = "";
-let studentId   = "";
-function validateForm() {
-  studentName = document.getElementById('studentName').value.trim().replace(/\\s+/g, '_');
-  studentId   = document.getElementById('studentID').value.trim().replace(/\\s+/g, '_');
-  const btn     = document.getElementById('printBtn');
-  const note    = document.getElementById('printNote');
-  const isValid = studentName.length >= 2 && studentId.length >= 2;
-  btn.disabled              = !isValid;
-  btn.style.cursor          = isValid ? 'pointer' : 'not-allowed';
-  btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
-  note.style.display        = isValid ? 'none' : 'block';
-}
-function prepareAndPrint() {
-  const originalTitle = document.title;
-  document.getElementById('print-name').textContent = 'Name: ' + document.getElementById('studentName').value.trim();
-  document.getElementById('print-id').textContent   = 'ID: '   + document.getElementById('studentID').value.trim();
-  document.title = studentId + "_" + studentName + "_" + originalTitle;
-  setTimeout(() => { window.print(); document.title = originalTitle; }, 90);
-}
-<\/script>
-<footer style="margin-top:8rem;">... end</footer>
-
-</body></html>`;
-}
-
-// Generates exercise DOM into a given container element (for download snapshot)
-function generateExerciseUIInto(container, data) {
-  container.innerHTML = '';
-  data.forEach((section, idx) => {
-    const sectionEl = document.createElement('div');
-    sectionEl.className = 'exercise-section';
-    sectionEl.dataset.sectionId = section.sectionId;
-
-    if (section.sectionTitle) {
-      const titleEl = document.createElement('h2');
-      titleEl.textContent = section.sectionTitle;
-      sectionEl.appendChild(titleEl);
-    }
-
-    section.items.forEach(item => {
-      const cardEl = document.createElement('div');
-      cardEl.className = 'sentence-card';
-      cardEl.dataset.sentenceId = item.id;
-      cardEl.innerHTML = `<div class="card-text"><span class="first-half">${item.first}</span><span class="second-half"></span></div>`;
-      sectionEl.appendChild(cardEl);
-    });
-
-    const choiceBoxEl = document.createElement('div');
-    choiceBoxEl.className = 'choice-box hidden';
-    choiceBoxEl.innerHTML = `<button class="close-btn" aria-label="Close choices">&times;</button><ul class="choices-list"></ul>`;
-    sectionEl.appendChild(choiceBoxEl);
-
-    container.appendChild(sectionEl);
-    if (idx < data.length - 1) container.appendChild(document.createElement('hr'));
-  });
-}
-
 </script>
-<footer style="margin-top:8rem;">... end</footer>
 </body>
 </html>
