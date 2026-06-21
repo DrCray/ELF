@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Have a Coke and a Santa – Podcast</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e8e0f0;
+    --surface: #f0ecf8;
+    --surface2: #f5f2fc;
+    --border: #c4b8d8;
+    --text: #1e1530;
+    --text-muted: #6b5a8a;
+    --accent: #7c3aed;
+    --accent2: #5b8dd9;
+    --jake: #1a7a55;
+    --priya: #b83050;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header — light purple override: dark bg, light text */
+  .header {
+    background: #2d1f48;
+    padding: 1.5rem 1.25rem;
+    border-radius: 8px;
+    border-bottom: none;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .show-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c084fc;
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #f0ecf8;
+    margin-bottom: 0.4rem;
+  }
+
+  .episode-tag {
+    font-size: 0.8rem;
+    color: #a5f3d0;
+    font-style: italic;
+  }
+
+  /* Lede */
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.75;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .nav-links a:hover {
+    background: #ebe4f8;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .nav-links a::before { font-size: 0.9em; }
+  .nav-links a.article::before { content: '📄'; }
+  .nav-links a.quiz::before    { content: '✏️'; }
+  .nav-links a.home::before    { content: '🏠'; }
+
+  /* Fake player */
+  .player-wrap {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .player-wrap a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .player:hover {
+    border-color: var(--accent);
+    background: #ebe4f8;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .player:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #ffffff;
+    margin-left: 3px;
+  }
+
+  .player-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 18%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .progress-dot {
+    position: absolute;
+    top: 50%;
+    left: 18%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ext-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .player:hover .ext-icon { color: var(--accent); }
+
+  /* Script */
+  .script-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .script-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .script-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .speaker {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.05em;
+    text-align: right;
+  }
+
+  .speaker.ben  { color: var(--jake); }
+  .speaker.maya { color: var(--priya); }
+
+  .speech {
+    font-size: 0.92rem;
+    color: #2d1f48;
+    line-height: 1.65;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .line:last-child .speech {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 400px) {
+    .line {
+      grid-template-columns: 44px 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <p class="show-label">Everyday Stories &nbsp;·&nbsp; Podcast</p>
+    <h1>Have a Coke and a ... Santa?</h1>
+    <p style="color:white;"><em>"Have a coke and a smile!" was a famous ad campaign slogan for Coca-Cola in the early '80s</em></p>
+    <p class="episode-tag">Podcast</p>
+  </header>
+
+  <!-- Lede -->
+  <p class="lede">Everyone knows Santa — the rosy-cheeked, red-suited, round-bellied man who shows up every December. But where did that image actually come from? Ben and Maya trace the surprising corporate origin story behind the world's most famous holiday icon.</p>
+
+  <!-- Nav links -->
+  <nav class="nav-links">
+    <a href="cokeSantaArticle.html" class="article" target="_blank">Read the Article</a>
+    <a href="cokeSantaPodcQuiz.html" class="quiz"  target="_blank">Take the Quiz</a>
+    <!--a href="mainPage.html" class="home">Main Page</a-->
+  </nav>
+
+  <!-- Fake player -->
+  <div class="player-wrap">
+    <a href="https://youtu.be/PLACEHOLDER" target="_blank" rel="noopener">
+      <div class="player">
+        <div class="play-btn"></div>
+        <div class="player-info">
+          <div class="player-title">Santa's Red Suit — Everyday Stories Podcast</div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="player-times">
+            <span>0:26</span>
+            <span>3:48</span>
+          </div>
+        </div>
+        <span class="ext-icon">↗</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Script -->
+  <section class="script-section">
+    <div class="script-label">Podcast Script</div>
+    <div class="dialogue">
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">So Maya, what do you think of when I say Santa?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">The man on the street corners ringing bells during the Christmas holidays, and the guy sitting on his throne in every mall.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Did you ever do that when you were a kid?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Not really a big fan of sitting on a stranger's lap.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Okay, so when I say Coca-Cola, what comes to mind?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Lunchtime. I just finished a big cup at the hot dog stand. Now I'm full of sugar and energy.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">So what do these two things have in common?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Have no idea, but I think you're about to tell me.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">I just read an article that says Santa wasn't always a jolly fat man with a red suit.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">And that relates to Coca-Cola how?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Believe it or not, Coca-Cola imprinted our modern view of Santa into the public mind.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">I mean, doesn't Santa go back to St. Nick some hundreds of years ago? Coca-Cola wasn't around back then.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Right, but until Coca-Cola, Santa was seen in many different ways — tall, thin, wearing blue, green, or brown robes.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Okay, I think I see where you're going. So Coca-Cola invented the fat, jolly old man in the red suit.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Not exactly. Santa was depicted by some in that way before, but the depictions were totally inconsistent. Then, in 1931, Coke had a massive problem: nobody wanted to drink cold soda in the dead of winter. It was strictly a summer thing.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Ah, so they needed a winter miracle.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Exactly. They hired this artist named Sundblom to create a friendly version of Santa for their holiday ads. Sundblom based his drawing on that famous poem, <em>'Twas the Night Before Christmas</em> — you know, the one with the rosy cheeks, twinkling eyes, and the round belly that shook like a bowl full of jelly?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Okay, but what about the red suit?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">He made the suit bright red and white specifically to match the Coca-Cola logo.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Wait, seriously? So they dressed Santa in corporate colors?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Pretty much! And they didn't just do it once. They ran these ads everywhere — magazines, billboards, store posters — this ad campaign ran for thirty-three consecutive years until 1964.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Wow. So they took a popular legend and slapped their branding on him. Clever.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Exactly. Coca-Cola didn't invent Santa, but their marketing department cemented today's version of Santa.</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker maya">Maya</span>
+        <p class="speech">Man, good marketing is powerful. Suddenly, I'm feeling thirsty. Coke?</p>
+      </div>
+
+      <div class="line">
+        <span class="speaker ben">Ben</span>
+        <p class="speech">Sure, why not. And that wraps up today's podcast.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">Everyday Stories Podcast &nbsp;·&nbsp; Santa's Red Suit</div>
+
+</div>
+</body>
+</html>
