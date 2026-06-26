@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Swift Podcast - Cloze/Select Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+             display: flex;
+      flex-direction: column;
+      gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .dialogLine {
+            margin: .9rem 0;
+            font-size: .9rem;
+            line-height: 1.5;
+            border: thin solid #D2C8C8;
+            box-shadow: 0 0 4px #D2C8C8;
+            border-radius: 7px;
+            padding: .5rem
+        }
+        select {
+            
+            font-size: .8rem;
+            border: 2px solid lightblue;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+  
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        
+        footer { margin-top: 15rem; }
+        
+        
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+   
+   
+ #theWordList {
+    display: none; /* Initially hide theWordList div */
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  } 
+  #subtitle {
+    font-size: 120%;
+  }
+    
+</style>
+
+</head>
+<body>
+    <div class="header">
+        <h1>Taylor Swift Podcast</h1>
+        <p id="subtitle">Cloze/Select Quiz</p>
+        <p>Complete the sentences using vocabulary from the podcast</p>
+    </div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column</button>
+
+    <div class="output" id="output"></div>
+    
+</div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+    
+    <div class="section">
+        <h3>Podcast Script with Blanks</h3>
+<h2>Taylor Swift - Podcast</h2><div class="dialogLine"><strong>Host:</strong> So I finally read that article about Taylor Swift, and it really got me thinking. The big idea is that for her fans, she’s not just a singer—she’s almost a best friend.</div><div class="dialogLine"><strong>Guest:</strong> Honestly, that’s no <select data-answer="exaggeration"><option value="">-- Select --</option><option value="die-hard">die-hard</option><option value="couldn’t agree more">couldn’t agree more</option><option value="exaggeration">exaggeration</option><option value="game changer">game changer</option><option value="secret sauce">secret sauce</option></select>. I know a few <select data-answer="die-hard"><option value="">-- Select --</option><option value="couldn’t agree more">couldn’t agree more</option><option value="secret sauce">secret sauce</option><option value="flips the script">flips the script</option><option value="takeaway">takeaway</option><option value="die-hard">die-hard</option></select> Swifties, and the way they talk about her, you’d think they grew up together.</div><div class="dialogLine"><strong>Host:</strong> Right. The writer says her songwriting just <select data-answer="resonates"><option value="">-- Select --</option><option value="puts into words">puts into words</option><option value="goes out of her way">goes out of her way</option><option value="stood out">stood out</option><option value="resonates">resonates</option><option value="bonding">bonding</option></select> with people. She takes her own breakups and growing pains and somehow <select data-answer="puts into words"><option value="">-- Select --</option><option value="puts into words">puts into words</option><option value="fixate on">fixate on</option><option value="game changer">game changer</option><option value="flips the script">flips the script</option><option value="got to hand it to her">got to hand it to her</option></select> what the rest of us only feel.</div><div class="dialogLine"><strong>Guest:</strong> That’s the <select data-answer="secret sauce"><option value="">-- Select --</option><option value="got to hand it to her">got to hand it to her</option><option value="secret sauce">secret sauce</option><option value="exaggeration">exaggeration</option><option value="give it another spin">give it another spin</option><option value="reads the room">reads the room</option></select>, if you ask me. When a song captures exactly what you’re going through, it really <select data-answer="hits home"><option value="">-- Select --</option><option value="give it another spin">give it another spin</option><option value="stood out">stood out</option><option value="puts into words">puts into words</option><option value="on the same page">on the same page</option><option value="hits home">hits home</option></select>. It’s like she <select data-answer="reads the room"><option value="">-- Select --</option><option value="word of mouth">word of mouth</option><option value="die-hard">die-hard</option><option value="mind-blowing">mind-blowing</option><option value="reads the room">reads the room</option><option value="going through the motions">going through the motions</option></select> of a whole generation.</div><div class="dialogLine"><strong>Host:</strong> What <select data-answer="stood out"><option value="">-- Select --</option><option value="game changer">game changer</option><option value="stood out">stood out</option><option value="word of mouth">word of mouth</option><option value="flips the script">flips the script</option><option value="showing up">showing up</option></select> to me was the community part—the “Swifties.” She actually <select data-answer="goes out of her way"><option value="">-- Select --</option><option value="die-hard">die-hard</option><option value="give it another spin">give it another spin</option><option value="stood out">stood out</option><option value="goes out of her way">goes out of her way</option><option value="takeaway">takeaway</option></select> to connect with them: surprise gifts, even inviting fans to her house for those “Secret Sessions.”</div><div class="dialogLine"><strong>Guest:</strong> And you can tell it’s not fake. Fans always know when a star is just <select data-answer="going through the motions"><option value="">-- Select --</option><option value="going through the motions">going through the motions</option><option value="game changer">game changer</option><option value="shared experience">shared experience</option><option value="do a double take">do a double take</option><option value="goes out of her way">goes out of her way</option></select> versus really <select data-answer="showing up"><option value="">-- Select --</option><option value="goes out of her way">goes out of her way</option><option value="got to hand it to her">got to hand it to her</option><option value="takeaway">takeaway</option><option value="reads the room">reads the room</option><option value="showing up">showing up</option></select> for them. We’re totally <select data-answer="on the same page"><option value="">-- Select --</option><option value="on the same page">on the same page</option><option value="do a double take">do a double take</option><option value="shared experience">shared experience</option><option value="hits home">hits home</option><option value="goes out of her way">goes out of her way</option></select> there.</div><div class="dialogLine"><strong>Host:</strong> Then there’s the money side, which is honestly <select data-answer="mind-blowing"><option value="">-- Select --</option><option value="give it another spin">give it another spin</option><option value="showing up">showing up</option><option value="mind-blowing">mind-blowing</option><option value="die-hard">die-hard</option><option value="stood out">stood out</option></select>. The “Eras Tour” made over two billion dollars. I had to <select data-answer="do a double take"><option value="">-- Select --</option><option value="do a double take">do a double take</option><option value="therapy session">therapy session</option><option value="got to hand it to her">got to hand it to her</option><option value="reads the room">reads the room</option><option value="showing up">showing up</option></select> when I read that number.</div><div class="dialogLine"><strong>Guest:</strong> Biggest tour in history! But I’m glad the article doesn’t just <select data-answer="fixate on"><option value="">-- Select --</option><option value="fixate on">fixate on</option><option value="secret sauce">secret sauce</option><option value="stood out">stood out</option><option value="goes out of her way">goes out of her way</option><option value="couldn’t agree more">couldn’t agree more</option></select> the cash. It treats the whole thing as a giant <select data-answer="shared experience"><option value="">-- Select --</option><option value="stood out">stood out</option><option value="mind-blowing">mind-blowing</option><option value="shared experience">shared experience</option><option value="on the same page">on the same page</option><option value="therapy session">therapy session</option></select>.</div><div class="dialogLine"><strong>Host:</strong> Exactly. For a lot of people, going was a real <select data-answer="bucket-list"><option value="">-- Select --</option><option value="hits home">hits home</option><option value="secret sauce">secret sauce</option><option value="puts into words">puts into words</option><option value="bucket-list">bucket-list</option><option value="game changer">game changer</option></select> moment. Total strangers <select data-answer="bonding"><option value="">-- Select --</option><option value="word of mouth">word of mouth</option><option value="bucket-list">bucket-list</option><option value="fixate on">fixate on</option><option value="bonding">bonding</option><option value="goes out of her way">goes out of her way</option></select> in a stadium over the same lyrics—how often does that happen?</div><div class="dialogLine"><strong>Guest:</strong> It kind of <select data-answer="flips the script"><option value="">-- Select --</option><option value="give it another spin">give it another spin</option><option value="goes out of her way">goes out of her way</option><option value="takeaway">takeaway</option><option value="flips the script">flips the script</option><option value="bonding">bonding</option></select> on what a concert even is. Part show, part reunion, part <select data-answer="therapy session"><option value="">-- Select --</option><option value="exaggeration">exaggeration</option><option value="therapy session">therapy session</option><option value="couldn’t agree more">couldn’t agree more</option><option value="hits home">hits home</option><option value="fixate on">fixate on</option></select>, if I’m being honest.</div><div class="dialogLine"><strong>Host:</strong> Ha, well said. And a lot of that buzz spread through pure <select data-answer="word of mouth"><option value="">-- Select --</option><option value="going through the motions">going through the motions</option><option value="word of mouth">word of mouth</option><option value="bucket-list">bucket-list</option><option value="therapy session">therapy session</option><option value="game changer">game changer</option></select>—friends telling friends they just had to be there.</div><div class="dialogLine"><strong>Guest:</strong> For sure. The streaming numbers were a <select data-answer="game changer"><option value="">-- Select --</option><option value="bucket-list">bucket-list</option><option value="game changer">game changer</option><option value="bonding">bonding</option><option value="give it another spin">give it another spin</option><option value="exaggeration">exaggeration</option></select> too. So my big <select data-answer="takeaway"><option value="">-- Select --</option><option value="going through the motions">going through the motions</option><option value="stood out">stood out</option><option value="on the same page">on the same page</option><option value="puts into words">puts into words</option><option value="takeaway">takeaway</option></select> is that none of this is luck—it’s talent plus effort plus actually caring.</div><div class="dialogLine"><strong>Host:</strong> You’ve <select data-answer="got to hand it to her"><option value="">-- Select --</option><option value="couldn’t agree more">couldn’t agree more</option><option value="shared experience">shared experience</option><option value="got to hand it to her">got to hand it to her</option><option value="resonates">resonates</option><option value="give it another spin">give it another spin</option></select>. Whether or not she’s your style, she built something way bigger than music.</div><div class="dialogLine"><strong>Guest:</strong> I <select data-answer="couldn’t agree more"><option value="">-- Select --</option><option value="bonding">bonding</option><option value="hits home">hits home</option><option value="couldn’t agree more">couldn’t agree more</option><option value="goes out of her way">goes out of her way</option><option value="bucket-list">bucket-list</option></select>. Actually, this chat makes me want to <select data-answer="give it another spin"><option value="">-- Select --</option><option value="give it another spin">give it another spin</option><option value="takeaway">takeaway</option><option value="game changer">game changer</option><option value="mind-blowing">mind-blowing</option><option value="going through the motions">going through the motions</option></select> and really listen this time.</div>
+    
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        // Sanitize input to prevent injection
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        // Validate input length and content
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Check if both fields are valid and changed from defaults
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            // Check if changed from defaults
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            // Check if valid
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            // Enable button only if both changed AND both valid
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        // Validate on blur (when user leaves field)
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        // Also check on input to provide immediate feedback for enabling button
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        // Clear default on focus
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        // PDF Print functionality
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+
+</div>
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        // Force hard refresh on any page reload
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });
+
+        // Toggle Study Mode with save & restore of student selections
+        let answersVisible = false;
+        let savedSelections = [];
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            const selects = document.querySelectorAll('select');
+
+            if (answersVisible) {
+                // Save each select's current value and CSS classes before showing answers
+                savedSelections = Array.from(selects).map(select => ({
+                    value: select.value,
+                    correct: select.classList.contains('correct'),
+                    incorrect: select.classList.contains('incorrect')
+                }));
+
+                // Show correct answers
+                selects.forEach(select => {
+                    select.value = select.getAttribute('data-answer');
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                });
+            } else {
+                // Restore saved selections
+                selects.forEach((select, i) => {
+                    const saved = savedSelections[i];
+                    if (saved) {
+                        select.value = saved.value;
+                        select.classList.toggle('correct', saved.correct);
+                        select.classList.toggle('incorrect', saved.incorrect);
+                    }
+                });
+                savedSelections = [];
+            }
+
+            button.textContent = answersVisible ? ' Close Study Mode ' : ' Study Mode ';
+        }
+    </script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}
+</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column') 
+        ? 'Close Column View' 
+        : 'View as Column';
+      updateOutput();
+    }
+
+    // Initial render
+    updateOutput();
+    
+    
+    
+  
+</script>   
+  
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+
+</script>
+    <footer>...
+</footer>
+
+</body>
+
+</html>

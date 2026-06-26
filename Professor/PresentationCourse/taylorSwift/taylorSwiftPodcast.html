@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Swift - Podcast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #2a1f3d;
+  --surface: #3a2e52;
+  --surface2: #463a63;
+  --border: #5f4a7f;
+
+  --text: #f4edff;
+  --text-muted: #d4c4f0;
+
+  --accent: #e0b3ff;
+  --accent2: #c99eff;
+
+  --jake: #a5f3d0;
+  --priya: #fda4af;
+}
+
+html { font-size: 100%; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header & Titles */
+.header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  animation: fadeUp 0.6s ease both;
+}
+
+h1, h2, h3 {
+  color: var(--text);
+}
+
+h2 {
+  color: #e0b3ff;
+}
+
+/* Lede */
+.lede {
+  font-size: 1.05rem;
+  color: #e8e0ff;
+  line-height: 1.75;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 2rem;
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #463a63;
+  transform: translateY(-1px);
+}
+
+/* Dialogue Boxes */
+.dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  background: #1a1525;
+  padding: 1.1rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid #3f3559;
+  box-shadow: inset 0 4px 12px #E0D7F1;
+  transition: all 0.2s;
+}
+
+.line:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5),
+              inset 0 2px 6px rgba(255,255,255,0.1);
+}
+
+.speaker {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-top: 0.1em;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+.speaker.jake  { color: var(--jake); }
+.speaker.priya { color: var(--priya); }
+
+.speech {
+  font-size: 0.95rem;
+  color: white; font-weight:500;
+  line-height: 1.7;
+}
+
+/* Audio Player */
+.fake-player-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.play-emoji {
+  font-size: 1.6rem;
+}
+
+.progress-track {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 65%;
+  background: linear-gradient(to right, var(--accent), #f0c4ff);
+  border-radius: 3px;
+}
+
+.audio-label {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* Script Section */
+.section h3 {
+  color: var(--accent);
+  margin-bottom: 1.2rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .line {
+    grid-template-columns: 44px 1fr;
+    padding: 1rem;
+  }
+}
+
+/* 1. Unvisited link */
+a:link {
+  color: white; /* Blue */
+}
+
+/* 2. Visited link */
+a:visited {
+  color: lightpink; /* Purple */
+}
+
+/* 3. Mouse hover */
+a:hover {
+  color: pink; /* Dark Blue */
+}
+
+/* 4. Clicking down on the link */
+a:active {
+  color: yellow; /* Red */
+}
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">Taylor Swift - Podcast</h2>
+            <div style="background:#F4DCFE; color:purple; padding: 1rem; border-radius:8px; box-shadow: inset 0 0 10px 2px #4A3F5D">
+            <p style="color:#4A3F5D; font-size:110%;">Mega star, best friend</p>
+            <p id="aboutPodcast" style="color:purple;font-weight:500; font-style:italic;">A discussion of a recent article the podcasters have read concerning Taylor Swift and her close bond with her fans</p></div>
+            <div style="margin: .4rem 0 0 0;
+                        padding:.6rem;">
+            <a href="taylorSwiftArticle.html" target="_blank">
+                📖&nbsp;<span>Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="taylorSwiftPodcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide 📚
+                </a>
+                <a href="taylorSwiftPodcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz 📝
+                </a>
+                <a href="taylorSwiftPodcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz 📝
+                </a>
+            </div>
+            </div>
+        </div>
+        <br>
+
+        <!-- AUDIO BLOCK -->
+        <div id="audioLinks">
+            <div class="audio-link-wrapper">
+                <a href="https://youtu.be/tPxeMpze3po" target="_blank" style="display: flex; width: 100%; text-decoration: none; color: inherit;">
+                    <div class="fake-player-bar">
+                        <div class="play-emoji">▶️</div>
+                        <div class="progress-track">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="audio-label">Podcast</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="section">
+            <h3>Taylor Swift - Podcast</h3>
+
+            <div class="dialogue">
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">So I finally read that article about Taylor Swift, and it really got me thinking. The big idea is that for her fans, she’s not just a singer—she’s almost a best friend.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">Honestly, that’s no exaggeration. I know a few die-hard Swifties, and the way they talk about her, you’d think they grew up together.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">Right. The article says her songwriting just resonates with people. She takes her own breakups and growing pains and somehow puts into words what the rest of us can feel.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">That’s the secret sauce, if you ask me. When a song captures exactly what you’re going through, it really hits home. It’s like she reads the room of a whole generation.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">What stood out to me was the community part—the “Swifties.” She actually goes out of her way to connect with them: surprise gifts, even inviting fans to her house for those “Secret Sessions.”</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">And you can tell it’s not fake. Fans always know when a star is just going through the motions versus really showing up for them. We’re totally on the same page there.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">Then there’s the money side, which is honestly mind-blowing. The “Eras Tour” made over two billion dollars, which, by the way, happens to be Taylor's net worth these days.  I had to do a double take when I read that number.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">Biggest tour in history! But I’m glad the article doesn’t just fixate on the cash. It treats the whole thing as a giant shared experience.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">Exactly. For a lot of people, going was a real bucket-list moment. Total strangers bonding in a stadium over the same lyrics—how often does that happen?</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">It kind of flips the script on what a concert even is. Part show, part reunion, part therapy session, if I’m being honest.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">Ha, well said. And a lot of that buzz spread through pure word of mouth—friends telling friends they just had to be there.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">For sure. The streaming numbers were a game changer too. So my big takeaway is that none of this is luck—it’s talent plus effort plus actually caring.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker">Host</div>
+                    <div class="speech">You’ve got to hand it to her. Whether or not she’s your style, she built something way bigger than music.</div>
+                </div>
+
+                <div class="line">
+                    <div class="speaker priya">Guest</div>
+                    <div class="speech">I couldn’t agree more. Actually, this chat makes me want to give her music another spin and really listen this time.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
