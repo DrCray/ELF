@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popcorn and a Movie Vocabulary Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .vocab-card {
+            background: linear-gradient(145deg, #2d2d44, #252536);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #39395a;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #e94560;
+        }
+        .card-closed {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e94560;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-open {
+            padding: 0;
+            display: none;
+        }
+        .card-header {
+            background-color: #e94560;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .definition {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #ccccdd;
+        }
+        .example {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #aaccff;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff5773;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        .hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8888aa;
+            font-style: italic;
+        }
+/* Light mode (default) */
+/* Light mode (default) - blue theme */
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #1d1d1f;
+}
+
+body.light-mode h1 {
+    color: #1e40af;                       /* blue-700 */
+    text-shadow: 0 0 8px rgba(30, 64, 175, 0.25);
+}
+
+body.light-mode .vocab-card {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);  /* very light blue tint */
+    border: 1px solid #dbeafe;            /* blue-100 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;                /* blue-500 */
+}
+
+body.light-mode .card-closed {
+    color: #1e40af;                       /* blue-700 */
+}
+
+body.light-mode .card-header {
+    background-color: #1e40af;            /* blue-700 */
+    color: white;
+}
+
+body.light-mode .definition {
+    color: #1E40AF;                    /* gray-500 — softer, less attention */
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: rgba(59, 130, 246, 0.10);   /* light blue background */
+    padding: .2rem .3rem;
+    border-radius: 0 10px 10px 0;
+    border-left: 5px solid #3b82f6;               /* blue-500, thicker border */
+
+}
+
+/* Example - more prominent */
+body.light-mode .example {
+
+    border-left: 5px solid #3b82f6;               /* blue-500, thicker border */
+    padding: 16px 18px 16px 22px;
+    border-radius: 0 10px 10px 0;
+    color: #1e293b;                               /* slate-900 — dark text for contrast */
+    line-height: 1.65;
+    font-size: 1.08rem;
+    font-weight: 500;                             /* slightly bolder */
+    margin: 16px 0;
+}
+
+body.light-mode .example-title {
+    color: #1d4ed8;                       /* blue-600 */
+}
+
+body.light-mode button {
+    background-color: #1d4ed8;            /* blue-600 */
+    color: white;
+}
+
+body.light-mode button:hover {
+    background-color: #3b82f6;            /* blue-500 */
+}
+
+body.light-mode .hint,
+body.light-mode footer {
+    color: #4b5563;                       /* gray-600 */
+}
+
+/* Dark mode styles (what you already have, just scoped) */
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+
+body.dark-mode h1 {
+    color: #e94560;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+
+
+/* ... your original dark styles can stay as they are ... */
+    </style>
+</head>
+<body>
+    <h1>Popcorn and a Movie Vocabulary Cards</h1>
+    <div class="hint">Click on any card to reveal the definition and example. Click again to close it.</div>
+    
+    <div class="controls">
+        <button id="openAll">Open All Cards</button>
+        <button id="closeAll">Close All Cards</button>
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+    
+    <div class="cards-container" id="cardsContainer">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+    
+    <footer>
+        Vocabulary extracted from "Popcorn and a Movie" text | Created for learning purposes
+    </footer>
+
+    <script>
+        // Vocabulary data: word/phrase, definition, example
+        const vocabulary = [
+            {
+                word: "sensory",
+                definition: "Relating to the physical senses (sight, smell, taste, touch, and hearing).",
+                example: "The spa offers a relaxing sensory experience with soft music, dim lights, and the scent of lavender."
+            },
+            {
+                word: "phenomenon",
+                definition: "A remarkable or notable fact, event, or situation, especially one that is widely observed.",
+                example: "The sudden popularity of the dance video became a global phenomenon almost overnight."
+            },
+            {
+                word: "street vendors",
+                definition: "People who sell food or goods from a stall or cart on the street.",
+                example: "In Bangkok, street vendors line the sidewalks selling noodles, fresh fruit, and grilled meat."
+            },
+            {
+                word: "socialized",
+                definition: "Mixed and interacted with other people in a friendly way.",
+                example: "At the conference, guests socialized over coffee before the first speaker began."
+            },
+            {
+                word: "revenue",
+                definition: "Income, especially the money a business or organization receives from its activities.",
+                example: "The bakery's holiday cookie sales brought in extra revenue during December."
+            },
+            {
+                word: "profit margin",
+                definition: "The difference between the cost of making something and the price it sells for.",
+                example: "Selling handmade jewelry has a high profit margin because the materials are inexpensive."
+            },
+            {
+                word: "firmly",
+                definition: "In a strong, steady, or definite way.",
+                example: "By the end of the season, the young player had firmly earned a spot on the starting team."
+            },
+            {
+                word: "aroma",
+                definition: "A pleasant, noticeable smell.",
+                example: "The aroma of fresh bread drifted from the kitchen and filled the whole house."
+            },
+            {
+                word: "enhance",
+                definition: "To improve the quality, value, or attractiveness of something.",
+                example: "A squeeze of lemon can enhance the flavor of grilled fish."
+            },
+            {
+                word: "immersed",
+                definition: "Deeply involved or absorbed in something; completely surrounded by it.",
+                example: "She was so immersed in her novel that she forgot to eat lunch."
+            },
+            {
+                word: "vice-versa",
+                definition: "With the order or relationship reversed; the other way around.",
+                example: "He helps her with math, and vice-versa, she helps him with writing."
+            },
+            {
+                word: "synonymous",
+                definition: "So closely associated that one thing strongly suggests the other.",
+                example: "For many travelers, the city of Paris has become synonymous with romance."
+            },
+            {
+                word: "combined",
+                definition: "Joined or mixed together to form a single thing.",
+                example: "The chef combined sweet and spicy flavors to create a unique sauce."
+            },
+            {
+                word: "expanded",
+                definition: "Became larger or grew in size, number, or range.",
+                example: "The small coffee shop expanded into a chain with twelve locations."
+            },
+            {
+                word: "ritual",
+                definition: "A series of actions performed regularly and in the same way each time.",
+                example: "Every Sunday morning, making pancakes together is a family ritual."
+            },
+            {
+                word: "association",
+                definition: "A connection or link in the mind between one thing and another.",
+                example: "For me, the smell of pine has a strong association with winter holidays."
+            },
+            {
+                word: "enthusiasts",
+                definition: "People who are very interested in and excited about a particular activity or subject.",
+                example: "The car show attracted hundreds of vintage automobile enthusiasts."
+            },
+            {
+                word: "go-to",
+                definition: "Most reliable or most frequently chosen for a particular purpose.",
+                example: "Whenever I need a quick dinner, pasta is my go-to meal."
+            }
+        ];
+
+        // Function to create cards
+        function createCards() {
+            const container = document.getElementById('cardsContainer');
+            
+            vocabulary.forEach(item => {
+                // Create card element
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.dataset.word = item.word;
+                
+                // Closed state
+                const closedDiv = document.createElement('div');
+                closedDiv.className = 'card-closed';
+                closedDiv.textContent = item.word;
+                
+                // Open state
+                const openDiv = document.createElement('div');
+                openDiv.className = 'card-open';
+                
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = item.word;
+                
+                const content = document.createElement('div');
+                content.className = 'card-content';
+                
+                const definition = document.createElement('div');
+                definition.className = 'definition';
+                definition.innerHTML = `<strong>Definition:</strong> ${item.definition}`;
+                
+                const example = document.createElement('div');
+                example.className = 'example';
+                example.innerHTML = `<div class="example-title">Example</div>${item.example}`;
+                
+                content.appendChild(definition);
+                content.appendChild(example);
+                
+                openDiv.appendChild(header);
+                openDiv.appendChild(content);
+                
+                card.appendChild(closedDiv);
+                card.appendChild(openDiv);
+                
+                // Add click event to toggle card
+                card.addEventListener('click', function(e) {
+                    // Don't toggle if clicking on buttons in controls
+                    if (e.target.tagName === 'BUTTON') return;
+                    
+                    const isOpen = this.querySelector('.card-open').style.display === 'block';
+                    
+                    if (isOpen) {
+                        this.querySelector('.card-open').style.display = 'none';
+                        this.querySelector('.card-closed').style.display = 'flex';
+                    } else {
+                        this.querySelector('.card-open').style.display = 'block';
+                        this.querySelector('.card-closed').style.display = 'none';
+                    }
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Function to open all cards
+        function openAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'block';
+                card.querySelector('.card-closed').style.display = 'none';
+            });
+        }
+
+        // Function to close all cards
+        function closeAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'none';
+                card.querySelector('.card-closed').style.display = 'flex';
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createCards();
+            
+            // Add event listeners to buttons
+            document.getElementById('openAll').addEventListener('click', openAllCards);
+            document.getElementById('closeAll').addEventListener('click', closeAllCards);
+        });
+    </script>
+
+
+
+<script>
+// Theme toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    // Set initial state (light mode by default)
+    body.classList.add('light-mode');
+    toggleBtn.textContent = 'Switch to Dark Mode';
+
+    toggleBtn.addEventListener('click', function() {
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Switch to Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            toggleBtn.textContent = 'Switch to Dark Mode';
+        }
+    });
+
+    // Optional: remember user's preference using localStorage
+    // Uncomment if you want the choice to persist across page reloads
+    /*
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        body.classList.remove('light-mode', 'dark-mode');
+        body.classList.add(savedTheme);
+        toggleBtn.textContent = savedTheme === 'dark-mode'
+            ? 'Switch to Light Mode'
+            : 'Switch to Dark Mode';
+    }
+
+    // Save preference when toggled
+    toggleBtn.addEventListener('click', function() {
+        const currentTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+        localStorage.setItem('theme', currentTheme);
+    });
+    */
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popcorn and a Movie - Cloze</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+             display: flex;
+      flex-direction: column;
+      gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+.student-info input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}        
+        
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .dialogLine {
+            margin: .9rem 0;
+            font-size: .9rem;
+            line-height: 1.5;
+            border: thin solid #D2C8C8;
+            box-shadow: 0 0 4px #D2C8C8;
+            border-radius: 7px;
+            padding: .5rem
+        }
+        select {
+            
+            font-size: .8rem;
+            border: 2px solid lightblue;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+  
+        
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        
+        
+        footer { margin-top: 15rem; }
+        
+        
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+   
+   
+ #theWordList {
+    display: none; /* Initially hide theWordList div */
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  } 
+  #subtitle {
+    font-size: 120%;
+  }
+    
+</style>
+
+</head>
+<body>
+    <div class="header">
+        <h1>Popcorn and a Movie Podcast</h1>
+        <p id="subtitle">Cloze/Select Quiz
+</p>
+        <p>Complete the sentences using vocabulary from the podcast
+</p>
+    
+</div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List
+</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column
+</button>
+
+    <div class="output" id="output">
+</div>
+    
+</div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode
+</button>
+    
+    <div class="section">
+        <h3>Podcast Script with Blanks
+</h3>
+<h2>Popcorn and a Movie - Podcast</h2><div class="dialogLine"><strong>Host:</strong> I <select data-answer="came across"><option value="">-- Select --</option><option value="came across">came across</option><option value="no-brainer">no-brainer</option><option value="caught on">caught on</option><option value="set the stage">set the stage</option><option value="tough times">tough times</option></select> this article on why popcorn and movies are inseparable, and I was instantly <select data-answer="hooked"><option value="">-- Select --</option><option value="set the stage">set the stage</option><option value="tough times">tough times</option><option value="cash in on">cash in on</option><option value="win-win">win-win</option><option value="hooked">hooked</option></select>. I'd never really thought about it before!</div><div class="dialogLine"><strong>Guest:</strong> Right? It's almost a <select data-answer="no-brainer"><option value="">-- Select --</option><option value="win-win">win-win</option><option value="mouthwatering">mouthwatering</option><option value="kick in">kick in</option><option value="no-brainer">no-brainer</option><option value="cash in on">cash in on</option></select> now—of course you get popcorn at the movies. But the story of how it <select data-answer="caught on"><option value="">-- Select --</option><option value="up a notch">up a notch</option><option value="tied together">tied together</option><option value="caught on">caught on</option><option value="mouthwatering">mouthwatering</option><option value="kick in">kick in</option></select> is something most people don't know.</div><div class="dialogLine"><strong>Host:</strong> It goes back to the late 1800s, when vendors sold popcorn on the street outside theaters. Many theaters wouldn't even allow food inside at first.</div><div class="dialogLine"><strong>Guest:</strong> So people snacked on the sidewalk before going in. Those early street scenes really <select data-answer="set the stage"><option value="">-- Select --</option><option value="die-hard">die-hard</option><option value="set the stage">set the stage</option><option value="up a notch">up a notch</option><option value="tied together">tied together</option><option value="on autopilot">on autopilot</option></select> for everything that followed.</div><div class="dialogLine"><strong>Host:</strong> Then the Great Depression hit. During those <select data-answer="tough times"><option value="">-- Select --</option><option value="tough times">tough times</option><option value="on autopilot">on autopilot</option><option value="die-hard">die-hard</option><option value="second nature">second nature</option><option value="game changer">game changer</option></select>, theaters were desperate for money, and popcorn was cheap.</div><div class="dialogLine"><strong>Guest:</strong> That was the turning point. Owners realized they could <select data-answer="cash in on"><option value="">-- Select --</option><option value="second nature">second nature</option><option value="game changer">game changer</option><option value="cozy">cozy</option><option value="the best of both worlds">the best of both worlds</option><option value="cash in on">cash in on</option></select> selling it themselves. It was a total <select data-answer="win-win"><option value="">-- Select --</option><option value="the best of both worlds">the best of both worlds</option><option value="pass down">pass down</option><option value="stand the test of time">stand the test of time</option><option value="win-win">win-win</option><option value="cozy">cozy</option></select>—theaters earned money and audiences got a snack they loved.</div><div class="dialogLine"><strong>Host:</strong> And it stuck! By the 1940s it was locked in. What really gets me, though, is the sensory side.</div><div class="dialogLine"><strong>Guest:</strong> The smell! You reach the concession stand and that <select data-answer="mouthwatering"><option value="">-- Select --</option><option value="go all out">go all out</option><option value="hits the spot">hits the spot</option><option value="mouthwatering">mouthwatering</option><option value="pass down">pass down</option><option value="stand the test of time">stand the test of time</option></select> buttery aroma hits you. Your stomach growls before you've even bought a ticket.</div><div class="dialogLine"><strong>Host:</strong> The cravings just <select data-answer="kick in"><option value="">-- Select --</option><option value="fall back on">fall back on</option><option value="kick in">kick in</option><option value="go all out">go all out</option><option value="hits the spot">hits the spot</option><option value="in a nutshell">in a nutshell</option></select>. And once the movie starts, the popcorn takes the whole experience <select data-answer="up a notch"><option value="">-- Select --</option><option value="up a notch">up a notch</option><option value="in a nutshell">in a nutshell</option><option value="fall back on">fall back on</option><option value="roots">roots</option><option value="lure">lure</option></select>.</div><div class="dialogLine"><strong>Guest:</strong> It really does. Taste, smell, the big screen, the sound—it's all <select data-answer="tied together"><option value="">-- Select --</option><option value="roots">roots</option><option value="lure">lure</option><option value="came across">came across</option><option value="hooked">hooked</option><option value="tied together">tied together</option></select>. After enough movie nights, grabbing popcorn is basically <select data-answer="on autopilot"><option value="">-- Select --</option><option value="hooked">hooked</option><option value="no-brainer">no-brainer</option><option value="caught on">caught on</option><option value="on autopilot">on autopilot</option><option value="came across">came across</option></select>.</div><div class="dialogLine"><strong>Host:</strong> For <select data-answer="die-hard"><option value="">-- Select --</option><option value="set the stage">set the stage</option><option value="tough times">tough times</option><option value="die-hard">die-hard</option><option value="no-brainer">no-brainer</option><option value="caught on">caught on</option></select> film fans, it's probably <select data-answer="second nature"><option value="">-- Select --</option><option value="win-win">win-win</option><option value="second nature">second nature</option><option value="set the stage">set the stage</option><option value="tough times">tough times</option><option value="cash in on">cash in on</option></select> by now.</div><div class="dialogLine"><strong>Guest:</strong> Totally. And here's the real <select data-answer="game changer"><option value="">-- Select --</option><option value="game changer">game changer</option><option value="cash in on">cash in on</option><option value="win-win">win-win</option><option value="mouthwatering">mouthwatering</option><option value="kick in">kick in</option></select>—home entertainment. Big TVs, surround sound, streaming.</div><div class="dialogLine"><strong>Host:</strong> Now you don't even leave the house. You microwave a bag, and that same <select data-answer="cozy"><option value="">-- Select --</option><option value="mouthwatering">mouthwatering</option><option value="kick in">kick in</option><option value="up a notch">up a notch</option><option value="tied together">tied together</option><option value="cozy">cozy</option></select> aroma fills the living room.</div><div class="dialogLine"><strong>Guest:</strong> It's <select data-answer="the best of both worlds"><option value="">-- Select --</option><option value="tied together">tied together</option><option value="on autopilot">on autopilot</option><option value="die-hard">die-hard</option><option value="the best of both worlds">the best of both worlds</option><option value="up a notch">up a notch</option></select>—the theater feeling without the ticket price, and you can pause whenever you want.</div><div class="dialogLine"><strong>Host:</strong> So the tradition expanded from a public outing into a private ritual at home. I love that it adapted instead of disappearing.</div><div class="dialogLine"><strong>Guest:</strong> And families <select data-answer="pass down"><option value="">-- Select --</option><option value="second nature">second nature</option><option value="game changer">game changer</option><option value="pass down">pass down</option><option value="on autopilot">on autopilot</option><option value="die-hard">die-hard</option></select> movie night to their kids, who grow up to be popcorn lovers themselves.</div><div class="dialogLine"><strong>Host:</strong> It's wild how it's managed to <select data-answer="stand the test of time"><option value="">-- Select --</option><option value="the best of both worlds">the best of both worlds</option><option value="stand the test of time">stand the test of time</option><option value="second nature">second nature</option><option value="game changer">game changer</option><option value="cozy">cozy</option></select>. From street carts to home theaters, the connection never broke.</div><div class="dialogLine"><strong>Guest:</strong> Some people <select data-answer="go all out"><option value="">-- Select --</option><option value="go all out">go all out</option><option value="cozy">cozy</option><option value="the best of both worlds">the best of both worlds</option><option value="pass down">pass down</option><option value="stand the test of time">stand the test of time</option></select>—gourmet kernels, fancy seasonings—but even a plain microwave bag <select data-answer="hits the spot"><option value="">-- Select --</option><option value="pass down">pass down</option><option value="stand the test of time">stand the test of time</option><option value="go all out">go all out</option><option value="in a nutshell">in a nutshell</option><option value="hits the spot">hits the spot</option></select> on a lazy night.</div><div class="dialogLine"><strong>Host:</strong> So true. Popcorn, <select data-answer="in a nutshell"><option value="">-- Select --</option><option value="hits the spot">hits the spot</option><option value="fall back on">fall back on</option><option value="roots">roots</option><option value="in a nutshell">in a nutshell</option><option value="go all out">go all out</option></select>, became "movie food" thanks to cheap economics and a powerful sensory link.</div><div class="dialogLine"><strong>Guest:</strong> Exactly. And when you can't decide on a snack, popcorn is the easy thing to <select data-answer="fall back on"><option value="">-- Select --</option><option value="lure">lure</option><option value="came across">came across</option><option value="fall back on">fall back on</option><option value="in a nutshell">in a nutshell</option><option value="roots">roots</option></select>.</div><div class="dialogLine"><strong>Host:</strong> It's my go-to. Funny how a simple snack can have such a long tradition.</div><div class="dialogLine"><strong>Guest:</strong> It really does have deep <select data-answer="roots"><option value="">-- Select --</option><option value="no-brainer">no-brainer</option><option value="roots">roots</option><option value="lure">lure</option><option value="came across">came across</option><option value="hooked">hooked</option></select>! Next time that smell tries to <select data-answer="lure"><option value="">-- Select --</option><option value="lure">lure</option><option value="hooked">hooked</option><option value="no-brainer">no-brainer</option><option value="caught on">caught on</option><option value="set the stage">set the stage</option></select> me to the concession stand, at least I'll know why I can't resist.</div>
+    
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        // Sanitize input to prevent injection
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        // Validate input length and content
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Check if both fields are valid and changed from defaults
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            // Check if changed from defaults
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            // Check if valid
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            // Enable button only if both changed AND both valid
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        // Validate on blur (when user leaves field)
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        // Also check on input to provide immediate feedback for enabling button
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        // Clear default on focus
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        // PDF Print functionality
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+
+</div>
+    <script>
+        // Check answers when select changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+
+        
+        
+// Force hard refresh on any page reload
+window.addEventListener('beforeunload', function() {
+    // Clear form data
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+/*    document.querySelectorAll('input').forEach(input => {
+        input.value = '';
+    });*/
+});        
+        
+        
+// Toggle show/hide answers
+let answersVisible = false;
+        let savedSelections = [];
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            const selects = document.querySelectorAll('select');
+
+            if (answersVisible) {
+                // Save each select's current value and CSS classes before showing answers
+                savedSelections = Array.from(selects).map(select => ({
+                    value: select.value,
+                    correct: select.classList.contains('correct'),
+                    incorrect: select.classList.contains('incorrect')
+                }));
+
+                // Show correct answers
+                selects.forEach(select => {
+                    select.value = select.getAttribute('data-answer');
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                });
+            } else {
+                // Restore saved selections
+                selects.forEach((select, i) => {
+                    const saved = savedSelections[i];
+                    if (saved) {
+                        select.value = saved.value;
+                        select.classList.toggle('correct', saved.correct);
+                        select.classList.toggle('incorrect', saved.incorrect);
+                    }
+                });
+                savedSelections = [];
+            }
+
+            // Update button text
+            button.textContent = answersVisible ? ' Close Study Mode ' : ' Study Mode ';
+        }        
+    
+</script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}
+</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column') 
+        ? 'Close Column View' 
+        : 'View as Column';
+      updateOutput();
+    }
+
+    // Initial render
+    updateOutput();
+    
+    
+    
+  
+</script>   
+  
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+
+</script>
+    <footer>...
+</footer>
+
+</body>
+
+</html>
