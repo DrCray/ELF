@@ -1,746 +1,670 @@
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
-		
-		<!-- content attribute is for search engines -->		
-		<meta name="quizMaker" content="English Learning Management Method">		
-
-		<!-- Mobile responsiveness -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- xxxx  NO Cache  xxx   -->
-		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Expires" content="0">
-		
- 		
-		<title>groceryLayoutsScramPara</title>
-		
-		<!-- link rel="stylesheet" href="style.css" --> 
-		      
-		<!-- <script src="script.js"></script -->
-		
-    <style>  
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrambler</title>
+    <style>
         body {
-            background-color: #d4e6f1; cursor:text; 
-            font-family: helvetica, arial, sans-serif;
-            max-width:55rem; margin:auto;
-        }  
-        
-        :focus {outline:none;}
-        ::-moz-focus-inner {border:0; }
-        
-        
-        
-        #zzpageHeader { 
-            box-shadow: 0 1ex 1ex 0;
-            border-radius: 7px; margin:1ex;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        
-        #zztitle { 
-            background-color:#fff8dc; 
-            border-style:solid;  border-width: medium; 
-            border-color:#8b0000; border-radius: 7px;
-            padding:2ex; margin-bottom: 3ex;
-        }
-        
-        .card {
-            background-color:  #d4e6f1  ; border-radius: 10px; 
-            padding:10px; 
-        }
- 
-        .quStyle {
-            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
-            border-style:solid; border-color:#8b0000; 
-            padding:1ex; margin: 0 0 1ex 1em;
-            border-radius: 10px; width: fit-content;
-         }
-         
-        .question {
-            cursor:cell; width: fit-content; padding: 0 3ex 0 3ex;
-        }
-         
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 40px; color: #2980b9; }
+        p.instructions { text-align: center; font-style: italic; color: #666; }
 
-         .answer {
-            display:block; margin:0 0 5px 0;
-            background-color:#fff8dc; border-width:thin; border-style:solid; 
-            border-color: blue;
-            padding:1ex; border-radius: 10px; width: fit-content;
-         }
-         
-        .fake-button {
-            background-color: #E9E9ED; 
-            border-style:solid; border-width:thin; border-radius: 5px;
-            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
-
+        .section { margin-bottom: 30px; }
+        
+        .dialog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
         }
 
-       .fake-button:hover {
-            background-color: lightblue;
-             border-radius: 5px; box-shadow: 3px 3px gray;
-
+        .line {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            position: relative;
         }
-        
-        /*  for <button> class="hltBtn"  */
-        .hlBtn {border-radius:5px; margin: 1ex; }
 
-        .hlBtn:hover {
-            background-color:lightblue;  border-radius: 5px;
+        .line:hover { border-color: #3498db; }
+
+        /* Indicator for first item clicked */
+        .selected {
+            border-color: #f39c12 !important;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+            transform: scale(1.02);
+            z-index: 10;
         }
-        
-        .instrcs{
-            border: thin solid darkgreen; border-radius: 5px; 
-            margin: 1.3em 0 1ex 1em; background-color: #EEF9FF;
-            padding: 1ex; width: fit-content; color: #080865;
+
+        /* Feedback Colors */
+/* Feedback Colors - Subtle Shades */
+.correct {
+    background-color: #f0fdf4 !important; /* Very light mint green */
+    border-color: #c3e6cb !important;
+}
+
+.incorrect {
+    background-color: #F4F7F6 !important; /* Very light rose/pink */
+    border-color: #f5c6cb !important;
+}
+
+        .speaker-label {
+            font-weight: bold;
+            display: block;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            color: #7f8c8d;
         }
-        
-        #printOptions {
-            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
-            border-radius: 5px;
-            box-shadow: 3px 3px darkgreen;
-            margin: 1ex 0 1ex 0;
-            padding:1ex;
-            font-weight: bold; font-size:85%;
-        }         
-    </style>  
-    
-  </head>
-  
-  <body>
-      
-      <div id="ii" style="display:none;">22</div>
-  
-        <img class="center" src="topImage.jpg" alt="" width="100%">      
-      
-  <header id="zzpageHeader">
-    <section id="zztitle" contenteditable="false">            
-        Dr Ray  <br>English Lesson<br>
-        <br><strong>Scrambled paragraphs</strong><br>
-        <strong>Grocery Store Layouts</strong> 
-    </section>   
-</header>
-<!-- ================= check if header was updated ============ -->
-<script>
-//put this under the header section
-  let initialContent = document.getElementById('zztitle').textContent;
-</script>
+.submission-area {
+    margin-top: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
 
-<div class="answer editOn" style="display: block; font-weight: bold;">
-	<ul class="_">
-	<li>Click/touch a sentence to move it UP one place.</li>   
-	<li>Clicking the top sentence will cycle it to the bottom. </li>   	
-</ul>
-</div>
-<!-- ====== Name ID Toggle and input ================= -->
-<script>
-document.onreadystatechange = () => {
-  if (document.readyState === "complete") {
-    document.getElementById("toggleShowHideNameID").checked=1;
-  }
-};
-</script>
-
-<input id="toggleShowHideNameID" type="checkbox" style="display: none;">
-<label id="toggleShowHideNameIDLbl" for="toggle" style="display: none;">Show Name and ID</label>
-<br>
-<input id="name" type="text" value="name">
-<input id="id" type="text" value="id#">
-
-<script>
-  const toggleShowHideNameID = document.getElementById('toggleShowHideNameID');
-  const nameInput = document.getElementById('name');
-  const idInput = document.getElementById('id');
-  
-  toggleShowHideNameID.addEventListener('change', event => {
-    const checked = event.target.checked;
-    if (checked){
-    nameInput.style.display="inline-block";
-    idInput.style.display="inline-block";}
-    else {
-    nameInput.style.display="none";
-    idInput.style.display="none";}
-  });
-</script>
-
-<div id="canvas" style="display: block;"><div id="instrcs1" contenteditable="false" class="instrcs">Put the sentences of the paragraphs into the correct order according to the article.</div>
-<button class="hlBtn" onclick="this.previousElementSibling.remove(); this.remove();" style="display: none;"> del info/instructions </button>
-
-<div id="allSorts1" class="quStyle"><div id="thisSort1"><span id="sentc1" class="answer" onclick="zmove('thisSort1','sentc1')">From the moment you enter until you reach the checkout counter, every aspect of the store's design has been carefully planned to influence your spending behavior.</span>
-<span id="sentc2" class="answer" onclick="zmove('thisSort1','sentc2')">Grocery stores have clever tricks in how they arrange their layouts, which are designed like a map that guides you to spend more money.</span>
-<span id="sentc3" class="answer" onclick="zmove('thisSort1','sentc3')">Have you ever gone to the grocery store for just milk and bread, but came out with a full shopping cart? This is no accident.</span>
-</div><details id="ansbox4" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; border-radius: 4px;"><br>Have you ever gone to the grocery store for just milk and bread, but came out with a full shopping cart? This is no accident.<br>Grocery stores have clever tricks in how they arrange their layouts, which are designed like a map that guides you to spend more money.<br>From the moment you enter until you reach the checkout counter, every aspect of the store's design has been carefully planned to influence your spending behavior.<summary>Answer</summary></details>
-
-<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button>
-</div>
-
-
-
-<div id="allSorts4" class="quStyle"><div id="thisSort4"><span id="sentc6" class="answer" onclick="zmove('thisSort4','sentc6')">It puts you in a good mood, and when you feel good at the start of your shopping experience, you're likely to buy more things later.</span><span id="sentc4" class="answer" onclick="zmove('thisSort4','sentc4')">All those bright colors and fresh smells makes the whole store seem fresh and alive.</span>
-<span id="sentc5" class="answer" onclick="zmove('thisSort4','sentc5')">When you first walk into a grocery store, you usually see fruits and vegetables right away.</span>
-
-</div><details id="ansbox7" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; border-radius: 4px;"><br>When you first walk into a grocery store, you usually see fruits and vegetables right away.<br>All those bright colors and fresh smells makes the whole store seem fresh and alive.<br>It puts you in a good mood, and when you feel good at the start of your shopping experience, you're likely to buy more things later.<summary>Answer</summary></details>
-
-<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button>
-</div>
-
-
-
-<div id="allSorts7" class="quStyle"><div id="thisSort7"><span id="sentc7" class="answer" onclick="zmove('thisSort7','sentc7')">Everyone needs these staples, so shoppers must pass by countless other shelves of products as they make their way to the back.</span>
-<span id="sentc8" class="answer" onclick="zmove('thisSort7','sentc8')">As you continue your journey, you'll notice that essential items like milk, bread, and eggs are usually located at the back of the store.</span>
-<span id="sentc9" class="answer" onclick="zmove('thisSort7','sentc9')">Meanwhile, the store’s most profitable items are placed at eye level, while cheaper products are often placed on higher or lower shelves where they're less likely to be noticed.</span>
-<span id="sentc10" class="answer" onclick="zmove('thisSort7','sentc10')">You’ll also notice the special displays at the end of the aisles which have sale items or seasonal products designed to catch your attention.</span>
-</div><details id="ansbox11" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; border-radius: 4px;"><br>As you continue your journey, you'll notice that essential items like milk, bread, and eggs are usually located at the back of the store.<br>Everyone needs these staples, so shoppers must pass by countless other shelves of products as they make their way to the back.<br>You’ll also notice the special displays at the end of the aisles which have sale items or seasonal products designed to catch your attention.<br>Meanwhile, the store’s most profitable items are placed at eye level, while cheaper products are often placed on higher or lower shelves where they're less likely to be noticed.<summary>Answer</summary></details>
-
-<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button>
-</div>
-
-
-
-<div id="allSorts11" class="quStyle"><div id="thisSort11"><span id="sentc12" class="answer" onclick="zmove('thisSort11','sentc12')">This zone is filled with small, impulse-purchase items like snacks, magazines, and batteries – things you probably didn't plan to buy but might grab while waiting in line.</span><span id="sentc11" class="answer" onclick="zmove('thisSort11','sentc11')">This is where stores play their last trick.</span>
-
-<span id="sentc13" class="answer" onclick="zmove('thisSort11','sentc13')">Before you leave, you have to go through the checkout area.</span>
-<span id="sentc14" class="answer" onclick="zmove('thisSort11','sentc14')">Even the music they play and how wide the aisles are have been carefully planned to make you shop longer and buy more.</span>
-<span id="sentc15" class="answer" onclick="zmove('thisSort11','sentc15')">You might think, "It's just a dollar or two," and add it to your cart.</span>
-<span id="sentc16" class="answer" onclick="zmove('thisSort11','sentc16')">Nothing in a grocery store is random – everything has a purpose.</span>
-</div><details id="ansbox17" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; border-radius: 4px;"><br>Before you leave, you have to go through the checkout area.<br>This is where stores play their last trick.<br>This zone is filled with small, impulse-purchase items like snacks, magazines, and batteries – things you probably didn't plan to buy but might grab while waiting in line.<br>You might think, "It's just a dollar or two," and add it to your cart.<br>Even the music they play and how wide the aisles are have been carefully planned to make you shop longer and buy more.<br>Nothing in a grocery store is random – everything has a purpose.<summary>Answer</summary></details>
-
-<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button>
-</div>
-
-
-
-<div id="allSorts17" class="quStyle"><div id="thisSort17"><span id="sentc17" class="answer" onclick="zmove('thisSort17','sentc17')">Next time you go shopping, try to spot these tricks.</span>
-<span id="sentc18" class="answer" onclick="zmove('thisSort17','sentc18')">By recognizing these psychological tactics, you can stick to your shopping list and budget more effectively.</span>
-<span id="sentc19" class="answer" onclick="zmove('thisSort17','sentc19')">Understanding the secret of grocery store layouts can help you become a more conscious shopper.</span>
-<span id="sentc20" class="answer" onclick="zmove('thisSort17','sentc20')">The grocery store might be speaking a secret language, but now you know how to understand what it's saying!</span>
-<span id="sentc21" class="answer" onclick="zmove('thisSort17','sentc21')">Notice how the store tries to make you buy things you didn't plan to get.</span>
-</div><details id="ansbox22" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; border-radius: 4px;"><br>Understanding the secret of grocery store layouts can help you become a more conscious shopper.<br>By recognizing these psychological tactics, you can stick to your shopping list and budget more effectively.<br>Next time you go shopping, try to spot these tricks.<br>Notice how the store tries to make you buy things you didn't plan to get.<br>The grocery store might be speaking a secret language, but now you know how to understand what it's saying!<summary>Answer</summary></details>
-
-<button class="hlBtn" onclick="this.parentElement.remove()" style="display: none;"> del list </button>
-</div>
-</div>
-      
-  
-      
-<section id="inputList" class="card" style="display: none;">
-     <div class="quStyle"><label for="wordList">Type/paste your sentence list in the correct order. 
-        
-         <br>
-             <code>Put ^^ at the end of each sentence.</code>
-         <br>
-         </label>
-         <textarea id="zList" style="width: 40%; min-width:30ex" rows="5">The dog barked and scared Mark. ^^ He began running as fast as he could.^^ He climbed a tree.  ^^ 
-         </textarea> <br>             
-             <span style="color:darkblue; background-color:gainsboro">(drag corner to make text area bigger)</span>
-     </div>
-    
-        <label id="noShowAnsPeekLbl" for="noShowAnsPeek" style="display: none;">
-            <input id="noShowAnsPeek" type="checkbox">no answer-peeks
-        </label>
-    
-        <button class="hlBtn" onclick="getzList()" style="display: none;">scramble</button>
-
-</section>  
-      
-      
-      
-<script>
-     let ii = document.getElementById('ii').innerHTML;
-    
-     function getzList(){
-         
-         let canvas = document.getElementById("canvas");
-         canvas.style.display="block";
-         
-         let instrcs = document.createElement("div");
-         instrucsID= "instrcs" + ii;
-         instrcs.id=instrucsID;
-         instrcs.innerHTML = "Type your instructions or other information here";
-         instrcs.contentEditable = "true";
-         instrcs.className="instrcs";
-         canvas.appendChild(instrcs);
-         canvas.insertAdjacentHTML("beforeend","\n");
-         canvas.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.previousElementSibling.remove(); this.remove();'> del info/instructions </button>");
-         canvas.insertAdjacentHTML("beforeend","\n");
-         canvas.insertAdjacentHTML("beforeend","\n");
-
-         
-         let allSorts = document.createElement("div");
-         allSortsID= "allSorts"+ii;
-         allSorts.id=allSortsID;
-         allSorts.className = "quStyle";
-         canvas.appendChild(allSorts);
-         canvas.insertAdjacentHTML("beforeend","\n");
-
-         
-         
-         
-         let listArrB = [];
-         let i = 0;
-         
-         listCheck =   document.getElementById("zList").value.trim(); //console.log(listCheck);
-         listDeqwz = listCheck.replace(/^\^\^|\^\^$/gi, "").trim(); //console.log(listDeqwz);
-         listQwz2Lcase = listDeqwz.replace(/\^\^/gi, "^^"); //console.log(listQwz2Lcase);
-         let listArrz = listQwz2Lcase.split('^^'); //console.log(listArrz);
-         for (const listArr of listArrz){
-             listArrB[i] = listArr.trim(); i++;
-         }
-                        //console.log("original" + listArrB); 
-         
-         let listArrBcopy = [...listArrB];
-                            console.log("copy" + listArrBcopy);   
-         
-         while (JSON.stringify(listArrB)==JSON.stringify(listArrBcopy)){
-             listArrBcopy.sort(function () {
-                    return Math.random() - 0.5;
-             });
-                console.log("shuffled" + listArrBcopy);      
-         } //endWhile
-
-        let thisSort = document.createElement("div");
-        let thisSortID = "thisSort" + ii; // console.log("ii zz " + ii);
-        thisSort.id = thisSortID;
-        allSorts.appendChild(thisSort);
-        // thisSort.id = thisSortID;
-        for (const addSentc of listArrBcopy){
-            let sentc = document.createElement("span");
-            let sentcID = "sentc" + ii; ii++;
-            sentc.id = sentcID;
-            sentc.innerHTML=addSentc;
-            sentc.className ="answer";
-            zmoveFn = "zmove('" + thisSortID + "','" + sentcID + "')";
-            sentc.setAttribute("onclick", zmoveFn);
-            thisSort.appendChild(sentc);
-         thisSort.insertAdjacentHTML("beforeend","\n");
-
-        }
-        
-         
-        
-    if(!document.getElementById("noShowAnsPeek").checked){
-         let ansBox = document.createElement("details");
-         let ansBoxID="ansbox"+ii;
-         ansBox.id = ansBoxID;
-         ansBox.style.backgroundColor="#C5F8E0";
-         ansBox.style.color="#0E237E";
-         ansBox.style.padding="1ex";
-         ansBox.style.borderRadius="4px";
-         for(const ansSentc of listArrB){
-             ansSentcz = "<br>" + ansSentc;
-              ansBox.insertAdjacentHTML("beforeend", ansSentcz);
-         }
-        
-         allSorts.appendChild(ansBox);
-         allSorts.insertAdjacentHTML("beforeend","\n");
-
-         
-         let ansBoxSmry = document.createElement("summary");
-         ansBoxSmryID= "ansBoxSmry" + ii;
-         ansBoxSmry.innerHTML = "Answer";
-         ansBox.appendChild(ansBoxSmry);
-     } //end show/hide answer peeks
-         
-          
-         allSorts.insertAdjacentHTML("beforeend","\n");
-         allSorts.insertAdjacentHTML("beforeend","<button class='hlBtn' onclick='this.parentElement.remove()'> del list </button>");
-         allSorts.insertAdjacentHTML("beforeend","\n");
-
-         
-         
-     }   // end getzList ********* 
-    
-
-    
-    
-    
-    function zmove(zparent,zchild){ 
-        let zthis = document.getElementById(zchild);
-        //let zthat = document.getElementById(zparent);
-          zthis.parentNode.insertBefore(zthis, zthis.previousElementSibling);
-        //zchild.insertAdjacentHTML("afterend"", "<br>)
+#bodyAllContent{
+    max-width:37rem; margin:auto;
+    -webkit-box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82);
+box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
+}
+/* Hide the inputs and button when actually printing the PDF */
+@media print {
+    .submission-area, .instructions, .selected {
+        display: none;
     }
-</script>
-      
-      <script>
-        function checkThenPrint(){
-            let Name =  document.getElementById("name").value.trim();
-            let ID = document.getElementById("id").value.trim();
-
-            //=============================================================            
-            //remove this IF statement when not using "show/Hide name and ID"
-            let nameAndIDdisplayValue=document.getElementById("name").style.display;            
-            
-            if (nameAndIDdisplayValue==="none"){
-                window.print(); return;}
-            //=============================================================   
+}
 
 
-            if (
-                (Name==="name" || ID==="id\#" || Name==="" || ID==="")
-                ){
-                alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
-                }
-            else{
-                let closeDetails = document.getElementsByTagName("details");
-                for (closeDetail of closeDetails){
-                    closeDetail.open=true; 
-                }                               
-             window.print();
-            }
-         } // end checkThenPrint()
-     </script>
-      
-      
-     <div id="printOptions" style="display: block;">
-        Print (save as PDF) <br>
-         <button id="printFullView" class="hlBtn" onclick="checkThenPrint()" style="display: block;"> Print </button>
-        <br>
-         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
-    </div> 
-      
-        <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
-        <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button> 
-        <br>
-      
-      <!--  ===============  SAVE THE DOM as FILE ==================== -->
-    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 1em 0px 0px 1em; padding: 1ex; display: none;">
-        
-        <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()" style="display: none;">beautify b4 saving</button> &nbsp;&nbsp;<span id="doneFontElmReplace" style="border:thin solid orange; color:orange; display:none">done</span>
-        <br>
-        
-        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
-          <input id="fileName" type="text" size="30" value="fileName">
-        </label><br>  
-        
-      <button id="saveDownload" class="hlBtn" onclick="saveDom()" style="display: none;">Save/Download</button>
+
+.solve-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  padding: 8px 18px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.solve-btn:hover {
+    background-color: gray;
+}
+
+#instructions {padding:1rem; background:#E4E4E4; color:#554D0F; box-shadow: 0 0 4px  gray;}
+
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .solve-btn {
+    right: 35%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .solve-btn {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+/* --- PHONES --- */
+@media (max-width: 767px) {
+  .solve-btn {
+    right: 16px; /* Tucked tightly to the corner on small screens */
+  }
+}
+
+    </style>
+</head>
+<body>
+<div id="bodyAllContent">
+ <div class="editMode" style="display: none;">
+ <div class="editMode" style="margin: 20px 0px; padding: 12px; background: rgb(255, 243, 224); border: 1px solid rgb(255, 183, 77); border-radius: 6px; display: none;">
+    <label style="font-weight: bold; user-select: none; cursor: pointer;">
+        <input type="checkbox" id="disableSolverCheckbox">
+        Disable Puzzle Solver
+    </label>
+</div>
+    <ul>
+        <li>Update the Title and subtitle areas</li>
+        <li>Then save this page <button id="savePageBtn">Save this page</button></li>
+        <li>In your default download folder, change the file name as desired</li>
+        <li>Open the new file in your editor and manually update the JS</li>
+        <ul>
+            <li>Use the JSON converter (seperate app) and copy the converted code.</li>
+            <li>Go to the code in the &lt;script&gt; section at <code> const quizData = [...]</code></li>
+            <li>Immediately after the = sign, select the opening and closing brackets and everyting inside them.</li>
+            <li>Paste the JSON data (replace the selected text).</li>
+        </ul>
+    </ul>
     </div>
-      
-      <script>
-      function toggleEditOff(){
-            // remove all editables ***********************************
-          
-              let editOffs = document.querySelectorAll('.editOff');
-                for (const editOff of editOffs) {
-                    editOff.style.display="none";
-                }          
+<div contenteditable="false">
+    <h1>Scrambled Sentences</h1>
+    <p class="instructions">Grocery Store Layouts</p>
+    <p id="instructions">Put the sentence sections in the correct order. <br> Click two lines to swap them.<br> Correctly placed sections will appear in <span style="background-color: #f0fdf4; border:thin solid #75A082;border-radius:6px;">&nbsp;green&nbsp;</span>.</p>
+</div>
+<div id="solvePuzzle" style="text-align: center; margin: 30px 0;">
+    <button id="solveToggleBtn" class="solve-btn">Study Mode</button>
+</div>
 
-              let editOns = document.querySelectorAll('.editOn');
-                for (const editOn of editOns) {
-                    editOn.style.display="block";
-                }             
-          
-            let contEdbls = document.querySelectorAll("[contenteditable=true]");
-            let hlBtns = document.querySelectorAll(".hlBtn");
+    <div id="game-board"><div class="section"><h2>Section 1</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="0"><span class="text">Balcony door left open—someone…</span></div><div class="line incorrect" data-original-index="2" data-section-index="0"><span class="text">Mom flips eggs, Dad reads the news,</span></div><div class="line incorrect" data-original-index="0" data-section-index="0"><span class="text">Clamdens on the  seventh  floor,</span></div><div class="line incorrect" data-original-index="4" data-section-index="0"><span class="text">Windows shut, AC hums,</span></div><div class="line incorrect" data-original-index="3" data-section-index="0"><span class="text">Little Johnny ties his shoes.</span></div><div class="line incorrect" data-original-index="1" data-section-index="0"><span class="text">Saturday sun through the door.</span></div></div></div><div class="section"><h2>Section 2</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="1"><span class="text">Seventh-floor miracle, wild and free.</span></div><div class="line incorrect" data-original-index="3" data-section-index="1"><span class="text">Good fortune wrapped him up again.</span></div><div class="line incorrect" data-original-index="1" data-section-index="1"><span class="text">Seven stories down, but the branches prevailed.</span></div><div class="line incorrect" data-original-index="4" data-section-index="1"><span class="text">Hallelujah, hallelujah—thank the tree!</span></div><div class="line incorrect" data-original-index="0" data-section-index="1"><span class="text">Oh, Johnny flew like a bird from the rail,</span></div><div class="line incorrect" data-original-index="2" data-section-index="1"><span class="text">Leaves caught his fall, dirt kissed his skin,</span></div></div></div></div>
+<hr>
 
-            for (const contEdbl of contEdbls ){
-                contEdbl.contentEditable = "false";
-            }
+<div class="submission-area">
+    <div class="input-group">
+        <input type="text" id="studentName" placeholder="Name" oninput="validateForm()">
+        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+    </div>
+        <p id="msg" class="error-msg">Name and ID required for PDF print/save</p>
+    <button id="printBtn" onclick="window.print()" disabled="">Print/Save to PDF</button>
 
-            for (const hlBtn of hlBtns ){                                        
-                hlBtn.style.display = "none";
-            }
+</div>
 
-            document.getElementById("inputList").style.display="none";
-            document.getElementById("saveDom").style.display="none";
-            document.getElementById("editOff").style.display="none";
-            document.getElementById("editOn").style.display="initial";   
-          
-            document.getElementById("printOptions").style.display="block";
-            document.getElementById("printFullView").style.display="block";
+</div>
 
-            document.getElementById("noShowAnsPeekLbl").style.display="none";
-          
-            document.getElementById("toggleShowHideNameID").style.display  = "none";          
-            document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";            
-          
-            let closeDetails = document.getElementsByTagName("details")
-                for (closeDetail of closeDetails){
-                    closeDetail.open=false; 
-                }
+    <script>
+    document.getElementById('savePageBtn').addEventListener('click', function () {
+    // === NEW LINES START HERE ===
 
-        // end remove all editables ************************
-      }
-          
-      function toggleEditOn(){
-          
-              let editOffs = document.querySelectorAll('.editOff');
-                for (const editOff of editOffs) {
-                    editOff.style.display="block";
-                }          
+    // 1. Disable all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = false;
+    });
 
-              let editOns = document.querySelectorAll('.editOn');
-                for (const editOn of editOns) {
-                    editOn.style.display="on";
-                }             
-          
-          
-            let contEdbls = document.querySelectorAll("[contenteditable=false]");
-            let hlBtns = document.querySelectorAll(".hlBtn");
-            // restore editables ***************************
-            for (const contEdbl of contEdbls ){
-                contEdbl.contentEditable = "true";
-            }
+    // 2. Hide all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'none';
+    });
 
-            for (const hlBtn of hlBtns ){                                        
-                hlBtn.style.display = "block";
-            }
+    // === END OF NEW LINES ===
 
-            document.getElementById("inputList").style.display="block";
-            document.getElementById("saveDom").style.display="block";
-            document.getElementById("editOff").style.display="initial";
-            document.getElementById("editOn").style.display="none";
-          
-            document.getElementById("printOptions").style.display="none";
-          
-            document.getElementById("noShowAnsPeekLbl").style.display="block";
-          
-            document.getElementById("toggleShowHideNameID").style.display  = "initial";          
-            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";                   
-          
-            //end restore editabels **********************
-      }
-      
-      </script>
-      
-      
-      <script>
-function saveDom(){
-    
-//add this to beginning of save file section
-    const currentContent = document.getElementById('zztitle').textContent;
+    // Original save logic continues...
+    const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
-    if (initialContent === currentContent) {
-      let userResponse = window.confirm('Update Page Title?');
+    const blob = new Blob([htmlContent], { type: 'text/html' });
 
-      if (userResponse) {
-        // User clicked "Yes"
-        return; // Exit the function immediately
-      } 
-    }    
-            // ========  Unusual entry for SAVEDOM
-            if (!document.getElementById("toggleShowHideNameID").checked){
-              document.getElementById("name").setAttribute("value", "zzzz");
-              document.getElementById("id").setAttribute("value", "yyyy");
-                      console.log (document.getElementById("name").value);
-                      console.log (document.getElementById("id").value);                    
-                }   
-            //========= end unusual entry      
-    
-    
-    
-        document.getElementById('ii').innerHTML= ii;
-    
-        oldTitle = document.title;
-        let fileName = document.getElementById("fileName").value;
-        document.title = fileName;
-    
-         //save theDom  editMode *************************
-        let theDom = document.documentElement.innerHTML;
-        //console.log(theDom);
-        const docHtml = '<!DOCTYPE html><html lang="en">';
-        const endHtml = '</html>';
-        const fullHtmlDoc = docHtml + theDom + endHtml;
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'changeThisFileName.html';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
 
 
-        // here we use Blob to set up a download link
+        //Restore all contenteditable elements (set to false)
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = true;
+    });
 
-        // (A) CREATE BLOB OBJECT
-        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+    //Restore all elements with class "editMode"
+    document.querySelectorAll('.editMode').forEach(el => {
+        el.style.display = 'block';
+    });
 
-        // (B) CREATE DOWNLOAD LINK
-        const url = window.URL.createObjectURL(myBlob);
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = fileName + "EditMode.html";
+    alert("saved to default download folder");
 
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        //end save theDom editMode
-    
-    
-        toggleEditOff(); //preview
-        document.getElementById("editOn").style.display="none";
-
-        
-           //  theDOM study mode
-        let theDom2 = document.documentElement.innerHTML;
-        const docHtml2 = '<!DOCTYPE html><html lang="en">';
-        const endHtml2 = '</html>';
-        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
-
-        // EditMode save .. here we use Blob to set up a download link
-
-        // (A) CREATE BLOB OBJECT
-        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
-
-        // (B) CREATE DOWNLOAD LINK
-        const url2 = window.URL.createObjectURL(myBlob2);
-        const anchor2 = document.createElement("a");
-        anchor2.href = url2;
-        anchor2.download = fileName + ".html";
-
-        anchor2.click();
-        window.URL.revokeObjectURL(url2);
-        //end the BLOB stuff and save
-    
-        document.title = oldTitle;
-        
-        alert("Check the browser's \n default download folder");
-    
-        toggleEditOn(); //close Preview
-    
-}
-          
-          
-          
-          
-</script>
-      <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
-      
-      
- <!--  =====++++++========== beautify code    ========================= -->
-
-<script>
-
-function replaceFontElms() {
- // Select all font elements
-const fonts = document.querySelectorAll("font");
-
-// Loop through each font and replace with a span
-fonts.forEach((font) => {
-  const span = document.createElement("span");
-
-  // Add the style attribute with the appropriate font styles
-  let style = "";
-  if (font.face) style += `font-family: ${font.face}; `;
-    if (font.size) {
-      const fontSize = Math.round(font.size * 3.7) + 'pt';
-      style += `font-size: ${fontSize}; `;
-    }
-  if (font.color) style += `color: ${font.color}; `;
-  if (typeof font.style === "string") style += `font-style: ${font.style}; `;
-  if (style) span.setAttribute("style", style.trim());
-
-  // Copy any child elements to the new span
-  while (font.firstChild) {
-    span.appendChild(font.firstChild);
-  }
-
-  // Replace the font element with the new span
-  font.parentNode.replaceChild(span, font);
 });
-   
-    
- const spanDone = document.getElementById("doneFontElmReplace");
-
-  // Toggle display style
-  if (spanDone.style.display === "none") {
-    spanDone.style.display = "inline-block";
-  } 
-
-  // Toggle border color and text color
-  if (spanDone.style.borderColor === "orange") {
-    spanDone.style.borderColor = "yellow";
-    spanDone.style.color = "yellow";
-  } else {
-    spanDone.style.borderColor = "orange";
-    spanDone.style.color = "orange";
-  }
-     // document.documentElement.style.pointerEvents = 'none';
-      setTimeout(replaceNlines, 100);    
-      setTimeout(addNewlines, 100);
-
-      setTimeout(addSpaces, 100);
-    
-}
-
-</script>    
-    
-    
-
-    <script>
-        function addNewlines() {
-            // Select all the elements: div, section, p, and span
-            const elements = document.querySelectorAll('div, section, p, span');
-
-            // Loop through each element and add a newline character before it
-            elements.forEach(element => {
-                switch (element.tagName.toLowerCase()) {
-                    case 'span':
-                        // Add '\n' only after <span>
-                        element.insertAdjacentHTML('beforebegin', '\r');
-                        //element.insertAdjacentHTML('afterend', '\n');
-                        break;
-                    default:
-                        // Add '\n' before all elements (including <span>), except <span>
-                        element.insertAdjacentHTML('beforebegin', '\r');
-                        element.insertAdjacentHTML('beforeend', '\r');
-                        break;
-                }
-            });
-            
-            //setTimeout(addSpaces, 300);
-          
-        }
-        
-        
-        function addSpaces() {
-            const elements = document.querySelectorAll('div, p, span');
-
-            elements.forEach(element => {                
-                
-                // Determine the number of spaces based on the element type
-                let numSpaces = 0;
-                switch (element.tagName.toLowerCase()) {
-                    case 'div':
-                        numSpaces = 3;
-                        break;
-                    case 'p':
-                        numSpaces = 7;
-                        break;
-                    case 'span':
-                        numSpaces = 10;
-                        break;
-                }
-
-                // Create the source code spaces using the repeat() method
-                const spaces = ' '.repeat(numSpaces);
-
-                // Add the spaces before the element's innerHTML
-                element.insertAdjacentHTML('beforebegin', spaces);
-            });
-            
-        setTimeout(dummy, 100);            
-        document.documentElement.style.pointerEvents = 'auto';              
-        }        
-    </script>   
-    
-<script>
-    
-    // this is currently turned off
-    // it may work in other apps that aren't as complicated as flatCMS
-    // if so we should convert this to REMOVE ALL WHITESPACES
-function replaceNlines() {
-  const allElements = document.querySelectorAll('div, p');
-  allElements.forEach(element => {
-    const originalText = element.innerHTML;
-    const updatedText = originalText.replace(/(\r\n|\r|\n)+/g, '\r');
-    element.innerHTML = updatedText;
-  });
-}
-</script>    
-    
-    
-    
-    <script>
-        function dummy(){ console.log("dummyFunction activated");}    
     </script>
-<!-- +===+++=== / beautify code  =================++++++============ -->     
-      
-      
-      
-<p style="margin:35px"> ... end. </p>
-  
-  
-  
+
+    <script>
+const quizData = [
+    {
+        "title": "Section 1",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "Have you ever gone to the grocery store for just milk and bread,"
+            },
+            {
+                "s": "Line",
+                "t": "but came out with a full shopping cart?"
+            },
+            {
+                "s": "Line",
+                "t": "This is no accident."
+            },
+            {
+                "s": "Line",
+                "t": "Grocery stores have clever tricks in how they arrange their layouts,"
+            },
+            {
+                "s": "Line",
+                "t": "which are designed like a map that guides you to spend more money."
+            },
+            {
+                "s": "Line",
+                "t": "From the moment you enter until you reach the checkout counter,"
+            },
+            {
+                "s": "Line",
+                "t": "every aspect of the store's design has been carefully planned to influence your spending behavior."
+            }
+        ]
+    },
+    {
+        "title": "Section 2",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "When you first walk into a grocery store,"
+            },
+            {
+                "s": "Line",
+                "t": "you usually see fruits and vegetables right away."
+            },
+            {
+                "s": "Line",
+                "t": "All those bright colors and fresh smells makes the whole store seem fresh and alive."
+            },
+            {
+                "s": "Line",
+                "t": "It puts you in a good mood,"
+            },
+            {
+                "s": "Line",
+                "t": "and when you feel good at the start of your shopping experience, you're likely to buy more things later."
+            }
+        ]
+    },
+    {
+        "title": "Section 3",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "As you continue your journey, you'll notice that essential items like milk, bread, and eggs"
+            },
+            {
+                "s": "Line",
+                "t": "are usually located at the back of the store."
+            },
+            {
+                "s": "Line",
+                "t": "Everyone needs these staples, so shoppers must pass by countless other shelves of products"
+            },
+            {
+                "s": "Line",
+                "t": "as they make their way to the back."
+            },
+            {
+                "s": "Line",
+                "t": "You’ll also notice the special displays at the end of the aisles"
+            },
+            {
+                "s": "Line",
+                "t": "which have sale items or seasonal products designed to catch your attention."
+            },
+            {
+                "s": "Line",
+                "t": "Meanwhile, the store’s most profitable items are placed at eye level,"
+            },
+            {
+                "s": "Line",
+                "t": "while cheaper products are often placed on higher or lower shelves where they're less likely to be noticed."
+            }
+        ]
+    },
+    {
+        "title": "Section 4",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "Before you leave, you have to go through the checkout area."
+            },
+            {
+                "s": "Line",
+                "t": "This is where stores play their last trick."
+            },
+            {
+                "s": "Line",
+                "t": "This zone is filled with small, impulse-purchase items like snacks, magazines, and batteries –"
+            },
+            {
+                "s": "Line",
+                "t": "things you probably didn't plan to buy but might grab while waiting in line."
+            },
+            {
+                "s": "Line",
+                "t": "You might think, \"It's just a dollar or two,\" and add it to your cart."
+            },
+            {
+                "s": "Line",
+                "t": "Even the music they play and the width of the aisles"
+            },
+            {
+                "s": "Line",
+                "t": "have been carefully planned to make you shop longer and buy more."
+            },
+            {
+                "s": "Line",
+                "t": "Nothing in a grocery store is random – everything has a purpose."
+            }
+        ]
+    },
+    {
+        "title": "Section 5",
+        "lines": [
+            {
+                "s": "Line",
+                "t": "Understanding the secret of grocery store layouts can help you"
+            },
+            {
+                "s": "Line",
+                "t": "become a more conscious shopper."
+            },
+            {
+                "s": "Line",
+                "t": "By recognizing these psychological tactics,"
+            },
+            {
+                "s": "Line",
+                "t": "you can stick to your budget and shopping list more effectively."
+            },
+            {
+                "s": "Line",
+                "t": "Next time you go shopping, try to spot these tricks."
+            },
+            {
+                "s": "Line",
+                "t": "Notice how the store tries to make you"
+            },
+            {
+                "s": "Line",
+                "t": "buy things you didn't plan to get."
+            },
+            {
+                "s": "Line",
+                "t": "Being aware of these techniques can"
+            },
+            {
+                "s": "Line",
+                "t": "put you back in control of your shopping experience."
+            }
+        ]
+    }
+]
+;
+
+let selectedElement = null;
+
+// Function to shuffle indices so that no index matches its original position
+function getDerangedIndices(length) {
+    let indices = Array.from({length}, (_, i) => i);
+    let scrambled = [...indices];
+    
+    // Fisher-Yates shuffle with a check
+    do {
+        for (let i = scrambled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+        }
+    } while (scrambled.some((val, idx) => val === idx));
+    
+    return scrambled;
+}
+
+function initGame() {
+    const board = document.getElementById('game-board');
+    board.innerHTML = ''; // Clear board for fresh start
+    
+    quizData.forEach((section, sectionIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+        
+        const container = document.createElement('div');
+        container.className = 'dialog-container';
+        
+        // Generate a derangement so every line starts in the wrong place
+        const scrambledIndices = getDerangedIndices(section.lines.length);
+
+        scrambledIndices.forEach((originalIdx) => {
+            const lineData = section.lines[originalIdx];
+            const lineEl = document.createElement('div');
+            lineEl.className = 'line';
+            lineEl.dataset.originalIndex = originalIdx;
+            lineEl.dataset.sectionIndex = sectionIdx;
+
+            //the below line was replaced by it's following line
+            //lineEl.innerHTML = `<span class="speaker-label">${lineData.s}</span> <span class="text">${lineData.t}</span>`;
+            lineEl.innerHTML = `<span class="text">${lineData.t}</span>`;
+            
+            lineEl.onclick = () => handleSelection(lineEl);
+            container.appendChild(lineEl);
+        });
+
+        sectionDiv.appendChild(container);
+        board.appendChild(sectionDiv);
+        checkColors(container);
+    });
+}
+
+function handleSelection(el) {
+    if (!selectedElement) {
+        selectedElement = el;
+        el.classList.add('selected');
+    } else {
+        if (selectedElement === el) {
+            el.classList.remove('selected');
+            selectedElement = null;
+            return;
+        }
+
+        if (selectedElement.dataset.sectionIndex === el.dataset.sectionIndex) {
+            const parent = el.parentNode;
+            const nextToEl = el.nextSibling;
+            const nextToSelected = selectedElement.nextSibling;
+
+            parent.insertBefore(el, nextToSelected);
+            parent.insertBefore(selectedElement, nextToEl);
+            
+            checkColors(parent);
+        }
+
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    }
+}
+
+function checkColors(container) {
+    const lines = container.querySelectorAll('.line');
+    lines.forEach((line, currentIndex) => {
+        if (parseInt(line.dataset.originalIndex) === currentIndex) {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        } else {
+            line.classList.add('incorrect');
+            line.classList.remove('correct');
+        }
+    });
+}
+
+initGame();
+
+
+
+function validateForm() {
+    const name = document.getElementById('studentName').value.trim();
+    const id = document.getElementById('studentID').value.trim();
+    const btn = document.getElementById('printBtn');
+    const msg = document.getElementById('msg');
+
+    if (name !== "" && id !== "") {
+        btn.disabled = false;
+        msg.style.visibility = "hidden";
+    } else {
+        btn.disabled = true;
+        msg.style.visibility = "visible";
+    }
+}
+    </script>
+
+
+<script>
+
+// ───────────────────────────────────────────────
+// Solve / Return toggle functionality
+// ───────────────────────────────────────────────
+
+let isSolved = false;
+let savedOrder = [];           // will store array of .line elements in scrambled order
+
+function saveCurrentOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    savedOrder = []; // reset
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        savedOrder.push(lines); // save reference to DOM elements in current order
+    });
+}
+
+function restoreSavedOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach((container, idx) => {
+        const fragment = document.createDocumentFragment();
+        savedOrder[idx].forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';           // clear
+        container.appendChild(fragment);    // restore
+        checkColors(container);             // re-apply correct/incorrect colors
+    });
+}
+
+function showCorrectOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        // Sort lines by their original index
+        lines.sort((a, b) => {
+            return parseInt(a.dataset.originalIndex) - parseInt(b.dataset.originalIndex);
+        });
+
+        const fragment = document.createDocumentFragment();
+        lines.forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';
+        container.appendChild(fragment);
+
+        // All lines should now be correct
+        lines.forEach(line => {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        });
+    });
+}
+
+function toggleSolve() {
+    const btn = document.getElementById('solveToggleBtn');
+
+    if (!isSolved) {
+        // Solve: save current state → show correct order
+        saveCurrentOrder();
+        showCorrectOrder();
+        btn.textContent = "Return to puzzle";
+        btn.style.backgroundColor="#e67e22";
+        isSolved = true;
+    } else {
+        // Return: restore scrambled state
+        restoreSavedOrder();
+        btn.textContent = "Study Mode";
+        btn.style.backgroundColor="blue";
+        isSolved = false;
+    }
+}
+
+// Attach the button listener
+document.getElementById('solveToggleBtn').addEventListener('click', toggleSolve);
+
+// Optional: save initial order when game first loads (so "Return" works even if never solved)
+window.addEventListener('load', () => {
+    saveCurrentOrder();
+});
+</script>
+
+<script>
+// disable puzzle solver button
+// ───────────────────────────────────────────────
+// Checkbox to disable/hide the solver button
+// ───────────────────────────────────────────────
+
+function updateSolverVisibility() {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    const solverDiv = document.getElementById('solvePuzzle');
+
+    if (!solverDiv) return; // safety
+
+    if (checkbox.checked) {
+        solverDiv.classList.add('editMode');     // using editMode class to hide it
+    } else {
+        solverDiv.classList.remove('editMode');
+    }
+}
+
+// Run once on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    if (checkbox) {
+        // Initial state
+        updateSolverVisibility();
+
+        // Listen for changes (toggles every time checkbox is clicked)
+        checkbox.addEventListener('change', updateSolverVisibility);
+    }
+});
+</script>
+
 
 </body></html>
