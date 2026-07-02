@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Secret of Grocery Store Layouts - Vocabulary Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .vocab-card {
+            background: linear-gradient(145deg, #2d2d44, #252536);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #39395a;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #e94560;
+        }
+        .card-closed {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e94560;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-open {
+            padding: 0;
+            display: none;
+        }
+        .card-header {
+            background-color: #e94560;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .definition {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #ccccdd;
+        }
+        .example {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #aaccff;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff5773;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        .hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8888aa;
+            font-style: italic;
+        }
+/* Light mode (default) - blue theme */
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #1d1d1f;
+}
+
+body.light-mode h1 {
+    color: #1e40af;
+    text-shadow: 0 0 8px rgba(30, 64, 175, 0.25);
+}
+
+body.light-mode .vocab-card {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);
+    border: 1px solid #dbeafe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+
+body.light-mode .card-closed {
+    color: #1e40af;
+}
+
+body.light-mode .card-header {
+    background-color: #1e40af;
+    color: white;
+}
+
+body.light-mode .definition {
+    color: #1E40AF;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: rgba(59, 130, 246, 0.10);
+    padding: .2rem .3rem;
+    border-radius: 0 10px 10px 0;
+    border-left: 5px solid #3b82f6;
+
+}
+
+body.light-mode .example {
+
+    border-left: 5px solid #3b82f6;
+    padding: 16px 18px 16px 22px;
+    border-radius: 0 10px 10px 0;
+    color: #1e293b;
+    line-height: 1.65;
+    font-size: 1.08rem;
+    font-weight: 500;
+    margin: 16px 0;
+}
+
+body.light-mode .example-title {
+    color: #1d4ed8;
+}
+
+body.light-mode button {
+    background-color: #1d4ed8;
+    color: white;
+}
+
+body.light-mode button:hover {
+    background-color: #3b82f6;
+}
+
+body.light-mode .hint,
+body.light-mode footer {
+    color: #4b5563;
+}
+
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+
+body.dark-mode h1 {
+    color: #e94560;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+
+    </style>
+</head>
+<body>
+    <h1>The Secret of Grocery Store Layouts Vocabulary Cards</h1>
+    <div class="hint">Click on any card to reveal the definition and example. Click again to close it.</div>
+    
+    <div class="controls">
+        <button id="openAll">Open All Cards</button>
+        <button id="closeAll">Close All Cards</button>
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+    
+    <div class="cards-container" id="cardsContainer">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+    
+    <footer>
+        Vocabulary extracted from "The Secret of Grocery Store Layouts" text | Created for learning purposes
+    </footer>
+
+    <script>
+        const vocabulary = [
+
+            {word: 'clever tricks', definition: 'Smart or cunning methods used to achieve a goal, often without the other person noticing.', example: "The magician's clever tricks left the whole audience wondering how he made the coin disappear."},
+            {word: 'layouts', definition: 'The way something is arranged or organized, especially the design of a space.', example: 'The architect showed us three different layouts for the new office before we chose one.'},
+            {word: 'checkout counter', definition: 'The place in a store where customers pay for the items they are buying.', example: 'There was a long line at the checkout counter, so we decided to use the self-service machine instead.'},
+            {word: 'aspect', definition: 'A particular part or feature of something.', example: 'Every aspect of the wedding, from the flowers to the music, had been planned months in advance.'},
+            {word: 'influence', definition: 'To affect or change the way someone thinks, feels, or behaves.', example: 'Advertisements are designed to influence what people choose to buy.'},
+            {word: 'fresh', definition: 'Newly made, produced, or gathered; not stale or old.', example: 'The bakery sells fresh bread every morning, and you can smell it from the street.'},
+            {word: 'good mood', definition: 'A positive, happy, and cheerful state of mind.', example: 'Sunny weather always puts me in a good mood, even on a busy Monday.'},
+            {word: 'essential', definition: 'Absolutely necessary or extremely important.', example: 'Clean water is essential for human survival, no matter where you live.'},
+            {word: 'located', definition: 'Situated or positioned in a particular place.', example: 'The new library is located right next to the community park.'},
+            {word: 'staples', definition: 'Basic, essential items that are used or needed regularly.', example: 'Rice, flour, and cooking oil are staples in most kitchens around the world.'},
+            {word: 'shelves', definition: 'Flat surfaces, often attached to a wall or frame, used for storing or displaying objects.', example: "The bookstore's shelves were packed from floor to ceiling with novels of every genre."},
+            {word: 'displays', definition: 'Arrangements of items set out for people to see, often to promote or advertise them.', example: 'The store set up colorful holiday displays in the front windows to attract shoppers.'},
+            {word: 'seasonal', definition: 'Relating to, or happening during, a particular season of the year.', example: 'The cafe adds seasonal drinks to its menu, like pumpkin spice in the fall and iced tea in summer.'},
+            {word: 'catch', definition: "To attract or capture someone's attention.", example: 'The bright red sports car was sure to catch the eye of anyone walking by.'},
+            {word: 'profitable', definition: 'Producing a financial profit; making more money than it costs.', example: 'The small bakery became so profitable that the owner opened a second location downtown.'},
+            {word: 'zone', definition: 'An area that has a particular purpose or characteristic.', example: 'The airport has a quiet zone where travelers can rest without noise or announcements.'},
+            {word: 'impulse-purchase', definition: 'Describing an item bought suddenly, on a whim, without planning ahead.', example: 'The gum and candy near the register are classic impulse-purchase items.'},
+            {word: 'aisles', definition: 'The narrow passageways between shelves in a store.', example: 'We wandered up and down the aisles for twenty minutes trying to find the cereal.'},
+            {word: 'random', definition: 'Happening or done without a specific pattern, method, or reason.', example: 'The teacher picked students at random to answer questions during the review session.'},
+            {word: 'conscious', definition: 'Aware of and paying close attention to something.', example: 'She has become a more conscious consumer, always checking where her clothes are made.'},
+            {word: 'tactics', definition: 'Methods or strategies used to achieve a particular goal.', example: 'The debate team practiced several tactics to persuade the judges before the competition.'},
+            {word: 'stick', definition: 'To continue following a plan, rule, or decision without giving up.', example: "It's hard to stick to a diet when there are cookies in the office kitchen."},
+            {word: 'budget', definition: 'A plan for how to spend a limited amount of money.', example: "We set a strict budget for the vacation so we wouldn't overspend on hotels."},
+            {word: 'effectively', definition: 'In a way that produces the intended or desired result.', example: 'The new manager communicated effectively with the whole team, so the project finished on time.'},
+            {word: 'spot', definition: "To notice or recognize something, often something that isn't obvious.", example: 'It took her a minute to spot the mistake hidden in the long spreadsheet.'},
+            {word: 'techniques', definition: 'Particular methods or skills used to carry out a task.', example: 'The chef demonstrated several knife techniques before letting the students try them.'}
+        ];
+
+        function createCards() {
+            const container = document.getElementById('cardsContainer');
+            
+            vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.dataset.word = item.word;
+                
+                const closedDiv = document.createElement('div');
+                closedDiv.className = 'card-closed';
+                closedDiv.textContent = item.word;
+                
+                const openDiv = document.createElement('div');
+                openDiv.className = 'card-open';
+                
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = item.word;
+                
+                const content = document.createElement('div');
+                content.className = 'card-content';
+                
+                const definition = document.createElement('div');
+                definition.className = 'definition';
+                definition.innerHTML = `<strong>Definition:</strong> ${item.definition}`;
+                
+                const example = document.createElement('div');
+                example.className = 'example';
+                example.innerHTML = `<div class="example-title">Example</div>${item.example}`;
+                
+                content.appendChild(definition);
+                content.appendChild(example);
+                
+                openDiv.appendChild(header);
+                openDiv.appendChild(content);
+                
+                card.appendChild(closedDiv);
+                card.appendChild(openDiv);
+                
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+                    
+                    const isOpen = this.querySelector('.card-open').style.display === 'block';
+                    
+                    if (isOpen) {
+                        this.querySelector('.card-open').style.display = 'none';
+                        this.querySelector('.card-closed').style.display = 'flex';
+                    } else {
+                        this.querySelector('.card-open').style.display = 'block';
+                        this.querySelector('.card-closed').style.display = 'none';
+                    }
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function openAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'block';
+                card.querySelector('.card-closed').style.display = 'none';
+            });
+        }
+
+        function closeAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'none';
+                card.querySelector('.card-closed').style.display = 'flex';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createCards();
+            
+            document.getElementById('openAll').addEventListener('click', openAllCards);
+            document.getElementById('closeAll').addEventListener('click', closeAllCards);
+        });
+    </script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    body.classList.add('light-mode');
+    toggleBtn.textContent = 'Switch to Dark Mode';
+
+    toggleBtn.addEventListener('click', function() {
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Switch to Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            toggleBtn.textContent = 'Switch to Dark Mode';
+        }
+    });
+});
+</script>
+</body>
+</html>

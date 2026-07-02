@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQnyms</title>
+    <style>
+		
+		/* color theme #B0E0E6  #d4e6f1  #E9E9E9 #fff8dc #8b0000; */
+		
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            background-color: #d4e6f1; 
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        #fileNameInput {
+            width: 100%;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            /*margin: 10px auto;*/
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-bottom: 20px; 
+            margin-top:20px;
+        }
+        .output-section {
+			background-color:#FAF8EF;
+			border: 1px solid #ddd; 
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+            padding: 10px;
+            margin-bottom: 10px;
+            min-height: 50px;
+            position: relative;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: block;
+            /*margin-left: auto;
+            margin-right: 10px;*/
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        select {
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            font-weight: bold;
+        }
+        select option {
+            color: black;
+        }
+        .default {
+            color: blue;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        p {
+            margin: 10px 0;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+        
+        #heading {
+			background-color:#fff8dc; 
+			border: 1px solid #ddd;  
+			border-radius: 7px;
+			box-shadow:1px 1px 5px #58B592;
+			margin:3rem 0 1rem 0; 
+			padding: 1rem; cursor:text;		
+		}       
+        
+        
+        #instruction1{
+			margin-bottom:1ex; border: thin solid black; padding: 1ex;
+			}
+        
+        @media (max-width: 600px) {
+            select, p {
+                font-size: 1.1em;
+            }
+            .output-section {
+                padding: 12px;
+            }
+        }
+
+		
+    </style>
+</head>
+<body>
+	
+	
+	
+	
+<!-- ==========================================================
+================   STYLE EDITOR  =================================
+=================================================================
+===============   CSS  HTML   JS  ================================== -->
+<!-- Copy and paste the HTML and JS together -->
+		<style>
+        /* CSS begin style editor*/
+        .styleEditor { background-color: #D1A7A7; margin:1em 0 0 0; border-radius: 3px;
+            padding: 8px; display:inline-block;  
+            position: fixed;
+            top: 0;
+            left: 1rem;
+            right: 0;
+            z-index: 999; width:fit-content;
+        }
+
+            .styleBtn {
+                display:inline-block; box-shadow: 3px 3px 5px darkred;
+                background-color: #D4E6F1; border-radius: 3px;
+            } 
+
+              .fsSmall{ font-size:small; }
+              .fsMedium{ font-size:medium; }
+              .fsLarge{ font-size:large; }
+              .fsXlarge{ font-size:x-large; }
+              .fsXxlarge{ font-size:xx-large; }
+              
+          .editMode { 
+			border: thick solid orange;
+            font-size:2.2rem; color: orange; 
+            margin:3rem;
+            padding:5rem 0 1rem 2rem;
+            background-color: darkblue;   
+          } 
+            
+          .hlBtn {
+			  margin: .15rem; padding: .3rem; 
+		  }         
+		  
+        /* end style editor*/
+		</style>
+        
+      <div id="styleEditor" class="styleEditor editOff" style="display: none;">
+                
+                <div class="styleBtn">
+                    <button id="btnQuBold" class="hlBtn" onclick="bold()"><strong> Bb </strong></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuItalic" class="hlBtn" onclick="italic()"><em>&nbsp;I i&nbsp; </em></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="undln()"><u> Uu </u></button>
+                </div>
+                
+                <div class="styleBtn">
+                    <button id="btnQuNone" class="hlBtn" onclick="normal()"> Ins Plain </button>
+                </div>
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="smAbc()"><span class="fsSmall"> SM</span></button>
+                </div>    
+                 
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="medAbc()"><span class="fsMedium"> Md </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="lgAbc()"><span class="fsLarge"> Lg</span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xlAbc()"><span class="fsLarge"> xL </span></button>
+                </div>
+                                  
+                <div class="styleBtn">
+                    <button id="btnQuUndl" class="hlBtn" onclick="xxlAbc()"><span class="fsLarge"> xxL </span></button>
+                </div>       
+      </div>         
+      
+      <div class="editMode editOff" style="display: none;">Edit Mode ------ Edit Mode</div>
+      
+      
+           <script>
+        function bold(){
+            let bold = document.createElement("b");
+            window.getSelection().getRangeAt(0).surroundContents(bold); 
+        } //  end fn bold
+        
+        function italic(){
+            let italic = document.createElement("i");
+            window.getSelection().getRangeAt(0).surroundContents(italic); 
+        } //  end fn italic
+        
+        function undln(){
+            let undln = document.createElement("u");
+            window.getSelection().getRangeAt(0).surroundContents(undln); 
+        } //  end fn undln
+         
+       function normal(){
+                  let  spanPlain = document.createElement("span");
+                  spanPlain.innerHTML=" --plain-- ";
+                  spanPlain.style.fontWeight="initial";
+                  spanPlain.style.fontSize="initial";
+                  spanPlain.style.fontStyle="initial";
+                  spanPlain.style.textDecoration="revert";
+
+                  //let plainText = document.createTextNode(" --plain-- ");
+                  window.getSelection().getRangeAt(0).insertNode(spanPlain); 
+        } //  end fn none  
+         
+            function smAbc(){
+                  let smallAbc = document.createElement("span");
+                  smallAbc.className="fsSmall";
+                  window.getSelection().getRangeAt(0).surroundContents(smallAbc); 
+              } //  end fn smAbc 
+        
+              function medAbc(){
+                  let medAbc = document.createElement("span");
+                  medAbc.className="fsMedium";
+                  window.getSelection().getRangeAt(0).surroundContents(medAbc); 
+              } //  end fn medAbc 
+        
+              function lgAbc(){
+                  let lgAbc = document.createElement("span");
+                  lgAbc.className="fsLarge";
+                  window.getSelection().getRangeAt(0).surroundContents(lgAbc); 
+              } //  end fn lgAbc 
+        
+              function xlAbc(){
+                  let xlAbc = document.createElement("span");
+                  xlAbc.className="fsXlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xlAbc); 
+              } //  end fn xlAbc 
+        
+              function xxlAbc(){
+                  let xxlAbc = document.createElement("span");
+                  xxlAbc.className="fsXxlarge";
+                  window.getSelection().getRangeAt(0).surroundContents(xxlAbc); 
+              } //  end fn xxlAbc          
+    </script>  
+    
+<!--==========================================================
+================  //end STYLE EDITOR  ===========================
+=================================================================
+==================================================================-->	
+	
+	
+	
+	
+	
+    <div id="heading" contenteditable="false"><div>Dr Ray <br></div><div>English Lesson <br></div><div><span class="fsLarge"><b>Grocery Store Layouts</b></span></div><div><br></div><div><i>Choose the synonym or similar phrase that best fits the sentence, according to the article.</i></div></div>
+    
+    
+    <details id="instruction1" class="editOff" style="display: none;"><summary>Instructions</summary><p>Paste a paragraph or article below with words in {{word1,word2,word3,...}} format. Word1 is the default (blue), word2 is the correct answer (green when selected), and the rest are distractors (red when selected). Click "Transform" to generate the exercise above the textarea. Use "Delete Forever" to remove a section if needed. Enter a file name and click "Save to Download Folder" to export as an HTML file.</p>
+    </details>
+    
+    <label for="nameInput">Name:</label>
+	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
+	<label for="idInput">ID#:</label>
+	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+
+
+
+
+    <!--
+Here is the markup source:
+Have you ever gone to the grocery store for just milk and bread, but came out with a {{full, packed, empty, borken}} shopping cart? This is no {{accident, mishap, intention, disaster}}. Grocery stores have {{clever tricks, cunning strategies, no reasons, shiny displays}} in how they arrange their {{layouts, aisles, disorganizations, posters}}, which are {{designed, planned, unplanned, read}} like a map that {{guides, directs, misleads, discourages}} you to spend more money. From the {{moment, instant, hour, door}} you enter until you {{reach, arrive at, depart, leave}} the checkout counter, every {{aspect, feature, omission, color}} of the store's design has been carefully planned to {{influence, affect, ignore, decorate}} your spending {{behavior, conduct, indifference, style}}.
+When you first walk into a grocery store, you usually see fruits and vegetables {{right away, immediately, later, upstairs}}. All those bright colors and fresh smells makes the whole store seem {{fresh, bright, stale, loud}} and alive. It puts you in a good mood, and when you feel good at the start of your shopping experience, you're likely to {{buy, purchase, sell, hide}} more things later.
+As you {{continue, proceed, stop, decorate}} your journey, you'll notice that {{essential, necessary, optional, colorful}} items like milk, bread, and eggs are usually {{located, placed, misplaced, left}} at the back of the store. Everyone needs these staples, so shoppers must {{pass by, walk past, avoid, climb over}} countless other shelves of {{products, goods, junk, services}} as they {{make their way, navigate, stay put, slink}} to the back. You'll also notice the special displays at the end of the aisles which have sale {{items, products, necessities, toys}} or seasonal products designed to {{catch, attract, repel, frame}} your attention. Meanwhile, the store's most {{profitable, lucrative, unprofitable, colorful}} items are placed at eye level, while {{cheaper, inexpensive, pricier, brighter}} products are often placed on higher or lower shelves where they're {{less likely, not as likely, certain, probably}} to be noticed.
+Before you leave, you have to {{go through, pass through, bypass, climb}} the checkout area. This is where stores play their last trick. This zone is filled with small, impulse-purchase items like snacks, magazines, and batteries -- things you probably didn't {{plan, intend, neglect, paint}} to buy but might {{grab, snatch, ignore, frame}} while {{waiting, standing, rushing, moving}} in line. You might think, "It's just a dollar or two," and {{add it to, put it in, remove from, paint}} your cart. Even the music they play and how {{wide, broad, set, settled}} the aisles are have been carefully planned to make you shop longer and {{buy more, purchase more, buy less, pay out}}. Nothing in a grocery store is {{random, haphazard, deliberate, planted}} -- everything has a {{purpose, reason, aimlessness, way}}.
+Understanding the secret of grocery store layouts can help you become a more {{conscious, aware, oblivious, fashoinable}} shopper. By {{recognizing, noticing, ignoring, framing}} these psychological {{tactics, strategies, accidents, tailorings}}, you can {{stick to, adhere to, abandon, paint}} your {{budget, spending plan, overspending, canvas}} and shopping list more {{effectively, successfully, poorly, brightly}}. Next time you go shopping, try to {{spot, notice, overlook, draw out}} these tricks. Notice how the store {{tries, attempts, avoids, forces}} to make you buy things you didn't plan to get. Being {{aware, mindful, unaware, fooled}} of these {{techniques, methods, mistakes, hues}} can put you {{back in control, back in charge, out of control, on display}} of your shopping experience.
+-->
+
+
+
+    
+    <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Have you ever gone to the grocery store for just milk and bread, but came out with a 
+                        <select id="select-1748157336735-0-0" class="default" data-correct="packed"><option value="full">full</option><option value="empty">empty</option><option value="packed">packed</option><option value="borken">borken</option></select>
+                     shopping cart? This is no 
+                        <select id="select-1748157336735-0-1" class="default" data-correct="mishap"><option value="accident">accident</option><option value="disaster">disaster</option><option value="intention">intention</option><option value="mishap">mishap</option></select>
+                    . Grocery stores have 
+                        <select id="select-1748157336736-0-2" class="default" data-correct="cunning strategies"><option value="clever tricks">clever tricks</option><option value="no reasons">no reasons</option><option value="cunning strategies">cunning strategies</option><option value="shiny displays">shiny displays</option></select>
+                     in how they arrange their 
+                        <select id="select-1748157336736-0-3" class="default" data-correct="aisles"><option value="layouts">layouts</option><option value="aisles">aisles</option><option value="disorganizations">disorganizations</option><option value="posters">posters</option></select>
+                    , which are 
+                        <select id="select-1748157336736-0-4" class="default" data-correct="planned"><option value="designed">designed</option><option value="read">read</option><option value="unplanned">unplanned</option><option value="planned">planned</option></select>
+                     like a map that 
+                        <select id="select-1748157336736-0-5" class="default" data-correct="directs"><option value="guides">guides</option><option value="directs">directs</option><option value="discourages">discourages</option><option value="misleads">misleads</option></select>
+                     you to spend more money. From the 
+                        <select id="select-1748157336736-0-6" class="default" data-correct="instant"><option value="moment">moment</option><option value="door">door</option><option value="hour">hour</option><option value="instant">instant</option></select>
+                     you enter until you 
+                        <select id="select-1748157336736-0-7" class="default" data-correct="arrive at"><option value="reach">reach</option><option value="arrive at">arrive at</option><option value="leave">leave</option><option value="depart">depart</option></select>
+                     the checkout counter, every 
+                        <select id="select-1748157336736-0-8" class="default" data-correct="feature"><option value="aspect">aspect</option><option value="feature">feature</option><option value="omission">omission</option><option value="color">color</option></select>
+                     of the store's design has been carefully planned to 
+                        <select id="select-1748157336736-0-9" class="default" data-correct="affect"><option value="influence">influence</option><option value="affect">affect</option><option value="decorate">decorate</option><option value="ignore">ignore</option></select>
+                     your spending 
+                        <select id="select-1748157336736-0-10" class="default" data-correct="conduct"><option value="behavior">behavior</option><option value="indifference">indifference</option><option value="style">style</option><option value="conduct">conduct</option></select>
+                    .</p><p>When you first walk into a grocery store, you usually see fruits and vegetables 
+                        <select id="select-1748157336737-1-0" class="default" data-correct="immediately"><option value="right away">right away</option><option value="upstairs">upstairs</option><option value="later">later</option><option value="immediately">immediately</option></select>
+                    . All those bright colors and fresh smells makes the whole store seem 
+                        <select id="select-1748157336737-1-1" class="default" data-correct="bright"><option value="fresh">fresh</option><option value="stale">stale</option><option value="loud">loud</option><option value="bright">bright</option></select>
+                     and alive. It puts you in a good mood, and when you feel good at the start of your shopping experience, you're likely to 
+                        <select id="select-1748157336737-1-2" class="default" data-correct="purchase"><option value="buy">buy</option><option value="hide">hide</option><option value="sell">sell</option><option value="purchase">purchase</option></select>
+                     more things later.</p><p>As you 
+                        <select id="select-1748157336737-2-0" class="default" data-correct="proceed"><option value="continue">continue</option><option value="stop">stop</option><option value="decorate">decorate</option><option value="proceed">proceed</option></select>
+                     your journey, you'll notice that 
+                        <select id="select-1748157336737-2-1" class="default" data-correct="necessary"><option value="essential">essential</option><option value="optional">optional</option><option value="necessary">necessary</option><option value="colorful">colorful</option></select>
+                     items like milk, bread, and eggs are usually 
+                        <select id="select-1748157336737-2-2" class="default" data-correct="placed"><option value="located">located</option><option value="left">left</option><option value="misplaced">misplaced</option><option value="placed">placed</option></select>
+                     at the back of the store. Everyone needs these staples, so shoppers must 
+                        <select id="select-1748157336737-2-3" class="default" data-correct="walk past"><option value="pass by">pass by</option><option value="avoid">avoid</option><option value="walk past">walk past</option><option value="climb over">climb over</option></select>
+                     countless other shelves of 
+                        <select id="select-1748157336737-2-4" class="default" data-correct="goods"><option value="products">products</option><option value="services">services</option><option value="goods">goods</option><option value="junk">junk</option></select>
+                     as they 
+                        <select id="select-1748157336737-2-5" class="default" data-correct="navigate"><option value="make their way">make their way</option><option value="navigate">navigate</option><option value="slink">slink</option><option value="stay put">stay put</option></select>
+                     to the back. You'll also notice the special displays at the end of the aisles which have sale 
+                        <select id="select-1748157336737-2-6" class="default" data-correct="products"><option value="items">items</option><option value="necessities">necessities</option><option value="products">products</option><option value="toys">toys</option></select>
+                     or seasonal products designed to 
+                        <select id="select-1748157336737-2-7" class="default" data-correct="attract"><option value="catch">catch</option><option value="frame">frame</option><option value="repel">repel</option><option value="attract">attract</option></select>
+                     your attention. Meanwhile, the store's most 
+                        <select id="select-1748157336737-2-8" class="default" data-correct="lucrative"><option value="profitable">profitable</option><option value="lucrative">lucrative</option><option value="colorful">colorful</option><option value="unprofitable">unprofitable</option></select>
+                     items are placed at eye level, while 
+                        <select id="select-1748157336737-2-9" class="default" data-correct="inexpensive"><option value="cheaper">cheaper</option><option value="inexpensive">inexpensive</option><option value="brighter">brighter</option><option value="pricier">pricier</option></select>
+                     products are often placed on higher or lower shelves where they're 
+                        <select id="select-1748157336737-2-10" class="default" data-correct="not as likely"><option value="less likely">less likely</option><option value="not as likely">not as likely</option><option value="certain">certain</option><option value="probably">probably</option></select>
+                     to be noticed.</p><p>Before you leave, you have to 
+                        <select id="select-1748157336737-3-0" class="default" data-correct="pass through"><option value="go through">go through</option><option value="bypass">bypass</option><option value="climb">climb</option><option value="pass through">pass through</option></select>
+                     the checkout area. This is where stores play their last trick. This zone is filled with small, impulse-purchase items like snacks, magazines, and batteries -- things you probably didn't 
+                        <select id="select-1748157336737-3-1" class="default" data-correct="intend"><option value="plan">plan</option><option value="intend">intend</option><option value="neglect">neglect</option><option value="paint">paint</option></select>
+                     to buy but might 
+                        <select id="select-1748157336737-3-2" class="default" data-correct="snatch"><option value="grab">grab</option><option value="snatch">snatch</option><option value="ignore">ignore</option><option value="frame">frame</option></select>
+                     while 
+                        <select id="select-1748157336737-3-3" class="default" data-correct="standing"><option value="waiting">waiting</option><option value="rushing">rushing</option><option value="standing">standing</option><option value="moving">moving</option></select>
+                     in line. You might think, "It's just a dollar or two," and 
+                        <select id="select-1748157336737-3-4" class="default" data-correct="put it in"><option value="add it to">add it to</option><option value="remove from">remove from</option><option value="paint">paint</option><option value="put it in">put it in</option></select>
+                     your cart. Even the music they play and how 
+                        <select id="select-1748157336737-3-5" class="default" data-correct="broad"><option value="wide">wide</option><option value="settled">settled</option><option value="set">set</option><option value="broad">broad</option></select>
+                     the aisles are have been carefully planned to make you shop longer and 
+                        <select id="select-1748157336737-3-6" class="default" data-correct="purchase more"><option value="buy more">buy more</option><option value="purchase more">purchase more</option><option value="buy less">buy less</option><option value="pay out">pay out</option></select>
+                    . Nothing in a grocery store is 
+                        <select id="select-1748157336737-3-7" class="default" data-correct="haphazard"><option value="random">random</option><option value="planted">planted</option><option value="haphazard">haphazard</option><option value="deliberate">deliberate</option></select>
+                     -- everything has a 
+                        <select id="select-1748157336737-3-8" class="default" data-correct="reason"><option value="purpose">purpose</option><option value="aimlessness">aimlessness</option><option value="reason">reason</option><option value="way">way</option></select>
+                    .</p><p>Understanding the secret of grocery store layouts can help you become a more 
+                        <select id="select-1748157336738-4-0" class="default" data-correct="aware"><option value="conscious">conscious</option><option value="fashoinable">fashoinable</option><option value="aware">aware</option><option value="oblivious">oblivious</option></select>
+                     shopper. By 
+                        <select id="select-1748157336738-4-1" class="default" data-correct="noticing"><option value="recognizing">recognizing</option><option value="noticing">noticing</option><option value="ignoring">ignoring</option><option value="framing">framing</option></select>
+                     these psychological 
+                        <select id="select-1748157336738-4-2" class="default" data-correct="strategies"><option value="tactics">tactics</option><option value="strategies">strategies</option><option value="accidents">accidents</option><option value="tailorings">tailorings</option></select>
+                    , you can 
+                        <select id="select-1748157336738-4-3" class="default" data-correct="adhere to"><option value="stick to">stick to</option><option value="abandon">abandon</option><option value="adhere to">adhere to</option><option value="paint">paint</option></select>
+                     your 
+                        <select id="select-1748157336738-4-4" class="default" data-correct="spending plan"><option value="budget">budget</option><option value="canvas">canvas</option><option value="overspending">overspending</option><option value="spending plan">spending plan</option></select>
+                     and shopping list more 
+                        <select id="select-1748157336738-4-5" class="default" data-correct="successfully"><option value="effectively">effectively</option><option value="poorly">poorly</option><option value="successfully">successfully</option><option value="brightly">brightly</option></select>
+                    . Next time you go shopping, try to 
+                        <select id="select-1748157336738-4-6" class="default" data-correct="notice"><option value="spot">spot</option><option value="notice">notice</option><option value="overlook">overlook</option><option value="draw out">draw out</option></select>
+                     these tricks. Notice how the store 
+                        <select id="select-1748157336738-4-7" class="default" data-correct="attempts"><option value="tries">tries</option><option value="attempts">attempts</option><option value="avoids">avoids</option><option value="forces">forces</option></select>
+                     to make you buy things you didn't plan to get. Being 
+                        <select id="select-1748157336738-4-8" class="default" data-correct="mindful"><option value="aware">aware</option><option value="mindful">mindful</option><option value="unaware">unaware</option><option value="fooled">fooled</option></select>
+                     of these 
+                        <select id="select-1748157336738-4-9" class="default" data-correct="methods"><option value="techniques">techniques</option><option value="methods">methods</option><option value="mistakes">mistakes</option><option value="hues">hues</option></select>
+                     can put you 
+                        <select id="select-1748157336738-4-10" class="default" data-correct="back in charge"><option value="back in control">back in control</option><option value="back in charge">back in charge</option><option value="out of control">out of control</option><option value="on display">on display</option></select>
+                     of your shopping experience.</p></div></div>
+   
+    
+    
+    
+    
+    
+    <button id="printBtn">Print/Save to PDF</button>    
+
+
+    <script>
+        // Function to escape HTML special characters
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Transform button logic
+        document.getElementById('transformBtn').addEventListener('click', () => {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+
+            // Create new output section
+            const newSection = document.createElement('div');
+            newSection.className = 'output-section';
+
+            // Add delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete Forever';
+            deleteBtn.addEventListener('click', () => {
+                newSection.remove();
+            });
+            newSection.appendChild(deleteBtn);
+
+            // Split input into paragraphs (handle multiple lines)
+            const paragraphs = input.split('\n').filter(p => p.trim());
+
+            // Process each paragraph
+            paragraphs.forEach((para, paraIndex) => {
+                let paraHtml = para;
+                // Match all {{...}} patterns
+                const matches = para.matchAll(/{{([^}]+)}}/g);
+                let selectCount = 0;
+
+                for (const match of matches) {
+                    const words = match[1].split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    if (words.length < 2) continue; // Skip invalid markup
+
+                    const defaultWord = escapeHtml(words[0]);
+                    const correctWord = escapeHtml(words[1]);
+                    const distractors = words.slice(2).map(w => escapeHtml(w));
+
+                    // Generate unique ID for select
+                    const selectId = `select-${Date.now()}-${paraIndex}-${selectCount++}`;
+                    const selectHtml = `
+                        <select id="${selectId}" class="default" data-correct="${correctWord}">
+                            <option value="${defaultWord}" selected>${defaultWord}</option>
+                            <option value="${correctWord}">${correctWord}</option>
+                            ${distractors.map(d => `<option value="${d}">${d}</option>`).join('')}
+                        </select>
+                    `;
+                    // Replace {{...}} with select HTML
+                    paraHtml = paraHtml.replace(match[0], selectHtml);
+                }
+
+                // Add paragraph to new section
+                const p = document.createElement('p');
+                p.innerHTML = paraHtml;
+                newSection.appendChild(p);
+            });
+
+            // Append new section to output (adds at bottom of #output, above textarea)
+            outputDiv.appendChild(newSection);
+
+            // Add event listeners to all selects in the new section
+            newSection.querySelectorAll('select').forEach(select => {
+                const correctWord = select.getAttribute('data-correct');
+                const defaultWord = select.options[0].value;
+
+                // Shuffle options (excluding default)
+                const opts = Array.from(select.options).slice(1);
+                opts.sort(() => Math.random() - 0.5);
+                select.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = defaultWord;
+                defaultOption.textContent = defaultWord;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+                opts.forEach(opt => select.appendChild(opt));
+
+                // Explicitly set initial value to ensure default word displays
+                select.value = defaultWord;
+
+                select.addEventListener('change', () => {
+                    const selectedValue = select.value;
+                    if (selectedValue === defaultWord) {
+                        select.className = 'default';
+                    } else if (selectedValue === correctWord) {
+                        select.className = 'correct';
+                    } else {
+                        select.className = 'incorrect';
+                    }
+                });
+            });
+        });
+
+        // Save to Download Folder button logic
+        document.getElementById('saveBtn').addEventListener('click', () => {
+			
+// Reset all select elements to their default option
+document.querySelectorAll('#output select').forEach(select => {
+    select.selectedIndex = 0; // Set to first option
+    select.value = select.options[0].value; // Ensure value matches
+    select.className = 'default'; // Set visual state to blue
+    select.dispatchEvent(new Event('change')); // Sync with event listener
+});		
+			
+            // Clone the document
+            const clonedDoc = document.cloneNode(true);
+
+            // Hide delete buttons in the cloned document
+            clonedDoc.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+			// Hide all elements with class="editOff" in the cloned document
+			clonedDoc.querySelectorAll('.editOff').forEach(element => {
+				element.style.display = 'none';
+			});
+
+			// Disable contenteditable on all elements with the attribute in the cloned document
+			clonedDoc.querySelectorAll('[contenteditable]').forEach(element => {
+				element.setAttribute('contenteditable', 'false');
+			});            
+
+            // Remove the Save button, Transform button, textarea, and file name input from the cloned document
+            const saveBtn = clonedDoc.getElementById('saveBtn');
+            if (saveBtn) saveBtn.remove();
+            const transformBtn = clonedDoc.getElementById('transformBtn');
+            if (transformBtn) transformBtn.remove();
+            const textarea = clonedDoc.getElementById('inputText');
+            if (textarea) textarea.remove();
+            const fileNameInput = clonedDoc.getElementById('fileNameInput');
+            if (fileNameInput) fileNameInput.remove();
+
+            // Add script to handle select interactions in the saved file
+            const script = clonedDoc.createElement('script');
+            script.textContent = `
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            `;
+            clonedDoc.body.appendChild(script);
+
+            // Get the file name from the input
+            let fileName = document.getElementById('fileNameInput').value.trim();
+            if (fileName) {
+                // Sanitize file name: replace spaces with hyphens, remove special characters
+                fileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+                if (!fileName.endsWith('.html')) {
+                    fileName += '.html';
+                }
+            } else {
+                fileName = 'vocabulary-exercise.html';
+            }
+
+            // Get the HTML content
+            const htmlContent = '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML;
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // Create a downloadable link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+    
+    
+    <script>
+	document.getElementById('printBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('nameInput').value.trim();
+    const idInput = document.getElementById('idInput').value.trim();
+    
+    if (!nameInput || !idInput) {
+        alert('Please enter both name and ID');
+        return;
+    }
+
+    // Prepare print view
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+        @media print {
+            body { font-size: 12pt; margin: 1cm; }
+            .output-section { border: none; margin-bottom: 20px; }
+            select { 
+                -webkit-appearance: none; 
+                appearance: none; 
+                border: 1px solid #000; 
+                padding: 2px; 
+                background: none;
+            }
+            #nameInput, #idInput, #printBtn { display: none; }
+            .print-header { 
+                margin-bottom: 20px; 
+                font-size: 14pt; 
+                font-weight: bold; 
+            }
+        }
+    `;
+    document.head.appendChild(printStyle);
+
+    // Add header with Name and ID
+    const header = document.createElement('div');
+    header.className = 'print-header';
+    header.textContent = `Name: ${nameInput} | ID#: ${idInput}`;
+    document.body.insertBefore(header, document.body.firstChild);
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up (remove header, keep style for multiple prints)
+    document.body.removeChild(header);
+	});
+	</script>
+    
+    
+    
+
+
+<script>
+                document.querySelectorAll('select').forEach(select => {
+                    const correctWord = select.getAttribute('data-correct');
+                    const defaultWord = select.options[0].value;
+
+                    select.addEventListener('change', () => {
+                        const selectedValue = select.value;
+                        if (selectedValue === defaultWord) {
+                            select.className = 'default';
+                        } else if (selectedValue === correctWord) {
+                            select.className = 'correct';
+                        } else {
+                            select.className = 'incorrect';
+                        }
+                    });
+                });
+            </script></body></html>
