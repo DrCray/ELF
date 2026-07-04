@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Vocabulary Activity - Chocolate Article</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f4f0;
+            color: #4a3728;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #8c6239;
+            padding-bottom: 20px;
+        }
+        h1 { color: #5c3a21; margin-bottom: 5px; font-size: 26px; }
+        p.instructions { color: #7a604d; font-style: italic; margin-top: 5px; }
+        
+        .score-container {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+            border: 1px solid #e3dac9;
+        }
+        .score-box { font-size: 18px; color: #8c6239; }
+        .reset-btn {
+            background-color: #8c6239;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover { background-color: #5c3a21; }
+
+        .sentence-card {
+            background-color: #ffffff;
+            border: 1px solid #e3dac9;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(92, 58, 33, 0.03);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-size: 16px;
+        }
+        
+        select {
+            font-family: inherit;
+            font-size: 15px;
+            padding: 4px 8px;
+            color: #4a3728;
+            background-color: #fff;
+            border: 2px solid #c9b097;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            font-weight: 600;
+            margin: 0 4px;
+        }
+        select:focus { border-color: #8c6239; }
+
+        /* Status classes applied dynamically */
+        .correct-card {
+            background-color: #e6f4ea !important; /* Pale pastel green */
+            border-color: #a3cfbb !important;
+        }
+/* Status classes applied dynamically */
+.correct-select {
+    border-color: #157347 !important;
+    background-color: #DFF3EB !important; /* Pale pastel green for the select box */
+    color: #1D3328 !important;
+}
+.incorrect-select {
+    border-color: #dc3545 !important;
+    background-color: #F6E8E9 !important; /* Pale red/pink for the select box */
+    color: #842029 !important;
+}
+
+        /* Remove .correct-card entirely */
+
+/* Keep the select border clean, but change only the chosen drop-down item color */
+select.correct-select {
+    border-color: #157347 !important;
+    color: #1D3328 !important;
+}
+
+select.incorrect-select {
+    border-color: #dc3545 !important;
+    color: #842029 !important;
+}
+
+/* This targets the background color of the option tags specifically inside the select box */
+select.correct-select option:checked,
+select.correct-select option[value=""]:not(:checked) {
+    background-color: #d1e7dd !important; /* Pale pastel green */
+}
+
+select.incorrect-select option:checked {
+    background-color: #f8d7da !important; /* Pale red/pink */
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Vocabulary Practice: Chocolate Theme</h1>
+        <p class="instructions">Choose the correct vocabulary word to complete each B1 example sentence.</p>
+    </header>
+
+    <div class="score-container">
+        <span class="score-box">Score: <span id="current-score">0</span> / <span id="total-questions">0</span></span>
+        <button class="reset-btn" onclick="initActivity()">Restart & Shuffle</button>
+    </div>
+
+    <div id="activity-container"></div>
+</div>
+
+<script>
+// 1. Array containing all sentences matching previous step's corpus
+const vocabularyData = [
+    { ans: "mood-enhancing", sentc: "Many people listen to upbeat music for its --select-- effects on a rainy day." },
+    { ans: "mood-enhancing", sentc: "Walking in a sunny park has a natural --select-- quality that reduces stress." },
+    { ans: "versatility", sentc: "The chef loves the --select-- of potatoes because they can be baked, fried, or mashed." },
+    { ans: "versatility", sentc: "A smartphone is famous for its --select--, acting as a phone, camera, and computer all at once." },
+    { ans: "indulgence", sentc: "Buying a ticket to a luxury spa was a wonderful weekend --select-- for Sarah." },
+    { ans: "indulgence", sentc: "An extra piece of strawberry cake is a small --select-- after a long week of hard work." },
+    { ans: "fascinating", sentc: "The students found the documentary about deep-sea creatures absolutely --select--." },
+    { ans: "fascinating", sentc: "History books are full of --select-- stories about ancient queens and kings." },
+    { ans: "originated", sentc: "The popular dish pizza --select-- in Italy before spreading across the globe." },
+    { ans: "originated", sentc: "Scientists believe that this specific type of plant --select-- in the rainforests of South America." },
+    { ans: "revered", sentc: "The ancient elders were --select-- by the village people for their wisdom." },
+    { ans: "revered", sentc: "In many traditional cultures, older teachers are deeply --select-- by their students." },
+    { ans: "consumed", sentc: "The hot soup was quickly --select-- by the cold hikers when they reached the cabin." },
+    { ans: "consumed", sentc: "Large amounts of coffee are --select-- every morning in busy city offices." },
+    { ans: "transforming", sentc: "The artist is --select-- the old, gray wall into a beautiful colorful mural." },
+    { ans: "transforming", sentc: "Adding fresh herbs is an easy way of --select-- a simple pasta dish into a gourmet meal." },
+    { ans: "sensation", sentc: "The young singer became an overnight --select-- after her video went viral." },
+    { ans: "sensation", sentc: "The new smartphone app created a global --select--, gaining millions of users in a week." },
+    { ans: "remarkable", sentc: "The young child showed a --select-- talent for playing the piano without lessons." },
+    { ans: "remarkable", sentc: "It is --select-- how much the city has changed and grown over the last ten years." },
+    { ans: "enhance", sentc: "You can --select-- the flavor of the soup by adding a little bit of salt and pepper." },
+    { ans: "enhance", sentc: "The new lighting system was designed to --select-- the beauty of the paintings in the museum." },
+    { ans: "stimulate", sentc: "Bright colors like yellow and orange can --select-- the brain and increase energy levels." },
+    { ans: "stimulate", sentc: "The exercise session helped to --select-- his blood circulation and wake him up." },
+    { ans: "texture", sentc: "This cream has a very light, smooth --select-- that absorbs into the skin quickly." },
+    { ans: "texture", sentc: "The bread had a wonderful crunchy --select-- on the outside but was soft inside." },
+    { ans: "aroma", sentc: "The rich --select-- of fresh coffee filled the kitchen early in the morning." },
+    { ans: "aroma", sentc: "We walked into the bakery, drawn in by the sweet --select-- of warm cinnamon rolls." },
+    { ans: "sensory", sentc: "Walking through the flower market offers a wonderful --select-- experience of bright colors and smells." },
+    { ans: "sensory", sentc: "Wine tasting is a complete --select-- process involving sight, aroma, and taste." },
+    { ans: "enduring", sentc: "The classic novel has an --select-- popularity that has lasted for over a century." },
+    { ans: "enduring", sentc: "Grandparents often share an --select-- love that serves as a beautiful example for the family." },
+    { ans: "significance", sentc: "The historical monument holds a huge cultural --select-- for the local community." },
+    { ans: "significance", sentc: "Doctors explained the deep --select-- of getting enough sleep every single night." },
+    { ans: "elaborate", sentc: "The dancers wore --select-- costumes covered in shiny beads and colorful feathers." },
+    { ans: "elaborate", sentc: "They prepared an --select-- surprise party with a complete schedule of events." },
+    { ans: "combination", sentc: "The salad is a delicious --select-- of sweet apples, crunchy walnuts, and fresh lettuce." },
+    { ans: "combination", sentc: "Success in learning a language requires a --select-- of regular practice and patience." },
+    { ans: "relevance", sentc: "The teacher explained the historical --select-- of the old treaty to today's political situation." },
+    { ans: "relevance", sentc: "Please only ask questions that have direct --select-- to the topic we are studying today." },
+    { ans: "appeal", sentc: "The universal --select-- of animated movies means both children and parents can enjoy them." },
+    { ans: "appeal", sentc: "Simple video games often have a wide --select-- because they are easy to understand and play." }
+];
+
+// Extract unique list of all answers to easily pull distracters
+const uniqueAnswers = [...new Set(vocabularyData.map(item => item.ans))];
+
+// Efficient Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Generate the dropdown choices (Correct option + 2 random distracters)
+function getDropdownOptions(correctAnswer) {
+    // Filter out the correct answer to safely pick distracters
+    const pool = uniqueAnswers.filter(ans => ans !== correctAnswer);
+    shuffleArray(pool);
+    
+    // Pick the first two distracters and combine with correct answer
+    const choices = [correctAnswer, pool[0], pool[1]];
+    return shuffleArray(choices); // Shuffle choices so correct answer isn't always first
+}
+
+function initActivity() {
+    const container = document.getElementById("activity-container");
+    container.innerHTML = ""; // Clear existing content
+    
+    // Set total questions counter
+    document.getElementById("total-questions").textContent = vocabularyData.length;
+    document.getElementById("current-score").textContent = "0";
+    
+    // Shuffle the sentences array
+    const shuffledData = shuffleArray([...vocabularyData]);
+    
+    shuffledData.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "sentence-card";
+        card.id = `card-${index}`;
+        
+        // Generate choices for this specific sentence
+        const choices = getDropdownOptions(item.ans);
+        
+        // Create select element HTML
+        let selectHTML = `<select id="select-${index}" onchange="checkAnswer(${index}, '${item.ans}')">`;
+        selectHTML += `<option value="">--select--</option>`;
+        choices.forEach(choice => {
+            selectHTML += `<option value="${choice}">${choice}</option>`;
+        });
+        selectHTML += `</select>`;
+        
+        // Replace custom placeholder with the actual HTML select tag
+        const customizedSentence = item.sentc.replace("--select--", selectHTML);
+        card.innerHTML = `${index + 1}. ${customizedSentence}`;
+        
+        container.appendChild(card);
+    });
+}
+
+function checkAnswer(index, correctAnswer) {
+    const selectElem = document.getElementById(`select-${index}`);
+    const selectedValue = selectElem.value;
+
+    // Clear classes initially (notice cardElem is completely removed)
+    selectElem.classList.remove("correct-select", "incorrect-select");
+
+    if (selectedValue === correctAnswer) {
+        selectElem.classList.add("correct-select"); // Only styles the select box green
+    } else if (selectedValue !== "") {
+        selectElem.classList.add("incorrect-select"); // Only styles the select box red/pink
+    }
+
+    // Recalculate score dynamically
+    updateScore();
+}
+
+function updateScore() {
+    let score = 0;
+    const selects = document.querySelectorAll("select");
+    selects.forEach((select, index) => {
+        // We stored the original index in elements to cross reference from shuffled source mapping,
+        // but an easier way dynamically is checking if the element contains the `.correct-select` class!
+        if (select.classList.contains("correct-select")) {
+            score++;
+        }
+    });
+    document.getElementById("current-score").textContent = score;
+}
+
+// Fire on load
+window.onload = initActivity;
+</script>
+
+</body>
+</html>
