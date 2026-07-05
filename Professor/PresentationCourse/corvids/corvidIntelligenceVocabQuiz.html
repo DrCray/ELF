@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Cloze Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #764ba2;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px black; background: #EAE7EB;
+        }
+
+        h1 {
+            color: white; background: purple;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            padding: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            margin-bottom: 10px;
+        }
+
+@media (min-width: 1025px) {
+  .controls {
+    top:0px;
+    right: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .controls {
+    right: 40px;
+  }
+}
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-study {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-study:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-hide {
+            background: #764ba2;
+            color: white;
+        }
+
+        .btn-hide:hover {
+            background: #633d8a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .dark-mode-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+
+        .dark-mode-control input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-bottom: .7rem;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.dark-mode .container {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode h1 {
+            color: #9d84f5;
+        }
+
+        body.dark-mode .subtitle {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .sentence-item {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode select {
+            background: #16213e;
+            color: #e0e0e0;
+            border-color: #9d84f5;
+        }
+
+        body.dark-mode select:hover {
+            border-color: #b39ddb;
+        }
+
+        body.dark-mode select.correct {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        body.dark-mode select.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        body.dark-mode .dark-mode-control {
+            color: #e0e0e0;
+        }
+
+        .sentence-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            box-shadow: 0 0 7px 2px  #D6BCDB;
+        }
+
+        select {
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        select:hover {
+            border-color: #764ba2;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 5px rgba(118, 75, 162, 0.3);
+        }
+
+        select.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        select.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+        margin-bottom: 20px;
+    }
+
+    .controls {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.95em;
+    }
+
+    .dark-mode-control {
+        font-size: 0.9em;
+    }
+
+    .sentence-item {
+        font-size: 1.05rem;
+        padding: 10px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+    }
+
+    select {
+        min-width: 110px;
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+}
+
+.student-info-container{
+    max-width:30rem;
+    margin: 2rem auto;
+    background:#E6F2EE;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 0 2px 5px gray;
+}
+#pdfButton{
+    padding:.7rem;
+    border-radius:6px;
+    font-weight:bold;
+}
+.inputZ{
+    padding: .3rem;
+    border-radius: 6px;
+}
+
+footer {margin-top: 6rem;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Remarkable Intelligence of the Corvid Birds - Vocab Sentences</h1>
+        <p class="subtitle">Select the correct word or phrase to complete each sentence</p>
+
+        <div class="controls">
+            <button id="studyBtn" class="btn btn-study" onclick="showAllAnswers()">Study Mode</button>
+            <button id="hideBtn" class="btn btn-hide" onclick="hideAllAnswers()" style="display: none;">Hide All</button>
+        </div>
+
+            <div class="dark-mode-control">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <label for="darkModeToggle" style="background:#800080; color: white; margin-bottom:.7rem">&nbsp; Dark Mode &nbsp;</label>
+            </div>
+
+        <div id="sentences"></div>
+    </div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+    <script>
+        const vocab = [{"word": "complex", "sentence": "The tax code is so _____ that most people hire an accountant to file their returns."}, {"word": "struggle", "sentence": "New employees often _____ to remember everyone's name during their first week."}, {"word": "intelligent", "sentence": "The _____ design of the new subway system cut commute times in half."}, {"word": "geniuses", "sentence": "The museum's exhibit celebrated history's greatest _____, from Einstein to Curie."}, {"word": "impressive", "sentence": "Her _____ presentation convinced the investors to fund the project."}, {"word": "abilities", "sentence": "The coach designed drills that matched each player's individual _____."}, {"word": "craft", "sentence": "The carpenter can _____ a beautiful chair from a single block of wood."}, {"word": "tasks", "sentence": "She organized her _____ by priority before starting the workday."}, {"word": "observed", "sentence": "The researchers _____ the wolves for months before publishing their findings."}, {"word": "bending", "sentence": "The gymnast is famous for _____ her body into incredible shapes."}, {"word": "unique", "sentence": "Every snowflake has a _____ pattern that never repeats."}, {"word": "treated", "sentence": "She always _____ her staff with respect, even during stressful deadlines."}, {"word": "bonds", "sentence": "Years of traveling together created strong _____ among the team members."}, {"word": "literally", "sentence": "After the marathon, he was _____ unable to walk up the stairs."}, {"word": "scarce", "sentence": "Fresh water became _____ during the long summer drought."}, {"word": "dangling", "sentence": "A single light bulb was _____ from the ceiling of the old barn."}, {"word": "deception", "sentence": "The con artist's whole business was built on _____."}, {"word": "caches", "sentence": "Hikers sometimes leave _____ of food and water along long desert trails."}, {"word": "elsewhere", "sentence": "The restaurant was full, so we decided to eat _____."}, {"word": "demonstrate", "sentence": "The scientist used a simple experiment to _____ how pressure affects boiling point."}, {"word": "brainpower", "sentence": "Solving the puzzle required more _____ than any of us expected."}, {"word": "challenge", "sentence": "The new regulations _____ everything we thought we knew about the industry."}, {"word": "mindlessly", "sentence": "He scrolled _____ through his phone during the entire meeting."}, {"word": "assessing", "sentence": "The insurance agent spent an hour _____ the damage to the car."}, {"word": "behavior", "sentence": "The teacher praised the students for their excellent _____ on the field trip."}];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function getDistractors(correctWord, allWords, count = 3) {
+            const distractors = allWords.filter(w => w !== correctWord);
+            const shuffled = shuffleArray(distractors);
+            return shuffled.slice(0, count);
+        }
+
+        function createSelect(correctWord, index) {
+            const allWords = vocab.map(v => v.word);
+            const distractors = getDistractors(correctWord, allWords, 3);
+            const options = [correctWord, ...distractors];
+            const shuffledOptions = shuffleArray(options);
+
+            let select = `<select id="select-${index}" data-correct="${correctWord}" onchange="checkAnswer(${index})">`;
+            select += `<option value="">--select--</option>`;
+            shuffledOptions.forEach(option => {
+                select += `<option value="${option}">${option}</option>`;
+            });
+            select += `</select>`;
+
+            return select;
+        }
+
+        function renderSentences() {
+            const container = document.getElementById('sentences');
+            let html = '';
+
+            vocab.forEach((item, index) => {
+                const sentenceWithSelect = item.sentence.replace('_____', createSelect(item.word, index));
+                html += `<div class="sentence-item">${sentenceWithSelect}</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function checkAnswer(index) {
+            const select = document.getElementById(`select-${index}`);
+            const selectedValue = select.value;
+            const correctValue = select.getAttribute('data-correct');
+
+            if (selectedValue === '') {
+                select.className = '';
+            } else if (selectedValue === correctValue) {
+                select.className = 'correct';
+            } else {
+                select.className = 'incorrect';
+            }
+        }
+
+        let savedSelections = [];
+
+        function showAllAnswers() {
+            savedSelections = vocab.map((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                return { value: select.value, className: select.className };
+            });
+
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                const correctValue = select.getAttribute('data-correct');
+                select.value = correctValue;
+                select.className = 'correct';
+            });
+
+            document.getElementById('studyBtn').style.display = 'none';
+            document.getElementById('hideBtn').style.display = 'block';
+        }
+
+        function hideAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                const saved = savedSelections[index];
+                if (saved) {
+                    select.value = saved.value;
+                    select.className = saved.className;
+                } else {
+                    select.value = '';
+                    select.className = '';
+                }
+            });
+            savedSelections = [];
+
+            document.getElementById('hideBtn').style.display = 'none';
+            document.getElementById('studyBtn').style.display = 'block';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        renderSentences();
+    </script>
+    <footer>...</footer>
+</body>
+</html>
