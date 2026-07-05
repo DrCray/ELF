@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synonym Practice</title>
+<style>:root{
+    --page:#f4f7fb;
+    --card:#ffffff;
+    --border:#d8e2ee;
+    --accent:#4c84d8;
+    --correct:#dff6df;
+    --wrong:#fde2e2;
+    --shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:70px 14px 30px;
+    background:var(--page);
+    font-family:Arial,Helvetica,sans-serif;
+    line-height:1.8;
+    color:#333;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:var(--card);
+    border-radius:14px;
+    padding:24px;
+    box-shadow:var(--shadow);
+}
+
+h1,h2{
+    margin-top:0;
+    color:#295ca8;
+}
+
+p{
+    margin:.9em 0;
+}
+
+select{
+    font-size:1rem;
+    padding:.45em .7em;
+    border:1px solid #bfcfe4;
+    border-radius:8px;
+    background:white;
+    transition:.2s;
+}
+
+select:hover{
+    border-color:var(--accent);
+}
+
+select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(76,132,216,.18);
+}
+
+.correct{
+    background:var(--correct);
+}
+
+.wrong{
+    background:var(--wrong);
+}
+
+input{
+    font-size:1rem;
+    padding:.5em;
+    border:1px solid #bfcfe4;
+    border-radius:8px;
+}
+
+button{
+    border:none;
+    border-radius:10px;
+    padding:.7em 1.2em;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+    box-shadow:var(--shadow);
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.05);
+}
+
+button:active{
+    transform:none;
+}
+
+#toggle{
+    position:fixed;
+    top:12px;
+    right:12px;
+    z-index:1000;
+}
+
+
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  #toggle {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggle {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+
+
+.footer{
+    margin-top:2em;
+    padding-top:1em;
+    border-top:1px solid var(--border);
+}
+
+@media (max-width:600px){
+
+    body{
+        padding-top:80px;
+    }
+
+    .container{
+        padding:16px;
+        border-radius:10px;
+    }
+
+    select,
+    input,
+    button{
+        width:100%;
+        margin-top:.35em;
+    }
+
+}
+
+@media print{
+
+    body{
+        background:white;
+        padding:0;
+    }
+
+    .container{
+        box-shadow:none;
+        border:none;
+        padding:0;
+    }
+
+    #toggle,
+    #save{
+        display:none;
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<button id="toggle">Show Answers</button>
+
+<div class="container">
+
+<h2>Synonym Practice</h2>
+
+<div id="q"></div>
+
+
+
+
+
+<div class="footer">
+
+   <div class="user-info-section">
+                <div class="input-group">
+                    <label for="studentName">Name:</label>
+                    <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
+                </div>
+                <div class="input-group">
+                    <label for="studentID">ID#:</label>
+                    <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+                </div>
+    </div>
+
+    <div class="button-section">
+        <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
+        <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print/Save PDF</button>
+
+    </div>
+</div>
+</div>
+<script>
+    let studentName = "";
+    let studentId = "";
+
+    function checkAnswer(selectElement, correctValue) {
+        const selectedValue = selectElement.value;
+        selectElement.classList.remove('correct', 'incorrect');
+        if (selectedValue === "") return;
+        selectElement.classList.add(selectedValue === correctValue ? 'correct' : 'incorrect');
+    }
+
+    function validateForm() {
+        studentName = document.getElementById('studentName').value.trim().replace(/\s+/g, '_');
+        studentId = document.getElementById('studentID').value.trim().replace(/\s+/g, '_');
+
+        const btn = document.getElementById('printBtn');
+        const note = document.getElementById('printNote');
+        const isValid = studentName.length >= 2 && studentId.length >= 2;
+
+        btn.disabled = !isValid;
+        btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
+        note.style.display = isValid ? 'none' : 'block';
+    }
+
+function prepareAndPrint() {
+    const originalTitle = document.title;
+
+    document.title = studentId + "_" + studentName + "_" + originalTitle;
+
+    setTimeout(() => {
+        window.print();
+        document.title = originalTitle; // restore after
+    }, 90); // 50–200ms works
+}
+</script>
+
+<script>
+const distractors=["problem","idea","result","object","person","place","system","choice","reason","change","event","action","group","value","answer","object"];
+const data=[
+["The restaurant uses ","clever tricks","smart strategies"," to encourage customers to order dessert."],
+["The museum changed its ","layouts","arrangements"," to make it easier for visitors to find each exhibit."],
+["Please pay for your items at the ","checkout counter","cash register"," near the exit."],
+["Safety is an important ","aspect","part"," of every construction project."],
+["Regular exercise can ","influence","affect"," your overall health for the better."],
+["The market sells ","fresh","recently picked"," vegetables every morning."],
+["Listening to music puts me in a ","good mood","happy state","."],
+["Water is ","essential","necessary"," for all living things."],
+["The public library is ","located","found"," beside the city park."],
+["Rice and beans are ","staples","basic necessities"," in many countries."],
+["The books are neatly arranged on the ","shelves","racks","."],
+["The electronics store has attractive ","displays","exhibits"," near the entrance."],
+["The café offers ","seasonal","for a particular time of year"," drinks during the holidays."],
+["Bright signs ","catch","attract"," the attention of passing drivers."],
+["Smartphones are one of the company's most ","profitable","money-making"," products."],
+["Smoking is not allowed in this ","zone","area","."],
+["Candy is often ","an impulse-purchase","a rash decision buy"," at convenience stores."],
+["Customers pushed their carts through the wide ","aisles","walkways","."],
+["His choice was not ","random","by chance","; he had a good reason."],
+["She became a more ","conscious","aware"," consumer after learning about recycling."],
+["The coach used different ","tactics","methods"," to prepare the team for the game."],
+["It's difficult to ","stick","adhere"," to a daily exercise routine."],
+["We created a ","budget","spending plan"," before planning our vacation."],
+["The new software helps employees work ","effectively","efficiently","."],
+["Can you ","spot","notice"," the mistake in this report?"],
+["Experienced teachers use different ","techniques","methods"," to keep students interested."]
+];
+const box=document.getElementById('q'); let saved=null,show=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+data.forEach((d,i)=>{
+ let opts=[d[0],d[1]];
+ let syn=d[2];
+ let ds=shuffle([...distractors].filter(x=>x!=d[1]&&x!=syn)).slice(0,2);
+ let arr=[d[1],...shuffle([syn,...ds])];
+ let sel=document.createElement('select'); sel.dataset.correct=d[2];
+ arr.forEach(v=>{let o=document.createElement('option');o.text=v;o.value=v;sel.add(o);});
+ sel.onchange=()=>{sel.classList.remove('correct','wrong'); if(sel.value==d[2])sel.classList.add('correct'); else sel.classList.add('wrong');};
+ let p=document.createElement('p'); p.append(d[0],sel,d[3]); box.append(p);
+});
+toggle.onclick=()=>{
+ let sels=[...document.querySelectorAll("select")];
+ if(!show){saved=sels.map(s=>s.selectedIndex); sels.forEach(s=>{for(let i=0;i<s.options.length;i++)if(s.options[i].value==s.dataset.correct)s.selectedIndex=i;s.onchange();});toggle.textContent="Hide Answers";show=true;}
+ else{sels.forEach((s,i)=>{s.selectedIndex=saved[i];s.classList.remove('correct','wrong');if(s.selectedIndex>0)s.onchange();});toggle.textContent="Show Answers";show=false;}
+};
+save.onclick=()=>{
+ let n=name.value.trim(),id=sid.value.trim();
+ if(!/[A-Za-z]{2,}/.test(n)||!/[A-Za-z]{2,}/.test(id)){alert("Enter at least two letters in both Name and ID.");return;}
+ window.print();
+};
+</script></body></html>
