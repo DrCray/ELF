@@ -468,6 +468,31 @@ function checkAnswer(select) {
 }
 </script>
 
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off "-- Select --" (index 0)
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
      <footer style="margin-top:6rem;">...</footer>
 
 </body></html>
