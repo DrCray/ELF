@@ -12,8 +12,6 @@
             background-color: #F2F4F2; /* Lightish gray background */
         }
 
-
-        }
         .button2 {
             padding:0; width:fit-content; font-size: 75%;
         }
@@ -35,7 +33,6 @@
             background-color: #0056a3;
         }
 
-
 /* --- LAPTOPS & DESKTOPS (PC) --- */
 @media (min-width: 1025px) {
   .toggle-button {
@@ -50,13 +47,6 @@
     right: 40px; /* Medium spacing for tablets */
   }
 }
-
-
-
-
-
-
-
 
         #output {
             margin-bottom: 10px;
@@ -110,9 +100,9 @@
             }
 
 hr {
-  border: none; /* Removes the default border */
-  height: 3px;  /* Sets the thickness of the line */
-  background-color: #CCBB91; /* Sets the color */
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
 }
 #nameID {
 margin: .7rem .3rem;
@@ -125,14 +115,11 @@ font-size: 1.3rem;
     </style>
 </head>
 <body>
-    
+
 <div id="topHeading"><h1>English Learning</h1><h2>The Secret of Grocery Store Layouts</h2>
 </div>
 
-    <!-- Student Info Section -->
-
-
-    <div id="output"><div id="cloze-div-1782898306600" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1782898306600')">Show Answers</button><div class="sentence-div">Have you ever gone to the grocery store for just milk and bread, but came out with a full shopping cart? This is no accident. Grocery stores have <span style="font-size: 70%;">1</span><select data-correct="clever tricks" data-group="0" onchange="checkAnswer(this)">
+    <div id="output"><div id="cloze-div-groceryLayouts" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-groceryLayouts')">Show Answers</button><div class="sentence-div">Have you ever gone to the grocery store for just milk and bread, but came out with a full shopping cart? This is no accident. Grocery stores have <span style="font-size: 70%;">1</span><select data-correct="clever tricks" data-group="0" onchange="checkAnswer(this)">
 <option value="">Select...</option>
 <option value="clever tricks">clever tricks</option>
 <option value="layouts">layouts</option>
@@ -331,9 +318,6 @@ font-size: 1.3rem;
 
 </div>
 
-
-
-
     <style>
         .student-info-container{
         max-width:30rem;
@@ -360,14 +344,10 @@ font-size: 1.3rem;
         <div class="input-group">
             <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
             <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
-
-</div>
-
+        </div>
         <p class="note">Name and ID required for PDF print.</p>
         <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
-
-</div>
-
+    </div>
 
 
     <script>
@@ -459,10 +439,8 @@ font-size: 1.3rem;
         });
     </script>
 
-
-
 <script>
-let selectCounter = 0; // Counter for select element numbering        
+let selectCounter = 0;
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -478,9 +456,8 @@ function toggleAnswers(containerId) {
     const container = document.getElementById(containerId);
     const button = container.querySelector('.toggle-button');
     const selects = container.querySelectorAll('select[data-correct]');
-    
+
     if (button.textContent === 'Show Answers') {
-        // Save each select's current value before showing answers
         savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
 
         selects.forEach(select => {
@@ -491,7 +468,6 @@ function toggleAnswers(containerId) {
         });
         button.textContent = 'Hide Answers';
     } else {
-        // Restore saved selections
         const saved = savedClozeSelections[containerId] || [];
         selects.forEach((select, i) => {
             select.value = saved[i] || '';
@@ -506,13 +482,11 @@ function toggleAnswers(containerId) {
     }
 }
 
-
-
 function checkAnswer(select) {
     if (select.classList.contains('answer-shown')) {
         return;
     }
-    
+
     const correctAnswer = select.getAttribute('data-correct');
     if (select.value === correctAnswer) {
         select.style.backgroundColor = '#d4edda';
@@ -522,11 +496,31 @@ function checkAnswer(select) {
 }
 </script>
 
-
-
-
-
      <footer style="margin-top:6rem;">...</footer>
 
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
 
 </body></html>
