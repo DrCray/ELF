@@ -1,0 +1,570 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>If I Won $5 Million Dollars</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-fiveMillion" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-fiveMillion')">Show Answers</button><div class="sentence-div">Winning a $5 million tax-free lottery would be <span style="font-size: 70%;">1</span><select data-correct="life-changing" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select>, requiring thoughtful planning rather than <span style="font-size: 70%;">2</span><select data-correct="reckless" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select> spending. After careful <span style="font-size: 70%;">3</span><select data-correct="reflection" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select>, I’ve <span style="font-size: 70%;">4</span><select data-correct="devised" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select> a three-part plan that balances <span style="font-size: 70%;">5</span><select data-correct="frivolity" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select>, financial security, and <span style="font-size: 70%;">6</span><select data-correct="generosity" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select>. This approach ensures that my winnings create lasting <span style="font-size: 70%;">7</span><select data-correct="fulfillment" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="life-changing">life-changing</option>
+<option value="reckless">reckless</option>
+<option value="reflection">reflection</option>
+<option value="devised">devised</option>
+<option value="frivolity">frivolity</option>
+<option value="generosity">generosity</option>
+<option value="fulfillment">fulfillment</option></select> and impact beyond the initial excitement.
+</div>
+<div class="sentence-div">First, I would <span style="font-size: 70%;">8</span><select data-correct="allocate" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> $1 million to frivolous spending—experiences and <span style="font-size: 70%;">9</span><select data-correct="luxuries" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> that are fun while creating lasting memories. I would take a dream European tour, spending a week each in Vienna, Barcelona, Rome, and London. I would stay only in the most <span style="font-size: 70%;">10</span><select data-correct="luxurious" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> hotels. I would throw an <span style="font-size: 70%;">11</span><select data-correct="extravagant" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> party, renting a hotel and nightclub for one unforgettable night, complete with an open bar. At home, I would <span style="font-size: 70%;">12</span><select data-correct="invest" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> in a <span style="font-size: 70%;">13</span><select data-correct="high-end" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> home theater with <span style="font-size: 70%;">14</span><select data-correct="reclining" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> leather seats and a 120-inch screen, a professional espresso machine to <span style="font-size: 70%;">15</span><select data-correct="enhance" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> my mornings, and a <span style="font-size: 70%;">16</span><select data-correct="spacious" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="allocate">allocate</option>
+<option value="luxuries">luxuries</option>
+<option value="luxurious">luxurious</option>
+<option value="extravagant">extravagant</option>
+<option value="invest">invest</option>
+<option value="high-end">high-end</option>
+<option value="reclining">reclining</option>
+<option value="enhance">enhance</option>
+<option value="spacious">spacious</option></select> home gym.
+</div>
+<div class="sentence-div">The largest <span style="font-size: 70%;">17</span><select data-correct="portion" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select>, $2.5 million, would be <span style="font-size: 70%;">18</span><select data-correct="dedicated" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select> to financial <span style="font-size: 70%;">19</span><select data-correct="stability" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select>. I would immediately pay off all debts, including my mortgage, student loans, and credit cards. With expert financial advice, I would create a <span style="font-size: 70%;">20</span><select data-correct="diversified" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select> investment portfolio focused on long-term growth rather than risky <span style="font-size: 70%;">21</span><select data-correct="speculation" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select>. I would also establish multiple income streams, including dividend investments, and real estate rentals in an <span style="font-size: 70%;">22</span><select data-correct="upscale" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select> neighborhood. This careful financial planning would allow me to establish a financially <span style="font-size: 70%;">23</span><select data-correct="stable" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="portion">portion</option>
+<option value="dedicated">dedicated</option>
+<option value="stability">stability</option>
+<option value="diversified">diversified</option>
+<option value="speculation">speculation</option>
+<option value="upscale">upscale</option>
+<option value="stable">stable</option></select> future.
+</div>
+<div class="sentence-div">The remaining $1.5 million would be used to support loved ones and meaningful causes. I would sit down with my parents and siblings to <span style="font-size: 70%;">24</span><select data-correct="assess" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="assess">assess</option>
+<option value="underprivileged">underprivileged</option></select> how I could financially assist them. I would also set up a scholarship fund for <span style="font-size: 70%;">25</span><select data-correct="underprivileged" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="assess">assess</option>
+<option value="underprivileged">underprivileged</option></select> youth at a technical institute, to help them gain real employable skills.
+</div>
+<div class="sentence-div">In conclusion, a $5 million lottery win is both a great opportunity and a responsibility. By balancing frivolity, financial security, and generosity, I would <span style="font-size: 70%;">26</span><select data-correct="ensure" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ensure">ensure</option>
+<option value="impact">impact</option>
+<option value="philanthropy">philanthropy</option>
+<option value="long-term">long-term</option></select> my winnings create a meaningful and lasting <span style="font-size: 70%;">27</span><select data-correct="impact" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ensure">ensure</option>
+<option value="impact">impact</option>
+<option value="philanthropy">philanthropy</option>
+<option value="long-term">long-term</option></select>. While the European trip and home luxuries would bring immediate joy, financial planning and <span style="font-size: 70%;">28</span><select data-correct="philanthropy" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ensure">ensure</option>
+<option value="impact">impact</option>
+<option value="philanthropy">philanthropy</option>
+<option value="long-term">long-term</option></select> would provide <span style="font-size: 70%;">29</span><select data-correct="long-term" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ensure">ensure</option>
+<option value="impact">impact</option>
+<option value="philanthropy">philanthropy</option>
+<option value="long-term">long-term</option></select> stability and a deep sense of fulfillment.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const savedClozeSelections = {};
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        const saved = savedClozeSelections[containerId] || [];
+        selects.forEach((select, i) => {
+            select.value = saved[i] || '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+            if (select.value) {
+                checkAnswer(select);
+            }
+        });
+        delete savedClozeSelections[containerId];
+        button.textContent = 'Show Answers';
+    }
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>

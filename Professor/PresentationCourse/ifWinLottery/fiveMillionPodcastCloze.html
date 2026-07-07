@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>If I Won $5 Million Dollars Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .dialogLine {
+            margin: .9rem 0;
+            font-size: .9rem;
+            line-height: 1.5;
+            border: thin solid #D2C8C8;
+            box-shadow: 0 0 4px #D2C8C8;
+            border-radius: 7px;
+            padding: .5rem
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid lightblue;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        footer { margin-top: 15rem; }
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+ #theWordList {
+    display: none;
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  } 
+  #subtitle {
+    font-size: 120%;
+  }
+
+#toggleAnswersBtn {
+  position: fixed;
+  top: 6px;
+  right: 16px;
+  z-index: 9999;
+}
+
+@media (min-width: 1025px) {
+  #toggleAnswersBtn {
+    top:0px;
+    right: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggleAnswersBtn {
+    right: 40px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+    <div class="header">
+        <h1>If I Won $5 Million Dollars Podcast</h1>
+        <p id="subtitle">Cloze/Select Quiz</p>
+        <p>Complete the sentences using vocabulary from the podcast</p>
+    </div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column</button>
+    <div class="output" id="output">
+</div>
+</div>
+<button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+
+    <div class="section">
+        <h3>Podcast Script with Blanks</h3>
+<h2>If I Won $5 Million Dollars - Podcast</h2><div class="dialogLine"><strong>Host:</strong> So I just read this article about what someone would do if they <select data-answer="hit the jackpot"><option value="">-- Select --</option>
+<option value="hit the jackpot">hit the jackpot</option>
+<option value="over the moon">over the moon</option>
+<option value="splurge">splurge</option>
+<option value="nest egg">nest egg</option>
+<option value="play it safe">play it safe</option></select> with a $5 million lottery win, and it's honestly a great daydream.
+</div><div class="dialogLine"><strong>Guest:</strong> Oh, I'd be <select data-answer="over the moon"><option value="">-- Select --</option>
+<option value="over the moon">over the moon</option>
+<option value="splurge">splurge</option>
+<option value="nest egg">nest egg</option>
+<option value="play it safe">play it safe</option>
+<option value="give back">give back</option></select> for at least a month! But knowing me, I'd probably just <select data-answer="splurge"><option value="">-- Select --</option>
+<option value="splurge">splurge</option>
+<option value="nest egg">nest egg</option>
+<option value="play it safe">play it safe</option>
+<option value="give back">give back</option>
+<option value="rainy day fund">rainy day fund</option></select> on the first flashy thing I saw.
+</div><div class="dialogLine"><strong>Host:</strong> That's the fun part, right? The writer set aside a full million just for that kind of frivolous spending, like a dream trip through Europe.
+</div><div class="dialogLine"><strong>Guest:</strong> See, that's smart. They didn't ignore the fun stuff, but they still made sure to build a solid <select data-answer="nest egg"><option value="">-- Select --</option>
+<option value="nest egg">nest egg</option>
+<option value="play it safe">play it safe</option>
+<option value="give back">give back</option>
+<option value="rainy day fund">rainy day fund</option>
+<option value="money can't buy happiness">money can't buy happiness</option></select> with the rest of the money.
+</div><div class="dialogLine"><strong>Host:</strong> Exactly, most of it went toward paying off debts and investing carefully instead of taking any big risks.
+</div><div class="dialogLine"><strong>Guest:</strong> It's tempting to gamble with sudden money, but it seems like the writer really wanted to <select data-answer="play it safe"><option value="">-- Select --</option>
+<option value="play it safe">play it safe</option>
+<option value="give back">give back</option>
+<option value="rainy day fund">rainy day fund</option>
+<option value="money can't buy happiness">money can't buy happiness</option>
+<option value="once in a lifetime">once in a lifetime</option></select> with the bigger portion.
+</div><div class="dialogLine"><strong>Host:</strong> What I liked most, though, was the last part—using some of the money to <select data-answer="give back"><option value="">-- Select --</option>
+<option value="give back">give back</option>
+<option value="rainy day fund">rainy day fund</option>
+<option value="money can't buy happiness">money can't buy happiness</option>
+<option value="once in a lifetime">once in a lifetime</option>
+<option value="hit the jackpot">hit the jackpot</option></select>, like starting a scholarship for students who need it.
+</div><div class="dialogLine"><strong>Guest:</strong> Yeah, that stood out to me too. Once your <select data-answer="rainy day fund"><option value="">-- Select --</option>
+<option value="rainy day fund">rainy day fund</option>
+<option value="money can't buy happiness">money can't buy happiness</option>
+<option value="once in a lifetime">once in a lifetime</option>
+<option value="hit the jackpot">hit the jackpot</option>
+<option value="over the moon">over the moon</option></select> is sorted, helping other people just feels more meaningful than another luxury item.
+</div><div class="dialogLine"><strong>Host:</strong> It kind of proves that old line, <select data-answer="money can't buy happiness"><option value="">-- Select --</option>
+<option value="money can't buy happiness">money can't buy happiness</option>
+<option value="once in a lifetime">once in a lifetime</option>
+<option value="hit the jackpot">hit the jackpot</option>
+<option value="over the moon">over the moon</option>
+<option value="splurge">splurge</option></select>—but it can definitely make life a lot more comfortable.
+</div><div class="dialogLine"><strong>Guest:</strong> True. Winning a <select data-answer="once in a lifetime"><option value="">-- Select --</option>
+<option value="once in a lifetime">once in a lifetime</option>
+<option value="hit the jackpot">hit the jackpot</option>
+<option value="over the moon">over the moon</option>
+<option value="splurge">splurge</option>
+<option value="nest egg">nest egg</option></select> amount like that and actually using it wisely? That's the real fantasy.
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+window.addEventListener('beforeunload', function() {
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+});
+
+let answersVisible = false;
+let savedSelections = [];
+
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    const button = document.getElementById('toggleAnswersBtn');
+    const selects = document.querySelectorAll('select');
+
+    if (answersVisible) {
+        savedSelections = Array.from(selects).map(select => ({
+            value: select.value,
+            correct: select.classList.contains('correct'),
+            incorrect: select.classList.contains('incorrect')
+        }));
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-answer');
+            select.value = correctAnswer;
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        });
+    } else {
+        selects.forEach((select, i) => {
+            const saved = savedSelections[i];
+            if (saved) {
+                select.value = saved.value;
+                select.classList.toggle('correct', saved.correct);
+                select.classList.toggle('incorrect', saved.incorrect);
+            }
+        });
+        savedSelections = [];
+    }
+
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}
+</script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}
+</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column') 
+        ? 'Close Column View' 
+        : 'View as Column';
+      updateOutput();
+    }
+
+    updateOutput();
+</script>   
+
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+</script>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+    <footer>...
+</footer>
+
+</body>
+
+</html>
