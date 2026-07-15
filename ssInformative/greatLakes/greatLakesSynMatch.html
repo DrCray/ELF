@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Paste your marked up quiz text in the
+script type="text/plain" id="markedContent" area below
+use the markup:
+    (vocabulary | synonym | distractor1 | distractor2)
+    (-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synonym Match — Great Lakes</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    padding: clamp(1rem, 4vw, 2rem);
+    background: #EFEEEB;
+    color: #222;
+    line-height: 1.85;
+  }
+
+  .quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #F8F7F4;
+    box-shadow: 0 0 6px 0 gray;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .quiz-header {
+    position: relative;
+    background: #073376;
+    color:white;
+    box-shadow: 0 0 6px 0 gray;
+    padding: clamp(0.9rem, 3vw, 1.3rem) clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .quiz-header h1 {
+    margin: 0;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    padding-right: 5.5rem; /* keep title clear of the floating button */
+  }
+
+  .study-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    transform: none;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border: 1px solid #999;
+    border-radius: 999px;
+    background: #E7E3D8;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .study-toggle {
+
+}
+
+  .study-toggle:hover {
+    background: #ddd8c8;
+  }
+
+  .quiz-body {
+    padding: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .instructions {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 6px 0 gray;
+    padding: 0 .6rem;
+    width: fit-content;
+  }
+
+  p { margin-bottom: 1.3em; }
+
+  /* Selects stripped of native chrome — only the colored word shows */
+  select {
+    font: inherit;
+    color: inherit;
+    border: none;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0 1px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  select::-ms-expand { display: none; }
+
+  /* Original / first-choice state — always blue bold, regardless of selection */
+  select.state-original {
+    color: #1a3fd6;
+    font-weight: 700;
+  }
+
+  /* Correct synonym selected */
+  select.state-correct {
+    color: #146b2e;
+    font-weight: 700;
+  }
+
+  /* Distractor selected */
+  select.state-incorrect {
+    color: #b8202a;
+    font-weight: 700;
+  }
+
+  select:disabled {
+    cursor: default;
+    opacity: 1; /* keep colors readable in Study Mode */
+  }
+
+  #printHeader {
+    display: none;
+  }
+
+  #footer-controls {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .name-id-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1 1 140px;
+  }
+
+  .field-group label {
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  .field-group input {
+    font-size: 1em;
+    padding: 6px 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  #printBtn {
+    align-self: flex-start;
+    font-size: 0.95em;
+    padding: 8px 16px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background: #E7E3D8;
+    cursor: pointer;
+  }
+
+  #printBtn:hover {
+    background: #ddd8c8;
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .quiz-container { box-shadow: none; }
+    .quiz-header { box-shadow: none; }
+    .study-toggle,
+    #footer-controls {
+      display: none;
+    }
+    #printHeader {
+      display: block;
+      font-weight: 700;
+      margin: 0 0 1.5rem;
+    }
+  }
+
+
+@media (min-width: 768px) {
+  .study-toggle {
+    right: calc(50vw - 350px + 1rem);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+
+  <div class="quiz-header">
+    <h1>Great Lakes ... Synonym Match</h1>
+    <button type="button" id="studyModeBtn" class="study-toggle">Study Mode</button>
+  </div>
+
+  <div class="quiz-body">
+
+    <div id="printHeader"></div>
+
+    <p class="instructions">Click on the blue words and choose the appropriate synonym.<br><span style="color:#146b2e">Green</span> - correct choice &nbsp; &nbsp; <span style="color:#b8202a">Red</span> - incorrect</p>
+
+    <!--
+      DROP-IN ZONE
+      Paste raw lesson text below, preserving blank lines between paragraphs
+      exactly as copied from your text editor. Mark each target word as:
+      ( original | synonym | distractor1 | distractor2 )
+    -->
+    <script type="text/plain" id="markedContent">
+Imagine a body of water so ( massive | enormous | inadequate | harmful ) that it holds about 20% of the entire world's surface freshwater. This group of connected lakes are called the Great Lakes. They were ( carved out | shaped | erroneous | detrimental ) by ancient glaciers and are ( situated | located | incorrect | severe ) between the USA and Canada.
+
+These lakes are ( vital | crucial | inappropriate | adverse ) to the sustenance, economy, and ecology of the area. They provide drinking water to over 40 million people, and support ( massive | immense | flawed | defective ) shipping and fishing industries. They provide important wetlands for birds and fish, and ( critical | essential | unsuitable | hostile ) habitats for more than 3,500 plant and animal species.
+
+The Great Lakes support a massive, ( booming | thriving | improper | perilous ) tourism industry that ( draws | attracts | mistaken | toxic ) millions of visitors ( annually | yearly | faulty | unpleasant ) and ( generates | produces | invalid | negative ) over $16 billion in economic activity. The region has become one of North America's ( premier | leading | unacceptable | dreadful ) outdoor and luxury travel destinations.
+
+One of the most popular ( attractions | sights | false | awful ) for both tourists and locals alike are the ( pristine | unspoiled | unseemly | terrible ) sandy beaches. And one of the most popular activities, of course, is swimming. But there are some ( caveats | warnings | unjust | grim ) for Great Lakes swimmers.
+
+Experts warn that swimming in a Great Lake can actually feel like being ( trapped | caught | misleading | foul ) inside a giant washing machine. "The frequency of the waves is much greater here than in the ocean," explains Scott Rozenthall, a meteorologist from the National Weather Service. "They just keep ( battering | pounding | untrue | pessimistic ) you down, and the constant action wears you out quickly."
+
+Unlike ocean waves, Great Lakes waves are mostly whipped up by the wind. This makes them incredibly ( chaotic | turbulent | unfavorable | vivacious ), crashing into you from all different directions. On the ocean, you usually have time to recover between waves. But here? "They come in fast and close together," warns the weather service. "If a wave knocks you down, you only have three to five seconds to get back up before the next one hits."
+
+We have all witnessed this struggle at the beach. You might see someone just a few feet from the shore, ( desperately | frantically | outdated | irrelevant ) fighting the water to reach the safety of the sand. Even standing at the waterline can be ( tricky | problematic | ambiguous | solitary ), as the powerful waves quickly suck the sand right out from under your feet.
+
+Furthermore, strong winds create dangerous underwater currents, especially near piers and breakwaters. Things get ( hazardous | unsafe | reluctant | suspicious ) very quickly once waves reach a height of three feet; in fact, over 85 percent of rescue incidents happen at this wave size. The official ( advice | counsel | adversary | sustain ) is simple: "You are no match for the power of these waves. If you want to jump in, wear a life jacket."
+
+Even experienced professionals are caught off guard. Captain Lena Pamali ( noted | said | sold out | novice ) that U.S. Coast Guard members who ( transfer | relocate | float | swim ) from the Atlantic or Pacific oceans are always shocked by the sheer intensity of the Great Lakes.
+
+"The conditions here are surprisingly ( fierce | intense | fragile | vulnerable )," Rozenthall laughed. "But hey, at least we still don't have sharks!"
+
+So, the next time you visit these beautiful waters, enjoy the view—but respect the washing machine!
+</script>
+
+    <div id="output"></div>
+
+    <div id="footer-controls">
+      <div class="name-id-row">
+        <div class="field-group">
+          <label for="studentName">Name</label>
+          <input type="text" id="studentName" autocomplete="off">
+        </div>
+        <div class="field-group">
+          <label for="studentID">ID</label>
+          <input type="text" id="studentID" autocomplete="off">
+        </div>
+      </div>
+      <button type="button" id="printBtn">Print / Save PDF</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const rawEl = document.getElementById('markedContent');
+  const raw = rawEl.textContent.trim();
+
+  // Paragraphs split on blank lines; single line breaks within a paragraph -> <br>
+  const paragraphs = raw.split(/\n\s*\n/);
+
+  // Matches ( original | synonym | distractor1 | distractor2 )
+  const blankPattern = /\(\s*([^|()]+?)\s*\|\s*([^|()]+?)\s*\|\s*([^|()]+?)\s*\|\s*([^|()]+?)\s*\)/g;
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function escapeAttr(str) {
+    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
+
+  let selectIndex = 0;
+
+  function buildSelect(original, synonym, d1, d2) {
+    const id = 'sel_' + (selectIndex++);
+    const others = shuffle([synonym, d1, d2]);
+
+    let optionsHTML = `<option value="${escapeAttr(original)}" selected>${original}</option>`;
+    others.forEach(word => {
+      optionsHTML += `<option value="${escapeAttr(word)}">${word}</option>`;
+    });
+
+    return `<select id="${id}" class="state-original" data-correct="${escapeAttr(synonym)}" data-original="${escapeAttr(original)}">${optionsHTML}</select>`;
+  }
+
+  const htmlParagraphs = paragraphs.map(p => {
+    const withBreaks = p.trim().replace(/\n/g, '<br>');
+    const withSelects = withBreaks.replace(blankPattern, (match, orig, syn, d1, d2) => {
+      return buildSelect(orig.trim(), syn.trim(), d1.trim(), d2.trim());
+    });
+    return `<p>${withSelects}</p>`;
+  });
+
+  document.getElementById('output').innerHTML = htmlParagraphs.join('\n');
+
+  document.querySelectorAll('#output select').forEach(sel => {
+    sel.addEventListener('change', function () {
+      const correct = this.getAttribute('data-correct');
+      const original = this.getAttribute('data-original');
+
+      this.classList.remove('state-original', 'state-correct', 'state-incorrect');
+
+      if (this.value === original) {
+        this.classList.add('state-original');
+      } else if (this.value === correct) {
+        this.classList.add('state-correct');
+      } else {
+        this.classList.add('state-incorrect');
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  // --- Print / Save PDF, gated on Name + ID (min 2 chars each) ---
+  const printBtn = document.getElementById('printBtn');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentID');
+  const printHeader = document.getElementById('printHeader');
+
+  printBtn.addEventListener('click', function () {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+
+    if (name.length < 2 || id.length < 2) {
+      alert('Enter both Name and ID to Print/Save PDF');
+      return;
+    }
+
+    printHeader.textContent = `Name: ${name}    ID: ${id}`;
+    window.print();
+  });
+
+  // --- Study Mode / Return to Quiz toggle ---
+  const studyBtn = document.getElementById('studyModeBtn');
+  let studyMode = false;
+
+  studyBtn.addEventListener('click', function () {
+    const selects = document.querySelectorAll('#output select');
+
+    if (!studyMode) {
+      // Entering Study Mode: save current state, then show correct answers
+      selects.forEach(sel => {
+        sel.dataset.savedValue = sel.value;
+        sel.dataset.savedClass = sel.className;
+
+        const correct = sel.getAttribute('data-correct');
+        sel.value = correct;
+        sel.classList.remove('state-original', 'state-correct', 'state-incorrect');
+        sel.classList.add('state-correct');
+        sel.disabled = true;
+      });
+
+      studyBtn.textContent = 'Return to Quiz';
+      studyMode = true;
+    } else {
+      // Returning to Quiz: restore the learner's exact prior value and color
+      selects.forEach(sel => {
+        sel.value = sel.dataset.savedValue;
+        sel.className = sel.dataset.savedClass;
+        sel.disabled = false;
+      });
+
+      studyBtn.textContent = 'Study Mode';
+      studyMode = false;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

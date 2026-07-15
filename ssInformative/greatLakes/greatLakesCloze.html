@@ -1,0 +1,504 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Great Lakes, Swimming, and a Caveat</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-greatLakes" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-greatLakes')">Show Answers</button><div class="sentence-div">Imagine a body of water so <span style="font-size: 70%;">1</span><select data-correct="massive" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="massive">massive</option>
+<option value="surface">surface</option>
+<option value="carved">carved</option>
+<option value="situated">situated</option></select> that it holds about 20% of the entire world's <span style="font-size: 70%;">2</span><select data-correct="surface" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="massive">massive</option>
+<option value="surface">surface</option>
+<option value="carved">carved</option>
+<option value="situated">situated</option></select> freshwater. This group of connected lakes are called the Great Lakes. They were <span style="font-size: 70%;">3</span><select data-correct="carved" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="massive">massive</option>
+<option value="surface">surface</option>
+<option value="carved">carved</option>
+<option value="situated">situated</option></select> out by ancient glaciers and are <span style="font-size: 70%;">4</span><select data-correct="situated" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="massive">massive</option>
+<option value="surface">surface</option>
+<option value="carved">carved</option>
+<option value="situated">situated</option></select> between the USA and Canada.
+</div>
+<div class="sentence-div">These lakes are <span style="font-size: 70%;">5</span><select data-correct="vital" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="vital">vital</option>
+<option value="sustenance">sustenance</option>
+<option value="critical">critical</option>
+<option value="species">species</option></select> to the <span style="font-size: 70%;">6</span><select data-correct="sustenance" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="vital">vital</option>
+<option value="sustenance">sustenance</option>
+<option value="critical">critical</option>
+<option value="species">species</option></select>, economy, and ecology of the area. They provide drinking water to over 40 million people, and support massive shipping and fishing industries. They provide important wetlands for birds and fish, and <span style="font-size: 70%;">7</span><select data-correct="critical" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="vital">vital</option>
+<option value="sustenance">sustenance</option>
+<option value="critical">critical</option>
+<option value="species">species</option></select> habitats for more than 3,500 plant and animal <span style="font-size: 70%;">8</span><select data-correct="species" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="vital">vital</option>
+<option value="sustenance">sustenance</option>
+<option value="critical">critical</option>
+<option value="species">species</option></select>.
+</div>
+<div class="sentence-div">The Great Lakes support a massive, booming tourism industry that <span style="font-size: 70%;">9</span><select data-correct="draws" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="draws">draws</option>
+<option value="generates">generates</option>
+<option value="economic activity">economic activity</option>
+<option value="premier">premier</option></select> millions of visitors annually and <span style="font-size: 70%;">10</span><select data-correct="generates" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="draws">draws</option>
+<option value="generates">generates</option>
+<option value="economic activity">economic activity</option>
+<option value="premier">premier</option></select> over $16 billion in <span style="font-size: 70%;">11</span><select data-correct="economic activity" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="draws">draws</option>
+<option value="generates">generates</option>
+<option value="economic activity">economic activity</option>
+<option value="premier">premier</option></select>. The region has become one of North America's <span style="font-size: 70%;">12</span><select data-correct="premier" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="draws">draws</option>
+<option value="generates">generates</option>
+<option value="economic activity">economic activity</option>
+<option value="premier">premier</option></select> outdoor and luxury travel destinations.
+</div>
+<div class="sentence-div">One of the most popular attractions for both tourists and locals alike are the <span style="font-size: 70%;">13</span><select data-correct="pristine" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="pristine">pristine</option>
+<option value="caveats">caveats</option></select> sandy beaches. And one of the most popular activities, of course, is swimming. But there are some <span style="font-size: 70%;">14</span><select data-correct="caveats" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="pristine">pristine</option>
+<option value="caveats">caveats</option></select> for Great Lakes swimmers.
+</div>
+<div class="sentence-div">Experts warn that swimming in a Great Lake can actually feel like being <span style="font-size: 70%;">15</span><select data-correct="trapped" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="trapped">trapped</option>
+<option value="frequency">frequency</option>
+<option value="meteorologist">meteorologist</option>
+<option value="battering">battering</option>
+<option value="wears you out">wears you out</option></select> inside a giant washing machine. "The <span style="font-size: 70%;">16</span><select data-correct="frequency" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="trapped">trapped</option>
+<option value="frequency">frequency</option>
+<option value="meteorologist">meteorologist</option>
+<option value="battering">battering</option>
+<option value="wears you out">wears you out</option></select> of the waves is much greater here than in the ocean," explains James Rozenthall, a <span style="font-size: 70%;">17</span><select data-correct="meteorologist" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="trapped">trapped</option>
+<option value="frequency">frequency</option>
+<option value="meteorologist">meteorologist</option>
+<option value="battering">battering</option>
+<option value="wears you out">wears you out</option></select> from the National Weather Service. "They just keep <span style="font-size: 70%;">18</span><select data-correct="battering" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="trapped">trapped</option>
+<option value="frequency">frequency</option>
+<option value="meteorologist">meteorologist</option>
+<option value="battering">battering</option>
+<option value="wears you out">wears you out</option></select> you down, and the constant action <span style="font-size: 70%;">19</span><select data-correct="wears you out" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="trapped">trapped</option>
+<option value="frequency">frequency</option>
+<option value="meteorologist">meteorologist</option>
+<option value="battering">battering</option>
+<option value="wears you out">wears you out</option></select> quickly."
+</div>
+<div class="sentence-div">Unlike ocean waves, Great Lakes waves are mostly <span style="font-size: 70%;">20</span><select data-correct="whipped up" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="whipped up">whipped up</option>
+<option value="chaotic">chaotic</option>
+<option value="recover">recover</option></select> by the wind. This makes them incredibly <span style="font-size: 70%;">21</span><select data-correct="chaotic" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="whipped up">whipped up</option>
+<option value="chaotic">chaotic</option>
+<option value="recover">recover</option></select>, crashing into you from all different directions. On the ocean, you usually have time to <span style="font-size: 70%;">22</span><select data-correct="recover" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="whipped up">whipped up</option>
+<option value="chaotic">chaotic</option>
+<option value="recover">recover</option></select> between waves. But here? "They come in fast and close together," warns the weather service. "If a wave knocks you down, you only have three to five seconds to get back up before the next one hits."
+</div>
+<div class="sentence-div">We have all <span style="font-size: 70%;">23</span><select data-correct="witnessed" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="witnessed">witnessed</option>
+<option value="struggle">struggle</option>
+<option value="desperately">desperately</option>
+<option value="tricky">tricky</option></select> this <span style="font-size: 70%;">24</span><select data-correct="struggle" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="witnessed">witnessed</option>
+<option value="struggle">struggle</option>
+<option value="desperately">desperately</option>
+<option value="tricky">tricky</option></select> at the beach. You might see someone just a few feet from the shore, <span style="font-size: 70%;">25</span><select data-correct="desperately" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="witnessed">witnessed</option>
+<option value="struggle">struggle</option>
+<option value="desperately">desperately</option>
+<option value="tricky">tricky</option></select> fighting the water to reach the safety of the sand. Even standing at the waterline can be <span style="font-size: 70%;">26</span><select data-correct="tricky" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="witnessed">witnessed</option>
+<option value="struggle">struggle</option>
+<option value="desperately">desperately</option>
+<option value="tricky">tricky</option></select>, as the powerful waves quickly suck the sand right out from under your feet.
+</div>
+<div class="sentence-div">Furthermore, strong winds create dangerous underwater <span style="font-size: 70%;">27</span><select data-correct="currents" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="currents">currents</option>
+<option value="hazardous">hazardous</option></select>, especially near piers and breakwaters. Things get <span style="font-size: 70%;">28</span><select data-correct="hazardous" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="currents">currents</option>
+<option value="hazardous">hazardous</option></select> very quickly once waves reach a height of three feet; in fact, over 85 percent of rescue incidents happen at this wave size. The official advice is simple: "You are no match for the power of these waves. If you want to jump in, wear a life jacket."
+</div>
+<div class="sentence-div">Even experienced professionals are <span style="font-size: 70%;">29</span><select data-correct="caught off guard" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught off guard">caught off guard</option>
+<option value="transfer">transfer</option>
+<option value="intensity">intensity</option></select>. Captain Lena Pamali noted that U.S. Coast Guard members who <span style="font-size: 70%;">30</span><select data-correct="transfer" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught off guard">caught off guard</option>
+<option value="transfer">transfer</option>
+<option value="intensity">intensity</option></select> from the Atlantic or Pacific oceans are always shocked by the sheer <span style="font-size: 70%;">31</span><select data-correct="intensity" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught off guard">caught off guard</option>
+<option value="transfer">transfer</option>
+<option value="intensity">intensity</option></select> of the Great Lakes.
+</div>
+<div class="sentence-div">"The conditions here are surprisingly <span style="font-size: 70%;">32</span><select data-correct="fierce" data-group="9" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="fierce">fierce</option></select>," Rozenthall laughed. "But hey, at least we still don't have sharks!"
+</div>
+<div class="sentence-div">So, the next time you visit these beautiful waters, enjoy the view—but <span style="font-size: 70%;">33</span><select data-correct="respect" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="respect">respect</option></select> the washing machine!
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const savedClozeSelections = {};
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        const saved = savedClozeSelections[containerId] || [];
+        selects.forEach((select, i) => {
+            select.value = saved[i] || '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+            if (select.value) {
+                checkAnswer(select);
+            }
+        });
+        delete savedClozeSelections[containerId];
+        button.textContent = 'Show Answers';
+    }
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
