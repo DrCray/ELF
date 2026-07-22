@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>cloze practice · vocab cards</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f4f6fa;
+      min-height: 100vh;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      margin: 0.5rem 0 0.2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    h1 small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #3e5a76;
+      margin-left: auto;
+    }
+    .subhead {
+      color: #3a5777;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #dbe2ed;
+      padding-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .reset-btn {
+      background: #eef2f7;
+      border: 1px solid #ccd7e8;
+      border-radius: 40px;
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1d3b5a;
+      cursor: pointer;
+      transition: 0.1s ease;
+    }
+    .reset-btn:hover {
+      background: #dde6f2;
+      border-color: #a3b9d4;
+    }
+    .reset-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* card grid */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+    }
+
+    /* card */
+    .card {
+      background: white;
+      border-radius: 1.2rem;
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 1px solid #eef2f7;
+      transition: box-shadow 0.15s ease;
+    }
+    .card:hover {
+      border-color: #d8e2f0;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .card-header .phrase {
+      font-weight: 650;
+      font-size: 1.15rem;
+      color: #0b1e33;
+      letter-spacing: -0.01em;
+    }
+    .card-header .badge {
+      background: #e6edf8;
+      color: #1d3b5a;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      border: 1px solid #d0dcec;
+    }
+
+    .sentence {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #15304d;
+      background: #f8fbff;
+      padding: 0.7rem 0.9rem;
+      border-radius: 0.9rem;
+      border-left: 4px solid #b6cae0;
+      margin: 0.2rem 0 0.3rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.1rem 0.2rem;
+    }
+
+    .sentence select {
+      font: inherit;
+      font-size: 0.9rem;
+      background: white;
+      border: 1.5px solid #c9d6ea;
+      border-radius: 0.5rem;
+      padding: 0.1rem 0.3rem 0.1rem 0.4rem;
+      margin: 0 0.1rem;
+      color: #0b1e33;
+      cursor: pointer;
+      transition: background 0.1s, border-color 0.1s;
+      min-width: 100px;
+      max-width: 180px;
+      background-color: white;
+    }
+    .sentence select:focus {
+      outline: 2px solid #7f9bc0;
+      border-color: transparent;
+    }
+
+    /* feedback states */
+    .sentence select.correct {
+      background-color: #d4edda !important;  /* pale pastel green */
+      border-color: #8fc9a8;
+    }
+    .sentence select.incorrect {
+      background-color: #f8dddd !important;  /* pale pastel pink */
+      border-color: #e0b3b3;
+    }
+    .sentence select:disabled {
+      opacity: 0.9;
+      cursor: default;
+    }
+
+    .example-note {
+      font-size: 0.8rem;
+      color: #5d7694;
+      margin-top: 0.2rem;
+      padding-left: 0.2rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .example-note .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 10px;
+      margin-right: 4px;
+    }
+    .example-note .dot.green { background: #9bc9b0; }
+    .example-note .dot.pink { background: #dbb0b0; }
+
+    /* mobile */
+    @media (max-width: 480px) {
+      body { padding: 0.6rem; }
+      .card { padding: 0.9rem; }
+      .sentence { font-size: 0.92rem; padding: 0.6rem 0.7rem; }
+      .sentence select { font-size: 0.85rem; min-width: 80px; max-width: 140px; }
+      h1 { font-size: 1.5rem; }
+    }
+
+    @media (min-width: 600px) {
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.3rem;
+      }
+      .page { max-width: 1000px; }
+    }
+
+    @media (min-width: 1024px) {
+      .card-grid { gap: 1.6rem; }
+      .card { padding: 1.4rem; }
+    }
+
+    .footer-note {
+      color: #6b7f99;
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 2rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* Floating toggle button */
+.toggle-mode-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999;
+  background: #0b1e33;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.01em;
+}
+.toggle-mode-btn:hover {
+  background: #1a3350;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+.toggle-mode-btn:active {
+  transform: scale(0.96);
+}
+.toggle-mode-btn.study-mode {
+  background: #2a6b4a;
+}
+.toggle-mode-btn.study-mode:hover {
+  background: #1f5a3d;
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+  .toggle-mode-btn {
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* === NEW: Adjust for notepads and computers === */
+@media (min-width: 601px) and (max-width: 2024px) {
+  .toggle-mode-btn {
+    right: 10rem;
+    top: 1.2rem;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+
+
+.card-header {display:none;}
+.example-note {display:none;}
+
+
+/* === User Info Section - Name/ID + Print === */
+.user-info-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  background: #f8faff;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid #e6edf6;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 180px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1d3b5a;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.input-group input {
+  padding: 0.5rem 0.8rem;
+  border: 1.5px solid #d0dcec;
+  border-radius: 0.6rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: white;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  min-width: 120px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #7f9bc0;
+  box-shadow: 0 0 0 3px rgba(127, 155, 192, 0.15);
+}
+
+.input-group input::placeholder {
+  color: #a0b6d0;
+  font-size: 0.85rem;
+}
+
+.button-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Change from 'flex-start' to 'center' */
+  gap: 0.3rem;
+  margin-left: auto;    /* Remove this line */
+  margin-right: auto;   /* Add this line */
+  flex: 0 1 auto;
+  min-width: 160px;
+}
+
+.button-section .note {
+  font-size: 0.7rem;
+  color: #8a9fb8;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+
+.button-section .note.ready {
+  color: #2a6b4a;
+}
+
+#printBtn {
+  background: #0b1e33;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 0.5rem 1.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s, transform 0.1s;
+  width: 100%;
+  white-space: nowrap;
+}
+
+#printBtn:hover:not(:disabled) {
+  background: #1a3350;
+}
+
+#printBtn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+#printBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#printBtn.enabled {
+  background: #2a6b4a;
+}
+
+#printBtn.enabled:hover:not(:disabled) {
+  background: #1f5a3d;
+}
+
+/* Mobile adjustment for user info */
+@media (max-width: 600px) {
+  .user-info-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+    padding: 0.9rem;
+  }
+
+  .input-group {
+    flex: 1 1 auto;
+  }
+
+  .button-section {
+   margin-top: 0.2rem;
+    min-width: unset;
+    width: 100%;
+    align-items: center;
+  }
+
+  .button-section .note {
+    font-size: 0.65rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  #printBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* Tablet and small desktop adjustments */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .user-info-section {
+    padding: 1rem 1.5rem;
+    gap: 1.2rem;
+  }
+
+  .input-group {
+    flex: 1 1 200px;
+  }
+
+  .button-section {
+    min-width: 180px;
+  }
+
+  #printBtn {
+    padding: 0.55rem 1.8rem;
+  }
+}
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1>
+   Passenger Runaway - Podcast
+
+  </h1>
+  <h1>
+    ✍️ cloze practice
+    <small>select the missing word</small>
+  </h1>
+  <div class="subhead">
+    <span>choose the correct phrase for each blank</span>
+    <button class="reset-btn" id="resetAllBtn">↻ reset all</button>
+  </div>
+
+  <div class="card-grid" id="cardGrid">
+    <!-- cards will be injected by javascript -->
+  </div>
+  <div class="footer-note">✔ green = correct &nbsp;·&nbsp; ✘ pink = incorrect · tap reset to try again</div>
+</div>
+
+<!-- # print/save PDF with Name_ID_Title.html # -->
+            <div class="user-info-section">
+                <div class="input-group">
+                    <label for="studentName">Name:</label>
+                    <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
+                </div>
+                <div class="input-group">
+                    <label for="studentID">ID#:</label>
+                    <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+                </div>
+            </div>
+
+            <div class="button-section">
+             <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
+                <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print/Save PDF</button>
+
+            </div>
+            <footer style="margin-top:8rem;">...</footer>
+<script>
+    let studentName = "";
+    let studentId = "";
+
+    function checkAnswer(selectElement, correctValue) {
+        const selectedValue = selectElement.value;
+        selectElement.classList.remove('correct', 'incorrect');
+        if (selectedValue === "") return;
+        selectElement.classList.add(selectedValue === correctValue ? 'correct' : 'incorrect');
+    }
+
+    function validateForm() {
+        studentName = document.getElementById('studentName').value.trim().replace(/\s+/g, '_');
+        studentId = document.getElementById('studentID').value.trim().replace(/\s+/g, '_');
+
+        const btn = document.getElementById('printBtn');
+        const note = document.getElementById('printNote');
+        const isValid = studentName.length >= 2 && studentId.length >= 2;
+
+        btn.disabled = !isValid;
+        btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
+        note.style.display = isValid ? 'none' : 'block';
+    }
+
+function prepareAndPrint() {
+    const originalTitle = document.title;
+
+    document.title = studentId + "_" + studentName + "_" + originalTitle;
+
+    setTimeout(() => {
+        window.print();
+        document.title = originalTitle; // restore after
+    }, 90); // 50–200ms works
+}
+</script>
+<!-- # end print/save PDF with Name_ID_Title.html # -->
+
+<script>
+  (function() {
+    // ----- data: each entry = { phrase, badge, examples: [sentence1, sentence2] }
+    // we keep all examples, but we will generate one card per example sentence.
+    // we also need the target phrase for each example.
+// ----- data: each entry = { phrase, badge, examples: [sentence1, sentence2] }
+// Randomized order using Fisher-Yates shuffle
+const entries = [
+  {
+    phrase: "ran away",
+    badge: "phrasal verb",
+    examples: [
+      "The teenager _____ from home after an argument with her parents.",
+      "The dog _____ when the gate was accidentally left open."
+    ]
+  },
+  {
+    phrase: "lost track of",
+    badge: "expression",
+    examples: [
+      "We _____ the kids in the crowded amusement park for a few terrifying minutes.",
+      "I _____ time while reading this fascinating book."
+    ]
+  },
+  {
+    phrase: "latched onto",
+    badge: "phrasal verb",
+    examples: [
+      "The little boy _____ his older brother's group of friends.",
+      "The stray dog _____ us and followed us all the way home."
+    ]
+  },
+  {
+    phrase: "snuck past",
+    badge: "phrasal verb",
+    examples: [
+      "The cat _____ the sleeping dog to get to its food bowl.",
+      "We _____ the security guard to get a better view of the stage."
+    ]
+  },
+  {
+    phrase: "panic attack",
+    badge: "noun",
+    examples: [
+      "She had a _____ right before her big presentation.",
+      "I almost had a _____ when I couldn't find my passport at the airport."
+    ]
+  },
+  {
+    phrase: "sneaky",
+    badge: "adjective",
+    examples: [
+      "My _____ brother ate the last piece of cake when no one was looking.",
+      "The _____ fox managed to steal a chicken from the coop."
+    ]
+  },
+  {
+    phrase: "pulled off",
+    badge: "phrasal verb",
+    examples: [
+      "I can't believe he _____ that surprise party without her finding out.",
+      "The team _____ a stunning victory in the final seconds of the game."
+    ]
+  },
+  {
+    phrase: "chickened out",
+    badge: "phrasal verb",
+    examples: [
+      "He was going to go skydiving, but he _____ at the last minute.",
+      "I wanted to ask for a raise, but I _____."
+    ]
+  },
+  {
+    phrase: "bold",
+    badge: "adjective",
+    examples: [
+      "It was a _____ move to start her own business during a recession.",
+      "The _____ soldier volunteered for the dangerous mission."
+    ]
+  },
+  {
+    phrase: "daring",
+    badge: "adjective",
+    examples: [
+      "The _____ rescue mission saved three climbers trapped on the mountain.",
+      "She wore a very _____ dress to the awards ceremony."
+    ]
+  },
+  {
+    phrase: "security breach",
+    badge: "noun",
+    examples: [
+      "The company notified its customers about a major computer _____.",
+      "Leaving the door unlocked was a _____ that allowed the thief to enter."
+    ]
+  },
+  {
+    phrase: "pulled aside",
+    badge: "phrasal verb",
+    examples: [
+      "The teacher _____ me _____ to discuss my failing grades.",
+      "I was _____ by airport security for a random bag check."
+    ]
+  },
+  {
+    phrase: "Make it make sense",
+    badge: "expression",
+    examples: [
+      "We work more hours than our CEO, yet he makes $30 million dollars a year? _____!",
+      "I need work experience to get a job, but I need a job to get work experience. _____!"
+    ]
+  },
+  {
+    phrase: "on so many levels",
+    badge: "expression",
+    examples: [
+      "That movie was terrible _____.",
+      "Getting a promotion was beneficial _____, both financially and professionally."
+    ]
+  },
+  {
+    phrase: "sign off",
+    badge: "phrasal verb",
+    examples: [
+      "The radio host played a final song before he _____(-ed) for the night.",
+      "We can take two more audience phone calls before we _____."
+    ]
+  }
+];
+
+// Shuffle the entries array using Fisher-Yates
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Randomize the order of entries
+const randomizedEntries = shuffleArray([...entries]);
+
+// Now use randomizedEntries instead of entries when building your cards
+
+    // ----- build distractor pool: all unique phrases (lowercase for matching)
+    const allPhrases = randomizedEntries.map(e => e.phrase);
+    // also add some common distractors (extra) to make it interesting, but we will use random from allPhrases
+    // but we need to avoid using the same as target. we'll do that per card.
+
+    // helper: get two random distractors different from target and each other
+    function getTwoDistractors(targetPhrase, pool) {
+      const candidates = pool.filter(p => p !== targetPhrase);
+      // shuffle and pick first two
+      const shuffled = [...candidates];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, 2);
+    }
+
+    // ----- build card data: each example becomes one card
+    const cardData = [];
+    randomizedEntries.forEach(entry => {
+      const { phrase, badge, examples } = entry;
+      examples.forEach(sentence => {
+        cardData.push({
+          phrase,
+          badge,
+          sentence,
+          // store the original sentence for display (with placeholder)
+        });
+      });
+    });
+
+    // ----- render
+    const grid = document.getElementById('cardGrid');
+
+    function renderCards() {
+      grid.innerHTML = '';
+      cardData.forEach((data, index) => {
+        const { phrase, badge, sentence } = data;
+        // generate distractors for this card
+        const distractors = getTwoDistractors(phrase, allPhrases);
+        // options: [target, distractor1, distractor2] shuffled
+        const options = [phrase, ...distractors];
+        // shuffle options
+        for (let i = options.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [options[i], options[j]] = [options[j], options[i]];
+        }
+
+        // build sentence with select
+        // we need to replace the target phrase with a <select>.
+        // escape regex special characters
+        const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedPhrase, 'i'); // case insensitive but we keep original
+        // we'll do a simple replace: find first occurrence (should be exact phrase)
+        // but we want to replace the exact phrase as it appears.
+        // we'll use a function to preserve case? but we'll just replace the exact match.
+        // we need to handle case where phrase appears in different case? but our sentences use exact phrase.
+        // we'll match the exact phrase string.
+        const parts = sentence.split(new RegExp(`(${escapedPhrase})`, 'i'));
+        // parts: [before, phrase, after]  (may have multiple occurrences? we only handle first)
+        // but we want to replace only the target phrase, not other occurrences.
+        // let's find the first occurrence index.
+        const indexOfPhrase = sentence.toLowerCase().indexOf(phrase.toLowerCase());
+        if (indexOfPhrase === -1) {
+          // fallback: just append select at end
+          const card = createCardElement(phrase, badge, sentence, options, index);
+          grid.appendChild(card);
+          return;
+        }
+        const before = sentence.slice(0, indexOfPhrase);
+        const after = sentence.slice(indexOfPhrase + phrase.length);
+        // build the sentence with select
+        const card = createCardElementWithParts(phrase, badge, before, after, options, index);
+        grid.appendChild(card);
+      });
+    }
+
+    function createCardElementWithParts(phrase, badge, before, after, options, cardIndex) {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const header = document.createElement('div');
+      header.className = 'card-header';
+      const phraseSpan = document.createElement('span');
+      phraseSpan.className = 'phrase';
+      phraseSpan.textContent = phrase;
+      const badgeSpan = document.createElement('span');
+      badgeSpan.className = 'badge';
+      badgeSpan.textContent = badge;
+      header.appendChild(phraseSpan);
+      header.appendChild(badgeSpan);
+      card.appendChild(header);
+
+      const sentenceDiv = document.createElement('div');
+      sentenceDiv.className = 'sentence';
+
+      // before text
+      if (before) {
+        const textNode = document.createTextNode(before);
+        sentenceDiv.appendChild(textNode);
+      }
+
+      // select element
+      const select = document.createElement('select');
+      select.dataset.cardIndex = cardIndex;
+      select.dataset.correct = phrase;
+      // add default option
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = '— choices —';
+      defaultOpt.disabled = true;
+      defaultOpt.selected = true;
+      select.appendChild(defaultOpt);
+
+      options.forEach(optValue => {
+        const opt = document.createElement('option');
+        opt.value = optValue;
+        opt.textContent = optValue;
+        select.appendChild(opt);
+      });
+
+      // event listener for feedback
+      select.addEventListener('change', function(e) {
+        // remove previous feedback classes
+        this.classList.remove('correct', 'incorrect');
+        const selected = this.value;
+        if (selected === '') {
+          // reset background to default
+          this.style.backgroundColor = '';
+          this.style.borderColor = '#c9d6ea';
+          return;
+        }
+        const correct = this.dataset.correct;
+        if (selected === correct) {
+          this.classList.add('correct');
+          this.style.backgroundColor = '#d4edda';
+          this.style.borderColor = '#8fc9a8';
+        } else {
+          this.classList.add('incorrect');
+          this.style.backgroundColor = '#f8dddd';
+          this.style.borderColor = '#e0b3b3';
+        }
+        // disable? we keep enabled but they can change. we want to allow re-try.
+        // but if they change again, we re-evaluate.
+      });
+
+      sentenceDiv.appendChild(select);
+
+      // after text
+      if (after) {
+        const textNode = document.createTextNode(after);
+        sentenceDiv.appendChild(textNode);
+      }
+
+      card.appendChild(sentenceDiv);
+
+      // small note: show which phrase is expected (optional)
+      const note = document.createElement('div');
+      note.className = 'example-note';
+      note.textContent = `target: “${phrase}”`;
+      card.appendChild(note);
+
+      return card;
+    }
+
+    // fallback: simpler card creation if regex fails (not used)
+    function createCardElement(phrase, badge, sentence, options, cardIndex) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      // ... similar but we use a simpler approach
+      const header = document.createElement('div');
+      header.className = 'card-header';
+      const phraseSpan = document.createElement('span');
+      phraseSpan.className = 'phrase';
+      phraseSpan.textContent = phrase;
+      const badgeSpan = document.createElement('span');
+      badgeSpan.className = 'badge';
+      badgeSpan.textContent = badge;
+      header.appendChild(phraseSpan);
+      header.appendChild(badgeSpan);
+      card.appendChild(header);
+
+      const sentenceDiv = document.createElement('div');
+      sentenceDiv.className = 'sentence';
+      // just show sentence and select at end (less ideal)
+      const textBefore = document.createTextNode(sentence + ' ');
+      sentenceDiv.appendChild(textBefore);
+      const select = document.createElement('select');
+      select.dataset.cardIndex = cardIndex;
+      select.dataset.correct = phrase;
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = '— choices —';
+      defaultOpt.disabled = true;
+      defaultOpt.selected = true;
+      select.appendChild(defaultOpt);
+      options.forEach(optValue => {
+        const opt = document.createElement('option');
+        opt.value = optValue;
+        opt.textContent = optValue;
+        select.appendChild(opt);
+      });
+      select.addEventListener('change', function(e) {
+        this.classList.remove('correct', 'incorrect');
+        const selected = this.value;
+        if (selected === '') {
+          this.style.backgroundColor = '';
+          this.style.borderColor = '#c9d6ea';
+          return;
+        }
+        if (selected === this.dataset.correct) {
+          this.classList.add('correct');
+          this.style.backgroundColor = '#d4edda';
+          this.style.borderColor = '#8fc9a8';
+        } else {
+          this.classList.add('incorrect');
+          this.style.backgroundColor = '#f8dddd';
+          this.style.borderColor = '#e0b3b3';
+        }
+      });
+      sentenceDiv.appendChild(select);
+      card.appendChild(sentenceDiv);
+      return card;
+    }
+
+    // reset all selects
+    function resetAll() {
+      const selects = document.querySelectorAll('.sentence select');
+      selects.forEach(sel => {
+        sel.value = '';
+        sel.classList.remove('correct', 'incorrect');
+        sel.style.backgroundColor = '';
+        sel.style.borderColor = '#c9d6ea';
+        // also reset any disabled? we keep enabled
+      });
+    }
+
+    // initial render
+    renderCards();
+
+    // reset button
+    document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+
+    // also we want to re-render if needed? but we keep dynamic.
+    // expose reset to global for debugging
+    window.resetAll = resetAll;
+
+  })();
+</script>
+
+
+<script>
+// === Floating Toggle Button: Study Mode / Return to Quiz ===
+(function() {
+  // Create the button
+  const btn = document.createElement('button');
+  btn.className = 'toggle-mode-btn';
+  btn.textContent = '📖 Study Mode';
+  document.body.appendChild(btn);
+
+  let isStudyMode = false;
+  // Store the state of all select elements (value and feedback classes)
+  let savedState = [];
+
+  // Get all select elements in the quiz
+  function getAllSelects() {
+    return document.querySelectorAll('.sentence select');
+  }
+
+  // Capture current state of all selects
+  function captureState() {
+    const selects = getAllSelects();
+    savedState = [];
+    selects.forEach(sel => {
+      savedState.push({
+        value: sel.value,
+        classes: Array.from(sel.classList).filter(c => c === 'correct' || c === 'incorrect'),
+        backgroundColor: sel.style.backgroundColor,
+        borderColor: sel.style.borderColor
+      });
+    });
+  }
+
+  // Restore state to all selects
+  function restoreState() {
+    const selects = getAllSelects();
+    selects.forEach((sel, index) => {
+      if (index < savedState.length) {
+        const state = savedState[index];
+        sel.value = state.value;
+        // Clear all feedback classes then re-add saved ones
+        sel.classList.remove('correct', 'incorrect');
+        state.classes.forEach(cls => sel.classList.add(cls));
+        sel.style.backgroundColor = state.backgroundColor || '';
+        sel.style.borderColor = state.borderColor || '';
+        // Trigger change event to update any visual state if needed
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  }
+
+  // Show all correct answers (highlight in green, select correct option)
+  function showCorrectAnswers() {
+    const selects = getAllSelects();
+    selects.forEach(sel => {
+      const correct = sel.dataset.correct;
+      if (correct) {
+        sel.value = correct;
+        sel.classList.remove('correct', 'incorrect');
+        sel.classList.add('correct');
+        sel.style.backgroundColor = '#d4edda';
+        sel.style.borderColor = '#8fc9a8';
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  }
+
+  // Toggle between Study Mode and Return to Quiz
+  function toggleMode() {
+    if (!isStudyMode) {
+      // Entering Study Mode: capture state, then show all correct answers
+      captureState();
+      showCorrectAnswers();
+      btn.textContent = '↩️ Return to Quiz';
+      btn.classList.add('study-mode');
+      isStudyMode = true;
+    } else {
+      // Returning to Quiz: restore previous state
+      restoreState();
+      btn.textContent = '📖 Study Mode';
+      btn.classList.remove('study-mode');
+      isStudyMode = false;
+    }
+  }
+
+  // Event listener
+  btn.addEventListener('click', toggleMode);
+})();
+</script>
+</body>
+</html>

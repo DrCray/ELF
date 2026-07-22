@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>vocab · card deck</title>
+  <style>
+    /* reset & base — mobile first */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f4f6fa;
+      min-height: 100vh;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      margin: 0.5rem 0 1.2rem 0;
+      padding-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    }
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      margin: 0.5rem 0 1.2rem 0;
+      padding-bottom: 0.3rem;
+      border-bottom: 3px solid #d0d9e8;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    h2 small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #3e5a76;
+      margin-left: auto;
+    }
+    /* card grid — mobile first, single column */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* card */
+    .card {
+      background: white;
+      border-radius: 1.2rem;
+      padding: 1.25rem 1.2rem 1.2rem 1.2rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+      transition: box-shadow 0.15s ease, transform 0.1s ease;
+      border: 1px solid #eef2f7;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:active {
+      transform: scale(0.99);
+      background: #fafcff;
+    }
+
+    /* card header: phrase + badge */
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.4rem 0.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .phrase {
+      font-size: 1.5rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      color: #0b1e33;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .badge {
+      background: #e6edf8;
+      color: #1d3b5a;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      border: 1px solid #d0dcec;
+      white-space: nowrap;
+    }
+
+    /* definition */
+    .definition {
+      font-size: 0.95rem;
+      color: #1f3a57;
+      background: #f0f4fc;
+      padding: 0.6rem 0.9rem;
+      border-radius: 0.9rem;
+      margin: 0.6rem 0 0.9rem 0;
+      line-height: 1.4;
+      border-left: 4px solid #7f9bc0;
+      font-weight: 440;
+    }
+
+    /* examples */
+    .examples {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.1rem;
+    }
+
+    .example {
+      background: #f8faff;
+      padding: 0.7rem 0.9rem;
+      border-radius: 0.8rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #15304d;
+      border: 1px solid #e6edf6;
+      position: relative;
+      padding-left: 1.7rem;
+    }
+
+    .example::before {
+      content: "“";
+      position: absolute;
+      left: 0.5rem;
+      top: 0.3rem;
+      font-size: 1.4rem;
+      color: #7f9bc0;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .example:last-child {
+      margin-bottom: 0;
+    }
+
+    .example em {
+      font-style: italic;
+      color: #1f4a7a;
+      font-weight: 500;
+    }
+
+    /* small screens adjustments */
+    @media (max-width: 480px) {
+      body { padding: 0.7rem; }
+      .card { padding: 1rem; }
+      .phrase { font-size: 1.35rem; }
+      .definition { font-size: 0.9rem; padding: 0.5rem 0.8rem; }
+      .example { font-size: 0.85rem; padding: 0.6rem 0.8rem 0.6rem 1.6rem; }
+      .example::before { left: 0.4rem; font-size: 1.2rem; }
+      h1 { font-size: 1.5rem; }
+    }
+
+    /* tablet / small desktop – two columns if space allows */
+    @media (min-width: 600px) {
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      .page { max-width: 1000px; }
+    }
+
+    /* larger screens: more breathing */
+    @media (min-width: 1024px) {
+      .card-grid { gap: 1.8rem; }
+      .card { padding: 1.6rem; }
+      .phrase { font-size: 1.7rem; }
+    }
+
+    /* subtle hover lift (non-touch) */
+    @media (hover: hover) {
+      .card:hover {
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 20, 40, 0.04);
+        border-color: #d3def0;
+      }
+    }
+
+    /* extra: make it sense special style */
+    .card[data-phrase="make it make sense"] .phrase {
+      color: #a53f3f;
+    }
+    .card[data-phrase="make it make sense"] .badge {
+      background: #fae9e9;
+      color: #8b2e2e;
+      border-color: #e3c5c5;
+    }
+
+    /* optional small decorative */
+    hr {
+      margin: 1.5rem 0 0.5rem 0;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, #dbe2ed, transparent);
+    }
+    .footer-note {
+      color: #6b7f99;
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 1.8rem;
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>
+    Passenger Runaway - Podcast
+  </h1>
+    <h2>
+    📚 study cards
+    <small>15 words/phrases</small>
+  </h2>
+
+  <div class="card-grid">
+    <!-- ran away -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">ran away</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To leave home or a place secretly without permission.</div>
+      <div class="examples">
+        <div class="example">The teenager ran away from home after an argument with her parents.</div>
+        <div class="example">The dog ran away when the gate was accidentally left open.</div>
+      </div>
+    </div>
+
+    <!-- lost track of -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">lost track of</span>
+        <span class="badge">expression</span>
+      </div>
+      <div class="definition">To no longer know where someone or something is, or to fail to pay attention to time.</div>
+      <div class="examples">
+        <div class="example">We lost track of the kids in the crowded amusement park for a few terrifying minutes.</div>
+        <div class="example">I lost track of time while reading this fascinating book.</div>
+      </div>
+    </div>
+
+    <!-- latched onto -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">latched onto</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To attach oneself to someone or something, often following them closely or associating with them.</div>
+      <div class="examples">
+        <div class="example">The little boy latched onto his older brother's group of friends.</div>
+        <div class="example">The stray dog latched onto us and followed us all the way home.</div>
+      </div>
+    </div>
+
+    <!-- snuck past -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">snuck past</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To move quietly and secretly past someone or something without being noticed.</div>
+      <div class="examples">
+        <div class="example">The cat snuck past the sleeping dog to get to its food bowl.</div>
+        <div class="example">We snuck past the security guard to get a better view of the stage.</div>
+      </div>
+    </div>
+
+    <!-- panic attack -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">panic attack</span>
+        <span class="badge">noun</span>
+      </div>
+      <div class="definition">A sudden, intense feeling of fear and anxiety; used informally to describe extreme panic.</div>
+      <div class="examples">
+        <div class="example">She had a panic attack right before her big presentation.</div>
+        <div class="example">I almost had a panic attack when I couldn't find my passport at the airport.</div>
+      </div>
+    </div>
+
+    <!-- sneaky -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">sneaky</span>
+        <span class="badge">adjective</span>
+      </div>
+      <div class="definition">Behaving in a secret and usually dishonest or unfair way.</div>
+      <div class="examples">
+        <div class="example">My sneaky brother ate the last piece of cake when no one was looking.</div>
+        <div class="example">The sneaky fox managed to steal a chicken from the coop.</div>
+      </div>
+    </div>
+
+    <!-- pull off -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">pull off</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To successfully accomplish something difficult or unexpected.</div>
+      <div class="examples">
+        <div class="example">I can't believe he pulled off that surprise party without her finding out.</div>
+        <div class="example">The team pulled off a stunning victory in the final seconds of the game.</div>
+      </div>
+    </div>
+
+    <!-- chickened out -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">chickened out</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To decide not to do something because one is too afraid.</div>
+      <div class="examples">
+        <div class="example">He was going to go skydiving, but he chickened out at the last minute.</div>
+        <div class="example">I wanted to ask for a raise, but I chickened out.</div>
+      </div>
+    </div>
+
+    <!-- bold -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">bold</span>
+        <span class="badge">adjective</span>
+      </div>
+      <div class="definition">Showing the ability to take risks; confident and courageous.</div>
+      <div class="examples">
+        <div class="example">It was a bold move to start her own business during a recession.</div>
+        <div class="example">The bold soldier volunteered for the dangerous mission.</div>
+      </div>
+    </div>
+
+    <!-- daring -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">daring</span>
+        <span class="badge">adjective</span>
+      </div>
+      <div class="definition">Willing to do dangerous or difficult things; adventurous.</div>
+      <div class="examples">
+        <div class="example">The daring rescue mission saved three climbers trapped on the mountain.</div>
+        <div class="example">She wore a very daring dress to the awards ceremony.</div>
+      </div>
+    </div>
+
+    <!-- security breach -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">security breach</span>
+        <span class="badge">noun</span>
+      </div>
+      <div class="definition">An incident where someone gains unauthorized access to a secure area, system, or information.</div>
+      <div class="examples">
+        <div class="example">The company notified its customers about a major computer security breach.</div>
+        <div class="example">Leaving the door unlocked was a security breach that allowed the thief to enter.</div>
+      </div>
+    </div>
+
+    <!-- pulled aside -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">pulled aside</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To take someone to one side to speak to them privately, often to inspect them or tell them something important.</div>
+      <div class="examples">
+        <div class="example">The teacher pulled me aside to discuss my failing grades.</div>
+        <div class="example">I was pulled aside by airport security for a random bag check.</div>
+      </div>
+    </div>
+
+    <!-- make it make sense -->
+    <div class="card" data-phrase="make it make sense">
+      <div class="card-header">
+        <span class="phrase">make it make sense</span>
+        <span class="badge">expression</span>
+      </div>
+      <div class="definition">An emphatic expression to point out the absurdity of a situation.</div>
+      <div class="examples">
+        <div class="example">We work more hours than our CEO, yet he makes $30 million dollars a year? Make it make sense!</div>
+        <div class="example">I need work experience to get a job, but I need a job to get work experience. Make this make sense.</div>
+      </div>
+    </div>
+
+    <!-- on so many levels -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">on so many levels</span>
+        <span class="badge">expression</span>
+      </div>
+      <div class="definition">In multiple ways or aspects; affecting many different parts of a situation.</div>
+      <div class="examples">
+        <div class="example">That movie was terrible on so many levels.</div>
+        <div class="example">Getting a promotion was beneficial on so many levels, both financially and professionally.</div>
+      </div>
+    </div>
+
+    <!-- sign off -->
+    <div class="card">
+      <div class="card-header">
+        <span class="phrase">sign off</span>
+        <span class="badge">phrasal verb</span>
+      </div>
+      <div class="definition">To end a broadcast, conversation, or message.</div>
+      <div class="examples">
+        <div class="example">The radio host played a final song before he signed off for the night.</div>
+        <div class="example">We can take two more audience phone calls before we sign off.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">✦ mobile-first · tap any card ✦</div>
+</div>
+</body>
+</html>
