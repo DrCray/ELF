@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scramble Lyrics - Interactive Exercise</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;display=swap');
+        
+        :root {
+            --primary: #4ade80;
+        }
+        
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #a5b4fc;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .section {
+            background: #1e2937;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #c4d0ff;
+        }
+        
+        .lyrics-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .lyrics-item {
+            background: #334155;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            border-left: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .lyrics-item:hover {
+            background: #475569;
+            transform: translateX(4px);
+        }
+        
+        .lyrics-item.selected {
+            background: #6366f1;
+            border-left-color: #a5b4fc;
+            color: white;
+        }
+        
+        .lyrics-item.correct {
+            border-left-color: #4ade80;
+            background: #14532d;
+        }
+        
+        /* Removed .number styling since we're removing the number spans */
+        
+        .lyrics-text {
+            flex: 1;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #6366f1;
+            transform: translateY(-2px);
+        }
+        
+        .reset-btn {
+            background: #64748b;
+        }
+        
+        .info {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            background: #1e2937;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+        }
+        
+        .form-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        
+        input {
+            padding: 12px 16px;
+            background: #334155;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            width: 280px;
+            transition: border 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        
+        #printBtn {
+            background: #22c55e;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        #printBtn:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .progress {
+            height: 6px;
+            background: #334155;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4ade80, #22d3ee);
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 Lyrics Scramble</h1>
+            <p class="subtitle">Rearrange each section into the correct order. Click two lines to swap them.</p>
+        </header>
+
+        <div id="sections"></div>
+
+        <div class="footer">
+            <h2 style="margin-top:0; color:#a5b4fc;">Student Information</h2>
+            <div class="form-group">
+                <div>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div>
+                    <label for="id">Student ID</label>
+                    <input type="text" id="id" placeholder="Enter your ID" required>
+                </div>
+            </div>
+            
+            <button id="printBtn">🖨️ Print / Save as PDF</button>
+            <div class="status" id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        // Lyrics sections - split by ---
+        const rawLyrics = `Going out on the town tonight
+Blind date; take a chance tonight
+Don't know your face, don't know your name
+Tonight I'm stepping up my game
+---
+New shoes on and my hair pulled tight
+Little bit nervous but I feel alright
+Could be magic, could be strange
+But I'm ready for a little change
+---
+Heartbeat going boom-boom fast
+No looking back, no looking back
+Take a breath, let's make it last
+No strings attached, no strings attached
+----
+Take a chance, take a chance
+I'm stepping out to dance
+It's gonna be a good time, no matter what
+Even if the sparks don't light it up
+I'm gonna shine so bright tonight
+Yeah, I'm gonna make it right
+---
+It's gonna be a good time, wait and see
+Even if it's not meant to be
+I'm here to laugh, I'm here to vibe
+Best night of my life
+Good time, good time (first)
+Yeah, we're feeling alright
+Good time, good time (second)
+Dancing under the lights
+---
+Saw you coming through the door
+A smile I've never seen before
+Maybe fate's got funny ways
+Bringing strangers face to face
+---
+We talk fast and we talk slow
+Where this goes, nobody knows
+But the music's pulling close
+And I kinda like it most
+---
+Heartbeat going boom-boom fast
+No looking back, no looking back
+Hands up high, forget the past
+We're in the now, we're in the now
+---
+Just a moment in the spotlight
+Maybe this is just one night
+Maybe this could feel so right
+Either way I'm not afraid
+Every risk is worth the play
+---
+Take a chance, take a chance
+Life's too short to stand and wait
+No regrets when morning comes
+We're too young to play it numb`;
+
+        let sections = [];
+        let currentSelections = {};
+
+        // ---------- Core scrambling algorithm with "max one correct position" constraint ----------
+        // This function generates a scrambled version of an array where at most ONE element
+        // remains in its original position. For sections with length >= 2, we strongly prefer
+        // a perfect derangement (0 correct positions) but allow 1 correct if derangement is
+        // hard to find after many attempts (very rare). For length 1, it's trivially correct.
+        
+        function isDerangement(arr, original) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === original[i]) return false;
+            }
+            return true;
+        }
+        
+        // Fisher-Yates shuffle helper
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+        
+        // Generate a scrambled array with max 1 correct position (ideally 0 correct)
+        function getScrambledWithLimit(originalArray) {
+            const n = originalArray.length;
+            if (n === 1) {
+                // Only one line: must be correct, no alternative
+                return [...originalArray];
+            }
+            
+            // For n == 2: derangement is swapping, guarantee 0 correct.
+            if (n === 2) {
+                return [originalArray[1], originalArray[0]];
+            }
+            
+            // For n >= 3: we want a permutation with maximum 1 correct element.
+            // We'll try to find a full derangement (0 correct) first.
+            // Derangements exist for n>=2, probability ~1/e, so rejection works.
+            let maxAttempts = 200;
+            for (let attempt = 0; attempt < maxAttempts; attempt++) {
+                const shuffled = shuffleArray([...originalArray]);
+                let correctCount = 0;
+                for (let i = 0; i < n; i++) {
+                    if (shuffled[i] === originalArray[i]) correctCount++;
+                    if (correctCount > 1) break; // early reject if more than 1 correct
+                }
+                if (correctCount <= 1) {
+                    // Acceptable: either 0 or exactly 1 correct position
+                    return shuffled;
+                }
+            }
+            
+            // Fallback: extremely rare case, manually fix
+            let fallback = [...originalArray];
+            for (let i = 0; i < n * 4; i++) {
+                const idxA = Math.floor(Math.random() * n);
+                const idxB = Math.floor(Math.random() * n);
+                if (idxA !== idxB) {
+                    [fallback[idxA], fallback[idxB]] = [fallback[idxB], fallback[idxA]];
+                }
+                let correct = 0;
+                for (let k = 0; k < n; k++) {
+                    if (fallback[k] === originalArray[k]) correct++;
+                    if (correct > 1) break;
+                }
+                if (correct <= 1) break;
+            }
+            return fallback;
+        }
+        
+        function resetScrambleForSection(section) {
+            const newScrambled = getScrambledWithLimit(section.original);
+            section.current = newScrambled;
+        }
+        
+        function parseSections() {
+            const parts = rawLyrics.split(/---+\n?/);
+            sections = parts.map((part, index) => {
+                const lines = part.trim().split('\n').filter(line => line.trim() !== '');
+                const original = [...lines];
+                const scrambled = getScrambledWithLimit(original);
+                return {
+                    id: index,
+                    original: original,
+                    current: scrambled
+                };
+            });
+        }
+        
+        // Validate that no section has more than 1 correct line at start
+        function validateInitialScrambles() {
+            let needsFix = false;
+            sections.forEach((section, idx) => {
+                let correctCount = 0;
+                for (let i = 0; i < section.current.length; i++) {
+                    if (section.current[i] === section.original[i]) correctCount++;
+                }
+                if (correctCount > 1 && section.current.length > 1) {
+                    section.current = getScrambledWithLimit(section.original);
+                    needsFix = true;
+                }
+            });
+            if (needsFix) {
+                renderSections();
+            }
+        }
+        
+        function renderSections() {
+            const container = document.getElementById('sections');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            sections.forEach((section, sIndex) => {
+                const sectionEl = document.createElement('div');
+                sectionEl.className = 'section';
+                
+                let correctCount = 0;
+                section.current.forEach((line, idx) => {
+                    if (line === section.original[idx]) correctCount++;
+                });
+                const totalLines = section.original.length;
+                const progressPercent = (correctCount / totalLines) * 100;
+                
+                let html = `
+                    <div class="section-header">
+                        <div class="section-title">Section ${sIndex + 1}</div>
+                        <button class="reset-btn" data-reset="${sIndex}">⟳ Reset Section</button>
+                    </div>
+                    <ul class="lyrics-list" id="list-${sIndex}">
+                `;
+                section.current.forEach((line, index) => {
+                    const isCorrect = (section.current[index] === section.original[index]);
+                    const selectedClass = (currentSelections[sIndex] === index) ? 'selected' : '';
+                    const correctClass = isCorrect ? 'correct' : '';
+                    // Removed the <span class="number"> prefix completely
+                    html += `
+                        <li class="lyrics-item ${selectedClass} ${correctClass}" 
+                            data-section="${sIndex}" 
+                            data-index="${index}">
+                            <span class="lyrics-text">${escapeHtml(line)}</span>
+                        </li>
+                    `;
+                });
+                html += `</ul>`;
+                html += `<div class="progress" style="margin-top:12px;"><div class="progress-bar" style="width: ${progressPercent}%;"></div></div>`;
+                html += `<div class="info">✅ Green border = correct position. Click two lines to swap them. (${correctCount}/${totalLines} correct)</div>`;
+                sectionEl.innerHTML = html;
+                container.appendChild(sectionEl);
+            });
+            
+            attachListEvents();
+        }
+        
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
+        function attachListEvents() {
+            const container = document.getElementById('sections');
+            if (!container) return;
+            container.removeEventListener('click', globalClickHandler);
+            container.addEventListener('click', globalClickHandler);
+        }
+        
+        function globalClickHandler(e) {
+            const resetBtn = e.target.closest('.reset-btn');
+            if (resetBtn && resetBtn.hasAttribute('data-reset')) {
+                const sectionIdx = parseInt(resetBtn.getAttribute('data-reset'), 10);
+                if (!isNaN(sectionIdx)) {
+                    resetSection(sectionIdx);
+                }
+                return;
+            }
+            
+            const listItem = e.target.closest('.lyrics-item');
+            if (!listItem) return;
+            
+            const sectionAttr = listItem.getAttribute('data-section');
+            const indexAttr = listItem.getAttribute('data-index');
+            if (sectionAttr === null || indexAttr === null) return;
+            
+            const sectionIndex = parseInt(sectionAttr, 10);
+            const lineIndex = parseInt(indexAttr, 10);
+            if (isNaN(sectionIndex) || isNaN(lineIndex)) return;
+            
+            selectLine(sectionIndex, lineIndex);
+        }
+        
+        function selectLine(sectionIndex, lineIndex) {
+            if (currentSelections[sectionIndex] !== undefined) {
+                const firstIndex = currentSelections[sectionIndex];
+                if (firstIndex !== lineIndex) {
+                    const section = sections[sectionIndex];
+                    const temp = section.current[firstIndex];
+                    section.current[firstIndex] = section.current[lineIndex];
+                    section.current[lineIndex] = temp;
+                }
+                delete currentSelections[sectionIndex];
+                renderSections();
+            } else {
+                currentSelections[sectionIndex] = lineIndex;
+                renderSections();
+            }
+        }
+        
+        function resetSection(sectionIndex) {
+            const section = sections[sectionIndex];
+            const newScrambled = getScrambledWithLimit(section.original);
+            section.current = newScrambled;
+            delete currentSelections[sectionIndex];
+            renderSections();
+        }
+        
+        function resetAllSections() {
+            sections.forEach((section, idx) => {
+                const newScrambled = getScrambledWithLimit(section.original);
+                section.current = newScrambled;
+                delete currentSelections[idx];
+            });
+            renderSections();
+        }
+        
+        function checkAllCorrect() {
+            let allCorrect = true;
+            sections.forEach(section => {
+                for (let i = 0; i < section.current.length; i++) {
+                    if (section.current[i] !== section.original[i]) {
+                        allCorrect = false;
+                        break;
+                    }
+                }
+            });
+            return allCorrect;
+        }
+        
+        function printExercise() {
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const statusEl = document.getElementById('status');
+            
+            if (!name || !id) {
+                statusEl.innerHTML = `<span style="color:#f87171;">⚠️ Please enter both Name and Student ID before printing.</span>`;
+                return;
+            }
+            
+            statusEl.innerHTML = `<span style="color:#4ade80;">✅ Preparing print... Please wait.</span>`;
+            
+            // Create print-friendly header
+            const printContainer = document.createElement('div');
+            printContainer.style.cssText = 'text-align:center; margin-bottom:30px; padding:20px; background:#1e2937; border-radius:12px;';
+            printContainer.innerHTML = `
+                <h2 style="margin:0 0 8px 0; color:#a5b4fc;">🎤 Lyrics Scramble Exercise</h2>
+                <p style="margin:8px 0;"><strong>Name:</strong> ${escapeHtml(name)} &nbsp;&nbsp;&nbsp; <strong>Student ID:</strong> ${escapeHtml(id)}</p>
+                <p style="font-size:0.85rem; color:#94a3b8;">Completed on ${new Date().toLocaleString()}</p>
+                <hr style="border-color:#334155; margin:15px 0;">
+                <p style="font-style:italic;">Below are your current scrambled lyrics. Green-bordered lines are correctly placed.</p>
+            `;
+            
+            const sectionsContainer = document.getElementById('sections');
+            const clonedSections = sectionsContainer.cloneNode(true);
+            
+            const tempPrintDiv = document.createElement('div');
+            tempPrintDiv.style.padding = '20px';
+            tempPrintDiv.style.backgroundColor = '#0f172a';
+            tempPrintDiv.style.color = '#e2e8f0';
+            tempPrintDiv.appendChild(printContainer);
+            tempPrintDiv.appendChild(clonedSections.cloneNode(true));
+            
+            // Remove reset buttons and any interactive elements from print version
+            const clonedResetBtns = tempPrintDiv.querySelectorAll('.reset-btn');
+            clonedResetBtns.forEach(btn => btn.remove());
+            const clonedListItems = tempPrintDiv.querySelectorAll('.lyrics-item');
+            clonedListItems.forEach(item => {
+                item.removeAttribute('onclick');
+                item.style.cursor = 'default';
+            });
+            
+            document.body.appendChild(tempPrintDiv);
+            const originalTitle = document.title;
+            document.title = `Lyrics_Scramble_${name}_${id}`;
+            
+            setTimeout(() => {
+                window.print();
+                setTimeout(() => {
+                    tempPrintDiv.remove();
+                    document.title = originalTitle;
+                    statusEl.innerHTML = `<span style="color:#4ade80;">✅ Print completed. You can continue editing.</span>`;
+                    setTimeout(() => {
+                        if (statusEl.innerHTML.includes("Print completed")) {
+                            statusEl.innerHTML = '';
+                        }
+                    }, 3000);
+                }, 500);
+            }, 200);
+        }
+        
+        // Keyboard shortcut: Ctrl+R resets all sections
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                resetAllSections();
+                const statusMsg = document.getElementById('status');
+                if (statusMsg) {
+                    statusMsg.innerHTML = `<span style="color:#22d3ee;">⟳ All sections have been re-scrambled (max 1 correct per section).</span>`;
+                    setTimeout(() => {
+                        if (statusMsg.innerHTML.includes("re-scrambled")) statusMsg.innerHTML = '';
+                    }, 2000);
+                }
+            }
+        });
+        
+        // Initialize
+        parseSections();
+        renderSections();
+        validateInitialScrambles();
+        
+        // Set up print button
+        const printBtn = document.getElementById('printBtn');
+        if (printBtn) {
+            const newPrintBtn = printBtn.cloneNode(true);
+            printBtn.parentNode.replaceChild(newPrintBtn, printBtn);
+            newPrintBtn.addEventListener('click', printExercise);
+        }
+        
+        // Add hint about Ctrl+R
+        const hintInfo = document.createElement('div');
+        hintInfo.style.textAlign = 'center';
+        hintInfo.style.marginTop = '10px';
+        hintInfo.style.fontSize = '0.8rem';
+        hintInfo.style.color = '#64748b';
+        hintInfo.innerHTML = '💡 Tip: Press <kbd>Ctrl+R</kbd> to reset ALL sections with a fresh scramble (still max 1 correct line per section).';
+        const sectionsDiv = document.getElementById('sections');
+        if (sectionsDiv && sectionsDiv.parentNode) {
+            sectionsDiv.parentNode.insertBefore(hintInfo, sectionsDiv.nextSibling);
+        }
+        
+        // Beforeprint validation
+        window.addEventListener('beforeprint', (e) => {
+            const name = document.getElementById('name').value.trim();
+            const id = document.getElementById('id').value.trim();
+            if (!name || !id) {
+                e.preventDefault();
+                alert("Please fill in your Full Name and Student ID before printing.");
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
