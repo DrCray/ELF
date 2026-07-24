@@ -1,0 +1,1559 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8" content="Dr Ray EFL ESL, English learning">
+		
+		<!-- content attribute is for search engines -->		
+		<meta name="quizMaker" content="English Learning Management Method">		
+
+		<!-- Mobile responsiveness -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- xxxx  NO Cache  xxx   -->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		
+		<title>supercenterPanicAnagram</title>
+		
+		<!-- link rel="stylesheet" href="style.css" --> 
+		      
+		<!-- <script src="script.js"></script -->
+		
+    <style>  
+        body {
+            background-color: #d4e6f1; cursor:text; margin: 2em;
+            font-family: helvetica, arial, sans-serif;
+            max-width:55rem; margin:auto;
+        }  
+        
+        :focus {outline:none;}
+        ::-moz-focus-inner {border:0; }
+        
+        
+        
+        #zzpageHeader { 
+            box-shadow: 0 1ex 1ex 0;
+            border-radius: 7px; margin:1ex;
+        }
+        
+        #zztitle { 
+            background-color:#fff8dc; 
+            border-style:solid;  border-width: medium; 
+            border-color:#8b0000; border-radius: 7px;
+            padding:2ex; margin-bottom: 3ex;
+        }
+        
+        .card {
+            background-color:  #d4e6f1  ; border-radius: 10px; 
+            padding:10px; 
+        }
+ 
+        .quStyle {
+            background-color:#B0E0E6; border-width:thin; box-shadow: 0 3px 3px 0;
+            border-style:solid; border-color:#8b0000; 
+            padding:3ex; 
+            border-radius: 10px;
+         }
+         
+        .question {
+            cursor:cell; width: fit-content; padding: 0 3ex 0 0;
+        }
+         
+
+         .answer {
+            display:block;
+            background-color:#fff8dc; border-width:thin; border-style:solid; 
+            border-color: blue;
+            padding:2ex; border-radius: 10px; 
+         }
+        
+        .fake-button {
+            background-color: #E9E9ED; 
+            border-style:solid; border-width:thin; border-radius: 5px;
+            box-shadow: 1px 1px; padding: 0 1ex 0 1ex; font-size: 0.85em;
+
+        }
+
+       .fake-button:hover {
+            background-color: lightblue;
+             border-radius: 5px; box-shadow: 3px 3px gray;
+
+        }
+        
+        /*  for <button> class="hlBtn"  */
+        .hlBtn {border-radius:5px; margin:1ex;}
+
+        .hlBtn:hover {
+            background-color:lightblue;  border-radius: 5px;
+        }
+        
+        .delBtn { margin:1em 0 0 0}
+        
+        #printOptions {
+            /*display:block;*/ display:none; background-color: #9CD7B7; color: darkblue;
+            border-radius: 5px;
+            box-shadow: 3px 3px darkgreen;
+            margin: 1ex 0 1ex 0;
+            padding:1ex;
+            font-weight: bold; font-size:85%;
+        }
+  /*new color scheme for older FIB quizzes*/
+        body {
+            background-color: #F1F0EB !important; border-color:#053849 !important;}
+
+        #zztitle {
+            background-color:#053849 !important;
+            color:white !important;  border-color:#053849 !important;}
+
+        .thePara {
+           background-color:#EDF3F5 !important;  border-color:#053849 !important;}
+
+        .answer {
+            background-color:#F1F0EB !important; border-color:#053849 !important;}
+
+        .choicesUl {
+            background-color:#F7F3F0 !important; border-color:#053849 !important; }
+
+        #printOptions {
+            background-color: #CDE0D2 !important; border-color:#053849 !important; }
+
+        .titleDiv {
+            background-color:#EDF3F5 !important; border-color:#053849 !important; }
+
+         details { background:#CDE0D2 !important; border-color:#053849 !important;}
+    /*end new color scheme */
+
+
+    </style>  
+    
+  </head>
+  
+  <body>
+      
+    <div id="idChar" style="display:none">146</div>
+        
+        <img class="center" src="topImage.jpg" alt="" width="100%">
+      
+  <header id="zzpageHeader">
+    <section id="zztitle" contenteditable="false"><div><strong>Find the anagrams</strong></div><div><strong><br></strong></div>
+        <strong>
+        Article: Panic at the Supercenter</strong></section>   
+</header>
+
+<!-- ================= check if header was updated ============ -->
+<script>
+//put this under the header section
+  let initialContent = document.getElementById('zztitle').textContent;
+</script>
+
+
+<!-- ====== Name ID Toggle and input ================= -->
+<script>
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    document.getElementById("toggleShowHideNameID").checked=1;
+  }
+};
+</script>
+
+<input id="toggleShowHideNameID" type="checkbox" style="display: none;">
+<label id="toggleShowHideNameIDLbl" for="toggle" style="display: none;">Show Name and ID</label>
+<br>
+<input id="name" type="text" value="name">
+<input id="id" type="text" value="id#">
+      
+        <div id="playHow" class="previewMode" style="padding: 3px; width: fit-content; margin: 1ex; background-color: rgb(196, 239, 215); color: darkred; display: block;">
+            <ul>
+                <li>Click on a square to get a letter hint. &nbsp; &nbsp;  &nbsp; &nbsp; </li>
+            </ul>
+        </div>
+      
+
+<script>
+  const toggleShowHideNameID = document.getElementById('toggleShowHideNameID');
+  const nameInput = document.getElementById('name');
+  const idInput = document.getElementById('id');
+  
+  toggleShowHideNameID.addEventListener('change', event => {
+    const checked = event.target.checked;
+    if (checked){
+    nameInput.style.display="inline-block";
+    idInput.style.display="inline-block";}
+    else {
+    nameInput.style.display="none";
+    idInput.style.display="none";}
+  });
+</script>
+      
+      
+<section id="allWordLists">
+    <div id="allLists"><div id="splitWord1"><div id="zInstrc1" contenteditable="false" class="quStyle" style="cursor: pointer; margin: 2ex 0px 1ex; background:#335059; color:white;"><div><h2>What are anagrams?</h2>They are the words you can make from the letters of another word.&nbsp;<br>For example:&nbsp; "find", "tied", "define", and "finite" are anagrams of the master word: "definite"<br><h3>Instructions</h3>First, click on two squares to get a letter hint.<br>Look at the clue and try to guess the word<br>If not, click on another square and guess again.&nbsp;<br>Continue the cycle until you can guess the word.<br><br>Use "shuffle" to remix the letters and get fresh ideas.</div><button id="$delThis$delIDnumb" class="delBtn editMode" style="display: none;">delete this</button></div>
+
+
+<button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete full list </button>
+<button onclick="showAll('splitWord1')" class="btnShowz previewMode" style="display: inlne-block; margin: 1em 0px 0px;" id="showAllBtn140">Show All Answers</button>
+<button onclick="hideAll('splitWord1')" class="btnHidez previewMode" style="display: inline-block; margin: 0px;" id="hideAllBtn1460">Hide All Answers</button><div id="wordCharSet1"><p id="para1" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Items used in cooking or recipes&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword1">degnrisenti</div>
+<button onclick="shuflkeyword('keyword1')" style="display: inline-block; margin: 1em 0px;" id="shuffle1">shuffle</button><br>
+<div id="char1" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char1','blankChar1')">i</div>
+<div id="blankChar1" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char1','blankChar1')">&nbsp;</div>
+<div id="char2" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char2','blankChar2')">n</div>
+<div id="blankChar2" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char2','blankChar2')">&nbsp;</div>
+<div id="char3" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char3','blankChar3')">g</div>
+<div id="blankChar3" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char3','blankChar3')">&nbsp;</div>
+<div id="char4" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char4','blankChar4')">r</div>
+<div id="blankChar4" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char4','blankChar4')">&nbsp;</div>
+<div id="char5" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char5','blankChar5')">e</div>
+<div id="blankChar5" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char5','blankChar5')">&nbsp;</div>
+<div id="char6" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char6','blankChar6')">d</div>
+<div id="blankChar6" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char6','blankChar6')">&nbsp;</div>
+<div id="char7" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char7','blankChar7')">i</div>
+<div id="blankChar7" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char7','blankChar7')">&nbsp;</div>
+<div id="char8" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char8','blankChar8')">e</div>
+<div id="blankChar8" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char8','blankChar8')">&nbsp;</div>
+<div id="char9" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char9','blankChar9')">n</div>
+<div id="blankChar9" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char9','blankChar9')">&nbsp;</div>
+<div id="char10" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char10','blankChar10')">t</div>
+<div id="blankChar10" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char10','blankChar10')">&nbsp;</div>
+<div id="char11" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char11','blankChar11')">s</div>
+<div id="blankChar11" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char11','blankChar11')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn12" data-word="ingredients">
+<button onclick="wordTest('wordIn12','notice12','guesses12','wordCharSet1')" style="display:none;" id="btnEnter12"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice12" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses12">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet12"><p id="para12" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Someone who creates fashion or art</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword12">gintrsndeie</div>
+<button onclick="shuflkeyword('keyword12')" style="display: inline-block; margin: 1em 0px;" id="shuffle12">shuffle</button><br>
+<div id="char12" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char12','blankChar12')">d</div>
+<div id="blankChar12" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char12','blankChar12')">&nbsp;</div>
+<div id="char13" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char13','blankChar13')">e</div>
+<div id="blankChar13" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char13','blankChar13')">&nbsp;</div>
+<div id="char14" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char14','blankChar14')">s</div>
+<div id="blankChar14" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char14','blankChar14')">&nbsp;</div>
+<div id="char15" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char15','blankChar15')">i</div>
+<div id="blankChar15" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char15','blankChar15')">&nbsp;</div>
+<div id="char16" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char16','blankChar16')">g</div>
+<div id="blankChar16" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char16','blankChar16')">&nbsp;</div>
+<div id="char17" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char17','blankChar17')">n</div>
+<div id="blankChar17" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char17','blankChar17')">&nbsp;</div>
+<div id="char18" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char18','blankChar18')">e</div>
+<div id="blankChar18" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char18','blankChar18')">&nbsp;</div>
+<div id="char19" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char19','blankChar19')">r</div>
+<div id="blankChar19" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char19','blankChar19')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn20" data-word="designer">
+<button onclick="wordTest('wordIn20','notice20','guesses20','wordCharSet12')" style="display:none;" id="btnEnter20"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice20" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses20">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet20"><p id="para20" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To put something into something else</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword20">ntsginredie</div>
+<button onclick="shuflkeyword('keyword20')" style="display: inline-block; margin: 1em 0px;" id="shuffle20">shuffle</button><br>
+<div id="char20" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char20','blankChar20')">i</div>
+<div id="blankChar20" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char20','blankChar20')">&nbsp;</div>
+<div id="char21" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char21','blankChar21')">n</div>
+<div id="blankChar21" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char21','blankChar21')">&nbsp;</div>
+<div id="char22" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char22','blankChar22')">s</div>
+<div id="blankChar22" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char22','blankChar22')">&nbsp;</div>
+<div id="char23" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char23','blankChar23')">e</div>
+<div id="blankChar23" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char23','blankChar23')">&nbsp;</div>
+<div id="char24" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char24','blankChar24')">r</div>
+<div id="blankChar24" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char24','blankChar24')">&nbsp;</div>
+<div id="char25" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char25','blankChar25')">t</div>
+<div id="blankChar25" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char25','blankChar25')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn26" data-word="insert">
+<button onclick="wordTest('wordIn26','notice26','guesses26','wordCharSet20')" style="display:none;" id="btnEnter26"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice26" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses26">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet26"><p id="para26" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">&nbsp;The decade from 1990 to 1999&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword26">tinsnrdgiee</div>
+<button onclick="shuflkeyword('keyword26')" style="display: inline-block; margin: 1em 0px;" id="shuffle26">shuffle</button><br>
+<div id="char26" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char26','blankChar26')">n</div>
+<div id="blankChar26" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char26','blankChar26')">&nbsp;</div>
+<div id="char27" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char27','blankChar27')">i</div>
+<div id="blankChar27" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char27','blankChar27')">&nbsp;</div>
+<div id="char28" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char28','blankChar28')">n</div>
+<div id="blankChar28" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char28','blankChar28')">&nbsp;</div>
+<div id="char29" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char29','blankChar29')">e</div>
+<div id="blankChar29" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char29','blankChar29')">&nbsp;</div>
+<div id="char30" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char30','blankChar30')">t</div>
+<div id="blankChar30" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char30','blankChar30')">&nbsp;</div>
+<div id="char31" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char31','blankChar31')">i</div>
+<div id="blankChar31" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char31','blankChar31')">&nbsp;</div>
+<div id="char32" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char32','blankChar32')">e</div>
+<div id="blankChar32" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char32','blankChar32')">&nbsp;</div>
+<div id="char33" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char33','blankChar33')">s</div>
+<div id="blankChar33" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char33','blankChar33')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn34" data-word="nineties">
+<button onclick="wordTest('wordIn34','notice34','guesses34','wordCharSet26')" style="display:none;" id="btnEnter34"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice34" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses34">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet34"><p id="para34" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To change the appearance or plan of something&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword34">gnderiietns</div>
+<button onclick="shuflkeyword('keyword34')" style="display: inline-block; margin: 1em 0px;" id="shuffle34">shuffle</button><br>
+<div id="char34" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char34','blankChar34')">r</div>
+<div id="blankChar34" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char34','blankChar34')">&nbsp;</div>
+<div id="char35" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char35','blankChar35')">e</div>
+<div id="blankChar35" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char35','blankChar35')">&nbsp;</div>
+<div id="char36" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char36','blankChar36')">d</div>
+<div id="blankChar36" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char36','blankChar36')">&nbsp;</div>
+<div id="char37" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char37','blankChar37')">e</div>
+<div id="blankChar37" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char37','blankChar37')">&nbsp;</div>
+<div id="char38" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char38','blankChar38')">s</div>
+<div id="blankChar38" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char38','blankChar38')">&nbsp;</div>
+<div id="char39" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char39','blankChar39')">i</div>
+<div id="blankChar39" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char39','blankChar39')">&nbsp;</div>
+<div id="char40" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char40','blankChar40')">g</div>
+<div id="blankChar40" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char40','blankChar40')">&nbsp;</div>
+<div id="char41" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char41','blankChar41')">n</div>
+<div id="blankChar41" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char41','blankChar41')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn42" data-word="redesign">
+<button onclick="wordTest('wordIn42','notice42','guesses42','wordCharSet34')" style="display:none;" id="btnEnter42"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice42" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses42">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet42"><p id="para42" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Someone who lives in a particular place&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword42">nsdgitneeir</div>
+<button onclick="shuflkeyword('keyword42')" style="display: inline-block; margin: 1em 0px;" id="shuffle42">shuffle</button><br>
+<div id="char42" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char42','blankChar42')">r</div>
+<div id="blankChar42" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char42','blankChar42')">&nbsp;</div>
+<div id="char43" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char43','blankChar43')">e</div>
+<div id="blankChar43" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char43','blankChar43')">&nbsp;</div>
+<div id="char44" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char44','blankChar44')">s</div>
+<div id="blankChar44" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char44','blankChar44')">&nbsp;</div>
+<div id="char45" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char45','blankChar45')">i</div>
+<div id="blankChar45" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char45','blankChar45')">&nbsp;</div>
+<div id="char46" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char46','blankChar46')">d</div>
+<div id="blankChar46" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char46','blankChar46')">&nbsp;</div>
+<div id="char47" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char47','blankChar47')">e</div>
+<div id="blankChar47" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char47','blankChar47')">&nbsp;</div>
+<div id="char48" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char48','blankChar48')">n</div>
+<div id="blankChar48" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char48','blankChar48')">&nbsp;</div>
+<div id="char49" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char49','blankChar49')">t</div>
+<div id="blankChar49" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char49','blankChar49')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn50" data-word="resident">
+<button onclick="wordTest('wordIn50','notice50','guesses50','wordCharSet42')" style="display:none;" id="btnEnter50"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice50" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses50">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet50"><p id="para50" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To quit or leave a job or position&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword50">ignrdeietns</div>
+<button onclick="shuflkeyword('keyword50')" style="display: inline-block; margin: 1em 0px;" id="shuffle50">shuffle</button><br>
+<div id="char50" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char50','blankChar50')">r</div>
+<div id="blankChar50" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char50','blankChar50')">&nbsp;</div>
+<div id="char51" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char51','blankChar51')">e</div>
+<div id="blankChar51" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char51','blankChar51')">&nbsp;</div>
+<div id="char52" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char52','blankChar52')">s</div>
+<div id="blankChar52" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char52','blankChar52')">&nbsp;</div>
+<div id="char53" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char53','blankChar53')">i</div>
+<div id="blankChar53" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char53','blankChar53')">&nbsp;</div>
+<div id="char54" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char54','blankChar54')">g</div>
+<div id="blankChar54" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char54','blankChar54')">&nbsp;</div>
+<div id="char55" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char55','blankChar55')">n</div>
+<div id="blankChar55" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char55','blankChar55')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn56" data-word="resign">
+<button onclick="wordTest('wordIn56','notice56','guesses56','wordCharSet50')" style="display:none;" id="btnEnter56"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice56" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses56">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet56"><p id="para56" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">The main meal of the evening&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword56">dgnieirestn</div>
+<button onclick="shuflkeyword('keyword56')" style="display: inline-block; margin: 1em 0px;" id="shuffle56">shuffle</button><br>
+<div id="char56" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char56','blankChar56')">d</div>
+<div id="blankChar56" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char56','blankChar56')">&nbsp;</div>
+<div id="char57" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char57','blankChar57')">i</div>
+<div id="blankChar57" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char57','blankChar57')">&nbsp;</div>
+<div id="char58" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char58','blankChar58')">n</div>
+<div id="blankChar58" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char58','blankChar58')">&nbsp;</div>
+<div id="char59" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char59','blankChar59')">n</div>
+<div id="blankChar59" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char59','blankChar59')">&nbsp;</div>
+<div id="char60" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char60','blankChar60')">e</div>
+<div id="blankChar60" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char60','blankChar60')">&nbsp;</div>
+<div id="char61" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char61','blankChar61')">r</div>
+<div id="blankChar61" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char61','blankChar61')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn62" data-word="dinner">
+<button onclick="wordTest('wordIn62','notice62','guesses62','wordCharSet56')" style="display:none;" id="btnEnter62"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice62" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses62">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet62"><p id="para62" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">If a car doesn't have one, it can't move.&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword62">tignnsreedi</div>
+<button onclick="shuflkeyword('keyword62')" style="display: inline-block; margin: 1em 0px;" id="shuffle62">shuffle</button><br>
+<div id="char62" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char62','blankChar62')">e</div>
+<div id="blankChar62" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char62','blankChar62')">&nbsp;</div>
+<div id="char63" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char63','blankChar63')">n</div>
+<div id="blankChar63" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char63','blankChar63')">&nbsp;</div>
+<div id="char64" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char64','blankChar64')">g</div>
+<div id="blankChar64" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char64','blankChar64')">&nbsp;</div>
+<div id="char65" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char65','blankChar65')">i</div>
+<div id="blankChar65" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char65','blankChar65')">&nbsp;</div>
+<div id="char66" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char66','blankChar66')">n</div>
+<div id="blankChar66" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char66','blankChar66')">&nbsp;</div>
+<div id="char67" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char67','blankChar67')">e</div>
+<div id="blankChar67" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char67','blankChar67')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn68" data-word="engine">
+<button onclick="wordTest('wordIn68','notice68','guesses68','wordCharSet62')" style="display:none;" id="btnEnter68"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice68" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses68">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet68"><p id="para68" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">A dry, sandy area with little rain</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword68">dgsnetrinie</div>
+<button onclick="shuflkeyword('keyword68')" style="display: inline-block; margin: 1em 0px;" id="shuffle68">shuffle</button><br>
+<div id="char68" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char68','blankChar68')">d</div>
+<div id="blankChar68" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char68','blankChar68')">&nbsp;</div>
+<div id="char69" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char69','blankChar69')">e</div>
+<div id="blankChar69" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char69','blankChar69')">&nbsp;</div>
+<div id="char70" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char70','blankChar70')">s</div>
+<div id="blankChar70" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char70','blankChar70')">&nbsp;</div>
+<div id="char71" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char71','blankChar71')">e</div>
+<div id="blankChar71" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char71','blankChar71')">&nbsp;</div>
+<div id="char72" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char72','blankChar72')">r</div>
+<div id="blankChar72" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char72','blankChar72')">&nbsp;</div>
+<div id="char73" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char73','blankChar73')">t</div>
+<div id="blankChar73" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char73','blankChar73')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn74" data-word="desert">
+<button onclick="wordTest('wordIn74','notice74','guesses74','wordCharSet68')" style="display:none;" id="btnEnter74"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice74" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses74">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet74"><p id="para74" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To plan or create something visually&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword74">nigrdieesnt</div>
+<button onclick="shuflkeyword('keyword74')" style="display: inline-block; margin: 1em 0px;" id="shuffle74">shuffle</button><br>
+<div id="char74" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char74','blankChar74')">d</div>
+<div id="blankChar74" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char74','blankChar74')">&nbsp;</div>
+<div id="char75" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char75','blankChar75')">e</div>
+<div id="blankChar75" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char75','blankChar75')">&nbsp;</div>
+<div id="char76" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char76','blankChar76')">s</div>
+<div id="blankChar76" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char76','blankChar76')">&nbsp;</div>
+<div id="char77" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char77','blankChar77')">i</div>
+<div id="blankChar77" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char77','blankChar77')">&nbsp;</div>
+<div id="char78" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char78','blankChar78')">g</div>
+<div id="blankChar78" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char78','blankChar78')">&nbsp;</div>
+<div id="char79" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char79','blankChar79')">n</div>
+<div id="blankChar79" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char79','blankChar79')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn80" data-word="design">
+<button onclick="wordTest('wordIn80','notice80','guesses80','wordCharSet74')" style="display:none;" id="btnEnter80"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice80" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses80">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet80"><p id="para80" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">A strong wish or want for something&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword80">ignredeistn</div>
+<button onclick="shuflkeyword('keyword80')" style="display: inline-block; margin: 1em 0px;" id="shuffle80">shuffle</button><br>
+<div id="char80" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char80','blankChar80')">d</div>
+<div id="blankChar80" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char80','blankChar80')">&nbsp;</div>
+<div id="char81" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char81','blankChar81')">e</div>
+<div id="blankChar81" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char81','blankChar81')">&nbsp;</div>
+<div id="char82" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char82','blankChar82')">s</div>
+<div id="blankChar82" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char82','blankChar82')">&nbsp;</div>
+<div id="char83" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char83','blankChar83')">i</div>
+<div id="blankChar83" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char83','blankChar83')">&nbsp;</div>
+<div id="char84" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char84','blankChar84')">r</div>
+<div id="blankChar84" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char84','blankChar84')">&nbsp;</div>
+<div id="char85" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char85','blankChar85')">e</div>
+<div id="blankChar85" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char85','blankChar85')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn86" data-word="desire">
+<button onclick="wordTest('wordIn86','notice86','guesses86','wordCharSet80')" style="display:none;" id="btnEnter86"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice86" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses86">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet86"><p id="para86" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Whole or complete&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword86">intgsenrdie</div>
+<button onclick="shuflkeyword('keyword86')" style="display: inline-block; margin: 1em 0px;" id="shuffle86">shuffle</button><br>
+<div id="char86" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char86','blankChar86')">e</div>
+<div id="blankChar86" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char86','blankChar86')">&nbsp;</div>
+<div id="char87" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char87','blankChar87')">n</div>
+<div id="blankChar87" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char87','blankChar87')">&nbsp;</div>
+<div id="char88" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char88','blankChar88')">t</div>
+<div id="blankChar88" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char88','blankChar88')">&nbsp;</div>
+<div id="char89" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char89','blankChar89')">i</div>
+<div id="blankChar89" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char89','blankChar89')">&nbsp;</div>
+<div id="char90" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char90','blankChar90')">r</div>
+<div id="blankChar90" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char90','blankChar90')">&nbsp;</div>
+<div id="char91" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char91','blankChar91')">e</div>
+<div id="blankChar91" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char91','blankChar91')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn92" data-word="entire">
+<button onclick="wordTest('wordIn92','notice92','guesses92','wordCharSet86')" style="display:none;" id="btnEnter92"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice92" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses92">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet92"><p id="para92" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Male or female classification&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword92">tignnsrdeie</div>
+<button onclick="shuflkeyword('keyword92')" style="display: inline-block; margin: 1em 0px;" id="shuffle92">shuffle</button><br>
+<div id="char92" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char92','blankChar92')">g</div>
+<div id="blankChar92" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char92','blankChar92')">&nbsp;</div>
+<div id="char93" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char93','blankChar93')">e</div>
+<div id="blankChar93" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char93','blankChar93')">&nbsp;</div>
+<div id="char94" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char94','blankChar94')">n</div>
+<div id="blankChar94" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char94','blankChar94')">&nbsp;</div>
+<div id="char95" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char95','blankChar95')">d</div>
+<div id="blankChar95" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char95','blankChar95')">&nbsp;</div>
+<div id="char96" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char96','blankChar96')">e</div>
+<div id="blankChar96" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char96','blankChar96')">&nbsp;</div>
+<div id="char97" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char97','blankChar97')">r</div>
+<div id="blankChar97" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char97','blankChar97')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn98" data-word="gender">
+<button onclick="wordTest('wordIn98','notice98','guesses98','wordCharSet92')" style="display:none;" id="btnEnter98"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice98" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses98">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet98"><p id="para98" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To start a fire or cause to burn&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword98">gnstnirieed</div>
+<button onclick="shuflkeyword('keyword98')" style="display: inline-block; margin: 1em 0px;" id="shuffle98">shuffle</button><br>
+<div id="char98" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char98','blankChar98')">i</div>
+<div id="blankChar98" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char98','blankChar98')">&nbsp;</div>
+<div id="char99" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char99','blankChar99')">g</div>
+<div id="blankChar99" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char99','blankChar99')">&nbsp;</div>
+<div id="char100" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char100','blankChar100')">n</div>
+<div id="blankChar100" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char100','blankChar100')">&nbsp;</div>
+<div id="char101" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char101','blankChar101')">i</div>
+<div id="blankChar101" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char101','blankChar101')">&nbsp;</div>
+<div id="char102" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char102','blankChar102')">t</div>
+<div id="blankChar102" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char102','blankChar102')">&nbsp;</div>
+<div id="char103" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char103','blankChar103')">e</div>
+<div id="blankChar103" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char103','blankChar103')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn104" data-word="ignite">
+<button onclick="wordTest('wordIn104','notice104','guesses104','wordCharSet98')" style="display:none;" id="btnEnter104"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice104" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses104">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet104"><p id="para104" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To swallow or take in food or substances&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword104">dreeiingtns</div>
+<button onclick="shuflkeyword('keyword104')" style="display: inline-block; margin: 1em 0px;" id="shuffle104">shuffle</button><br>
+<div id="char104" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char104','blankChar104')">i</div>
+<div id="blankChar104" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char104','blankChar104')">&nbsp;</div>
+<div id="char105" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char105','blankChar105')">n</div>
+<div id="blankChar105" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char105','blankChar105')">&nbsp;</div>
+<div id="char106" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char106','blankChar106')">g</div>
+<div id="blankChar106" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char106','blankChar106')">&nbsp;</div>
+<div id="char107" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char107','blankChar107')">e</div>
+<div id="blankChar107" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char107','blankChar107')">&nbsp;</div>
+<div id="char108" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char108','blankChar108')">s</div>
+<div id="blankChar108" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char108','blankChar108')">&nbsp;</div>
+<div id="char109" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char109','blankChar109')">t</div>
+<div id="blankChar109" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char109','blankChar109')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn110" data-word="ingest">
+<button onclick="wordTest('wordIn110','notice110','guesses110','wordCharSet104')" style="display:none;" id="btnEnter110"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice110" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses110">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet110"><p id="para110" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To put something into something else&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword110">gsntinrdeei</div>
+<button onclick="shuflkeyword('keyword110')" style="display: inline-block; margin: 1em 0px;" id="shuffle110">shuffle</button><br>
+<div id="char110" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char110','blankChar110')">i</div>
+<div id="blankChar110" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char110','blankChar110')">&nbsp;</div>
+<div id="char111" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char111','blankChar111')">n</div>
+<div id="blankChar111" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char111','blankChar111')">&nbsp;</div>
+<div id="char112" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char112','blankChar112')">s</div>
+<div id="blankChar112" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char112','blankChar112')">&nbsp;</div>
+<div id="char113" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char113','blankChar113')">e</div>
+<div id="blankChar113" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char113','blankChar113')">&nbsp;</div>
+<div id="char114" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char114','blankChar114')">r</div>
+<div id="blankChar114" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char114','blankChar114')">&nbsp;</div>
+<div id="char115" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char115','blankChar115')">t</div>
+<div id="blankChar115" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char115','blankChar115')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn116" data-word="insert">
+<button onclick="wordTest('wordIn116','notice116','guesses116','wordCharSet110')" style="display:none;" id="btnEnter116"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice116" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses116">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet116"><p id="para116" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">The inner part of something&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword116">tnesenidigr</div>
+<button onclick="shuflkeyword('keyword116')" style="display: inline-block; margin: 1em 0px;" id="shuffle116">shuffle</button><br>
+<div id="char116" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char116','blankChar116')">i</div>
+<div id="blankChar116" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char116','blankChar116')">&nbsp;</div>
+<div id="char117" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char117','blankChar117')">n</div>
+<div id="blankChar117" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char117','blankChar117')">&nbsp;</div>
+<div id="char118" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char118','blankChar118')">s</div>
+<div id="blankChar118" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char118','blankChar118')">&nbsp;</div>
+<div id="char119" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char119','blankChar119')">i</div>
+<div id="blankChar119" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char119','blankChar119')">&nbsp;</div>
+<div id="char120" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char120','blankChar120')">d</div>
+<div id="blankChar120" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char120','blankChar120')">&nbsp;</div>
+<div id="char121" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char121','blankChar121')">e</div>
+<div id="blankChar121" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char121','blankChar121')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn122" data-word="inside">
+<button onclick="wordTest('wordIn122','notice122','guesses122','wordCharSet116')" style="display:none;" id="btnEnter122"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice122" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses122">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet122"><p id="para122" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">To plan or mean to do something&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword122">rgniieednts</div>
+<button onclick="shuflkeyword('keyword122')" style="display: inline-block; margin: 1em 0px;" id="shuffle122">shuffle</button><br>
+<div id="char122" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char122','blankChar122')">i</div>
+<div id="blankChar122" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char122','blankChar122')">&nbsp;</div>
+<div id="char123" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char123','blankChar123')">n</div>
+<div id="blankChar123" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char123','blankChar123')">&nbsp;</div>
+<div id="char124" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char124','blankChar124')">t</div>
+<div id="blankChar124" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char124','blankChar124')">&nbsp;</div>
+<div id="char125" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char125','blankChar125')">e</div>
+<div id="blankChar125" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char125','blankChar125')">&nbsp;</div>
+<div id="char126" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char126','blankChar126')">n</div>
+<div id="blankChar126" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char126','blankChar126')">&nbsp;</div>
+<div id="char127" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char127','blankChar127')">d</div>
+<div id="blankChar127" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char127','blankChar127')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn128" data-word="intend">
+<button onclick="wordTest('wordIn128','notice128','guesses128','wordCharSet122')" style="display:none;" id="btnEnter128"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice128" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses128">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet128"><p id="para128" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">A length of cord or thread; you need these for some shoes</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword128">eidriegnstn</div>
+<button onclick="shuflkeyword('keyword128')" style="display: inline-block; margin: 1em 0px;" id="shuffle128">shuffle</button><br>
+<div id="char128" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char128','blankChar128')">s</div>
+<div id="blankChar128" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char128','blankChar128')">&nbsp;</div>
+<div id="char129" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char129','blankChar129')">t</div>
+<div id="blankChar129" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char129','blankChar129')">&nbsp;</div>
+<div id="char130" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char130','blankChar130')">r</div>
+<div id="blankChar130" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char130','blankChar130')">&nbsp;</div>
+<div id="char131" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char131','blankChar131')">i</div>
+<div id="blankChar131" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char131','blankChar131')">&nbsp;</div>
+<div id="char132" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char132','blankChar132')">n</div>
+<div id="blankChar132" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char132','blankChar132')">&nbsp;</div>
+<div id="char133" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char133','blankChar133')">g</div>
+<div id="blankChar133" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char133','blankChar133')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn134" data-word="string">
+<button onclick="wordTest('wordIn134','notice134','guesses134','wordCharSet128')" style="display:none;" id="btnEnter134"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice134" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses134">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet134"><p id="para134" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">A sport played with a racket and ball on a court with a net&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword134">ntsnirgedie</div>
+<button onclick="shuflkeyword('keyword134')" style="display: inline-block; margin: 1em 0px;" id="shuffle134">shuffle</button><br>
+<div id="char134" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char134','blankChar134')">t</div>
+<div id="blankChar134" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char134','blankChar134')">&nbsp;</div>
+<div id="char135" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char135','blankChar135')">e</div>
+<div id="blankChar135" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char135','blankChar135')">&nbsp;</div>
+<div id="char136" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char136','blankChar136')">n</div>
+<div id="blankChar136" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char136','blankChar136')">&nbsp;</div>
+<div id="char137" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char137','blankChar137')">n</div>
+<div id="blankChar137" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char137','blankChar137')">&nbsp;</div>
+<div id="char138" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char138','blankChar138')">i</div>
+<div id="blankChar138" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char138','blankChar138')">&nbsp;</div>
+<div id="char139" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char139','blankChar139')">s</div>
+<div id="blankChar139" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char139','blankChar139')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn140" data-word="tennis">
+<button onclick="wordTest('wordIn140','notice140','guesses140','wordCharSet134')" style="display:none;" id="btnEnter140"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice140" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses140">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<div id="wordCharSet140"><p id="para140" style="border-top:thin solid black; margin-top:2em; padding-top:1.5ex;" contenteditable="false">Large, striped wild cats from Asia&nbsp;&nbsp;</p>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 0px 0px; display: inline-block; letter-spacing: 0.7ex; font-size: 1.3em; color: darkred; background-color: rgb(245, 236, 247);" id="keyword140">ingredeistn</div>
+<button onclick="shuflkeyword('keyword140')" style="display: inline-block; margin: 1em 0px;" id="shuffle140">shuffle</button><br>
+<div id="char140" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char140','blankChar140')">t</div>
+<div id="blankChar140" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char140','blankChar140')">&nbsp;</div>
+<div id="char141" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char141','blankChar141')">i</div>
+<div id="blankChar141" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char141','blankChar141')">&nbsp;</div>
+<div id="char142" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char142','blankChar142')">g</div>
+<div id="blankChar142" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char142','blankChar142')">&nbsp;</div>
+<div id="char143" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char143','blankChar143')">e</div>
+<div id="blankChar143" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char143','blankChar143')">&nbsp;</div>
+<div id="char144" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char144','blankChar144')">r</div>
+<div id="blankChar144" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char144','blankChar144')">&nbsp;</div>
+<div id="char145" class="char" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: none; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char145','blankChar145')">s</div>
+<div id="blankChar145" class="blank" style="padding: 5px 1ex 0px; width: 1ex; margin: 0px 2px 1ex 0px; border: thin solid black; display: inline-block; background-color: rgb(251, 244, 228); cursor: pointer;" onclick="toglDisplay('char145','blankChar145')">&nbsp;</div>
+<div style="display: block;"></div>
+<input type="text" style="width: 9em; display: none;" id="wordIn146" data-word="tigers">
+<button onclick="wordTest('wordIn146','notice146','guesses146','wordCharSet140')" style="display:none;" id="btnEnter146"> try </button>
+<div style="margin:0 0 1ex 0"></div><div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkgreen; background-color: rgb(251, 244, 228);" id="notice146" class="guesses">guesses</div>
+<div style="padding: 5px 1ex 0px; width: fit-content; margin: 0px 2px 1ex 0px; display: none; color: darkblue; background-color: rgb(251, 244, 228);" id="guesses146">Guesses </div>
+<button class="delWord editMode" style="margin: 0.5ex 0px 2ex; display: none;" onclick="this.parentElement.remove()">del word</button></div>
+<button onclick="showAll('splitWord1')" class="btnShowz previewMode" style="display: inline-block; margin: 1em 0px 0px;" id="showAllBtn146">Show All Answers</button>
+<button onclick="hideAll('splitWord1')" class="btnHidez previewMode" style="display: inline-block; margin: 0px;" id="hideAllBtn146">Hide All Answers</button>
+<button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete full list </button></div></div>
+    
+</section>
+ 
+<section id="inputList" class="card editMode" style="display: none;">
+     <div class="quStyle"> 
+         
+       <div style="border: thin solid gray; width: fit-content; margin: 0 0 1rem 0; padding: .2rem 1rem .2rem 1rem;">
+             <label style="display:inline-block; margin:1ex 0 0 0;"><input id="useShufl" type="checkbox">use for anagram guessing.</label><br>
+             <label for="keyword">
+                 Type/paste key word
+             </label>
+             <input type="text" id="keyword" value="e.g. determination">
+        </div>
+         
+         <script> 
+             let useShufl = document.getElementById("useShufl").checked;
+         </script>
+         
+         <label for="wordList">
+             Type/paste your word list (drag corner to make box bigger)
+         </label><br>
+         <textarea id="wordList" style="width: 30%; min-width:30ex" rows="5">admire, matter, modern entertain  termination 
+         </textarea><br>
+     </div>
+      <button class="hlBtn" onclick="getWordList()">Input List</button>
+    
+      <label style="display:inline-block; margin:1ex 0 0 0;"><input id="clues" type="checkbox" checked="">Include Clues</label>
+    
+      <label style="display:inline-block; margin:1ex 0 0 0;"><input id="hideAllAnsBtns" type="checkbox">no answer-peeks</label>    
+    
+     <details style="color:darkred; background-color: beige; width: fit-content;"><summary>multiple lists ...</summary><ul><li>You can add as many lists as you like.</li><li>New Lists will add below current list.</li><li>The input box and buttons will also move to the end of the current list.</li></ul></details>
+</section>
+
+    <script>    //toggle 2 elements by ID; set displays opposite each other
+    function toglDisplay(zID1,zID2) {
+          let zID1z = document.getElementById(zID1);
+          let zID2z = document.getElementById(zID2);
+         if (zID1z.style.display === "none")
+             {zID1z.style.display = "inline-block";}
+         else {zID1z.style.display = "none";}
+         if (zID2z.style.display === "none")
+             {zID2z.style.display = "inline-block";}
+         else {zID2z.style.display = "none";}
+    }
+    </script>
+
+<!--  ======= / show hide function ==================!!!!!!!!!!!!!  -->
+      
+    <script>
+        
+                      
+            function shuflkeyword(shuffleID){
+               let passString = document.getElementById(shuffleID).innerText; console.log(passString);
+                
+               let shuffle = (s) => {
+                    let str = s.split('')
+                      .sort(() => 0.5 - Math.random())
+                      .join('');
+
+                   document.getElementById(shuffleID).innerHTML = str;
+                  }
+
+                  shuffle(passString);                
+                
+                }    // fn shfulkeyword 
+                      
+        let allLists;
+        let zsplitWord;
+        let zspitWordID;
+                
+        let wordList;
+        let wordArr=[];
+        //let ztitleInstructions;
+        
+        let wordListCheck;
+        let wordListTrim;
+                      
+        let idCharCount = document.getElementById('idChar').innerHTML;
+        let idChar=idCharCount;
+        
+        let delIDnumb = 1;
+        function getWordList(){
+            
+            //ztitleInstructions =   document.getElementById("titleInstructions").value; 
+           // ztitleInstructions.trim();
+            
+            wordListCheck =   document.getElementById("wordList").value; 
+            wordListDeXtraCommas = wordListCheck.replace(/,/g, " ");
+            wordListDeSpaces = wordListDeXtraCommas.replace(/\s+/g, ' ');
+            wordListTrim = wordListDeSpaces.trim();                     
+            wordList = wordListTrim.toLowerCase();
+                                console.log("<br><br>" + wordList);
+            
+        
+            //document.getElementById("ztitleInstructions").insertAdjacentHTML("beforeend", ztitleInstructions);
+
+             
+            let wordArr = wordList.split(' ');
+            console.log(wordArr);
+             //document.getElementById("wordListDiv").innerHTML = wordArr;
+
+            allLists = document.getElementById("allLists");
+            zsplitWord = document.createElement("div");
+            zsplitWordID = "splitWord" + idChar;
+            zsplitWord.id = zsplitWordID;
+            allLists.appendChild(zsplitWord);            
+            
+                    // ************** first put instruction div ************   
+                    //let wordListDiv = document.getElementById("wordListDiv")
+                    const zInstrc = document.createElement("div");
+                        let zInstrcID = "zInstrc" + idChar;
+                        zInstrc.id=zInstrcID;
+                        zInstrc.innerHTML = "Type instructions/information here.";
+                        zInstrc.contentEditable = "true"; 
+                        zInstrc.className = "quStyle";
+                        zInstrc.style.cursor = "pointer";
+                        zInstrc.style.margin ="2ex 0 1ex 0"
+                        zsplitWord.appendChild(zInstrc);   
+                        zsplitWord.insertAdjacentHTML("beforeend","\n");
+                    // Create the delete button
+                    const deleteButton = document.createElement("button");
+                    deleteButton.id = `$delThis$delIDnumb`; delIDnumb++
+                    deleteButton.classList.add("delBtn", "editMode");
+                    //deleteButton.style.display = "none";
+                    deleteButton.textContent = "delete this";
+
+                    // Add click event to the delete button
+                    deleteButton.onclick = function() {
+                        this.parentElement.remove();
+                    };            
+                    // Append the delete button to the titleDiv
+                    zInstrc.innerHTML += '<br>';
+                    zInstrc.appendChild(deleteButton);                                   
+
+  
+         
+            for (const word of wordArr){                   
+                
+                zword=word.trim(); console.log("trimmed??:" + zword);
+
+                
+                const wordCharSet = document.createElement("div");
+                        wordCharSetID = "wordCharSet" + idChar;
+                        wordCharSet.id = wordCharSetID;
+                        zsplitWord.appendChild(wordCharSet);  
+                        zsplitWord.insertAdjacentHTML("beforeend","\n");
+                
+                        if (document.getElementById("clues").checked){
+                        wordCharSet.insertAdjacentHTML("beforeend", "<p id='para" + idChar + "' style='border-top:thin solid black; margin-top:2em; padding-top:1.5ex;' contentEditable = 'true'>Just click here and type. You can type a clue, definition, sample sentence or make sentences with blanks</p>\n");
+                        }
+                
+            if (document.getElementById("useShufl").checked){
+               let zkeyword = document.getElementById("keyword").value.trim().toLowerCase();
+                
+               const zkeywordDiv = document.createElement("div");
+                        zkeywordDiv.innerHTML = zkeyword;
+                        zkeywordDiv.style.padding ="5px 1ex 0 1ex";
+                        zkeywordDiv.style.width ="fit-content";
+                        zkeywordDiv.style.margin ="0 2px 0 0";
+                        //zkeywordDiv.style.border ="thin solid black";
+                        zkeywordDiv.style.display = "inline-block";
+                        zkeywordDiv.style.letterSpacing = ".7ex";
+                        zkeywordDiv.style.fontSize = "1.3em";
+                        zkeywordDiv.style.color = "darkred";
+                        zkeywordDiv.style.backgroundColor = "#F5ECF7";
+                        let zkeywordDivID = "keyword" + idChar;
+                        zkeywordDiv.id=zkeywordDivID; 
+                        wordCharSet.appendChild(zkeywordDiv); 
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+
+                    const shuflBtn = document.createElement("button");
+                        shuflBtn.innerHTML="shuffle";
+                        shuflFn = "shuflkeyword('" + zkeywordDivID + "')";
+                        shuflBtn.setAttribute("onclick", shuflFn);
+                        shuflBtn.style.display="inline-block";
+                        shuflBtn.style.margin = "1em 0 1em 0";
+                        let shuflBtnID = "shuffle" + idChar;
+                        shuflBtn.id = shuflBtnID;
+                        wordCharSet.appendChild(shuflBtn); 
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+
+                        shuflBtn.insertAdjacentHTML("afterend", "<br>");
+                
+                        shuflkeyword(zkeywordDivID);                
+            }
+              
+                
+                let charsArr = zword.split('');
+
+                for (const char of charsArr){
+                    console.log(idChar);
+                    
+                    zthisID = "char" + idChar;
+                    zblankID = "blankChar" + idChar;
+                    
+                    
+                    const zthis = document.createElement("div");
+                        zthis.innerHTML = char;
+                        zthis.id=zthisID;
+                        zthis.className="char";
+                        zthis.style.padding ="5px 1ex 0 1ex";
+                        zthis.style.width ="1ex";
+                        zthis.style.margin ="0 2px 1ex 0";
+                        zthis.style.border ="thin solid black";
+                        zthis.style.display = "none";
+                        zthis.style.backgroundColor = "#FBF4E4";
+                        zthis.style.cursor = "pointer";
+                                        
+                    let toglThis = "toglDisplay('" + zthisID + "','" + zblankID + "')";
+                        zthis.setAttribute("onclick", toglThis);
+                        wordCharSet.appendChild(zthis);  
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+
+                    
+                    const zblank = document.createElement("div");
+                        zblank.innerHTML = "&nbsp;";
+                        zblank.id=zblankID; 
+                        zblank.className ="blank";
+                        zblank.style.padding ="5px 1ex 0 1ex";
+                        zblank.style.width ="1ex";
+                        zblank.style.margin ="0 2px 1ex 0";
+                        zblank.style.border ="thin solid black";
+                        zblank.style.display = "inline-block";
+                        zblank.style.backgroundColor = "#FBF4E4";
+                        zblank.style.cursor = "pointer";
+                    
+                        let toglBlank = "toglDisplay('" + zthisID + "','" + zblankID + "')";
+                        zblank.setAttribute("onclick", toglBlank);
+                        wordCharSet.appendChild(zblank); 
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+                    
+                    idChar++; 
+                } // for char
+
+                      let znotifyID = "notice" + idChar;
+                      let guessesID = "guesses" + idChar;
+
+                    const zbreak = document.createElement("div");
+                        zbreak.style.display = "block";
+                        wordCharSet.appendChild(zbreak);  
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");   
+
+                
+                    const zwordIn = document.createElement("input");
+                        zwordIn.setAttribute("type", "text");
+                        //zwordIn.setAttribute("value", char);
+                        zwordIn.style.width ="9em";
+                        let zwordInID = "wordIn" + idChar;
+                        zwordIn.id= zwordInID;
+                        zwordIn.style.display="inline-block";
+                        zwordIn.dataset.word = word;
+                        wordCharSet.appendChild(zwordIn);  
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+                    const zbutton = document.createElement("button");
+                        zbutton.innerHTML=" try ";
+                        wordTestFn = "wordTest('" + zwordInID + "','" + znotifyID + "','" + guessesID + "','" + wordCharSetID + "')";
+                        zbutton.setAttribute("onclick", wordTestFn);
+                        zbutton.style.display="inline-block";
+                        let zbtnID = "btnEnter" + idChar;
+                        zbutton.id = zbtnID;
+                        wordCharSet.appendChild(zbutton);                    
+                        wordCharSet.insertAdjacentHTML("beforeend","\n<div style='margin:0 0 1ex 0'></div>");
+                    
+                   const znotify = document.createElement("div");
+                        znotify.innerHTML = " guesses ";
+                        znotify.style.padding ="5px 1ex 0 1ex";
+                        znotify.style.width ="fit-content";
+                        znotify.style.margin ="0 2px 1ex 0";
+                        //znotify.style.border ="thin solid black";
+                        znotify.style.display = "none";
+                        znotify.style.color = "darkgreen";
+                        znotify.style.backgroundColor = "#FBF4E4";
+                        znotify.id=znotifyID; 
+                        znotify.className="guesses";
+                
+                        wordCharSet.appendChild(znotify); 
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+                   const zguesses = document.createElement("div");
+                        zguesses.innerHTML = "Guesses ";
+                        zguesses.style.padding ="5px 1ex 0 1ex";
+                        zguesses.style.width ="fit-content";
+                        zguesses.style.margin ="0 2px 1ex 0";
+                        //zguesses.style.border ="thin solid black";
+                        zguesses.style.display = "none";
+                        zguesses.style.color = "darkblue";
+                        zguesses.style.backgroundColor = "#FBF4E4";
+                        zguesses.id = guessesID; 
+                        wordCharSet.appendChild(zguesses); 
+                        wordCharSet.insertAdjacentHTML("beforeend","\n");
+                
+                    const delWord = document.createElement("button");
+                        delWord.innerHTML="del word";
+                        delWord.className="delWord editMode";
+                        delWord.style.margin=".5ex 0 2ex 0";
+                        delWord.style.display="block";
+                        delWord.setAttribute("onclick", "this.parentElement.remove()");
+                        wordCharSet.appendChild(delWord);
+                
+                    let inputz = "input" + idChar; console.log(inputz);                
+                    let ze2bCode = "let " + inputz + " = document.getElementById('" + zwordInID + "');" + inputz + ".addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('" + zbtnID + "').click(); }});"
+                   const Enter2btn = document.createElement("script");
+                   const e2bCode = document.createTextNode(ze2bCode);
+                      Enter2btn.appendChild(e2bCode);
+                      document.body.appendChild(Enter2btn);
+            } // end for word
+            
+            
+                if (!document.getElementById("hideAllAnsBtns").checked){           
+            
+                    const showAllBtn = document.createElement("button");
+                        showAllBtn.innerHTML="Show All Answers for this section";
+                        showAllFn = "showAll('" + zsplitWordID + "')";
+                        showAllBtn.setAttribute("onclick", showAllFn);
+                        showAllBtn.classList.add("btnShowz", "previewMode");
+                        /*technically, the above would work with .className="btnShowz previewMode"; (no commas). That would replace any pre-existing classes with the new ones. But for learning purposes, I want to use .classList.add("btnShowz", "previewMode"); This method adds new classes alongside pre-existing ones. */
+                        showAllBtn.style.display="none";
+                        showAllBtn.style.margin="1em 0 0 0";
+
+                        let zshowAllBtnID = "showAllBtn" + idChar;
+                        showAllBtn.id = zshowAllBtnID;
+                        zsplitWord.appendChild(showAllBtn);  
+                        zsplitWord.insertAdjacentHTML("beforeend","\n");
+                             
+                    const hideAllBtn = document.createElement("button");
+                        hideAllBtn.innerHTML="Hide All Answers for this section";
+                        hideAllFn = "hideAll('" + zsplitWordID + "')";
+                        hideAllBtn.setAttribute("onclick", hideAllFn);
+                        hideAllBtn.className="btnHidez previewMode";
+                    
+                        hideAllBtn.style.display="none";
+                        hideAllBtn.style.margin="0 0 0 0";
+
+                        let zhideAllBtnID = "hideAllBtn" + idChar;
+                        hideAllBtn.id = zhideAllBtnID;
+                        zsplitWord.appendChild(hideAllBtn);  
+                        zsplitWord.insertAdjacentHTML("beforeend","\n");
+                } //end if hideAllAnsBtns not checked
+                    
+            
+                        zsplitWord.insertAdjacentHTML("beforeend","<button class='delBtn editMode' onclick='this.parentElement.remove()'> delete full list </button>");      
+            
+        if (document.getElementById("hideAllAnsBtns").checked){            
+              document.getElementById("showAllAnsThisPage").style.display="none";
+              document.getElementById("hideAllAnsThisPage").style.display="none";              
+        } // end if hideAllAnsBtns for PAGE            
+            
+    } // end fn getWordList
+        
+        
+        function hint(){
+            alert("thing");
+        }
+                   /* const zbutton = document.createElement("button");
+                    zsplitWord.appendChild(zbutton); 
+                    zbutton.innerHTML="hint";
+                    zbutton.setAttribute("onclick", "hint()");
+                    zbutton.insertAdjacentHTML("beforebegin", "<br>");
+                    zbutton.insertAdjacentHTML("afterend", "<br>");
+            */
+                //console.log (charsArr);
+        
+        
+         
+        function wordTest(wordTestID, notifyID, guessesID, wordCharSetID){
+
+            let wordInz = document.getElementById(wordTestID);
+            let guess = wordInz.value.trim().toLowerCase();
+            let word = wordInz.dataset.word.trim(); 
+            let notify = document.getElementById(notifyID); 
+            let guesses = document.getElementById(guessesID)
+            let wordCharSetz = document.getElementById(wordCharSetID);
+
+            if (word === guess){
+                notify.style.display="block";
+                notify.style.color="darkgreen";
+                notify.style.backgroundColor="#FBF4E4";
+                notify.innerHTML = "Great Job!"; // : " + "<span style='font-size: larger;'><strong>" + word + "</strong></large>";
+                //notify.insertAdjacentHTML("afterbegin","** Great Job! **")
+                guesses.style.display="none";
+                
+                let zcharsCheck = wordCharSetz.querySelectorAll(".char");
+                let zblanksCheck = wordCharSetz.querySelectorAll(".blank");
+                for (const zcharCheck of zcharsCheck){
+                    zcharCheck.style.display = "inline-block";                    
+                }
+                for (const zblankCheck of zblanksCheck){
+                    zblankCheck.style.display = "none";                    
+                }
+                
+                
+            } else {
+                notify.style.color="darkblue";
+                notify.style.backgroundColor="#EBE4E4";
+                //notify.innerHTML = "keep at it";
+                notify.style.display="block";
+                notify.insertAdjacentHTML("beforeend", " : " + guess);
+            }
+            wordInz.value="";
+        }
+   
+        
+        
+    </script>
+      <div id="btnShowHideAnsOnPage" class="previewMode" style="display: none;">
+          <div style="border-top: thin solid darkblue; margin: 1ex 0 0 0; padding: 1ex 0 0 0;"><button id="showAllAnsThisPage" onclick="showAll('allLists')">Show all Answers for this page</button>
+          </div>
+          <div><button id="hideAllAnsThisPage" onclick="hideAll('allLists')">Hide all Answers for this page</button>
+          </div>
+      </div>
+      <br>
+      <script>
+          
+          
+      function showAll(zID){
+          let byID = document.getElementById(zID);
+          let showAllAns = byID.querySelectorAll(".char");
+          let hideAllBlanks = byID.querySelectorAll(".blank");
+          for (const showAllAn of showAllAns){
+              showAllAn.style.display = "inline-block";
+          }
+          for (const hideAllBlank of hideAllBlanks){
+              hideAllBlank.style.display = "none";
+          }
+      }
+      
+          
+      function hideAll(zID){
+          let byID = document.getElementById(zID);
+          let showAllAns = byID.querySelectorAll(".char");
+          let hideAllBlanks = byID.querySelectorAll(".blank");
+          for (const showAllAn of showAllAns){
+              showAllAn.style.display = "none";
+          }
+          for (const hideAllBlank of hideAllBlanks){
+              hideAllBlank.style.display = "inline-block";
+          }
+      }        
+      </script>
+      
+      
+      <script>
+        function checkThenPrint(){
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let namedisplayValue=document.getElementById("name").style.display;            
+            if (namedisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================  
+
+            if (
+                (Name==="name" || ID==="id\#" || Name==="" || ID==="")
+                ){
+                alert ('You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again \r\n '); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>     
+
+    <div id="printOptions" class="previewMode" style="display: block;">
+        Print (save as PDF) <br>
+         <button id="printFullView" class="hlBtn" onclick="checkThenPrint()"> Print </button>
+        <br>
+         <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
+    </div>
+      
+      
+        <button id="previewBtn" class="editMode" onclick="previewMode()" style="display: none;">Preview</button>
+        <button id="editBtn" class="previewMode" onclick="editMode()" style="display: none;">Edit Mode</button>      
+      
+<!--  ===============  SAVE THE DOM as FILE ==================== -->
+    <div id="saveDom" class="editMode" style="background-color: cadetblue; width: fit-content; margin: 1em 0px 0px 1em; padding: 1ex; display: none;">
+        
+<br>    <!--place this in the save Dom buttons division if applicable -->
+  <button id="replaceFontElms" class="hlBtn" onclick="replaceFontElms()">beautify b4 saving</button> 
+    &nbsp;&nbsp;
+    <span id="doneFontElmReplace" style="background-color: blue; border:thin solid orange; color:orange; display:none">done</span>
+<br>        
+        
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div>
+      
+      <script>
+          function previewMode(){
+			  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="none";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="block";
+            }   
+            
+            	
+            document.getElementById("toggleShowHideNameID").style.display  = "none";          
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "none";   
+                        			  
+              
+              hideAll('allLists'); 
+              //close all "guesses: " and "great job!"
+              closeGuesses = document.querySelectorAll(".guesses");
+              for (const closeGuess of closeGuesses){
+                  closeGuess.style.display="none";
+              }              
+              
+                // remove all editables ***********************************
+                let contEdbls = document.querySelectorAll("[contenteditable=true]");
+                
+                                for (const contEdbl of contEdbls ){
+                    contEdbl.contentEditable = "false";
+                }
+                
+                
+                //let delBtns = document.querySelectorAll(".delBtn");
+                //let delzWords = document.querySelectorAll(".delWord");  
+                //let btnShowzs = document.querySelectorAll(".btnShowz");  
+                //let btnHidezs = document.querySelectorAll(".btnHidez");  
+              
+
+
+
+              /*  for (const delBtn of delBtns ){                                        
+                    delBtn.style.display = "none";
+                }
+			  
+			  
+                for (const delzWord of delzWords ){                                        
+                    delzWord.style.display = "none";
+                }
+              
+              
+                for (const btnShowz of btnShowzs ){                                        
+                    btnShowz.style.display = "block";
+                }
+             
+                for (const btnHidez of btnHidezs ){                                        
+                    btnHidez.style.display = "block";
+                } 
+               */             
+
+                //document.getElementById("inputList").style.display="none";
+                //document.getElementById("saveDom").style.display="none";  
+              
+                //document.getElementById("previewBtn").style.display="none";
+                //document.getElementById("editBtn").style.display="initial";  
+              
+                //document.getElementById("printOptions").style.display="block";               
+
+            //document.getElementById("btnShowHideAnsOnPage").style.display  = "block";  
+            //document.getElementById("playHow").style.display  = "block";                
+              
+              
+                // end remove all editables ************************
+          }
+          
+          function editMode(){
+			  
+          let editModes = document.querySelectorAll('.editMode');
+            for (const editMode of editModes) {
+                editMode.style.display="block";
+            }          
+
+          let previewModes = document.querySelectorAll('.previewMode');
+            for (const previewMode of previewModes) {
+                previewMode.style.display="none";
+            }  
+            
+              
+            document.getElementById("toggleShowHideNameID").style.display  = "initial";          
+            document.getElementById("toggleShowHideNameIDLbl").style.display  = "initial";               
+             
+              
+              hideAll('allLists'); 
+              //close all "guesses: " and "great job!"
+              closeGuesses = document.querySelectorAll(".guesses");
+              for (const closeGuess of closeGuesses){
+                  closeGuess.style.display="none";
+              }              
+                            
+                // restore editables ***************************
+                let contEdbls = document.querySelectorAll("[contenteditable=false]");
+                
+                for (const contEdbl of contEdbls ){
+                    contEdbl.contentEditable = "true";
+                }                
+                
+                
+                //let delBtns = document.querySelectorAll(".delBtn");
+                //let delzWords = document.querySelectorAll(".delWord");  
+                //let btnShowzs = document.querySelectorAll(".btnShowz");  
+                //let btnHidezs = document.querySelectorAll(".btnHidez");  
+              
+               /* for (const btnShowz of btnShowzs ){                                        
+                    btnShowz.style.display = "none";
+                }
+              
+              
+                for (const btnHidez of btnHidezs ){                                        
+                    btnHidez.style.display = "none";
+                }                
+
+                for (const delBtn of delBtns ){                                        
+                    delBtn.style.display = "block";
+                }
+			   
+			   
+                for (const delzWord of delzWords ){                                        
+                    delzWord.style.display = "block";
+                }
+              */
+
+                //document.getElementById("inputList").style.display="block";
+                //document.getElementById("saveDom").style.display="block";
+              
+                //document.getElementById("previewBtn").style.display="initial";
+                //document.getElementById("editBtn").style.display="none";  
+              
+                //document.getElementById("printOptions").style.display="none";
+              
+            //document.getElementById("btnShowHideAnsOnPage").style.display  = "none";                
+            //document.getElementById("playHow").style.display  = "none";                
+              
+                //end restore editabels **********************              
+          }
+      
+      
+      </script>
+      
+      <script>
+function saveDom(){
+
+    const currentContent = document.getElementById('zztitle').textContent;
+
+    if (initialContent === currentContent) {
+      let userResponse = window.confirm('Update Page Title?');
+
+      if (userResponse) {
+        // User clicked "Yes"
+        return; // Exit the function immediately
+      } 
+    }
+
+    
+            // ========  Unusual entry for SAVEDOM
+            if (!document.getElementById("toggleShowHideNameID").checked){
+              document.getElementById("name").setAttribute("value", "zzzz");
+              document.getElementById("id").setAttribute("value", "yyyy");
+                      console.log (document.getElementById("name").value);
+                      console.log (document.getElementById("id").value);                    
+                }   
+            //========= end unusual entry       
+    
+        
+        document.getElementById('idChar').innerHTML = idChar;
+    
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title = fileName;
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        previewMode();
+              //  document.getElementById("previewBtn").style.display="none";
+              document.getElementById("editBtn").style.display="none";      
+        
+        let resetGuesses = document.querySelectorAll(".guesses");
+                for (const resetGuess of resetGuesses ){                                        
+                    resetGuess.textContent = "guesses";
+                }  
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+    
+        editMode();    
+        document.title = oldTitle;
+}
+
+</script>
+      <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
+
+
+<script>
+
+function replaceFontElms() {
+ // Select all font elements
+const fonts = document.querySelectorAll("font");
+
+// Loop through each font and replace with a span
+fonts.forEach((font) => {
+  const span = document.createElement("span");
+
+  // Add the style attribute with the appropriate font styles
+  let style = "";
+  if (font.face) style += `font-family: ${font.face}; `;
+    if (font.size) {
+      const fontSize = Math.round(font.size * 3.7) + 'pt';
+      style += `font-size: ${fontSize}; `;
+    }
+  if (font.color) style += `color: ${font.color}; `;
+  if (typeof font.style === "string") style += `font-style: ${font.style}; `;
+  if (style) span.setAttribute("style", style.trim());
+
+  // Copy any child elements to the new span
+  while (font.firstChild) {
+    span.appendChild(font.firstChild);
+  }
+
+  // Replace the font element with the new span
+  font.parentNode.replaceChild(span, font);
+});
+   
+    
+ const spanDone = document.getElementById("doneFontElmReplace");
+
+  // Toggle display style
+  if (spanDone.style.display === "none") {
+    spanDone.style.display = "inline-block";
+  } 
+
+  // Toggle border color and text color
+  if (spanDone.style.borderColor === "orange") {
+    spanDone.style.borderColor = "yellow";
+    spanDone.style.color = "yellow";
+  } else {
+    spanDone.style.borderColor = "orange";
+    spanDone.style.color = "orange";
+  }
+     // document.documentElement.style.pointerEvents = 'none';
+      setTimeout(replaceNlines, 100);    
+      setTimeout(addNewlines, 100);
+
+      setTimeout(addSpaces, 100);
+    
+}
+
+</script>    
+    
+    
+
+    <script>
+        function addNewlines() {
+            // Select all the elements: div, section, p, and span
+            const elements = document.querySelectorAll('div, section, p, span');
+
+            // Loop through each element and add a newline character before it
+            elements.forEach(element => {
+                switch (element.tagName.toLowerCase()) {
+                    case 'span':
+                        // Add '\n' only after <span>
+                        element.insertAdjacentHTML('beforebegin', '\r');
+                        //element.insertAdjacentHTML('afterend', '\n');
+                        break;
+                    default:
+                        // Add '\n' before all elements (including <span>), except <span>
+                        element.insertAdjacentHTML('beforebegin', '\r');
+                        element.insertAdjacentHTML('beforeend', '\r');
+                        break;
+                }
+            });
+            
+            //setTimeout(addSpaces, 300);
+          
+        }
+        
+        
+        function addSpaces() {
+            const elements = document.querySelectorAll('div, p, span');
+
+            elements.forEach(element => {                
+                
+                // Determine the number of spaces based on the element type
+                let numSpaces = 0;
+                switch (element.tagName.toLowerCase()) {
+                    case 'div':
+                        numSpaces = 3;
+                        break;
+                    case 'p':
+                        numSpaces = 7;
+                        break;
+                    case 'span':
+                        numSpaces = 10;
+                        break;
+                }
+
+                // Create the source code spaces using the repeat() method
+                const spaces = ' '.repeat(numSpaces);
+
+                // Add the spaces before the element's innerHTML
+                element.insertAdjacentHTML('beforebegin', spaces);
+            });
+            
+        setTimeout(dummy, 100);            
+        document.documentElement.style.pointerEvents = 'auto';              
+        }        
+    </script>   
+    
+<script>
+    
+    // this is currently turned off
+    // it may work in other apps that aren't as complicated as flatCMS
+    // if so we should convert this to REMOVE ALL WHITESPACES
+function replaceNlines() {
+  const allElements = document.querySelectorAll('div, p');
+  allElements.forEach(element => {
+    const originalText = element.innerHTML;
+    const updatedText = originalText.replace(/(\r\n|\r|\n)+/g, '\r');
+    element.innerHTML = updatedText;
+  });
+}
+</script>    
+    
+    
+    
+    <script>
+        function dummy(){ console.log("dummyFunction activated");}    
+    </script>
+      
+
+<p style="margin:35px"> ... end. </p>
+  
+  
+<script>let input12 = document.getElementById('wordIn12');input12.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter12').click(); }});</script><script>let input20 = document.getElementById('wordIn20');input20.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter20').click(); }});</script><script>let input26 = document.getElementById('wordIn26');input26.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter26').click(); }});</script><script>let input34 = document.getElementById('wordIn34');input34.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter34').click(); }});</script><script>let input42 = document.getElementById('wordIn42');input42.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter42').click(); }});</script><script>let input50 = document.getElementById('wordIn50');input50.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter50').click(); }});</script><script>let input56 = document.getElementById('wordIn56');input56.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter56').click(); }});</script><script>let input62 = document.getElementById('wordIn62');input62.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter62').click(); }});</script><script>let input68 = document.getElementById('wordIn68');input68.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter68').click(); }});</script><script>let input74 = document.getElementById('wordIn74');input74.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter74').click(); }});</script><script>let input80 = document.getElementById('wordIn80');input80.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter80').click(); }});</script><script>let input86 = document.getElementById('wordIn86');input86.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter86').click(); }});</script><script>let input92 = document.getElementById('wordIn92');input92.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter92').click(); }});</script><script>let input98 = document.getElementById('wordIn98');input98.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter98').click(); }});</script><script>let input104 = document.getElementById('wordIn104');input104.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter104').click(); }});</script><script>let input110 = document.getElementById('wordIn110');input110.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter110').click(); }});</script><script>let input116 = document.getElementById('wordIn116');input116.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter116').click(); }});</script><script>let input122 = document.getElementById('wordIn122');input122.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter122').click(); }});</script><script>let input128 = document.getElementById('wordIn128');input128.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter128').click(); }});</script><script>let input134 = document.getElementById('wordIn134');input134.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter134').click(); }});</script><script>let input140 = document.getElementById('wordIn140');input140.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter140').click(); }});</script><script>let input146 = document.getElementById('wordIn146');input146.addEventListener('keypress', function(event) { if (event.key === 'Enter') {event.preventDefault(); document.getElementById('btnEnter146').click(); }});</script></body></html>
