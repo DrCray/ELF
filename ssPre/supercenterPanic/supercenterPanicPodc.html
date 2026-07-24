@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mom Talk Podcast - Episode Page</title>
+<style>
+    :root {
+        --primary: #4a3b32;
+        --primary-light: #5d4037;
+        --accent: #8d6e63;
+        --bg-color: #faf7f2;
+        --card-bg: #ffffff;
+        --text-color: #2c2c2c;
+        --text-muted: #666666;
+        --border-color: #d7ccc8;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    header {
+        background-color: var(--primary);
+        color: #ffffff;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 2rem;
+        margin: 0 0 10px 0;
+        letter-spacing: 0.5px;
+    }
+
+    header p {
+        margin: 0;
+        color: #d7ccc8;
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+
+    /* Top Navigation Links */
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 25px 0 10px 0;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ffffff;
+        color: var(--primary);
+        text-decoration: none;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border-radius: 25px;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-btn:hover {
+        background-color: var(--bg-color);
+        border-color: #ffffff;
+        color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    main {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 0 20px 50px 20px;
+    }
+
+    /* Audio Player Placeholder */
+    .audio-player-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 35px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border: 1px solid var(--border-color);
+    }
+
+    .audio-player-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .player-title {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .player-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .play-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        transition: background-color 0.2s;
+    }
+
+    .audio-player-card:hover .play-btn {
+        background-color: var(--accent);
+    }
+
+    .track-info {
+        flex-grow: 1;
+    }
+
+    .track-name {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-color);
+        margin-bottom: 5px;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 6px;
+        background-color: #e0e0e0;
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-bar {
+        width: 35%;
+        height: 100%;
+        background-color: var(--accent);
+    }
+
+    .time-stamp {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        font-family: monospace;
+    }
+
+    /* Script Section */
+    .script-container {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 35px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border: 1px solid var(--border-color);
+    }
+
+    .script-title {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.5rem;
+        color: var(--primary);
+        margin-top: 0;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .audio-note {
+        font-style: italic;
+        color: var(--accent);
+        background-color: #f0ebe1;
+        padding: 8px 15px;
+        border-radius: 6px;
+        margin: 20px 0;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+
+    .dialogue {
+        margin-bottom: 18px;
+    }
+
+    .speaker {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 700;
+        color: var(--primary-light);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        margin-right: 6px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>Mom Chat - Podcast</h1>
+        <p>Episode: Every Parent's Worst Nightmare</p>
+        
+        <!-- Top Placeholder Links -->
+        <nav class="nav-links">
+            <a href="supercenterPanicPodcStudyCards.html" target="_blank" rel="noreferrer noopener" class="nav-btn">Study Cards</a>
+            <a href="supercenterPanicPodcScrambled.html" target="_blank" rel="noreferrer noopener" class="nav-btn">Scrampled Podcast</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <!-- Placeholder Fake Audio Player -->
+    <div class="audio-player-card">
+        <a href="https://youtu.be/vqeV-tBFS8w" target="_blank" rel="noreferrer noopener" class="audio-player-link">
+            <div class="player-title">Listen to Audio (Demo Player)</div>
+            <div class="player-controls">
+                <div class="play-btn">▶</div>
+                <div class="track-info">
+                    <div class="track-name">Mom Talk — Every Parent's Worst Nightmare</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="time-stamp">
+                        <span>01:15</span>
+                        <span>03:45</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Podcast Script Section -->
+    <article class="script-container">
+        <h2 class="script-title">Episode Script</h2>
+
+        <div class="audio-note">[Audio Intro: Warm, acoustic guitar theme fades in then fades out]</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> Welcome back, everyone! Today, Maya and I were reading an article about a mom named Agatha who lost her four-year-old, Riley, in a grocery store.</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> Oh, Sarah, reading that sent chills down my spine. The store went into total lockdown, made announcements, and thankfully, a customer found Riley by the stuffed animals. But those few minutes? Pure panic.</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> Absolute terror. It immediately took me back to two years ago at a massive theme park with my daughter, Lily. One minute she was right beside me near the carousel, and the next—gone.</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> Oh no, Sarah! Did they lock the park down?</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> That’s the scariest part—they <em>can't</em>. Theme parks are way too large and open to do a store-style lockdown. You stand there looking at thousands of people, realizing anyone could walk out with your child. Security was great, but those six minutes felt like six agonizing hours until a staff member spotted her near a cotton candy stand.</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> I completely get that helpless feeling. I had a similar nightmare at the airport last year with my son, Leo. We were at the crowded baggage claim. I turned around to grab a heavy suitcase, and when I looked up, Leo had wandered off.</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> An airport! That is terrifying! Did they shut down the terminal?</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> No, exactly like your theme park situation! High-traffic public hubs like airports simply can’t lock down for safety and logistical reasons. So your brain immediately jumps to the absolute worst-case scenario—he’s gotten onto a shuttle, or worse, left the building entirely with a stranger.</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> How did you find him?</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> Thankfully, another mom noticed him wandering toward the exit doors and stopped him. When I ran over, I just burst into tears and squeezed him so tight, exactly like Agatha did with Riley.</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> It’s that instant shift from sheer, breath-stealing panic to overwhelming gratitude.</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> Absolutely. The article mentioned Agatha sat Riley down afterward to teach him about store safety, and it’s such a crucial lesson.</div>
+
+        <div class="dialogue"><span class="speaker">Sarah:</span> Exactly. Whether it’s a grocery store, a theme park, or an airport, we have to teach our kids what to do if they get lost—find a uniform, stay put, and never leave with anyone.</div>
+
+        <div class="dialogue"><span class="speaker">Maya:</span> Amen to that. Hug your little ones tight tonight, moms. Thanks for listening, and we'll see you next week!</div>
+
+        <div class="audio-note">[Audio Outro: Acoustic guitar theme fades in]</div>
+    </article>
+</main>
+
+<footer>
+    &copy; 2026 Mom Talk Podcast. All rights reserved.
+</footer>
+
+</body>
+</html>

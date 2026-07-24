@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrambled Podcast Exercise</title>
+<style>
+    :root {
+        --primary: #4a3b32;
+        --primary-light: #5d4037;
+        --accent: #8d6e63;
+        --bg-color: #faf7f2;
+        --card-bg: #ffffff;
+        --text-color: #2c2c2c;
+        --border-color: #d7ccc8;
+        --correct-bg: #e8f5e9;
+        --correct-border: #4caf50;
+        --selected-border: #2196f3;
+        --selected-bg: #e3f2fd;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    header {
+        background-color: var(--primary);
+        color: #ffffff;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.8rem;
+        margin: 0 0 5px 0;
+    }
+
+    header p {
+        margin: 0;
+        color: #d7ccc8;
+        font-size: 0.95rem;
+    }
+
+    main {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 0 20px 50px 20px;
+    }
+
+    .section-title {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.3rem;
+        color: var(--primary);
+        margin: 30px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .lines-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .line-unit {
+        background-color: var(--card-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        position: relative;
+    }
+
+    .line-unit:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+    }
+
+    .line-unit.selected {
+        border-color: var(--selected-border) !important;
+        background-color: var(--selected-bg) !important;
+        box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
+    }
+
+    .line-unit.correct {
+        border-color: var(--correct-border) !important;
+        background-color: var(--correct-bg) !important;
+        cursor: default;
+    }
+
+    .line-unit.correct::after {
+        content: "✓ Correct Order";
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #2e7d32;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .speaker {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 700;
+        color: var(--primary-light);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        margin-right: 6px;
+    }
+
+    .instructions {
+        background-color: #f0ebe1;
+        border-left: 4px solid var(--accent);
+        padding: 12px 18px;
+        margin-bottom: 25px;
+        border-radius: 4px;
+        font-size: 0.95rem;
+    }
+
+
+
+
+.toggle-btn {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    transition: background-color 0.2s;
+}
+.toggle-btn:hover {
+    background-color: var(--accent);
+}
+
+.print-section {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary);
+}
+
+.input-group input {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--accent);
+}
+
+.print-btn {
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.print-btn:hover {
+    background-color: var(--accent);
+}
+
+/* Hide inputs and buttons when printing to PDF */
+@media print {
+    header, .nav-links, .toggle-btn, .instructions, .print-section {
+        display: none !important;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Scrambled Podcast Dialogue Exercise</h1>
+    <h2>Panic at the Supercenter</h2>
+    <p>Reorder the podcast transcript into the correct chronological order.</p>
+    <p> To reshuffle, refresh browser or F5</p>
+</header>
+
+<main>
+    <div class="instructions">
+        <strong>How to play:</strong> Select a dialogue line, then click any other line to swap places.<br> Correct placements will turn green.
+    </div>
+
+    <!-- Section 1 -->
+    <h2 class="section-title">Section 1 (Lines 1 – 7)</h2>
+    <!-- Inside Section 1 Header Area -->
+<button class="toggle-btn" onclick="toggleOrder('section-1', this)">Show order</button>
+
+
+    <div class="lines-container" id="section-1"></div>
+
+    <!-- Section 2 -->
+    <h2 class="section-title">Section 2 (Lines 8 – 14)</h2>
+    <!-- Inside Section 2 Header Area -->
+<button class="toggle-btn" onclick="toggleOrder('section-2', this)">Show order</button>
+    <div class="lines-container" id="section-2"></div>
+</main>
+
+
+
+
+<!-- Footer Actions / Validation Section -->
+<section class="print-section">
+    <div class="input-group">
+        <label for="user-name">Name:</label>
+        <input type="text" id="user-name" placeholder="Enter full name" minlength="2" required>
+    </div><br>
+    <div class="input-group">
+        <label for="user-id">ID:</label>
+        <input type="text" id="user-id" placeholder="Enter ID number" minlength="2" required>
+    </div><br>
+    <button id="pdf-btn" class="print-btn" onclick="handlePrintPDF()">Print / Save PDF</button>
+</section>
+
+
+<script>
+const fullTranscript = [
+    // Section 1 (0 to 6)
+    { id: 0, speaker: "Sarah", text: "Welcome back, everyone! Today, Maya and I were reading an article about a mom named Agatha who lost her four-year-old, Riley, in a grocery store." },
+    { id: 1, speaker: "Maya", text: "Oh, Sarah, reading that sent chills down my spine. The store went into total lockdown, made announcements, and thankfully, a customer found Riley by the stuffed animals. But those few minutes? Pure panic." },
+    { id: 2, speaker: "Sarah", text: "Absolute terror. It immediately took me back to two years ago at a massive theme park with my daughter, Lily. One minute she was right beside me near the carousel, and the next—gone." },
+    { id: 3, speaker: "Maya", text: "Oh no, Sarah! Did they lock the park down?" },
+    { id: 4, speaker: "Sarah", text: "That’s the scariest part—they can't. Theme parks are way too large and open to do a store-style lockdown. You stand there looking at thousands of people, realizing anyone could walk out with your child. Security was great, but those six minutes felt like six agonizing hours until a staff member spotted her near a cotton candy stand." },
+    { id: 5, speaker: "Maya", text: "I completely get that helpless feeling. I had a similar nightmare at the airport last year with my son, Leo. We were at the crowded baggage claim. I turned around to grab a heavy suitcase, and when I looked up, Leo had wandered off." },
+    { id: 6, speaker: "Sarah", text: "An airport! That is terrifying! Did they shut down the terminal?" },
+
+    // Section 2 (7 to 13)
+    { id: 7, speaker: "Maya", text: "No, exactly like your theme park situation! High-traffic public hubs like airports simply can’t lock down for safety and logistical reasons. So your brain immediately jumps to the absolute worst-case scenario—he’s gotten onto a shuttle, or worse, left the building entirely with a stranger." },
+    { id: 8, speaker: "Sarah", text: "How did you find him?" },
+    { id: 9, speaker: "Maya", text: "Thankfully, another mom noticed him wandering toward the exit doors and stopped him. When I ran over, I just burst into tears and squeezed him so tight, exactly like Agatha did with Riley." },
+    { id: 10, speaker: "Sarah", text: "It’s that instant shift from sheer, breath-stealing panic to overwhelming gratitude." },
+    { id: 11, speaker: "Maya", text: "Absolutely. The article mentioned Agatha sat Riley down afterward to teach him about store safety, and it’s such a crucial lesson." },
+    { id: 12, speaker: "Sarah", text: "Exactly. Whether it’s a grocery store, a theme park, or an airport, we have to teach our kids what to do if they get lost—find a uniform, stay put, and never leave with anyone." },
+    { id: 13, speaker: "Maya", text: "Amen to that. Hug your little ones tight tonight, moms. Thanks for listening, and we'll see you next week!" }
+];
+
+let selectedElement = null;
+
+function shuffleArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function createSection(containerId, data) {
+    const container = document.getElementById(containerId);
+    let shuffled = shuffleArray(data);
+    
+    // Ensure it's not accidentally shuffled into perfect order on load
+    while (shuffled.every((item, idx) => item.id === data[idx].id)) {
+        shuffled = shuffleArray(data);
+    }
+
+    shuffled.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'line-unit';
+        div.dataset.id = item.id;
+        div.innerHTML = `<span class="speaker">${item.speaker}:</span> ${item.text}`;
+        
+        div.addEventListener('click', function() {
+            handleCardClick(this, container);
+        });
+
+        container.appendChild(div);
+    });
+
+    checkMatches(container);
+}
+
+function handleCardClick(clickedEl, container) {
+    // If no card selected yet, select this one
+    if (!selectedElement) {
+        selectedElement = clickedEl;
+        clickedEl.classList.add('selected');
+    } 
+    // If clicking the already selected card, deselect it
+    else if (selectedElement === clickedEl) {
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    } 
+    // If clicking a card in a different section, switch selection
+    else if (selectedElement.parentNode !== container) {
+        selectedElement.classList.remove('selected');
+        selectedElement = clickedEl;
+        clickedEl.classList.add('selected');
+    } 
+    // Swap two elements in the same section
+    else {
+        const parent = container;
+        const children = Array.from(parent.children);
+        const nodeA = selectedElement;
+        const nodeB = clickedEl;
+
+        const idxA = children.indexOf(nodeA);
+        const idxB = children.indexOf(nodeB);
+
+        if (idxA < idxB) {
+            parent.insertBefore(nodeB, nodeA);
+            parent.insertBefore(nodeA, parent.children[idxB + 1]);
+        } else {
+            parent.insertBefore(nodeA, nodeB);
+            parent.insertBefore(nodeB, parent.children[idxA + 1]);
+        }
+
+        nodeA.classList.remove('selected');
+        selectedElement = null;
+
+        // Check if any lines are in their correct spot
+        checkMatches(container);
+    }
+}
+
+function checkMatches(container) {
+    const children = Array.from(container.children);
+    
+    // Get expected target IDs for this section
+    const targetIds = children.map(child => parseInt(child.dataset.id)).sort((a, b) => a - b);
+
+    children.forEach((child, index) => {
+        const expectedId = targetIds[index];
+        const actualId = parseInt(child.dataset.id);
+
+        if (actualId === expectedId) {
+            child.classList.add('correct');
+        } else {
+            child.classList.remove('correct');
+        }
+    });
+}
+
+// Initialize sections on load
+document.addEventListener('DOMContentLoaded', () => {
+    createSection('section-1', fullTranscript.slice(0, 7));
+    createSection('section-2', fullTranscript.slice(7, 14));
+});
+
+
+
+
+
+// Store saved puzzle states per section
+const savedStates = {};
+
+function toggleOrder(sectionId, btn) {
+    const container = document.getElementById(sectionId);
+
+    // Clear any active selection state before toggling
+    if (selectedElement) {
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    }
+
+    if (btn.innerText === "Show order") {
+        // 1. Capture current puzzle order (array of element references)
+        savedStates[sectionId] = Array.from(container.children);
+
+        // 2. Sort elements into their proper numerical ID order
+        const sortedChildren = Array.from(container.children).sort((a, b) => {
+            return parseInt(a.dataset.id) - parseInt(b.dataset.id);
+        });
+
+        // 3. Re-append in sorted order & disable clicks while viewing solution
+        sortedChildren.forEach(child => {
+            container.appendChild(child);
+            child.style.pointerEvents = "none";
+        });
+
+        btn.innerText = "Return to puzzle";
+    } else {
+        // 1. Restore the captured state
+        savedStates[sectionId].forEach(child => {
+            container.appendChild(child);
+            child.style.pointerEvents = "auto";
+        });
+
+        btn.innerText = "Show order";
+    }
+
+    // Re-check matches to update visual green/correct status
+    checkMatches(container);
+}
+
+
+
+
+
+function handlePrintPDF() {
+    const nameVal = document.getElementById('user-name').value.trim();
+    const idVal = document.getElementById('user-id').value.trim();
+
+    // Check if both fields have at least 2 characters
+    if (nameVal.length < 2 || idVal.length < 2) {
+        alert("Name and ID required \n for Print/Save PDF");
+        return;
+    }
+
+    // Trigger browser print/save-as-PDF dialog
+    window.print();
+}
+</script>
+
+</body>
+</html>
