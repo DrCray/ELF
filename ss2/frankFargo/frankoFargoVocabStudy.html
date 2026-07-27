@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franko Fargo Vocabulary Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .vocab-card {
+            background: linear-gradient(145deg, #2d2d44, #252536);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #39395a;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #e94560;
+        }
+        .card-closed {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e94560;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-open {
+            padding: 0;
+            display: none;
+        }
+        .card-header {
+            background-color: #e94560;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .definition {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #ccccdd;
+        }
+        .example {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #aaccff;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff5773;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        .hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8888aa;
+            font-style: italic;
+        }
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #1d1d1f;
+}
+body.light-mode h1 {
+    color: #1e40af;
+    text-shadow: 0 0 8px rgba(30, 64, 175, 0.25);
+}
+body.light-mode .vocab-card {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);
+    border: 1px solid #dbeafe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+body.light-mode .vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+body.light-mode .card-closed {
+    color: #1e40af;
+}
+body.light-mode .card-header {
+    background-color: #1e40af;
+    color: white;
+}
+body.light-mode .definition {
+    color: #1E40AF;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: rgba(59, 130, 246, 0.10);
+    padding: .2rem .3rem;
+    border-radius: 0 10px 10px 0;
+    border-left: 5px solid #3b82f6;
+}
+body.light-mode .example {
+    border-left: 5px solid #3b82f6;
+    padding: 16px 18px 16px 22px;
+    border-radius: 0 10px 10px 0;
+    color: #1e293b;
+    line-height: 1.65;
+    font-size: 1.08rem;
+    font-weight: 500;
+    margin: 16px 0;
+}
+body.light-mode .example-title {
+    color: #1d4ed8;
+}
+body.light-mode button {
+    background-color: #1d4ed8;
+    color: white;
+}
+body.light-mode button:hover {
+    background-color: #3b82f6;
+}
+body.light-mode .hint,
+body.light-mode footer {
+    color: #4b5563;
+}
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+body.dark-mode h1 {
+    color: #e94560;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+    </style>
+</head>
+<body>
+    <h1>Franko Fargo — Vocabulary Cards</h1>
+    <div class="hint">Click on any card to reveal the definition and example. Click again to close it.</div>
+    
+    <div class="controls">
+        <button id="openAll">Open All Cards</button>
+        <button id="closeAll">Close All Cards</button>
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+    
+    <div class="cards-container" id="cardsContainer"></div>
+    
+    <footer>
+        Vocabulary extracted from "The Unlikely Survival Story of Franko Fargo" | Created for learning purposes
+    </footer>
+
+    <script>
+        const vocabulary = [
+            { word: "series", definition: "A number of similar events or things that happen one after another.", example: "The company faced a series of financial problems before finally going bankrupt." },
+            { word: "reportedly", definition: "According to what some people say; used to show information has not been confirmed.", example: "The actor reportedly earned over ten million dollars for the role, though the studio has not confirmed it." },
+            { word: "incidents", definition: "Events or occurrences, especially ones that are unusual, unpleasant, or significant.", example: "The school reported several incidents of bullying during the first week of term." },
+            { word: "derailed", definition: "Left the tracks (for a train); went off course.", example: "The freight train derailed after heavy rains weakened the bridge it was crossing." },
+            { word: "plunged", definition: "Fell or moved suddenly and quickly downward; dropped sharply.", example: "The roller coaster plunged from the highest point, making everyone scream." },
+            { word: "minor injuries", definition: "Small, not serious physical harm such as cuts, bruises, or scrapes.", example: "Fortunately, the cyclist walked away from the accident with only minor injuries." },
+            { word: "chaotic", definition: "In a state of complete confusion and disorder.", example: "The airport became chaotic after dozens of flights were cancelled due to the snowstorm." },
+            { word: "allegedly", definition: "Used to say that something is claimed to be true, but has not been proved.", example: "The politician allegedly accepted gifts from lobbyists, but the investigation is still ongoing." },
+            { word: "recovered", definition: "Returned to a normal state of health or strength after an illness or injury.", example: "After six weeks of rest, the football player fully recovered from his knee surgery." },
+            { word: "reputation", definition: "The general opinion that people have about someone or something based on past behavior or character.", example: "The restaurant built a strong reputation for using only fresh, locally sourced ingredients." },
+            { word: "slid off", definition: "Moved or slipped away from a surface or path, usually unintentionally.", example: "The truck slid off the icy highway and ended up in a ditch." },
+            { word: "vehicle", definition: "A machine used for transporting people or goods, such as a car, bus, or truck.", example: "Emergency crews arrived quickly to remove the damaged vehicle from the intersection." },
+            { word: "consumed", definition: "Completely destroyed, especially by fire; used up entirely.", example: "The wildfire consumed hundreds of acres of forest before firefighters could contain it." },
+            { word: "fascinated", definition: "Extremely interested and attracted by something.", example: "The children were fascinated by the magician's tricks and watched with wide eyes." },
+            { word: "near-fatal", definition: "Almost causing death; very close to being deadly.", example: "The mountain climber survived a near-fatal fall when his rope caught on a rock." },
+            { word: "lost control of", definition: "Was no longer able to direct or manage something.", example: "The driver lost control of the car on the wet road and crashed into a fence." },
+            { word: "steep slope", definition: "A sharp, angled surface of land that rises or falls at a large angle.", example: "Hikers should be careful on the steep slope near the summit because the path is narrow." },
+            { word: "thrown clear", definition: "Ejected or pushed away from a vehicle or object during an accident.", example: "The passenger was thrown clear of the wreckage and landed on soft ground nearby." },
+            { word: "perception", definition: "The way something is understood or interpreted by people.", example: "The public's perception of the company changed after the CEO issued a personal apology." },
+            { word: "possessed", definition: "Had or owned a quality, ability, or characteristic.", example: "The young pianist possessed a rare musical talent that impressed every audience." },
+            { word: "resilience", definition: "The ability to recover quickly from difficulties or hardship; toughness.", example: "The community showed remarkable resilience after the earthquake, rebuilding homes within months." },
+            { word: "took a surprising turn", definition: "Changed unexpectedly; went in a direction no one anticipated.", example: "The court case took a surprising turn when a new witness came forward with key evidence." },
+            { word: "substantial", definition: "Large in amount, size, or importance; considerable.", example: "The charity received a substantial donation that allowed it to open a new shelter." },
+            { word: "wealth", definition: "A large amount of money, property, or valuable possessions.", example: "Despite his great wealth, the businessman lived in a simple apartment near his office." },
+            { word: "modest", definition: "Not large, expensive, or impressive; simple and humble.", example: "They lived in a modest house on a quiet street, far from the busy city center." },
+            { word: "peace of mind", definition: "A feeling of calm, safety, and freedom from worry.", example: "Having good health insurance gives many families peace of mind during uncertain times." },
+            { word: "luxury", definition: "Great comfort and expensive living; something enjoyable but not necessary.", example: "Staying at a five-star hotel with a private pool felt like pure luxury." },
+            { word: "circulate", definition: "To spread or pass from person to person or place to place.", example: "Rumors about the merger began to circulate among employees weeks before the official announcement." },
+            { word: "suspense", definition: "A feeling of excitement or anxiety about what will happen next.", example: "The thriller novel kept readers in suspense until the very last page." },
+            { word: "harrowing", definition: "Extremely distressing, frightening, or traumatic.", example: "Survivors of the shipwreck shared harrowing accounts of spending three days adrift at sea." },
+            { word: "verified", definition: "Confirmed as true or accurate through evidence or investigation.", example: "The journalist verified the facts with three independent sources before publishing the article." },
+            { word: "disputed", definition: "Questioned or argued about; not accepted as true by everyone.", example: "The election results were disputed by the losing candidate, who demanded a recount." },
+            { word: "documented", definition: "Recorded in written, photographic, or other form as evidence.", example: "Scientists have documented hundreds of new species in the Amazon rainforest over the past decade." },
+            { word: "improbable", definition: "Not likely to happen or be true; hard to believe.", example: "Winning the championship after being last in the league seemed improbable, but the team never gave up." },
+            { word: "exaggerated", definition: "Made something seem larger, better, worse, or more important than it really is.", example: "The fisherman's story about catching a two-meter fish was probably exaggerated." },
+            { word: "realm of possibility", definition: "The range of things that could possibly happen or be true.", example: "Traveling to Mars within the next decade is now within the realm of possibility thanks to advances in technology." },
+            { word: "capture", definition: "To succeed in attracting and holding someone's attention or interest.", example: "The documentary managed to capture the attention of millions of viewers around the world." }
+        ];
+
+        function createCards() {
+            const container = document.getElementById('cardsContainer');
+            vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.dataset.word = item.word;
+                const closedDiv = document.createElement('div');
+                closedDiv.className = 'card-closed';
+                closedDiv.textContent = item.word;
+                const openDiv = document.createElement('div');
+                openDiv.className = 'card-open';
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = item.word;
+                const content = document.createElement('div');
+                content.className = 'card-content';
+                const definition = document.createElement('div');
+                definition.className = 'definition';
+                definition.innerHTML = `<strong>Definition:</strong> ${item.definition}`;
+                const example = document.createElement('div');
+                example.className = 'example';
+                example.innerHTML = `<div class="example-title">Example</div>${item.example}`;
+                content.appendChild(definition);
+                content.appendChild(example);
+                openDiv.appendChild(header);
+                openDiv.appendChild(content);
+                card.appendChild(closedDiv);
+                card.appendChild(openDiv);
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+                    const isOpen = this.querySelector('.card-open').style.display === 'block';
+                    if (isOpen) {
+                        this.querySelector('.card-open').style.display = 'none';
+                        this.querySelector('.card-closed').style.display = 'flex';
+                    } else {
+                        this.querySelector('.card-open').style.display = 'block';
+                        this.querySelector('.card-closed').style.display = 'none';
+                    }
+                });
+                container.appendChild(card);
+            });
+        }
+
+        function openAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'block';
+                card.querySelector('.card-closed').style.display = 'none';
+            });
+        }
+
+        function closeAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'none';
+                card.querySelector('.card-closed').style.display = 'flex';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createCards();
+            document.getElementById('openAll').addEventListener('click', openAllCards);
+            document.getElementById('closeAll').addEventListener('click', closeAllCards);
+        });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+    body.classList.add('light-mode');
+    toggleBtn.textContent = 'Switch to Dark Mode';
+    toggleBtn.addEventListener('click', function() {
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Switch to Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            toggleBtn.textContent = 'Switch to Dark Mode';
+        }
+    });
+});
+</script>
+</body>
+</html>

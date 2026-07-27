@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Cloze Exercise - Franko Fargo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #764ba2;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px black; background: #EAE7EB;
+        }
+        h1 {
+            color: white; background: purple;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            padding: 2rem 0;
+            border-radius: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .controls {
+            display: flex;
+            justify-content: right;
+            gap: 15px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .btn-study { background: #667eea; color: white; }
+        .btn-study:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn-hide { background: #764ba2; color: white; }
+        .btn-hide:hover { background: #633d8a; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4); }
+        .dark-mode-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+            color: #333;
+        }
+        .dark-mode-control input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-bottom: .7rem;
+        }
+        body.dark-mode { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        body.dark-mode .container { background: #0f3460; color: #e0e0e0; }
+        body.dark-mode h1 { color: #9d84f5; }
+        body.dark-mode .subtitle { color: #b0b0b0; }
+        body.dark-mode .sentence-item { background: #1a1a2e; color: #e0e0e0; }
+        body.dark-mode select { background: #16213e; color: #e0e0e0; border-color: #9d84f5; }
+        body.dark-mode select:hover { border-color: #b39ddb; }
+        body.dark-mode select.correct { background: #d4edda; color: #155724; border-color: #28a745; }
+        body.dark-mode select.incorrect { background: #f8d7da; color: #721c24; border-color: #dc3545; }
+        body.dark-mode .dark-mode-control { color: #e0e0e0; }
+        .sentence-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            box-shadow: 0 0 7px 2px #D6BCDB;
+        }
+        select {
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        select:hover { border-color: #764ba2; }
+        select:focus { outline: none; border-color: #764ba2; box-shadow: 0 0 5px rgba(118, 75, 162, 0.3); }
+        select.correct { background: #d4edda; border-color: #28a745; }
+        select.incorrect { background: #f8d7da; border-color: #dc3545; }
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    .container { padding: 15px; border-radius: 10px; }
+    h1 { font-size: 1.4em; margin-bottom: 8px; }
+    .subtitle { font-size: 0.95em; margin-bottom: 20px; }
+    .controls { margin-bottom: 20px; gap: 10px; }
+    .btn { padding: 10px 18px; font-size: 0.95em; }
+    .dark-mode-control { font-size: 0.9em; }
+    .sentence-item { font-size: 1.05rem; padding: 10px; margin-bottom: 12px; line-height: 1.6; }
+    select { min-width: 110px; font-size: 0.9em; padding: 4px 8px; }
+}
+.student-info-container{
+    max-width:30rem;
+    margin: 2rem auto;
+    background:#E6F2EE;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 0 2px 5px gray;
+}
+#pdfButton{ padding:.7rem; border-radius:6px; font-weight:bold; }
+.inputZ{ padding: .3rem; border-radius: 6px; }
+footer {margin-top: 6rem;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Franko Fargo — Vocab Sentences</h1>
+        <p class="subtitle">Select the correct word or phrase to complete each sentence</p>
+        
+        <div class="controls">
+            <button id="studyBtn" class="btn btn-study" onclick="showAllAnswers()">Study Mode</button>
+            <button id="hideBtn" class="btn btn-hide" onclick="hideAllAnswers()" style="display: none;">Hide All</button>
+        </div>
+
+            <div class="dark-mode-control">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <label for="darkModeToggle" style="background:#800080; color: white; margin-bottom:.7rem">&nbsp; Dark Mode &nbsp;</label>
+            </div>
+
+        <div id="sentences"></div>
+    </div>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" class="inputZ" value="ID" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+        function sanitizeInput(input) { const temp = document.createElement('div'); temp.textContent = input; return temp.innerHTML; }
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+            if (sanitized.length < 2) { alert(`${fieldName} must be at least 2 characters long.`); return false; }
+            if (sanitized.length > 25) { alert(`${fieldName} must be no more than 25 characters long.`); return false; }
+            return true;
+        }
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim(); const idValue = idInput.value.trim();
+            const nameChanged = nameValue !== DEFAULTS.name; const idChanged = idValue !== DEFAULTS.id;
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+        nameInput.addEventListener('blur', function() { const value = this.value.trim(); if (value !== DEFAULTS.name && value.length > 0) { if (validateInput(value, 'Name')) { this.value = sanitizeInput(value); } else { this.value = DEFAULTS.name; } } checkEnablePDF(); });
+        idInput.addEventListener('blur', function() { const value = this.value.trim(); if (value !== DEFAULTS.id && value.length > 0) { if (validateInput(value, 'ID')) { this.value = sanitizeInput(value); } else { this.value = DEFAULTS.id; } } checkEnablePDF(); });
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+        nameInput.addEventListener('focus', function() { if (this.value === DEFAULTS.name) { this.value = ''; } });
+        idInput.addEventListener('focus', function() { if (this.value === DEFAULTS.id) { this.value = ''; } });
+        pdfButton.addEventListener('click', function() { window.print(); });
+    </script>
+
+    <script>
+        const vocab = [
+            {word: "series", sentence: "The company faced a _____ of financial problems before finally going bankrupt."},
+            {word: "reportedly", sentence: "The actor _____ earned over ten million dollars for the role, though the studio has not confirmed it."},
+            {word: "incidents", sentence: "The school reported several _____ of bullying during the first week of term."},
+            {word: "derailed", sentence: "The freight train _____ after heavy rains weakened the bridge it was crossing."},
+            {word: "plunged", sentence: "The roller coaster _____ from the highest point, making everyone scream."},
+            {word: "minor injuries", sentence: "Fortunately, the cyclist walked away from the accident with only _____."},
+            {word: "chaotic", sentence: "The airport became _____ after dozens of flights were cancelled due to the snowstorm."},
+            {word: "allegedly", sentence: "The politician _____ accepted gifts from lobbyists, but the investigation is still ongoing."},
+            {word: "recovered", sentence: "After six weeks of rest, the football player fully _____ from his knee surgery."},
+            {word: "reputation", sentence: "The restaurant built a strong _____ for using only fresh, locally sourced ingredients."},
+            {word: "slid off", sentence: "The truck _____ the icy highway and ended up in a ditch."},
+            {word: "vehicle", sentence: "Emergency crews arrived quickly to remove the damaged _____ from the intersection."},
+            {word: "consumed", sentence: "The wildfire _____ hundreds of acres of forest before firefighters could contain it."},
+            {word: "fascinated", sentence: "The children were _____ by the magician's tricks and watched with wide eyes."},
+            {word: "near-fatal", sentence: "The mountain climber survived a _____ fall when his rope caught on a rock."},
+            {word: "lost control of", sentence: "The driver _____ the car on the wet road and crashed into a fence."},
+            {word: "steep slope", sentence: "Hikers should be careful on the _____ near the summit because the path is narrow."},
+            {word: "thrown clear", sentence: "The passenger was _____ of the wreckage and landed on soft ground nearby."},
+            {word: "perception", sentence: "The public's _____ of the company changed after the CEO issued a personal apology."},
+            {word: "possessed", sentence: "The young pianist _____ a rare musical talent that impressed every audience."},
+            {word: "resilience", sentence: "The community showed remarkable _____ after the earthquake, rebuilding homes within months."},
+            {word: "took a surprising turn", sentence: "The court case _____ when a new witness came forward with key evidence."},
+            {word: "substantial", sentence: "The charity received a _____ donation that allowed it to open a new shelter."},
+            {word: "wealth", sentence: "Despite his great _____, the businessman lived in a simple apartment near his office."},
+            {word: "modest", sentence: "They lived in a _____ house on a quiet street, far from the busy city center."},
+            {word: "peace of mind", sentence: "Having good health insurance gives many families _____ during uncertain times."},
+            {word: "luxury", sentence: "Staying at a five-star hotel with a private pool felt like pure _____."},
+            {word: "circulate", sentence: "Rumors about the merger began to _____ among employees weeks before the official announcement."},
+            {word: "suspense", sentence: "The thriller novel kept readers in _____ until the very last page."},
+            {word: "harrowing", sentence: "Survivors of the shipwreck shared _____ accounts of spending three days adrift at sea."},
+            {word: "verified", sentence: "The journalist _____ the facts with three independent sources before publishing the article."},
+            {word: "disputed", sentence: "The election results were _____ by the losing candidate, who demanded a recount."},
+            {word: "documented", sentence: "Scientists have _____ hundreds of new species in the Amazon rainforest over the past decade."},
+            {word: "improbable", sentence: "Winning the championship after being last in the league seemed _____, but the team never gave up."},
+            {word: "exaggerated", sentence: "The fisherman's story about catching a two-meter fish was probably _____."},
+            {word: "realm of possibility", sentence: "Traveling to Mars within the next decade is now within the _____ thanks to advances in technology."},
+            {word: "capture", sentence: "The documentary managed to _____ the attention of millions of viewers around the world."}
+        ];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function getDistractors(correctWord, allWords, count = 3) {
+            const distractors = allWords.filter(w => w !== correctWord);
+            const shuffled = shuffleArray(distractors);
+            return shuffled.slice(0, count);
+        }
+
+        function createSelect(correctWord, index) {
+            const allWords = vocab.map(v => v.word);
+            const distractors = getDistractors(correctWord, allWords, 3);
+            const options = [correctWord, ...distractors];
+            const shuffledOptions = shuffleArray(options);
+            let select = `<select id="select-${index}" data-correct="${correctWord}" onchange="checkAnswer(${index})">`;
+            select += `<option value="">--select--</option>`;
+            shuffledOptions.forEach(option => { select += `<option value="${option}">${option}</option>`; });
+            select += `</select>`;
+            return select;
+        }
+
+        function renderSentences() {
+            const container = document.getElementById('sentences');
+            let html = '';
+            vocab.forEach((item, index) => {
+                const sentenceWithSelect = item.sentence.replace('_____', createSelect(item.word, index));
+                html += `<div class="sentence-item">${sentenceWithSelect}</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function checkAnswer(index) {
+            const select = document.getElementById(`select-${index}`);
+            const selectedValue = select.value;
+            const correctValue = select.getAttribute('data-correct');
+            if (selectedValue === '') { select.className = ''; }
+            else if (selectedValue === correctValue) { select.className = 'correct'; }
+            else { select.className = 'incorrect'; }
+        }
+
+        function showAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                const correctValue = select.getAttribute('data-correct');
+                select.value = correctValue;
+                select.className = 'correct';
+            });
+            document.getElementById('studyBtn').style.display = 'none';
+            document.getElementById('hideBtn').style.display = 'block';
+        }
+
+        function hideAllAnswers() {
+            vocab.forEach((item, index) => {
+                const select = document.getElementById(`select-${index}`);
+                select.value = '';
+                select.className = '';
+            });
+            document.getElementById('hideBtn').style.display = 'none';
+            document.getElementById('studyBtn').style.display = 'block';
+        }
+
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+
+        renderSentences();
+    </script>
+    <footer>...</footer>
+</body>
+</html>

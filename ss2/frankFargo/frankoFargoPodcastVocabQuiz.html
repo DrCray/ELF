@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franko Fargo - Vocabulary Quiz - Podcast</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 40rem; margin: 10px auto; padding: 10px; background-color: #4A0004; display: flex; flex-direction: column; gap: 0; }
+        .header { background-color: #00274D; color: white; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+        .student-info input { width: 100%; max-width: 100%; padding: 10px; margin: 10px 0; border: 2px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        .section { background-color: white; padding: 10px; margin-bottom: 10px; margin-top:1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .section h3 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; font-size:1.1rem }
+        .sentence { margin: 10px 0; font-size: .9rem; line-height: 1.2; }
+        select { font-size: .8rem; border: 2px solid #ddd; border-radius: 4px; background-color: white; cursor: pointer; min-width: 4rem; }
+        select.correct { background-color: #CFFFE2; color: #0404D0; border-color: #27ae60; }
+        select.incorrect { background-color: #FEE2E5; color: #940D0D; border-color: #C70000; }
+        button { padding: .33rem; font-size: 1rem; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        footer { margin-top: 15rem; }
+        .toggle-button { padding: 5px 10px; font-size: .8rem; cursor: pointer; border: none; border-radius: 4px; background-color: #007bff; color: white; transition: background-color 0.3s; }
+        .toggle-button:hover { background-color: #0056b3; }
+        .output { padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9; font-size: 16px; word-wrap: break-word; text-align:left; }
+        .output.column { display: flex; flex-direction: column; gap: 0; }
+        .output.column span { padding: 5px; border-bottom: 1px solid #eee; }
+        #theWordList { display: none; }
+        .show-hide-button { margin: 0 0 1rem 0; padding: 5px 10px; font-size: 16px; cursor: pointer; border: none; border-radius: 4px; background-color: #28a745; color: white; transition: background-color 0.3s; }
+        .show-hide-button:hover { background-color: #218838; }
+        #subtitle { font-size: 120%; }
+        @media print { .print-section { display: none; } body { background-color: white; } }
+        .student-info-container{ max-width:30rem; margin: 2rem auto; background:#E6F2EE; padding: 2rem; border-radius: 6px; box-shadow: 0 0 2px 5px gray; }
+        #pdfButton{ padding:.7rem; border-radius:6px; font-weight:bold; }
+        .inputZ{ padding: .3rem; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Franko Fargo</h1>
+        <p id="subtitle">Vocabulary Quiz - Podcast</p>
+        <p>Complete the sentences by selecting the correct vocabulary word</p>
+    </div>
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+    
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">1. I still can't <select data-answer="wrap my head around"><option value="">-- Select --</option><option value="wrap my head around">wrap my head around</option><option value="made up">made up</option><option value="gets me">gets me</option><option value="sum it up">sum it up</option><option value="call it quits">call it quits</option></select> how she managed to finish the entire project in just two days.</div>
+        <div class="sentence">2. The children told a <select data-answer="made up"><option value="">-- Select --</option><option value="made up">made up</option><option value="wild">wild</option><option value="cinematic">cinematic</option><option value="compelling">compelling</option><option value="credible">credible</option></select> story about finding treasure in their backyard.</div>
+        <div class="sentence">3. What really <select data-answer="gets me"><option value="">-- Select --</option><option value="gets me">gets me</option><option value="stands out">stands out</option><option value="blew my mind">blew my mind</option><option value="wrap my head around">wrap my head around</option><option value="stuck around">stuck around</option></select> about the film is how realistic the acting feels throughout.</div>
+        <div class="sentence">4. The team suffered a <select data-answer="string"><option value="">-- Select --</option><option value="string">string</option><option value="tale">tale</option><option value="rough patches">rough patches</option><option value="brushes with death">brushes with death</option><option value="hard way">hard way</option></select> of defeats before finally winning the championship game.</div>
+        <div class="sentence">5. If I had to <select data-answer="sum it up"><option value="">-- Select --</option><option value="sum it up">sum it up</option><option value="call it quits">call it quits</option><option value="buy into">buy into</option><option value="blurs the line">blurs the line</option><option value="make it up to">make it up to</option></select> in one word, I'd say the vacation was unforgettable.</div>
+        <div class="sentence">6. After three failed attempts to fix the old car, he decided to <select data-answer="call it quits"><option value="">-- Select --</option><option value="call it quits">call it quits</option><option value="sum it up">sum it up</option><option value="wrap my head around">wrap my head around</option><option value="buy into">buy into</option><option value="stand out">stand out</option></select> and buy a new one.</div>
+    </div>
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">7. The plot twist at the end of the movie was absolutely <select data-answer="wild"><option value="">-- Select --</option><option value="wild">wild</option><option value="cinematic">cinematic</option><option value="jaw-dropping">jaw-dropping</option><option value="compelling">compelling</option><option value="credible">credible</option></select>---nobody saw it coming.</div>
+        <div class="sentence">8. He says the renovation will only take two weeks, but I'd <select data-answer="take that with a grain of salt"><option value="">-- Select --</option><option value="take that with a grain of salt">take that with a grain of salt</option><option value="wrap my head around">wrap my head around</option><option value="call it quits">call it quits</option><option value="buy into">buy into</option><option value="blurs the line">blurs the line</option></select>---these things always take longer.</div>
+        <div class="sentence">9. My grandfather used to tell us a <select data-answer="tale"><option value="">-- Select --</option><option value="tale">tale</option><option value="string">string</option><option value="rough patches">rough patches</option><option value="hard way">hard way</option><option value="skeptic">skeptic</option></select> about a fisherman who caught a golden fish.</div>
+        <div class="sentence">10. The sunset over the canyon was so <select data-answer="cinematic"><option value="">-- Select --</option><option value="cinematic">cinematic</option><option value="wild">wild</option><option value="jaw-dropping">jaw-dropping</option><option value="compelling">compelling</option><option value="grounded">grounded</option></select> that it looked like a scene from a film.</div>
+        <div class="sentence">11. That catchy song from the 1980s has <select data-answer="stuck around"><option value="">-- Select --</option><option value="stuck around">stuck around</option><option value="stands out">stands out</option><option value="blew my mind">blew my mind</option><option value="gets me">gets me</option><option value="first in line">first in line</option></select> and is still played on the radio today.</div>
+        <div class="sentence">12. Working from home <select data-answer="blurs the line"><option value="">-- Select --</option><option value="blurs the line">blurs the line</option><option value="sum it up">sum it up</option><option value="buy into">buy into</option><option value="make it up to">make it up to</option><option value="call it quits">call it quits</option></select> between personal time and professional responsibilities.</div>
+    </div>
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">13. Over the years, the family legend has been <select data-answer="embellished"><option value="">-- Select --</option><option value="embellished">embellished</option><option value="balanced">balanced</option><option value="credible">credible</option><option value="grounded">grounded</option><option value="upfront">upfront</option></select> with details that probably never happened.</div>
+        <div class="sentence">14. The magic show completely <select data-answer="blew my mind"><option value="">-- Select --</option><option value="blew my mind">blew my mind</option><option value="gets me">gets me</option><option value="stands out">stands out</option><option value="stuck around">stuck around</option><option value="jaw-dropping">jaw-dropping</option></select>---I still can't figure out how she did the final trick.</div>
+        <div class="sentence">15. I'm sorry I missed your birthday party---let me <select data-answer="make it up to"><option value="">-- Select --</option><option value="make it up to">make it up to</option><option value="blurs the line">blurs the line</option><option value="buy into">buy into</option><option value="sum it up">sum it up</option><option value="call it quits">call it quits</option></select> you by taking you out to dinner.</div>
+        <div class="sentence">16. Every marriage goes through <select data-answer="rough patches"><option value="">-- Select --</option><option value="rough patches">rough patches</option><option value="brushes with death">brushes with death</option><option value="string">string</option><option value="hard way">hard way</option><option value="tale">tale</option></select>, but communication helps couples get through them.</div>
+        <div class="sentence">17. Among all the applicants, her resume really <select data-answer="stands out"><option value="">-- Select --</option><option value="stands out">stands out</option><option value="gets me">gets me</option><option value="blew my mind">blew my mind</option><option value="stuck around">stuck around</option><option value="first in line">first in line</option></select> because of her international experience.</div>
+        <div class="sentence">18. Despite becoming a famous actor, she remained <select data-answer="grounded"><option value="">-- Select --</option><option value="grounded">grounded</option><option value="balanced">balanced</option><option value="credible">credible</option><option value="upfront">upfront</option><option value="compelling">compelling</option></select> and continued to visit her hometown regularly.</div>
+    </div>
+
+    <div class="section">
+        <h3>Section 4</h3>
+        <div class="sentence">19. The small bakery became famous <select data-answer="overnight"><option value="">-- Select --</option><option value="overnight">overnight</option><option value="hard way">hard way</option><option value="first in line">first in line</option><option value="wild">wild</option><option value="cinematic">cinematic</option></select> after a celebrity posted about it on social media.</div>
+        <div class="sentence">20. The firefighter has had several <select data-answer="brushes with death"><option value="">-- Select --</option><option value="brushes with death">brushes with death</option><option value="rough patches">rough patches</option><option value="string">string</option><option value="tale">tale</option><option value="hard way">hard way</option></select> during his twenty-year career.</div>
+        <div class="sentence">21. She learned the <select data-answer="hard way"><option value="">-- Select --</option><option value="hard way">hard way</option><option value="overnight">overnight</option><option value="rough patches">rough patches</option><option value="brushes with death">brushes with death</option><option value="first in line">first in line</option></select> that you should always save your work before closing the computer.</div>
+        <div class="sentence">22. The doctor was <select data-answer="upfront"><option value="">-- Select --</option><option value="upfront">upfront</option><option value="grounded">grounded</option><option value="balanced">balanced</option><option value="credible">credible</option><option value="compelling">compelling</option></select> about the risks of the surgery so the patient could make an informed decision.</div>
+        <div class="sentence">23. Not everyone is willing to <select data-answer="buy into"><option value="">-- Select --</option><option value="buy into">buy into</option><option value="blurs the line">blurs the line</option><option value="make it up to">make it up to</option><option value="wrap my head around">wrap my head around</option><option value="sum it up">sum it up</option></select> the idea that artificial intelligence will replace all jobs.</div>
+    </div>
+
+    <div class="section">
+        <h3>Section 5</h3>
+        <div class="sentence">24. A good news report should present a <select data-answer="balanced"><option value="">-- Select --</option><option value="balanced">balanced</option><option value="upfront">upfront</option><option value="grounded">grounded</option><option value="credible">credible</option><option value="embellished">embellished</option></select> view by including opinions from both sides of the debate.</div>
+        <div class="sentence">25. The witness gave a <select data-answer="credible"><option value="">-- Select --</option><option value="credible">credible</option><option value="balanced">balanced</option><option value="compelling">compelling</option><option value="jaw-dropping">jaw-dropping</option><option value="cinematic">cinematic</option></select> account of the events, which matched the security camera footage.</div>
+        <div class="sentence">26. The acrobat's performance was <select data-answer="jaw-dropping"><option value="">-- Select --</option><option value="jaw-dropping">jaw-dropping</option><option value="wild">wild</option><option value="cinematic">cinematic</option><option value="compelling">compelling</option><option value="credible">credible</option></select>---the audience couldn't believe what they were seeing.</div>
+        <div class="sentence">27. The lawyer presented a <select data-answer="compelling"><option value="">-- Select --</option><option value="compelling">compelling</option><option value="jaw-dropping">jaw-dropping</option><option value="cinematic">cinematic</option><option value="wild">wild</option><option value="credible">credible</option></select> argument that convinced the jury to change their minds.</div>
+        <div class="sentence">28. As a <select data-answer="skeptic"><option value="">-- Select --</option><option value="skeptic">skeptic</option><option value="tale">tale</option><option value="string">string</option><option value="grounded">grounded</option><option value="upfront">upfront</option></select>, she always asks for scientific evidence before accepting new health claims.</div>
+        <div class="sentence">29. When they announced free concert tickets, I was <select data-answer="first in line"><option value="">-- Select --</option><option value="first in line">first in line</option><option value="overnight">overnight</option><option value="hard way">hard way</option><option value="stands out">stands out</option><option value="stuck around">stuck around</option></select> at the box office.</div>
+    </div>
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('studentName'); const idInput = document.getElementById('studentID'); const pdfButton = document.getElementById('pdfButton');
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+        function sanitizeInput(input) { const temp = document.createElement('div'); temp.textContent = input; return temp.innerHTML; }
+        function validateInput(input, fieldName) { const s = sanitizeInput(input.trim()); if (s.length < 2) { alert(fieldName + ' must be at least 2 characters long.'); return false; } if (s.length > 25) { alert(fieldName + ' must be no more than 25 characters long.'); return false; } return true; }
+        function checkEnablePDF() { const nv = nameInput.value.trim(); const iv = idInput.value.trim(); pdfButton.disabled = !(nv !== DEFAULTS.name && iv !== DEFAULTS.id && nv.length >= 2 && nv.length <= 25 && iv.length >= 2 && iv.length <= 25); }
+        nameInput.addEventListener('blur', function() { const v = this.value.trim(); if (v !== DEFAULTS.name && v.length > 0) { if (validateInput(v, 'Name')) { this.value = sanitizeInput(v); } else { this.value = DEFAULTS.name; } } checkEnablePDF(); });
+        idInput.addEventListener('blur', function() { const v = this.value.trim(); if (v !== DEFAULTS.id && v.length > 0) { if (validateInput(v, 'ID')) { this.value = sanitizeInput(v); } else { this.value = DEFAULTS.id; } } checkEnablePDF(); });
+        nameInput.addEventListener('input', checkEnablePDF); idInput.addEventListener('input', checkEnablePDF);
+        nameInput.addEventListener('focus', function() { if (this.value === DEFAULTS.name) this.value = ''; });
+        idInput.addEventListener('focus', function() { if (this.value === DEFAULTS.id) this.value = ''; });
+        pdfButton.addEventListener('click', function() { window.print(); });
+    </script>
+
+    <script>
+        document.querySelectorAll('select').forEach(function(select) { select.addEventListener('change', function() { var ca = this.getAttribute('data-answer'); var sv = this.value; if (sv === ca) { this.classList.remove('incorrect'); this.classList.add('correct'); } else if (sv !== '') { this.classList.remove('correct'); this.classList.add('incorrect'); } else { this.classList.remove('correct', 'incorrect'); } }); });
+        var answersVisible = false;
+        function toggleAnswers() { answersVisible = !answersVisible; var button = document.getElementById('toggleAnswersBtn'); document.querySelectorAll('select').forEach(function(select) { if (answersVisible) { select.value = select.getAttribute('data-answer'); select.classList.add('correct'); select.classList.remove('incorrect'); } else { select.selectedIndex = 0; select.classList.remove('correct', 'incorrect'); } }); button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode '; }
+    </script>
+
+    <script>
+        function updateOutput() { var selects = document.querySelectorAll('select[data-answer]'); var output = document.getElementById('output'); var isCol = output.classList.contains('column'); var answers = Array.from(selects).map(function(s) { return s.getAttribute('data-answer'); }); if (isCol) { output.innerHTML = answers.map(function(a) { return '<span>' + a + '</span>'; }).join(''); } else { output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; '); } }
+        function toggleView() { var output = document.getElementById('output'); var button = document.querySelector('.toggle-button'); output.classList.toggle('column'); button.textContent = output.classList.contains('column') ? 'Close Column View' : 'View as Column'; updateOutput(); }
+        updateOutput();
+    </script>
+
+    <script>
+        function toggleWordList() { var wl = document.getElementById('theWordList'); var btn = document.querySelector('.show-hide-button'); if (wl.style.display === 'none' || wl.style.display === '') { wl.style.display = 'block'; btn.textContent = 'Hide Word List'; } else { wl.style.display = 'none'; btn.textContent = 'Show Word List'; } }
+    </script>
+    <footer>...</footer>
+</body>
+</html>
