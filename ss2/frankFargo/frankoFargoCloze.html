@@ -75,13 +75,34 @@ hr {
   height: 3px;
   background-color: #CCBB91;
 }
+
+
+.study-float-wrap {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    z-index: 1000;
+}
+.study-float-wrap .toggle-button {
+    pointer-events: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
     </style>
 </head>
 <body>
     
 <div id="topHeading"><h1>English Learning</h1><h2>The Unlikely Survival Story of Franko Fargo</h2></div>
 
-    <div id="output"><div id="cloze-div-1" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1')">Show Answers</button><div class="sentence-div">The Unlikely Survival Story of Franko Fargo
+    <div id="output"><div id="cloze-div-1" class="cloze-container"><div class="study-float-wrap"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1')">Show Answers</button></div><div class="sentence-div">The Unlikely Survival Story of Franko Fargo
 <hr>
 Franko Fargo was a Croatian music teacher who became internationally known for a <span style="font-size: 70%;">1</span><select data-correct="series" data-group="0" onchange="checkAnswer(this)">
                 <option value="">Select...</option>
@@ -273,8 +294,11 @@ function toggleAnswers(containerId) {
     const container = document.getElementById(containerId);
     const button = container.querySelector('.toggle-button');
     const selects = container.querySelectorAll('select[data-correct]');
-    
+
     if (button.textContent === 'Show Answers') {
+        container._savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, backgroundColor: s.style.backgroundColor };
+        });
         selects.forEach(select => {
             const correctAnswer = select.getAttribute('data-correct');
             select.value = correctAnswer;
@@ -283,10 +307,16 @@ function toggleAnswers(containerId) {
         });
         button.textContent = 'Hide Answers';
     } else {
-        selects.forEach(select => {
-            select.value = '';
+        const saved = container._savedState;
+        selects.forEach((select, i) => {
             select.classList.remove('answer-shown');
-            select.style.backgroundColor = '';
+            if (saved && saved[i]) {
+                select.value = saved[i].value;
+                select.style.backgroundColor = saved[i].backgroundColor;
+            } else {
+                select.value = '';
+                select.style.backgroundColor = '';
+            }
         });
         button.textContent = 'Show Answers';
     }

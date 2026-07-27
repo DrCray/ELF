@@ -31,6 +31,26 @@
         .student-info-container{ max-width:30rem; margin: 2rem auto; background:#E6F2EE; padding: 2rem; border-radius: 6px; box-shadow: 0 0 2px 5px gray; }
         #pdfButton{ padding:.7rem; border-radius:6px; font-weight:bold; }
         .inputZ{ padding: .3rem; border-radius: 6px; }
+
+        .study-float-wrap {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    z-index: 1000;
+}
+.study-float-wrap #toggleAnswersBtn {
+    pointer-events: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
     </style>
 </head>
 <body>
@@ -45,8 +65,9 @@
         <button class="toggle-button" onclick="toggleView()">View as Column</button>
         <div class="output" id="output"></div>
     </div>
+<div class="study-float-wrap">
     <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
-    
+</div>
     <div class="section">
         <h3>Section 1</h3>
         <div class="sentence">1. I still can't <select data-answer="wrap my head around"><option value="">-- Select --</option><option value="wrap my head around">wrap my head around</option><option value="made up">made up</option><option value="gets me">gets me</option><option value="sum it up">sum it up</option><option value="call it quits">call it quits</option></select> how she managed to finish the entire project in just two days.</div>
@@ -122,7 +143,35 @@
     <script>
         document.querySelectorAll('select').forEach(function(select) { select.addEventListener('change', function() { var ca = this.getAttribute('data-answer'); var sv = this.value; if (sv === ca) { this.classList.remove('incorrect'); this.classList.add('correct'); } else if (sv !== '') { this.classList.remove('correct'); this.classList.add('incorrect'); } else { this.classList.remove('correct', 'incorrect'); } }); });
         var answersVisible = false;
-        function toggleAnswers() { answersVisible = !answersVisible; var button = document.getElementById('toggleAnswersBtn'); document.querySelectorAll('select').forEach(function(select) { if (answersVisible) { select.value = select.getAttribute('data-answer'); select.classList.add('correct'); select.classList.remove('incorrect'); } else { select.selectedIndex = 0; select.classList.remove('correct', 'incorrect'); } }); button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode '; }
+var savedState = null;
+function toggleAnswers() {
+    answersVisible = !answersVisible;
+    var button = document.getElementById('toggleAnswersBtn');
+    var selects = document.querySelectorAll('select[data-answer]');
+    if (answersVisible) {
+        savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, correct: s.classList.contains('correct'), incorrect: s.classList.contains('incorrect') };
+        });
+        selects.forEach(function(select) {
+            select.value = select.getAttribute('data-answer');
+            select.classList.add('correct');
+            select.classList.remove('incorrect');
+        });
+    } else {
+        selects.forEach(function(select, i) {
+            var state = savedState ? savedState[i] : null;
+            if (state) {
+                select.value = state.value;
+                select.classList.toggle('correct', state.correct);
+                select.classList.toggle('incorrect', state.incorrect);
+            } else {
+                select.selectedIndex = 0;
+                select.classList.remove('correct', 'incorrect');
+            }
+        });
+    }
+    button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
+}
     </script>
 
     <script>
