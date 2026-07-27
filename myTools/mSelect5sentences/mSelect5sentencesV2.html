@@ -15,7 +15,7 @@
         background: #f0f2ff; /* Simplified background for faster loading/cleaner look */
         color: #2c3e50;
         line-height: 1.4;
-        padding: 0.75rem; /* Tightened outer padding */
+        padding: 4rem 0.75rem; /* Tightened outer padding */
         min-height: 100vh;
     }
     .container {
@@ -171,6 +171,35 @@ box-shadow:
             font-size: 0.8rem;
         }
     }
+
+
+
+#studyToggleBtn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+#studyToggleBtn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#studyToggleBtn:hover {
+    opacity: 0.92;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -407,23 +436,45 @@ const studyToggleBtn = document.getElementById('studyToggleBtn');
 
 studyToggleBtn.addEventListener('click', () => {
     const selects = document.querySelectorAll('.vocab-select');
-    const isCurrentlyStudyMode = studyToggleBtn.textContent === "Study Mode";
+    const isStudyMode = studyToggleBtn.textContent === 'Study Mode';
 
-    selects.forEach(select => {
-        if (isCurrentlyStudyMode) {
-            // Switch to Study Mode: Show all correct answers
+    if (isStudyMode) {
+        selects.forEach(select => {
+            if (!select.dataset.userValueCaptured) {
+                select.dataset.userValueCaptured = select.value;
+            }
+            if (!select.dataset.userClassesCaptured) {
+                select.dataset.userClassesCaptured = JSON.stringify({
+                    correct: select.classList.contains('correct'),
+                    incorrect: select.classList.contains('incorrect')
+                });
+            }
+
             select.value = select.dataset.correct;
-            select.classList.add('correct');
+            select.disabled = true;
             select.classList.remove('incorrect');
-        } else {
-            // Switch to Hide Answers: Restore to blank/original state
-            select.value = "";
-            select.classList.remove('correct', 'incorrect');
-        }
-    });
+            select.classList.add('correct');
+        });
 
-    // Toggle the button text
-    studyToggleBtn.textContent = isCurrentlyStudyMode ? "Hide Answers" : "Study Mode";
+        studyToggleBtn.textContent = 'Hide Answers';
+    } else {
+        selects.forEach(select => {
+            select.value = select.dataset.userValueCaptured ?? '';
+            select.disabled = false;
+
+            const classState = select.dataset.userClassesCaptured
+                ? JSON.parse(select.dataset.userClassesCaptured)
+                : { correct: false, incorrect: false };
+
+            select.classList.toggle('correct', classState.correct);
+            select.classList.toggle('incorrect', classState.incorrect);
+
+            delete select.dataset.userValueCaptured;
+            delete select.dataset.userClassesCaptured;
+        });
+
+        studyToggleBtn.textContent = 'Study Mode';
+    }
 });
 
 
