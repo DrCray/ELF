@@ -257,6 +257,33 @@
 }
 
 footer {margin-top: 6rem;}
+
+
+
+
+.study-float-wrap {
+    position: fixed;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 30px;
+    box-sizing: border-box;
+    justify-content: flex-end;
+    pointer-events: none;
+    z-index: 1000;
+}
+.study-float-wrap .btn {
+    pointer-events: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+@media (max-width: 768px) {
+    .study-float-wrap { padding: 0 15px; }
+}
+
+
+
     </style>
 </head>
 <body>
@@ -264,7 +291,7 @@ footer {margin-top: 6rem;}
         <h1>Zombie Walks - Vocab Sentences</h1>
         <p class="subtitle">Select the correct word or phrase to complete each sentence</p>
         
-        <div class="controls">
+        <div class="controls  study-float-wrap">
             <button id="studyBtn" class="btn btn-study" onclick="showAllAnswers()">Study Mode</button>
             <button id="hideBtn" class="btn btn-hide" onclick="hideAllAnswers()" style="display: none;">Hide All</button>
         </div>
@@ -494,30 +521,36 @@ footer {margin-top: 6rem;}
             }
         }
 
-        function showAllAnswers() {
-            vocab.forEach((item, index) => {
-                const select = document.getElementById(`select-${index}`);
-                const correctValue = select.getAttribute('data-correct');
-                select.value = correctValue;
-                select.className = 'correct';
-            });
-            
-            // Toggle buttons
-            document.getElementById('studyBtn').style.display = 'none';
-            document.getElementById('hideBtn').style.display = 'block';
-        }
+function showAllAnswers() {
+    savedSelections = vocab.map((item, index) => {
+        const select = document.getElementById(`select-${index}`);
+        return { value: select.value, className: select.className };
+    });
+    vocab.forEach((item, index) => {
+        const select = document.getElementById(`select-${index}`);
+        const correctValue = select.getAttribute('data-correct');
+        select.value = correctValue;
+        select.className = 'correct';
+    });
+    document.getElementById('studyBtn').style.display = 'none';
+    document.getElementById('hideBtn').style.display = 'block';
+}
 
-        function hideAllAnswers() {
-            vocab.forEach((item, index) => {
-                const select = document.getElementById(`select-${index}`);
-                select.value = '';
-                select.className = '';
-            });
-            
-            // Toggle buttons
-            document.getElementById('hideBtn').style.display = 'none';
-            document.getElementById('studyBtn').style.display = 'block';
+function hideAllAnswers() {
+    vocab.forEach((item, index) => {
+        const select = document.getElementById(`select-${index}`);
+        const saved = savedSelections ? savedSelections[index] : null;
+        if (saved) {
+            select.value = saved.value;
+            select.className = saved.className;
+        } else {
+            select.value = '';
+            select.className = '';
         }
+    });
+    document.getElementById('hideBtn').style.display = 'none';
+    document.getElementById('studyBtn').style.display = 'block';
+}
 
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
