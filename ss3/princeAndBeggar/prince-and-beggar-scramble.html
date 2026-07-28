@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics Scramble – The Prince and the Beggar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b8860b;
+            --gold-light: #d4a017;
+            --parchment: #f5f0e8;
+            --parchment-dark: #e8e0cc;
+            --ink: #2a1f0e;
+            --ink-mid: #4a3a20;
+            --ink-light: #7a6040;
+            --correct-bg: #eef5e8;
+            --correct-border: #7a9e60;
+            --incorrect-bg: #f5f0e8;
+            --incorrect-border: #c9baa0;
+            --selected-border: #b8860b;
+            --shadow: 0 4px 24px rgba(42,31,14,0.13);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: #d6cdb8;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 27px,
+                    rgba(180,160,100,0.08) 27px,
+                    rgba(180,160,100,0.08) 28px
+                );
+            color: var(--ink);
+            margin: 0;
+            padding: 30px 16px 60px;
+            min-height: 100vh;
+        }
+
+        #bodyAllContent {
+            max-width: 640px;
+            margin: 0 auto;
+            background: var(--parchment);
+            border-radius: 4px;
+            box-shadow:
+                0 2px 0 var(--gold),
+                0 8px 40px rgba(42,31,14,0.28),
+                inset 0 0 60px rgba(180,160,100,0.10);
+            padding: 0 0 2rem;
+            border: 1px solid var(--parchment-dark);
+        }
+
+        /* ── Header band ── */
+        .page-header {
+            background: var(--ink);
+            color: var(--parchment);
+            padding: 2rem 2rem 1.4rem;
+            border-radius: 4px 4px 0 0;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 120%, rgba(184,134,11,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin: 0 0 0.2rem;
+            color: var(--gold-light);
+            text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #c8b88a;
+            margin: 0;
+        }
+
+        .music-credit {
+            font-size: 0.82rem;
+            color: #8a7a60;
+            margin: 0.3rem 0 0;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* ── Instructions ── */
+        #instructions {
+            margin: 1.4rem 1.5rem 0;
+            padding: 0.85rem 1.1rem;
+            background: #ede6d4;
+            border-left: 3px solid var(--gold);
+            border-radius: 0 3px 3px 0;
+            font-size: 0.97rem;
+            color: var(--ink-mid);
+            line-height: 1.6;
+        }
+
+        #instructions .correct-sample {
+            display: inline-block;
+            background: var(--correct-bg);
+            border: 1px solid var(--correct-border);
+            border-radius: 4px;
+            padding: 0 6px;
+            font-size: 0.9em;
+        }
+
+        /* ── Game board ── */
+        #game-board {
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 1.6rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--ink-light);
+            border-bottom: 1px solid var(--parchment-dark);
+            padding-bottom: 4px;
+            margin: 1.6rem 0 0.7rem;
+            letter-spacing: 0.03em;
+        }
+
+        .dialog-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .line {
+            padding: 10px 14px;
+            border-radius: 3px;
+            background: var(--incorrect-bg);
+            border: 1.5px solid var(--incorrect-border);
+            cursor: pointer;
+            transition: border-color 0.18s, box-shadow 0.18s, transform 0.13s, background 0.25s;
+            user-select: none;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        .line:hover {
+            border-color: var(--gold);
+            box-shadow: 0 2px 8px rgba(184,134,11,0.13);
+        }
+
+        .line.selected {
+            border-color: var(--selected-border) !important;
+            box-shadow: 0 0 0 3px rgba(184,134,11,0.22), 0 2px 12px rgba(184,134,11,0.18);
+            transform: scale(1.015);
+            z-index: 10;
+            background: #fdf6e3 !important;
+        }
+
+        .line.correct {
+            background: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+        }
+
+        .line.incorrect {
+            background: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+        }
+
+        /* ── Solve button ── */
+        #solvePuzzle {
+            text-align: center;
+            margin: 0.5rem 1.5rem 1.2rem;
+        }
+
+        .solve-btn {
+            padding: 10px 28px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1rem;
+            font-style: italic;
+            font-weight: 700;
+            background: var(--ink);
+            color: var(--gold-light);
+            border: 1.5px solid var(--gold);
+            border-radius: 3px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.18s, color 0.18s;
+        }
+
+        .solve-btn:hover {
+            background: var(--gold);
+            color: var(--ink);
+        }
+
+        /* ── Submission area ── */
+        .submission-area {
+            margin: 0 1.5rem;
+            padding: 1.1rem 1.2rem;
+            background: #ede6d4;
+            border-radius: 3px;
+            text-align: center;
+            border: 1px solid var(--parchment-dark);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            padding: 9px 12px;
+            border: 1.5px solid #c9baa0;
+            border-radius: 3px;
+            background: var(--parchment);
+            color: var(--ink);
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 1rem;
+            width: 180px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        button#printBtn {
+            padding: 10px 22px;
+            cursor: pointer;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            border-radius: 3px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
+            transition: background 0.18s;
+        }
+
+        button#printBtn:hover:not(:disabled) {
+            background: var(--gold-light);
+        }
+
+        button#printBtn:disabled {
+            background: #c9baa0;
+            cursor: not-allowed;
+            color: #7a6040;
+        }
+
+        .error-msg {
+            color: #8a4a2a;
+            font-size: 0.88rem;
+            margin-top: 7px;
+            font-style: italic;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            #bodyAllContent { box-shadow: none; border: none; }
+            .submission-area, #instructions, #solvePuzzle { display: none; }
+            .line.selected { transform: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+<div id="bodyAllContent">
+
+    <div class="page-header">
+        <h1>Lyrics Scramble</h1>
+        <p class="subtitle">The Prince and the Beggar</p>
+        <p class="music-credit">Music: Everybody Bleeds &nbsp;·&nbsp; Linka Kulla</p>
+    </div>
+
+    <div id="instructions">
+        Place the lyrics in the correct order for each section.
+        Click two lines to swap them.
+        A line turns <span class="correct-sample">green</span> when correctly placed.
+    </div>
+
+    <div id="game-board"></div>
+
+    <div id="solvePuzzle">
+        <button id="solveToggleBtn" class="solve-btn">Solve the puzzle</button>
+    </div>
+
+    <div class="submission-area">
+        <div class="input-group">
+            <input type="text" id="studentName" placeholder="Name" oninput="validateForm()">
+            <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+        </div>
+        <p id="msg" class="error-msg">Name and ID required for PDF print/save</p>
+        <button id="printBtn" onclick="window.print()" disabled>Print / Save to PDF</button>
+    </div>
+
+</div>
+
+<script>
+const quizData = [
+    {
+        "title": "Section 1",
+        "lines": [
+            { "t": "All the world was at my feet," },
+            { "t": "Every comfort I could need" },
+            { "t": "All the love my parents gave," },
+            { "t": "In a room with too much space," }
+        ]
+    },
+    {
+        "title": "Section 2",
+        "lines": [
+            { "t": "But the children in the streets," },
+            { "t": "Seemed to live more wild and free" },
+            { "t": "Laughing loud and chasing days," },
+            { "t": "I would gladly trade my place" }
+        ]
+    },
+    {
+        "title": "Section 3",
+        "lines": [
+            { "t": "One shirt and a pair of shoes," },
+            { "t": "Begging all day just for food" },
+            { "t": "Or I'll face the wrath inside," },
+            { "t": "Of my uncle's foolish pride." }
+        ]
+    },
+    {
+        "title": "Section 4",
+        "lines": [
+            { "t": "There's a castle on the hill" },
+            { "t": "Dream of shirts made out of silk" },
+            { "t": "And a horse to call my own," },
+            { "t": "And a place to call my home." }
+        ]
+    },
+    {
+        "title": "Section 5",
+        "lines": [
+            { "t": "Welcome to my world," },
+            { "t": "step inside and see" },
+            { "t": "Castles made of stone" },
+            { "t": "or living on the streets" }
+        ]
+    },
+    {
+        "title": "Section 6",
+        "lines": [
+            { "t": "No life is what it seems" },
+            { "t": "no one can ever tell" },
+            { "t": "What's hidden in the heart," },
+            { "t": "who's living inside hell" }
+        ]
+    },
+    {
+        "title": "Section 7",
+        "lines": [
+            { "t": "Everybody bleeds," },
+            { "t": "everybody dreams" },
+            { "t": "Everybody cries," },
+            { "t": "it's never what it seems" }
+        ]
+    },
+    {
+        "title": "Section 8",
+        "lines": [
+            { "t": "No matter who you are," },
+            { "t": "No matter where you've been" },
+            { "t": "No matter what you have" },
+            { "t": "everybody needs a friend" }
+        ]
+    },
+    {
+        "title": "Section 9",
+        "lines": [
+            { "t": "When I saw you at the gate," },
+            { "t": "I knew I could change our fate" },
+            { "t": "I saw things I never knew" },
+            { "t": "And it's all because of you" }
+        ]
+    },
+    {
+        "title": "Section 10",
+        "lines": [
+            { "t": "And we both began to see" },
+            { "t": "that the happiness we seek" },
+            { "t": "It was in us all along" },
+            { "t": "now together we are strong." }
+        ]
+    },
+    {
+        "title": "Section 11",
+        "lines": [
+            { "t": "Welcome to my world," },
+            { "t": "step inside and see" },
+            { "t": "Castles made of stone" },
+            { "t": "or living on the streets" }
+        ]
+    },
+    {
+        "title": "Section 12",
+        "lines": [
+            { "t": "No life is what it seems" },
+            { "t": "no one can ever tell" },
+            { "t": "What's hidden in the heart," },
+            { "t": "who's living inside hell" }
+        ]
+    },
+    {
+        "title": "Section 13",
+        "lines": [
+            { "t": "Everybody bleeds," },
+            { "t": "everybody dreams" },
+            { "t": "Everybody cries," },
+            { "t": "it's never what it seems" }
+        ]
+    },
+    {
+        "title": "Section 14",
+        "lines": [
+            { "t": "No matter who you are," },
+            { "t": "No matter where you've been" },
+            { "t": "No matter what you have" },
+            { "t": "everybody needs a friend" }
+        ]
+    },
+    {
+        "title": "Section 15",
+        "lines": [
+            { "t": "Everybody bleeds," },
+            { "t": "everybody dreams" },
+            { "t": "Everybody cries," },
+            { "t": "it's never what it seems" }
+        ]
+    },
+    {
+        "title": "Section 16",
+        "lines": [
+            { "t": "No matter who you are," },
+            { "t": "No matter where you've been" },
+            { "t": "No matter what you have" },
+            { "t": "everybody needs a friend" }
+        ]
+    }
+];
+
+let selectedElement = null;
+
+function getDerangedIndices(length) {
+    // For sections with blank lines, we only shuffle non-blank lines
+    let indices = Array.from({length}, (_, i) => i);
+    let scrambled = [...indices];
+    let attempts = 0;
+    do {
+        for (let i = scrambled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+        }
+        attempts++;
+    } while (scrambled.some((val, idx) => val === idx) && attempts < 100);
+    return scrambled;
+}
+
+function initGame() {
+    const board = document.getElementById('game-board');
+    board.innerHTML = '';
+
+    quizData.forEach((section, sectionIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+
+        const container = document.createElement('div');
+        container.className = 'dialog-container';
+
+        const scrambledIndices = getDerangedIndices(section.lines.length);
+
+        scrambledIndices.forEach((originalIdx) => {
+            const lineData = section.lines[originalIdx];
+            const lineEl = document.createElement('div');
+            lineEl.className = 'line incorrect';
+            lineEl.dataset.originalIndex = originalIdx;
+            lineEl.dataset.sectionIndex = sectionIdx;
+            lineEl.innerHTML = `<span class="text">${lineData.t}</span>`;
+            lineEl.onclick = () => handleSelection(lineEl);
+            container.appendChild(lineEl);
+        });
+
+        sectionDiv.appendChild(container);
+        board.appendChild(sectionDiv);
+        checkColors(container);
+    });
+}
+
+function handleSelection(el) {
+    if (!selectedElement) {
+        selectedElement = el;
+        el.classList.add('selected');
+    } else {
+        if (selectedElement === el) {
+            el.classList.remove('selected');
+            selectedElement = null;
+            return;
+        }
+
+        if (selectedElement.dataset.sectionIndex === el.dataset.sectionIndex) {
+            const parent = el.parentNode;
+            const nextToEl = el.nextSibling;
+            const nextToSelected = selectedElement.nextSibling;
+
+            parent.insertBefore(el, nextToSelected);
+            parent.insertBefore(selectedElement, nextToEl);
+
+            checkColors(parent);
+        }
+
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+    }
+}
+
+function checkColors(container) {
+    const lines = container.querySelectorAll('.line');
+    lines.forEach((line, currentIndex) => {
+        if (parseInt(line.dataset.originalIndex) === currentIndex) {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        } else {
+            line.classList.add('incorrect');
+            line.classList.remove('correct');
+        }
+    });
+}
+
+initGame();
+
+function validateForm() {
+    const name = document.getElementById('studentName').value.trim();
+    const id = document.getElementById('studentID').value.trim();
+    const btn = document.getElementById('printBtn');
+    const msg = document.getElementById('msg');
+    if (name !== '' && id !== '') {
+        btn.disabled = false;
+        msg.style.visibility = 'hidden';
+    } else {
+        btn.disabled = true;
+        msg.style.visibility = 'visible';
+    }
+}
+
+// ── Solve / Return toggle ──
+let isSolved = false;
+let savedOrder = [];
+
+function saveCurrentOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    savedOrder = [];
+    containers.forEach(container => {
+        savedOrder.push(Array.from(container.querySelectorAll('.line')));
+    });
+}
+
+function restoreSavedOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    containers.forEach((container, idx) => {
+        const fragment = document.createDocumentFragment();
+        savedOrder[idx].forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';
+        container.appendChild(fragment);
+        checkColors(container);
+    });
+}
+
+function showCorrectOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        lines.sort((a, b) => parseInt(a.dataset.originalIndex) - parseInt(b.dataset.originalIndex));
+        const fragment = document.createDocumentFragment();
+        lines.forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';
+        container.appendChild(fragment);
+        lines.forEach(line => {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        });
+    });
+}
+
+function toggleSolve() {
+    const btn = document.getElementById('solveToggleBtn');
+    if (!isSolved) {
+        saveCurrentOrder();
+        showCorrectOrder();
+        btn.textContent = 'Return to puzzle';
+        isSolved = true;
+    } else {
+        restoreSavedOrder();
+        btn.textContent = 'Solve the puzzle';
+        isSolved = false;
+    }
+}
+
+document.getElementById('solveToggleBtn').addEventListener('click', toggleSolve);
+window.addEventListener('load', () => { saveCurrentOrder(); });
+</script>
+</body>
+</html>
