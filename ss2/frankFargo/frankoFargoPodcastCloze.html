@@ -55,7 +55,7 @@
     <div class="header">
         <h1>Franko Fargo Podcast</h1>
         <p id="subtitle">Cloze/Select Quiz</p>
-        <p>Complete the sentences using vocabulary from the podcast</p>
+        <p>Multiple answers may make sense, but select the exact wording used in the podcast.</p>
     </div>
 
     <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
@@ -161,6 +161,27 @@ function toggleAnswers() {
     <script>
         function toggleWordList() { const wl = document.getElementById('theWordList'); const btn = document.querySelector('.show-hide-button'); if (wl.style.display === 'none' || wl.style.display === '') { wl.style.display = 'block'; btn.textContent = 'Hide Word List'; } else { wl.style.display = 'none'; btn.textContent = 'Show Word List'; } }
     </script>
+
+    <script>
+window.addEventListener('DOMContentLoaded', () => {
+  // Find every select element on the page
+  const dropdowns = document.querySelectorAll('select');
+
+  dropdowns.forEach(select => {
+    // Skip if the select has fewer than 3 options
+    if (select.options.length < 3) return;
+
+    // Convert options to an array and skip the first item
+    const optionsArray = Array.from(select.options).slice(1);
+
+    // Shuffle the array elements randomly
+    optionsArray.sort(() => Math.random() - 0.5);
+
+    // Append them back (moves them to the end of this specific select)
+    optionsArray.forEach(option => select.appendChild(option));
+  });
+});
+</script>
     <footer>...</footer>
 </body>
 </html>

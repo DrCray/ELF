@@ -333,6 +333,27 @@ function checkAnswer(select) {
 }
 </script>
 
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  // Find every select element on the page
+  const dropdowns = document.querySelectorAll('select');
+
+  dropdowns.forEach(select => {
+    // Skip if the select has fewer than 3 options
+    if (select.options.length < 3) return;
+
+    // Convert options to an array and skip the first item
+    const optionsArray = Array.from(select.options).slice(1);
+
+    // Shuffle the array elements randomly
+    optionsArray.sort(() => Math.random() - 0.5);
+
+    // Append them back (moves them to the end of this specific select)
+    optionsArray.forEach(option => select.appendChild(option));
+  });
+});
+</script>
+
      <footer style="margin-top:6rem;">...</footer>
 
 </body></html>
