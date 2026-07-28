@@ -27,7 +27,7 @@
         max-width: 720px;
     }
 
-    /* Lavender buttons */
+/* Lavender buttons */
     button#toggleAll, button#studyMode {
        width: 10rem;
         padding: 0.3rem;
@@ -41,6 +41,12 @@
         transition: all 0.3s ease;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    button#studyMode {
+        position: sticky;
+        top: 0.5rem;
+        z-index: 100;
+    }
+
     button#toggleAll:hover, button#studyMode:hover {
         background: linear-gradient(135deg, #d8bfd8 0%, #c8b3d8 100%);
         box-shadow: 0 4px 6px rgba(0,0,0,0.15);
@@ -670,13 +676,27 @@
 // Study Mode toggle
 const studyBtn = document.getElementById('studyMode');
 let studyMode = false;
+let preStudyState = null; // holds captured user state before entering study mode
+
 studyBtn.addEventListener('click', () => {
     studyMode = !studyMode;
     studyBtn.textContent = studyMode ? 'Hide Answers' : 'Study Mode';
-    document.querySelectorAll('#quiz select').forEach(select => {
-        const correct = select.dataset.answer;
-        if (studyMode) {
+
+    if (studyMode) {
+        // Capture current user state BEFORE showing answers
+        preStudyState = new Map();
+        document.querySelectorAll('#quiz select').forEach(select => {
+            preStudyState.set(select, {
+                value: select.value,
+                wasCorrect: select.classList.contains('correct'),
+                wasIncorrect: select.classList.contains('incorrect')
+            });
+        });
+
+        document.querySelectorAll('#quiz select').forEach(select => {
+            const correct = select.dataset.answer;
             select.value = correct; // auto-select correct answer
+            select.classList.remove('incorrect');
             select.classList.add('correct'); // ADD GREEN BACKGROUND TO SELECT
             // Highlight correct option in green
             Array.from(select.options).forEach(opt => {
@@ -686,17 +706,21 @@ studyBtn.addEventListener('click', () => {
                     opt.classList.remove('correct-answer');
                 }
             });
-        } else {
-            // Remove highlighting when hiding
-            select.value = ''; // RESET to empty/default option
-            select.classList.remove('correct', 'incorrect'); // REMOVE COLORED BACKGROUNDS
+        });
+    } else {
+        // Reinstate the preserved user state
+        document.querySelectorAll('#quiz select').forEach(select => {
+            const saved = preStudyState ? preStudyState.get(select) : null;
+            select.value = saved ? saved.value : '';
+            select.classList.remove('correct', 'incorrect');
+            if (saved && saved.wasCorrect) select.classList.add('correct');
+            if (saved && saved.wasIncorrect) select.classList.add('incorrect');
             Array.from(select.options).forEach(opt => {
                 opt.classList.remove('correct-answer');
             });
-        }
-        // DELETE THESE TWO LINES - they're undoing everything!
-        // select.classList.remove('correct', 'incorrect');
-    });
+        });
+        preStudyState = null;
+    }
 });
 
     // Check answers - automatic on selection change
