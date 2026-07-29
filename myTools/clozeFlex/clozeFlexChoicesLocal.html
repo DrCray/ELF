@@ -153,14 +153,10 @@
 
 
 .toggle-button {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-end;
+   position: -webkit-sticky; /* For Safari compatibility */
+  position: sticky;         /* Activates sticky positioning */
+  top: 10px;                /* Gap from top of screen when stuck */
+  z-index: 100;             /* Ensures it stays on top of text */
 }
 
 .toggle-button {
@@ -192,9 +188,7 @@
 </div>
     <!-- Student Info Section -->
 
-    <input id="name" type="text" value="name">
-    <input id="id" type="text" value="id#">
-    <hr>
+
     <input id="passCode" type="text" value="passcode" style="display:none;"">
     <button id="verifyYou" onclick="verifyStudent()" style="display:none;">Verify Your Name, ID, Passcode</button>
     
@@ -801,7 +795,14 @@ const domFileName = document.getElementById('domFileName').value;
 </script>
 <!--///// end edit HTML save as DOM =======================
 ========================================================-->
+
+    <input id="name" type="text" placeholder="name">
+    <input id="id" type="text" placeholder="id#">
+
+
     <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
+
+
 
       <script>
         function checkThenPrint(){
@@ -812,10 +813,9 @@ const domFileName = document.getElementById('domFileName').value;
             let ID = document.getElementById("id").value.trim();
 
 
-            if (
-                (Name==="name" || ID==="id#" || Name==="" || ID==="")
-                ){
-                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
+                    // Check if either field has fewer than 2 characters
+        if (Name.length < 2 || ID.length < 2){
+                alert ("Name and ID# required \r\n for Print/Save as PDF ");
                 }
             else{
              window.print();
