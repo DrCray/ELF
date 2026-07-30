@@ -19,6 +19,9 @@
             padding:0; width:fit-content; font-size: 75%;
         }
         .toggle-button {
+            position:sticky;
+            top: 8px;
+            z-index:1000;
             background-color: #017BC6;
             color: white;
             border: none;
@@ -411,9 +414,11 @@ function toggleAnswers(containerId) {
     const container = document.getElementById(containerId);
     const button = container.querySelector('.toggle-button');
     const selects = container.querySelectorAll('select[data-correct]');
-    
+
     if (button.textContent === 'Show Answers') {
-        // Show all answers
+        container._savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, backgroundColor: s.style.backgroundColor };
+        });
         selects.forEach(select => {
             const correctAnswer = select.getAttribute('data-correct');
             select.value = correctAnswer;
@@ -422,11 +427,16 @@ function toggleAnswers(containerId) {
         });
         button.textContent = 'Hide Answers';
     } else {
-        // Hide all answers
-        selects.forEach(select => {
-            select.value = '';
+        const saved = container._savedState;
+        selects.forEach((select, i) => {
             select.classList.remove('answer-shown');
-            select.style.backgroundColor = '';
+            if (saved && saved[i]) {
+                select.value = saved[i].value;
+                select.style.backgroundColor = saved[i].backgroundColor;
+            } else {
+                select.value = '';
+                select.style.backgroundColor = '';
+            }
         });
         button.textContent = 'Show Answers';
     }
