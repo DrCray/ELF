@@ -73,6 +73,32 @@ select.incorrect {
     border-color: #f39c12;
 }
 
+.study-toggle-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 0;
+    background: #f9f9fb;
+}
+
+.study-toggle-btn {
+    padding: 9px 20px;
+    font-size: 0.95em;
+    background: linear-gradient(135deg, #7c4dca, #5b3a8c);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 6px rgba(90, 58, 140, 0.25);
+}
+
+.study-toggle-btn:hover {
+    opacity: 0.88;
+}
+
 .form-area {
     margin-top: 50px;
     padding-top: 25px;
@@ -154,6 +180,10 @@ button:disabled {
     Choose the best word or phrase for each gap.<br>
     (High A2 – Low B1 level)
 </p>
+
+<div class="study-toggle-bar">
+    <button id="studyModeBtn" class="study-toggle-btn" type="button">Study Mode</button>
+</div>
 
 <div class="section">
 <h2>1. Waking Up to Disaster: Mark’s Painful Morning</h2>
@@ -331,6 +361,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Print when button clicked
     printBtn.addEventListener('click', () => {
         window.print();
+    });
+
+    // ───────────────────────────────────────────────
+    // Study Mode: snapshot current state, reveal answers,
+    // then restore the snapshot on Return to Quiz
+    // ───────────────────────────────────────────────
+    const studyModeBtn = document.getElementById('studyModeBtn');
+    let studySnapshot = null;
+    let inStudyMode = false;
+
+    studyModeBtn.addEventListener('click', () => {
+        const selects = document.querySelectorAll('select');
+
+        if (!inStudyMode) {
+            // Entering Study Mode: capture current value + classes for each select
+            studySnapshot = Array.from(selects).map(select => ({
+                value: select.value,
+                classes: Array.from(select.classList)
+            }));
+
+            selects.forEach(select => {
+                select.value = 'correct';
+                select.classList.remove('incorrect');
+                select.classList.add('correct');
+                select.disabled = true;
+            });
+
+            inStudyMode = true;
+            studyModeBtn.textContent = 'Return to Quiz';
+        } else {
+            // Returning to Quiz: restore the captured state
+            selects.forEach((select, i) => {
+                const snap = studySnapshot ? studySnapshot[i] : null;
+                select.disabled = false;
+                if (snap) {
+                    select.value = snap.value;
+                    select.classList.remove('correct', 'incorrect');
+                    snap.classes.forEach(c => select.classList.add(c));
+                } else {
+                    select.value = '--select--';
+                    select.classList.remove('correct', 'incorrect');
+                }
+            });
+
+            inStudyMode = false;
+            studyModeBtn.textContent = 'Study Mode';
+        }
     });
 });
 </script>
