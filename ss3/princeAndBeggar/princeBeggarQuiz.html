@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +25,7 @@ body {
     background: white;
     border-radius: 28px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    /* overflow: hidden; REMOVED - this prevents position: sticky from working */
 }
 
 h1 {
@@ -39,6 +38,9 @@ h1 {
     font-size: 2rem;
     letter-spacing: -0.3px;
     border-bottom: 5px solid #f5c542;
+    /* Added to maintain rounded corners after removing overflow: hidden */
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
 }
 
 h2 {
@@ -51,6 +53,45 @@ h2 {
     font-weight: 500;
     letter-spacing: 1px;
     border-bottom: none;
+}
+
+/* Sticky Button Container */
+.sticky-btn-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 1px solid #eef2f5;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+#studyToggleBtn {
+    background-color: #2a6b47;
+    color: white;
+    cursor: pointer;
+    padding: 10px 28px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 60px;
+    transition: 0.2s;
+    width: auto;
+}
+
+#studyToggleBtn:hover {
+    background-color: #1f543b;
+    transform: scale(0.97);
+}
+
+#studyToggleBtn.study-mode-active {
+    background-color: #f39c12; /* Orange to indicate study mode is active */
+}
+
+#studyToggleBtn.study-mode-active:hover {
+    background-color: #d68910;
 }
 
 .question-block {
@@ -193,7 +234,7 @@ button:enabled:hover {
 }
 
 @media print {
-    .button-section, .note {
+    .button-section, .note, .sticky-btn-container {
         display: none;
     }
     body {
@@ -239,6 +280,8 @@ footer {
     h1 {
         font-size: 1.6rem;
         padding: 1.5rem 1rem 0.8rem;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
     }
     h2 {
         font-size: 0.85rem;
@@ -262,6 +305,11 @@ footer {
     <div class="container">
         <h1>Comprehension Quiz</h1>
         <h2>Prince and the Beggar</h2>
+
+        <!-- Sticky Button Container -->
+        <div class="sticky-btn-container">
+            <button id="studyToggleBtn">Study Mode</button>
+        </div>
 
         <div id="quizForm">
             <!-- Question 1 -->
@@ -467,6 +515,8 @@ footer {
 <script>
     let studentName = "";
     let studentId = "";
+    let isStudyMode = false;
+    let savedState = [];
 
     function checkAnswer(selectElement, correctValue) {
         const selectedValue = selectElement.value;
@@ -499,6 +549,65 @@ function prepareAndPrint() {
         document.title = originalTitle; // restore after
     }, 90); // 50–200ms works
 }
+
+    // --- Study Mode Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('studyToggleBtn');
+        
+        toggleBtn.addEventListener('click', () => {
+            if (!isStudyMode) {
+                enterStudyMode();
+            } else {
+                returnToQuiz();
+            }
+        });
+    });
+
+    function enterStudyMode() {
+        savedState = []; // Clear previous state
+        const selects = document.querySelectorAll('#quizForm select');
+
+        // 1. Capture current state of all select boxes and apply correct answers
+        selects.forEach(select => {
+            // Extract the correct value from the onchange attribute (e.g., checkAnswer(this, 'b') -> 'b')
+            const match = select.getAttribute('onchange').match(/checkAnswer\([^,]+,\s*'([^']+)'\)/);
+            if (match) {
+                const correctValue = match[1];
+                
+                // Save current state
+                savedState.push({
+                    element: select,
+                    value: select.value,
+                    className: select.className
+                });
+
+                // Apply Study Mode styles and show correct answer
+                select.value = correctValue;
+                select.classList.remove('incorrect');
+                select.classList.add('correct');
+            }
+        });
+
+        // Update button text and state
+        const toggleBtn = document.getElementById('studyToggleBtn');
+        toggleBtn.textContent = "Return to Quiz";
+        toggleBtn.classList.add('study-mode-active');
+        isStudyMode = true;
+    }
+
+    function returnToQuiz() {
+        // 2. Restore the captured state
+        savedState.forEach(state => {
+            state.element.value = state.value;
+            state.element.className = state.className;
+        });
+
+        // Update button text and state
+        const toggleBtn = document.getElementById('studyToggleBtn');
+        toggleBtn.textContent = "Study Mode";
+        toggleBtn.classList.remove('study-mode-active');
+        isStudyMode = false;
+    }
 </script>
     <footer>...</footer>
 </body>
