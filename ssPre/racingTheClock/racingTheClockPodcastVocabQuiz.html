@@ -97,8 +97,8 @@
             border-radius: 8px;
         }
         button {
-            padding: .33rem;
-            font-size: 1rem;
+            padding: .2rem;
+            font-size: .9rem;
             background-color: #3498db;
             color: white;
             border: none;
@@ -185,6 +185,13 @@
   } 
   #subtitle {
     font-size: 120%;
+  }
+
+
+  #toggleAnswersBtn {
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
   }
     </style>
 </head>
@@ -494,27 +501,35 @@ window.addEventListener('beforeunload', function() {
 // Toggle show/hide answers
 let answersVisible = false;
 
+var savedState = null;
 function toggleAnswers() {
     answersVisible = !answersVisible;
-    const button = document.getElementById('toggleAnswersBtn');
-    
-    document.querySelectorAll('select').forEach(select => {
-        if (answersVisible) {
-            // Show correct answer
-            const correctAnswer = select.getAttribute('data-answer');
-            select.value = correctAnswer;
+    var button = document.getElementById('toggleAnswersBtn');
+    var selects = document.querySelectorAll('select[data-answer]');
+    if (answersVisible) {
+        savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, correct: s.classList.contains('correct'), incorrect: s.classList.contains('incorrect') };
+        });
+        selects.forEach(function(select) {
+            select.value = select.getAttribute('data-answer');
             select.classList.add('correct');
             select.classList.remove('incorrect');
-        } else {
-            // Hide answers - reset to default
-            select.selectedIndex = 0;
-            select.classList.remove('correct', 'incorrect');
-        }
-    });
-    
-    // Update button text
+        });
+    } else {
+        selects.forEach(function(select, i) {
+            var state = savedState ? savedState[i] : null;
+            if (state) {
+                select.value = state.value;
+                select.classList.toggle('correct', state.correct);
+                select.classList.toggle('incorrect', state.incorrect);
+            } else {
+                select.selectedIndex = 0;
+                select.classList.remove('correct', 'incorrect');
+            }
+        });
+    }
     button.textContent = answersVisible ? ' Hide Answers ' : ' Study Mode ';
-}        
+}
     </script>
 
 <script>
