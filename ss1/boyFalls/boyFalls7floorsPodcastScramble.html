@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scrambler</title>
-    <style>
+   <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -18,7 +18,7 @@
         p.instructions { text-align: center; font-style: italic; color: #666; }
 
         .section { margin-bottom: 30px; }
-        
+
         .dialog-container {
             display: flex;
             flex-direction: column;
@@ -118,6 +118,30 @@ box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
     }
 }
 
+#solvePuzzle{
+    position:sticky;
+    top:8px;
+    z-index: 1000;
+}
+
+.solve-btn {
+    padding: 12px 28px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.solve-btn:hover {
+    background-color: #d35400;
+}
+
+#instructions {padding:1rem; background:#E4E4E4; color:#554D0F; box-shadow: 0 0 4px  gray;}
+
 
     </style>
 </head>
@@ -136,7 +160,9 @@ box-shadow: -1px 2px 13px 3px rgba(0,0,0,0.82); padding:1rem; border-radius:6px;
     <h1>Podcast Scramble</h1>
     <p class="instructions">Boy Falls 7 Floors</p><p class="instructions">Click two lines to swap them. Changes to&nbsp;<span style="background-color: #f0fdf4; border:thin solid #75A082;border-radius:6px;">&nbsp;green&nbsp;</span>&nbsp;when correct</p>
 </div>
-
+<div id="solvePuzzle" style="text-align: center; margin: 3px 0;">
+    <button id="solveToggleBtn" class="solve-btn">Study Mode</button>
+</div>
 
     <div id="game-board"><div class="section"><h2>Section 1</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="0"><span class="text">Balcony door left open—someone…</span></div><div class="line incorrect" data-original-index="3" data-section-index="0"><span class="text">Little Johnny ties his shoes.</span></div><div class="line incorrect" data-original-index="0" data-section-index="0"><span class="text">Clamdens on the  seventh  floor,</span></div><div class="line incorrect" data-original-index="2" data-section-index="0"><span class="text">Mom flips eggs, Dad reads the news,</span></div><div class="line incorrect" data-original-index="1" data-section-index="0"><span class="text">Saturday sun through the door.</span></div><div class="line incorrect" data-original-index="4" data-section-index="0"><span class="text">Windows shut, AC hums,</span></div></div></div><div class="section"><h2>Section 2</h2><div class="dialog-container"><div class="line incorrect" data-original-index="5" data-section-index="1"><span class="text">Seventh-floor miracle, wild and free.</span></div><div class="line incorrect" data-original-index="4" data-section-index="1"><span class="text">Hallelujah, hallelujah—thank the tree!</span></div><div class="line incorrect" data-original-index="3" data-section-index="1"><span class="text">Good fortune wrapped him up again.</span></div><div class="line incorrect" data-original-index="2" data-section-index="1"><span class="text">Leaves caught his fall, dirt kissed his skin,</span></div><div class="line incorrect" data-original-index="0" data-section-index="1"><span class="text">Oh, Johnny flew like a bird from the rail,</span></div><div class="line incorrect" data-original-index="1" data-section-index="1"><span class="text">Seven stories down, but the branches prevailed.</span></div></div></div></div>
 
@@ -422,5 +448,116 @@ function validateForm() {
     </script>
 
 
+<script>
+
+// ───────────────────────────────────────────────
+// Solve / Return toggle functionality
+// ───────────────────────────────────────────────
+
+let isSolved = false;
+let savedOrder = [];           // will store array of .line elements in scrambled order
+
+function saveCurrentOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+    savedOrder = []; // reset
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        savedOrder.push(lines); // save reference to DOM elements in current order
+    });
+}
+
+function restoreSavedOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach((container, idx) => {
+        const fragment = document.createDocumentFragment();
+        savedOrder[idx].forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';           // clear
+        container.appendChild(fragment);    // restore
+        checkColors(container);             // re-apply correct/incorrect colors
+    });
+}
+
+function showCorrectOrder() {
+    const containers = document.querySelectorAll('.dialog-container');
+
+    containers.forEach(container => {
+        const lines = Array.from(container.querySelectorAll('.line'));
+        // Sort lines by their original index
+        lines.sort((a, b) => {
+            return parseInt(a.dataset.originalIndex) - parseInt(b.dataset.originalIndex);
+        });
+
+        const fragment = document.createDocumentFragment();
+        lines.forEach(line => fragment.appendChild(line));
+        container.innerHTML = '';
+        container.appendChild(fragment);
+
+        // All lines should now be correct
+        lines.forEach(line => {
+            line.classList.add('correct');
+            line.classList.remove('incorrect');
+        });
+    });
+}
+
+function toggleSolve() {
+    const btn = document.getElementById('solveToggleBtn');
+
+    if (!isSolved) {
+        // Solve: save current state → show correct order
+        saveCurrentOrder();
+        showCorrectOrder();
+        btn.textContent = "Return to puzzle";
+        isSolved = true;
+    } else {
+        // Return: restore scrambled state
+        restoreSavedOrder();
+        btn.textContent = "Study Mode";
+        isSolved = false;
+    }
+}
+
+// Attach the button listener
+document.getElementById('solveToggleBtn').addEventListener('click', toggleSolve);
+
+// Optional: save initial order when game first loads (so "Return" works even if never solved)
+window.addEventListener('load', () => {
+    saveCurrentOrder();
+});
+</script>
+
+<script>
+// disable puzzle solver button
+// ───────────────────────────────────────────────
+// Checkbox to disable/hide the solver button
+// ───────────────────────────────────────────────
+
+function updateSolverVisibility() {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    const solverDiv = document.getElementById('solvePuzzle');
+
+    if (!solverDiv) return; // safety
+
+    if (checkbox.checked) {
+        solverDiv.classList.add('editMode');     // using editMode class to hide it
+    } else {
+        solverDiv.classList.remove('editMode');
+    }
+}
+
+// Run once on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('disableSolverCheckbox');
+    if (checkbox) {
+        // Initial state
+        updateSolverVisibility();
+
+        // Listen for changes (toggles every time checkbox is clicked)
+        checkbox.addEventListener('change', updateSolverVisibility);
+    }
+});
+</script>
 
 </body></html>
