@@ -1,0 +1,492 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Mave and Laura: A True Sacrifice</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-maveLaura" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-maveLaura')">Show Answers</button><div class="sentence-div">Princess Mave of Merridale <span style="font-size: 70%;">1</span><select data-correct="possessed" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="possessed">possessed</option>
+<option value="transform">transform</option>
+<option value="prank">prank</option>
+<option value="slipped from">slipped from</option>
+<option value="landed on">landed on</option></select> a rare magical gift: she could <span style="font-size: 70%;">2</span><select data-correct="transform" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="possessed">possessed</option>
+<option value="transform">transform</option>
+<option value="prank">prank</option>
+<option value="slipped from">slipped from</option>
+<option value="landed on">landed on</option></select> anything into stone. She and her younger sister, Laura, spent countless happy hours playing in the royal gardens, racing stone tomatoes down the hills. One afternoon, Laura was carrying a watermelon when Mave decided to play a harmless <span style="font-size: 70%;">3</span><select data-correct="prank" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="possessed">possessed</option>
+<option value="transform">transform</option>
+<option value="prank">prank</option>
+<option value="slipped from">slipped from</option>
+<option value="landed on">landed on</option></select> by turning it to stone. The fruit instantly grew heavy, <span style="font-size: 70%;">4</span><select data-correct="slipped from" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="possessed">possessed</option>
+<option value="transform">transform</option>
+<option value="prank">prank</option>
+<option value="slipped from">slipped from</option>
+<option value="landed on">landed on</option></select> Laura's hands, and <span style="font-size: 70%;">5</span><select data-correct="landed on" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="possessed">possessed</option>
+<option value="transform">transform</option>
+<option value="prank">prank</option>
+<option value="slipped from">slipped from</option>
+<option value="landed on">landed on</option></select> her foot, fracturing it.  When Mave tried to help, she accidentally turned Laura's foot into stone.
+</div>
+<div class="sentence-div">Terrified, Mave rushed to her parents, who took Laura to Merlin, the kingdom's wise wizard. He <span style="font-size: 70%;">6</span><select data-correct="restored" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="restored">restored</option>
+<option value="fueled by">fueled by</option>
+<option value="permanently">permanently</option>
+<option value="withdrew from">withdrew from</option>
+<option value="inseparable">inseparable</option></select> her foot, then explained that Mave's magic was <span style="font-size: 70%;">7</span><select data-correct="fueled by" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="restored">restored</option>
+<option value="fueled by">fueled by</option>
+<option value="permanently">permanently</option>
+<option value="withdrew from">withdrew from</option>
+<option value="inseparable">inseparable</option></select> her emotions -- the stronger she felt, the stronger her powers grew. Unless she learned self-control, she might someday hurt Laura <span style="font-size: 70%;">8</span><select data-correct="permanently" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="restored">restored</option>
+<option value="fueled by">fueled by</option>
+<option value="permanently">permanently</option>
+<option value="withdrew from">withdrew from</option>
+<option value="inseparable">inseparable</option></select>. Frightened of another accident, the King and Queen separated the sisters. Mave <span style="font-size: 70%;">9</span><select data-correct="withdrew from" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="restored">restored</option>
+<option value="fueled by">fueled by</option>
+<option value="permanently">permanently</option>
+<option value="withdrew from">withdrew from</option>
+<option value="inseparable">inseparable</option></select> everyone, and as the years passed, the once <span style="font-size: 70%;">10</span><select data-correct="inseparable" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="restored">restored</option>
+<option value="fueled by">fueled by</option>
+<option value="permanently">permanently</option>
+<option value="withdrew from">withdrew from</option>
+<option value="inseparable">inseparable</option></select> sisters grew distant.
+</div>
+<div class="sentence-div">When Mave turned twenty-one, the royal family held a <span style="font-size: 70%;">11</span><select data-correct="magnificent" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select> birthday celebration. There, Laura met the handsome Prince Marcus, and the two fell in love almost immediately. Before the night ended, Marcus <span style="font-size: 70%;">12</span><select data-correct="proposed" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select>, and Laura happily accepted. When the couple asked for Mave's blessing, she refused, warning that they were <span style="font-size: 70%;">13</span><select data-correct="rushing into" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select> marriage. The sisters argued, and Mave's emotions <span style="font-size: 70%;">14</span><select data-correct="spiraled out of control" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select>. Stone spread from her magic, turning tables, chairs, and even the <span style="font-size: 70%;">15</span><select data-correct="feast" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select> to marble. Horrified, Mave <span style="font-size: 70%;">16</span><select data-correct="fled" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="magnificent">magnificent</option>
+<option value="proposed">proposed</option>
+<option value="rushing into">rushing into</option>
+<option value="spiraled out of control">spiraled out of control</option>
+<option value="feast">feast</option>
+<option value="fled">fled</option></select> into the western mountains.
+</div>
+<div class="sentence-div">There, Mave slowly accepted her powers and built a marble palace of her own. But the magic she had released kept spreading, slowly turning all of Merridale to stone. <span style="font-size: 70%;">17</span><select data-correct="Determined to" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Determined to">Determined to</option>
+<option value="overcome">overcome</option>
+<option value="no clue">no clue</option>
+<option value="paralyzed by fear">paralyzed by fear</option></select> save everyone, Laura searched the mountains until she found her sister. Mave was <span style="font-size: 70%;">18</span><select data-correct="overcome" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Determined to">Determined to</option>
+<option value="overcome">overcome</option>
+<option value="no clue">no clue</option>
+<option value="paralyzed by fear">paralyzed by fear</option></select> with guilt -- she had <span style="font-size: 70%;">19</span><select data-correct="no clue" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Determined to">Determined to</option>
+<option value="overcome">overcome</option>
+<option value="no clue">no clue</option>
+<option value="paralyzed by fear">paralyzed by fear</option></select> how to undo the damage. When she panicked and accidentally touched Laura's arm, it too began turning to stone. Laura rushed to Merlin for help, while Mave stayed behind, <span style="font-size: 70%;">20</span><select data-correct="paralyzed by fear" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Determined to">Determined to</option>
+<option value="overcome">overcome</option>
+<option value="no clue">no clue</option>
+<option value="paralyzed by fear">paralyzed by fear</option></select>. She was afraid of causing more damage.
+</div>
+<div class="sentence-div">Merlin warned Laura that unless the spell was broken, she would eventually turn fully to stone. The only cure, he said, was an act of true love. Laura rushed to Marcus, hoping his kiss would save her. They shared a heartfelt kiss, but nothing happened. As the stone <span style="font-size: 70%;">21</span><select data-correct="crept" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="crept">crept</option></select> further up her arm, Laura realized she was running out of time.
+</div>
+<div class="sentence-div">Meanwhile, Mave finally <span style="font-size: 70%;">22</span><select data-correct="conquered her fear" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="conquered her fear">conquered her fear</option></select>. She raced back to Merridale, found Laura, and, through tears, begged for forgiveness. Gently holding her sister's stone arm, she looked into her eyes and whispered, "I love you." Then she closed her eyes and poured her whole soul into a single wish: that every trace of her stone magic be undone.
+</div>
+<div class="sentence-div">Laura's arm slowly returned to <span style="font-size: 70%;">23</span><select data-correct="flesh" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="flesh">flesh</option>
+<option value="vanished">vanished</option>
+<option value="wept">wept</option>
+<option value="sacrificed">sacrificed</option></select>, and across Merridale the stone <span style="font-size: 70%;">24</span><select data-correct="vanished" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="flesh">flesh</option>
+<option value="vanished">vanished</option>
+<option value="wept">wept</option>
+<option value="sacrificed">sacrificed</option></select>. But when Laura looked up, she saw that Mave herself had turned into a stone statue. Laura fell at her sister's feet and <span style="font-size: 70%;">25</span><select data-correct="wept" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="flesh">flesh</option>
+<option value="vanished">vanished</option>
+<option value="wept">wept</option>
+<option value="sacrificed">sacrificed</option></select>, understanding that Mave had willingly <span style="font-size: 70%;">26</span><select data-correct="sacrificed" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="flesh">flesh</option>
+<option value="vanished">vanished</option>
+<option value="wept">wept</option>
+<option value="sacrificed">sacrificed</option></select> herself to save both her and the kingdom. To this day, Mave's statue still stands in the town square, a reminder that the greatest magic of all is selfless love.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const savedClozeSelections = {};
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        const saved = savedClozeSelections[containerId] || [];
+        selects.forEach((select, i) => {
+            select.value = saved[i] || '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+            if (select.value) {
+                checkAnswer(select);
+            }
+        });
+        delete savedClozeSelections[containerId];
+        button.textContent = 'Show Answers';
+    }
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
