@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐺 Werewolf Vocab · Sentence Completion Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0e0b16;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 400;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+            color: #e2d9d0;
+            border-bottom: 2px dashed #5e4b3c;
+            padding-bottom: 0.6rem;
+        }
+
+        h1 span {
+            font-weight: 600;
+            color: #e8b88a;
+        }
+
+        .subhead {
+            text-align: center;
+            color: #a08d7c;
+            margin-top: -0.2rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            background: #1c171f;
+            border-radius: 40px;
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #cfc3b7;
+            border: 1px solid #3d2e28;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+        }
+
+        .progress-text strong {
+            color: #f4d3b0;
+        }
+
+        .score {
+            background: #2a222a;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            border: 1px solid #5e4b3c;
+        }
+
+        .score strong {
+            color: #e8b88a;
+        }
+
+        .question-block {
+            background: #1c171f;
+            border-radius: 20px;
+            padding: 1.8rem 1.8rem 1.8rem 2.2rem;
+            margin-bottom: 0.3rem;
+            border-left: 4px solid #b8865b;
+            transition: background 0.2s;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.3rem 0.2rem;
+            line-height: 1.8;
+        }
+
+        .question-block:hover {
+            background: #221d26;
+        }
+
+        .question-number {
+            color: #7f6a58;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.6rem;
+            min-width: 2.2rem;
+        }
+
+        .sentence-text {
+            color: #ede7e0;
+            font-size: 1.02rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.2rem 0.1rem;
+        }
+
+        .sentence-text .before,
+        .sentence-text .after {
+            display: inline;
+        }
+
+        .sentence-text select {
+            background: #2a222a;
+            color: #f4d3b0;
+            border: 1px solid #5e4b3c;
+            border-radius: 8px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            cursor: pointer;
+            min-width: 120px;
+            transition: border-color 0.2s, background 0.2s;
+            margin: 0 0.1rem;
+        }
+
+        .sentence-text select:focus {
+            outline: none;
+            border-color: #b8865b;
+            background: #1f1820;
+        }
+
+        .sentence-text select.correct {
+            border-color: #5b9b6d;
+            background: #1e2d22;
+            color: #a8d6b5;
+        }
+
+        .sentence-text select.incorrect {
+            border-color: #9b5b5b;
+            background: #2d1e1e;
+            color: #d6a8a8;
+        }
+
+        .sentence-text select:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .feedback-icon {
+            margin-left: 0.4rem;
+            font-size: 1.1rem;
+        }
+
+        .word-badge {
+            display: inline-block;
+            background: #2d1f1a;
+            color: #cfb094;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            border: 1px solid #4b372b;
+            margin-left: 0.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2.5rem 0 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #2a222a;
+            color: #ede7e0;
+            border: 1px solid #5e4b3c;
+            padding: 0.7rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #3d2e28;
+            border-color: #b8865b;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #5e4b3c;
+            border-color: #b8865b;
+            color: #f4e8dc;
+        }
+
+        .btn-primary:hover {
+            background: #7a604b;
+        }
+
+        .btn-success {
+            background: #2d4a33;
+            border-color: #5b9b6d;
+            color: #c8e6d0;
+        }
+
+        .btn-success:hover {
+            background: #3d6a47;
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            color: #6b5b4c;
+            font-size: 0.85rem;
+            border-top: 1px solid #342a24;
+            padding-top: 1.5rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.8rem; }
+            .question-block { padding: 1.2rem; }
+            .sentence-text { font-size: 0.95rem; }
+            .sentence-text select { min-width: 100px; font-size: 0.85rem; }
+            .progress-bar { flex-direction: column; align-items: flex-start; }
+        }
+
+
+
+
+
+#sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14, 11, 22, 0.6);  /* Changed from 0.85 to 0.6 for 60% visibility */
+    backdrop-filter: blur(8px);  /* Reduced blur for more transparency */
+    -webkit-backdrop-filter: blur(8px);
+    padding: 1rem 1.5rem;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(94, 75, 60, 0.2);  /* More transparent border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* If you want the inner elements also transparent */
+#sticky .progress-bar {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 250px;
+    background: rgba(28, 23, 31, 0.5);  /* More transparent */
+    border: 1px solid rgba(61, 46, 40, 0.3);
+    backdrop-filter: blur(4px);
+}
+
+#sticky .btn-group {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+#sticky .btn {
+    background: rgba(42, 34, 42, 0.6);  /* More transparent */
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(94, 75, 60, 0.4);
+}
+
+#sticky .btn:hover {
+    background: rgba(61, 46, 40, 0.8);
+    border-color: #b8865b;
+}
+
+        #sticky {
+  /* 2. Make the background translucent (White with 80% opacity) */
+  background-color: rgb(255 255 255 / 40%);
+
+  /* 3. Optional: Add a blur effect for a premium "frosted glass" look */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px); /* For Safari support */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🐾 <span>sentence</span> · completion</h1>
+    <div class="subhead">choose the correct vocabulary word for each sentence</div>
+
+<div id="sticky">
+    <div class="btn-group">
+        <button class="btn btn-primary" id="checkAllBtn">🔍 Check All</button>
+        <button class="btn btn-success" id="resetAllBtn">🔄 Reset All</button>
+    </div>
+    <div class="progress-bar" id="progressBar">
+        <span class="progress-text">📝 <strong id="answeredCount">0</strong> / <span id="totalCount">106</span> answered</span>
+        <span class="score">✅ <strong id="correctCount">0</strong> correct · ❌ <strong id="incorrectCount">0</strong> incorrect</span>
+    </div>
+</div>
+
+    <div id="questionsContainer"></div>
+
+
+
+    <div class="footer-note">✦ each dropdown has the correct word + 2 random distractors ✦</div>
+</div>
+
+<script>
+    (function() {
+        // ---------------------------------------------------------------
+        // VOCABULARY DATA (same as before: word + 2 example sentences)
+        // ---------------------------------------------------------------
+        const vocabData = [
+            {
+                word: "staple",
+                examples: [
+                    "Rice is a __ of Asian cuisine, served with almost every meal.",
+                    "Critical thinking is a __ of a good education, taught in every subject."
+                ]
+            },
+            {
+                word: "supernatural",
+                examples: [
+                    "She loves watching TV shows about __ events like ghosts and telekinesis.",
+                    "Many people believe in __ forces, even if science can't prove them."
+                ]
+            },
+            {
+                word: "mythical",
+                examples: [
+                    "Dragons are __ creatures that appear in the folklore of many cultures.",
+                    "The idea of a perfect job with no stress is pretty __—it doesn't really exist."
+                ]
+            },
+            {
+                word: "transforms",
+                examples: [
+                    "A caterpillar __ into a butterfly through a process called metamorphosis.",
+                    "The old factory __ into a trendy shopping mall with cafes and cinemas."
+                ]
+            },
+            {
+                word: "process",
+                examples: [
+                    "Applying for a visa is a long __ that requires many documents.",
+                    "Learning a new language is a slow __, but daily practice really helps."
+                ]
+            },
+            {
+                word: "shape-shifting",
+                examples: [
+                    "In many video games, characters have __ abilities to adapt to different situations.",
+                    "The magician's trick looked like __, but it was really just clever lighting and mirrors."
+                ]
+            },
+            {
+                word: "erect",
+                examples: [
+                    "The soldiers stood __ during the ceremony, not moving a single muscle.",
+                    "Good posture means keeping your back __ while sitting at your desk."
+                ]
+            },
+            {
+                word: "legends",
+                examples: [
+                    "My grandmother told me __ about the ancient kings who built the castle.",
+                    "The company's success became the stuff of __ in the business world."
+                ]
+            },
+            {
+                word: "persisted",
+                examples: [
+                    "The rain __ for three days, flooding the streets and delaying flights.",
+                    "Despite many rejections, her determination __ and she finally got the job."
+                ]
+            },
+            {
+                word: "centuries",
+                examples: [
+                    "The cathedral has been standing for __, surviving wars and earthquakes.",
+                    "Coffee has been traded across the globe for __, connecting different cultures."
+                ]
+            },
+            {
+                word: "depictions",
+                examples: [
+                    "Ancient __ of gods show them with animal heads or wings.",
+                    "The film's __ of medieval life were surprisingly accurate, from clothing to food."
+                ]
+            },
+            {
+                word: "characteristics",
+                examples: [
+                    "One of the __ of a good manager is the ability to listen to their team.",
+                    "The main __ of this smartphone are its long battery life and fast processor."
+                ]
+            },
+            {
+                word: "evolved",
+                examples: [
+                    "The company's marketing strategy __ as they learned more about their customers.",
+                    "Over the years, his opinion on the matter __ from strong opposition to cautious support."
+                ]
+            },
+            {
+                word: "compelled",
+                examples: [
+                    "The deadline __ me to finish the project by midnight.",
+                    "She felt __ to apologize after realizing she had hurt his feelings."
+                ]
+            },
+            {
+                word: "cursed",
+                examples: [
+                    "The team seemed __—they lost their best players and then their coach left.",
+                    "He always missed the bus by seconds; he joked that he was __."
+                ]
+            },
+            {
+                word: "undergoes",
+                examples: [
+                    "The city __ major renovations before the Olympic Games.",
+                    "She __ two months of training before the marathon."
+                ]
+            },
+            {
+                word: "uncontrollable",
+                examples: [
+                    "His laughter was __ during the comedy show—he couldn't stop.",
+                    "The wildfire spread at an __ speed, forcing thousands to evacuate."
+                ]
+            },
+            {
+                word: "ruthless",
+                examples: [
+                    "The manager was __, firing employees without warning for small mistakes.",
+                    "Competition in the tech industry is __, with companies always trying to outdo each other."
+                ]
+            },
+            {
+                word: "creatures",
+                examples: [
+                    "The forest is home to many __, from deer to foxes to tiny insects.",
+                    "Marine __ like whales and dolphins are highly intelligent."
+                ]
+            },
+            {
+                word: "insatiable",
+                examples: [
+                    "She has an __ curiosity about other cultures and reads travel books every night.",
+                    "His __ appetite for knowledge led him to earn three university degrees."
+                ]
+            },
+            {
+                word: "prey",
+                examples: [
+                    "Scammers often __ on elderly people who are less familiar with technology.",
+                    "The company __ on desperate job seekers by charging them for non-existent jobs."
+                ]
+            },
+            {
+                word: "agility",
+                examples: [
+                    "The soccer player's __ allowed him to dodge defenders and score goals.",
+                    "She showed great __ in the yoga class, shifting between poses smoothly."
+                ]
+            },
+            {
+                word: "heightened senses",
+                examples: [
+                    "After the accident, he had __ and could hear conversations from down the hall.",
+                    "Pregnant women often experience __, especially a stronger sense of smell."
+                ]
+            },
+            {
+                word: "claws",
+                examples: [
+                    "The cat used its __ to climb the tree and catch the bird.",
+                    "She trimmed her dog's __ to stop them from scratching the wooden floor."
+                ]
+            },
+            {
+                word: "fangs",
+                examples: [
+                    "The snake's __ injected venom that could paralyze its prey instantly.",
+                    "In the movie, the vampire's __ grew longer when he was about to bite someone."
+                ]
+            },
+            {
+                word: "fur",
+                examples: [
+                    "The rabbit's __ was soft and warm, perfect for the cold winter months.",
+                    "She brushed her dog's __ every morning to keep it shiny and free of tangles."
+                ]
+            },
+            {
+                word: "fearsome",
+                examples: [
+                    "The CEO had a __ reputation for firing people who disagreed with her.",
+                    "The boxer's __ appearance frightened many opponents before the fight even started."
+                ]
+            },
+            {
+                word: "complex",
+                examples: [
+                    "The traffic system in the city is so __ that many drivers get lost.",
+                    "The human brain is incredibly __, with billions of neural connections."
+                ]
+            },
+            {
+                word: "psychological",
+                examples: [
+                    "Sleep deprivation can have serious __ effects, including anxiety and depression.",
+                    "The book focuses on the __ motivations of the main character."
+                ]
+            },
+            {
+                word: "torment",
+                examples: [
+                    "The guilt of lying to his parents was a constant __ for him.",
+                    "Living in a noisy city can be a __ for people who need peace and quiet."
+                ]
+            },
+            {
+                word: "ceased",
+                examples: [
+                    "When the rain __, we finally went outside for a walk.",
+                    "The company __ operations last year due to financial problems."
+                ]
+            },
+            {
+                word: "villains",
+                examples: [
+                    "In many fairy tales, the __ are witches or evil stepmothers.",
+                    "The movie's __ were so well-written that the audience actually sympathized with them."
+                ]
+            },
+            {
+                word: "tragic",
+                examples: [
+                    "The __ accident took the lives of three young people who had bright futures.",
+                    "Her story is __—she lost everything in the fire and had to start over."
+                ]
+            },
+            {
+                word: "torn between",
+                examples: [
+                    "She felt __ staying in her hometown or moving to the city for work.",
+                    "He was __ his loyalty to his best friend and his desire to tell the truth."
+                ]
+            },
+            {
+                word: "dignity",
+                examples: [
+                    "Even in poverty, she maintained her __ and refused to beg for money.",
+                    "The elderly man walked with __, despite his age and the weight of his years."
+                ]
+            },
+            {
+                word: "primal instincts",
+                examples: [
+                    "When you're extremely hungry, __ can make you act before you think.",
+                    "Parents have __ to protect their children at all costs."
+                ]
+            },
+            {
+                word: "evokes",
+                examples: [
+                    "The smell of freshly baked bread __ happy memories of my grandmother's kitchen.",
+                    "His speech __ a sense of hope and determination among the audience."
+                ]
+            },
+            {
+                word: "sympathy",
+                examples: [
+                    "She expressed __ for her friend who had just lost a family member.",
+                    "The teacher showed __ by giving extra time to students with personal problems."
+                ]
+            },
+            {
+                word: "internal struggle",
+                examples: [
+                    "His __ between career ambition and family life kept him awake at night.",
+                    "The novel explores the hero's __ between good and evil."
+                ]
+            },
+            {
+                word: "grappling",
+                examples: [
+                    "The government is __ with the issue of rising unemployment.",
+                    "She spent the weekend __ with a complex problem at work and finally found a solution."
+                ]
+            },
+            {
+                word: "dual",
+                examples: [
+                    "The smartphone has a __ camera that takes better photos.",
+                    "She has a __ role in the company—both manager and mentor to new employees."
+                ]
+            },
+            {
+                word: "lore",
+                examples: [
+                    "According to local __, the old bridge is haunted by the ghost of a sailor.",
+                    "The __ of the forest said that whoever cut down the oldest tree would bring bad luck."
+                ]
+            },
+            {
+                word: "abilities",
+                examples: [
+                    "Her __ as a pianist were recognized when she performed at the concert hall.",
+                    "The job requires excellent communication __ and a calm personality."
+                ]
+            },
+            {
+                word: "at will",
+                examples: [
+                    "With the new system, employees can take breaks __ instead of at set times.",
+                    "She could recall any memory __, making her an excellent student."
+                ]
+            },
+            {
+                word: "reliance",
+                examples: [
+                    "His __ on his smartphone meant he couldn't function without it.",
+                    "The country's __ on oil exports made it vulnerable when prices fell."
+                ]
+            },
+            {
+                word: "portrayed",
+                examples: [
+                    "The media __ the young woman as a hero for saving the child from drowning.",
+                    "In the film, the villain is __ as a complex character with a difficult past."
+                ]
+            },
+            {
+                word: "intellect",
+                examples: [
+                    "Her __ and sharp questions impressed the university professors.",
+                    "He used his __ to solve problems that others thought were impossible."
+                ]
+            },
+            {
+                word: "intact",
+                examples: [
+                    "Although the car was badly damaged, the driver's seat remained __.",
+                    "Her confidence remained __ despite the criticism from her boss."
+                ]
+            },
+            {
+                word: "retained",
+                examples: [
+                    "She __ her memory of the event, even though it happened years ago.",
+                    "The company __ its top employees by offering them better benefits."
+                ]
+            },
+            {
+                word: "scenarios",
+                examples: [
+                    "The training prepared staff for worst-case __ like power outages or fires.",
+                    "In some __, working from home is more productive than being in an office."
+                ]
+            },
+            {
+                word: "self-healing",
+                examples: [
+                    "Some plants have __ properties and can grow back after being cut.",
+                    "The new material is __, meaning it can repair scratches on its own."
+                ]
+            },
+            {
+                word: "ultimate",
+                examples: [
+                    "Becoming a professor was her __ career goal, achieved after years of study.",
+                    "The __ test of a friendship is whether you can trust each other in difficult times."
+                ]
+            },
+            {
+                word: "captivating",
+                examples: [
+                    "The documentary was so __ that we watched it twice in one week.",
+                    "Her speech was __—everyone in the room was completely focused."
+                ]
+            },
+            {
+                word: "haunt",
+                examples: [
+                    "The memory of his mistake continued to __ him for many years.",
+                    "Images of the accident __ her dreams, making it hard to sleep."
+                ]
+            },
+            {
+                word: "roam",
+                examples: [
+                    "The tourists __ through the old city, discovering hidden cafes and shops.",
+                    "Street cats __ the neighborhood, often looking for scraps of food."
+                ]
+            },
+            {
+                word: "ferocity",
+                examples: [
+                    "The __ of the storm tore off roofs and uprooted trees.",
+                    "She argued with such __ that her colleagues backed off from the discussion."
+                ]
+            }
+        ];
+
+        // ---------------------------------------------------------------
+        // Build the question data: flatten all sentences with their correct word
+        // ---------------------------------------------------------------
+        let allQuestions = [];
+        vocabData.forEach(item => {
+            item.examples.forEach(sentence => {
+                allQuestions.push({
+                    word: item.word,
+                    sentence: sentence
+                });
+            });
+        });
+
+        // Total questions = 106 (53 words × 2 sentences)
+        const totalQuestions = allQuestions.length;
+        let answerState = []; // 'correct', 'incorrect', or null (unanswered)
+
+        // ---------------------------------------------------------------
+        // Helper: get 2 random distractors (different from the correct word)
+        // ---------------------------------------------------------------
+        function getDistractors(correctWord, excludeWords = []) {
+            const allWords = vocabData.map(item => item.word);
+            const pool = allWords.filter(w => w !== correctWord && !excludeWords.includes(w));
+            // Shuffle and pick 2
+            const shuffled = pool.sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, 2);
+        }
+
+        // ---------------------------------------------------------------
+        // Render all questions
+        // ---------------------------------------------------------------
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            let html = '';
+
+            allQuestions.forEach((q, index) => {
+                const distractors = getDistractors(q.word);
+                // Combine correct word + distractors, then shuffle
+                const options = [q.word, ...distractors];
+                const shuffledOptions = options.sort(() => Math.random() - 0.5);
+
+                // Build the sentence with a select placeholder
+                // Split on "__" (placeholder)
+                const parts = q.sentence.split('__');
+                const before = parts[0] || '';
+                const after = parts[1] || '';
+
+                // Generate select options
+                let optionsHtml = `<option value="">choices</option>`;
+                shuffledOptions.forEach(opt => {
+                    optionsHtml += `<option value="${opt}">${opt}</option>`;
+                });
+
+                const selectId = `select-${index}`;
+
+                html += `
+                    <div class="question-block" data-index="${index}">
+                        <span class="question-number">#${index + 1}</span>
+                        <span class="sentence-text">
+                            <span class="before">${before}</span>
+                            <select id="${selectId}" data-index="${index}" class="word-select">
+                                ${optionsHtml}
+                            </select>
+                            <span class="after">${after}</span>
+                            <span class="feedback-icon" id="feedback-${index}"></span>
+                        </span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Attach event listeners to all selects
+            document.querySelectorAll('.word-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    const selectedValue = this.value;
+                    const correctWord = allQuestions[index].word;
+
+                    // Reset feedback
+                    const feedbackSpan = document.getElementById(`feedback-${index}`);
+
+                    if (selectedValue === '') {
+                        // User selected "choices" (empty value)
+                        this.className = 'word-select';
+                        feedbackSpan.textContent = '';
+                        answerState[index] = null;
+                    } else if (selectedValue === correctWord) {
+                        this.className = 'word-select correct';
+                        feedbackSpan.textContent = '✅';
+                        answerState[index] = 'correct';
+                    } else {
+                        this.className = 'word-select incorrect';
+                        feedbackSpan.textContent = '❌';
+                        answerState[index] = 'incorrect';
+                    }
+
+                    updateProgress();
+                });
+            });
+
+            // Initialize answerState
+            answerState = new Array(totalQuestions).fill(null);
+            updateProgress();
+        }
+
+        // ---------------------------------------------------------------
+        // Update progress bar
+        // ---------------------------------------------------------------
+        function updateProgress() {
+            const answered = answerState.filter(a => a !== null).length;
+            const correct = answerState.filter(a => a === 'correct').length;
+            const incorrect = answerState.filter(a => a === 'incorrect').length;
+
+            document.getElementById('answeredCount').textContent = answered;
+            document.getElementById('totalCount').textContent = totalQuestions;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = incorrect;
+        }
+
+// ---------------------------------------------------------------
+// REPLACE the entire button functionality with this code
+// ---------------------------------------------------------------
+
+let savedState = []; // Stores the state of each select when entering Study Mode
+let isStudyModeActive = false; // Track if we're in study mode
+
+// ---------------------------------------------------------------
+// Study Mode: capture current state, then show all correct answers
+// ---------------------------------------------------------------
+function studyMode() {
+    const selects = document.querySelectorAll('.word-select');
+
+    // Only save state if we're not already in study mode
+    if (!isStudyModeActive) {
+        // Capture current state of every select
+        savedState = [];
+        selects.forEach((select, index) => {
+            savedState[index] = {
+                value: select.value,
+                className: select.className,
+                feedback: document.getElementById(`feedback-${index}`).textContent
+            };
+        });
+        isStudyModeActive = true;
+    }
+
+    // Now show all correct answers
+    selects.forEach((select, index) => {
+        const correctWord = allQuestions[index].word;
+        const feedbackSpan = document.getElementById(`feedback-${index}`);
+
+        // Set to correct answer
+        select.value = correctWord;
+        select.className = 'word-select correct';
+        feedbackSpan.textContent = '✅';
+        answerState[index] = 'correct';
+    });
+
+    updateProgress();
+}
+
+// ---------------------------------------------------------------
+// Return to Quiz: restore previously captured state
+// ---------------------------------------------------------------
+function returnToQuiz() {
+    if (savedState.length === 0) {
+        // No saved state - do nothing
+        console.log('No saved state to restore');
+        return;
+    }
+
+    const selects = document.querySelectorAll('.word-select');
+
+    selects.forEach((select, index) => {
+        if (savedState[index]) {
+            select.value = savedState[index].value;
+            select.className = savedState[index].className;
+            document.getElementById(`feedback-${index}`).textContent = savedState[index].feedback;
+
+            // Update answerState based on restored value
+            const correctWord = allQuestions[index].word;
+            const selectedValue = select.value;
+
+            if (selectedValue === '') {
+                answerState[index] = null;
+            } else if (selectedValue === correctWord) {
+                answerState[index] = 'correct';
+            } else {
+                answerState[index] = 'incorrect';
+            }
+        }
+    });
+
+    // Reset study mode flag
+    isStudyModeActive = false;
+    updateProgress();
+}
+
+// ---------------------------------------------------------------
+// Replace the button text and event listeners
+// ---------------------------------------------------------------
+document.getElementById('checkAllBtn').textContent = '📖 Study Mode';
+document.getElementById('resetAllBtn').textContent = '🔙 Return to Quiz';
+
+// Remove old listeners and add new ones
+const checkBtn = document.getElementById('checkAllBtn');
+const resetBtn = document.getElementById('resetAllBtn');
+
+// Clone and replace to remove old event listeners
+const newCheckBtn = checkBtn.cloneNode(true);
+const newResetBtn = resetBtn.cloneNode(true);
+checkBtn.parentNode.replaceChild(newCheckBtn, checkBtn);
+resetBtn.parentNode.replaceChild(newResetBtn, resetBtn);
+
+newCheckBtn.addEventListener('click', studyMode);
+newResetBtn.addEventListener('click', returnToQuiz);
+
+// ---------------------------------------------------------------
+// Also update the reset function to handle the flag
+// ---------------------------------------------------------------
+// If you have a separate reset function, make sure it resets the flag
+// But we're using the buttons above, so this should work.
+
+        // ---------------------------------------------------------------
+        // Initialize
+        // ---------------------------------------------------------------
+        renderQuestions();
+
+        document.getElementById('checkAllBtn').addEventListener('click', checkAll);
+        document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+
+        // ---------------------------------------------------------------
+        // Fix for multi-word terms (like "heightened senses") — ensure they
+        // display correctly in selects and sentences. Already handled.
+        // ---------------------------------------------------------------
+    })();
+</script>
+</body>
+</html>

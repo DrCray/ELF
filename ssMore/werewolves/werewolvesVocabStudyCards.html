@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐺 Werewolf Vocab · B1-B2 Study Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0e0b16;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1300px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 400;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.2rem;
+            color: #e2d9d0;
+            border-bottom: 2px dashed #5e4b3c;
+            padding-bottom: 0.6rem;
+        }
+
+        h1 span {
+            font-weight: 600;
+            color: #e8b88a;
+        }
+
+        .subhead {
+            text-align: center;
+            color: #a08d7c;
+            margin-top: -0.2rem;
+            margin-bottom: 2.5rem;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem 1.6rem;
+            justify-content: center;
+        }
+
+        .card {
+            background: #1c171f;
+            border-radius: 32px 16px 32px 16px;
+            box-shadow: 0 16px 28px -8px rgba(0,0,0,0.7), 0 0 0 1px #3d2e28;
+            padding: 1.6rem 1.4rem 1.8rem;
+            transition: transform 0.15s ease, box-shadow 0.2s;
+            color: #ede7e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 22px 34px -10px #0a0705, 0 0 0 2px #a77b5e;
+        }
+
+        .word {
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #f4d3b0;
+            line-height: 1.1;
+            margin-bottom: 0.3rem;
+            border-left: 4px solid #b8865b;
+            padding-left: 0.9rem;
+            text-shadow: 0 2px 3px #0b0805;
+        }
+
+        .context-hint {
+            font-size: 0.75rem;
+            color: #a08d7c;
+            margin-left: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .definition {
+            font-size: 1.02rem;
+            background: #2a222a;
+            padding: 0.9rem 1.2rem;
+            border-radius: 24px 8px 24px 8px;
+            margin: 0.5rem 0 1.2rem 0;
+            line-height: 1.5;
+            border-left: 2px solid #b17d54;
+            color: #ddd2c6;
+        }
+
+        .definition strong {
+            color: #eac9a8;
+            font-weight: 500;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0.6rem 0 0.9rem 0;
+            color: #7f6a58;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #5e4b3c, #2f241d, #5e4b3c);
+        }
+
+        .examples {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-top: 0.2rem;
+        }
+
+        .example {
+            background: #14101a;
+            border-radius: 20px 6px 20px 6px;
+            padding: 0.75rem 1.1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-left: 3px solid #78604b;
+            color: #cfc3b7;
+        }
+
+        .example::before {
+            content: "› ";
+            color: #b48b64;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2d1f1a;
+            color: #cfb094;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            align-self: flex-start;
+            margin-top: 0.7rem;
+            border: 1px solid #4b372b;
+        }
+
+        @media (max-width: 450px) {
+            body { padding: 1rem 0.8rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .word { font-size: 2rem; }
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            color: #6b5b4c;
+            font-size: 0.9rem;
+            border-top: 1px solid #342a24;
+            padding-top: 1.8rem;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🐾 <span>lycan</span> · vocabulary</h1>
+    <div class="subhead">B1–B2 study cards · meaning from the werewolf story · examples for everyday life</div>
+
+    <div class="card-grid" id="cardContainer"></div>
+    <div class="footer-note">✦ each card: definition from context + two relatable, teachable examples ✦</div>
+</div>
+
+<script>
+    (function() {
+        const vocabData = [
+            {
+                word: "staple",
+                definition: "a main or essential part of something",
+                examples: [
+                    "Rice is a staple of Asian cuisine, served with almost every meal.",
+                    "Critical thinking is a staple of a good education, taught in every subject."
+                ]
+            },
+            {
+                word: "supernatural",
+                definition: "beyond what is natural or scientifically explainable",
+                examples: [
+                    "She loves watching TV shows about supernatural events like ghosts and telekinesis.",
+                    "Many people believe in supernatural forces, even if science can't prove them."
+                ]
+            },
+            {
+                word: "mythical",
+                definition: "existing only in myths, stories, or imagination",
+                examples: [
+                    "Dragons are mythical creatures that appear in the folklore of many cultures.",
+                    "The idea of a perfect job with no stress is pretty mythical—it doesn't really exist."
+                ]
+            },
+            {
+                word: "transforms",
+                definition: "changes completely in form or appearance",
+                examples: [
+                    "A caterpillar transforms into a butterfly through a process called metamorphosis.",
+                    "The old factory transformed into a trendy shopping mall with cafes and cinemas."
+                ]
+            },
+            {
+                word: "process",
+                definition: "a series of steps or actions leading to a result",
+                examples: [
+                    "Applying for a visa is a long process that requires many documents.",
+                    "Learning a new language is a slow process, but daily practice really helps."
+                ]
+            },
+            {
+                word: "shape-shifting",
+                definition: "the ability to change physical form",
+                examples: [
+                    "In many video games, characters have shape-shifting abilities to adapt to different situations.",
+                    "The magician's trick looked like shape-shifting, but it was really just clever lighting and mirrors."
+                ]
+            },
+            {
+                word: "erect",
+                definition: "standing or sitting straight up, not bending",
+                examples: [
+                    "The soldiers stood erect during the ceremony, not moving a single muscle.",
+                    "Good posture means keeping your back erect while sitting at your desk."
+                ]
+            },
+            {
+                word: "legends",
+                definition: "old, well-known stories, often about heroic people or events",
+                examples: [
+                    "My grandmother told me legends about the ancient kings who built the castle.",
+                    "The company's success became the stuff of legends in the business world."
+                ]
+            },
+            {
+                word: "persisted",
+                definition: "continued to exist or happen for a long time",
+                examples: [
+                    "The rain persisted for three days, flooding the streets and delaying flights.",
+                    "Despite many rejections, her determination persisted and she finally got the job."
+                ]
+            },
+            {
+                word: "centuries",
+                definition: "periods of 100 years",
+                examples: [
+                    "The cathedral has been standing for centuries, surviving wars and earthquakes.",
+                    "Coffee has been traded across the globe for centuries, connecting different cultures."
+                ]
+            },
+            {
+                word: "depictions",
+                definition: "images, paintings, or descriptions of something",
+                examples: [
+                    "Ancient depictions of gods show them with animal heads or wings.",
+                    "The film's depictions of medieval life were surprisingly accurate, from clothing to food."
+                ]
+            },
+            {
+                word: "characteristics",
+                definition: "features or qualities that make someone or something unique",
+                examples: [
+                    "One of the characteristics of a good manager is the ability to listen to their team.",
+                    "The main characteristics of this smartphone are its long battery life and fast processor."
+                ]
+            },
+            {
+                word: "evolved",
+                definition: "developed or changed gradually over time",
+                examples: [
+                    "The company's marketing strategy evolved as they learned more about their customers.",
+                    "Over the years, his opinion on the matter evolved from strong opposition to cautious support."
+                ]
+            },
+            {
+                word: "compelled",
+                definition: "felt forced or strongly driven to do something",
+                examples: [
+                    "The deadline compelled me to finish the project by midnight.",
+                    "She felt compelled to apologize after realizing she had hurt his feelings."
+                ]
+            },
+            {
+                word: "cursed",
+                definition: "experiencing bad luck or misfortune (often as if by a spell)",
+                examples: [
+                    "The team seemed cursed—they lost their best players and then their coach left.",
+                    "He always missed the bus by seconds; he joked that he was cursed."
+                ]
+            },
+            {
+                word: "undergoes",
+                definition: "experiences or goes through (a process or change)",
+                examples: [
+                    "The city underwent major renovations before the Olympic Games.",
+                    "She underwent two months of training before the marathon."
+                ]
+            },
+            {
+                word: "uncontrollable",
+                definition: "impossible to control or stop",
+                examples: [
+                    "His laughter was uncontrollable during the comedy show—he couldn't stop.",
+                    "The wildfire spread at an uncontrollable speed, forcing thousands to evacuate."
+                ]
+            },
+            {
+                word: "ruthless",
+                definition: "extremely cruel or without mercy",
+                examples: [
+                    "The manager was ruthless, firing employees without warning for small mistakes.",
+                    "Competition in the tech industry is ruthless, with companies always trying to outdo each other."
+                ]
+            },
+            {
+                word: "creatures",
+                definition: "living beings, often animals",
+                examples: [
+                    "The forest is home to many creatures, from deer to foxes to tiny insects.",
+                    "Marine creatures like whales and dolphins are highly intelligent."
+                ]
+            },
+            {
+                word: "insatiable",
+                definition: "impossible to satisfy, always wanting more",
+                examples: [
+                    "She has an insatiable curiosity about other cultures and reads travel books every night.",
+                    "His insatiable appetite for knowledge led him to earn three university degrees."
+                ]
+            },
+            {
+                word: "prey",
+                definition: "to hunt or take advantage of someone weaker",
+                examples: [
+                    "Scammers often prey on elderly people who are less familiar with technology.",
+                    "The company preyed on desperate job seekers by charging them for non-existent jobs."
+                ]
+            },
+            {
+                word: "agility",
+                definition: "the ability to move quickly and with ease",
+                examples: [
+                    "The soccer player's agility allowed him to dodge defenders and score goals.",
+                    "She showed great agility in the yoga class, shifting between poses smoothly."
+                ]
+            },
+            {
+                word: "heightened senses",
+                definition: "increased sensitivity to sight, smell, hearing, etc.",
+                examples: [
+                    "After the accident, he had heightened senses and could hear conversations from down the hall.",
+                    "Pregnant women often experience heightened senses, especially a stronger sense of smell."
+                ]
+            },
+            {
+                word: "claws",
+                definition: "sharp, curved nails on an animal's foot",
+                examples: [
+                    "The cat used its claws to climb the tree and catch the bird.",
+                    "She trimmed her dog's claws to stop them from scratching the wooden floor."
+                ]
+            },
+            {
+                word: "fangs",
+                definition: "long, sharp teeth, especially of some animals",
+                examples: [
+                    "The snake's fangs injected venom that could paralyze its prey instantly.",
+                    "In the movie, the vampire's fangs grew longer when he was about to bite someone."
+                ]
+            },
+            {
+                word: "fur",
+                definition: "thick hair covering the body of an animal",
+                examples: [
+                    "The rabbit's fur was soft and warm, perfect for the cold winter months.",
+                    "She brushed her dog's fur every morning to keep it shiny and free of tangles."
+                ]
+            },
+            {
+                word: "fearsome",
+                definition: "making people feel afraid or intimidated",
+                examples: [
+                    "The CEO had a fearsome reputation for firing people who disagreed with her.",
+                    "The boxer's fearsome appearance frightened many opponents before the fight even started."
+                ]
+            },
+            {
+                word: "complex",
+                definition: "having many related parts, not simple or easy to understand",
+                examples: [
+                    "The traffic system in the city is so complex that many drivers get lost.",
+                    "The human brain is incredibly complex, with billions of neural connections."
+                ]
+            },
+            {
+                word: "psychological",
+                definition: "relating to the mind or mental processes",
+                examples: [
+                    "Sleep deprivation can have serious psychological effects, including anxiety and depression.",
+                    "The book focuses on the psychological motivations of the main character."
+                ]
+            },
+            {
+                word: "torment",
+                definition: "severe physical or emotional suffering",
+                examples: [
+                    "The guilt of lying to his parents was a constant torment for him.",
+                    "Living in a noisy city can be a torment for people who need peace and quiet."
+                ]
+            },
+            {
+                word: "ceased",
+                definition: "stopped doing something or existing",
+                examples: [
+                    "When the rain ceased, we finally went outside for a walk.",
+                    "The company ceased operations last year due to financial problems."
+                ]
+            },
+            {
+                word: "villains",
+                definition: "characters in a story who do bad things or cause trouble",
+                examples: [
+                    "In many fairy tales, the villains are witches or evil stepmothers.",
+                    "The movie's villains were so well-written that the audience actually sympathized with them."
+                ]
+            },
+            {
+                word: "tragic",
+                definition: "very sad, often involving death or loss",
+                examples: [
+                    "The tragic accident took the lives of three young people who had bright futures.",
+                    "Her story is tragic—she lost everything in the fire and had to start over."
+                ]
+            },
+            {
+                word: "torn between",
+                definition: "unable to decide between two choices or feelings",
+                examples: [
+                    "She felt torn between staying in her hometown or moving to the city for work.",
+                    "He was torn between his loyalty to his best friend and his desire to tell the truth."
+                ]
+            },
+            {
+                word: "dignity",
+                definition: "self-respect; the quality of being worthy of honor",
+                examples: [
+                    "Even in poverty, she maintained her dignity and refused to beg for money.",
+                    "The elderly man walked with dignity, despite his age and the weight of his years."
+                ]
+            },
+            {
+                word: "primal instincts",
+                definition: "basic, natural urges like survival or aggression",
+                examples: [
+                    "When you're extremely hungry, primal instincts can make you act before you think.",
+                    "Parents have primal instincts to protect their children at all costs."
+                ]
+            },
+            {
+                word: "evokes",
+                definition: "brings a feeling, memory, or image into the mind",
+                examples: [
+                    "The smell of freshly baked bread evokes happy memories of my grandmother's kitchen.",
+                    "His speech evoked a sense of hope and determination among the audience."
+                ]
+            },
+            {
+                word: "sympathy",
+                definition: "understanding and caring about someone else's suffering",
+                examples: [
+                    "She expressed sympathy for her friend who had just lost a family member.",
+                    "The teacher showed sympathy by giving extra time to students with personal problems."
+                ]
+            },
+            {
+                word: "internal struggle",
+                definition: "a mental conflict within oneself",
+                examples: [
+                    "His internal struggle between career ambition and family life kept him awake at night.",
+                    "The novel explores the hero's internal struggle between good and evil."
+                ]
+            },
+            {
+                word: "grappling",
+                definition: "trying hard to deal with a difficult problem",
+                examples: [
+                    "The government is grappling with the issue of rising unemployment.",
+                    "She spent the weekend grappling with a complex problem at work and finally found a solution."
+                ]
+            },
+            {
+                word: "dual",
+                definition: "having two parts or two sides",
+                examples: [
+                    "The smartphone has a dual camera that takes better photos.",
+                    "She has a dual role in the company—both manager and mentor to new employees."
+                ]
+            },
+            {
+                word: "lore",
+                definition: "traditional knowledge, stories, and beliefs about something",
+                examples: [
+                    "According to local lore, the old bridge is haunted by the ghost of a sailor.",
+                    "The lore of the forest said that whoever cut down the oldest tree would bring bad luck."
+                ]
+            },
+            {
+                word: "abilities",
+                definition: "skills or powers that allow you to do something",
+                examples: [
+                    "Her abilities as a pianist were recognized when she performed at the concert hall.",
+                    "The job requires excellent communication abilities and a calm personality."
+                ]
+            },
+            {
+                word: "at will",
+                definition: "whenever you want or choose, without restriction",
+                examples: [
+                    "With the new system, employees can take breaks at will instead of at set times.",
+                    "She could recall any memory at will, making her an excellent student."
+                ]
+            },
+            {
+                word: "reliance",
+                definition: "dependence on someone or something",
+                examples: [
+                    "His reliance on his smartphone meant he couldn't function without it.",
+                    "The country's reliance on oil exports made it vulnerable when prices fell."
+                ]
+            },
+            {
+                word: "portrayed",
+                definition: "described or shown in a particular way",
+                examples: [
+                    "The media portrayed the young woman as a hero for saving the child from drowning.",
+                    "In the film, the villain is portrayed as a complex character with a difficult past."
+                ]
+            },
+            {
+                word: "intellect",
+                definition: "the ability to think, reason, and understand",
+                examples: [
+                    "Her intellect and sharp questions impressed the university professors.",
+                    "He used his intellect to solve problems that others thought were impossible."
+                ]
+            },
+            {
+                word: "intact",
+                definition: "undamaged or complete",
+                examples: [
+                    "Although the car was badly damaged, the driver's seat remained intact.",
+                    "Her confidence remained intact despite the criticism from her boss."
+                ]
+            },
+            {
+                word: "retained",
+                definition: "kept or continued to have something",
+                examples: [
+                    "She retained her memory of the event, even though it happened years ago.",
+                    "The company retained its top employees by offering them better benefits."
+                ]
+            },
+            {
+                word: "scenarios",
+                definition: "possible situations or imagined events",
+                examples: [
+                    "The training prepared staff for worst-case scenarios like power outages or fires.",
+                    "In some scenarios, working from home is more productive than being in an office."
+                ]
+            },
+            {
+                word: "self-healing",
+                definition: "able to recover without outside help",
+                examples: [
+                    "Some plants have self-healing properties and can grow back after being cut.",
+                    "The new material is self-healing, meaning it can repair scratches on its own."
+                ]
+            },
+            {
+                word: "ultimate",
+                definition: "the most important, final, or extreme",
+                examples: [
+                    "Becoming a professor was her ultimate career goal, achieved after years of study.",
+                    "The ultimate test of a friendship is whether you can trust each other in difficult times."
+                ]
+            },
+            {
+                word: "captivating",
+                definition: "very interesting and holding your attention completely",
+                examples: [
+                    "The documentary was so captivating that we watched it twice in one week.",
+                    "Her speech was captivating—everyone in the room was completely focused."
+                ]
+            },
+            {
+                word: "haunt",
+                definition: "to cause worry or sadness that keeps coming back",
+                examples: [
+                    "The memory of his mistake continued to haunt him for many years.",
+                    "Images of the accident haunted her dreams, making it hard to sleep."
+                ]
+            },
+            {
+                word: "roam",
+                definition: "to move around freely, without a fixed plan",
+                examples: [
+                    "The tourists roamed through the old city, discovering hidden cafes and shops.",
+                    "Street cats roam the neighborhood, often looking for scraps of food."
+                ]
+            },
+            {
+                word: "ferocity",
+                definition: "fierce and violent intensity",
+                examples: [
+                    "The ferocity of the storm tore off roofs and uprooted trees.",
+                    "She argued with such ferocity that her colleagues backed off from the discussion."
+                ]
+            }
+        ];
+
+        const container = document.getElementById('cardContainer');
+
+        function renderCards() {
+            let html = '';
+            vocabData.forEach(item => {
+                html += `
+                    <div class="card">
+                        <div class="word">${item.word}</div>
+                        <div class="context-hint">📖 meaning from the werewolf story</div>
+                        <div class="definition"><strong>·</strong> ${item.definition}</div>
+                        <div class="divider">
+                            <span>✧</span>
+                            <span class="divider-line"></span>
+                            <span>everyday examples</span>
+                            <span class="divider-line"></span>
+                            <span>✧</span>
+                        </div>
+                        <div class="examples">
+                            <div class="example">${item.examples[0]}</div>
+                            <div class="example">${item.examples[1]}</div>
+                        </div>
+                        <span class="badge">🎯 B1–B2</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        renderCards();
+    })();
+</script>
+</body>
+</html>
