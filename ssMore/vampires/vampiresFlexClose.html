@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:2rem auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        button {
+            padding: 5px 5px;
+        }
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px;
+        }
+        .answer-shown {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 1.5rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+        code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%;            
+        }
+        .quasi-code {
+            background-color: #EFEDE8;
+            border: thin solid lightgray; 
+            border-radius: 4px;
+            margin: .33rem;
+            padding: .2rem; 
+            font-size:80%; 
+            width: fit-content;
+        }
+        .copy-popup {
+          position: absolute;
+          background: #333;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 9999;
+        }
+        .copy-popup.show {
+          opacity: 1;
+        }
+        
+        /* Save status styles */
+        .save-status {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .save-status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .save-status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .save-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Student info styling */
+        #verifyYou { 
+            display:none; 
+            background-color: #fff8dc;
+            color: darkgreen;
+            border-radius: 5px;
+            margin: .33rem 0 0 0;
+            padding: .5rem;
+            font-weight: bold;              
+         }
+         #verifyYou:hover { 
+            background-color: #D4CDB3;
+            color: green;
+         }         
+         #verifyYou:active { 
+            background-color: darkgray;
+            color: white;
+         }
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+
+
+.toggle-button {
+   position: -webkit-sticky; /* For Safari compatibility */
+  position: sticky;         /* Activates sticky positioning */
+  top: 10px;                /* Gap from top of screen when stuck */
+  z-index: 100;             /* Ensures it stays on top of text */
+}
+
+.toggle-button {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-button:hover {
+    opacity: 0.92;
+}
+
+#toggleAnswersBtn {display:none;}
+
+
+    </style>
+</head>
+<body>
+    
+<div id="topHeading"><h1>Vampires</h1>
+    <h3>Cloze-Select Quiz&nbsp;</h3>
+    <h4>Select the words to complete the sentences, according to the article.</h4></div>
+    <!-- Student Info Section -->
+
+
+    <input id="passCode" type="text" value="passcode" style="display:none;" "="">
+    <button id="verifyYou" onclick="verifyStudent()" style="display:none;">Verify Your Name, ID, Passcode</button>
+    
+    <details class="editMode" style="display: none;"><summary>Instructions</summary>
+        <div style="margin-bottom: 15px; font-family: Arial, sans-serif; font-size: 14px;">
+        <h4>Creating the Cloze/select sentences</h4>
+         <p> Use the standard bold markdown <code>**bold text**</code> for the cloze words in the quiz section.</p><p>Use<code>^^</code>as a delimiter(divider) to show which sentences will share the same answer choices</p> <p>Use ^br to start a new line.</p> <p> There is an example already in the text box</p>
+                    
+            <h4>Add optional info above the select sentences</h4>
+            <p>If you want to put instructions, reading material, or other things above the quiz selection sentences, follow these intructions</p>
+            <p>This is app-specific markdown, NOT traditional markdown.</p>
+        <p>Enter optional information within division markdown tags <br> <code><sup>^</sup>dv ... dv<sup>^</sup></code> Only ONE div allowed <br>(see example below)</p>
+            <p> Headings markdown (only 3 levels):<br> <code><sup>^</sup>h1 ... h1<sup>^</sup></code>, <code><sup>^</sup>h2 ... h2<sup>^</sup></code>, <code><sup>^</sup>h3 ... h3<sup>^</sup></code></p>
+            <p>Other markdown:<br> <code><sup>^</sup>bb bold bb<sup>^</sup></code>, <code><sup>^</sup>ii italic ii<sup>^</sup></code>, <code><sup>^</sup>uu underline uu<sup>^</sup></code></p>
+            <p> line breaks: <code><sup>^</sup>br</code></p> 
+
+
+            
+            Copy and paste this example to see how it renders:<br>
+            (only one division is allowed, so replace the current example division)<br><br>
+            <div class="quasi-code" style="margin: 0 0 0 2rem;">
+^dv  <br>
+&nbsp; &nbsp; &nbsp; ^h1 Cloze Instructions h1^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h2 Details h2^ <br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; Complete the sentences below.^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ^h3 Note h3^<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; : Choose carefully<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;   ^br<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ^bb bold bb^, with ^ii italic ii^ and ^uu underline uu^!<br>
+dv^<br>
+  <button class="button2" onclick="copyParent(this)">Copy</button>
+
+            </div>
+        </div>
+    </details>
+
+    <div id="output"><div id="cloze-div-1786443403494" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-1786443403494')">Show Answers</button><div class="sentence-div">The werewolf, a <span style="font-size: 70%;">1</span><select data-correct="staple" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="staple">staple</option><option value="beast">beast</option><option value="mythical">mythical</option><option value="supernatural">supernatural</option>
+            </select> of modern <span style="font-size: 70%;">2</span><select data-correct="supernatural" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="staple">staple</option><option value="beast">beast</option><option value="mythical">mythical</option><option value="supernatural">supernatural</option>
+            </select> fiction, has<em> captured our imaginations </em> throughout history. Known by various names---wolfman, lycan---this <span style="font-size: 70%;">3</span><select data-correct="mythical" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="staple">staple</option><option value="beast">beast</option><option value="mythical">mythical</option><option value="supernatural">supernatural</option>
+            </select> creature is both human and <span style="font-size: 70%;">4</span><select data-correct="beast" data-group="0" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="staple">staple</option><option value="beast">beast</option><option value="mythical">mythical</option><option value="supernatural">supernatural</option>
+            </select>.</div><div class="sentence-div">In its simplest definition, a werewolf is a human who <span style="font-size: 70%;">5</span><select data-correct="transforms" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="process">process</option><option value="shape-shifting">shape-shifting</option><option value="transforms">transforms</option>
+            </select> into a wolf, a <span style="font-size: 70%;">6</span><select data-correct="process" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="process">process</option><option value="shape-shifting">shape-shifting</option><option value="transforms">transforms</option>
+            </select> often referred to as <span style="font-size: 70%;">7</span><select data-correct="shape-shifting" data-group="1" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="process">process</option><option value="shape-shifting">shape-shifting</option><option value="transforms">transforms</option>
+            </select>.</div><div class="sentence-div">In some stories, werewolves appear as wolves in human form, standing <span style="font-size: 70%;">8</span><select data-correct="erect" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="centuries">centuries</option><option value="legends">legends</option><option value="persisted">persisted</option><option value="erect">erect</option><option value="transformation">transformation</option>
+            </select> like humans. In other cases, the <span style="font-size: 70%;">9</span><select data-correct="transformation" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="centuries">centuries</option><option value="legends">legends</option><option value="persisted">persisted</option><option value="erect">erect</option><option value="transformation">transformation</option>
+            </select> is more complete, turning into a wolf that walks on all fours. These <span style="font-size: 70%;">10</span><select data-correct="legends" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="centuries">centuries</option><option value="legends">legends</option><option value="persisted">persisted</option><option value="erect">erect</option><option value="transformation">transformation</option>
+            </select> have <span style="font-size: 70%;">11</span><select data-correct="persisted" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="centuries">centuries</option><option value="legends">legends</option><option value="persisted">persisted</option><option value="erect">erect</option><option value="transformation">transformation</option>
+            </select> for <span style="font-size: 70%;">12</span><select data-correct="centuries" data-group="2" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="centuries">centuries</option><option value="legends">legends</option><option value="persisted">persisted</option><option value="erect">erect</option><option value="transformation">transformation</option>
+            </select>, even millenia, dating as far back as 380 B.C.</div><div class="sentence-div">The earliest <span style="font-size: 70%;">13</span><select data-correct="depictions" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="evolved">evolved</option><option value="characteristics">characteristics</option><option value="depictions">depictions</option><option value="compelled">compelled</option>
+            </select> portrayed humans transforming into a full wolf with no human <span style="font-size: 70%;">14</span><select data-correct="characteristics" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="evolved">evolved</option><option value="characteristics">characteristics</option><option value="depictions">depictions</option><option value="compelled">compelled</option>
+            </select>. However, over time, the werewolf <span style="font-size: 70%;">15</span><select data-correct="evolved" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="evolved">evolved</option><option value="characteristics">characteristics</option><option value="depictions">depictions</option><option value="compelled">compelled</option>
+            </select> into a half-human, half-wolf creature, <span style="font-size: 70%;">16</span><select data-correct="compelled" data-group="3" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="evolved">evolved</option><option value="characteristics">characteristics</option><option value="depictions">depictions</option><option value="compelled">compelled</option>
+            </select> to transform during every full moon.</div><div class="sentence-div">In traditional folklore, as the full moon rises, the <span style="font-size: 70%;">17</span><select data-correct="cursed" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="ruthless">ruthless</option><option value="uncontrollable">uncontrollable</option><option value="cursed">cursed</option><option value="undergoes">undergoes</option>
+            </select> human <span style="font-size: 70%;">18</span><select data-correct="undergoes" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="ruthless">ruthless</option><option value="uncontrollable">uncontrollable</option><option value="cursed">cursed</option><option value="undergoes">undergoes</option>
+            </select> an <span style="font-size: 70%;">19</span><select data-correct="uncontrollable" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="ruthless">ruthless</option><option value="uncontrollable">uncontrollable</option><option value="cursed">cursed</option><option value="undergoes">undergoes</option>
+            </select> transformation into a werewolf, turning them into <span style="font-size: 70%;">20</span><select data-correct="ruthless" data-group="4" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="ruthless">ruthless</option><option value="uncontrollable">uncontrollable</option><option value="cursed">cursed</option><option value="undergoes">undergoes</option>
+            </select> killers.</div><div class="sentence-div">They become monstrous <span style="font-size: 70%;">21</span><select data-correct="creatures" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="creatures">creatures</option><option value="insatiable">insatiable</option><option value="prey">prey</option>
+            </select>---bloodthirsty beasts, unable to control their desire for killing. Driven by an <span style="font-size: 70%;">22</span><select data-correct="insatiable" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="creatures">creatures</option><option value="insatiable">insatiable</option><option value="prey">prey</option>
+            </select> hunger for blood, they <span style="font-size: 70%;">23</span><select data-correct="prey" data-group="5" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="creatures">creatures</option><option value="insatiable">insatiable</option><option value="prey">prey</option>
+            </select> on wild animals or even humans.</div><div class="sentence-div">Their strength, <span style="font-size: 70%;">24</span><select data-correct="agility" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="claws">claws</option><option value="fur">fur</option><option value="fangs">fangs</option><option value="fearsome">fearsome</option><option value="agility">agility</option>
+            </select>, and<em> heightened senses </em> mirror those of actual wolves. Sharp <span style="font-size: 70%;">25</span><select data-correct="claws" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="claws">claws</option><option value="fur">fur</option><option value="fangs">fangs</option><option value="fearsome">fearsome</option><option value="agility">agility</option>
+            </select>, <span style="font-size: 70%;">26</span><select data-correct="fangs" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="claws">claws</option><option value="fur">fur</option><option value="fangs">fangs</option><option value="fearsome">fearsome</option><option value="agility">agility</option>
+            </select>, and thick <span style="font-size: 70%;">27</span><select data-correct="fur" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="claws">claws</option><option value="fur">fur</option><option value="fangs">fangs</option><option value="fearsome">fearsome</option><option value="agility">agility</option>
+            </select> complete their <span style="font-size: 70%;">28</span><select data-correct="fearsome" data-group="6" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="claws">claws</option><option value="fur">fur</option><option value="fangs">fangs</option><option value="fearsome">fearsome</option><option value="agility">agility</option>
+            </select> appearance. Shooting them with a silver bullet is the only way to kill them. After returning to their human form, werewolves often wake up with no memory of their actions. Anyone unfortunate enough to be bitten would become a werewolf as well.</div><div class="sentence-div">As time passed, however, literature began to offer a more <span style="font-size: 70%;">29</span><select data-correct="complex" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="torment">torment</option><option value="psychological">psychological</option><option value="ceased">ceased</option><option value="complex">complex</option><option value="villains">villains</option>
+            </select> view of werewolves, focusing on the <span style="font-size: 70%;">30</span><select data-correct="psychological" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="torment">torment</option><option value="psychological">psychological</option><option value="ceased">ceased</option><option value="complex">complex</option><option value="villains">villains</option>
+            </select> <span style="font-size: 70%;">31</span><select data-correct="torment" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="torment">torment</option><option value="psychological">psychological</option><option value="ceased">ceased</option><option value="complex">complex</option><option value="villains">villains</option>
+            </select> of transformation. Werewolves <span style="font-size: 70%;">32</span><select data-correct="ceased" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="torment">torment</option><option value="psychological">psychological</option><option value="ceased">ceased</option><option value="complex">complex</option><option value="villains">villains</option>
+            </select> to be the <span style="font-size: 70%;">33</span><select data-correct="villains" data-group="7" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="torment">torment</option><option value="psychological">psychological</option><option value="ceased">ceased</option><option value="complex">complex</option><option value="villains">villains</option>
+            </select>;</div><div class="sentence-div">they became <span style="font-size: 70%;">34</span><select data-correct="tragic" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="primal instincts">primal instincts</option><option value="tragic">tragic</option><option value="torn between">torn between</option><option value="dignity">dignity</option>
+            </select> figures. The human side was seen as the victim of a curse, <span style="font-size: 70%;">35</span><select data-correct="torn between" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="primal instincts">primal instincts</option><option value="tragic">tragic</option><option value="torn between">torn between</option><option value="dignity">dignity</option>
+            </select> their human <span style="font-size: 70%;">36</span><select data-correct="dignity" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="primal instincts">primal instincts</option><option value="tragic">tragic</option><option value="torn between">torn between</option><option value="dignity">dignity</option>
+            </select> and their <span style="font-size: 70%;">37</span><select data-correct="primal instincts" data-group="8" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="primal instincts">primal instincts</option><option value="tragic">tragic</option><option value="torn between">torn between</option><option value="dignity">dignity</option>
+            </select>.</div><div class="sentence-div">Their situation <span style="font-size: 70%;">38</span><select data-correct="evokes" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="beast">beast</option><option value="grappling">grappling</option><option value="evokes">evokes</option><option value="sympathy">sympathy</option><option value="dual">dual</option>
+            </select> <span style="font-size: 70%;">39</span><select data-correct="sympathy" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="beast">beast</option><option value="grappling">grappling</option><option value="evokes">evokes</option><option value="sympathy">sympathy</option><option value="dual">dual</option>
+            </select> rather than fear, as they deal with their<em> internal struggle </em> , forever <span style="font-size: 70%;">40</span><select data-correct="grappling" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="beast">beast</option><option value="grappling">grappling</option><option value="evokes">evokes</option><option value="sympathy">sympathy</option><option value="dual">dual</option>
+            </select> with the <span style="font-size: 70%;">41</span><select data-correct="dual" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="beast">beast</option><option value="grappling">grappling</option><option value="evokes">evokes</option><option value="sympathy">sympathy</option><option value="dual">dual</option>
+            </select> nature of being both human and <span style="font-size: 70%;">42</span><select data-correct="beast" data-group="9" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="beast">beast</option><option value="grappling">grappling</option><option value="evokes">evokes</option><option value="sympathy">sympathy</option><option value="dual">dual</option>
+            </select>.</div><div class="sentence-div">The <span style="font-size: 70%;">43</span><select data-correct="lore" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="abilities">abilities</option><option value="at will">at will</option><option value="reliance">reliance</option><option value="lore">lore</option>
+            </select> has changed as well. Werewolves have control over their shape-shifting <span style="font-size: 70%;">44</span><select data-correct="abilities" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="abilities">abilities</option><option value="at will">at will</option><option value="reliance">reliance</option><option value="lore">lore</option>
+            </select>, changing <span style="font-size: 70%;">45</span><select data-correct="at will" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="abilities">abilities</option><option value="at will">at will</option><option value="reliance">reliance</option><option value="lore">lore</option>
+            </select> without <span style="font-size: 70%;">46</span><select data-correct="reliance" data-group="10" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="abilities">abilities</option><option value="at will">at will</option><option value="reliance">reliance</option><option value="lore">lore</option>
+            </select> on the full moon.</div><div class="sentence-div">They are <span style="font-size: 70%;">47</span><select data-correct="portrayed" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intact">intact</option><option value="intellect">intellect</option><option value="retained">retained</option><option value="portrayed">portrayed</option>
+            </select> as heroes with fangs, protecting humanity from other mythical evils. Their <span style="font-size: 70%;">48</span><select data-correct="intellect" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intact">intact</option><option value="intellect">intellect</option><option value="retained">retained</option><option value="portrayed">portrayed</option>
+            </select> is <span style="font-size: 70%;">49</span><select data-correct="intact" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intact">intact</option><option value="intellect">intellect</option><option value="retained">retained</option><option value="portrayed">portrayed</option>
+            </select> while transformed, and their memory <span style="font-size: 70%;">50</span><select data-correct="retained" data-group="11" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="intact">intact</option><option value="intellect">intellect</option><option value="retained">retained</option><option value="portrayed">portrayed</option>
+            </select> afterwards.</div><div class="sentence-div">In some <span style="font-size: 70%;">51</span><select data-correct="scenarios" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="self-healing">self-healing</option><option value="scenarios">scenarios</option><option value="ultimate">ultimate</option>
+            </select>, they can be killed the same as humans, although in others, they have <span style="font-size: 70%;">52</span><select data-correct="self-healing" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="self-healing">self-healing</option><option value="scenarios">scenarios</option><option value="ultimate">ultimate</option>
+            </select> powers so they are difficult to kill. Their <span style="font-size: 70%;">53</span><select data-correct="ultimate" data-group="12" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="self-healing">self-healing</option><option value="scenarios">scenarios</option><option value="ultimate">ultimate</option>
+            </select> desire is to seek balance between their cursed life and their normal life. They even fall in love and have families.</div><div class="sentence-div">Some famous werewolf movies and shows are "American werewolf in London", the "Twilight" franchise (vampires and werewolves) , the "Underworld" franchise (war between vampires and werewolves) and the "Teen Wolf" TV series.</div><div class="sentence-div">The werewolf remains a <span style="font-size: 70%;">54</span><select data-correct="captivating" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="captivating">captivating</option><option value="haunt">haunt</option><option value="roam">roam</option><option value="folklore">folklore</option><option value="ferocity">ferocity</option>
+            </select> character. Whether they <span style="font-size: 70%;">55</span><select data-correct="haunt" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="captivating">captivating</option><option value="haunt">haunt</option><option value="roam">roam</option><option value="folklore">folklore</option><option value="ferocity">ferocity</option>
+            </select> our nightmares or evoke sympathy, these creatures continue to <span style="font-size: 70%;">56</span><select data-correct="roam" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="captivating">captivating</option><option value="haunt">haunt</option><option value="roam">roam</option><option value="folklore">folklore</option><option value="ferocity">ferocity</option>
+            </select> the pages of our stories, forever caught between humanity and <span style="font-size: 70%;">57</span><select data-correct="ferocity" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="captivating">captivating</option><option value="haunt">haunt</option><option value="roam">roam</option><option value="folklore">folklore</option><option value="ferocity">ferocity</option>
+            </select>.A vampire is a creature from <span style="font-size: 70%;">58</span><select data-correct="folklore" data-group="14" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="captivating">captivating</option><option value="haunt">haunt</option><option value="roam">roam</option><option value="folklore">folklore</option><option value="ferocity">ferocity</option>
+            </select>, said to be undead---neither completely human nor completely dead.</div><div class="sentence-div">Their skin <span style="font-size: 70%;">59</span><select data-correct="is pale" data-group="15" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="victims">victims</option><option value="roaming">roaming</option><option value="is pale">is pale</option><option value="immortal">immortal</option><option value="weak-minded">weak-minded</option>
+            </select>, and they are <span style="font-size: 70%;">60</span><select data-correct="immortal" data-group="15" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="victims">victims</option><option value="roaming">roaming</option><option value="is pale">is pale</option><option value="immortal">immortal</option><option value="weak-minded">weak-minded</option>
+            </select>; they cannot die naturally. Vampires<em> feed on </em> the blood of the living, <span style="font-size: 70%;">61</span><select data-correct="roaming" data-group="15" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="victims">victims</option><option value="roaming">roaming</option><option value="is pale">is pale</option><option value="immortal">immortal</option><option value="weak-minded">weak-minded</option>
+            </select> the world at night in search of <span style="font-size: 70%;">62</span><select data-correct="weak-minded" data-group="15" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="victims">victims</option><option value="roaming">roaming</option><option value="is pale">is pale</option><option value="immortal">immortal</option><option value="weak-minded">weak-minded</option>
+            </select> <span style="font-size: 70%;">63</span><select data-correct="victims" data-group="15" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="victims">victims</option><option value="roaming">roaming</option><option value="is pale">is pale</option><option value="immortal">immortal</option><option value="weak-minded">weak-minded</option>
+            </select> from whom they can drink blood.</div><div class="sentence-div">How does a Vampire Target and Lure its Victims?</div><div class="sentence-div">Vampires are known for their <span style="font-size: 70%;">64</span><select data-correct="cunning" data-group="17" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="charm">charm</option><option value="lure">lure</option><option value="lair">lair</option><option value="cunning">cunning</option>
+            </select> and <span style="font-size: 70%;">65</span><select data-correct="charm" data-group="17" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="charm">charm</option><option value="lure">lure</option><option value="lair">lair</option><option value="cunning">cunning</option>
+            </select>, often appearing as attractive humans to <span style="font-size: 70%;">66</span><select data-correct="lure" data-group="17" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="charm">charm</option><option value="lure">lure</option><option value="lair">lair</option><option value="cunning">cunning</option>
+            </select> victims to their <span style="font-size: 70%;">67</span><select data-correct="lair" data-group="17" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="charm">charm</option><option value="lure">lure</option><option value="lair">lair</option><option value="cunning">cunning</option>
+            </select>.</div><div class="sentence-div">Charming their victims with <span style="font-size: 70%;">68</span><select data-correct="irresistible" data-group="18" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="Naive">Naive</option><option value="persuaded">persuaded</option><option value="target">target</option><option value="prey">prey</option><option value="irresistible">irresistible</option>
+            </select> sweet talk is how they lure their <span style="font-size: 70%;">69</span><select data-correct="prey" data-group="18" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="Naive">Naive</option><option value="persuaded">persuaded</option><option value="target">target</option><option value="prey">prey</option><option value="irresistible">irresistible</option>
+            </select>. <span style="font-size: 70%;">70</span><select data-correct="Naive" data-group="18" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="Naive">Naive</option><option value="persuaded">persuaded</option><option value="target">target</option><option value="prey">prey</option><option value="irresistible">irresistible</option>
+            </select> individuals who are easily <span style="font-size: 70%;">71</span><select data-correct="persuaded" data-group="18" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="Naive">Naive</option><option value="persuaded">persuaded</option><option value="target">target</option><option value="prey">prey</option><option value="irresistible">irresistible</option>
+            </select> are their<em> primar </em> y<span style="font-size: 70%;">72</span><select data-correct="target" data-group="18" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="Naive">Naive</option><option value="persuaded">persuaded</option><option value="target">target</option><option value="prey">prey</option><option value="irresistible">irresistible</option>
+            </select>. If they can't succeed in luring someone to their place, they come through open windows to find sleeping victims.</div><div class="sentence-div">What are a Vampire's Powers?</div><div class="sentence-div">Vampires have <span style="font-size: 70%;">73</span><select data-correct="supernatural" data-group="20" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="senses">senses</option><option value="enhanced">enhanced</option><option value="destroys">destroys</option><option value="supernatural">supernatural</option>
+            </select> powers, including great strength and speed. Unless someone <span style="font-size: 70%;">74</span><select data-correct="destroys" data-group="20" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="senses">senses</option><option value="enhanced">enhanced</option><option value="destroys">destroys</option><option value="supernatural">supernatural</option>
+            </select> them, they will live forever. Some vampires have the ability to control the minds of their victims. They have heightened <span style="font-size: 70%;">75</span><select data-correct="senses" data-group="20" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="senses">senses</option><option value="enhanced">enhanced</option><option value="destroys">destroys</option><option value="supernatural">supernatural</option>
+            </select>, such as <span style="font-size: 70%;">76</span><select data-correct="enhanced" data-group="20" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="senses">senses</option><option value="enhanced">enhanced</option><option value="destroys">destroys</option><option value="supernatural">supernatural</option>
+            </select> smell, sight, and hearing---detecting a heartbeat from far away.</div><div class="sentence-div">Their <span style="font-size: 70%;">77</span><select data-correct="hypnotic" data-group="21" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="paralyze">paralyze</option><option value="hypnotic">hypnotic</option><option value="disguise">disguise</option>
+            </select> gaze can <span style="font-size: 70%;">78</span><select data-correct="paralyze" data-group="21" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="paralyze">paralyze</option><option value="hypnotic">hypnotic</option><option value="disguise">disguise</option>
+            </select> you with fear. Turning into bats, rats, or foxes is how they travel in <span style="font-size: 70%;">79</span><select data-correct="disguise" data-group="21" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="paralyze">paralyze</option><option value="hypnotic">hypnotic</option><option value="disguise">disguise</option>
+            </select>.</div><div class="sentence-div">What are a Vampire's Weaknesses?</div><div class="sentence-div">Vampires cannot go out in the sunlight, as it will burn them; and too much <span style="font-size: 70%;">80</span><select data-correct="exposure" data-group="23" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="exposure">exposure</option><option value="standing invitation">standing invitation</option><option value="residence">residence</option>
+            </select> will kill them. Garlic and the holy symbol of a cross can keep them away. If all windows and doors are closed, they can't enter a personal <span style="font-size: 70%;">81</span><select data-correct="residence" data-group="23" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="exposure">exposure</option><option value="standing invitation">standing invitation</option><option value="residence">residence</option>
+            </select> unless they are invited in (however, even one open window is a <span style="font-size: 70%;">82</span><select data-correct="standing invitation" data-group="23" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="exposure">exposure</option><option value="standing invitation">standing invitation</option><option value="residence">residence</option>
+            </select> to enter by door or window).</div><div class="sentence-div">How can a Vampire be Destroyed?
+<br><br>
+There are a few ways to <span style="font-size: 70%;">83</span><select data-correct="destroy" data-group="24" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="expose">expose</option><option value="destroy">destroy</option><option value="stake">stake</option>
+            </select> a vampire. One sure way is to drive a wooden <span style="font-size: 70%;">84</span><select data-correct="stake" data-group="24" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="expose">expose</option><option value="destroy">destroy</option><option value="stake">stake</option>
+            </select> through its heart. Another is to <span style="font-size: 70%;">85</span><select data-correct="expose" data-group="24" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="expose">expose</option><option value="destroy">destroy</option><option value="stake">stake</option>
+            </select> it to sunlight for a minute or two. And yet another way is cutting off its head and burying it separately from his body.</div><div class="sentence-div">How can You Protect Yourself?</div><div class="sentence-div">To protect yourself from vampires, wear a cross or carry garlic. Keep windows and doors closed, and <span style="font-size: 70%;">86</span><select data-correct="avoid" data-group="26" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="avoid">avoid</option><option value="wandering">wandering</option>
+            </select> <span style="font-size: 70%;">87</span><select data-correct="wandering" data-group="26" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="avoid">avoid</option><option value="wandering">wandering</option>
+            </select> alone in the dark.</div><div class="sentence-div">How can You Recognize a Vampire?</div><div class="sentence-div">Recognizing a vampire can be difficult, as they look like humans. However, vampires do not have <span style="font-size: 70%;">88</span><select data-correct="reflections" data-group="28" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="aversion">aversion</option><option value="cast">cast</option><option value="reflections">reflections</option><option value="canine">canine</option>
+            </select> in mirrors and do not <span style="font-size: 70%;">89</span><select data-correct="cast" data-group="28" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="aversion">aversion</option><option value="cast">cast</option><option value="reflections">reflections</option><option value="canine">canine</option>
+            </select> shadows. Look for signs like an <span style="font-size: 70%;">90</span><select data-correct="aversion" data-group="28" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="aversion">aversion</option><option value="cast">cast</option><option value="reflections">reflections</option><option value="canine">canine</option>
+            </select> to sunlight and unusually sharp <span style="font-size: 70%;">91</span><select data-correct="canine" data-group="28" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="aversion">aversion</option><option value="cast">cast</option><option value="reflections">reflections</option><option value="canine">canine</option>
+            </select> teeth.</div><div class="sentence-div">In some vampire stories, vampires are not monsters. They <span style="font-size: 70%;">92</span><select data-correct="struggle" data-group="29" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="curse">curse</option><option value="struggle">struggle</option><option value="survive">survive</option>
+            </select> with their <span style="font-size: 70%;">93</span><select data-correct="curse" data-group="29" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="curse">curse</option><option value="struggle">struggle</option><option value="survive">survive</option>
+            </select>, seeking to control their hunger and live among humans. To <span style="font-size: 70%;">94</span><select data-correct="survive" data-group="29" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                <option value="curse">curse</option><option value="struggle">struggle</option><option value="survive">survive</option>
+            </select>, they may drink animal blood or buy/steal blood from hospitals or blood banks.</div><button class="deleteThisSectionBtn editMode" onclick="this.parentElement.remove();alert(&quot;section deleted&quot;);" style="display: none;">Delete This Section</button></div></div>
+    <textarea id="inputText" class="editMode" style="white-space: pre-wrap; display: none;" rows="10" cols="80" placeholder="Enter optional info in ^dv dv^, headings in ^h1 h1^, ^h2 h2^, ^h3 h3^, followed by sentences with **bold** words, separated by ^^">^dv
+  Choose the correct answers
+dv^
+        
+The mirror image appeared **opposite** to the original ^br^br 
+object's **orientation**. ^br
+The laser **sliced** through the **metal** sheet with **precision** cutting technology. ^br ^^
+The **motor** completed a **half turn** before the safety **sensor** triggered the **stop**. ^br
+The **circuit** was ^br**overloaded** due to excessive **current**. ^br^^
+The **signal** was **amplified** for better **transmission**. ^br 
+The **gear** shifted with a **click**. ^br^^
+
+
+
+    </textarea>
+    <button class="editMode" onclick="generateCloze()" style="display: none;">Generate Cloze</button>
+    
+    <!-- Submit Assignment Button -->
+    <button id="submitAssignment" style="display:none; margin-top: 20px;" disabled="">Submit Assignment</button>
+    
+    <!-- Save System -->
+    <!--
+    <button id="save2server" class="editMode" onclick="document.getElementById('output').style.pointerEvents = 'none'; saveBothVersions()" style="display:none">Save To Server</button>
+    <div id="adminSaveStatus" class="save-status editMode"></div>
+    <div id="publicSaveStatus" class="save-status editMode"></div>
+    
+    <button id="viewStudentVersion" class="editMode" onclick="redirectToHtml()" style="display:none;">View Student Version</button>
+    -->
+
+<script>
+function copyParent(button) {
+  const parent = button.parentElement;
+
+  // Temporarily hide button
+  const oldDisplay = button.style.display;
+  button.style.display = "none";
+  const text = parent.innerText.trim();
+  button.style.display = oldDisplay;
+
+  // Copy
+  navigator.clipboard.writeText(text).then(() => {
+    showPopup(button, "Copied");
+  });
+}
+
+function showPopup(button, message) {
+  const popup = document.createElement("div");
+  popup.className = "copy-popup show";
+  popup.textContent = message;
+  document.body.appendChild(popup);
+
+  // Position near the button
+  const rect = button.getBoundingClientRect();
+  popup.style.left = rect.left + window.scrollX + "px";
+  popup.style.top = rect.top + window.scrollY - 30 + "px"; // 30px above button
+
+  // Fade out and remove
+  setTimeout(() => popup.classList.remove("show"), 1200);
+  setTimeout(() => popup.remove(), 1600);
+}
+</script>
+
+<script>
+let selectCounter = 0; // Counter for select element numbering        
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        selects.forEach(select => {
+            if (!select.dataset.userValueCaptured) {
+                select.dataset.userValueCaptured = select.value;
+            }
+            if (!select.dataset.bgCaptured) {
+                select.dataset.bgCaptured = select.style.backgroundColor || '';
+            }
+
+            select.value = select.getAttribute('data-correct');
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        selects.forEach(select => {
+            select.value = select.dataset.userValueCaptured ?? '0';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = select.dataset.bgCaptured ?? '';
+            delete select.dataset.userValueCaptured;
+            delete select.dataset.bgCaptured;
+        });
+        button.textContent = 'Show Answers';
+    }
+}
+
+function generateCloze() {
+    selectCounter = 0; // Reset select numbering for new cloze exercise
+    const input = document.getElementById('inputText').value;
+    const outputDiv = document.getElementById('output');
+
+    // Create container for this cloze exercise
+    const clozeContainer = document.createElement('div');
+
+    const uniqueId = Date.now();
+    clozeContainer.id = `cloze-div-${uniqueId}`;
+    
+    clozeContainer.className = 'cloze-container';
+
+    // Add toggle button at the top
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toggle-button';
+    toggleButton.textContent = 'Show Answers';
+    toggleButton.setAttribute('onclick', `toggleAnswers('cloze-div-${uniqueId}')`);   clozeContainer.appendChild(toggleButton);
+
+    // Check for information section with ^dv dv^
+    const dvOpenCount = (input.split('^dv').length - 1);
+    const dvCloseCount = (input.split('dv^').length - 1);
+    console.log(`^dv count: ${dvOpenCount}, dv^ count: ${dvCloseCount}`);
+    if (dvOpenCount !== dvCloseCount) {
+        alert(`Tag mismatch: Found ${dvOpenCount} ^dv tags but ${dvCloseCount} dv^ tags. Please ensure each ^dv has a matching dv^.`);
+        return;
+    }
+    if (dvOpenCount + dvCloseCount > 2) {
+        alert(`only one ^dv...dv^ set allowed.`);
+        return;
+    }            
+
+    // Check heading tags
+    const headings = [
+        { open: '^h1', close: 'h1^', openTag: '<h1>', closeTag: '</h1>' },
+        { open: '^h2', close: 'h2^', openTag: '<h2>', closeTag: '</h2>' },
+        { open: '^h3', close: 'h3^', openTag: '<h3>', closeTag: '</h3>' }
+    ];
+    for (const heading of headings) {
+        const openCount = (input.split(heading.open).length - 1);
+        const closeCount = (input.split(heading.close).length - 1);
+        console.log(`${heading.open} count: ${openCount}, ${heading.close} count: ${closeCount}`);
+        if (openCount !== closeCount) {
+            alert(`Tag mismatch: Found ${openCount} ${heading.open} tags but ${closeCount} ${heading.close} tags. Please ensure each ${heading.open} has a matching ${heading.close}.`);
+            return;
+        }
+    }
+
+    // Process information section if present
+    let infoSection = '';
+    let sentencesInput = input;
+    const infoMatch = input.match(/\^dv([\s\S]*?)dv\^/);
+    if (infoMatch) {
+        infoSection = infoMatch[1].trim();
+        sentencesInput = input.replace(/\^dv[\s\S]*?dv\^/, '').trim();
+        console.log('Raw infoSection:', infoSection);
+
+        // Replace heading tags with simple string replacement
+        let processedInfo = infoSection;
+        headings.forEach(heading => {
+            console.log(`Replacing ${heading.open} with ${heading.openTag} and ${heading.close} with ${heading.closeTag}`);
+            processedInfo = processedInfo.replaceAll(heading.open, heading.openTag).replaceAll(heading.close, heading.closeTag);
+            console.log(`After ${heading.openTag} replacement:`, processedInfo);
+        });
+
+        
+// Validate bold, italic, underline tags
+const textStyles = [
+    { open: '^bb', close: 'bb^', name: 'bold' },
+    { open: '^ii', close: 'ii^', name: 'italic' },
+    { open: '^uu', close: 'uu^', name: 'underline' }
+];
+for (const style of textStyles) {
+    const openCount = (input.split(style.open).length - 1);
+    const closeCount = (input.split(style.close).length - 1);
+    console.log(`${style.open} count: ${openCount}, ${style.close} count: ${closeCount}`);
+    if (openCount !== closeCount) {
+        alert(`Tag mismatch: Found ${openCount} ${style.open} tags but ${closeCount} ${style.close} tags. Please ensure each ${style.open} has a matching ${style.close}.`);
+        return;
+    }
+}
+
+// Replace ^br and text style tags
+processedInfo = processedInfo.replaceAll('^br', '<br>')
+    .replaceAll('^bb', '<b>')
+    .replaceAll('bb^', '</b>')
+    .replaceAll('^ii', '<i>')
+    .replaceAll('ii^', '</i>')
+    .replaceAll('^uu', '<u>')
+    .replaceAll('uu^', '</u>');
+console.log('After ^br and text style replacement:', processedInfo);                
+        
+        
+        infoSection = processedInfo;
+        const infoDiv = document.createElement('div');
+        infoDiv.innerHTML = infoSection;
+        infoDiv.style.marginBottom = '20px';
+        clozeContainer.appendChild(infoDiv);
+    }
+
+const caretCount = (sentencesInput.match(/\^\^/g) || []).length;
+if (caretCount < 2) {
+    if (!confirm('Normally, two or more sets of ^^ should be present.\n Do you really want to continue?\n\n CANCEL = back to input; \n\n OK = make the quiz anyway. ')) {
+        return;
+    }
+}
+
+    // Split remaining input into groups by ^^ (each group can contain multiple sentences)
+    const groups = sentencesInput.split('^^').map(s => s.trim()).filter(s => s);
+
+    // Process each group
+    groups.forEach((group, groupIndex) => {
+        // Extract unique bold words for this group
+        const boldWords = [];
+        const matches = group.match(/\*\*([^\*]+)\*\*/g) || [];
+        matches.forEach(match => {
+            const word = match.replace(/\*\*/g, '').trim();
+            if (word && !boldWords.includes(word)) {
+                boldWords.push(word);
+            }
+        });
+
+        // Shuffle bold words once for this group
+        const shuffledWords = shuffleArray([...boldWords]);
+
+        // Generate HTML for the group
+        let clozeGroup = group;
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
+        
+        // Replace each bold word with a select element
+        boldWords.forEach(word => {
+            const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
+            selectCounter++; // Increment counter for this select
+            const selectHtml = `<span style="font-size: 70%;">${selectCounter}</span><select data-correct="${word}" data-group="${groupIndex}" onchange="checkAnswer(this)">
+                <option value="">Select...</option>
+                ${shuffledWords.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+            </select>`;
+            clozeGroup = clozeGroup.replace(regex, selectHtml);
+        });
+
+        // Create group container
+        const sentenceDiv = document.createElement('div');
+        sentenceDiv.className = 'sentence-div'; // Apply the CSS class
+        sentenceDiv.innerHTML = clozeGroup;
+        clozeContainer.appendChild(sentenceDiv);
+    });
+    
+    const deleteThisSectionBtn = document.createElement('button');
+    deleteThisSectionBtn.className='deleteThisSectionBtn editMode';
+    deleteThisSectionBtn.textContent = 'Delete This Section';
+    deleteThisSectionBtn.setAttribute('onclick', 'this.parentElement.remove();alert("section deleted");');
+    clozeContainer.appendChild(deleteThisSectionBtn);
+
+    // Append to output
+    outputDiv.appendChild(clozeContainer);
+}
+
+function checkAnswer(select) {
+    // Don't provide feedback if answers are being shown
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+    
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+<!-- Student Verification Script -->
+<script>
+async function verifyStudent() {
+    const name = document.getElementById("name").value.trim();
+    const id = document.getElementById("id").value.trim();
+    const passCode = document.getElementById("passCode").value.trim();
+    
+    if (!name || !id || !passCode) {
+        alert("Please fill in all fields first!");
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('id', id);
+    formData.append('passCode', passCode);
+    
+    try {
+        const response = await fetch('./verify_student.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
+        
+        if (result === 'SUCCESS') {
+          document.getElementById('output').style.pointerEvents = 'auto';  
+          document.getElementById('submitAssignment').disabled = false;
+        }
+        
+    } catch (error) {
+        alert("Verification error. Try again!");
+    }
+}
+
+// Show verification button initially
+//document.getElementById('verifyYou').style.display = "block";
+</script>
+
+<!-- Save System Scripts -->
+<script>
+function redirectToHtml() {
+  // Get the current page's URL
+  let currentUrl = window.location.href;
+  // Replace .php with .html
+  let newUrl = currentUrl.replace(/\.php$/, '.html');
+  // Open the new URL in a new tab
+  window.open(newUrl, '_blank');
+}
+
+async function saveBothVersions() {
+    // Get the current file's pathname
+    const filePath = window.location.pathname;
+    let pathParts = filePath.split('/');
+
+    // Extract just the filename from the path
+    const fileNM = pathParts.pop() || 'lesson.php'; // Fallback if empty
+    const fileNameHtml = fileNM.replace(/\.php$/, ".html") || 'lesson.html';
+
+    console.log("1. Current filename:", fileNM);
+    console.log("2. New file name:", fileNameHtml);
+
+    // Validate filenames
+    if (!fileNM || typeof fileNM !== 'string') {
+        console.error('Error: fileNM is invalid:', fileNM);
+        return;
+    }
+    if (!fileNameHtml || typeof fileNameHtml !== 'string') {
+        console.error('Error: fileNameHtml is invalid:', fileNameHtml);
+        return;
+    }
+
+    // Set serverLocation to the desired directory
+    const serverLocation = './';
+    console.log('serverLocation:', serverLocation); // Debug: verify the path
+
+    // Run admin save first
+    await saveAdminVersion(fileNM, serverLocation);
+    // Then run public save
+    await savePublicVersion(fileNameHtml, serverLocation);
+}
+
+async function saveAdminVersion(fileNM, serverLocation) {
+    const saveStatus = document.getElementById('adminSaveStatus');
+    
+    document.getElementById('output').style.pointerEvents = 'auto'; 
+    document.getElementById("backToHub").style.display = "block";     
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    try {
+        // Capture the HTML content
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const htmlContent = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Wrap HTML content with basic PHP authentication (no auth_check yet)
+        const phpWrappedContent = `${htmlContent}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving admin version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', phpWrappedContent);
+        formData.append('filename', fileNM);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // File saved successfully, now inject auth_check.php
+            const injectFormData = new FormData();
+            injectFormData.append('filename', fileNM);
+            
+            const injectResponse = await fetch('./inject_auth.php', {
+                method: 'POST',
+                body: injectFormData
+            });
+            
+            if (injectResponse.ok) {
+                saveStatus.className = 'save-status success';
+                saveStatus.textContent = 'Admin PHP version saved successfully!';
+            } else {
+                saveStatus.className = 'save-status warning';
+                saveStatus.textContent = 'File saved but auth injection may have failed';
+            }
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Admin Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Admin Error: ${error.message}`;
+    }
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+
+async function savePublicVersion(fileNameHtml, serverLocation) {
+    
+    const deleteButtons = document.querySelectorAll('.deleteThisSectionBtn');
+    deleteButtons.forEach(button => {
+        button.style.display = 'none';
+    });
+    
+    document.getElementById('output').style.pointerEvents = 'none';
+    document.getElementById("backToHub").style.display = "none";     
+    document.getElementById("adminSaveStatus").style.display = "none";     
+
+    
+    const saveStatus = document.getElementById('publicSaveStatus');
+    
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+    
+    try {
+        // Capture DOCTYPE and full HTML
+        const doctypeNode = document.doctype;
+        let doctypeString = '';
+        if (doctypeNode) {
+            doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
+        }
+        const fullHtml = `${doctypeString}\n${document.documentElement.outerHTML}`;
+
+        // Show loading status
+        saveStatus.className = 'save-status loading';
+        saveStatus.textContent = 'Saving public version...';
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('htmlContent', fullHtml);
+        formData.append('filename', fileNameHtml);
+        formData.append('serverLocation', serverLocation);
+
+        // Send FormData to server
+        const response = await fetch('./save_to_public.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            saveStatus.className = 'save-status success';
+            saveStatus.textContent = 'Public version saved successfully!';
+        } else {
+            saveStatus.className = 'save-status error';
+            saveStatus.textContent = `Public Error: ${result.message}`;
+        }
+    } catch (error) {
+        saveStatus.className = 'save-status error';
+        saveStatus.textContent = `Public Error: ${error.message}`;
+    }
+    
+    
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";  
+    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    // Hide status after 5 seconds
+    setTimeout(() => {
+        saveStatus.className = 'save-status';
+        saveStatus.textContent = '';
+    }, 5000);
+}
+</script>
+
+<!-- Include the submission system -->
+<script src="/drRayLMS/components/geniMore.js"></script>
+
+<!--========================================================
+edit HTML; save as DOM
+-------------------------
+Change a web page without coding!
+1. Set document to contenteditable.
+2. Then save the dom with code below
+------------------------- -->
+<div class="editMode" style="display: none;">
+<p>Save as: <input id="domFileName" type="text" value="File Name"></p>
+
+<button id="saveDomButton" class="editMode" style="display: none;">Save DOM as File</button>
+<a id="downloadLink" style="display: none;"></a>
+</div>
+<script>
+document.getElementById('saveDomButton').addEventListener('click', function() {
+const domFileName = document.getElementById('domFileName').value;
+    // Hide all editMode elements before saving
+    const editModeElements = document.querySelectorAll('.editMode');
+    editModeElements.forEach(element => {
+        element.style.display = 'none';
+    });
+
+    document.getElementById('topHeading').removeAttribute('contenteditable');
+  // Capture the current DOM state as HTML
+  const domState = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // Create a Blob with the DOM state
+  const blob = new Blob([domState], { type: 'text/html' });
+
+  // Create a URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Set the download link's href and download attributes
+  const downloadLink = document.getElementById('downloadLink');
+  downloadLink.href = url;
+  downloadLink.download = domFileName;
+
+  // Trigger the download
+  downloadLink.click();
+
+  // Clean up the URL object
+  URL.revokeObjectURL(url);
+
+
+    // Restore editMode elements
+    editModeElements.forEach(element => {
+        element.style.display = '';
+    });
+
+    document.getElementById('topHeading').contentEditable = "true";
+
+  alert("Check Your Browser's Default Download Folder");
+
+});
+</script>
+<!--///// end edit HTML save as DOM =======================
+========================================================-->
+
+    <input id="name" type="text" placeholder="name">
+    <input id="id" type="text" placeholder="id#">
+
+
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
+
+
+
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("<em> <em> zz: " + nameAndIDdisplayValue);
+
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+
+                    // Check if either field has fewer than 2 characters
+        if (Name.length < 2 || ID.length < 2){
+                alert ("Name and ID# required \r\n for Print/Save as PDF ");
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+     <footer style="margin-top:6rem;">...</footer>
+
+
+</body></html>
