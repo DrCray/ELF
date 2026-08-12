@@ -1,0 +1,509 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DialPizzaCompQ</title>
+
+<style>
+/* ============================================================
+   magazine-style theme for comprehension pages
+   structure: #zzpageHeader, #zztitle, #nameAndID, .scrollArticleText,
+   #main, .editable, .question, .answer, etc.
+   ============================================================ */
+
+/* ---------- reset & base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5efe6;               /* warm paper */
+  font-family: 'Georgia', 'Times New Roman', serif;
+  padding: 2rem 1rem;
+  color: #1e2b2f;
+  line-height: 1.6;
+  max-width: 820px;
+  margin: 0 auto;
+  cursor: text;
+}
+
+/* ---------- header / title block ---------- */
+#zzpageHeader {
+  border-bottom: 3px double #2c3e40;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: none;                  /* remove heavy shadow, magazine style */
+  border-radius: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: transparent;
+}
+
+#zztitle {
+  background: transparent;
+  border: none;
+  border-left: 6px solid #b5654b;    /* editorial accent */
+  padding: 0 0 0 1rem;
+  margin-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  flex: 1;
+}
+
+#zztitle #zheaderTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #1e2b2f;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+#zztitle .fsLarge {
+  font-size: inherit;
+}
+
+#zztitle span.fsLarge span {
+  font-weight: 700;
+}
+
+/* small issue badge (optional, but we keep classes) */
+#zzpageHeader::after {
+  content: "📰  CRIME & JUSTICE";
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.75rem;
+  background: #1e2b2f;
+  color: #f5efe6;
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+
+
+/* ---------- article scroll container ---------- */
+.scrollArticleText {
+  font-weight: 400 !important; /* normal weight */
+
+  height: auto;
+  max-height: 340px;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e0d6cb;
+  margin: 0 0 2rem 0;
+}
+
+.scrollArticleText p {
+  margin-bottom: 1.2rem;   line-height:1.5;
+}
+
+.scrollArticleText p:last-child {
+  margin-bottom: 0;
+}
+
+
+
+
+/* custom scrollbar for article */
+.scrollArticleText::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollArticleText::-webkit-scrollbar-track {
+  background: #ece3d9;
+  border-radius: 10px;
+}
+.scrollArticleText::-webkit-scrollbar-thumb {
+  background: #b5654b;
+  border-radius: 10px;
+}
+
+/* ---------- main question container ---------- */
+#main {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: auto;
+  margin-top: 1.5rem;
+}
+
+/* each question block (using div with text + .editable) */
+#main > div,
+#main > br + div {
+  display: block;
+  background: #ffffff;
+  border-left: 4px solid #b5654b;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  margin-bottom: 1.8rem;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: box-shadow 0.1s ease;
+}
+
+#main > div:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+/* question number & text – we style them inline, but we keep the structure */
+#main .question {
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  min-width: auto;
+  overflow: visible;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* we also support .question inside #main, but we also style raw text */
+#main .question,
+#main > div:not(.editable):not(.answer) {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+}
+
+/* ---------- editable answer boxes ---------- */
+.editable,
+.answer {
+  display: block;
+  background: #f9f5ef;
+  border: 1px solid #ddd2c6;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0 0 0;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  color: #1e2b2f;
+  min-height: 3.2rem;
+  caret-color: #b5654b;
+  transition: background 0.1s ease, border-color 0.1s ease;
+  word-break: break-word;
+  overflow: auto;
+  background-color: #f9f5ef;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ddd2c6;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.editable:focus,
+.answer:focus {
+  background: #ffffff;
+  border-color: #b5654b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(181, 101, 75, 0.1);
+}
+
+.editable:empty::before,
+.answer:empty::before {
+  content: "type or paste answer here";
+  color: #a89586;
+  font-style: italic;
+}
+
+/* if .editable is used inside a .quSet or directly, we keep consistent */
+.quSet {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ---------- print & utility ---------- */
+@media print {
+  body {
+    background: white;
+    padding: 0.5in;
+    max-width: 100%;
+  }
+  .scrollArticleText {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    max-height: none;
+    overflow-y: visible;
+  }
+  #main > div {
+    box-shadow: none;
+    border-left-color: #333;
+    break-inside: avoid;
+  }
+  .editable,
+  .answer {
+    background: #fafafa;
+    border: 1px solid #aaa;
+  }
+  #zzpageHeader::after {
+    content: "CRIME & JUSTICE";
+    background: #1e2b2f;
+    color: white;
+  }
+
+  button,
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 600px) {
+  #zzpageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  #zzpageHeader::after {
+    margin-left: 0;
+    align-self: flex-start;
+    font-size: 0.65rem;
+  }
+  #zztitle {
+    padding-left: 0.5rem;
+    border-left-width: 4px;
+  }
+  #zztitle #zheaderTitle {
+    font-size: 1.5rem;
+  }
+  .scrollArticleText {
+    padding: 1.2rem;
+  }
+  #main > div {
+    padding: 1rem 1rem 0.8rem 1rem;
+  }
+
+}
+</style>
+</head>
+<body>
+	
+
+  <header id="zzpageHeader"> 
+        <img class="center" src="topImage.jpg" alt="" width="100%">
+        
+        <section id="zztitle" contenteditable="false">
+            <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--************************ Type title here ******************-->
+            
+        
+            <div id="zheaderTitle"><span class="fsLarge">Dial PIZZA - quiz.</span></div>
+
+            
+            <!--     ***************** End title ****************************-->
+            <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--     ------ Don’t type Title content past this line ---  -->
+            
+        </section>
+    </header>	
+	
+
+	
+<div id="main" contenteditable="false">
+<br><br>
+
+
+<p>Scroll the article</p>
+<div class="scrollArticleText" contentEditable = "false">
+
+<p>
+<span><span>Mr.
+Johansen has a weak heart. On this <b>particular</b> Saturday night,
+his heart will stop, he will die, but he won't <b>remain</b> dead for
+long. </span></span>
+</p>
+<p><span><span>It
+was a Saturday night. Mr. Johansen and his wife <i>ordered out</i>
+for pizza. About 25 minutes after <i><span style="font-weight: normal">placing</span></i><i>
+the order</i> and <i>hanging up</i> the phone, Mr. Johansen fell back
+ onto the sofa <b>clutching</b> his chest with a very pained face.
+Two minutes later, he was dead.</span></span></p>
+<p><span><span>Right
+at that moment, however, fortune came knocking on the Johansen's
+door. It was the pizza man. <i>It just so happened</i> that this
+particular pizza man was a <i>laid-off</i> <b>paramedic</b>, Joe
+Kerney, who was trained in CPR. </span></span>
+</p>
+<p><span><span>Joe
+Kerney, 24, had been working at the local hospital as a paramedic.
+But Kerney had recently lost his job because the local hospital, in
+order to <i><span style="font-weight: normal">cut their budget</span></i>,
+had been <i>laying off</i> many of its employees. Joe had <i>turned
+to</i> delivering pizzas to help make ends meet.</span></span></p>
+<p><span><span>Joe
+heard Mrs. Johansen screaming for help so he quickly entered the
+house. He <b>instructed</b> Mrs. Johansen to call 911 and he got Mr.
+Johansen on the floor and began <b>administering</b> CPR.  Joe was
+able to keep Mr. Johansen's blood flowing until the arrival of the
+fire department's <i>emergency rescue team. </i><span style="font-style: normal">The
+paramedics used a defibrillator to get Mr. Johansen's heart going
+again. They </span>immediately <b>transported</b> Mr. Johansen to the
+hospital.</span></span></p>
+<p><span><span>According
+to the Fire Chief, Joe is credited with saving Mr. Johansen's life.
+“It's an absolute fact,” he said, “that if Joe hadn't <i>arrived
+on the scene</i> when he did, Mr. Johansen would have surely died.”</span></span></p>
+<p><span><span>Mr.
+Cam Wiley, Joe's boss, said that there's more to this amazing story.
+“Joe wasn't even <b>scheduled</b> to work on that Saturday. In
+fact, he wasn't scheduled to come in until the next week, but Joe
+came in anyway since he wanted to earn some extra cash.” He added,
+“I think it was not Mr. Johansen's time to go.”</span></span></p>
+<p>
+<span><span>There
+is even more good news from this story. Joe has received a call from
+both a hospital and a fire department <i>offering him a job</i> in
+his <i>chosen line of</i> work.</span></span></p>
+<p><span><span>Mr.
+Johansen laughs, “My doctor told me not to eat too much pizza, but
+if I hadn't ordered that pizza, I would be dead. The pizza man saved
+my life.”</span></span></p>	
+	
+</div>
+	
+	
+
+<p style="line-height: 100%; margin-bottom: 0in">
+1. What happened after Mr. Johanson ordered out for pizza?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">2. What was special
+about the pizza delivery man?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">3. Why was Joe
+Kerney delivering pizzas?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">4. What did Joe
+instruct Mrs. Johanson to do?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">5. How did Joe
+Kerney save Mr. Johanson's life?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">6. Joe's boss said
+that there was more to this story, what did he mean?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">7. Why was Joe
+working on this particular Saturday night?<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">8. In hindsight, why
+was it a fortunate event that Joe lost his job at the hospital? 
+<div contenteditable="true" class="editable">Type or Paste Answer:</div></p>
+
+<style type="text/css">p { line-height: 115%; margin-bottom: 0.1in; background: transparent }</style>
+
+
+
+</div>
+<button id="insertBtn" style="display:none;">add answer box</button>
+ <div id="nameAndID">
+              <input id="name" type="text" value="name">
+              <input id="id" type="text" value="id#"><br><br>
+            </div>
+
+<p style="padding:.5rem; background:maroon; width: fit-content;">
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>   
+</p>
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
+<script>
+document.getElementById('insertBtn').addEventListener('click', function() {
+    // Create a new contenteditable div element
+    var newDiv = document.createElement('div');
+    newDiv.contentEditable = true;
+    newDiv.classList.add('editable');
+    
+    // Set up a placeholder text
+    newDiv.textContent = 'answer:';
+
+    // Get the selection range
+    var selection = window.getSelection();
+    var range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+    // Check if the selection exists and is within #main
+    if (range && range.commonAncestorContainer.parentElement && range.commonAncestorContainer.parentElement.closest('#main')) {
+        // Check if the parent element of the selected node is an existing .editable division
+        if (range.startContainer.parentElement.closest('.editable')) {
+            console.log('Cannot insert division inside existing .editable division');
+        } else {
+            range.deleteContents();
+            range.insertNode(newDiv);
+        }
+    } else {
+        console.log('Cannot insert division outside #main');
+    }
+});
+</script>
+
+<!--  =============== !!SIMPLE Version!! SAVE THE DOM as FILE ==================== -->
+
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()" style="display: none;">Save/Download</button>
+<script>
+function saveDom(){
+
+	      document.getElementById("saveDownload").style.display="none";
+
+        let theDom = document.documentElement.innerHTML;
+        console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+         //(A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "fileName.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+}
+        
+</script>
+<!--  ======= END ====  /SIMPLE version SAVE THE DOM as FILE ==================== -->
+
+
+
+
+</body></html>
