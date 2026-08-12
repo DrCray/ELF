@@ -1,0 +1,624 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zombieApocalypseCompQweb</title>
+
+<style>
+/* ============================================================
+   magazine-style theme for comprehension pages
+   structure: #zzpageHeader, #zztitle, #nameAndID, .scrollArticleText,
+   #main, .editable, .question, .answer, etc.
+   ============================================================ */
+
+/* ---------- reset & base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5efe6;               /* warm paper */
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+
+  padding: 2rem 1rem;
+  color: #1e2b2f;
+  line-height: 1.6;
+  max-width: 820px;
+  margin: 0 auto;
+  cursor: text;
+}
+
+/* ---------- header / title block ---------- */
+#zzpageHeader {
+  border-bottom: 3px double #2c3e40;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: none;                  /* remove heavy shadow, magazine style */
+  border-radius: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: transparent;
+}
+
+#zztitle {
+  background: transparent;
+  border: none;
+  border-left: 6px solid #b5654b;    /* editorial accent */
+  padding: 0 0 0 1rem;
+  margin-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  flex: 1;
+}
+
+#zztitle #zheaderTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #1e2b2f;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+#zztitle .fsLarge {
+  font-size: inherit;
+}
+
+#zztitle span.fsLarge span {
+  font-weight: 700;
+}
+
+/* small issue badge (optional, but we keep classes) */
+#zzpageHeader::after {
+  content: "📰  CRIME & JUSTICE";
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.75rem;
+  background: #1e2b2f;
+  color: #f5efe6;
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+
+
+/* ---------- article scroll container ---------- */
+.scrollArticleText {
+  font-weight: 400 !important; /* normal weight */
+
+  height: auto;
+  max-height: 340px;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e0d6cb;
+  margin: 0 0 .2rem 0;
+}
+
+.scrollArticleText p {
+  margin-bottom: .3rem;   line-height:1.5;
+}
+
+.scrollArticleText p:last-child {
+  margin-bottom: 0;
+}
+
+
+
+
+/* custom scrollbar for article */
+.scrollArticleText::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollArticleText::-webkit-scrollbar-track {
+  background: #ece3d9;
+  border-radius: 10px;
+}
+.scrollArticleText::-webkit-scrollbar-thumb {
+  background: #b5654b;
+  border-radius: 10px;
+}
+
+/* ---------- main question container ---------- */
+#main {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: auto;
+  margin-top: .1rem;
+}
+
+/* each question block (using div with text + .editable) */
+#main > div,
+#main > br + div {
+  display: block;
+  background: #ffffff;
+  border-left: 4px solid #b5654b;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  margin-bottom: 1.8rem;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: box-shadow 0.1s ease;
+}
+
+#main > div:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+/* question number & text – we style them inline, but we keep the structure */
+#main .question {
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  min-width: auto;
+  overflow: visible;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* we also support .question inside #main, but we also style raw text */
+#main .question,
+#main > div:not(.editable):not(.answer) {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+}
+
+/* ---------- editable answer boxes ---------- */
+.editable,
+.answer {
+  display: block;
+  background: #f9f5ef;
+  border: 1px solid #ddd2c6;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0 0 0;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  color: #1e2b2f;
+  min-height: 3.2rem;
+  caret-color: #b5654b;
+  transition: background 0.1s ease, border-color 0.1s ease;
+  word-break: break-word;
+  overflow: auto;
+  background-color: #f9f5ef;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ddd2c6;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.editable:focus,
+.answer:focus {
+  background: #ffffff;
+  border-color: #b5654b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(181, 101, 75, 0.1);
+}
+
+.editable:empty::before,
+.answer:empty::before {
+  content: "type or paste answer here";
+  color: #a89586;
+  font-style: italic;
+}
+
+/* if .editable is used inside a .quSet or directly, we keep consistent */
+.quSet {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ---------- print & utility ---------- */
+@media print {
+  body {
+    background: white;
+    padding: 0.5in;
+    max-width: 100%;
+  }
+  .scrollArticleText {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    max-height: none;
+    overflow-y: visible;
+  }
+  #main > div {
+    box-shadow: none;
+    border-left-color: #333;
+    break-inside: avoid;
+  }
+  .editable,
+  .answer {
+    background: #fafafa;
+    border: 1px solid #aaa;
+  }
+  #zzpageHeader::after {
+    content: "CRIME & JUSTICE";
+    background: #1e2b2f;
+    color: white;
+  }
+
+  button,
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 600px) {
+  #zzpageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  #zzpageHeader::after {
+    margin-left: 0;
+    align-self: flex-start;
+    font-size: 0.65rem;
+  }
+  #zztitle {
+    padding-left: 0.5rem;
+    border-left-width: 4px;
+  }
+  #zztitle #zheaderTitle {
+    font-size: 1.5rem;
+  }
+  .scrollArticleText {
+    padding: 1.2rem;
+  }
+  #main > div {
+    padding: 1rem 1rem 0.8rem 1rem;
+  }
+
+}
+</style>
+</head>
+<body>
+	
+
+  <header id="zzpageHeader"> 
+        <img class="center" src="topImage.jpg" alt="" width="100%">
+        
+        <section id="zztitle" contenteditable="false">
+            <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--************************ Type title here ******************-->
+            
+        <h3>Dr Ray</h3>
+            <div id="zheaderTitle"> <span class="fsLarge"><span style="font-weight: bold;">Zombie Apocalypse</span></span></div><div><span class="fsLarge"><span style="font-weight: bold;"><br></span></span></div><div><span class="fsLarge"><span style="font-weight: bold;">Comprehension Questions<br></span></span></div><div><br></div>
+
+            
+            <!--     ***************** End title ****************************-->
+            <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--     ------ Don’t type Title content past this line ---  -->
+            
+        </section>
+    </header>	
+	
+
+ 
+<div class="scrollArticleText" contenteditable="false"><div id="container">
+    <div id="column1" class="column1" contenteditable="false">
+
+
+<p>
+<span><span><span><b>Z</b></span>ombies,
+zombies everywhere. At least, in movies and TV series. The last
+decade has seen a <b>proliferation</b> of Zombie productions: the
+Resident Evil <b>franchise</b>, the Walking Dead series and all its
+<b>spin-offs</b> and <b>copycats</b>, even comedies like the “Scouts
+Guide...”, and Zombieland.  </span></span>
+</p>
+<p><span><span>Zombies
+have been so popular it led one group of student scientists to ask
+the question, “What if Zombies were real.” Using mathematical
+<b>formulas</b>, and considering that one zombie could bite at least
+one person a day, the group discovered that Zombies could <b>wipe out</b>
+the human race in just 100 days. </span></span>
+</p>
+<p><span><span>However,
+their professor was not <b>impressed</b>. He told them they hadn’t
+considered enough <b>factors</b>, such as how many zombies could be
+killed in one day, how much distance would people <b>intentionally</b>
+keep from the Zombie population, and how many babies could be born.
+Reconsidering these factors, the students discovered that, though the
+population numbers would get dangerously low, the human race would 
+survive. </span></span>
+</p>
+<p><span><span>But
+where did all these “walking dead,” the undead, and zombie ideas
+come from? Many <b>attribute</b> it to the religious practice of
+Haitian voodoo. In this practice, one could poison a living person
+and put them in a <b>state</b> that appears as death. After burial,
+they are taken from the grave by someone who desired to use them as
+their slave. So the word “zombi” originated from the voodoo
+language, no doubt, and was introduced into English around the early
+to mid 1800s. But it is unlikely that the voodoo type of zombi, to be
+a slave, is the sole origin of the full zombie <b>concept</b>—the
+biting and spreading of a zombie disease. </span></span>
+</p>
+<p><span><span>In
+fact the concept of dead people walking, can also be found in Chinese
+literature dating to the mid 1700s. There is also the literature of
+vampires from Europe, which is just another <b>variation</b> of the
+undead biting people.</span></span></p>
+<p><span><span>The
+concept of zombie is rather more <b>symbolic</b> of the many <b>pandemic</b>
+diseases that have <b>ravaged</b> the human race throughout history.
+Zombies are a disease <b>ridden</b> people who will spread the
+disease upon contact. Staying away from zombies or letting them die
+out, are the same common themes of an international pandemic. </span></span>
+</p>
+<p><span><span>The
+Black Death of Europe is a disease that spread so easily and quickly
+that it killed 200 million people. There were dead bodies everywhere.
+People, even then, knew to keep their distance from the dead bodies. 
+They also stayed away from people who  had the disease—who were in
+essence “the walking dead”—alive and walking today, dead
+tomorrow.</span></span></p>
+<p><span><span>This
+was only one of the many hundreds of <b>pandemics</b> that have swept
+through countries and the world, killing thousands and millions in
+just a couple of years. It is a familiar theme throughout the history
+of humankind. There are even pictures in <b>century-old</b>
+newspapers that represent these diseases as monstrous death-like
+bodies reaching out to kill the living. If you saw them, you would
+think they were zombie images, not news articles about diseases.</span></span></p>
+<p><span><span>Having
+lived through our own recent pandemic, it is not so <b>far-fetched</b>
+to imagine that some type of a zombie-diseased apocalypse could
+actually happen.</span></span></p>
+
+</div>
+</div></div>
+	
+	
+<div id="main" contenteditable="false">
+<br><br>1a. According to the <b>initial</b> results of the students’ research, would humankind survive a real Zombie apocalypse? <div contenteditable="true" class="editable">type or copy/paste answer here</div><br><div>1b. According to the&nbsp;<b>final</b> results of the students’ research, would humankind survive a real Zombie apocalypse? <div contenteditable="true" class="editable">type or copy/paste answer here</div><br></div><div>2. Where did the word “zombie” originate? </div><div contenteditable="true" class="editable">type or copy/paste answer here</div><br>3. When was is introduced to English?<div contenteditable="true" class="editable">type or copy/paste answer here</div><br>4. Besides zombies, what is another variation of the undead biting people?<div contenteditable="true" class="editable">type or copy/paste answer here</div><br>5. The zombie concept is symbolic of what?<div contenteditable="true" class="editable">type or copy/paste answer here</div><br>6. How many people died the Black Death?<div contenteditable="true" class="editable">type or copy/paste answer here</div><br>7. Do an internet search for “list pandemics, history”. <div contenteditable="true" class="editable">type or copy/paste answer here</div>
+
+
+
+</div>
+<button id="insertBtn" class="editOff" style="display: none;">add answer box</button>
+<div class="srollArticleText" contenteditable="false"></div>
+	
+	 <div id="nameAndID">
+	  <input id="name" type="text" value="name">
+	  <input id="id" type="text" value="id#"><br><br>
+ </div>
+
+<p style="padding:.5rem; background:maroon; width: fit-content;">
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>   
+</p>
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
+<script>
+document.getElementById('insertBtn').addEventListener('click', function() {
+    // Create a new contenteditable div element
+    var newDiv = document.createElement('div');
+    newDiv.contentEditable = true;
+    newDiv.classList.add('editable');
+    
+    // Set up a placeholder text
+    newDiv.textContent = `type or copy/paste answer here`;
+
+    // Get the selection range
+    var selection = window.getSelection();
+    var range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+    // Check if the selection exists and is within #main
+    if (range && range.commonAncestorContainer.parentElement && range.commonAncestorContainer.parentElement.closest('#main')) {
+        // Check if the parent element of the selected node is an existing .editable division
+        if (range.startContainer.parentElement.closest('.editable')) {
+            console.log('Cannot insert division inside existing .editable division');
+        } else {
+            range.deleteContents();
+            range.insertNode(newDiv);
+        }
+    } else {
+        console.log('Cannot insert division outside #main');
+    }
+});
+</script>
+ <!--  =============== DETAILED version ========================================================= -->
+<!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>     
+      
+        <button style="margin: 2ex 0px 0px; display: none;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+                 
+    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+      
+      <script>
+      function toggleEditOff(){
+      
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }   
+          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("editOff").style.display="none";
+            document.getElementById("editOn").style.display="block";   
+            
+        //    document.getElementById("styleEditor").style.display="none";
+            
+          
+            let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+				for (const contEdbl of contEdbls) {
+					contEdbl.contentEditable=false;
+				}
+        
+			// Get all elements with the class "editable"
+			let editableElements = document.querySelectorAll('.editable');
+
+				// Loop through each element and set contenteditable to false
+				editableElements.forEach(function(element) {
+					element.setAttribute('contenteditable', 'true');
+				});              
+            
+        // end remove all editables ************************
+      } //end toggleEditOff 
+          
+      function toggleEditOn(){
+      
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }  
+          
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("editOff").style.display="block";
+            document.getElementById("editOn").style.display="none";     
+            
+         //   document.getElementById("styleEditor").style.display="block";
+        
+        
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      } // end toggleEditOn
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        toggleEditOff();
+    
+    
+  document.getElementById("editOn").style.display="none";   
+
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+ <!--  ===============  /end Detailed!! SAVE THE DOM as FILE ==================== -->
+
+
+
+</body></html>
