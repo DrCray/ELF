@@ -1,0 +1,631 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sleepwalkerGatorsCompQu</title>
+<style>
+/* ============================================================
+   magazine-style theme for comprehension pages
+   structure: #zzpageHeader, #zztitle, #nameAndID, .scrollArticleText,
+   #main, .editable, .question, .answer, etc.
+   ============================================================ */
+
+/* ---------- reset & base ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5efe6;               /* warm paper */
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+
+  padding: 2rem 1rem;
+  color: #1e2b2f;
+  line-height: 1.6;
+  max-width: 820px;
+  margin: 0 auto;
+  cursor: text;
+}
+
+/* ---------- header / title block ---------- */
+#zzpageHeader {
+  border-bottom: 3px double #2c3e40;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: none;                  /* remove heavy shadow, magazine style */
+  border-radius: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: transparent;
+}
+
+#zztitle {
+  background: transparent;
+  border: none;
+  border-left: 6px solid #b5654b;    /* editorial accent */
+  padding: 0 0 0 1rem;
+  margin-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  flex: 1;
+}
+
+#zztitle #zheaderTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #1e2b2f;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+#zztitle .fsLarge {
+  font-size: inherit;
+}
+
+#zztitle span.fsLarge span {
+  font-weight: 700;
+}
+
+/* small issue badge (optional, but we keep classes) */
+#zzpageHeader::after {
+  content: "📰  Learn English";
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.75rem;
+  background: #1e2b2f;
+  color: #f5efe6;
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+
+
+/* ---------- article scroll container ---------- */
+.scrollArticleText {
+  font-weight: 400 !important; /* normal weight */
+
+  height: auto;
+  max-height: 340px;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e0d6cb;
+  margin: 0 0 .2rem 0;
+}
+
+.scrollArticleText p {
+  margin-bottom: .3rem;   line-height:1.5;
+}
+
+.scrollArticleText p:last-child {
+  margin-bottom: 0;
+}
+
+
+
+
+/* custom scrollbar for article */
+.scrollArticleText::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollArticleText::-webkit-scrollbar-track {
+  background: #ece3d9;
+  border-radius: 10px;
+}
+.scrollArticleText::-webkit-scrollbar-thumb {
+  background: #b5654b;
+  border-radius: 10px;
+}
+
+/* ---------- main question container ---------- */
+#main {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: auto;
+  margin-top: .1rem;
+}
+
+/* each question block (using div with text + .editable) */
+#main > div,
+#main > br + div {
+  display: block;
+  background: #ffffff;
+  border-left: 4px solid #b5654b;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  margin-bottom: 1.8rem;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: box-shadow 0.1s ease;
+}
+
+#main > div:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+/* question number & text – we style them inline, but we keep the structure */
+#main .question {
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  min-width: auto;
+  overflow: visible;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* we also support .question inside #main, but we also style raw text */
+#main .question,
+#main > div:not(.editable):not(.answer) {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e2b2f;
+}
+
+/* ---------- editable answer boxes ---------- */
+.editable,
+.answer {
+  display: block;
+  background: #f9f5ef;
+  border: 1px solid #ddd2c6;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  margin: 0.8rem 0 0 0;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  color: #1e2b2f;
+  min-height: 3.2rem;
+  caret-color: #b5654b;
+  transition: background 0.1s ease, border-color 0.1s ease;
+  word-break: break-word;
+  overflow: auto;
+  background-color: #f9f5ef;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ddd2c6;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.editable:focus,
+.answer:focus {
+  background: #ffffff;
+  border-color: #b5654b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(181, 101, 75, 0.1);
+}
+
+.editable:empty::before,
+.answer:empty::before {
+  content: "type or paste answer here";
+  color: #a89586;
+  font-style: italic;
+}
+
+/* if .editable is used inside a .quSet or directly, we keep consistent */
+.quSet {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ---------- print & utility ---------- */
+@media print {
+  body {
+    background: white;
+    padding: 0.5in;
+    max-width: 100%;
+  }
+  .scrollArticleText {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    max-height: none;
+    overflow-y: visible;
+  }
+  #main > div {
+    box-shadow: none;
+    border-left-color: #333;
+    break-inside: avoid;
+  }
+  .editable,
+  .answer {
+    background: #fafafa;
+    border: 1px solid #aaa;
+  }
+  #zzpageHeader::after {
+    content: "CRIME & JUSTICE";
+    background: #1e2b2f;
+    color: white;
+  }
+
+  button,
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 600px) {
+  #zzpageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  #zzpageHeader::after {
+    margin-left: 0;
+    align-self: flex-start;
+    font-size: 0.65rem;
+  }
+  #zztitle {
+    padding-left: 0.5rem;
+    border-left-width: 4px;
+  }
+  #zztitle #zheaderTitle {
+    font-size: 1.5rem;
+  }
+  .scrollArticleText {
+    padding: 1.2rem;
+  }
+  #main > div {
+    padding: 1rem 1rem 0.8rem 1rem;
+  }
+
+}
+</style>
+</head>
+<body>
+	
+
+  <header id="zzpageHeader"> 
+        <img class="center" src="topImage.jpg" alt="" width="100%">
+        
+        <section id="zztitle" contenteditable="false">
+            <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--************************ Type title here ******************-->
+            
+        
+            <div id="zheaderTitle">Dr Ray  <br><br><span class="fsLarge"><span style="font-weight: bold;">Comprehension Questions.</span></span></div><div><span class="fsLarge"><span style="font-weight: bold;"><br></span></span></div><div><span class="fsLarge"><span style="font-weight: bold;">Sleepwalker swims with gators<br></span></span></div><div><br></div>
+
+            
+            <!--     ***************** End title ****************************-->
+            <!--     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+            <!--     ------ Don’t type Title content past this line ---  -->
+            
+        </section>
+    </header>	
+	
+ <div id="nameAndID">
+	  <input id="name" type="text" value="name">
+	  <input id="id" type="text" value="id#"><br><br>
+ </div>  
+ 
+<div class="scrollArticleText" contenteditable="false"><div id="container">
+    <div id="column1" class="column1" contenteditable="false">
+
+
+	
+	
+	
+	
+
+<p>
+<span><span>Sleepwalking
+<b>occurs</b> when someone gets up from bed and walks around even
+though they are still  asleep. They might talk or shout as they are
+walking. Their eyes are usually open and have a <span>confused</span>,
+“glassy” look to them.  Sleepwalkers might do <b>routine</b>
+daily actions such as laundry, sweeping the floor, or pointing and
+clicking the <b>remote control</b> at a blank TV. </span></span>
+</p>
+<p><span><span>Sometimes,
+sleepwalkers do dangerous things such as attempting to cook a meal
+and then leaving the <span>stove</span>
+on, climbing out of a high window, or even driving a car.  </span></span>
+</p>
+<p><span><span>Of
+course, funny things can happen too, such as a woman who ate dried
+cat food from her <b>pantry</b>, or a man in his underwear who walked
+into a nearby grocery store and then walked out with a <b>loaf</b> of
+bread. </span></span>
+</p>
+<p><span><span>Joe
+Larken had a sleepwalking <b>incident</b> that was both dangerous and
+funny. He says although it was dangerous at the time, it makes for a
+<b>humorous</b> story <i>after the fact.</i> </span></span>
+</p>
+<p><span><span>Joe
+has a bad knee and often uses a <b>cane</b> when he walks. One night
+when Joe was sleepwalking, he grabbed his cane and then walked out of
+his house. </span></span>
+</p>
+<p><span><span>Joe’s
+<b>neighborhood</b> is near a <span>good-sized</span>
+lake. Apparently, Joe had walked down a neighborhood street and off
+the end of a <b>pier</b> where he fell into the lake.</span></span></p>
+<p>
+<span><span>When
+he hit the water, he immediately woke up, and was <span>shocked</span>
+to find himself standing in the lake. Even worse, he realized that
+his feet were <b>stuck</b> deep in the mud so he couldn't move. The
+situation became even more shocking when he thought he saw something
+moving in the water. </span></span>
+</p>
+<p><span><span>A
+few moments later, he realized that he was <b>surrounded</b> by
+alligators. Joe began fighting the gators with his cane, <b>striking</b>
+at them and pushing them away. Luckily, a neighbor heard him yelling
+for help and called the local police. </span></span>
+</p>
+<p><span><span>The
+police arrived soon after the call, and <i>pulled up</i> to the lake
+and began shining their bright lights at the alligators. The light
+<i>scared the alligators away</i> and Mr. Larken was <b>rescued</b>
+from the lake.</span></span></p>
+
+</div>
+</div> Paste Article Text Here </div>
+	
+	
+<div id="main" contenteditable="false">
+1. What is sleepwalking?<p style="line-height: 100%; margin-bottom: 0in"><div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    2. What kind of
+usual routines might people do while sleepwalking?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    3. What are some
+dangerous things that sleepwalkers might do?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    4. What are some
+funny things that sleepwalkers might do?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    5. Why does Joe
+Larken need a cane?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    6. How did Joe
+Larken end up in the lake?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    7. When Joe woke
+up in the lake why couldn’t he move?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    8. After Joe
+realized he was surrounded by alligators, what did he do?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    9. Who called
+the local police and why?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p>
+<p style="line-height: 100%; margin-bottom: 0in">    10. How did the
+police scare the alligators away?<div contenteditable="true" class="editable">type or copy/paste answer here</div></p><br>
+
+
+
+</div>
+<button id="insertBtn" class="editOff" style="display: none;">add answer box</button>
+<div class="srollArticleText" contenteditable="false"></div>
+	
+
+<p style="padding:.5rem; background:maroon; width: fit-content;">
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>   
+</p>
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+            
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+            //=============================================================            
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;            
+            
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================               
+            
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again"); 
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>      
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+
+<script>
+document.getElementById('insertBtn').addEventListener('click', function() {
+    // Create a new contenteditable div element
+    var newDiv = document.createElement('div');
+    newDiv.contentEditable = true;
+    newDiv.classList.add('editable');
+    
+    // Set up a placeholder text
+    newDiv.textContent = `type or copy/paste answer here`;
+
+    // Get the selection range
+    var selection = window.getSelection();
+    var range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+    // Check if the selection exists and is within #main
+    if (range && range.commonAncestorContainer.parentElement && range.commonAncestorContainer.parentElement.closest('#main')) {
+        // Check if the parent element of the selected node is an existing .editable division
+        if (range.startContainer.parentElement.closest('.editable')) {
+            console.log('Cannot insert division inside existing .editable division');
+        } else {
+            range.deleteContents();
+            range.insertNode(newDiv);
+        }
+    } else {
+        console.log('Cannot insert division outside #main');
+    }
+});
+</script>
+ <!--  =============== DETAILED version ========================================================= -->
+<!--  =============== SAVE THE DOM as FILE with fileName and TITLE   ==================== -->
+<!--  =============== with fileName, add Html TITLE, editON/Off buttons   ==================== -->
+
+        <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>     
+      
+        <button style="margin: 2ex 0px 0px; display: none;" id="editOff" onclick="toggleEditOff()">Preview</button>
+        
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+                 
+    <div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+                
+        <label style="background-color: antiquewhite;"> name the file before saving &nbsp;
+          <input id="fileName" type="text" size="30" value="fileName">
+        </label><br>  
+        
+      <button id="saveDownload" class="hlBtn" onclick="saveDom()">Save/Download</button>
+    </div> 
+      
+                 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+      
+      <script>
+      function toggleEditOff(){
+      
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="none";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="block";
+            }   
+          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("editOff").style.display="none";
+            document.getElementById("editOn").style.display="block";   
+            
+        //    document.getElementById("styleEditor").style.display="none";
+            
+          
+            let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+				for (const contEdbl of contEdbls) {
+					contEdbl.contentEditable=false;
+				}
+        
+			// Get all elements with the class "editable"
+			let editableElements = document.querySelectorAll('.editable');
+
+				// Loop through each element and set contenteditable to false
+				editableElements.forEach(function(element) {
+					element.setAttribute('contenteditable', 'true');
+				});              
+            
+        // end remove all editables ************************
+      } //end toggleEditOff 
+          
+      function toggleEditOn(){
+      
+          let editOffs = document.querySelectorAll('.editOff');
+            for (const editOff of editOffs) {
+                editOff.style.display="block";
+            }          
+
+          let editOns = document.querySelectorAll('.editOn');
+            for (const editOn of editOns) {
+                editOn.style.display="none";
+            }  
+          
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("editOff").style.display="block";
+            document.getElementById("editOn").style.display="none";     
+            
+         //   document.getElementById("styleEditor").style.display="block";
+        
+        
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      } // end toggleEditOn
+        
+      </script>
+      
+
+<script>
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    
+        toggleEditOff();
+    
+    
+  document.getElementById("editOn").style.display="none";   
+
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+ <!--  ===============  /end Detailed!! SAVE THE DOM as FILE ==================== -->
+
+
+
+</body></html>
