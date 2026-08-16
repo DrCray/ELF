@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sentence Scramble</title>
+  <style>
+    :root {
+      --pastel-yellow: #fff9c4;
+      --correct-white: #ffffff;
+      --selected-border: #1976d2;
+      --text: #333;
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      margin: 0 0 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .controls {
+     position:sticky;
+     top: 5px;
+     z-index:1000;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 5px 9px;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 8px;
+      background: #1976d2;
+      color: white;
+      cursor: pointer;
+      font-weight: 500;
+      touch-action: manipulation;
+    }
+
+    button:active {
+      background: #1565c0;
+    }
+
+    button.secondary {
+      background: #757575;
+    }
+
+    button.secondary:active {
+      background: #616161;
+    }
+
+    .sentence-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: .3rem;
+      margin-bottom: .5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .sentence-label {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .section {
+      background: var(--pastel-yellow);
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+
+    .section.correct {
+      background: var(--correct-white);
+      border-color: #e0e0e0;
+    }
+
+    .section.selected {
+      border-color: var(--selected-border);
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
+    }
+
+    .section:active {
+      opacity: 0.85;
+    }
+
+    .progress {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+
+    .progress.complete {
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .section {
+        font-size: 1rem;
+        padding: 12px 14px;
+      }
+    }
+
+    .student-info {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.student-info input {
+  padding: 5px 6px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+#printBtn:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
+@media print {
+  .controls, .student-info, .subtitle, .progress { display: none !important; }
+  body { background: white; padding: 0; }
+  .sentence-card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}
+  </style>
+</head>
+<body>
+  <h1>Sentence Scramble</h1>
+  <p class="subtitle">Tap a section, then tap another to swap. Correct sections turn white.</p>
+
+  <div class="controls">
+    <button id="reshuffleBtn">Reshuffle All</button>
+    <button id="resetBtn" class="secondary" style="display:none;">Reset Order</button>
+    <button id="studyBtn">Study Mode</button>
+  </div>
+
+  <div id="progress" class="progress"></div>
+  <div id="sentences"></div>
+
+  <script>
+    // JSON-style array — easy to reuse / edit
+    const sentencesData = [
+      ["Trusty is the name", "of a guide dog", "who belongs to", "Harold Manning"],
+      ["Harold is blind", "so Trusty assists him", "in getting around"],
+      ["Trusty helps Harold", "get safely to work", "every morning", "and safely home", "every evening"],
+      ["His office", "was two floors", "above a chemical lab"],
+      ["The explosion", "was so big that", "the floor of Harold’s office", "actually bounced"],
+      ["Guide dogs", "for the blind", "are trained", "to remain calm", "in emergency situations"],
+      ["Harold gave Trusty", "a command", "to lead him to safety"],
+      ["Trusty", "led Harold", "to the stairwell"],
+      ["Trusty led", "the whole group", "down the stairs", "and out of the building"],
+      ["For her bravery", "Trusty was given", "a medal of honor", "and a key to the city"]
+    ];
+
+    // State: for each sentence, current order of original indices
+    let state = [];
+
+    // Generate a derangement (permutation with no fixed points)
+    function derange(n) {
+      if (n <= 1) return Array.from({length: n}, (_, i) => i);
+      let arr;
+      let attempts = 0;
+      do {
+        arr = Array.from({length: n}, (_, i) => i);
+        // Fisher-Yates
+        for (let i = n - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        attempts++;
+      } while (arr.some((v, i) => v === i) && attempts < 200);
+      // Fallback: simple cycle shift if still has fixed points
+      if (arr.some((v, i) => v === i)) {
+        arr = Array.from({length: n}, (_, i) => (i + 1) % n);
+      }
+      return arr;
+    }
+
+    function initState() {
+      state = sentencesData.map(s => ({
+        original: s.slice(),
+        order: derange(s.length), // indices into original
+        selected: null // index within the current order
+      }));
+    }
+
+    function isCorrect(sentenceIdx, pos) {
+      return state[sentenceIdx].order[pos] === pos;
+    }
+
+    function allCorrect() {
+      return state.every((s, si) => s.order.every((origIdx, pos) => origIdx === pos));
+    }
+
+    function updateProgress() {
+      const total = state.reduce((sum, s) => sum + s.order.length, 0);
+      const correct = state.reduce((sum, s, si) => {
+        return sum + s.order.filter((origIdx, pos) => origIdx === pos).length;
+      }, 0);
+      const el = document.getElementById('progress');
+      if (correct === total) {
+        el.textContent = `All correct! (${correct}/${total})`;
+        el.classList.add('complete');
+      } else {
+        el.textContent = `Correct sections: ${correct} / ${total}`;
+        el.classList.remove('complete');
+      }
+    }
+
+    function render() {
+      const container = document.getElementById('sentences');
+      container.innerHTML = '';
+
+      state.forEach((s, si) => {
+        const card = document.createElement('div');
+        card.className = 'sentence-card';
+
+        const label = document.createElement('div');
+        label.className = 'sentence-label';
+        label.textContent = `Sentence ${si + 1}`;
+        card.appendChild(label);
+
+        const sectionsDiv = document.createElement('div');
+        sectionsDiv.className = 'sections';
+
+        s.order.forEach((origIdx, pos) => {
+          const sec = document.createElement('div');
+          sec.className = 'section';
+          if (isCorrect(si, pos)) sec.classList.add('correct');
+          if (s.selected === pos) sec.classList.add('selected');
+          sec.textContent = s.original[origIdx];
+          sec.dataset.si = si;
+          sec.dataset.pos = pos;
+          sec.addEventListener('click', onSectionClick);
+          sectionsDiv.appendChild(sec);
+        });
+
+        card.appendChild(sectionsDiv);
+        container.appendChild(card);
+      });
+
+      updateProgress();
+    }
+
+    function onSectionClick(e) {
+      const si = parseInt(e.currentTarget.dataset.si, 10);
+      const pos = parseInt(e.currentTarget.dataset.pos, 10);
+      const s = state[si];
+
+      if (s.selected === null) {
+        // First selection
+        s.selected = pos;
+      } else if (s.selected === pos) {
+        // Deselect same section
+        s.selected = null;
+      } else {
+        // Swap
+        const a = s.selected;
+        const b = pos;
+        [s.order[a], s.order[b]] = [s.order[b], s.order[a]];
+        s.selected = null;
+      }
+      // Clear selection on other sentences
+      state.forEach((other, oi) => {
+        if (oi !== si) other.selected = null;
+      });
+      render();
+    }
+
+    document.getElementById('reshuffleBtn').addEventListener('click', () => {
+      state.forEach(s => {
+        s.order = derange(s.original.length);
+        s.selected = null;
+      });
+      render();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      state.forEach(s => {
+        s.order = Array.from({length: s.original.length}, (_, i) => i);
+        s.selected = null;
+      });
+      render();
+    });
+
+
+// --- Study Mode support ---
+let studyMode = false;
+let savedState = null;   // will hold a deep copy of the current order
+
+document.getElementById('studyBtn').addEventListener('click', () => {
+  if (!studyMode) {
+    // Enter Study Mode: capture current state, then show correct order
+    savedState = state.map(s => ({
+      order: s.order.slice(),
+      selected: s.selected
+    }));
+
+    // Force every sentence into correct order
+    state.forEach(s => {
+      s.order = Array.from({ length: s.original.length }, (_, i) => i);
+      s.selected = null;
+    });
+
+    studyMode = true;
+    document.getElementById('studyBtn').textContent = 'Return to Puzzle';
+  } else {
+    // Return to Puzzle: restore the captured state
+    if (savedState) {
+      state.forEach((s, i) => {
+        s.order = savedState[i].order.slice();
+        s.selected = savedState[i].selected;
+      });
+    }
+    studyMode = false;
+    document.getElementById('studyBtn').textContent = 'Study Mode';
+  }
+  render();
+});
+
+
+    // Start
+    initState();
+    render();
+  </script>
+
+
+  <div class="student-info">
+  <input type="text" id="studentName" placeholder="Name" maxlength="40">
+  <input type="text" id="studentId" placeholder="ID" maxlength="20">
+  <button id="printBtn" disabled>Print / Save PDF</button>
+</div>
+  <script>
+  const nameInput = document.getElementById('studentName');
+const idInput = document.getElementById('studentId');
+const printBtn = document.getElementById('printBtn');
+
+function checkPrintReady() {
+  const nameOk = nameInput.value.trim().length >= 2;
+  const idOk = idInput.value.trim().length >= 2;
+  printBtn.disabled = !(nameOk && idOk);
+}
+
+nameInput.addEventListener('input', checkPrintReady);
+idInput.addEventListener('input', checkPrintReady);
+
+printBtn.addEventListener('click', () => {
+  if (printBtn.disabled) return;
+  window.print();
+});
+  </script>
+
+</body>
+</html>
