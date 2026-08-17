@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Headless Horseman of Small Valley - Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        footer { margin-top: 15rem; }
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    #theWordList {
+        display: none;
+    }
+    .show-hide-button {
+        margin: 0 0 1rem 0;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .show-hide-button:hover {
+        background-color: #218838;
+    } 
+    #subtitle {
+        font-size: 120%;
+    }
+
+#toggleAnswersBtn {
+  position: fixed;
+  top: 6px;
+  right: 16px;
+  z-index: 9999;
+}
+
+@media (min-width: 1025px) {
+  #toggleAnswersBtn {
+    top:0px;
+    right: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggleAnswersBtn {
+    right: 40px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>The Headless Horseman of Small Valley</h1>
+        <p id="subtitle">Vocabulary Quiz - Podcast</p>
+        <p>Complete the sentences by selecting the correct vocabulary word</p>
+    </div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+    <button id="toggleAnswersBtn" onclick="toggleAnswers()">Study Mode</button>
+
+
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. The old photograph of the abandoned house <select data-answer="gave me chills"><option value="">-- Select --</option>
+<option value="kicks into gear">kicks into gear</option>
+<option value="side note">side note</option>
+<option value="gave me chills">gave me chills</option>
+<option value="bad timing">bad timing</option>
+<option value="ties the whole story together">ties the whole story together</option></select>.
+        </div>
+        <div class="sentence">
+            2. The whole team's effort <select data-answer="kicks into gear"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="on the edge of my seat">on the edge of my seat</option>
+<option value="kicks into gear">kicks into gear</option>
+<option value="paid off">paid off</option>
+<option value="side note">side note</option></select> once the deadline gets close.
+        </div>
+        <div class="sentence">
+            3. As a <select data-answer="side note"><option value="">-- Select --</option>
+<option value="kicks into gear">kicks into gear</option>
+<option value="on the edge of my seat">on the edge of my seat</option>
+<option value="single-handedly">single-handedly</option>
+<option value="side note">side note</option>
+<option value="paid off">paid off</option></select>, the museum is also open late on Fridays this month.
+        </div>
+        <div class="sentence">
+            4. The panic usually <select data-answer="kicks in"><option value="">-- Select --</option>
+<option value="kicks in">kicks in</option>
+<option value="knows his way around">knows his way around</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="paid off">paid off</option>
+<option value="on the edge of my seat">on the edge of my seat</option></select> right before the exam starts.
+        </div>
+        <div class="sentence">
+            5. She <select data-answer="single-handedly"><option value="">-- Select --</option>
+<option value="tuning in">tuning in</option>
+<option value="side note">side note</option>
+<option value="single-handedly">single-handedly</option>
+<option value="knows his way around">knows his way around</option>
+<option value="gave me chills">gave me chills</option></select> organized the entire charity event in under a week.
+        </div>
+        <div class="sentence">
+            6. Getting a flat tire on the way to the interview was seriously <select data-answer="bad timing"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="fast-forwards">fast-forwards</option>
+<option value="tuning in">tuning in</option>
+<option value="bad timing">bad timing</option>
+<option value="kicks into gear">kicks into gear</option></select>.
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            7. The documentary <select data-answer="fast-forwards"><option value="">-- Select --</option>
+<option value="single-handedly">single-handedly</option>
+<option value="gave me chills">gave me chills</option>
+<option value="came out of nowhere">came out of nowhere</option>
+<option value="fast-forwards">fast-forwards</option>
+<option value="does his homework">does his homework</option></select> through the boring early years and gets right to the drama.
+        </div>
+        <div class="sentence">
+            8. After years in the kitchen, he really <select data-answer="knows his way around"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="knows his way around">knows his way around</option>
+<option value="came out of nowhere">came out of nowhere</option>
+<option value="paid off">paid off</option>
+<option value="single-handedly">single-handedly</option></select> a stove.
+        </div>
+        <div class="sentence">
+            9. Before every big decision, he always <select data-answer="does his homework"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="kicks in">kicks in</option>
+<option value="single-handedly">single-handedly</option>
+<option value="gave me chills">gave me chills</option>
+<option value="does his homework">does his homework</option></select> first.
+        </div>
+        <div class="sentence">
+            10. All those late nights studying finally <select data-answer="paid off"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="paid off">paid off</option>
+<option value="bad timing">bad timing</option>
+<option value="knows his way around">knows his way around</option>
+<option value="single-handedly">single-handedly</option></select> when she got her acceptance letter.
+        </div>
+        <div class="sentence">
+            11. The idea for the new invention <select data-answer="came out of nowhere"><option value="">-- Select --</option>
+<option value="tuning in">tuning in</option>
+<option value="came out of nowhere">came out of nowhere</option>
+<option value="single-handedly">single-handedly</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="kicks into gear">kicks into gear</option></select> while he was washing dishes.
+        </div>
+        <div class="sentence">
+            12. The final scene really <select data-answer="ties the whole story together"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="fast-forwards">fast-forwards</option>
+<option value="knows his way around">knows his way around</option>
+<option value="side note">side note</option>
+<option value="single-handedly">single-handedly</option></select>, explaining every earlier clue.
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            13. The final scene left me <select data-answer="on the edge of my seat"><option value="">-- Select --</option>
+<option value="ties the whole story together">ties the whole story together</option>
+<option value="on the edge of my seat">on the edge of my seat</option>
+<option value="tuning in">tuning in</option>
+<option value="kicks in">kicks in</option>
+<option value="gave me chills">gave me chills</option></select>, wondering what would happen next.
+        </div>
+        <div class="sentence">
+            14. Thanks for <select data-answer="tuning in"><option value="">-- Select --</option>
+<option value="tuning in">tuning in</option>
+<option value="kicks in">kicks in</option>
+<option value="paid off">paid off</option>
+<option value="on the edge of my seat">on the edge of my seat</option>
+<option value="bad timing">bad timing</option></select> to this week's episode — see you next time!
+        </div>
+    </div>
+
+
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+                
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });        
+        
+        let answersVisible = false;
+        let savedSelections = [];
+
+        function toggleAnswers() {
+            answersVisible = !answersVisible;
+            const button = document.getElementById('toggleAnswersBtn');
+            const selects = document.querySelectorAll('select');
+
+            if (answersVisible) {
+                savedSelections = Array.from(selects).map(select => ({
+                    value: select.value,
+                    correct: select.classList.contains('correct'),
+                    incorrect: select.classList.contains('incorrect')
+                }));
+
+                selects.forEach(select => {
+                    select.value = select.getAttribute('data-answer');
+                    select.classList.add('correct');
+                    select.classList.remove('incorrect');
+                });
+            } else {
+                selects.forEach((select, i) => {
+                    const saved = savedSelections[i];
+                    if (saved) {
+                        select.value = saved.value;
+                        select.classList.toggle('correct', saved.correct);
+                        select.classList.toggle('incorrect', saved.incorrect);
+                    }
+                });
+                savedSelections = [];
+            }
+            
+            button.textContent = answersVisible ? ' Close Study Mode ' : ' Study Mode ';
+        }        
+    </script>
+
+    <script>
+        function updateOutput() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            const output = document.getElementById('output');
+            const isColumnView = output.classList.contains('column');
+            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+            if (isColumnView) {
+                output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+            } else {
+                output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column') 
+                ? 'Close Column View' 
+                : 'View as Column';
+            updateOutput();
+        }
+
+        updateOutput();
+    </script>   
+  
+    <script>
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const showHideButton = document.querySelector('.show-hide-button');
+            if (wordList.style.display === 'none' || wordList.style.display === '') {
+                wordList.style.display = 'block';
+                showHideButton.textContent = 'Hide Word List';
+            } else {
+                wordList.style.display = 'none';
+                showHideButton.textContent = 'Show Word List';
+            }
+        }
+    </script>
+    
+    <footer>...</footer>
+</body>
+</html>
