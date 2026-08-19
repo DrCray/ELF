@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty and the Beast — Article Cloze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="studyModeBtn" class="btn secondary" type="button">Study Mode</button>
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Beauty and the Beast — Article Cloze</h1>
+  <p>Vocabulary-in-context practice</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section passage">
+  <h2>Fill in the Blanks</h2>
+  <p style="font-size:.9rem;color:#666;">Read the story of Beauty and the Beast and choose the word or phrase that best completes each sentence.</p>
+  <p>An old man was once
+<select class="blank" data-answer="passing by"><option value="">— choose —</option><option value="passing by">passing by</option><option value="fell back">fell back</option><option value="leaned in">leaned in</option></select>
+a
+<select class="blank" data-answer="mansion"><option value="">— choose —</option><option value="spread">spread</option><option value="mansion">mansion</option><option value="scarf">scarf</option></select>
+when he noticed a beautiful garden. so he stopped to pick a rose for his daughter. Suddenly, a
+<select class="blank" data-answer="ferocious"><option value="">— choose —</option><option value="startled">startled</option><option value="cruel">cruel</option><option value="ferocious">ferocious</option></select>
+beast
+<select class="blank" data-answer="pounced"><option value="">— choose —</option><option value="clutching">clutching</option><option value="pounced">pounced</option><option value="hunt down">hunt down</option></select>
+on him and yelled, "How dare you steal from my garden!" The beast grabbed the man by his feet and
+began dragging him away.</p>
+<p>"Please don't kill me," pleaded the man, "I have many daughters who need me. What can I do for you
+that you might forgive me?"</p>
+<p>The ugly beast said, "Look at me, a beast. I'm so lonely. Bring me one of your daughters to
+<select class="blank" data-answer="keep me company"><option value="">— choose —</option><option value="felt sorry for">felt sorry for</option><option value="come willingly">come willingly</option><option value="keep me company">keep me company</option></select>
+, and I promise, I'll treat her well. But whichever daughter should come, she must agree to
+<select class="blank" data-answer="come willingly"><option value="">— choose —</option><option value="up to you">up to you</option><option value="come willingly">come willingly</option><option value="keep me company">keep me company</option></select>
+and must remain my prisoner till I release her." Then the beast
+<select class="blank" data-answer="leaned in"><option value="">— choose —</option><option value="fell back">fell back</option><option value="passing by">passing by</option><option value="leaned in">leaned in</option></select>
+closer to the old man and said, "I'll
+<select class="blank" data-answer="release"><option value="">— choose —</option><option value="release">release</option><option value="hunt down">hunt down</option><option value="cursed">cursed</option></select>
+you, but if you or one of your daughters doesn't return, I'll
+<select class="blank" data-answer="hunt down"><option value="">— choose —</option><option value="pounced">pounced</option><option value="hunt down">hunt down</option><option value="release">release</option></select>
+all of you and eat you one by one, and you, last of all."</p>
+<p>The father returned home in tears and explained his horrible story. Beauty, however, was not afraid
+and told her father that she would go.</p>
+<p>When Beauty arrived at the mansion there was no one there. The table was
+<select class="blank" data-answer="spread"><option value="">— choose —</option><option value="mansion">mansion</option><option value="spread">spread</option><option value="faded">faded</option></select>
+with food so she sat down to eat. A voice spoke behind her, "My house is yours, find yourself a
+place to sleep." She turned around, but no one was there.</p>
+<p>The next day as she walked in the garden, the beast came out from behind some bushes. Beauty was
+<select class="blank" data-answer="startled"><option value="">— choose —</option><option value="ferocious">ferocious</option><option value="startled">startled</option><option value="fell back">fell back</option></select>
+and
+<select class="blank" data-answer="fell back"><option value="">— choose —</option><option value="startled">startled</option><option value="leaned in">leaned in</option><option value="fell back">fell back</option></select>
+against the bushes, and screamed. The beast ran away.</p>
+<p>Beauty
+<select class="blank" data-answer="felt sorry for"><option value="">— choose —</option><option value="keep me company">keep me company</option><option value="up to you">up to you</option><option value="felt sorry for">felt sorry for</option></select>
+the beast, and they soon became close friends. After some time she asked him if she could go home
+and see her family---she promised that she would return. The beast released Beauty and said, "If you
+come or go, it is
+<select class="blank" data-answer="up to you"><option value="">— choose —</option><option value="come willingly">come willingly</option><option value="up to you">up to you</option><option value="felt sorry for">felt sorry for</option></select>
+, but if you don't return, I'm sure I'll die of a broken heart."</p>
+<p>Beauty was glad to return to her family, but after a month, she grew sad and really missed the beast
+so she returned to the mansion. When she arrived, she found the beast lying dead in the garden,
+<select class="blank" data-answer="clutching"><option value="">— choose —</option><option value="clutching">clutching</option><option value="scarf">scarf</option><option value="pounced">pounced</option></select>
+an old
+<select class="blank" data-answer="scarf"><option value="">— choose —</option><option value="mansion">mansion</option><option value="scarf">scarf</option><option value="clutching">clutching</option></select>
+of hers.</p>
+<p>She bent over him and wept, "I never realized until now how complete my life was when I was with
+you." Her tear fell upon the beast. A bright light suddenly filled the whole garden. When the light
+<select class="blank" data-answer="faded"><option value="">— choose —</option><option value="spread">spread</option><option value="faded">faded</option><option value="cursed">cursed</option></select>
+, she opened her eyes to see a handsome prince standing in front of her. "Because I was once a
+<select class="blank" data-answer="cruel"><option value="">— choose —</option><option value="cruel">cruel</option><option value="ferocious">ferocious</option><option value="cursed">cursed</option></select>
+man, I have been
+<select class="blank" data-answer="cursed"><option value="">— choose —</option><option value="faded">faded</option><option value="cursed">cursed</option><option value="cruel">cruel</option></select>
+all these years," said the prince, "but our love has finally released me."</p>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selects = () => document.querySelectorAll('select.blank');
+
+  document.body.addEventListener('change', (e) => {
+    if (!e.target.matches('select.blank')) return;
+    const sel = e.target;
+    sel.classList.remove('correct','incorrect');
+    if (sel.value === sel.dataset.answer) {
+      sel.classList.add('correct');
+    } else if (sel.value !== '') {
+      sel.classList.add('incorrect');
+    }
+  });
+
+  const studyBtn = document.getElementById('studyModeBtn');
+  let snapshot = null;
+  let inStudy = false;
+
+  studyBtn.addEventListener('click', () => {
+    const all = selects();
+    if (!inStudy) {
+      snapshot = Array.from(all).map(s => ({
+        value: s.value,
+        classes: Array.from(s.classList)
+      }));
+      all.forEach(s => {
+        s.value = s.dataset.answer;
+        s.classList.remove('incorrect');
+        s.classList.add('correct');
+        s.disabled = true;
+      });
+      inStudy = true;
+      studyBtn.textContent = 'Return to Quiz';
+    } else {
+      all.forEach((s, i) => {
+        const snap = snapshot ? snapshot[i] : null;
+        s.disabled = false;
+        s.classList.remove('correct','incorrect');
+        if (snap) {
+          s.value = snap.value;
+          snap.classes.forEach(c => { if (c === 'correct' || c === 'incorrect') s.classList.add(c); });
+        }
+      });
+      inStudy = false;
+      studyBtn.textContent = 'Study Mode';
+    }
+  });
+
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
