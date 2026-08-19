@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surfer Fights Off Sharks — Article Cloze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="studyModeBtn" class="btn secondary" type="button">Study Mode</button>
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Surfer Fights Off Sharks — Article Cloze</h1>
+  <p>Vocabulary-in-context practice</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section passage">
+  <h2>Fill in the Blanks</h2>
+  <p style="font-size:.9rem;color:#666;">Read the article about the surfer's shark encounter and choose the word or phrase that best completes each sentence.</p>
+  <p>Kite surfer Johann Schmidt recently
+<select class="blank" data-answer="found himself"><option value="">— choose —</option><option value="faced with">faced with</option><option value="found himself">found himself</option><option value="gives credit">gives credit</option></select>
+in a battle against sharks in the Red Sea during a kite surfing
+<select class="blank" data-answer="excursion"><option value="">— choose —</option><option value="voyage">voyage</option><option value="excursion">excursion</option><option value="vicinity">vicinity</option></select>
+.</p>
+<p>Schmidt had planned to sail 124 miles across the Red Sea when the wind suddenly stopped. At about
+two-thirds the way into his trip, his kite was
+<select class="blank" data-answer="deflated"><option value="">— choose —</option><option value="stabbed">stabbed</option><option value="deflated">deflated</option><option value="built up">built up</option></select>
+and he was
+<select class="blank" data-answer="faced with"><option value="">— choose —</option><option value="faced with">faced with</option><option value="brave out">brave out</option><option value="found himself">found himself</option></select>
+having to
+<select class="blank" data-answer="brave out"><option value="">— choose —</option><option value="brave out">brave out</option><option value="fighting off">fighting off</option><option value="faced with">faced with</option></select>
+the situation until help arrived.</p>
+<p>Reportedly, the 42-year-old Schmidt waited 40 hours for help to arrive. He survived the
+<select class="blank" data-answer="ordeal"><option value="">— choose —</option><option value="exhaustion">exhaustion</option><option value="ordeal">ordeal</option><option value="premonition">premonition</option></select>
+by
+<select class="blank" data-answer="nourishing"><option value="">— choose —</option><option value="nourishing">nourishing</option><option value="nourishment">nourishment</option><option value="built up">built up</option></select>
+himself with two energy bars, some water, and energy drinks. But
+<select class="blank" data-answer="nourishment"><option value="">— choose —</option><option value="dehydration">dehydration</option><option value="nourishing">nourishing</option><option value="nourishment">nourishment</option></select>
+was the least of his problems as he spent a good amount of his time
+<select class="blank" data-answer="fighting off"><option value="">— choose —</option><option value="fighting off">fighting off</option><option value="stabbed">stabbed</option><option value="brave out">brave out</option></select>
+sharks.</p>
+<p>In an interview with News Agency One, Schmidt described the challenges he was
+<select class="blank" data-answer="faced with"><option value="">— choose —</option><option value="brave out">brave out</option><option value="faced with">faced with</option><option value="found himself">found himself</option></select>
+while waiting for the National Coast Guard to arrive.</p>
+<p>"I was surfing along when the wind just completely stopped. After waiting for an hour-and-a-half, no
+winds came back, but waves had
+<select class="blank" data-answer="built up"><option value="">— choose —</option><option value="built up">built up</option><option value="response">response</option><option value="deflated">deflated</option></select>
+and night was arriving, so I called SOS on my hand-held radio, then called again three hours later,
+but there was no
+<select class="blank" data-answer="response"><option value="">— choose —</option><option value="premonition">premonition</option><option value="built up">built up</option><option value="response">response</option></select>
+." He also shot flares out toward passing fisherman, but was not noticed .</p>
+<p>Schmidt says the first night stuck on the sea was "peaceful" and he'd made a raft with his board and
+drifted about. The second night, however, was not peaceful as winds pushed him into a reef where
+sharks were in the
+<select class="blank" data-answer="vicinity"><option value="">— choose —</option><option value="excursion">excursion</option><option value="voyage">voyage</option><option value="vicinity">vicinity</option></select>
+.</p>
+<p>"They were about 8 to 15 feet long. They attacked me through my kite, which must've also attracted
+them because of its color," Schmidt said. "I
+<select class="blank" data-answer="stabbed"><option value="">— choose —</option><option value="fighting off">fighting off</option><option value="deflated">deflated</option><option value="stabbed">stabbed</option></select>
+them in the eyes, nose and gills. The fight, which I've miraculously survived, took the whole night.
+By the morning, they were gone. There were eleven of them."</p>
+<p>He
+<select class="blank" data-answer="gives credit"><option value="">— choose —</option><option value="premonition">premonition</option><option value="gives credit">gives credit</option><option value="found himself">found himself</option></select>
+to his brother Tim who'd made him take the knife on the trip. "Maybe he had a
+<select class="blank" data-answer="premonition"><option value="">— choose —</option><option value="ordeal">ordeal</option><option value="response">response</option><option value="premonition">premonition</option></select>
+," noted Schmidt.</p>
+<p>Eventually, he was rescued by a military boat and was brought to a hospital. He is doing well and
+suffers no injuries, but did experience
+<select class="blank" data-answer="exhaustion"><option value="">— choose —</option><option value="dehydration">dehydration</option><option value="ordeal">ordeal</option><option value="exhaustion">exhaustion</option></select>
+and
+<select class="blank" data-answer="dehydration"><option value="">— choose —</option><option value="dehydration">dehydration</option><option value="exhaustion">exhaustion</option><option value="nourishment">nourishment</option></select>
+, reported NBC Miami.</p>
+<p>This isn't Schmidt's first attempt at a long
+<select class="blank" data-answer="voyage"><option value="">— choose —</option><option value="voyage">voyage</option><option value="vicinity">vicinity</option><option value="excursion">excursion</option></select>
+across an ocean. He once crossed the Baltic Sea on his kiteboard. "I'm always prepared with energy
+bars and drinks, but from now on, I will always carry a knife."</p>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selects = () => document.querySelectorAll('select.blank');
+
+  document.body.addEventListener('change', (e) => {
+    if (!e.target.matches('select.blank')) return;
+    const sel = e.target;
+    sel.classList.remove('correct','incorrect');
+    if (sel.value === sel.dataset.answer) {
+      sel.classList.add('correct');
+    } else if (sel.value !== '') {
+      sel.classList.add('incorrect');
+    }
+  });
+
+  const studyBtn = document.getElementById('studyModeBtn');
+  let snapshot = null;
+  let inStudy = false;
+
+  studyBtn.addEventListener('click', () => {
+    const all = selects();
+    if (!inStudy) {
+      snapshot = Array.from(all).map(s => ({
+        value: s.value,
+        classes: Array.from(s.classList)
+      }));
+      all.forEach(s => {
+        s.value = s.dataset.answer;
+        s.classList.remove('incorrect');
+        s.classList.add('correct');
+        s.disabled = true;
+      });
+      inStudy = true;
+      studyBtn.textContent = 'Return to Quiz';
+    } else {
+      all.forEach((s, i) => {
+        const snap = snapshot ? snapshot[i] : null;
+        s.disabled = false;
+        s.classList.remove('correct','incorrect');
+        if (snap) {
+          s.value = snap.value;
+          snap.classes.forEach(c => { if (c === 'correct' || c === 'incorrect') s.classList.add(c); });
+        }
+      });
+      inStudy = false;
+      studyBtn.textContent = 'Study Mode';
+    }
+  });
+
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
