@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    
+<style>
+body {
+  max-width:55rem; margin:3rem auto;
+  font-size: 130%;
+}
+
+</style>    
+    
+</head>
+<body>
+<h1>Make links (link-outs)</h1>
+<h3> enter as "filename.html|Link text"<br> (paste over examples below)</h3>
+<textarea id="linkInput" rows="10" cols="70">TheWitchSwitchDict.html|Dictation
+witch-switch-article-cloze.html|Article Cloze-Select
+witch-switch-vocabulary-study-cards.html|Vocab Study Cards
+witch-switch-vocab-def-cloze.html|Vocab Definitions Quiz
+witch-switch-vocab-sentences-cloze.html|Vocab Sentences Quiz</textarea>
+
+<br><br>
+
+<button id="makeLinksBtn">make links</button>
+
+<div id="linkOutput" style="margin-top: 1em;">
+  <textarea id="htmlOutput" rows="12" cols="70" readonly></textarea>
+</div>
+
+<script>
+  const linkInput = document.getElementById('linkInput');
+  const makeLinksBtn = document.getElementById('makeLinksBtn');
+  const htmlOutput = document.getElementById('htmlOutput');
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  makeLinksBtn.addEventListener('click', function () {
+    const lines = linkInput.value
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(Boolean);
+
+    const links = lines
+      .map(line => {
+        const barPosition = line.indexOf('|');
+
+        if (barPosition === -1) {
+          return `<!-- Missing | separator: ${escapeHtml(line)} -->`;
+        }
+
+        const href = line.slice(0, barPosition).trim();
+        const text = line.slice(barPosition + 1).trim();
+
+        return `<a href="${escapeHtml(href)}" target="_blank">${escapeHtml(text)}</a>`;
+      })
+      .join('\n\n');
+
+    htmlOutput.value = links;
+  });
+</script>
+</body>
+</html>
