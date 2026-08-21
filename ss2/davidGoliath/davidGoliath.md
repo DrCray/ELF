@@ -1,0 +1,11 @@
+There were once two **ancient** armies that stood opposite each other and between them lay a **valley**. One army supposed themselves to be the people of God. The other army was led by a giant man by the name of Goliath. Both armies had stood across from each other for many days without going to battle. Goliath became **frustrated** and went out by himself to meet the other army. He said, "If there will be no battle, then bring out your best man to fight against me, **winner takes all**." He came out everyday and made this **challenge** to the other army, but because he was such a large man---larger than a modern day NBA player---**no one dared** to go up against him. The soldiers of the other army were very afraid.
+
+Soon, a young shepherd boy came to the camp of God's army to bring his brothers some food. The boy's name was David. When he arrived at the camp he heard Goliath come out and give his challenge to the soldiers. He asked his brothers why they did not go and fight this man. His brothers said, "Look at him, a giant dressed in all that **armor**, how can anyone **defeat** him?" David said, "What are you afraid of? Are we not the army of God?"
+
+David was a very brave young man who had killed wolves, lions, and bears while **protecting** his father's sheep. He was **not at all** afraid of Goliath. As a shepherd boy, he had a lot of skill with his sling.
+
+A sling is a small **pouch** with strings. You put a stone in the pouch and swing it around in circles and when you **release** one string, the small rock will go flying through the air at great speed.
+
+So David, with his sling and a stone, came out to accept Goliath's challenge. Goliath began to laugh and said, "I ask you for your best and you send me a boy?" Then Goliath began **charging** toward David. David put a stone in his sling and began swinging it in circles and before Goliath got too close, David **let go of** the string and hit Goliath in the **forehead** with a stone. It knocked Goliath out and he fell to the ground. David then went over to Goliath and took Goliath's own sword and cut off Goliath's head. When Goliath's army saw this, they began to run away as fast as they could.
+
+This story teaches us that **no matter** how big or strong something may seem, we can **overcome** it if we are smart. 
