@@ -36,6 +36,12 @@ witch-switch-vocab-sentences-cloze.html|Vocab Sentences Quiz</textarea>
   const makeLinksBtn = document.getElementById('makeLinksBtn');
   const htmlOutput = document.getElementById('htmlOutput');
 
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   makeLinksBtn.addEventListener('click', function () {
     const lines = linkInput.value
       .split(/\r?\n/)
@@ -47,20 +53,18 @@ witch-switch-vocab-sentences-cloze.html|Vocab Sentences Quiz</textarea>
         const barPosition = line.indexOf('|');
 
         if (barPosition === -1) {
-          return `<!-- Missing | separator: ${line} -->`;
+          return `<!-- Missing | separator: ${escapeHtml(line)} -->`;
         }
 
         const href = line.slice(0, barPosition).trim();
         const text = line.slice(barPosition + 1).trim();
 
-        // HTML tags inside href or text variables will now remain unescaped
-        return `<a href="${href}" target="_blank">${text}</a>`;
+        return `<a href="${escapeHtml(href)}" target="_blank">${escapeHtml(text)}</a>`;
       })
       .join('\n\n');
 
     htmlOutput.value = links;
   });
 </script>
-
 </body>
 </html>
