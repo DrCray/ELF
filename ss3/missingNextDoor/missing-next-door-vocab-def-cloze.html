@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missing Next Door — Vocabulary Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="studyModeBtn" class="btn secondary" type="button">Study Mode</button>
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Missing Next Door — Vocabulary Quiz</h1>
+  <p>Match each word to its definition</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section">
+  <h2>Check Your Understanding</h2>
+  <p style="font-size:.9rem;color:#666;">Choose the word or phrase that matches each definition.</p>
+  <div class="quiz-item">
+  <span class="qnum">1.</span>Disappeared; could not be found — this word or phrase is <select class="blank" data-answer="went missing"><option value="">— choose —</option><option value="went missing">went missing</option><option value="given up">given up</option><option value="moved in">moved in</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">2.</span>An official document filed with police when someone cannot be located — this word or phrase is <select class="blank" data-answer="missing person&#x27;s report"><option value="">— choose —</option><option value="belief system">belief system</option><option value="leads">leads</option><option value="missing person&#x27;s report">missing person&#x27;s report</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">3.</span>Pieces of information or evidence that help in solving a case or finding someone — this word or phrase is <select class="blank" data-answer="leads"><option value="">— choose —</option><option value="leads">leads</option><option value="factor">factor</option><option value="missing person&#x27;s report">missing person&#x27;s report</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">4.</span>Continued to believe or hope that something good would happen, despite difficulties — this word or phrase is <select class="blank" data-answer="held out hope"><option value="">— choose —</option><option value="given up">given up</option><option value="held out hope">held out hope</option><option value="It turns out">It turns out</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">5.</span>Stopped trying; abandoned an effort or hope — this word or phrase is <select class="blank" data-answer="given up"><option value="">— choose —</option><option value="given up">given up</option><option value="went missing">went missing</option><option value="held out hope">held out hope</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">6.</span>Officially informed authorities about something, such as a person missing — this word or phrase is <select class="blank" data-answer="reported"><option value="">— choose —</option><option value="reported">reported</option><option value="dictated">dictated</option><option value="affected">affected</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">7.</span>Met someone unexpectedly by chance — this word or phrase is <select class="blank" data-answer="ran into"><option value="">— choose —</option><option value="moved in">moved in</option><option value="ran into">ran into</option><option value="given up">given up</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">8.</span>Used to introduce a fact that becomes known later, often surprisingly — this word or phrase is <select class="blank" data-answer="It turns out"><option value="">— choose —</option><option value="secretly">secretly</option><option value="held out hope">held out hope</option><option value="It turns out">It turns out</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">9.</span>In a way that is hidden or not known to others — this word or phrase is <select class="blank" data-answer="secretly"><option value="">— choose —</option><option value="secretly">secretly</option><option value="It turns out">It turns out</option><option value="affected">affected</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">10.</span>Began living in a new place, especially with someone else — this word or phrase is <select class="blank" data-answer="moved in"><option value="">— choose —</option><option value="moved in">moved in</option><option value="ran into">ran into</option><option value="went missing">went missing</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">11.</span>The power to have an effect on people, events, or things — this word or phrase is <select class="blank" data-answer="influence"><option value="">— choose —</option><option value="influence">influence</option><option value="factor">factor</option><option value="rejection">rejection</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">12.</span>To act or conduct oneself in a particular way — this word or phrase is <select class="blank" data-answer="behave"><option value="">— choose —</option><option value="affected">affected</option><option value="behave">behave</option><option value="dictated">dictated</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">13.</span>Influenced or changed by something — this word or phrase is <select class="blank" data-answer="affected"><option value="">— choose —</option><option value="behave">behave</option><option value="affected">affected</option><option value="dictated">dictated</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">14.</span>A set of principles or beliefs that guide a person&#x27;s thoughts and behavior — this word or phrase is <select class="blank" data-answer="belief system"><option value="">— choose —</option><option value="factor">factor</option><option value="belief system">belief system</option><option value="missing person&#x27;s report">missing person&#x27;s report</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">15.</span>Marriages that have been arranged by the couples&#x27; parents rather than chosen by the couple — this word or phrase is <select class="blank" data-answer="Arranged marriages"><option value="">— choose —</option><option value="interfaith">interfaith</option><option value="belief system">belief system</option><option value="Arranged marriages">Arranged marriages</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">16.</span>Controlled or determined completely, without allowing choice — this word or phrase is <select class="blank" data-answer="dictated"><option value="">— choose —</option><option value="reported">reported</option><option value="affected">affected</option><option value="dictated">dictated</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">17.</span>One of several things that influences or contributes to a result or decision — this word or phrase is <select class="blank" data-answer="factor"><option value="">— choose —</option><option value="leads">leads</option><option value="influence">influence</option><option value="factor">factor</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">18.</span>Involving people of different religions — this word or phrase is <select class="blank" data-answer="interfaith"><option value="">— choose —</option><option value="Arranged marriages">Arranged marriages</option><option value="interfaith">interfaith</option><option value="rejection">rejection</option></select>.
+</div>
+<div class="quiz-item">
+  <span class="qnum">19.</span>The act of refusing to accept, welcome, or support someone — this word or phrase is <select class="blank" data-answer="rejection"><option value="">— choose —</option><option value="influence">influence</option><option value="rejection">rejection</option><option value="interfaith">interfaith</option></select>.
+</div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selects = () => document.querySelectorAll('select.blank');
+
+  document.body.addEventListener('change', (e) => {
+    if (!e.target.matches('select.blank')) return;
+    const sel = e.target;
+    sel.classList.remove('correct','incorrect');
+    if (sel.value === sel.dataset.answer) {
+      sel.classList.add('correct');
+    } else if (sel.value !== '') {
+      sel.classList.add('incorrect');
+    }
+  });
+
+  const studyBtn = document.getElementById('studyModeBtn');
+  let snapshot = null;
+  let inStudy = false;
+
+  studyBtn.addEventListener('click', () => {
+    const all = selects();
+    if (!inStudy) {
+      snapshot = Array.from(all).map(s => ({
+        value: s.value,
+        classes: Array.from(s.classList)
+      }));
+      all.forEach(s => {
+        s.value = s.dataset.answer;
+        s.classList.remove('incorrect');
+        s.classList.add('correct');
+        s.disabled = true;
+      });
+      inStudy = true;
+      studyBtn.textContent = 'Return to Quiz';
+    } else {
+      all.forEach((s, i) => {
+        const snap = snapshot ? snapshot[i] : null;
+        s.disabled = false;
+        s.classList.remove('correct','incorrect');
+        if (snap) {
+          s.value = snap.value;
+          snap.classes.forEach(c => { if (c === 'correct' || c === 'incorrect') s.classList.add(c); });
+        }
+      });
+      inStudy = false;
+      studyBtn.textContent = 'Study Mode';
+    }
+  });
+
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>

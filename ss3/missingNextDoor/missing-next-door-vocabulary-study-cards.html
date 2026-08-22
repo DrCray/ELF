@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missing Next Door — Vocabulary Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar" style="display:none;">
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Missing Next Door — Vocabulary Study</h1>
+  <p>19 key words from the article (reference)</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section">
+  <h2>Word List</h2>
+  <div class="vocab-card">
+  <span class="word">went missing</span><span class="pos">(phrase)</span>
+  <p class="def">disappeared; could not be found</p>
+  <p class="example"><em>"Ten years ago, in India, an 18 year old girl, Sabita, went missing from her home."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">missing person&#x27;s report</span><span class="pos">(noun phrase)</span>
+  <p class="def">an official document filed with police when someone cannot be located</p>
+  <p class="example"><em>"The worried parents made a missing person&#x27;s report with the local police."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">leads</span><span class="pos">(noun)</span>
+  <p class="def">pieces of information or evidence that help in solving a case or finding someone</p>
+  <p class="example"><em>"The police made serious efforts to find the girl, but after several months, having no leads at all, had stopped searching."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">held out hope</span><span class="pos">(phrase)</span>
+  <p class="def">continued to believe or hope that something good would happen, despite difficulties</p>
+  <p class="example"><em>"The parents held out hope for some time, but eventually had given up on ever finding their lost daughter."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">given up</span><span class="pos">(phrasal verb)</span>
+  <p class="def">stopped trying; abandoned an effort or hope</p>
+  <p class="example"><em>"The parents held out hope for some time, but eventually had given up on ever finding their lost daughter."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">reported</span><span class="pos">(verb)</span>
+  <p class="def">officially informed authorities about something, such as a person missing</p>
+  <p class="example"><em>"Recently, the neighbor&#x27;s of Sabita, who lived just 500 meters away, reported their son missing."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">ran into</span><span class="pos">(phrasal verb)</span>
+  <p class="def">met someone unexpectedly by chance</p>
+  <p class="example"><em>"Three months later, however, one of his brothers ran into Yatan in a small town 30 km away."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">It turns out</span><span class="pos">(phrase)</span>
+  <p class="def">used to introduce a fact that becomes known later, often surprisingly</p>
+  <p class="example"><em>"It turns out that Sabita was never missing at all."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">secretly</span><span class="pos">(adverb)</span>
+  <p class="def">in a way that is hidden or not known to others</p>
+  <p class="example"><em>"In fact, she was secretly living just 500 meters from her parents in Yatan&#x27;s parents&#x27; house."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">moved in</span><span class="pos">(phrasal verb)</span>
+  <p class="def">began living in a new place, especially with someone else</p>
+  <p class="example"><em>"So Sabita secretly moved in with Yatan."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">influence</span><span class="pos">(noun)</span>
+  <p class="def">the power to have an effect on people, events, or things</p>
+  <p class="example"><em>"In some countries, religion has a very strong influence on how people behave."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">behave</span><span class="pos">(verb)</span>
+  <p class="def">to act or conduct oneself in a particular way</p>
+  <p class="example"><em>"In some countries, religion has a very strong influence on how people behave."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">affected</span><span class="pos">(verb)</span>
+  <p class="def">influenced or changed by something</p>
+  <p class="example"><em>"The things people choose to do, or not do, will be affected by their belief system."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">belief system</span><span class="pos">(noun phrase)</span>
+  <p class="def">a set of principles or beliefs that guide a person&#x27;s thoughts and behavior</p>
+  <p class="example"><em>"The things people choose to do, or not do, will be affected by their belief system."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">Arranged marriages</span><span class="pos">(noun phrase)</span>
+  <p class="def">marriages that have been arranged by the couples&#x27; parents rather than chosen by the couple</p>
+  <p class="example"><em>"Arranged marriages are marriages that have been arranged by the couples&#x27; parents."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">dictated</span><span class="pos">(verb)</span>
+  <p class="def">controlled or determined completely, without allowing choice</p>
+  <p class="example"><em>"Arranged marriage used to be completely dictated by the parents."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">factor</span><span class="pos">(noun)</span>
+  <p class="def">one of several things that influences or contributes to a result or decision</p>
+  <p class="example"><em>"For both traditional and modern arranged marriages, however, the one thing that remains a strong factor in the marriage decision is religion."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">interfaith</span><span class="pos">(adjective)</span>
+  <p class="def">involving people of different religions</p>
+  <p class="example"><em>"Only 2.8 percent of marriages in India are interfaith marriages."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">rejection</span><span class="pos">(noun)</span>
+  <p class="def">the act of refusing to accept, welcome, or support someone</p>
+  <p class="example"><em>"When couples enter into an interfaith relationship or marriage, it can lead to a social rejection of the couple by family and friends."</em></p>
+</div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID. This will appear at the top of your printed page.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Your full name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="Your student ID">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
