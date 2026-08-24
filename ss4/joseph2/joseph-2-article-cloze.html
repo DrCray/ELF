@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph, Part II — Article Cloze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="studyModeBtn" class="btn secondary" type="button">Study Mode</button>
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Joseph, Part II — Article Cloze</h1>
+  <p>Vocabulary-in-context practice</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section passage">
+  <h2>Fill in the Blanks</h2>
+  <p style="font-size:.9rem;color:#666;">Read the story of Joseph in Egypt and choose the word or phrase that best completes each sentence.</p>
+  <p>No matter what his situation, Joseph had proven that he was always a hard worker,
+<select class="blank" data-answer="responsible"><option value="">— choose —</option><option value="appointed">appointed</option><option value="responsible">responsible</option><option value="willingness">willingness</option></select>
+, and wise. Because of this, the pharaoh
+<select class="blank" data-answer="appointed"><option value="">— choose —</option><option value="recognize">recognize</option><option value="responsible">responsible</option><option value="appointed">appointed</option></select>
+Joseph as governor of all Egypt, second only to himself. The pharaoh was so serious about this, that
+he took off his own ring and put it on Joseph's finger in front of all his
+<select class="blank" data-answer="counselors"><option value="">— choose —</option><option value="administrators">administrators</option><option value="interpreter">interpreter</option><option value="counselors">counselors</option></select>
+and
+<select class="blank" data-answer="administrators"><option value="">— choose —</option><option value="counselors">counselors</option><option value="interpreter">interpreter</option><option value="administrators">administrators</option></select>
+.</p>
+<p>Not only was Joseph happy, but the pharaoh was also happy because he didn't have to worry, or
+trouble his mind, about the
+<select class="blank" data-answer="affairs"><option value="">— choose —</option><option value="storehouses">storehouses</option><option value="affairs">affairs</option><option value="crop">crop</option></select>
+of his kingdom. He trusted Joseph completely.</p>
+<p>Joseph began to prepare for the coming famine. He built
+<select class="blank" data-answer="storehouses"><option value="">— choose —</option><option value="storehouses">storehouses</option><option value="affairs">affairs</option><option value="grain">grain</option></select>
+in important areas of pharaoh's kingdom. Joseph made sure that during the years of great harvest,
+every farmer had to bring twenty percent of his
+<select class="blank" data-answer="crop"><option value="">— choose —</option><option value="grain">grain</option><option value="storehouses">storehouses</option><option value="crop">crop</option></select>
+to the pharaoh's storehouses.</p>
+<p>After seven years, as Joseph
+<select class="blank" data-answer="predicted"><option value="">— choose —</option><option value="suggested">suggested</option><option value="recognize">recognize</option><option value="predicted">predicted</option></select>
+, there came a drought that caused a famine. So Egypt opened all the storehouses and sold the
+<select class="blank" data-answer="grain"><option value="">— choose —</option><option value="crop">crop</option><option value="storehouses">storehouses</option><option value="grain">grain</option></select>
+to the people of Egypt and the surrounding countries. Not only did it save the peoples' lives, it
+made the pharaoh very rich.</p>
+<p>When Jacob, Joseph's father, had heard that there was grain in Egypt, he sent Joseph's brothers
+there to buy some corn. Since Joseph was in charge of the storehouses, the brothers had to go to him
+to buy the grain. When the brothers arrived, they did not
+<select class="blank" data-answer="recognize"><option value="">— choose —</option><option value="predicted">predicted</option><option value="recognize">recognize</option><option value="appointed">appointed</option></select>
+him. Joseph, however, recognized his brothers.</p>
+<p>Joseph
+<select class="blank" data-answer="tricked"><option value="">— choose —</option><option value="tricked">tricked</option><option value="pretending">pretending</option><option value="pretended">pretended</option></select>
+them by speaking Egyptian to them through an
+<select class="blank" data-answer="interpreter"><option value="">— choose —</option><option value="administrators">administrators</option><option value="counselors">counselors</option><option value="interpreter">interpreter</option></select>
+,
+<select class="blank" data-answer="pretending"><option value="">— choose —</option><option value="pretending">pretending</option><option value="pretended">pretended</option><option value="tricked">tricked</option></select>
+he did not understand his own native language. And he began to speak rudely to them, saying, "Why
+have you come to our country, are you
+<select class="blank" data-answer="spies"><option value="">— choose —</option><option value="counselors">counselors</option><option value="interpreter">interpreter</option><option value="spies">spies</option></select>
+?" Joseph put them all in
+<select class="blank" data-answer="prison"><option value="">— choose —</option><option value="prison">prison</option><option value="storehouses">storehouses</option><option value="affairs">affairs</option></select>
+.</p>
+<p>While they were in prison, one of the brother's
+<select class="blank" data-answer="suggested"><option value="">— choose —</option><option value="suggested">suggested</option><option value="overheard">overheard</option><option value="predicted">predicted</option></select>
+that God was
+<select class="blank" data-answer="punishing"><option value="">— choose —</option><option value="sacrifice">sacrifice</option><option value="willingness">willingness</option><option value="punishing">punishing</option></select>
+them for selling their brother, Joseph, into slavery. They seemed sorry for what they had done.
+Joseph
+<select class="blank" data-answer="overheard"><option value="">— choose —</option><option value="recognize">recognize</option><option value="overheard">overheard</option><option value="suggested">suggested</option></select>
+what they said.</p>
+<p>But Joseph wanted to test them more, to see if they were truly sorry. He
+<select class="blank" data-answer="pretended"><option value="">— choose —</option><option value="tricked">tricked</option><option value="pretending">pretending</option><option value="pretended">pretended</option></select>
+to let them go free to return home. But he
+<select class="blank" data-answer="secretly"><option value="">— choose —</option><option value="punishing">punishing</option><option value="willingness">willingness</option><option value="secretly">secretly</option></select>
+put a silver cup into the youngest brother's bag.</p>
+<p>After his brothers had gone outside the city, Joseph sent his soldiers to arrest them and bring them
+back. When they stood before him he said, "Your youngest brother has stolen my silver cup, he must
+stay here and be my slave."</p>
+<p>But Judah stepped up and said, "Please don't take our youngest brother, it will kill our father. He
+has already lost his favorite son because of us. Please, we will be your slaves. Just let our
+youngest brother return home."</p>
+<p>When Joseph saw their
+<select class="blank" data-answer="willingness"><option value="">— choose —</option><option value="willingness">willingness</option><option value="responsible">responsible</option><option value="sacrifice">sacrifice</option></select>
+to
+<select class="blank" data-answer="sacrifice"><option value="">— choose —</option><option value="punishing">punishing</option><option value="willingness">willingness</option><option value="sacrifice">sacrifice</option></select>
+themselves, he knew that they were truly sorry for their
+<select class="blank" data-answer="past actions"><option value="">— choose —</option><option value="adventures">adventures</option><option value="past actions">past actions</option><option value="affairs">affairs</option></select>
+. He began to cry, and he finally told them who he really was. He forgave them and loved them. They
+had a big dinner and Joseph told them all about his past
+<select class="blank" data-answer="adventures"><option value="">— choose —</option><option value="affairs">affairs</option><option value="adventures">adventures</option><option value="past actions">past actions</option></select>
+. In the end, they all came to Egypt to live a very good life with Joseph.</p>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selects = () => document.querySelectorAll('select.blank');
+
+  // ---- Immediate feedback on change ----
+  document.body.addEventListener('change', (e) => {
+    if (!e.target.matches('select.blank')) return;
+    const sel = e.target;
+    sel.classList.remove('correct','incorrect');
+    if (sel.value === sel.dataset.answer) {
+      sel.classList.add('correct');
+    } else if (sel.value !== '') {
+      sel.classList.add('incorrect');
+    }
+  });
+
+  // ---- Study Mode: snapshot / reveal / restore ----
+  const studyBtn = document.getElementById('studyModeBtn');
+  let snapshot = null;
+  let inStudy = false;
+
+  studyBtn.addEventListener('click', () => {
+    const all = selects();
+    if (!inStudy) {
+      snapshot = Array.from(all).map(s => ({
+        value: s.value,
+        classes: Array.from(s.classList)
+      }));
+      all.forEach(s => {
+        s.value = s.dataset.answer;
+        s.classList.remove('incorrect');
+        s.classList.add('correct');
+        s.disabled = true;
+      });
+      inStudy = true;
+      studyBtn.textContent = 'Return to Quiz';
+    } else {
+      all.forEach((s, i) => {
+        const snap = snapshot ? snapshot[i] : null;
+        s.disabled = false;
+        s.classList.remove('correct','incorrect');
+        if (snap) {
+          s.value = snap.value;
+          snap.classes.forEach(c => { if (c === 'correct' || c === 'incorrect') s.classList.add(c); });
+        }
+      });
+      inStudy = false;
+      studyBtn.textContent = 'Study Mode';
+    }
+  });
+
+  // ---- Print gate: require Name + Student ID first ----
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
