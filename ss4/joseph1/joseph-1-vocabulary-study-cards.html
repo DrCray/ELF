@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph, Part I — Vocabulary Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar" style="display:none;">
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Joseph, Part I — Vocabulary Study</h1>
+  <p>20 key words from the story (reference)</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section">
+  <h2>Word List</h2>
+  <div class="vocab-card">
+  <span class="word">unwisely</span><span class="pos">(adverb)</span>
+  <p class="def">in a way that shows poor judgment; foolishly</p>
+  <p class="example"><em>"The father, very unwisely, treated Joseph special in front of the others."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">treatment</span><span class="pos">(noun)</span>
+  <p class="def">the way someone is treated or dealt with by others</p>
+  <p class="example"><em>"But also because of Joseph&#x27;s special treatment, the brothers became jealous."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">jealous</span><span class="pos">(adjective)</span>
+  <p class="def">feeling envy or resentment toward someone, often because of their advantages or success</p>
+  <p class="example"><em>"But also because of Joseph&#x27;s special treatment, the brothers became jealous."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">came across</span><span class="pos">(phrasal verb)</span>
+  <p class="def">encountered or found something, often unexpectedly</p>
+  <p class="example"><em>"They were all out in the fields working when they came across a deep pit."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">pit</span><span class="pos">(noun)</span>
+  <p class="def">a large hole dug in the ground</p>
+  <p class="example"><em>"They were all out in the fields working when they came across a deep pit."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">traders</span><span class="pos">(noun)</span>
+  <p class="def">people who buy and sell goods, especially traveling merchants</p>
+  <p class="example"><em>"Fortunately for Joseph, a group of traveling traders was passing nearby."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">dutiful</span><span class="pos">(adjective)</span>
+  <p class="def">showing a strong sense of responsibility and doing what is expected</p>
+  <p class="example"><em>"But Joseph was always dutiful in his work, and soon the rich man he worked for, Potiphar, put Joseph in charge of his whole house and all his affairs."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">affairs</span><span class="pos">(noun)</span>
+  <p class="def">matters or business that someone is responsible for managing</p>
+  <p class="example"><em>"Potiphar put Joseph in charge of his whole house and all his affairs."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">affair</span><span class="pos">(noun)</span>
+  <p class="def">a romantic or sexual relationship, especially an illicit one</p>
+  <p class="example"><em>"But one day, Potiphar&#x27;s wife wanted to have an affair with Joseph."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">refused</span><span class="pos">(verb)</span>
+  <p class="def">declined or rejected a request or offer</p>
+  <p class="example"><em>"Joseph refused."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">prison</span><span class="pos">(noun)</span>
+  <p class="def">a building where people are confined as punishment for a crime</p>
+  <p class="example"><em>"Joseph was thrown into prison."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">found favor</span><span class="pos">(phrase)</span>
+  <p class="def">gained approval or a good opinion from someone</p>
+  <p class="example"><em>"In prison, Joseph found favor with the warden, and the warden put Joseph in charge of the prison."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">warden</span><span class="pos">(noun)</span>
+  <p class="def">an official responsible for the supervision of a prison</p>
+  <p class="example"><em>"In prison, Joseph found favor with the warden, and the warden put Joseph in charge of the prison."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">in charge of</span><span class="pos">(phrase)</span>
+  <p class="def">having control or responsibility over something</p>
+  <p class="example"><em>"The warden put Joseph in charge of the prison."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">interpreting</span><span class="pos">(verb (-ing))</span>
+  <p class="def">explaining the meaning of something, such as a dream or a foreign language</p>
+  <p class="example"><em>"The warden discovered that Joseph was good at interpreting dreams."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">escorted</span><span class="pos">(verb)</span>
+  <p class="def">accompanied someone, especially to protect or guide them</p>
+  <p class="example"><em>"The warden told the king that he knew a man who could interpret dreams, so he escorted Joseph to the pharaoh&#x27;s house."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">harvest</span><span class="pos">(noun)</span>
+  <p class="def">the gathering of crops, or the crops gathered, at the end of a growing season</p>
+  <p class="example"><em>"Joseph told the king that his dream meant that there would be seven years of good harvest for Egypt, but then, there would be seven years of drought."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">drought</span><span class="pos">(noun)</span>
+  <p class="def">a long period with little or no rain, causing water shortage</p>
+  <p class="example"><em>"Joseph told the king that his dream meant that there would be seven years of good harvest for Egypt, but then, there would be seven years of drought (no rain)."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">famine</span><span class="pos">(noun)</span>
+  <p class="def">an extreme shortage of food affecting a large population</p>
+  <p class="example"><em>"The king trusted Joseph and put him in charge of storing food in order to prepare the country for the coming famine."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">governor</span><span class="pos">(noun)</span>
+  <p class="def">a person who officially governs a region or country</p>
+  <p class="example"><em>"He made him governor over all the country."</em></p>
+</div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID. This will appear at the top of your printed page.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Your full name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="Your student ID">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
