@@ -207,6 +207,8 @@ body{
 </style>
 
 
+
+
 <style>
   #image-loader {
     position: fixed;
@@ -220,6 +222,9 @@ body{
     font-family: system-ui, sans-serif;
     font-size: 1.1rem;
     color: #333;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   .spinner {
@@ -229,14 +234,28 @@ body{
     border-top-color: #333;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-bottom: 1rem;
   }
 
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
 
-  /* Hide when done */
+  #close-loader {
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    cursor: pointer;
+    border: 1px solid #999;
+    border-radius: 6px;
+    background: #f5f5f5;
+    color: #333;
+  }
+
+  #close-loader:hover {
+    background: #eaeaea;
+  }
+
   #image-loader.hidden {
     display: none;
   }
@@ -245,15 +264,23 @@ body{
 
 
 
+
+
 </head>
   
 <body>
 
-<!-- Spinner overlay (put this near the top of <body>) -->
+<!-- Spinner overlay -->
 <div id="image-loader">
   <div class="spinner"></div>
   <p>images loading</p>
+  <button id="close-loader" type="button">
+    Wait for images to load<br>
+    or Click to close this spinner
+  </button>
 </div>
+
+
     <div id="styleEditor" class="styleEditor" style="display: none;">
                 
                 <div class="styleBtn">
@@ -759,12 +786,17 @@ function saveDom(){
 </footer>
           
 <script>
-  // Wait until the DOM is ready
   document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('img');
     const loader = document.getElementById('image-loader');
+    const closeBtn = document.getElementById('close-loader');
 
-    // If there are no images, hide immediately
+    // Allow user to dismiss early
+    closeBtn.addEventListener('click', () => {
+      loader.classList.add('hidden');
+    });
+
+    // No images → hide immediately
     if (images.length === 0) {
       loader.classList.add('hidden');
       return;
@@ -780,17 +812,15 @@ function saveDom(){
     };
 
     images.forEach(img => {
-      // Already cached / already loaded
       if (img.complete && img.naturalHeight !== 0) {
         imageLoaded();
       } else {
         img.addEventListener('load', imageLoaded);
-        img.addEventListener('error', imageLoaded); // count errors as “done” too
+        img.addEventListener('error', imageLoaded);
       }
     });
   });
 </script>
-  
   
 
 
