@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Grinch Article</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 1rem;
+      background: #f4f4f4;
+      color: #222;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #b21f1f;
+    }
+
+    audio {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    #subtitle {
+      font-size: 1.5rem;
+      min-height: 20vh;       /* keeps layout stable */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      background: #fafafa;
+      border: 1px solid #eee;
+    }
+    
+    img {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  height: auto;
+}
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>The Grinch Article &#127911;</h1>
+
+    <audio id="audio" controls preload="metadata">
+      <source src="GrinchArticle.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <div id="subtitle">Timed text appears here.</div>
+    
+    <img src="grinchPajamas.webp" alt="image">
+  </main>
+
+  <script>
+    const SRT_DATA = String.raw`
+1
+00:00:00,060 --> 00:00:03,300
+Grinch is a mean old creature who dislikes Christmas 
+
+2
+00:00:03,400 --> 00:00:04,800
+and any other festive holiday.
+
+3
+00:00:05,000 --> 00:00:08,900
+He lives in a mountain cave somewhere north of a town called Whoville,
+
+4
+00:00:09,000 --> 00:00:11,500
+where the Whos are preparing for Christmas.
+
+5
+00:00:11,700 --> 00:00:16,250
+It's Christmas Eve, and the Grinch can’t stand the thought of sitting through another Christmas  
+
+6
+00:00:16,400 --> 00:00:19,750
+with children noisily playing and people gathering to sing, 
+
+7
+00:00:19,760 --> 00:00:22,900
+so the Grinch tries to stop Christmas from coming to Whoville.
+
+8
+00:00:23,160 --> 00:00:27,500
+Grinch thinks that Christmas is all about the decorations and gifts,
+
+9
+00:00:27,500 --> 00:00:32,440
+so he decides to simply steal every Christmas decoration, tree, and gift.
+
+10
+00:00:32,600 --> 00:00:37,800
+He dresses up like Santa and takes his sleigh down to Whoville.
+
+11
+00:00:37,960 --> 00:00:43,000
+He breaks into every house in Whoville through the chimney,
+and starting with the Christmas stockings,
+
+12
+00:00:43,100 --> 00:00:46,440 
+he takes away every Christmas thing, even the food.
+
+13
+00:00:46,560 --> 00:00:51,240
+There was one little girl, Cindy-Lou Who, who caught the Grinch stealing Christmas.
+
+14
+00:00:51,560 --> 00:00:55,440
+She thought he was Santa and asked him what he was doing.
+
+15
+00:00:55,900 --> 00:01:01,440
+Being quite sly, Grinch told her that he was taking the tree back to his shop to fix the tree lights.
+
+16
+00:01:01,740 --> 00:01:07,900
+The Whos wake up on Christmas morning to find their town stripped of all material possessions.
+
+17
+00:01:08,000 --> 00:01:14,800
+To the Grinch's surprise, however, the Whos join hands and begin to sing in celebration of Christmas.
+
+18
+00:01:15,500 --> 00:01:20,500
+Despite his efforts, the Grinch realized he hadn’t stopped Christmas at all.
+
+19
+00:01:20,900 --> 00:01:25,900
+He realizes that Christmas is more than just big dinners, presents and decorations, 
+
+20
+00:01:26,000 --> 00:01:30,800
+and that the true meaning of Christmas is love, family, and friendship.
+
+21
+00:01:31,000 --> 00:01:36,800
+Witnessing the Whos' genuine joy and love for one another, the Grinch undergoes a change of heart.
+
+22
+00:01:36,900 --> 00:01:40,500
+His shriveled heart grows three sizes that day.
+
+23
+00:01:41,000 --> 00:01:44,900
+Overwhelmed with a newfound understanding of the true meaning of Christmas, 
+
+24
+00:01:45,000 --> 00:01:48,600
+the Grinch returns all the stolen items to Whoville.
+
+25
+00:01:48,900 --> 00:01:50,800
+He joins the Whos in their festivities, 
+
+26
+00:01:50,900 --> 00:01:56,900
+and the story ends with the Grinch carving the roast meat, and enjoying Christmas dinner with the Whos.
+`;
+
+    const audio = document.getElementById("audio");
+    const subtitleEl = document.getElementById("subtitle");
+
+    function timeToSeconds(timeString) {
+      const normalized = timeString.replace(",", ".");
+      const [hours, minutes, seconds] = normalized.split(":");
+      return (
+        Number(hours) * 3600 +
+        Number(minutes) * 60 +
+        Number(seconds)
+      );
+    }
+
+    function parseSRT(srtText) {
+      return srtText
+        .trim()
+        .split(/\r?\n\s*\r?\n/)
+        .map(block => {
+          const lines = block.split(/\r?\n/);
+          const timeLineIndex = /^\d+$/.test(lines[0].trim()) ? 1 : 0;
+          const timeLine = lines[timeLineIndex];
+
+          const match = timeLine.match(
+            /(\d{2}:\d{2}:\d{2}[,.]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[,.]\d{3})/
+          );
+
+          if (!match) return null;
+
+          return {
+            start: timeToSeconds(match[1]),
+            end: timeToSeconds(match[2]),
+            text: lines
+              .slice(timeLineIndex + 1)
+              .join(" ")
+              .replace(/\s+/g, " ")
+              .trim()
+          };
+        })
+        .filter(Boolean);
+    }
+
+    const subtitles = parseSRT(SRT_DATA);
+    let currentIndex = -1;
+
+    function updateSubtitle() {
+      const t = audio.currentTime;
+
+      const newIndex = subtitles.findIndex(
+        sub => t >= sub.start && t < sub.end
+      );
+
+      if (newIndex === currentIndex) return;
+
+      if (newIndex === -1) {
+        subtitleEl.textContent = "";
+      } else {
+        subtitleEl.textContent = subtitles[newIndex].text;
+      }
+
+      currentIndex = newIndex;
+    }
+
+    audio.addEventListener("timeupdate", updateSubtitle);
+    audio.addEventListener("seeked", updateSubtitle);
+    audio.addEventListener("ended", () => {
+      subtitleEl.textContent = "";
+      currentIndex = -1;
+    });
+  </script>
+</body>
+</html>
