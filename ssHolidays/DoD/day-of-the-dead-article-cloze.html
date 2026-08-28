@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day of the Dead — Article Cloze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+.passage h3{font-size:clamp(1rem,2.6vw,1.2rem);margin:1.4rem 0 .6rem;}
+.passage ul{margin:0 0 1rem;padding-left:1.4rem;}
+.passage ul li{margin:0 0 .4rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="studyModeBtn" class="btn secondary" type="button">Study Mode</button>
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>Day of the Dead — Article Cloze</h1>
+  <p>Vocabulary-in-context practice</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section passage">
+  <h2>Fill in the Blanks</h2>
+  <p style="font-size:.9rem;color:#666;">Read the article about Day of the Dead and choose the word or phrase that best completes each sentence.</p>
+  <p>Day of the Dead, or <em>Día de los Muertos</em>, is a colorful and meaningful celebration in Mexico
+that honors
+<select class="blank" data-answer="deceased"><option value="">— choose —</option><option value="remembrance">remembrance</option><option value="reunion">reunion</option><option value="deceased">deceased</option></select>
+loved ones. It
+<select class="blank" data-answer="takes place"><option value="">— choose —</option><option value="takes place">takes place</option><option value="gather">gather</option><option value="guide">guide</option></select>
+from October 31st to November 2nd. It is considered as a joyful
+<select class="blank" data-answer="reunion"><option value="">— choose —</option><option value="reunion">reunion</option><option value="remembrance">remembrance</option><option value="festive occasion">festive occasion</option></select>
+with those who have
+<select class="blank" data-answer="passed away"><option value="">— choose —</option><option value="reconnect">reconnect</option><option value="passed away">passed away</option><option value="deceased">deceased</option></select>
+.</p>
+<p>The
+<select class="blank" data-answer="roots"><option value="">— choose —</option><option value="graves">graves</option><option value="roots">roots</option><option value="cemeteries">cemeteries</option></select>
+of Day of the Dead go back to the Aztec civilization. The Aztecs celebrated death as a part of life,
+believing that on this day, the souls of the dead return to visit their families.</p>
+<p>One of the most important traditions during Day of the Dead is the creation of an <em>ofrenda</em>,
+or
+<select class="blank" data-answer="ancestral altar"><option value="">— choose —</option><option value="cemeteries">cemeteries</option><option value="ancestral altar">ancestral altar</option><option value="festive occasion">festive occasion</option></select>
+.</p>
+<p>Families set up these altars in their homes and
+<select class="blank" data-answer="cemeteries"><option value="">— choose —</option><option value="graves">graves</option><option value="roots">roots</option><option value="cemeteries">cemeteries</option></select>
+,
+<select class="blank" data-answer="decorating"><option value="">— choose —</option><option value="decorating">decorating</option><option value="gather">gather</option><option value="guide">guide</option></select>
+them with photos, favorite foods, and items that belonged to the
+<select class="blank" data-answer="deceased"><option value="">— choose —</option><option value="reunion">reunion</option><option value="remembrance">remembrance</option><option value="deceased">deceased</option></select>
+. These altars are designed to welcome back the souls of loved ones and offer them comfort and
+<select class="blank" data-answer="nourishment"><option value="">— choose —</option><option value="remembrance">remembrance</option><option value="reunion">reunion</option><option value="nourishment">nourishment</option></select>
+during their visit.</p>
+<p>People also celebrate by visiting
+<select class="blank" data-answer="graves"><option value="">— choose —</option><option value="cemeteries">cemeteries</option><option value="graves">graves</option><option value="roots">roots</option></select>
+, cleaning them, and leaving food offerings. Families
+<select class="blank" data-answer="gather"><option value="">— choose —</option><option value="gather">gather</option><option value="celebrate">celebrate</option><option value="reconnect">reconnect</option></select>
+to share stories and remember their loved ones with joy rather than sadness.</p>
+<p>Common symbols include:</p>
+<ul>
+<li><strong>Sugar skulls:</strong> Colorful skulls made from sugar that represent the deceased.</li>
+<li><strong>Marigolds:</strong> Bright orange flowers that
+<select class="blank" data-answer="guide"><option value="">— choose —</option><option value="guide">guide</option><option value="focuses">focuses</option><option value="decorating">decorating</option></select>
+spirits back to their families.</li>
+<li><strong>Candles:</strong>
+<select class="blank" data-answer="Lit"><option value="">— choose —</option><option value="decorating">decorating</option><option value="guide">guide</option><option value="Lit">Lit</option></select>
+candles to help spirits find their way home.</li>
+</ul>
+<p>In cities like Mexico City, there are big
+<select class="blank" data-answer="parades"><option value="">— choose —</option><option value="parades">parades</option><option value="floats">floats</option><option value="costumes">costumes</option></select>
+with colorful
+<select class="blank" data-answer="floats"><option value="">— choose —</option><option value="parades">parades</option><option value="floats">floats</option><option value="skeletons">skeletons</option></select>
+, music, and dancing. People dress up in bright
+<select class="blank" data-answer="costumes"><option value="">— choose —</option><option value="costumes">costumes</option><option value="skeletons">skeletons</option><option value="parades">parades</option></select>
+and paint their faces to look like
+<select class="blank" data-answer="skeletons"><option value="">— choose —</option><option value="costumes">costumes</option><option value="floats">floats</option><option value="skeletons">skeletons</option></select>
+.</p>
+<p>The Day of the Dead is often compared to Halloween because they are at the same time of year.
+However, Halloween
+<select class="blank" data-answer="focuses"><option value="">— choose —</option><option value="guide">guide</option><option value="focuses">focuses</option><option value="celebrate">celebrate</option></select>
+on scary and spooky elements, while the Day of the Dead celebrates life and
+<select class="blank" data-answer="remembrance"><option value="">— choose —</option><option value="reunion">reunion</option><option value="nourishment">nourishment</option><option value="remembrance">remembrance</option></select>
+. It is a
+<select class="blank" data-answer="festive occasion"><option value="">— choose —</option><option value="reunion">reunion</option><option value="festive occasion">festive occasion</option><option value="fright">fright</option></select>
+filled with color and joy rather than
+<select class="blank" data-answer="fright"><option value="">— choose —</option><option value="fright">fright</option><option value="festive occasion">festive occasion</option><option value="remembrance">remembrance</option></select>
+.</p>
+<p>Day of the Dead, or <em>Día de los Muertos</em>, is a time for families to
+<select class="blank" data-answer="reconnect"><option value="">— choose —</option><option value="reconnect">reconnect</option><option value="celebrate">celebrate</option><option value="gather">gather</option></select>
+with their past,
+<select class="blank" data-answer="celebrate"><option value="">— choose —</option><option value="reconnect">reconnect</option><option value="gather">gather</option><option value="celebrate">celebrate</option></select>
+life, and honor those who have passed away.</p>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const selects = () => document.querySelectorAll('select.blank');
+
+  // ---- Immediate feedback on change ----
+  document.body.addEventListener('change', (e) => {
+    if (!e.target.matches('select.blank')) return;
+    const sel = e.target;
+    sel.classList.remove('correct','incorrect');
+    if (sel.value === sel.dataset.answer) {
+      sel.classList.add('correct');
+    } else if (sel.value !== '') {
+      sel.classList.add('incorrect');
+    }
+  });
+
+  // ---- Study Mode: snapshot / reveal / restore ----
+  const studyBtn = document.getElementById('studyModeBtn');
+  let snapshot = null;
+  let inStudy = false;
+
+  studyBtn.addEventListener('click', () => {
+    const all = selects();
+    if (!inStudy) {
+      snapshot = Array.from(all).map(s => ({
+        value: s.value,
+        classes: Array.from(s.classList)
+      }));
+      all.forEach(s => {
+        s.value = s.dataset.answer;
+        s.classList.remove('incorrect');
+        s.classList.add('correct');
+        s.disabled = true;
+      });
+      inStudy = true;
+      studyBtn.textContent = 'Return to Quiz';
+    } else {
+      all.forEach((s, i) => {
+        const snap = snapshot ? snapshot[i] : null;
+        s.disabled = false;
+        s.classList.remove('correct','incorrect');
+        if (snap) {
+          s.value = snap.value;
+          snap.classes.forEach(c => { if (c === 'correct' || c === 'incorrect') s.classList.add(c); });
+        }
+      });
+      inStudy = false;
+      studyBtn.textContent = 'Study Mode';
+    }
+  });
+
+  // ---- Print gate: require Name + Student ID first ----
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
