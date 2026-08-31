@@ -170,45 +170,84 @@
 
   </style>
 
-  <script>
-    function checkAnswer(select, correct, type) {
-      const val = select.value;
-      select.className = "";
-      if (val === correct) {
-        select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
-      } else if (val !== '') {
-        select.className = 'incorrect';
-      }
+ <script>
+  function checkAnswer(select, correct, type) {
+    const val = select.value;
+    select.className = "";
+    if (val === correct) {
+      select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
+    } else if (val !== '') {
+      select.className = 'incorrect';
     }
+  }
 
-    // Toggle Show/Hide All Answers
-    document.addEventListener('DOMContentLoaded', function () {
-      const toggleBtn = document.getElementById('toggleAnswers');
-      if (!toggleBtn) return;
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggleAnswers');
+    if (!toggleBtn) return;
 
-      toggleBtn.addEventListener('click', function () {
-        const selects = document.querySelectorAll('select');
-        const isShowing = this.textContent.includes('Show');
+    let savedStates = null;
 
+    // Re-apply styling to any selects that already have a value on load
+    document.querySelectorAll('select').forEach(select => {
+      if (!select.value) return;
+
+      const onchangeAttr = select.getAttribute('onchange') || '';
+      // Try to extract the correct value and type from the onchange attribute
+      const match = onchangeAttr.match(
+        /checkAnswer\(\s*this\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/
+      );
+
+      if (match) {
+        checkAnswer(select, match[1], match[2]);
+      } else {
+        // Fallback (same logic the toggle uses)
+        const correctOption = Array.from(select.options)
+          .find(opt => opt.value && opt.value !== '');
+        const correctValue = correctOption ? correctOption.value : '';
+        const type = onchangeAttr.includes('bold') ? 'bold' : 'italic';
+        checkAnswer(select, correctValue, type);
+      }
+    });
+
+    // Toggle Show / Hide All Answers
+    toggleBtn.addEventListener('click', function () {
+      const selects = document.querySelectorAll('select');
+      const isShowing = this.textContent.includes('Show');
+
+      if (isShowing) {
+        // Capture current state
+        savedStates = Array.from(selects).map(select => ({
+          value: select.value,
+          className: select.className
+        }));
+
+        // Force correct answers
         selects.forEach(select => {
-          // Find correct option (first non-blank value)
-          const correctOption = Array.from(select.options).find(opt => opt.value && opt.value !== '');
+          const correctOption = Array.from(select.options)
+            .find(opt => opt.value && opt.value !== '');
           const correctValue = correctOption ? correctOption.value : '';
+          select.value = correctValue;
 
-          if (isShowing) {
-            select.value = correctValue;
-            const type = select.getAttribute('onchange').includes('bold') ? 'bold' : 'italic';
-            select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
-          } else {
-            select.value = '';
-            select.className = '';
-          }
+          const type = (select.getAttribute('onchange') || '').includes('bold')
+            ? 'bold'
+            : 'italic';
+          select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
         });
 
-        this.textContent = isShowing ? 'Hide all answers' : 'Show all answers';
-      });
+        this.textContent = 'Hide all answers';
+      } else {
+        // Restore previous state
+        if (savedStates) {
+          selects.forEach((select, i) => {
+            select.value = savedStates[i].value;
+            select.className = savedStates[i].className;
+          });
+        }
+        this.textContent = 'Show all answers';
+      }
     });
-  </script>
+  });
+</script>
 </head>
 <body>
 
@@ -453,6 +492,37 @@
     .
   </p>
 </div>
+
+
+<script>
+  function shuffleSelectOptions() {
+    const selects = document.querySelectorAll('select');
+
+    selects.forEach(select => {
+      const options = Array.from(select.options);
+      if (options.length <= 1) return;
+
+      const placeholder = options[0]; // e.g. <option value="">--</option>
+      const rest = options.slice(1);
+
+      // Fisher–Yates shuffle
+      for (let i = rest.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rest[i], rest[j]] = [rest[j], rest[i]];
+      }
+
+      // Rebuild options list
+      select.innerHTML = '';
+      select.add(placeholder);
+      rest.forEach(opt => select.add(opt));
+
+      // Ensure the placeholder is the "non-selected" initial value
+      select.value = placeholder.value; // usually ""
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', shuffleSelectOptions);
+</script>
 
 <footer>
   <p>Cultural Awareness Series</p>
