@@ -34,7 +34,7 @@
 
     header {
       text-align: center;
-      width:80%;
+      width:95%;
       margin: 2rem auto 2rem auto;
       padding-bottom: 1.5rem;
       border-bottom: 3px solid var(--primary);
@@ -70,6 +70,10 @@
       display: block;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       border: 1px solid #eee;
+    }
+
+    #instructions {
+      color:#0A167A; box-shadow: 0 0 8px 0 purple; padding:1.6rem; margin:1.6rem;
     }
 
     .content {
@@ -129,7 +133,7 @@
     select { min-width: 130px; }
 
     /* Toggle Button */
-    #toggleAnswers {
+    #toggleModeBtn {
       display: block;
       margin: 1.5rem auto;
       padding: 12px 28px;
@@ -144,7 +148,7 @@
       transition: all 0.3s ease;
     }
 
-    #toggleAnswers:hover {
+    #toggleModeBtn:hover {
       background: #134a44;
       transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(26, 93, 87, 0.4);
@@ -168,86 +172,25 @@
     }
 
 
+    #toggleModeBtn {
+      position:sticky; top: 3px; z-index:1000;
+    }
+
+
+
+    /* Pale pastel green for correct answers */
+.bg-correct {
+    background-color: #d4edda !important;
+}
+
+/* Pale pink for incorrect answers */
+.bg-incorrect {
+    background-color: #f8d7da !important;
+}
+
   </style>
 
- <script>
-  function checkAnswer(select, correct, type) {
-    const val = select.value;
-    select.className = "";
-    if (val === correct) {
-      select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
-    } else if (val !== '') {
-      select.className = 'incorrect';
-    }
-  }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggleBtn = document.getElementById('toggleAnswers');
-    if (!toggleBtn) return;
-
-    let savedStates = null;
-
-    // Re-apply styling to any selects that already have a value on load
-    document.querySelectorAll('select').forEach(select => {
-      if (!select.value) return;
-
-      const onchangeAttr = select.getAttribute('onchange') || '';
-      // Try to extract the correct value and type from the onchange attribute
-      const match = onchangeAttr.match(
-        /checkAnswer\(\s*this\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/
-      );
-
-      if (match) {
-        checkAnswer(select, match[1], match[2]);
-      } else {
-        // Fallback (same logic the toggle uses)
-        const correctOption = Array.from(select.options)
-          .find(opt => opt.value && opt.value !== '');
-        const correctValue = correctOption ? correctOption.value : '';
-        const type = onchangeAttr.includes('bold') ? 'bold' : 'italic';
-        checkAnswer(select, correctValue, type);
-      }
-    });
-
-    // Toggle Show / Hide All Answers
-    toggleBtn.addEventListener('click', function () {
-      const selects = document.querySelectorAll('select');
-      const isShowing = this.textContent.includes('Show');
-
-      if (isShowing) {
-        // Capture current state
-        savedStates = Array.from(selects).map(select => ({
-          value: select.value,
-          className: select.className
-        }));
-
-        // Force correct answers
-        selects.forEach(select => {
-          const correctOption = Array.from(select.options)
-            .find(opt => opt.value && opt.value !== '');
-          const correctValue = correctOption ? correctOption.value : '';
-          select.value = correctValue;
-
-          const type = (select.getAttribute('onchange') || '').includes('bold')
-            ? 'bold'
-            : 'italic';
-          select.className = type === 'bold' ? 'correct-bold' : 'correct-italic';
-        });
-
-        this.textContent = 'Hide all answers';
-      } else {
-        // Restore previous state
-        if (savedStates) {
-          selects.forEach((select, i) => {
-            select.value = savedStates[i].value;
-            select.className = savedStates[i].className;
-          });
-        }
-        this.textContent = 'Show all answers';
-      }
-    });
-  });
-</script>
 </head>
 <body>
 
@@ -260,51 +203,57 @@
   <h4>Dr. Ray’s Cultural Awareness Course</h4>
 </header>
 
+<div id="instructions">Choose the correct word <em>according to the podcast script</em>. For words with similar meanings, use the exact word from the podcast.<br>Correct answers will show in <span style="background:#d4edda;">green</span>.</div>
+
 <div class="content">
-  <button id="toggleAnswers">Show all answers</button>
+  <button id="toggleModeBtn">Study Mode</button><!-- toggles to "Return to Quiz"-->
 
   <p>
     Halloween and Dia de Los Muertos (Day of the Dead) are two fall holidays with
-    <select onchange="checkAnswer(this,'distinct','bold')">
+    <select data-correct="distinct">
       <option value="">—</option>
+      <option value="identical">identical</option>
       <option value="distinct">distinct</option>
       <option value="similar">similar</option>
-      <option value="identical">identical</option>
     </select>
     traditions. Halloween, rooted in Ireland, focuses on costumes, trick-or-treating, and spooky fun. In
-    <select onchange="checkAnswer(this,'contrast','bold')">
+    <select data-correct="contrast">
       <option value="">—</option>
-      <option value="contrast">contrast</option>
       <option value="addition">addition</option>
       <option value="harmony">harmony</option>
+            <option value="contrast">contrast</option>
+
     </select>
     , Dia de Los Muertos, celebrated in Mexico and parts of the US, honors
-    <select onchange="checkAnswer(this,'deceased','bold')">
+    <select data-correct="deceased">
       <option value="">—</option>
       <option value="deceased">deceased</option>
       <option value="living">living</option>
       <option value="future">future</option>
     </select>
     loved ones with altars, marigolds, and joyful family
-    <select onchange="checkAnswer(this,'gatherings','bold')">
+    <select data-correct="gatherings">
       <option value="">—</option>
-      <option value="gatherings">gatherings</option>
       <option value="parties">parties</option>
+            <option value="gatherings">gatherings</option>
+
       <option value="competitions">competitions</option>
     </select>
     . While Halloween is
-    <select onchange="checkAnswer(this,'eerie','bold')">
+    <select data-correct="eerie">
       <option value="">—</option>
-      <option value="eerie">eerie</option>
       <option value="cheerful">cheerful</option>
       <option value="quiet">quiet</option>
+            <option value="eerie">eerie</option>
+
     </select>
     and playful, Day of the Dead is
-    <select onchange="checkAnswer(this,'vibrant','bold')">
+    <select data-correct="vibrant">
       <option value="">—</option>
-      <option value="vibrant">vibrant</option>
       <option value="muted">muted</option>
       <option value="dark">dark</option>
+            <option value="vibrant">vibrant</option>
+
     </select>
     and celebratory, emphasizing remembrance and connection with the past.
   </p>
@@ -312,38 +261,40 @@
  <hr>
 
   <p><strong>Host:</strong> It's funny how October and November give us this
-    <select onchange="checkAnswer(this,'back-to-back','italic')">
+    <select data-correct="back-to-back">
       <option value="">—</option>
       <option value="back-to-back">back-to-back</option>
       <option value="side-by-side">side-by-side</option>
       <option value="far-apart">far-apart</option>
     </select>
     double feature: Halloween first, then Day of the Dead—both with their own flavors, even though they're just days apart. Have you noticed how people sometimes
-    <select onchange="checkAnswer(this,'mix them up','italic')">
+    <select data-correct="mix them up">
       <option value="">—</option>
-      <option value="mix them up">mix them up</option>
       <option value="keep them separate">keep them separate</option>
+            <option value="mix them up">mix them up</option>
+
       <option value="ignore one">ignore one</option>
     </select>
     just because of the timing?
   </p>
 
   <p><strong>Guest:</strong> You're so right! The calendar
-    <select onchange="checkAnswer(this,'overlap','bold')">
+    <select data-correct="overlap">
       <option value="">—</option>
-      <option value="overlap">overlap</option>
       <option value="gap">gap</option>
+            <option value="overlap">overlap</option>
+
       <option value="sequence">sequence</option>
     </select>
     definitely causes confusion, even though the
-    <select onchange="checkAnswer(this,'vibe','bold')">
+    <select data-correct="vibe">
       <option value="">—</option>
       <option value="vibe">vibe</option>
       <option value="theme">theme</option>
       <option value="origin">origin</option>
     </select>
     of each holiday couldn't be more different. Halloween's all about costumes, haunted houses, and that
-    <select onchange="checkAnswer(this,'sugar rush','italic')">
+    <select data-correct="sugar rush">
       <option value="">—</option>
       <option value="sugar rush">sugar rush</option>
       <option value="scary walk">scary walk</option>
@@ -353,7 +304,7 @@
   </p>
 
   <p><strong>Host:</strong> Exactly! Halloween has that whole thrill of being spooked, with ghost stories and skeletons everywhere—it's fun, but not what I'd call spiritual. I love that Day of the Dead, or Dia de los Muertos, is really about honoring people who've
-    <select onchange="checkAnswer(this,'passed away','bold')">
+    <select data-correct="passed away">
       <option value="">—</option>
       <option value="passed away">passed away</option>
       <option value="moved on">moved on</option>
@@ -363,21 +314,23 @@
   </p>
 
   <p><strong>Guest:</strong> What
-    <select onchange="checkAnswer(this,'stands out','bold')">
+    <select data-correct="stands out">
       <option value="">—</option>
-      <option value="stands out">stands out</option>
       <option value="fades away">fades away</option>
       <option value="blends in">blends in</option>
+            <option value="stands out">stands out</option>
+
     </select>
     to me is the mood shift—Halloween
-    <select onchange="checkAnswer(this,'leans into','italic')">
+    <select data-correct="leans into">
       <option value="">—</option>
-      <option value="leans into">leans into</option>
       <option value="steps back from">steps back from</option>
+            <option value="leans into">leans into</option>
+
       <option value="runs toward">runs toward</option>
     </select>
     the eerie, while Day of the Dead is vibrant and almost celebratory. It's like a
-    <select onchange="checkAnswer(this,'reunion','bold')">
+    <select data-correct="reunion">
       <option value="">—</option>
       <option value="reunion">reunion</option>
       <option value="farewell">farewell</option>
@@ -387,38 +340,41 @@
   </p>
 
   <p><strong>Host:</strong>
-    <select onchange="checkAnswer(this,'Speaking of','italic')">
+    <select data-correct="Speaking of">
       <option value="">—</option>
-      <option value="Speaking of">Speaking of</option>
       <option value="Moving on from">Moving on from</option>
       <option value="Ignoring">Ignoring</option>
+            <option value="Speaking of">Speaking of</option>
+
     </select>
     that, I was totally
-    <select onchange="checkAnswer(this,'fascinated','bold')">
+    <select data-correct="fascinated">
       <option value="">—</option>
-      <option value="fascinated">fascinated</option>
       <option value="bored">bored</option>
       <option value="confused">confused</option>
+            <option value="fascinated">fascinated</option>
+
     </select>
     learning about the ofrendas people build at home. There's so much intention behind it—the photos, the foods, the marigolds. It's a
-    <select onchange="checkAnswer(this,'sensory','bold')">
+    <select data-correct="sensory">
       <option value="">—</option>
-      <option value="sensory">sensory</option>
       <option value="silent">silent</option>
+            <option value="sensory">sensory</option>
+
       <option value="visual">visual</option>
     </select>
     way of inviting memories back for a visit.
   </p>
 
   <p><strong>Guest:</strong> Absolutely, and those marigolds are such a key detail—they aren't just for decoration! Their bright orange color is supposed to guide spirits home, and the
-    <select onchange="checkAnswer(this,'scent','bold')">
+    <select data-correct="scent">
       <option value="">—</option>
       <option value="scent">scent</option>
       <option value="sound">sound</option>
       <option value="taste">taste</option>
     </select>
     is almost like a calling card. Plus, papel picado and all the treats make the altar feel festive, not
-    <select onchange="checkAnswer(this,'somber','bold')">
+    <select data-correct="somber">
       <option value="">—</option>
       <option value="somber">somber</option>
       <option value="noisy">noisy</option>
@@ -430,31 +386,33 @@
   <p><strong>Host:</strong> The sugar skulls, too—I used to think they were creepy, but now I get that they're part of the joyful side. It's a way of saying, 'Hey, we remember you—and we're glad you're here.'</p>
 
   <p><strong>Guest:</strong> Exactly, it's this gentle macabre, not meant to frighten at all. I even saw someone include photos of their pets on an ofrenda, which honestly made me tear up. It's about celebrating every life that touched us, not just
-    <select onchange="checkAnswer(this,'mourning','bold')">
+    <select data-correct="mourning">
       <option value="">—</option>
-      <option value="mourning">mourning</option>
       <option value="forgetting">forgetting</option>
+            <option value="mourning">mourning</option>
+
       <option value="ignoring">ignoring</option>
     </select>
     the loss.
   </p>
 
   <p><strong>Host:</strong> That actually reminds me—events like the one at Pan Am Park really
-    <select onchange="checkAnswer(this,'bring','italic')">
+    <select data-correct="bring">
       <option value="">—</option>
-      <option value="bring">bring</option>
       <option value="hide">hide</option>
+            <option value="bring">bring</option>
+
       <option value="cancel">cancel</option>
     </select>
     these traditions
-    <select onchange="checkAnswer(this,'to life','italic')">
+    <select data-correct="to life">
       <option value="">—</option>
       <option value="to life">to life</option>
       <option value="to an end">to an end</option>
       <option value="into darkness">into darkness</option>
     </select>
     for everyone. Live music, art installations, food trucks, and those
-    <select onchange="checkAnswer(this,'elaborate','bold')">
+    <select data-correct="elaborate">
       <option value="">—</option>
       <option value="elaborate">elaborate</option>
       <option value="simple">simple</option>
@@ -466,27 +424,30 @@
   <p><strong>Guest:</strong> What I love is how open those celebrations are. You see families, friends, kids with calavera face paint and even people who are just learning about the holiday for the first time. It's welcoming—like, 'Come celebrate with us, no matter your background.'</p>
 
   <p><strong>Host:</strong> Totally. And I think even
-    <select onchange="checkAnswer(this,'little touches','italic')">
+    <select data-correct="little touches">
       <option value="">—</option>
-      <option value="little touches">little touches</option>
       <option value="big changes">big changes</option>
       <option value="strict rules">strict rules</option>
+            <option value="little touches">little touches</option>
+
     </select>
     —like putting together a small ofrenda at home, or adding your pet's photo—can make the season feel more connected. It's a reminder that joy and remembrance can go hand in hand.
   </p>
 
   <p><strong>Guest:</strong> Couldn't agree more. Whether you're carving pumpkins or sharing pan dulce, it's a special time to honor our stories—both the
-    <select onchange="checkAnswer(this,'spooky','bold')">
+    <select data-correct="spooky">
       <option value="">—</option>
-      <option value="spooky">spooky</option>
       <option value="peaceful">peaceful</option>
       <option value="serious">serious</option>
+            <option value="spooky">spooky</option>
+
     </select>
     and the sweet. I think that's what makes this season so
-    <select onchange="checkAnswer(this,'unique','bold')">
+    <select data-correct="unique">
       <option value="">—</option>
-      <option value="unique">unique</option>
       <option value="ordinary">ordinary</option>
+            <option value="unique">unique</option>
+
       <option value="common">common</option>
     </select>
     .
@@ -495,35 +456,77 @@
 
 
 <script>
-  function shuffleSelectOptions() {
-    const selects = document.querySelectorAll('select');
+// State variables
+let isStudyMode = false;
+const previousState = new Map();
 
-    selects.forEach(select => {
-      const options = Array.from(select.options);
-      if (options.length <= 1) return;
+// DOM elements
+const selects = document.querySelectorAll('select');
+// Replace 'toggleModeBtn' with the actual ID of your toggle button
+const toggleBtn = document.getElementById('toggleModeBtn');
 
-      const placeholder = options[0]; // e.g. <option value="">--</option>
-      const rest = options.slice(1);
+// Function to evaluate a single select element and apply background
+function evaluateSelect(selectEl) {
+    selectEl.classList.remove('bg-correct', 'bg-incorrect');
 
-      // Fisher–Yates shuffle
-      for (let i = rest.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [rest[i], rest[j]] = [rest[j], rest[i]];
-      }
+    // Only apply color if the user has actually made a selection
+    if (selectEl.value !== "") {
+        if (selectEl.value === selectEl.dataset.correct) {
+            selectEl.classList.add('bg-correct');
+        } else {
+            selectEl.classList.add('bg-incorrect');
+        }
+    }
+}
 
-      // Rebuild options list
-      select.innerHTML = '';
-      select.add(placeholder);
-      rest.forEach(opt => select.add(opt));
-
-      // Ensure the placeholder is the "non-selected" initial value
-      select.value = placeholder.value; // usually ""
+// Attach change listeners to all select elements
+selects.forEach(select => {
+    select.addEventListener('change', function() {
+        // Only evaluate if we are not in Study Mode
+        if (!isStudyMode) {
+            evaluateSelect(this);
+        }
     });
-  }
+});
 
-  document.addEventListener('DOMContentLoaded', shuffleSelectOptions);
+// Toggle button logic
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+        if (!isStudyMode) {
+            // --- ENTER STUDY MODE ---
+            isStudyMode = true;
+            toggleBtn.textContent = "Return to Quiz";
+
+            selects.forEach(select => {
+                // 1. Capture state using the DOM element as the key
+                previousState.set(select, select.value);
+
+                // 2. Show correct answers
+                select.value = select.dataset.correct;
+
+                // 3. Apply pale green background
+                select.classList.remove('bg-incorrect');
+                select.classList.add('bg-correct');
+            });
+
+        } else {
+            // --- RETURN TO QUIZ MODE ---
+            isStudyMode = false;
+            toggleBtn.textContent = "Study Mode";
+
+            selects.forEach(select => {
+                // 1. Restore previous state
+                if (previousState.has(select)) {
+                    select.value = previousState.get(select);
+                }
+
+                // 2. Re-evaluate to apply appropriate green/pink background
+                evaluateSelect(select);
+            });
+        }
+    });
+}
 </script>
-
 <footer>
   <p>Cultural Awareness Series</p>
 </footer>
