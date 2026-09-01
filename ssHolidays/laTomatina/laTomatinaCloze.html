@@ -1,0 +1,470 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>La Tomatina: The World's Messiest Festival</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-laTomatina" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-laTomatina')">Show Answers</button><div class="sentence-div">Imagine walking through a quiet Spanish town when suddenly, a truck arrives carrying thousands of <span style="font-size: 70%;">1</span><select data-correct="ripe" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ripe">ripe</option></select> tomatoes. A few minutes later, the streets are covered in red, people are laughing and shouting, and everyone is throwing tomatoes at everyone else. This is La Tomatina, one of the strangest and most exciting festivals in the world.
+</div>
+<div class="sentence-div">La Tomatina takes place every year in Buñol, a small town near Valencia, Spain. It is <span style="font-size: 70%;">2</span><select data-correct="held" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="held">held</option>
+<option value="enormous">enormous</option></select> on the last Wednesday of August and attracts thousands of people from Spain and other countries. There were 20,000 people at its last event. The main event lasts only about one hour, but it creates an <span style="font-size: 70%;">3</span><select data-correct="enormous" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="held">held</option>
+<option value="enormous">enormous</option></select> mess. Trucks bring in tons of overripe tomatoes, and when the signal is given, the tomato fight begins.
+</div>
+<div class="sentence-div">Nobody comes to La Tomatina to win. There are no teams, no scores, and no prizes. The goal is simply to have fun. People wear old clothes, <span style="font-size: 70%;">4</span><select data-correct="protect" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="protect">protect</option>
+<option value="goggles">goggles</option>
+<option value="covered">covered</option></select> their eyes with <span style="font-size: 70%;">5</span><select data-correct="goggles" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="protect">protect</option>
+<option value="goggles">goggles</option>
+<option value="covered">covered</option></select>, and prepare themselves to become completely <span style="font-size: 70%;">6</span><select data-correct="covered" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="protect">protect</option>
+<option value="goggles">goggles</option>
+<option value="covered">covered</option></select> in tomato juice.
+</div>
+<div class="sentence-div">I had heard about La Tomatina for years, but I never imagined I would actually <span style="font-size: 70%;">7</span><select data-correct="take part" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="take part">take part</option></select>. When I arrived in Buñol, the town was already full of excited visitors. Music was playing in the streets, people were dancing, and everyone seemed to be waiting for something crazy to happen.
+</div>
+<div class="sentence-div">Then I heard a loud noise. A truck slowly moved through the crowd, loaded with huge <span style="font-size: 70%;">8</span><select data-correct="piles" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="piles">piles</option>
+<option value="building">building</option>
+<option value="thigh">thigh</option></select> of tomatoes. People started cheering. I could feel the excitement <span style="font-size: 70%;">9</span><select data-correct="building" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="piles">piles</option>
+<option value="building">building</option>
+<option value="thigh">thigh</option></select> around me. Suddenly, the signal was given. The first tomato hit me in the <span style="font-size: 70%;">10</span><select data-correct="thigh" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="piles">piles</option>
+<option value="building">building</option>
+<option value="thigh">thigh</option></select>.
+</div>
+<div class="sentence-div">Before I could <span style="font-size: 70%;">11</span><select data-correct="react" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="react">react</option>
+<option value="flew past">flew past</option>
+<option value="reached for">reached for</option></select>, another one <span style="font-size: 70%;">12</span><select data-correct="flew past" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="react">react</option>
+<option value="flew past">flew past</option>
+<option value="reached for">reached for</option></select> my face. Then another hit me on the back. Within seconds, tomatoes were flying in every direction. I <span style="font-size: 70%;">13</span><select data-correct="reached for" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="react">react</option>
+<option value="flew past">flew past</option>
+<option value="reached for">reached for</option></select> one on the ground, picked it up, and threw it at a complete stranger. He laughed and threw two tomatoes straight back at me.
+</div>
+<div class="sentence-div">Soon, I was completely <span style="font-size: 70%;">14</span><select data-correct="caught up" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught up">caught up</option>
+<option value="madness">madness</option>
+<option value="scoop up">scoop up</option></select> in the <span style="font-size: 70%;">15</span><select data-correct="madness" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught up">caught up</option>
+<option value="madness">madness</option>
+<option value="scoop up">scoop up</option></select>. I threw tomatoes at people I had never met, and they threw them back at me. Some people were dancing in the middle of the street, while others were using their hands to <span style="font-size: 70%;">16</span><select data-correct="scoop up" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caught up">caught up</option>
+<option value="madness">madness</option>
+<option value="scoop up">scoop up</option></select> tomatoes and throw them like snowballs. The strangest part was how quickly everyone became friends. Language didn't seem to matter. We were all covered in red, laughing, shouting, and enjoying the same crazy experience.
+</div>
+<div class="sentence-div">Then, just as suddenly as it had started, it was <span style="font-size: 70%;">17</span><select data-correct="over" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select>. I <span style="font-size: 70%;">18</span><select data-correct="looked around" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select> and could hardly <span style="font-size: 70%;">19</span><select data-correct="recognize" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select> the street. Everything was red. My clothes were covered in tomato <span style="font-size: 70%;">20</span><select data-correct="pulp" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select>, my shoes were <span style="font-size: 70%;">21</span><select data-correct="slippery" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select>, and there was tomato juice <span style="font-size: 70%;">22</span><select data-correct="running down" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select> my arms. I was <span style="font-size: 70%;">23</span><select data-correct="exhausted" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="over">over</option>
+<option value="looked around">looked around</option>
+<option value="recognize">recognize</option>
+<option value="pulp">pulp</option>
+<option value="slippery">slippery</option>
+<option value="running down">running down</option>
+<option value="exhausted">exhausted</option></select>—but I couldn't stop smiling.
+</div>
+<div class="sentence-div">Afterward, the streets were washed with water, and the town slowly returned to normal. As I walked away, I realized that La Tomatina was much more than a food fight. It was an <span style="font-size: 70%;">24</span><select data-correct="unforgettable" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unforgettable">unforgettable</option>
+<option value="messy">messy</option></select> experience that reminded me that sometimes it's good to forget about being serious, get a little <span style="font-size: 70%;">25</span><select data-correct="messy" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unforgettable">unforgettable</option>
+<option value="messy">messy</option></select>, and simply have fun.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const savedClozeSelections = {};
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        const saved = savedClozeSelections[containerId] || [];
+        selects.forEach((select, i) => {
+            select.value = saved[i] || '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+            if (select.value) {
+                checkAnswer(select);
+            }
+        });
+        delete savedClozeSelections[containerId];
+        button.textContent = 'Show Answers';
+    }
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
