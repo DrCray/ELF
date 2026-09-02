@@ -1,0 +1,490 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea { 
+            max-width: 100%; box-sizing: border-box; 
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Tomb-Sweeping Day in Taiwan: A Day of Family, Food, and Memories</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-tombSweeping" class="cloze-container"><button class="toggle-button" onclick="toggleAnswers('cloze-div-tombSweeping')">Show Answers</button><div class="sentence-div">Tomb-Sweeping Day, known as Qingming Festival, is an important traditional holiday in Taiwan. Families visit the <span style="font-size: 70%;">1</span><select data-correct="graves" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="graves">graves</option>
+<option value="ancestors">ancestors</option>
+<option value="passed away">passed away</option>
+<option value="reunion">reunion</option>
+<option value="heading">heading</option></select> of their <span style="font-size: 70%;">2</span><select data-correct="ancestors" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="graves">graves</option>
+<option value="ancestors">ancestors</option>
+<option value="passed away">passed away</option>
+<option value="reunion">reunion</option>
+<option value="heading">heading</option></select>, clean them, and remember relatives who have <span style="font-size: 70%;">3</span><select data-correct="passed away" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="graves">graves</option>
+<option value="ancestors">ancestors</option>
+<option value="passed away">passed away</option>
+<option value="reunion">reunion</option>
+<option value="heading">heading</option></select>. For many, it's also a chance for a family <span style="font-size: 70%;">4</span><select data-correct="reunion" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="graves">graves</option>
+<option value="ancestors">ancestors</option>
+<option value="passed away">passed away</option>
+<option value="reunion">reunion</option>
+<option value="heading">heading</option></select>. When my friend Wei invited me to spend Tomb-Sweeping Day with his family, I wasn't sure what to expect. We left early because the roads were already busy — thousands of families were <span style="font-size: 70%;">5</span><select data-correct="heading" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="graves">graves</option>
+<option value="ancestors">ancestors</option>
+<option value="passed away">passed away</option>
+<option value="reunion">reunion</option>
+<option value="heading">heading</option></select> to cemeteries across the island, and the highways were far more crowded than usual.
+</div>
+<div class="sentence-div">At the <span style="font-size: 70%;">6</span><select data-correct="cemetery" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="cemetery">cemetery</option>
+<option value="weeds">weeds</option>
+<option value="showing respect">showing respect</option></select>, families were everywhere, carrying flowers, food, and bags of supplies. First, we cleaned the family grave; pulling <span style="font-size: 70%;">7</span><select data-correct="weeds" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="cemetery">cemetery</option>
+<option value="weeds">weeds</option>
+<option value="showing respect">showing respect</option></select>, sweeping leaves, and wiping the stone. Wei explained that this work is a way of <span style="font-size: 70%;">8</span><select data-correct="showing respect" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="cemetery">cemetery</option>
+<option value="weeds">weeds</option>
+<option value="showing respect">showing respect</option></select> for your ancestors.
+</div>
+<div class="sentence-div">Then came the food. Wei's family had prepared a large meal — fruit, tea, rice, meat, and more — which was placed in front of the grave as an <span style="font-size: 70%;">9</span><select data-correct="offering" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select>. The spiritual "energy" of the food passes over to the ancestor, whose spiritual world is believed to be a <span style="font-size: 70%;">10</span><select data-correct="mirror image" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select> of the living world, where <span style="font-size: 70%;">11</span><select data-correct="nourishment" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select>, and even money, are still required. Everyone talked, laughed, and shared memories as they worked. One tradition I found especially interesting was burning incense sticks (joss sticks) and special paper money (joss paper) and other paper objects as <span style="font-size: 70%;">12</span><select data-correct="symbolic" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select> gifts, believed to bring comfort or wealth to ancestors in the afterlife. The whole <span style="font-size: 70%;">13</span><select data-correct="ritual" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select> is a way of remembering ancestors while <span style="font-size: 70%;">14</span><select data-correct="reuniting" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="offering">offering</option>
+<option value="mirror image">mirror image</option>
+<option value="nourishment">nourishment</option>
+<option value="symbolic">symbolic</option>
+<option value="ritual">ritual</option>
+<option value="reuniting">reuniting</option></select> with our living family.
+</div>
+<div class="sentence-div">Later, we went to Wei's aunt's house, where the family had lunch together. There was plenty of food since the food offered to the ancestors had to be eaten. For dinner, we made spring rolls. Spring rolls, or Run-bing, are like a Taiwanese version of a <span style="font-size: 70%;">15</span><select data-correct="customizable" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="customizable">customizable</option>
+<option value="burrito">burrito</option>
+<option value="crepe">crepe</option>
+<option value="overlapping">overlapping</option>
+<option value="stacked">stacked</option></select> burrito. Unlike a thick Mexican <span style="font-size: 70%;">16</span><select data-correct="burrito" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="customizable">customizable</option>
+<option value="burrito">burrito</option>
+<option value="crepe">crepe</option>
+<option value="overlapping">overlapping</option>
+<option value="stacked">stacked</option></select>, however, the wrapper is a thin <span style="font-size: 70%;">17</span><select data-correct="crepe" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="customizable">customizable</option>
+<option value="burrito">burrito</option>
+<option value="crepe">crepe</option>
+<option value="overlapping">overlapping</option>
+<option value="stacked">stacked</option></select> — and you usually need two of them, laid out <span style="font-size: 70%;">18</span><select data-correct="overlapping" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="customizable">customizable</option>
+<option value="burrito">burrito</option>
+<option value="crepe">crepe</option>
+<option value="overlapping">overlapping</option>
+<option value="stacked">stacked</option></select> on a plate (not <span style="font-size: 70%;">19</span><select data-correct="stacked" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="customizable">customizable</option>
+<option value="burrito">burrito</option>
+<option value="crepe">crepe</option>
+<option value="overlapping">overlapping</option>
+<option value="stacked">stacked</option></select>).
+</div>
+<div class="sentence-div">Once the crepes are <span style="font-size: 70%;">20</span><select data-correct="laid out" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="laid out">laid out</option>
+<option value="preferences">preferences</option>
+<option value="flavorings">flavorings</option>
+<option value="consistency">consistency</option></select>, you pile on the ingredients: cabbage, bean sprouts, dried tofu, cucumber, and carrots. The meat is dried pork floss or other styles of pork. Every region and family has its own <span style="font-size: 70%;">21</span><select data-correct="preferences" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="laid out">laid out</option>
+<option value="preferences">preferences</option>
+<option value="flavorings">flavorings</option>
+<option value="consistency">consistency</option></select> — you can really add almost anything. The traditional <span style="font-size: 70%;">22</span><select data-correct="flavorings" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="laid out">laid out</option>
+<option value="preferences">preferences</option>
+<option value="flavorings">flavorings</option>
+<option value="consistency">consistency</option></select> are peanut powder, sugar powder, and cilantro. Some families add hoisin sauce or a mild, orangish chili sauce (with a ketchup-like <span style="font-size: 70%;">23</span><select data-correct="consistency" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="laid out">laid out</option>
+<option value="preferences">preferences</option>
+<option value="flavorings">flavorings</option>
+<option value="consistency">consistency</option></select>).
+</div>
+<div class="sentence-div">At the table, everyone gathered to build their own Run-bing, with a little of this and a little of that, a <span style="font-size: 70%;">24</span><select data-correct="sprinkle" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sprinkle">sprinkle</option>
+<option value="amusement">amusement</option>
+<option value="passed">passed</option></select> of sugar and peanut powder, all rolled up carefully. My first attempt fell apart immediately, to everyone's <span style="font-size: 70%;">25</span><select data-correct="amusement" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sprinkle">sprinkle</option>
+<option value="amusement">amusement</option>
+<option value="passed">passed</option></select>. The whole family sat together, talking, asking questions, passing plates, in no hurry at all. After a morning of remembering those who had <span style="font-size: 70%;">26</span><select data-correct="passed" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sprinkle">sprinkle</option>
+<option value="amusement">amusement</option>
+<option value="passed">passed</option></select>, this also felt like a celebration of those still here. Qingming wasn't only about remembering the past; it was also about spending time together in the present with the ones we love.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for PDF print.</p>
+        <button id="pdfButton" class="pdf-button" disabled>Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        const DEFAULTS = {
+            name: 'Name',
+            id: 'ID'
+        };
+
+        function sanitizeInput(input) {
+            const temp = document.createElement('div');
+            temp.textContent = input;
+            return temp.innerHTML;
+        }
+
+        function validateInput(input, fieldName) {
+            const sanitized = sanitizeInput(input.trim());
+
+            if (sanitized.length < 2) {
+                alert(`${fieldName} must be at least 2 characters long.`);
+                return false;
+            }
+
+            if (sanitized.length > 25) {
+                alert(`${fieldName} must be no more than 25 characters long.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function checkEnablePDF() {
+            const nameValue = nameInput.value.trim();
+            const idValue = idInput.value.trim();
+
+            const nameChanged = nameValue !== DEFAULTS.name;
+            const idChanged = idValue !== DEFAULTS.id;
+
+            const nameValid = nameValue.length >= 2 && nameValue.length <= 25;
+            const idValid = idValue.length >= 2 && idValue.length <= 25;
+
+            pdfButton.disabled = !(nameChanged && idChanged && nameValid && idValid);
+        }
+
+        nameInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.name && value.length > 0) {
+                if (validateInput(value, 'Name')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.name;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        idInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value !== DEFAULTS.id && value.length > 0) {
+                if (validateInput(value, 'ID')) {
+                    this.value = sanitizeInput(value);
+                } else {
+                    this.value = DEFAULTS.id;
+                }
+            }
+            checkEnablePDF();
+        });
+
+        nameInput.addEventListener('input', checkEnablePDF);
+        idInput.addEventListener('input', checkEnablePDF);
+
+        nameInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.name) {
+                this.value = '';
+            }
+        });
+
+        idInput.addEventListener('focus', function() {
+            if (this.value === DEFAULTS.id) {
+                this.value = '';
+            }
+        });
+
+        pdfButton.addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+const savedClozeSelections = {};
+
+function toggleAnswers(containerId) {
+    const container = document.getElementById(containerId);
+    const button = container.querySelector('.toggle-button');
+    const selects = container.querySelectorAll('select[data-correct]');
+
+    if (button.textContent === 'Show Answers') {
+        savedClozeSelections[containerId] = Array.from(selects).map(select => select.value);
+
+        selects.forEach(select => {
+            const correctAnswer = select.getAttribute('data-correct');
+            select.value = correctAnswer;
+            select.classList.add('answer-shown');
+            select.style.backgroundColor = '#d4edda';
+        });
+        button.textContent = 'Hide Answers';
+    } else {
+        const saved = savedClozeSelections[containerId] || [];
+        selects.forEach((select, i) => {
+            select.value = saved[i] || '';
+            select.classList.remove('answer-shown');
+            select.style.backgroundColor = '';
+            if (select.value) {
+                checkAnswer(select);
+            }
+        });
+        delete savedClozeSelections[containerId];
+        button.textContent = 'Show Answers';
+    }
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
