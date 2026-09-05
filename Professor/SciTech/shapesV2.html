@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Dr Ray EFL ESL, English learning – shapes lesson">
+  <meta name="author" content="quizMaker, English Learning Management Method">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>CrashCoursePractical · Shapes</title>
+  <style>
+    /* ----- reset & base (mobile first) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f8fafc;
+      padding: 1rem;
+      color: #0b1a2a;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* main card – soft white with subtle shadow */
+    .lesson-card {
+      max-width: 680px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
+      padding: 1.25rem 1.25rem 2rem;
+      transition: all 0.2s ease;
+    }
+
+    /* heading */
+    .lesson-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b2b44;
+      padding-bottom: 0.25rem;
+      border-bottom: 3px solid #d0e2f2;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lesson-title small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #3a5e7a;
+      margin-left: auto;
+      background: #eaf1f9;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    /* featured image – responsive */
+    .feature-img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      display: block;
+      background: #eef3f7;
+      border: 1px solid #e4edf5;
+    }
+
+    /* shape blocks – clean grid */
+    .shape-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .shape-item {
+      background: #fbfdff;
+      border-radius: 20px;
+      padding: 0.75rem 0.75rem 1rem 0.75rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      border: 1px solid #eaf0f6;
+      transition: border 0.2s;
+    }
+    .shape-item:hover {
+      border-color: #cbdae7;
+    }
+
+    /* SVG wrapper – keeps them responsive */
+    .shape-svg-wrap {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 0.25rem 0 0.25rem 0.1rem;
+    }
+    .shape-svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+    }
+
+    /* shape name */
+    .shape-name {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 0.25rem 0 0.2rem 0.1rem;
+      color: #153b57;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .shape-name small {
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: #4b6f8a;
+      background: #e8f0f7;
+      padding: 0.1rem 0.8rem;
+      border-radius: 30px;
+    }
+
+    /* description cards */
+    .desc-box {
+      border: 1px solid #dce8f2;
+      border-radius: 14px;
+      padding: 0.8rem 1rem;
+      margin: 0.3rem 0 0.1rem 0;
+      background: #f2f8fe;
+      font-size: 0.98rem;
+      color: #1f3c55;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .desc-box br {
+      display: block;
+      content: "";
+      margin: 0.35rem 0;
+    }
+
+    /* additional sentences list */
+    .extra-sentences {
+      margin-top: 2rem;
+      border-top: 2px dashed #d6e2ee;
+      padding-top: 1.5rem;
+    }
+    .extra-sentences h3 {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #1d405a;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .sentence-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .sentence-list li {
+      background: #f4f9ff;
+      border: 1px solid #deeaf5;
+      border-radius: 16px;
+      padding: 0.75rem 1rem;
+      font-size: 0.98rem;
+      color: #1b3852;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: background 0.15s;
+    }
+    .sentence-list li:hover {
+      background: #edf5fd;
+    }
+    .sentence-list li p {
+      margin: 0;
+    }
+
+    /* micro spacing */
+    .mt-1 { margin-top: 0.5rem; }
+
+    /* ----- mobile first – small tweaks for larger screens ----- */
+    @media (min-width: 480px) {
+      .lesson-card {
+        padding: 1.75rem 2rem 2.25rem;
+      }
+      .shape-item {
+        padding: 1rem 1.25rem 1.25rem 1.25rem;
+      }
+      .shape-name {
+        font-size: 1.35rem;
+      }
+      .desc-box {
+        font-size: 1rem;
+        padding: 0.9rem 1.2rem;
+      }
+    }
+
+    @media (min-width: 640px) {
+      body {
+        padding: 1.5rem;
+      }
+      .lesson-title {
+        font-size: 2.1rem;
+      }
+    }
+
+    /* accessibility / touch friendly */
+    .shape-item {
+      touch-action: manipulation;
+    }
+
+    /* images and svg scale nicely */
+    img, svg {
+      vertical-align: middle;
+    }
+
+    /* remove default outline for better UX */
+    :focus-visible {
+      outline: 2px solid #2a75b3;
+      outline-offset: 2px;
+    }
+
+    .conceptExts > p { display:block;
+     margin-top:1rem;
+    }
+
+  </style>
+</head>
+<body>
+<div class="lesson-card">
+
+  <!-- title -->
+  <div class="lesson-title">
+    <span>📐 Shapes</span>
+    <small>lesson</small>
+  </div>
+
+  <!-- image (from original) -->
+  <img class="feature-img" src="solidHollow.webp" alt="solid and hollow shapes illustration" loading="lazy">
+
+  <!-- all shape content -->
+  <div class="shape-grid">
+
+    <!-- 1. Circle -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="32" fill="#4CAF50" stroke="#2E7D32" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Circle</div>
+      <div class="desc-box">A circle is round and has no corners or edges.<br><br>The pizza is shaped like a circle, but it's put in a square box for delivery.</div>
+    </div>
+
+    <!-- 2. Square -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="12" width="56" height="56" fill="#2196F3" stroke="#1565C0" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Square</div>
+      <div class="desc-box">A square has four equal sides and four right angles.<br><br>The table is a square, so it fits perfectly in the corner of the room.</div>
+    </div>
+
+    <!-- 3. Rectangle -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="100" height="60" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="84" height="44" fill="#FF9800" stroke="#EF6C00" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Rectangle</div>
+      <div class="desc-box">A rectangle has two long sides and two short sides.<br><br>The TV has a rectangular screen.</div>
+    </div>
+
+    <!-- 4. Triangle -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="70" viewBox="0 0 80 70" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="40,8 72,62 8,62" fill="#E91E63" stroke="#C2185B" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Triangle</div>
+      <div class="desc-box">A triangle has three sides and three corners.<br><br>The roof of the house is shaped like a triangle, pointing up to the sky.</div>
+    </div>
+
+    <!-- 5. Oval -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="90" height="60" viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="45" cy="30" rx="38" ry="24" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Oval <small>ellipse</small></div>(ellipse)
+      <div class="desc-box">An oval shape is similar to a stretched circle.<br><br>The egg is oval.</div>
+    </div>
+
+    <!-- 6. Diamond -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="70" height="80" viewBox="0 0 70 80" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="35,6 64,40 35,74 6,40" fill="#00BCD4" stroke="#00838F" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Diamond</div>
+      <div class="desc-box">A diamond shape looks like a square that has been turned on its side.<br><br>The kite is shaped like a diamond, flying high in the sky.</div>
+    </div>
+
+    <!-- 7. Star -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="40,6 48.5,28.5 72,28.5 53,43 60.5,66 40,52 19.5,66 27,43 8,28.5 31.5,28.5" fill="#FFC107" stroke="#FF8F00" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Star</div>
+      <div class="desc-box">A star shape has five or more points that extend outward.<br><br>The decoration on top of the Christmas tree is shaped like a star.</div>
+    </div>
+
+    <!-- 8. Cube -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,20 70,20 70,60 30,60" fill="#90CAF9" stroke="#1565C0" stroke-width="1.5"/>
+          <polygon points="20,30 30,20 30,60 20,70" fill="#64B5F6" stroke="#1565C0" stroke-width="1.5"/>
+          <polygon points="20,70 30,60 70,60 60,70" fill="#42A5F5" stroke="#1565C0" stroke-width="1.5"/>
+          <polygon points="20,30 60,30 60,70 20,70" fill="#2196F3" stroke="#1565C0" stroke-width="2"/>
+          <polygon points="20,30 30,20 70,20 60,30" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5"/>
+          <line x1="60" y1="30" x2="70" y2="20" stroke="#1565C0" stroke-width="1.5"/>
+          <line x1="60" y1="70" x2="70" y2="60" stroke="#1565C0" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shape-name">Cube</div>
+      <div class="desc-box">A cube has six equal square faces.<br><br>The dice we use to play games are shaped like cubes.</div>
+    </div>
+
+    <!-- 9. Sphere -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sphereGrad" cx="35%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#81C784"/>
+              <stop offset="70%" stop-color="#4CAF50"/>
+              <stop offset="100%" stop-color="#2E7D32"/>
+            </radialGradient>
+          </defs>
+          <circle cx="40" cy="40" r="32" fill="url(#sphereGrad)" stroke="#1B5E20" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="shape-name">Sphere <small>ball</small></div>
+      <div class="desc-box">A sphere is perfectly round, like a basketball.<br><br>The Earth is shaped like a sphere, which is why it has no edges.</div>
+    </div>
+
+    <!-- 10. Cylinder -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="70" height="90" viewBox="0 0 70 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="15" y="20" width="40" height="50" fill="#FFCC80" stroke="#EF6C00" stroke-width="1.5"/>
+          <ellipse cx="35" cy="20" rx="20" ry="8" fill="#FFE0B2" stroke="#EF6C00" stroke-width="1.5"/>
+          <ellipse cx="35" cy="70" rx="20" ry="8" fill="#FFB74D" stroke="#EF6C00" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shape-name">Cylinder <small>pipe</small></div>
+      <div class="desc-box">A cylinder has two circular faces and one curved surface.<br><br>A can of soda is a cylinder, making it easy to hold and drink from.</div>
+    </div>
+
+    <!-- 11. Cone -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="80" height="90" viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="40,10 65,70 15,70" fill="#CE93D8" stroke="#7B1FA2" stroke-width="1.5"/>
+          <ellipse cx="40" cy="70" rx="25" ry="9" fill="#BA68C8" stroke="#7B1FA2" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shape-name">Cone</div>
+      <div class="desc-box">A cone has a circular base and comes to a point at the top.<br><br>An ice cream cone is shaped like a cone, holding the ice cream inside.</div>
+    </div>
+
+    <!-- 12. Pyramid -->
+    <div class="shape-item">
+      <div class="shape-svg-wrap">
+        <svg class="shape-svg" width="90" height="80" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="45,8 15,65 45,55" fill="#A1887F" stroke="#5D4037" stroke-width="1.5"/>
+          <polygon points="45,8 75,65 45,55" fill="#8D6E63" stroke="#5D4037" stroke-width="1.5"/>
+          <polygon points="15,65 45,55 75,65 45,72" fill="#BCAAA4" stroke="#5D4037" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="shape-name">Pyramid</div>
+      <div class="desc-box">A pyramid has a square base and triangular sides that meet at a point.<br><br>The Great Pyramid of Giza is a famous example of a pyramid.</div>
+    </div>
+  </div>
+
+
+  <!-- ========== VOCABULARY & CONCEPT EXTENSIONS ========== -->
+  <div class="conceptExts"><br><br>
+<svg width="160" height="80" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- 2D circle -->
+  <circle cx="40" cy="40" r="28" fill="none" stroke="#4CAF50" stroke-width="3"/>
+  <text x="40" y="75" text-anchor="middle" font-size="12" fill="#333">2D</text>
+  <!-- 3D sphere -->
+  <defs>
+    <radialGradient id="s3d" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#81C784"/><stop offset="100%" stop-color="#2E7D32"/>
+    </radialGradient>
+  </defs>
+  <circle cx="120" cy="40" r="28" fill="url(#s3d)" stroke="#1B5E20" stroke-width="2"/>
+  <text x="120" y="75" text-anchor="middle" font-size="12" fill="#333">3D</text>
+</svg>
+<p><b>2D vs 3D</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+2D shapes are flat. They have only length and width.<br>
+3D shapes are solid (or hollow). They have length, width and height.
+<br><br>
+A circle is 2D. A sphere is 3D. (Compare a coin to a ball)
+</p>
+
+<br><br>
+<svg width="100" height="90" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+  <!-- simple cube with labels -->
+  <polygon points="30,25 70,25 70,65 30,65" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5"/>
+  <polygon points="20,35 30,25 30,65 20,75" fill="#90CAF9" stroke="#1565C0" stroke-width="1.5"/>
+  <polygon points="20,35 60,35 60,75 20,75" fill="#64B5F6" stroke="#1565C0" stroke-width="2"/>
+  <polygon points="20,35 30,25 70,25 60,35" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.5"/>
+  <line x1="60" y1="35" x2="70" y2="25" stroke="#1565C0" stroke-width="1.5"/>
+  <line x1="60" y1="75" x2="70" y2="65" stroke="#1565C0" stroke-width="1.5"/>
+  <!-- dots for vertices -->
+  <circle cx="20" cy="35" r="3" fill="#C62828"/>
+  <circle cx="60" cy="35" r="3" fill="#C62828"/>
+  <circle cx="20" cy="75" r="3" fill="#C62828"/>
+  <circle cx="60" cy="75" r="3" fill="#C62828"/>
+</svg>
+
+<p><b>Edges, Faces and Vertices (Corners)</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+A <b>face</b> is a flat surface.<br>
+An <b>edge</b> is where two faces meet.<br>
+A <b>vertex</b> (corner) is where edges meet.
+<br><br>
+A cube has 6 faces, 12 edges and 8 vertices.
+</p>
+<br><br>
+<svg width="160" height="70" viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="40" cy="35" r="25" fill="none" stroke="#9C27B0" stroke-width="3"/>
+  <text x="40" y="68" text-anchor="middle" font-size="11" fill="#333">curved</text>
+  <rect x="100" y="10" width="50" height="50" fill="none" stroke="#2196F3" stroke-width="3"/>
+  <text x="125" y="68" text-anchor="middle" font-size="11" fill="#333">straight</text>
+</svg>
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- curved line -->
+  <path d="M 20 50 Q 50 10 80 50" fill="none" stroke="#9C27B0" stroke-width="4" stroke-linecap="round"/>
+  <text x="50" y="72" text-anchor="middle" font-size="12" fill="#333">curved</text>
+
+  <!-- straight line -->
+  <line x1="120" y1="50" x2="180" y2="50" stroke="#2196F3" stroke-width="4" stroke-linecap="round"/>
+  <text x="150" y="72" text-anchor="middle" font-size="12" fill="#333">straight</text>
+</svg>
+<p><b>Curved vs Straight</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+Some shapes have <b>curved</b> lines (circle, oval, sphere).<br>
+Some shapes have only <b>straight</b> lines (square, triangle, cube).
+<br><br>
+A circle is curved. A square is straight.
+</p>
+<br><br>
+<svg width="160" height="70" viewBox="0 0 160 70" xmlns="http://www.w3.org/2000/svg">
+  <!-- regular triangle -->
+  <polygon points="40,8 65,58 15,58" fill="#E91E63" stroke="#C2185B" stroke-width="2"/>
+  <text x="40" y="68" text-anchor="middle" font-size="11" fill="#333">regular</text>
+  <!-- irregular triangle -->
+  <polygon points="120,20 155,55 95,45" fill="#FF9800" stroke="#EF6C00" stroke-width="2"/>
+  <text x="120" y="68" text-anchor="middle" font-size="11" fill="#333">irregular</text>
+</svg>
+<svg width="220" height="110" viewBox="0 0 220 110" xmlns="http://www.w3.org/2000/svg">
+  <!-- Regular: Stop sign (octagon) -->
+  <polygon points="55,15 75,15 90,30 90,50 75,65 55,65 40,50 40,30"
+           fill="#E53935" stroke="#B71C1C" stroke-width="2"/>
+  <text x="65" y="45" text-anchor="middle" font-size="11" font-weight="bold" fill="white">STOP</text>
+  <text x="65" y="95" text-anchor="middle" font-size="12" fill="#333">regular</text>
+
+  <!-- Irregular polygon (unequal sides) -->
+  <polygon points="105,15 200,25 210,60 175,85 130,70 140,40"
+           fill="#FF9800" stroke="#EF6C00" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="12" fill="#333">irregular</text>
+</svg>
+<p><b>Regular vs Irregular</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+A <b>regular</b> shape has all sides equal and all angles equal.<br>
+An <b>irregular</b> shape has sides or angles that are different.
+<br><br>
+A square is regular. Most real-life triangles are irregular.
+</p>
+<br><br>
+<svg width="90" height="100" viewBox="0 0 90 100" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="45,12 72,78 18,78" fill="#CE93D8" stroke="#7B1FA2" stroke-width="1.5"/>
+  <ellipse cx="45" cy="78" rx="27" ry="9" fill="#BA68C8" stroke="#7B1FA2" stroke-width="1.5"/>
+  <!-- labels -->
+  <text x="45" y="8" text-anchor="middle" font-size="11" fill="#7B1FA2">apex (pointed top)</text>
+  <text x="45" y="97" text-anchor="middle" font-size="11" fill="#7B1FA2">base</text>
+</svg>
+<svg width="140" height="130" viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cube -->
+  <!-- back face -->
+  <polygon points="45,25 95,25 95,75 45,75" fill="#BBDEFB" stroke="#1565C0" stroke-width="1.5"/>
+  <!-- left face -->
+  <polygon points="30,40 45,25 45,75 30,90" fill="#90CAF9" stroke="#1565C0" stroke-width="1.5"/>
+  <!-- bottom (base) -->
+  <polygon points="30,90 45,75 95,75 80,90" fill="#64B5F6" stroke="#1565C0" stroke-width="1.5"/>
+  <!-- front face (side) -->
+  <polygon points="30,40 80,40 80,90 30,90" fill="#2196F3" stroke="#1565C0" stroke-width="2"/>
+  <!-- top face -->
+  <polygon points="30,40 45,25 95,25 80,40" fill="#E3F2FD" stroke="#1565C0" stroke-width="1.5"/>
+  <!-- right edges -->
+  <line x1="80" y1="40" x2="95" y2="25" stroke="#1565C0" stroke-width="1.5"/>
+  <line x1="80" y1="90" x2="95" y2="75" stroke="#1565C0" stroke-width="1.5"/>
+
+  <!-- Labels -->
+  <text x="55" y="20" text-anchor="middle" font-size="12" fill="#1565C0">top (no apex)</text>
+  <text x="20" y="70" text-anchor="middle" font-size="12" fill="#1565C0" transform="rotate(-60 20 70)">side</text>
+  <text x="70" y="115" text-anchor="middle" font-size="12" fill="#1565C0">base</text>
+</svg>
+<svg width="140" height="130" viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- left face -->
+  <polygon points="70,15 25,95 70,80" fill="#A1887F" stroke="#5D4037" stroke-width="1.5"/>
+  <!-- right face (side) -->
+  <polygon points="70,15 115,95 70,80" fill="#8D6E63" stroke="#5D4037" stroke-width="1.5"/>
+  <!-- base -->
+  <polygon points="25,95 70,80 115,95 70,110" fill="#BCAAA4" stroke="#5D4037" stroke-width="1.5"/>
+
+  <!-- Labels -->
+  <text x="70" y="12" text-anchor="middle" font-size="13" fill="#5D4037">apex</text>
+  <text x="115" y="62" font-size="13" fill="#5D4037">side </text>
+  <text x="70" y="125" text-anchor="middle" font-size="13" fill="#5D4037">base</text>
+</svg>
+<p><b>Base, Apex and Side</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+The <b>base</b> is the bottom of a 3D shape.<br>
+The <b>apex</b> is the pointed top (on a cone or pyramid).<br>
+The <b>side</b> (or lateral face) is the surface between the base and the apex.
+<br><br>
+A cone has a circular base and one apex.
+</p>
+<br><br>
+<svg width="260" height="100" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- ===== Transparent ===== -->
+  <!-- red ball behind -->
+  <circle cx="50" cy="45" r="14" fill="#E53935"/>
+  <!-- transparent panel -->
+  <rect x="20" y="15" width="60" height="60" fill="#E3F2FD" fill-opacity="0.25" stroke="#1565C0" stroke-width="2"/>
+  <text x="50" y="95" text-anchor="middle" font-size="12" fill="#333">transparent</text>
+
+  <!-- ===== Translucent ===== -->
+  <!-- red ball behind -->
+  <circle cx="130" cy="45" r="14" fill="#E53935"/>
+  <!-- translucent panel -->
+  <rect x="100" y="15" width="60" height="60" fill="#90CAF9" fill-opacity="0.55" stroke="#1565C0" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="12" fill="#333">translucent</text>
+
+  <!-- ===== Opaque ===== -->
+  <!-- red ball behind (almost hidden) -->
+  <circle cx="210" cy="45" r="14" fill="#E53935"/>
+  <!-- opaque panel -->
+  <rect x="180" y="15" width="60" height="60" fill="#64B5F6" stroke="#1565C0" stroke-width="2"/>
+  <text x="210" y="95" text-anchor="middle" font-size="12" fill="#333">opaque</text>
+</svg>
+<p><b>Transparent, Opaque and Translucent</b></p>
+<p style="border: thin solid black; border-radius:5px; padding:.75rem 1rem; background-color:#E1F2DD">
+<b>Transparent</b> – see-through, clear (glass).<br>
+<b>Translucent</b> – see-through, not clear (frosted glass, some plastic).<br>
+<b>Opaque</b> – not see-through (wood, metal).
+
+<br><br>
+A glass cylinder is transparent and hollow. A wooden cube is opaque and solid.
+</p>
+
+<svg width="260" height="110" viewBox="0 0 260 110" xmlns="http://www.w3.org/2000/svg">
+  <!-- Right angle (90°) -->
+  <line x1="30" y1="80" x2="100" y2="80" stroke="#1565C0" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="80" x2="30" y2="20" stroke="#1565C0" stroke-width="3" stroke-linecap="round"/>
+  <!-- small square mark -->
+  <rect x="30" y="65" width="15" height="15" fill="none" stroke="#1565C0" stroke-width="2"/>
+  <text x="65" y="100" text-anchor="middle" font-size="13" fill="#333">right angle (90°)</text>
+
+  <!-- 45° angle -->
+  <line x1="160" y1="80" x2="230" y2="80" stroke="#E65100" stroke-width="3" stroke-linecap="round"/>
+  <line x1="160" y1="80" x2="210" y2="30" stroke="#E65100" stroke-width="3" stroke-linecap="round"/>
+  <!-- arc to show the angle -->
+  <path d="M 180 80 A 20 20 0 0 1 174 66" fill="none" stroke="#E65100" stroke-width="2"/>
+  <text x="195" y="100" text-anchor="middle" font-size="13" fill="#333">45° angle</text>
+</svg>
+<svg width="280" height="120" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- 180° angle (straight line) -->
+  <line x1="20" y1="60" x2="120" y2="60" stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+  <!-- arc showing 180° -->
+  <path d="M 40 60 A 30 30 0 0 1 100 60" fill="none" stroke="#2E7D32" stroke-width="2"/>
+  <text x="70" y="105" text-anchor="middle" font-size="13" fill="#333">180° angle</text>
+
+  <!-- 360° angle (full circle) -->
+  <circle cx="200" cy="55" r="35" fill="none" stroke="#6A1B9A" stroke-width="3"/>
+  <!-- small arrow to suggest full turn -->
+  <path d="M 200 20 A 35 35 0 1 1 199 20" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6A1B9A"/>
+    </marker>
+  </defs>
+  <text x="200" y="105" text-anchor="middle" font-size="13" fill="#333">360° angle</text>
+</svg>
+</div>
+
+
+
+
+  <!-- additional sentences -->
+  <div class="extra-sentences">
+    <h3>➕ Additional Sentences</h3><p><b>Look and Say:<b><br>Read the sentence to yourself. Then look up and say the sentence to your partner <em>without looking at the text</em></p>
+    <ul class="sentence-list">
+      <li><p>The circle is a simple shape, but it appears in many places, such as wheels and coins.</p></li>
+      <li><p>A square has equal sides, making it a common shape for windows and tiles.</p></li>
+      <li><p>Rectangles are often seen in everyday objects, like books and doors.</p></li>
+      <li><p>Triangles are strong shapes and are used in construction for stability.</p></li>
+      <li><p>Ovals can be found in nature, such as in the shape of some fruits and leaves.</p></li>
+      <li><p>Diamonds are often associated with beauty and luxury, especially in jewelry.</p></li>
+      <li><p>Boxes, such as delivery packages, are cube shaped.</p></li>
+      <li><p>Basketballs, soap bubbles, and the earth are examples of spheres.</p></li>
+      <li><p>Cylinders are often used in everyday items, like pipes and cans.</p></li>
+      <li><p>Cones are shaped like ice-cream cones.</p></li>
+      <li><p>Pyramids were built in Egypt in ancient times.</p></li>
+    </ul>
+  </div>
+
+</div> <!-- /lesson-card -->
+</body>
+</html>
