@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technology Focus - Expressions Cloze-Select</title>
+<style>
+  :root{
+    --primary:#2563eb; --primary-hover:#1d4ed8; --bg:#f8fafc; --card-bg:#ffffff;
+    --text-main:#1e293b; --text-muted:#64748b; --border:#e2e8f0; --accent:#f1f5f9;
+    --correct:#16a34a; --correct-bg:#dcfce7; --incorrect:#dc2626; --incorrect-bg:#fee2e2;
+    --study:#f59e0b; --study-bg:#fef3c7;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text-main); margin:0; padding:2rem 1rem 6rem; line-height:1.6;}
+  .container{max-width:800px; margin:0 auto;}
+  header{text-align:center; margin-bottom:1.5rem;}
+  h1{font-size:clamp(1.6rem,4vw,2.1rem); margin-bottom:.25rem;}
+  header p{color:var(--text-muted); margin:0;}
+  .gate-bar{display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; justify-content:center;
+    background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; margin-bottom:1.5rem;}
+  .gate-bar label{font-size:.9rem; color:var(--text-muted); display:flex; align-items:center; gap:.4rem;}
+  .gate-bar input{padding:.4rem .6rem; border:1px solid var(--border); border-radius:6px; font-size:.9rem; width:9rem;}
+  .gate-bar button{background:var(--primary); color:#fff; border:none; border-radius:6px; padding:.5rem 1rem;
+    font-size:.9rem; cursor:pointer;}
+  .gate-bar button:disabled{background:#cbd5e1; cursor:not-allowed;}
+  .gate-bar button:not(:disabled):hover{background:var(--primary-hover);}
+  .print-header{display:none;}
+  .section-title{font-size:1.3rem; font-weight:700; margin:2rem 0 1rem; padding-bottom:.4rem;
+    border-bottom:2px solid var(--border); color:var(--primary);}
+  .question{background:var(--card-bg); border:1px solid var(--border); border-radius:8px;
+    padding:.9rem 1rem; margin-bottom:.75rem; font-size:1rem;}
+  .q-num{font-weight:700; color:var(--text-muted); margin-right:.4rem;}
+  select.cloze-select{font-size:.95rem; padding:.25rem .5rem; border:1px solid var(--primary);
+    border-radius:6px; background:var(--accent); color:var(--text-main); margin:0 .2rem; max-width:100%;}
+  select.cloze-select.correct{border-color:var(--correct); background:var(--correct-bg);}
+  select.cloze-select.incorrect{border-color:var(--incorrect); background:var(--incorrect-bg);}
+  select.cloze-select.study-answer{border-color:var(--study); background:var(--study-bg);}
+  .action-bar{position:fixed; bottom:0; left:0; right:0; background:var(--card-bg);
+    border-top:1px solid var(--border); padding:.8rem 1rem; display:flex; align-items:center;
+    justify-content:center; gap:1rem; flex-wrap:wrap; box-shadow:0 -2px 12px rgba(0,0,0,.08); z-index:999;}
+  .action-bar button{border:none; border-radius:999px; padding:.7rem 1.3rem; font-size:.95rem;
+    font-weight:600; cursor:pointer;}
+  .action-bar .check-btn{background:var(--primary); color:#fff;}
+  .action-bar .check-btn:hover{background:var(--primary-hover);}
+  .action-bar .study-btn{background:var(--study); color:#fff;}
+  .action-bar .study-btn:hover{opacity:.9;}
+  .score{font-weight:700;}
+  @media print{
+    .gate-bar, .action-bar, .sticky-btn{display:none !important;}
+    .print-header{display:block; text-align:center; font-size:1rem; margin-bottom:1rem; border-bottom:1px solid #000; padding-bottom:.5rem;}
+    body{padding-bottom:1rem;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Technology Focus</h1>
+    <p>Expressions Cloze-Select Practice</p>
+  </header>
+
+  <div class="print-header">
+    Name: <span id="printName"></span> &nbsp;|&nbsp; Student ID: <span id="printId"></span> &nbsp;|&nbsp; Date: <span id="printDate"></span>
+  </div>
+
+  <div class="gate-bar">
+    <label>Name: <input type="text" id="studentName" oninput="checkGate()"></label>
+    <label>Student ID: <input type="text" id="studentId" oninput="checkGate()"></label>
+    <button id="savePdfBtn" disabled onclick="savePdf()">🖨️ Print/save PDF</button>
+    Name and ID required for Print/save PDF
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="action-bar">
+    <button class="check-btn" onclick="checkAnswers()" style="display:none !important">✅ Check</button>
+
+    <button id="studyModeBtn" class="study-btn" onclick="toggleStudyMode()">Study Mode</button>
+     <div id="score" class="score" style="display:none !important"></div>
+  </div>
+</div>
+</div>
+
+<script>
+const sections = [
+  { title: "4. Explaining Technical Glitches", questions: [
+    { sentence: "My screen keeps {blank} every time I open this spreadsheet.", answer: "freezing" },
+    { sentence: "The application {blank} while I was saving the report.", answer: "crashed" },
+    { sentence: "My browser is {blank} today; it takes a minute to load a page.", answer: "running really slowly" },
+    { sentence: "The computer is {blank} because you have twenty tabs open.", answer: "running slowly" },
+    { sentence: "I'm {blank} 'File Not Found'.", answer: "getting an error message that says" },
+    { sentence: "When I click submit, I {blank} my session expired.", answer: "get an error message that says" },
+    { sentence: "I can't finish the call because the {blank}.", answer: "connection keeps dropping" },
+    { sentence: "Our Wi-Fi {blank} whenever it rains.", answer: "connection keeps dropping" },
+  ]},
+  { title: "5. Troubleshooting & Instructions", questions: [
+    { sentence: "Before calling IT, try {blank} the system.", answer: "restarting" },
+    { sentence: "{blank} the server usually fixes minor network glitches.", answer: "Rebooting" },
+    { sentence: "If the web page won't load properly, {blank}.", answer: "clear your browser cache" },
+    { sentence: "{blank} can resolve login issues.", answer: "Clearing your cache and cookies" },
+    { sentence: "{blank} to ensure your cap lock isn't on.", answer: "Double-check your credentials" },
+    { sentence: "If it fails to log in, {blank} with the administrator.", answer: "double-check your credentials" },
+  ]},
+  { title: "6. Specifying & Recommending Specs", questions: [
+    { sentence: "It's {blank}, but it's more cost-effective in the long run.", answer: "a bit pricey upfront" },
+    { sentence: "Buying quality hardware is {blank}, but it saves maintenance costs later.", answer: "a bit pricey upfront" },
+    { sentence: "It has {blank} basic video editing.", answer: "enough processing power for" },
+    { sentence: "This entry-level chip has {blank} our daily admin tasks.", answer: "enough processing power for" },
+    { sentence: "Is the upgraded phone model really {blank}?", answer: "worth the extra cost" },
+    { sentence: "We need to ask ourselves if faster shipping is {blank}.", answer: "worth the extra cost" },
+  ]},
+];
+
+const allQuestions = sections.flatMap(s => s.questions);
+const poolMap = new Map();
+allQuestions.forEach(q => { const k = q.answer.toLowerCase(); if(!poolMap.has(k)) poolMap.set(k, q.answer); });
+const pool = Array.from(poolMap.values());
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+function buildOptions(answer){
+  const distractors = shuffle(pool.filter(p=>p.toLowerCase()!==answer.toLowerCase())).slice(0,3);
+  return shuffle([answer, ...distractors]);
+}
+
+function render(){
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+  let qIndex = 0;
+  sections.forEach(sec=>{
+    const st = document.createElement('div');
+    st.className='section-title'; st.textContent=sec.title;
+    container.appendChild(st);
+    sec.questions.forEach(q=>{
+      qIndex++;
+      const qDiv = document.createElement('div'); qDiv.className='question';
+      const num = document.createElement('span'); num.className='q-num'; num.textContent=qIndex+'.';
+      qDiv.appendChild(num);
+      const parts = q.sentence.split('{blank}');
+      qDiv.appendChild(document.createTextNode(parts[0]));
+      const select = document.createElement('select');
+      select.className='cloze-select'; select.id='q'+qIndex; select.dataset.answer=q.answer;
+      const optDefault = document.createElement('option'); optDefault.value=''; optDefault.textContent='— choose —';
+      select.appendChild(optDefault);
+      buildOptions(q.answer).forEach(opt=>{
+        const o=document.createElement('option'); o.value=opt; o.textContent=opt; select.appendChild(o);
+      });
+      qDiv.appendChild(select);
+      qDiv.appendChild(document.createTextNode(parts[1]));
+      container.appendChild(qDiv);
+      select.addEventListener('change', checkAnswers);
+    });
+  });
+}
+
+function checkAnswers(){
+  let correct=0, total=0;
+  document.querySelectorAll('.cloze-select').forEach(s=>{
+    total++; s.classList.remove('correct','incorrect');
+    if(!s.value) return;
+    if(s.value.toLowerCase()===s.dataset.answer.toLowerCase()){ s.classList.add('correct'); correct++; }
+    else s.classList.add('incorrect');
+  });
+  document.getElementById('score').textContent = `Score: ${correct} / ${total}`;
+}
+
+const savedValues = {};
+let studyMode = false;
+function toggleStudyMode(){
+  studyMode = !studyMode;
+  const btn = document.getElementById('studyModeBtn');
+  document.querySelectorAll('.cloze-select').forEach(s=>{
+    if(studyMode){
+      savedValues[s.id] = s.value;
+      s.value = s.dataset.answer;
+      s.disabled = true;
+      s.classList.remove('correct','incorrect');
+      s.classList.add('study-answer');
+    } else {
+      s.value = savedValues[s.id] || '';
+      s.disabled = false;
+      s.classList.remove('study-answer');
+    }
+  });
+  btn.textContent = studyMode ? 'Back to Quiz' : 'Study Mode';
+  if(!studyMode) document.getElementById('score').textContent = '';
+}
+
+function checkGate(){
+  const name = document.getElementById('studentName').value.trim();
+  const id = document.getElementById('studentId').value.trim();
+  document.getElementById('savePdfBtn').disabled = !(name && id);
+}
+function savePdf(){
+  document.getElementById('printName').textContent = document.getElementById('studentName').value.trim();
+  document.getElementById('printId').textContent = document.getElementById('studentId').value.trim();
+  document.getElementById('printDate').textContent = new Date().toLocaleDateString();
+  window.print();
+}
+
+window.onload = function(){
+  render();
+  checkAnswers();
+};
+</script>
+</body>
+</html>
