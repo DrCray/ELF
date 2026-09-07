@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast: Have a coke and a ... Santa?</title>
+  <style>
+    body { font-family: sans-serif; padding: 15px; background-color: #f5f7fb; }
+    h1 { font-size: 2rem; color: #025C0E; margin-bottom: 5px; }
+    .main-instructions { background:#F5EBF7; text-align:center; margin-bottom:25px; padding:.2rem; box-shadow:0 0 2px 2px gray; border-radius:7px; }
+    .main-instructions #subHeading { font-weight:bold; font-style:italic; font-size:1.5rem; color:#025C0E; margin-bottom:5px; }
+    .main-instructions p { font-size:0.95rem; color:#64748b; }
+    .exercise-container { max-width:500px; margin:0 auto; }
+    .sentence-card { background:#fff; border:2px solid #e0e0e0; border-radius:8px; padding:15px; margin-bottom:12px; cursor:pointer; transition:border-color 0.2s ease,background-color 0.2s ease; font-size:1.1rem; }
+    .sentence-card.active { border-color:#3b82f6; background-color:#eff6ff; cursor:default; }
+    .sentence-card.completed { border-color:#10b981; background-color:#ecfdf5; cursor:default; }
+    .choice-box { position:relative; margin-top:15px; padding:15px 10px 5px 10px; border-top:1px dashed #cbd5e1; background:#ffffff; }
+    .close-btn { position:absolute; top:5px; right:8px; background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; line-height:1; padding:5px; }
+    .close-btn:hover { color:#64748b; }
+    .choice-item { background:#f3f4f6; padding:12px; margin-bottom:8px; border-radius:6px; cursor:pointer; font-size:1rem; transition:background 0.2s; }
+    .choice-item.incorrect { background:#fee2e2; color:#dc2626; border:1px solid #f87171; animation:shake 0.2s ease-in-out 2; }
+    .hidden { display:none !important; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+    .print-section { margin-top:2.5rem; padding:16px; background:#fff; border:2px solid #e0e0e0; border-radius:10px; }
+    .print-section .section-label { font-size:0.8rem; font-weight:bold; color:#64748b; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; }
+    .user-info-section { display:flex; gap:12px; margin-bottom:12px; }
+    .input-group { display:flex; flex-direction:column; gap:4px; flex:1; }
+    .input-group label { font-size:0.85rem; font-weight:bold; color:#475569; }
+    .input-group input { padding:8px 10px; border:2px solid #cbd5e1; border-radius:7px; font-size:0.95rem; background:#f8fafc; color:#1e293b; transition:border-color 0.2s; }
+    .input-group input:focus { outline:none; border-color:#3b82f6; background:#fff; }
+    .button-section { display:flex; flex-direction:column; align-items:stretch; gap:6px; }
+    .note { font-size:0.82rem; color:#94a3b8; text-align:center; }
+    #printBtn { padding:11px 0; font-size:1rem; font-weight:bold; border:none; border-radius:8px; background:#95a5a6; color:#fff; cursor:not-allowed; transition:background 0.2s; }
+    #print-header { display:none; }
+    @media print { .print-section { display:none !important; } body { background:#fff; padding:0; } .sentence-card { break-inside:avoid; } #print-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #025C0E; padding-bottom:6px; margin-bottom:14px; font-size:0.95rem; } }
+  </style>
+</head>
+<body>
+
+<!-- AUTHORING PANEL: hidden in exercise view; unhide via DevTools to edit -->
+<div id="authoring-panel" style="display:none">
+  <textarea id="inputData">
+# Podcast: Have a coke and a ... Santa?
+## Match Excerpts from the podcast
+The man on the street corners^^ ringing bells during the Christmas holidays.
+Not really a big fan of^^ sitting on a stranger's lap.
+So what do these two things^^ have in common?
+Santa wasn't always^^ a jolly fat man with a red suit.
+
+# Podcast: Have a coke and a ... Santa?
+## Match Excerpts from the podcast
+Coca-Cola imprinted our modern ^^view of Santa into the public mind.
+Santa was seen in many different ways ^^— tall, thin, wearing blue, green, or brown.
+Nobody wanted to drink cold soda ^^in the dead of winter.
+He made the suit bright red and white ^^specifically to match the Coca-Cola logo.
+
+# Podcast: Have a coke and a ... Santa?
+## Match Excerpts from the podcast
+So they dressed Santa^^ in corporate colors?
+This ad campaign ran for thirty-three^^ consecutive years until 1964.
+So they took a popular legend and ^^slapped their branding on him.
+Coca-Cola didn't invent Santa, but their marketing department cemented today's version of Santa.</textarea>
+</div>
+
+<div class="exercise-container">
+  <div id="print-header">
+    <span id="print-name"></span>
+    <span id="print-id"></span>
+  </div>
+  <div class="main-instructions" id="exercise-header">
+    <h1 id="exercise-title">Podcast: Have a coke and a ... Santa?</h1>
+    <div id="subHeading">Matching Exercise</div>
+    <p>Tap a card below, then select its correct matching counterpart.</p>
+  </div>
+  <div id="dynamic-exercise-root"><div class="exercise-section" data-section-id="A"><h2>Match Excerpts from the podcast</h2><div class="sentence-card" data-sentence-id="A1"><div class="card-text"><span class="first-half">The man on the street corners</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="A2"><div class="card-text"><span class="first-half">Not really a big fan of</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="A3"><div class="card-text"><span class="first-half">So what do these two things</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="A4"><div class="card-text"><span class="first-half">Santa wasn't always</span><span class="second-half"></span></div></div><div class="choice-box hidden"><button class="close-btn" aria-label="Close choices">×</button><ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="B"><h2>Match Excerpts from the podcast</h2><div class="sentence-card" data-sentence-id="B1"><div class="card-text"><span class="first-half">Coca-Cola imprinted our modern</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="B2"><div class="card-text"><span class="first-half">Santa was seen in many different ways</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="B3"><div class="card-text"><span class="first-half">Nobody wanted to drink cold soda</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="B4"><div class="card-text"><span class="first-half">He made the suit bright red and white</span><span class="second-half"></span></div></div><div class="choice-box hidden"><button class="close-btn" aria-label="Close choices">×</button><ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="C"><h2>Match Excerpts from the podcast</h2><div class="sentence-card" data-sentence-id="C1"><div class="card-text"><span class="first-half">So they dressed Santa</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="C2"><div class="card-text"><span class="first-half">This ad campaign ran for thirty-three</span><span class="second-half"></span></div></div><div class="sentence-card" data-sentence-id="C3"><div class="card-text"><span class="first-half">So they took a popular legend and</span><span class="second-half"></span></div></div><div class="choice-box hidden"><button class="close-btn" aria-label="Close choices">×</button><ul class="choices-list"></ul></div></div></div>
+
+  <div class="print-section">
+    <div class="section-label">🖨 Print / Save PDF</div>
+    <div class="user-info-section">
+      <div class="input-group">
+        <label for="studentName">Name:</label>
+        <input type="text" id="studentName" placeholder="name" oninput="validateForm()">
+      </div>
+      <div class="input-group">
+        <label for="studentID">ID#:</label>
+        <input type="text" id="studentID" placeholder="ID" oninput="validateForm()">
+      </div>
+    </div>
+    <div class="button-section">
+      <span id="printNote" class="note">Name and ID required for Print/Save PDF</span>
+      <button type="button" id="printBtn" disabled onclick="prepareAndPrint()">Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const exerciseData = [{"sectionId":"A","sectionTitle":"Match Excerpts from the podcast","items":[{"id":"A1","first":"The man on the street corners","second":"ringing bells during the Christmas holidays."},{"id":"A2","first":"Not really a big fan of","second":"sitting on a stranger's lap."},{"id":"A3","first":"So what do these two things","second":"have in common?"},{"id":"A4","first":"Santa wasn't always","second":"a jolly fat man with a red suit."}]},{"sectionId":"B","sectionTitle":"Match Excerpts from the podcast","items":[{"id":"B1","first":"Coca-Cola imprinted our modern","second":"view of Santa into the public mind."},{"id":"B2","first":"Santa was seen in many different ways","second":"— tall, thin, wearing blue, green, or brown."},{"id":"B3","first":"Nobody wanted to drink cold soda","second":"in the dead of winter."},{"id":"B4","first":"He made the suit bright red and white","second":"specifically to match the Coca-Cola logo."}]},{"sectionId":"C","sectionTitle":"Match Excerpts from the podcast","items":[{"id":"C1","first":"So they dressed Santa","second":"in corporate colors?"},{"id":"C2","first":"This ad campaign ran for thirty-three","second":"consecutive years until 1964."},{"id":"C3","first":"So they took a popular legend and","second":"slapped their branding on him."}]}];
+let activeCard = null;
+let activeChoiceBox = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupCardEventListeners();
+});
+
+function setupCardEventListeners() {
+  document.querySelectorAll('.sentence-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (card.classList.contains('completed') || card.classList.contains('active') || e.target.closest('.choice-box')) return;
+      if (activeCard) closeMenu();
+      activeCard = card;
+      activeCard.classList.add('active');
+      const parentSection = card.closest('.exercise-section');
+      const sectionId = parentSection.dataset.sectionId;
+      activeChoiceBox = parentSection.querySelector('.choice-box');
+      const choicesList = parentSection.querySelector('.choices-list');
+      const sectionData = exerciseData.find(sec => sec.sectionId === sectionId);
+      renderShuffledChoices(choicesList, sectionData.items);
+      activeCard.appendChild(activeChoiceBox);
+      activeChoiceBox.classList.remove('hidden');
+    });
+  });
+  document.getElementById('dynamic-exercise-root').addEventListener('click', e => {
+    if (e.target.classList.contains('close-btn')) { e.stopPropagation(); closeMenu(); }
+  });
+}
+
+function renderShuffledChoices(listElement, itemsArray) {
+  listElement.innerHTML = '';
+  const shuffled = [...itemsArray];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  shuffled.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'choice-item';
+    li.textContent = item.second;
+    li.addEventListener('click', () => handleSelection(li, item));
+    listElement.appendChild(li);
+  });
+}
+
+function handleSelection(element, item) {
+  const correctId = activeCard.dataset.sentenceId;
+  if (item.id === correctId) {
+    activeCard.querySelector('.second-half').textContent = item.second;
+    activeCard.classList.remove('active');
+    activeCard.classList.add('completed');
+    const parentSection = activeCard.closest('.exercise-section');
+    parentSection.appendChild(activeChoiceBox);
+    activeChoiceBox.classList.add('hidden');
+    activeCard = null;
+    activeChoiceBox = null;
+  } else {
+    element.classList.add('incorrect');
+    setTimeout(() => element.classList.remove('incorrect'), 800);
+  }
+}
+
+function closeMenu() {
+  if (!activeCard) return;
+  activeCard.classList.remove('active');
+  const parentSection = activeCard.closest('.exercise-section');
+  parentSection.appendChild(activeChoiceBox);
+  activeChoiceBox.classList.add('hidden');
+  activeCard = null;
+  activeChoiceBox = null;
+}
+
+let studentName = "";
+let studentId   = "";
+function validateForm() {
+  studentName = document.getElementById('studentName').value.trim().replace(/\s+/g, '_');
+  studentId   = document.getElementById('studentID').value.trim().replace(/\s+/g, '_');
+  const btn     = document.getElementById('printBtn');
+  const note    = document.getElementById('printNote');
+  const isValid = studentName.length >= 2 && studentId.length >= 2;
+  btn.disabled              = !isValid;
+  btn.style.cursor          = isValid ? 'pointer' : 'not-allowed';
+  btn.style.backgroundColor = isValid ? '#2ecc71' : '#95a5a6';
+  note.style.display        = isValid ? 'none' : 'block';
+}
+function prepareAndPrint() {
+  const originalTitle = document.title;
+  document.getElementById('print-name').textContent = 'Name: ' + document.getElementById('studentName').value.trim();
+  document.getElementById('print-id').textContent   = 'ID: '   + document.getElementById('studentID').value.trim();
+  document.title = studentId + "_" + studentName + "_" + originalTitle;
+  setTimeout(() => { window.print(); document.title = originalTitle; }, 90);
+}
+</script>
+<footer style="margin-top:8rem;">... end</footer>
+
+</body></html>

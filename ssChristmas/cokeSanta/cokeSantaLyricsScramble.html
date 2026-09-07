@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Have a Coke and a ... Santa?</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 15px;
+      background-color: #f5f7fb;
+    }
+
+    footer {
+      margin-top:6rem;
+      width:100%;
+      text-align:center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #025C0E;
+      margin-bottom: 5px;
+    }
+
+    .main-instructions {
+      background: #F5EBF7;
+      text-align: center;
+      margin-bottom: 25px;
+      padding: .2rem;
+      box-shadow: 0 0 2px 2px gray;
+      border-radius: 7px;
+    }
+
+    .main-instructions #subHeading {
+      font-weight: bold;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: #025C0E;
+      margin-bottom: 5px;
+    }
+
+    .main-instructions p {
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+
+    .exercise-container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ── Authoring toolbar ── */
+    #authoring-panel {
+      margin-bottom: 1rem;
+    }
+
+    #inputData {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: monospace;
+      font-size: 0.9rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      resize: vertical;
+      background: #fff;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 0;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    #makeBtn {
+      background: #025C0E;
+      color: #fff;
+    }
+
+    #makeBtn:hover {
+      background: #037a14;
+    }
+
+    #downloadBtn {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    #downloadBtn:hover:not(:disabled) {
+      background: #2563eb;
+    }
+
+    #downloadBtn:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* ── Exercise UI (identical to matching.html) ── */
+    .sentence-card {
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+      font-size: 1.1rem;
+    }
+
+    .sentence-card.active {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+      cursor: default;
+    }
+
+    .sentence-card.completed {
+      border-color: #10b981;
+      background-color: #ecfdf5;
+      cursor: default;
+    }
+
+    .choice-box {
+      position: relative;
+      margin-top: 15px;
+      padding: 15px 10px 5px 10px;
+      border-top: 1px dashed #cbd5e1;
+      background: #ffffff;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      cursor: pointer;
+      line-height: 1;
+      padding: 5px;
+    }
+
+    .close-btn:hover { color: #64748b; }
+
+    .choice-item {
+      background: #f3f4f6;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .choice-item.incorrect {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #f87171;
+      animation: shake 0.2s ease-in-out 2;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-4px); }
+      75%       { transform: translateX(4px); }
+    }
+
+    /* ── Parse error banner ── */
+    #parse-error {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="exercise-container">
+
+  <!-- AUTHORING PANEL (hidden in downloaded file) -->
+  <div id="authoring-panel" style="display:none">
+    <p id="restore-title" style="display:none">MatchMaker</p>
+    <textarea id="inputData" rows="18">#Runaway Bride
+
+## Present Tenses
+Every morning, he drinks ^^ a hot cup of coffee.
+Right now, they are studying ^^ for their final exams.
+She usually walks to school, ^^ but today she is taking the bus.
+
+## Past Tenses
+To bite the bullet means ^^ to face a difficult situation with courage.
+To break a leg means ^^ to wish someone good luck before a performance.
+To spill the beans means ^^ to reveal a secret prematurely.</textarea>
+
+    <div class="btn-row">
+      <button class="btn" id="makeBtn">▶ Edit / Remake</button>
+      <button class="btn" id="downloadBtn">⬇ Download</button>
+    </div>
+  </div>
+
+  <!-- PARSE ERROR (shown only on bad input) -->
+  <div id="parse-error" class="hidden"></div>
+
+  <!-- EXERCISE HEADER (populated by Make) -->
+  <div class="main-instructions" id="exercise-header">
+    <h1 id="exercise-title">Have a Coke and a ... Santa?</h1>
+    <div id="subHeading">Matching Exercise</div>
+    <p>Tap a card below, then select its correct matching counterpart.</p>
+  </div>
+
+  <!-- EXERCISE BODY -->
+  <div id="dynamic-exercise-root"><div class="exercise-section" data-section-id="A"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="A1">
+        <div class="card-text">
+          <span class="first-half">Santa used to be</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="A2">
+        <div class="card-text">
+          <span class="first-half">His robes were made</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="A3">
+        <div class="card-text">
+          <span class="first-half">But when people sought</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="A4">
+        <div class="card-text">
+          <span class="first-half">Who he was had</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="B"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="B1">
+        <div class="card-text">
+          <span class="first-half">So he got a call</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="B2">
+        <div class="card-text">
+          <span class="first-half">They said, "We know</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="B3">
+        <div class="card-text">
+          <span class="first-half">If you wear the</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="B4">
+        <div class="card-text">
+          <span class="first-half">We'll market a campaign</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="C"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="C1">
+        <div class="card-text">
+          <span class="first-half">Now Santa's wearing red</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="C2">
+        <div class="card-text">
+          <span class="first-half">Sitting in his giant chair</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="C3">
+        <div class="card-text">
+          <span class="first-half">And children line up</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="C4">
+        <div class="card-text">
+          <span class="first-half">While Santa promotes</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="D"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="D1">
+        <div class="card-text">
+          <span class="first-half">Oh, Santa's wearing</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="D2">
+        <div class="card-text">
+          <span class="first-half">And he's smiling</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="D3">
+        <div class="card-text">
+          <span class="first-half">He holds up high</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="D4">
+        <div class="card-text">
+          <span class="first-half">Then turns and gives</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="E"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="E1">
+        <div class="card-text">
+          <span class="first-half">Back when he was</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="E2">
+        <div class="card-text">
+          <span class="first-half">He slipped through town</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="E3">
+        <div class="card-text">
+          <span class="first-half">He would toss a bag of gold</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="E4">
+        <div class="card-text">
+          <span class="first-half">Then disappear before</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="F"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="F1">
+        <div class="card-text">
+          <span class="first-half">But corporate had</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="F2">
+        <div class="card-text">
+          <span class="first-half">"Let's make him</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="F3">
+        <div class="card-text">
+          <span class="first-half">Give him fur and</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="F4">
+        <div class="card-text">
+          <span class="first-half">And make his beard</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="G"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="G1">
+        <div class="card-text">
+          <span class="first-half">The painters</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="G2">
+        <div class="card-text">
+          <span class="first-half">In magazines and</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="G3">
+        <div class="card-text">
+          <span class="first-half">And gas stations</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="G4">
+        <div class="card-text">
+          <span class="first-half">By the snowy fields</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="H"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="H1">
+        <div class="card-text">
+          <span class="first-half">And now we see him</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="H2">
+        <div class="card-text">
+          <span class="first-half">In every city,</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="H3">
+        <div class="card-text">
+          <span class="first-half">In his red-and-white suit</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="H4">
+        <div class="card-text">
+          <span class="first-half">With his big round belly</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="I"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="I1">
+        <div class="card-text">
+          <span class="first-half">Now he's on the</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="I2">
+        <div class="card-text">
+          <span class="first-half">He's on buses,</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="I3">
+        <div class="card-text">
+          <span class="first-half">He's on mugs</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="I4">
+        <div class="card-text">
+          <span class="first-half">And inflatable</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="J"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="J1">
+        <div class="card-text">
+          <span class="first-half">Children smile and</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="J2">
+        <div class="card-text">
+          <span class="first-half">Stores put decorations</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="J3">
+        <div class="card-text">
+          <span class="first-half">And corporate counts</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="J4">
+        <div class="card-text">
+          <span class="first-half">While Santa laughs and says,</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="K"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="K1">
+        <div class="card-text">
+          <span class="first-half">Now Santa's wearing</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="K2">
+        <div class="card-text">
+          <span class="first-half">And the whole world knows</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="K3">
+        <div class="card-text">
+          <span class="first-half">From the Arctic</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="K4">
+        <div class="card-text">
+          <span class="first-half">Everybody</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="L"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="L1">
+        <div class="card-text">
+          <span class="first-half">Yes, Santa's wearing</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="L2">
+        <div class="card-text">
+          <span class="first-half">Though he sometimes</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="L3">
+        <div class="card-text">
+          <span class="first-half">But if he can make</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="L4">
+        <div class="card-text">
+          <span class="first-half">He says, "I guess that's</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div><hr><div class="exercise-section" data-section-id="M"><p>Select the correct last half of the lines.</p><div class="sentence-card" data-sentence-id="M1">
+        <div class="card-text">
+          <span class="first-half">They say Christmas</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="M2">
+        <div class="card-text">
+          <span class="first-half">Though traditions</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="M3">
+        <div class="card-text">
+          <span class="first-half">Just don't let</span>
+          <span class="second-half"></span>
+        </div></div><div class="sentence-card" data-sentence-id="M4">
+        <div class="card-text">
+          <span class="first-half">Start promoting</span>
+          <span class="second-half"></span>
+        </div></div><div class="choice-box hidden">
+      <button class="close-btn" aria-label="Close choices">×</button>
+      <ul class="choices-list"></ul></div></div></div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let exerciseData = [
+  {
+    "sectionId": "A",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "A1",
+        "first": "Santa used to be",
+        "second": "a slimmer tall man,"
+      },
+      {
+        "id": "A2",
+        "first": "His robes were made",
+        "second": "of green and brown and blue."
+      },
+      {
+        "id": "A3",
+        "first": "But when people sought",
+        "second": "to ask him for a present,"
+      },
+      {
+        "id": "A4",
+        "first": "Who he was had",
+        "second": "everyone confused."
+      }
+    ]
+  },
+  {
+    "sectionId": "B",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "B1",
+        "first": "So he got a call",
+        "second": "from corporate,"
+      },
+      {
+        "id": "B2",
+        "first": "They said, \"We know",
+        "second": "just what to do."
+      },
+      {
+        "id": "B3",
+        "first": "If you wear the",
+        "second": "colors of our logo,"
+      },
+      {
+        "id": "B4",
+        "first": "We'll market a campaign",
+        "second": "and sponsor you.\""
+      }
+    ]
+  },
+  {
+    "sectionId": "C",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "C1",
+        "first": "Now Santa's wearing red",
+        "second": "for corporate,"
+      },
+      {
+        "id": "C2",
+        "first": "Sitting in his giant chair",
+        "second": "down at the mall."
+      },
+      {
+        "id": "C3",
+        "first": "And children line up",
+        "second": "just to get a closer look,"
+      },
+      {
+        "id": "C4",
+        "first": "While Santa promotes",
+        "second": "toy trains and dolls."
+      }
+    ]
+  },
+  {
+    "sectionId": "D",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "D1",
+        "first": "Oh, Santa's wearing",
+        "second": "red for corporate,"
+      },
+      {
+        "id": "D2",
+        "first": "And he's smiling",
+        "second": "in advertisements too."
+      },
+      {
+        "id": "D3",
+        "first": "He holds up high",
+        "second": "his bottle full of cola,"
+      },
+      {
+        "id": "D4",
+        "first": "Then turns and gives",
+        "second": "us all a wink or two."
+      }
+    ]
+  },
+  {
+    "sectionId": "E",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "E1",
+        "first": "Back when he was",
+        "second": "old Saint Nicholas,"
+      },
+      {
+        "id": "E2",
+        "first": "He slipped through town",
+        "second": "and helped the poor at night."
+      },
+      {
+        "id": "E3",
+        "first": "He would toss a bag of gold",
+        "second": "through open windows,"
+      },
+      {
+        "id": "E4",
+        "first": "Then disappear before",
+        "second": "the morning light."
+      }
+    ]
+  },
+  {
+    "sectionId": "F",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "F1",
+        "first": "But corporate had",
+        "second": "a different point of view,"
+      },
+      {
+        "id": "F2",
+        "first": "\"Let's make him",
+        "second": "cheerful, round, and bright."
+      },
+      {
+        "id": "F3",
+        "first": "Give him fur and",
+        "second": "shiny black boots,"
+      },
+      {
+        "id": "F4",
+        "first": "And make his beard",
+        "second": "more full and snowy white.\""
+      }
+    ]
+  },
+  {
+    "sectionId": "G",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "G1",
+        "first": "The painters",
+        "second": "put him on the billboards,"
+      },
+      {
+        "id": "G2",
+        "first": "In magazines and",
+        "second": "every shop display."
+      },
+      {
+        "id": "G3",
+        "first": "And gas stations",
+        "second": "hung his famous posters,"
+      },
+      {
+        "id": "G4",
+        "first": "By the snowy fields",
+        "second": "where children play."
+      }
+    ]
+  },
+  {
+    "sectionId": "H",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "H1",
+        "first": "And now we see him",
+        "second": "on the street corners,"
+      },
+      {
+        "id": "H2",
+        "first": "In every city,",
+        "second": "everywhere."
+      },
+      {
+        "id": "H3",
+        "first": "In his red-and-white suit",
+        "second": "and black boots,"
+      },
+      {
+        "id": "H4",
+        "first": "With his big round belly",
+        "second": "and snowy white hair."
+      }
+    ]
+  },
+  {
+    "sectionId": "I",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "I1",
+        "first": "Now he's on the",
+        "second": "signs and billboards,"
+      },
+      {
+        "id": "I2",
+        "first": "He's on buses,",
+        "second": "trucks, and trains."
+      },
+      {
+        "id": "I3",
+        "first": "He's on mugs",
+        "second": "and Christmas sweaters,"
+      },
+      {
+        "id": "I4",
+        "first": "And inflatable",
+        "second": "lawn displays."
+      }
+    ]
+  },
+  {
+    "sectionId": "J",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "J1",
+        "first": "Children smile and",
+        "second": "wave when they see him,"
+      },
+      {
+        "id": "J2",
+        "first": "Stores put decorations",
+        "second": "by the ton."
+      },
+      {
+        "id": "J3",
+        "first": "And corporate counts",
+        "second": "another billion dollars,"
+      },
+      {
+        "id": "J4",
+        "first": "While Santa laughs and says,",
+        "second": "\"Well, isn't this fun?\""
+      }
+    ]
+  },
+  {
+    "sectionId": "K",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "K1",
+        "first": "Now Santa's wearing",
+        "second": "red for corporate,"
+      },
+      {
+        "id": "K2",
+        "first": "And the whole world knows",
+        "second": "exactly who he is."
+      },
+      {
+        "id": "K3",
+        "first": "From the Arctic",
+        "second": "down to Australia,"
+      },
+      {
+        "id": "K4",
+        "first": "Everybody",
+        "second": "recognizes him."
+      }
+    ]
+  },
+  {
+    "sectionId": "L",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "L1",
+        "first": "Yes, Santa's wearing",
+        "second": "red for corporate,"
+      },
+      {
+        "id": "L2",
+        "first": "Though he sometimes",
+        "second": "misses how things used to be."
+      },
+      {
+        "id": "L3",
+        "first": "But if he can make",
+        "second": "a million children smile,"
+      },
+      {
+        "id": "L4",
+        "first": "He says, \"I guess that's",
+        "second": "good enough for me.\""
+      }
+    ]
+  },
+  {
+    "sectionId": "M",
+    "sectionTitle": "𝄞",
+    "items": [
+      {
+        "id": "M1",
+        "first": "They say Christmas",
+        "second": "is about tradition,"
+      },
+      {
+        "id": "M2",
+        "first": "Though traditions",
+        "second": "sometimes change their ways."
+      },
+      {
+        "id": "M3",
+        "first": "Just don't let",
+        "second": "the marketing department"
+      },
+      {
+        "id": "M4",
+        "first": "Start promoting",
+        "second": "an Easter Bunny craze!"
+      }
+    ]
+  }
+];
+let activeCard    = null;
+let activeChoiceBox = null;
+
+// ─────────────────────────────────────────────
+// 1. MARKDOWN PARSER
+// ─────────────────────────────────────────────
+function parseMarkdown(raw) {
+  const lines    = raw.split('\n');
+  const sections = [];
+  let title      = '';
+  let currentSection = null;
+  let sectionIndex   = 0;
+
+  for (let raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+
+    if (/^#(?!#)/.test(line)) {
+      // # Title
+      title = line.replace(/^#+\s*/, '').trim();
+
+    } else if (/^##/.test(line)) {
+      // ## Section heading
+      if (currentSection) sections.push(currentSection);
+      sectionIndex++;
+      currentSection = {
+        sectionId:    String.fromCharCode(64 + sectionIndex), // A, B, C …
+        sectionTitle: line.replace(/^#+\s*/, '').trim(),
+        items:        []
+      };
+
+    } else if (line.includes('^^')) {
+      // Matching pair
+      if (!currentSection) {
+        // Pairs before any ## heading → auto-create a section
+        sectionIndex++;
+        currentSection = {
+          sectionId:    String.fromCharCode(64 + sectionIndex),
+          sectionTitle: '',
+          items:        []
+        };
+      }
+      const [first, second] = line.split('^^');
+      if (first && second) {
+        const itemIndex = currentSection.items.length + 1;
+        currentSection.items.push({
+          id:     currentSection.sectionId + itemIndex,
+          first:  first.trim(),
+          second: second.trim()
+        });
+      }
+    }
+  }
+
+  if (currentSection && currentSection.items.length) sections.push(currentSection);
+
+  return { title, sections };
+}
+
+// ─────────────────────────────────────────────
+// 2. UI GENERATOR
+// ─────────────────────────────────────────────
+function generateExerciseUI(data) {
+  const root = document.getElementById('dynamic-exercise-root');
+  root.innerHTML = '';
+  activeCard = null;
+  activeChoiceBox = null;
+
+  data.forEach((section, idx) => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'exercise-section';
+    sectionEl.dataset.sectionId = section.sectionId;
+
+    if (section.sectionTitle) {
+      const titleEl = document.createElement('h2');
+      titleEl.textContent = section.sectionTitle;
+      sectionEl.appendChild(titleEl);
+    }
+
+    section.items.forEach(item => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'sentence-card';
+      cardEl.dataset.sentenceId = item.id;
+      cardEl.innerHTML = `
+        <div class="card-text">
+          <span class="first-half">${item.first}</span>
+          <span class="second-half"></span>
+        </div>`;
+      sectionEl.appendChild(cardEl);
+    });
+
+    const choiceBoxEl = document.createElement('div');
+    choiceBoxEl.className = 'choice-box hidden';
+    choiceBoxEl.innerHTML = `
+      <button class="close-btn" aria-label="Close choices">&times;</button>
+      <ul class="choices-list"></ul>`;
+    sectionEl.appendChild(choiceBoxEl);
+
+    root.appendChild(sectionEl);
+    if (idx < data.length - 1) root.appendChild(document.createElement('hr'));
+  });
+
+  setupCardEventListeners();
+}
+
+// ─────────────────────────────────────────────
+// 3. INTERACTION ENGINE
+// ─────────────────────────────────────────────
+function setupCardEventListeners() {
+  document.querySelectorAll('.sentence-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (card.classList.contains('completed') ||
+          card.classList.contains('active')    ||
+          e.target.closest('.choice-box')) return;
+
+      if (activeCard) closeMenu();
+
+      activeCard = card;
+      activeCard.classList.add('active');
+
+      const parentSection = card.closest('.exercise-section');
+      const sectionId     = parentSection.dataset.sectionId;
+
+      activeChoiceBox = parentSection.querySelector('.choice-box');
+      const choicesList = parentSection.querySelector('.choices-list');
+
+      const sectionData = exerciseData.find(sec => sec.sectionId === sectionId);
+      renderShuffledChoices(choicesList, sectionData.items);
+
+      activeCard.appendChild(activeChoiceBox);
+      activeChoiceBox.classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('dynamic-exercise-root').addEventListener('click', e => {
+    if (e.target.classList.contains('close-btn')) {
+      e.stopPropagation();
+      closeMenu();
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+// 4. SHUFFLE ENGINE
+// ─────────────────────────────────────────────
+function renderShuffledChoices(listElement, itemsArray) {
+  listElement.innerHTML = '';
+  const shuffled = [...itemsArray];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  shuffled.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'choice-item';
+    li.textContent = item.second;
+    li.addEventListener('click', () => handleSelection(li, item));
+    listElement.appendChild(li);
+  });
+}
+
+// ─────────────────────────────────────────────
+// 5. VALIDATION ENGINE
+// ─────────────────────────────────────────────
+function handleSelection(element, item) {
+  const correctId = activeCard.dataset.sentenceId;
+
+  if (item.id === correctId) {
+    activeCard.querySelector('.second-half').textContent = ' ' + item.second;
+    activeCard.classList.remove('active');
+    activeCard.classList.add('completed');
+
+    const parentSection = activeCard.closest('.exercise-section');
+    parentSection.appendChild(activeChoiceBox);
+    activeChoiceBox.classList.add('hidden');
+
+    activeCard = null;
+    activeChoiceBox = null;
+  } else {
+    element.classList.add('incorrect');
+    setTimeout(() => element.classList.remove('incorrect'), 800);
+  }
+}
+
+function closeMenu() {
+  if (!activeCard) return;
+  activeCard.classList.remove('active');
+  const parentSection = activeCard.closest('.exercise-section');
+  parentSection.appendChild(activeChoiceBox);
+  activeChoiceBox.classList.add('hidden');
+  activeCard = null;
+  activeChoiceBox = null;
+}
+
+// ─────────────────────────────────────────────
+// 6. MAKE BUTTON
+// ─────────────────────────────────────────────
+document.getElementById('makeBtn').addEventListener('click', () => {
+  const raw     = document.getElementById('inputData').value;
+  const errorEl = document.getElementById('parse-error');
+  const header  = document.getElementById('exercise-header');
+
+  errorEl.classList.add('hidden');
+  errorEl.textContent = '';
+
+  const parsed = parseMarkdown(raw);
+
+  if (!parsed.sections.length) {
+    errorEl.textContent = 'No matching pairs found. Make sure each pair is separated by ^^.';
+    errorEl.classList.remove('hidden');
+    header.classList.add('hidden');
+    document.getElementById('downloadBtn').disabled = true;
+    return;
+  }
+
+  // Check every section has at least 2 items (for a meaningful exercise)
+  for (const sec of parsed.sections) {
+    if (sec.items.length < 2) {
+      errorEl.textContent = `Section "${sec.sectionTitle || sec.sectionId}" needs at least 2 pairs.`;
+      errorEl.classList.remove('hidden');
+      document.getElementById('downloadBtn').disabled = true;
+      return;
+    }
+  }
+
+  exerciseData = parsed.sections;
+
+  // Update header
+  document.getElementById('exercise-title').textContent = parsed.title || 'Matching Exercise';
+  document.title = parsed.title || 'MatchMaker';
+  header.classList.remove('hidden');
+
+  generateExerciseUI(exerciseData);
+
+  document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('makeBtn').textContent = '▶ Edit / Remake';
+});
+
+// ─────────────────────────────────────────────
+// 7. DOWNLOAD BUTTON
+//    Captures outerHTML directly — no separate template.
+// ─────────────────────────────────────────────
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const authoringPanel = document.getElementById('authoring-panel');
+  const makeBtn        = document.getElementById('makeBtn');
+  const downloadBtn     = document.getElementById('downloadBtn');
+
+  // ── Temporarily mutate DOM for snapshot ──
+  authoringPanel.style.display = 'none';
+
+  // Capture the full page HTML as-is
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // ── Restore DOM immediately ──
+  authoringPanel.style.display = '';
+  document.title = document.getElementById('restore-title').textContent;
+
+  // ── Make the authoring panel's hidden state permanent in the captured copy ──
+  // (handles both 'display: none;' and 'display:none' serialization forms)
+  let finalHtml = html.replace(
+    /id="authoring-panel"\s+style="display:\s*none;?"/,
+    'id="authoring-panel" style="display:none"'
+  );
+
+  // ── Stamp the live exerciseData into the captured script ──
+  // (pretty-printed so the downloaded file stays readable in a text editor,
+  //  not one giant line of JSON)
+  finalHtml = finalHtml.replace(
+    'let exerciseData = [];',
+    'let exerciseData = ' + JSON.stringify(exerciseData, null, 2) + ';'
+  );
+
+  // ── Wire up card click listeners on load ──
+  // (the downloaded file's cards already exist in the DOM, but the listeners
+  //  are normally only attached when Make is clicked, which never happens
+  //  in the downloaded file — so we add that call here)
+  finalHtml = finalHtml.replace(
+    '<\/script>',
+    'document.addEventListener("DOMContentLoaded", setupCardEventListeners);\n<\/script>'
+  );
+
+  const blob = new Blob([finalHtml], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const title = (document.getElementById('exercise-title').textContent || 'exercise')
+    .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+  a.href     = url;
+  a.download = title + '.html';
+  a.click();
+  alert('File downloaded to your browser\'s default download folder.');
+  URL.revokeObjectURL(url);
+});
+document.addEventListener("DOMContentLoaded", setupCardEventListeners);
+</script>
+
+<footer>EFL/ESL Lesson Exercise</footer>
+</body></html>

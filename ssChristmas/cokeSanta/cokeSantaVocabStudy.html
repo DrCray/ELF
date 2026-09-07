@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Vocabulary · Santa & the Red Suit</title>
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f7f5f0;
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      padding: 1rem 0.5rem;      /* reduced outer padding */
+      color: #1e1e1e;
+      line-height: 1.6;
+    }
+
+    .magazine {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: white;
+      padding: 1.2rem 1.2rem;    /* much tighter padding */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }
+
+    /* ----- serif for titles, headings, emphasis ----- */
+    h1, h2, h3, .serif, .card h3, .title-block, summary {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 2rem;           /* slightly smaller */
+      letter-spacing: -0.5px;
+      border-bottom: 3px solid #c0392b;
+      padding-bottom: 0.3rem;
+      margin-bottom: 0.8rem;      /* reduced */
+      color: #2c3e50;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin: 1.5rem 0 0.5rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .subhead {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      color: #5d5d5d;
+      margin-top: -0.3rem;
+      margin-bottom: 1rem;        /* reduced */
+      font-size: 1rem;
+    }
+
+    /* ----- DISCLOSURE (details / summary) ----- */
+    .vocab-disclosure {
+      margin: 0.8rem 0 0.8rem;    /* reduced vertical margin */
+      border: 1px solid #d6cec4;
+      border-radius: 12px;
+      background: #faf8f5;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .vocab-disclosure summary {
+      padding: 0.6rem 1.2rem;      /* tighter padding */
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #2c3e50;
+      background: #f0ede8;
+      border-bottom: 1px solid #d6cec4;
+      transition: background 0.15s;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .vocab-disclosure summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .vocab-disclosure summary::before {
+      content: "▸";
+      font-size: 1.5rem;
+      color: #b03a2e;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    .vocab-disclosure[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .vocab-disclosure summary:hover {
+      background: #e8e2da;
+    }
+
+    .vocab-disclosure .vocab-list-wrap {
+      padding: 0.6rem 0.8rem;      /* much tighter padding */
+    }
+
+/* ----- THE LIST: spans are inline-block by default ----- */
+.vocab-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.5rem;           /* reduced gap */
+  background: #f2f5f9;
+  padding: 0.4rem 0.6rem;       /* tighter padding */
+  border-radius: 1.2rem;
+  border: 1px solid #dfe5ed;
+}
+
+.vocab-list > span {
+  display: inline-block;
+  background: white;
+  padding: 0.1rem 0.7rem;       /* reduced vertical padding */
+  border-radius: 30px;
+  font-size: 0.85rem;           /* slightly smaller */
+  font-weight: 450;
+  color: #1a2b3e;
+  border: 1px solid #d3dbe5;
+  transition: background 0.1s, border-color 0.1s;
+  line-height: 1.4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.vocab-list > span:hover {
+  background: #ffffff;
+  border-color: #b0bccb;
+}
+
+/* The button */
+#listColumn {
+  background: #1e2b3c;
+  border: none;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.9rem;
+  border-radius: 30px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: background 0.15s, transform 0.05s;
+  border: 1px solid #2b3a4e;
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  flex-shrink: 0;
+  height: auto;
+}
+
+#listColumn:hover {
+  background: #2d3f54;
+  border-color: #3f536b;
+}
+
+#listColumn:active {
+  transform: scale(0.96);
+}
+
+/* ===== COLUMN VIEW: p > span becomes display: block ===== */
+.vocab-list.column-mode > span {
+  display: block !important;
+  width: 100%;
+  text-align: left;
+  border-radius: 30px;
+  padding: 0.15rem 0.9rem;      /* tighter in column mode */
+  margin: 0.05rem 0;
+}
+
+/* Keep the button inline-block — not a block */
+.vocab-list.column-mode > #listColumn {
+  display: inline-block !important;
+  width: auto;
+  margin-bottom: 0.2rem;
+}
+
+/* responsive */
+@media (max-width: 600px) {
+  .magazine { padding: 0.8rem 0.8rem; }
+  .vocab-list { padding: 0.4rem 0.5rem; gap: 0.15rem 0.4rem; }
+}
+
+
+    /* ----- card grid (flex wrap, no @media) ----- */
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;              /* reduced gap between cards */
+      margin: 0.8rem 0 0.2rem;
+    }
+
+    .card {
+      flex: 1 1 260px;
+      min-width: 300px;
+      background: #fcfcfa;
+      border: 1px solid #e0dbd4;
+      border-radius: 14px;
+      padding: 1rem 1.2rem 1.2rem;  /* tighter padding inside cards */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 0.3rem;
+      color: #1f3a4b;
+      font-weight: 700;
+      border-left: 4px solid #b03a2e;
+      padding-left: 0.6rem;
+    }
+
+    .card h3 strong {
+      font-weight: 700;
+    }
+
+    .card p {
+      margin: 0.3rem 0;
+      font-size: 0.92rem;
+      color: #2c3e50;
+    }
+
+    .card{
+      font-weight: 500;
+      color: #1f3a4b;
+    }
+
+    .card .example {
+      font-style: normal;
+      background: #f2f0ec;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+      margin-top: 0.4rem;
+      font-size: 0.88rem;
+      color: #1f2f3a;
+      border-left: 3px solid #b03a2e;
+    }
+
+    .card .example strong {
+      font-weight: 700;
+      color: #a53125;
+    }
+
+    /* second example gets a slightly lighter background */
+    .card .example.second {
+      background: #f6f4f0;
+      border-left-color: #8f7e6e;
+      margin-top: 0.2rem;
+    }
+
+    /* ----- responsive behaviour: all wraps, no @media ----- */
+    .card {
+      flex: 1 1 240px;
+    }
+
+    .definition{
+    font-weight: 600; color:darkgreen;
+    }
+
+    .definition::before {
+    content: "📖"; /* Standard dictionary emoji */
+    margin-right: 8px;
+}
+
+    /* ----- footer ----- */
+    hr {
+      margin: 1.2rem 0 0.3rem;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, #d0cac2, transparent);
+    }
+
+    .footer-note {
+      font-size: 0.8rem;
+      color: #6b6b6b;
+      margin-top: 1.2rem;
+      text-align: right;
+      border-top: 1px solid #e5e0d8;
+      padding-top: 0.6rem;
+      font-family: 'Helvetica', sans-serif;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-note i {
+      font-style: italic;
+    }
+
+    /* small screens: keep spacing readable */
+    @media (max-width: 480px) {
+      .magazine { padding: 0.6rem 0.6rem; }
+      .card { padding: 0.8rem 0.8rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="magazine">
+
+  <h1>🎓 vocabulary · Coca Cola and Santa</h1>
+  <div class="subhead">From the article — B1 level · academic magazine style</div>
+
+
+  <details class="vocab-disclosure">
+    <summary>📖 vocabulary (list)</summary>
+    <div class="vocab-list-wrap">
+      <div class="vocab-list">
+        <button id="listColumn">view as a single column</button>
+        <span>figure</span>
+        <span>portrayed</span>
+        <span>rarely</span>
+        <span>depicted</span>
+        <span>origin</span>
+        <span>traced back</span>
+        <span>generosity</span>
+        <span>legend</span>
+        <span>depictions</span>
+        <span>inconsistent</span>
+        <span>consistency</span>
+        <span>modernization</span>
+        <span>inspiration</span>
+        <span>trimmed</span>
+        <span>intentionally</span>
+        <span>logo</span>
+        <span>brand name</span>
+        <span>displays</span>
+        <span>billboards</span>
+        <span>campaign</span>
+        <span>standardize</span>
+        <span>popularize</span>
+      </div>
+    </div>
+  </details>
+
+
+  <!-- ----- STUDY CARDS (flex wrap, no @media) ----- -->
+  <div class="card-grid">
+
+    <!-- card 1 -->
+    <div class="card">
+      <h3><strong>figure</strong></h3>
+      <p><span class="definition">Definition:</span> A person, especially one who is well‑known or has a particular role.</p>
+      <p class="example"><strong>Example 1:</strong> Santa was not always the jolly <strong>figure</strong> we know today; he used to be shown as a tall, thin man.</p>
+      <p class="example second"><strong>Example 2:</strong> Nelson Mandela is a respected <strong>figure</strong> in the history of human rights.</p>
+    </div>
+
+    <!-- card 2 -->
+    <div class="card">
+      <h3><strong>portrayed</strong></h3>
+      <p><span class="definition">Definition:</span> Described or shown in a particular way (past tense of portray).</p>
+      <p class="example"><strong>Example 1:</strong> In early art, Santa was often <strong>portrayed</strong> as a tall, thin man, not the round fellow we see now.</p>
+      <p class="example second"><strong>Example 2:</strong> In the film, the queen is <strong>portrayed</strong> as a wise and fair ruler.</p>
+    </div>
+
+    <!-- card 3 -->
+    <div class="card">
+      <h3><strong>rarely</strong></h3>
+      <p><span class="definition">Definition:</span> Not often; seldom.</p>
+      <p class="example"><strong>Example 1:</strong> Before the mid‑1800s, Santa was <strong>rarely</strong> shown as a fat man in a red suit; it was very uncommon.</p>
+      <p class="example second"><strong>Example 2:</strong> My grandmother <strong>rarely</strong> watches television; she prefers reading books.</p>
+    </div>
+
+    <!-- card 4 -->
+    <div class="card">
+      <h3><strong>depicted</strong></h3>
+      <p><span class="definition">Definition:</span> Represented or shown in a picture, story, or description.</p>
+      <p class="example"><strong>Example 1:</strong> In older paintings, Santa was <strong>depicted</strong> wearing blue or green, not red.</p>
+      <p class="example second"><strong>Example 2:</strong> The ancient cave walls <strong>depicted</strong> scenes of hunting and daily life.</p>
+    </div>
+
+    <!-- card 5 -->
+    <div class="card">
+      <h3><strong>origin</strong></h3>
+      <p><span class="definition">Definition:</span> The point or place where something begins, starts, or comes from.</p>
+      <p class="example"><strong>Example 1:</strong> The <strong>origin</strong> of Santa can be traced back to Saint Nicholas, a Greek bishop from Turkey.</p>
+      <p class="example second"><strong>Example 2:</strong> The <strong>origin</strong> of the word "robot" comes from a Czech play.</p>
+    </div>
+
+    <!-- card 6 -->
+    <div class="card">
+      <h3><strong>traced back</strong></h3>
+      <p><span class="definition">Definition:</span> Followed to discover the origin or cause of something (phrasal verb).</p>
+      <p class="example"><strong>Example 1:</strong> The story of Santa can be <strong>traced back</strong> to the 4th century and Saint Nicholas.</p>
+      <p class="example second"><strong>Example 2:</strong> His family's history can be <strong>traced back</strong> to the 18th century in Ireland.</p>
+    </div>
+
+    <!-- card 7 -->
+    <div class="card">
+      <h3><strong>generosity</strong></h3>
+      <p><span class="definition">Definition:</span> The quality of being kind, helpful, and willing to give freely.</p>
+      <p class="example"><strong>Example 1:</strong> Saint Nicholas became famous for his <strong>generosity</strong>, often giving gifts in secret.</p>
+      <p class="example second"><strong>Example 2:</strong> The community thanked the donor for her <strong>generosity</strong> in funding the new library.</p>
+    </div>
+
+    <!-- card 8 -->
+    <div class="card">
+      <h3><strong>legend</strong></h3>
+      <p><span class="definition">Definition:</span> A traditional story that may or may not be completely true, often about a famous person or event.</p>
+      <p class="example"><strong>Example 1:</strong> The stories about Saint Nicholas helped form the Christmas <strong>legend</strong> we know today.</p>
+      <p class="example second"><strong>Example 2:</strong> The <strong>legend</strong> of King Arthur and the Knights of the Round Table is still popular.</p>
+    </div>
+
+    <!-- card 9 -->
+    <div class="card">
+      <h3><strong>depictions</strong></h3>
+      <p><span class="definition">Definition:</span> Representations or images of someone or something (plural of depiction).</p>
+      <p class="example"><strong>Example 1:</strong> Before the 1930s, the <strong>depictions</strong> of Santa varied a lot from one artist to another.</p>
+      <p class="example second"><strong>Example 2:</strong> The museum had many <strong>depictions</strong> of daily life in the 19th century.</p>
+    </div>
+
+    <!-- card 10 -->
+    <div class="card">
+      <h3><strong>inconsistent</strong></h3>
+      <p><span class="definition">Definition:</span> Not staying the same; having different parts that don't match or agree.</p>
+      <p class="example"><strong>Example 1:</strong> Before Coca‑Cola, images of Santa were <strong>inconsistent</strong>—he looked different in each drawing.</p>
+      <p class="example second"><strong>Example 2:</strong> The data from the two experiments was <strong>inconsistent</strong>, so we repeated the tests.</p>
+    </div>
+
+    <!-- card 11 -->
+    <div class="card">
+      <h3><strong>consistency</strong></h3>
+      <p><span class="definition">Definition:</span> The quality of always behaving or happening in the same way.</p>
+      <p class="example"><strong>Example 1:</strong> Sundblom's artwork brought <strong>consistency</strong> to Santa's image, making him look the same everywhere.</p>
+      <p class="example second"><strong>Example 2:</strong> The chef's <strong>consistency</strong> in cooking made the restaurant famous.</p>
+    </div>
+
+    <!-- card 12 -->
+    <div class="card">
+      <h3><strong>modernization</strong></h3>
+      <p><span class="definition">Definition:</span> The process of making something more modern or up to date.</p>
+      <p class="example"><strong>Example 1:</strong> The biggest step toward the <strong>modernization</strong> of Santa's image came in 1931 with Coca‑Cola's ads.</p>
+      <p class="example second"><strong>Example 2:</strong> The <strong>modernization</strong> of the railway system improved travel times significantly.</p>
+    </div>
+
+    <!-- card 13 -->
+    <div class="card">
+      <h3><strong>inspiration</strong></h3>
+      <p><span class="definition">Definition:</span> The feeling or idea you get from someone or something that makes you want to create.</p>
+      <p class="example"><strong>Example 1:</strong> Sundblom took <strong>inspiration</strong> from a famous poem about Santa for his paintings.</p>
+      <p class="example second"><strong>Example 2:</strong> She drew <strong>inspiration</strong> from nature to write her new collection of poems.</p>
+    </div>
+
+    <!-- card 14 -->
+    <div class="card">
+      <h3><strong>trimmed</strong></h3>
+      <p><span class="definition">Definition:</span> Decorated or bordered with a particular material or color.</p>
+      <p class="example"><strong>Example 1:</strong> Sundblom's Santa wore a bright red suit <strong>trimmed</strong> with white fur around the edges.</p>
+      <p class="example second"><strong>Example 2:</strong> The dress was <strong>trimmed</strong> with delicate lace at the sleeves.</p>
+    </div>
+
+    <!-- card 15 -->
+    <div class="card">
+      <h3><strong>intentionally</strong></h3>
+      <p><span class="definition">Definition:</span> Done on purpose; deliberately.</p>
+      <p class="example"><strong>Example 1:</strong> The colors were <strong>intentionally</strong> chosen to match Coca‑Cola's famous red and white logo.</p>
+      <p class="example second"><strong>Example 2:</strong> He <strong>intentionally</strong> arrived late to avoid the first boring speech.</p>
+    </div>
+
+    <!-- card 16 -->
+    <div class="card">
+      <h3><strong>logo</strong></h3>
+      <p><span class="definition">Definition:</span> A symbol or design used by a company to identify its products.</p>
+      <p class="example"><strong>Example 1:</strong> Coca‑Cola's famous red <strong>logo</strong> was a key part of the Santa advertisements.</p>
+      <p class="example second"><strong>Example 2:</strong> The new <strong>logo</strong> for the sports team features a fierce lion.</p>
+    </div>
+
+    <!-- card 17 -->
+    <div class="card">
+      <h3><strong>brand name</strong></h3>
+      <p><span class="definition">Definition:</span> The name given to a specific product or company.</p>
+      <p class="example"><strong>Example 1:</strong> The red Santa suit matched the <strong>brand name</strong> "Coca‑Cola" written in white script.</p>
+      <p class="example second"><strong>Example 2:</strong> Many people recognize the <strong>brand name</strong> Nike by its famous slogan.</p>
+    </div>
+
+    <!-- card 18 -->
+    <div class="card">
+      <h3><strong>displays</strong></h3>
+      <p><span class="definition">Definition:</span> Arrangements or exhibitions of items for people to see (plural of display).</p>
+      <p class="example"><strong>Example 1:</strong> Sundblom's Santa appeared in shop <strong>displays</strong> and calendars across the country.</p>
+      <p class="example second"><strong>Example 2:</strong> The museum's <strong>displays</strong> included ancient pottery and tools.</p>
+    </div>
+
+    <!-- card 19 -->
+    <div class="card">
+      <h3><strong>billboards</strong></h3>
+      <p><span class="definition">Definition:</span> Large outdoor signs used for advertising.</p>
+      <p class="example"><strong>Example 1:</strong> The Santa ads were so big they were placed on giant <strong>billboards</strong> by the road.</p>
+      <p class="example second"><strong>Example 2:</strong> The <strong>billboards</strong> along the highway advertised a new smartphone.</p>
+    </div>
+
+    <!-- card 20 -->
+    <div class="card">
+      <h3><strong>campaign</strong></h3>
+      <p><span class="definition">Definition:</span> A planned series of activities or advertisements to achieve a goal.</p>
+      <p class="example"><strong>Example 1:</strong> Coca‑Cola's advertising <strong>campaign</strong> ran for over 30 years and made Santa famous.</p>
+      <p class="example second"><strong>Example 2:</strong> The political <strong>campaign</strong> focused on health care and education reform.</p>
+    </div>
+
+    <!-- card 21 -->
+    <div class="card">
+      <h3><strong>standardize</strong></h3>
+      <p><span class="definition">Definition:</span> To make things the same or consistent across different places.</p>
+      <p class="example"><strong>Example 1:</strong> The Coca‑Cola ads helped <strong>standardize</strong> Santa's image so he looked the same everywhere.</p>
+      <p class="example second"><strong>Example 2:</strong> The company wants to <strong>standardize</strong> its safety procedures in all factories.</p>
+    </div>
+
+    <!-- card 22 -->
+    <div class="card">
+      <h3><strong>popularize</strong></h3>
+      <p><span class="definition">Definition:</span> To make something well‑liked or well‑known by many people.</p>
+      <p class="example"><strong>Example 1:</strong> The advertisements helped <strong>popularize</strong> the red‑suited Santa around the world.</p>
+      <p class="example second"><strong>Example 2:</strong> The band's hit single helped <strong>popularize</strong> indie music in the mainstream.</p>
+    </div>
+
+  </div> <!-- end card-grid -->
+
+  <hr>
+  <div class="footer-note">
+    <i>Academic Magazine · vocabulary from “Santa & the red suit” · B1 level</i>
+  </div>
+
+</div> <!-- end magazine -->
+
+
+<script>
+(function() {
+  "use strict";
+
+  const vocabList = document.querySelector('.vocab-list');
+  const toggleBtn = document.getElementById('listColumn');
+
+  if (!vocabList || !toggleBtn) {
+    console.warn('Required elements not found.');
+    return;
+  }
+
+  // Initial state: inline-block (no column-mode class)
+  vocabList.classList.remove('column-mode');
+  toggleBtn.textContent = 'view as a single column';
+
+  toggleBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const isColumnMode = vocabList.classList.contains('column-mode');
+
+    if (isColumnMode) {
+      vocabList.classList.remove('column-mode');
+      toggleBtn.textContent = 'view as a single column';
+    } else {
+      vocabList.classList.add('column-mode');
+      toggleBtn.textContent = 'close column view';
+    }
+  });
+
+})();
+</script>
+
+
+</body>
+</html>
