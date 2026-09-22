@@ -114,8 +114,6 @@
 </div><div id="toBottomMenu">
 <a href="#menu-links">Exercises and other Audiovid links at bottom</a>
 </div><img alt="image" src="jealousDonkey.webp" style="display:block; margin:auto; width:97%; padding: 1rem 0 1rem 0"/>
-
-
 <div class="audio-player">
 <a href="https://youtu.be/he6MVh6OBnE" rel="noopener noreferrer" style="text-decoration:none;" target="_blank">
 <audio controls="" tabindex="-1">
@@ -124,9 +122,6 @@
         </audio>
 </a>
 </div>
-
-
-
 <p>
 <span><span><span><span>A
 farmer had a donkey, and a poodle, a very great beauty. The donkey
@@ -186,15 +181,13 @@ scorpion. It's what I do.”  (or “it's my nature”)</span></span></p>
 <div contenteditable="false" id="compQs"><ol><li>Where did the donkey live?</li><li>Where did the poodle live?</li><li>What did the dog know how to do?</li><li>What did the dog usually do after dinner?</li><li>What kind of life did the donkey have?</li><li>What was the donkey’s job?</li><li>What kind of life did the poodle have?</li><li>What did the donkey do after he broke out of the stable?</li><li>What did the field workers do?</li><li>How did the donkey feel?</li></ol></div>
 <div id="discussQsTitle">Discussion</div>
 <div contenteditable="false" id="discussQs"><ol><li>Do you have any friends who are easily jealous of others? In what ways?</li><li>What different kinds of things can a person be jealous about?</li><li>Should we be content with our lives, or should we try to change our lives?</li></ol></div>
-
 <p style="box-shadow:0 0 6px 2px gray; padding:.4rem; width:fit-content;background:#E9EBF0;">
-      <a href="https://youtu.be/_D0Ob25MF2M" target="_blank">Dictation audioVid</a>
+<a href="https://youtu.be/_D0Ob25MF2M" target="_blank">Dictation audioVid</a>
 </p>
-
 <details><summary id="dictationTitle">Dictation Check</summary>
 <div style="box-shadow:0 0 6px 2px gray; padding:.7rem 0;">
-    <ol>
-    <li>    The hard-working donkey wanted to be like the farmer’s favorite dog.
+<ol>
+<li>    The hard-working donkey wanted to be like the farmer’s favorite dog.
     </li><li>He was jealous of the poodle’s easy life.
     </li><li>So he broke out of the stable and ran into the house.
     </li><li>He started dancing and jumping around like a dog.
@@ -208,12 +201,9 @@ scorpion. It's what I do.”  (or “it's my nature”)</span></span></p>
     </li><li>The frog said, why did you do that, now we'll both drown.
     </li><li>The scorpion said, "I'm a scorpion, that's what I do."
     </li>
-    </ol>
+</ol>
 </div>
 </details>
-
-
-
 <button id="text2list" onclick="textToList()" style="margin: 0px 0px 1em; display: none;">make Ordered List</button>
 <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
 <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
@@ -447,30 +437,81 @@ function saveDom(){
 
 }      
 </script>
-<div id="menu-links" class="menu-links">
-<a href="#container">&uarr; Top</a>
-
- <a
-              href="jealousDonkeyFIBselect.html"
-              target="_blank"
-              >quiz</a
-            > 
-            <a
-              href="jealousDonkeyVocabSentnQuiz.html"
-              target="_blank"
-              >vocab quiz</a
-            > 
-            <a
-              href="jealousDonkeyPodcast.html"
-              target="_blank"
-              >podcast</a
-            >
+<div class="menu-links" id="menu-links">
+<a href="#container">↑ Top</a>
+<a href="jealousDonkeyFIBselect.html" target="_blank">quiz</a>
+<a href="jealousDonkeyVocabSentnQuiz.html" target="_blank">vocab quiz</a>
+<a href="jealousDonkeyPodcast.html" target="_blank">podcast</a>
 </div>
-
-
-
-
-<footer style="margin:8rem;">
+<script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><footer style="margin:8rem;">
 <p> ... end. </p>
 </footer>
 <script>
@@ -495,4 +536,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
+</script><script>
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
 </script></body></html>
