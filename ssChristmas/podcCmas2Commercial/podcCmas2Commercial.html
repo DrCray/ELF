@@ -83,6 +83,30 @@
 }
 
 
+details {background:white; padding:1rem;}
+summary {background:#E9F1F8; padding: 1rem;}
+
+    .copy-btn {
+        margin:1rem .3rem;
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.98);
+    }
+
   </style>
 </head>
 <body>
@@ -181,7 +205,7 @@ sustains it?</p><p></p>
 
 
     <!-- SECTION 1 -->
-    <div class="section"><div><h3>When Christmas Meets Commerce</h3>
+    <div id="column1" class="section"><div><h3>When Christmas Meets Commerce</h3>
         <div><div><ul><li>SARAH: Welcome to "Perspective Matters." I'm Sarah Chen.</li><li>MARK: And I'm Mark Williams. Today we're tackling the annual complaint that Christmas has become too commercialized.</li><li>SARAH:
  I'll admit, I've been that person. Last week I saw an AI-generated 
 Christmas ad and thought, "We've officially lost the true spirit of 
@@ -274,7 +298,42 @@ perspective on keeping the Christmas Spirit during this holiday season.</li><li>
       <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
     </div>
     <div class="edit-spacer editMode" style="display: none;"></div>
+
+
+<details id="compQs"><summary><span style="font-weight:700; font-size:1.2rem;">Comprehension Questions</span></summary>
+    <p>When did Christmas become popular in America, and how did it happen?
+    </p><details><summary>Suggested Answer:</summary>It became widely celebrated in the 1840s because stores began marketing and commercializing it.
+    </details><p>Who is Santa Claus based on, and what did that person do?
+    </p><details><summary>Suggested Answer:</summary>Santa Claus is based on St. Nicholas, a bishop who gave away his wealth to help poor people.
+    </details><p>Why does Sarah say that commercialization is "neutral"?
+    </p><details><summary>Suggested Answer:</summary>Because it is just a system or mechanism. What matters is the intention behind it and how people choose to use it.
+    </details><p>Why is it almost impossible to make handmade decorations without buying anything?
+    </p><details><summary>Suggested Answer:</summary>Because you still need to buy materials from stores to create handmade items, which involves commerce.
+    </details><p>What examples are given to show that business helps charities during Christmas?
+    </p><details><summary>Suggested Answer:</summary>Charities launch fundraising campaigns during this time, and organizations like the Salvation Army stand outside stores to collect donations.
+    </details><p>According to Sarah, where does the real "spirit of Christmas" live?
+    </p><details><summary>Suggested Answer:</summary>It lives in our hearts, not in stores, advertisements, or products.
+    </details><p>What changes a simple gift purchase into a real sign of love?
+    </p><details><summary>Suggested Answer:</summary>The intention in your heart determines whether a gift is just a financial transaction or an expression of love.
+    </details><p>In the podcast, how do Jesus and Santa Claus work together to spread good values?
+    </p><details><summary>Suggested Answer:</summary>Jesus provides the values (love, forgiveness, compassion), and Santa Claus helps bring those values to life through the action of gift-giving.
+    </details><p>How should you view the people shopping around you in a crowded mall?
+    </p><details><summary>Suggested Answer:</summary>You can view them as people who care enough to brave the crowds to express love to others.
+    </details><p>If someone feels that Christmas is too focused on money, who or what is actually responsible for that feeling?
+    </p><details><summary>Suggested Answer:</summary>The person's own internal state or focus. Sarah explains that if Christmas feels too commercial, it is because you have allowed your focus to drift from what matters in your heart.
+    </details>
+</details>
+
+<details id="discussQs"><summary><span style="font-weight:700; font-size:1.2rem;">Discussion</span></summary>
+    <p>Name some other busy shopping seasons in your country?</p>
+    <p>Do you have any funny stories about shopping during a busy shopping season?</p>
+</details>
+
+<button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button>
+
   </div>
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -503,4 +562,103 @@ document.getElementById('formatBtn').addEventListener('click', function() {
 </script>
 
 
+
+
+<script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('#column1');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('#column1');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Choose several CEFR B1/B2 appropriate vocabulary words or expressions from the article: give a short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script><footer style="margin:35px">
+<p> ... end. </p>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function setupToggle(titleId, contentId) {
+    const title = document.getElementById(titleId);
+    const content = document.getElementById(contentId);
+    if (!title || !content) return;
+
+    const baseText = title.textContent.trim();
+    title.textContent = baseText + " +";
+    title.style.cursor = "pointer";
+    title.style.userSelect = "none";
+
+    title.addEventListener("click", function () {
+      const isHidden = getComputedStyle(content).display === "none";
+      content.style.display = isHidden ? "block" : "none";
+      title.textContent = baseText + (isHidden ? " -" : " +");
+    });
+  }
+
+  setupToggle("compQsTitle", "compQs");
+  setupToggle("discussQsTitle", "discussQs");
+});
+</script>
+
+
+<footer style="margin:8rem 0 0 0;">...</footer>
 </body></html>
