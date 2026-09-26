@@ -239,6 +239,33 @@ input[type="checkbox"] {
   }
 </style>
 
+<style>
+
+    /*added 18sep*/
+    .copy-btn {
+        margin:1rem .3rem;
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.98);
+    }
+
+footer {margin:7rem 0 0 0;}
+</style>
+
 </head>
 <body>
     <div class="container">
@@ -283,7 +310,7 @@ input[type="checkbox"] {
         </audio>
     </a>
 </div>
-
+<div id="column1">
 <p>When we think about Christmas, we often picture two familiar
 <b>figures</b>: Jesus Christ and Santa Claus. At first, they might
 seem completely different. One belongs to the world of faith, and the
@@ -302,7 +329,7 @@ community, and compassion.</p>
 <h3 class="western"><a name="santa-claus-a-story-that-inspires-action"></a>
 Santa Claus: A Story That Inspires Action</h3>
 <p>Santa Claus may seem like a playful character, but his <b>roots</b>
-point to a very real person: St. Nicholas, also known as St. Nick, was a bishop from the 4th century.
+point to a very real person, St. Nicholas. Also known as St. Nick, he was a bishop from the 4th century.
 St. Nick gave away his own wealth to help the poor, often in secret.
 Over many <b>centuries</b>, this story grew into the modern Santa
 Claus, who represents joyful <b>generosity</b>.</p>
@@ -338,12 +365,12 @@ our communities.</p>
 <b>seamlessly</b>. It began with acts of real, personal generosity
 centuries ago, and today it continues through millions of people
 choosing to give, to care, and to share.</p>
-
+  </div>
 </div>
 
         <div class="edit-spacer editMode" style="display: none;">---------------------------------</div>
         <div class="discussion" contenteditable="false">
- <details><summary><span style="font-weight:700; font-size:1.2rem;">Comprehension Questions</span></summary>
+ <details id="compQs"><summary><span style="font-weight:700; font-size:1.2rem;">Comprehension Questions</span></summary>
 <p>1. According to the article, what two figures shape the meaning of Christmas?</p>
 <details>
   <summary>Answer:</summary>
@@ -387,6 +414,14 @@ choosing to give, to care, and to share.</p>
 </details>
 </details>
         </div>
+
+                <div class="discussion" contenteditable="false">
+ <details id="discussQs"><summary><span style="font-weight:700; font-size:1.2rem;">Discussion</span></summary>
+<p>1. What gift would you buy for the following people: Your boss; a specific co-worker or colleague; a spouse, fiance, or girl/boyfriend; your parents; your best friend  </p>
+
+</details>
+        </div>
+
     </div>
      <!-- EDITOR PANEL -->
   <div class="editor-panel editMode" style="display: none;">
@@ -424,9 +459,6 @@ choosing to give, to care, and to share.</p>
 
 <a href="../podcCmas2Commercial/podcCmas2Commercial.html" target="_blank">Podcast and Exercises</a>
 </div>
-
-<footer style="margin-top:8rem;">...</footer>
-
 
   <script>
 
@@ -571,6 +603,79 @@ document.getElementById('btnSave').onclick = () => {
 
 
 
+</div><button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button>
+
+<script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script>
+
+<footer>...</footer>
 
 
 </body></html>
