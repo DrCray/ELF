@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Christmas Carol — The Literary Lens Podcast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+.ep-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.ep-art{width:4.5rem;height:4.5rem;border-radius:10px;flex:none;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:700;}
+.ep-meta h2{margin:0;}
+.ep-meta p{margin:.15rem 0 0;color:#666;font-size:.9rem;}
+.fake-player{display:flex;align-items:center;gap:.9rem;margin-top:1rem;padding:.75rem 1rem;
+  border:1.5px solid var(--purple);border-radius:999px;background:var(--paper);text-decoration:none;
+  color:var(--text);transition:background .15s ease,box-shadow .15s ease;}
+.fake-player:hover{background:#ece9fb;box-shadow:0 4px 14px rgba(38,33,92,.15);}
+.fp-play{flex:none;width:2.6rem;height:2.6rem;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;font-size:1rem;padding-left:.15rem;}
+.fp-body{flex:1;min-width:0;}
+.fp-title{display:block;font-weight:600;font-size:.9rem;color:var(--purple);}
+.fp-track{display:flex;align-items:center;gap:.6rem;font-size:.75rem;color:#777;margin-top:.25rem;}
+.fp-bar{flex:1;height:5px;border-radius:999px;background:var(--border);position:relative;}
+.fp-bar::before{content:"";position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:var(--purple);}
+.fp-bar::after{content:"";position:absolute;left:-5px;top:50%;width:11px;height:11px;margin-top:-5.5px;
+  border-radius:50%;background:var(--purple);}
+.fp-src{flex:none;font-size:.75rem;font-weight:600;color:#a3231f;}
+.line{display:flex;gap:.75rem;padding:.6rem .7rem;margin:0 -.7rem .35rem;border-radius:10px;}
+.spk{flex:none;width:3.4rem;font-weight:700;font-size:.85rem;padding-top:.15rem;}
+.spk.sarah{color:var(--purple);}
+.spk.mark{color:#8a5a14;}
+.line p{margin:0;}
+button.vocab{font:inherit;font-weight:700;color:var(--purple);background:none;border:none;padding:0;
+  cursor:pointer;border-bottom:2px dotted var(--purple-light);}
+button.vocab:hover,button.vocab.active{background:#ece9fb;}
+.def-bar{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);width:min(40rem,calc(100% - 2rem));
+  background:#fff;border:1.5px solid var(--purple);border-radius:12px;padding:.8rem 2.4rem .8rem 1rem;
+  box-shadow:0 8px 24px rgba(38,33,92,.18);display:none;z-index:100;}
+.def-bar.open{display:block;}
+.def-bar .word{font-weight:700;color:var(--purple);}
+.def-bar .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.def-bar p{margin:.2rem 0 0;}
+.def-bar .close{position:absolute;top:.4rem;right:.6rem;border:none;background:none;font-size:1.3rem;
+  color:#888;cursor:pointer;line-height:1;}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem;}
+.link-card{display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);
+  border-radius:10px;padding:.9rem 1.1rem;background:var(--paper);transition:border-color .15s ease;}
+.link-card:hover{border-color:var(--purple);}
+.link-card strong{display:block;color:var(--purple);font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;}
+.link-card span{font-size:.88rem;color:#555;}
+@media print{.fake-player,.def-bar,.links-section{display:none !important;}}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="printBtn" class="btn secondary" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>A Christmas Carol — The Literary Lens Podcast</h1>
+  <p>Listen, read along, and learn the key vocabulary</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section">
+  <div class="ep-meta">
+    <div class="ep-art">LL</div>
+    <div>
+      <h2>A Christmas Carol: The Story of Redemption</h2>
+      <p>The Literary Lens · with Sarah &amp; Mark</p>
+    </div>
+  </div>
+  <a class="fake-player" href="YOUTUBE_LINK_HERE" target="_blank" rel="noopener" aria-label="Listen to this episode on YouTube (opens in a new tab)">
+    <span class="fp-play" aria-hidden="true">▶</span>
+    <span class="fp-body">
+      <span class="fp-title">Listen to this episode</span>
+      <span class="fp-track"><span>0:00</span><span class="fp-bar"></span><span>--:--</span></span>
+    </span>
+    <span class="fp-src">YouTube ↗</span>
+  </a>
+</div>
+
+<div class="section">
+  <h2>Transcript</h2>
+  <p style="font-size:.9rem;color:#666;">Tap a <strong style="color:var(--purple)">highlighted word</strong> to see what it means.</p>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>Welcome back to The Literary Lens, where we talk about stories that shape our world. I’m Sarah.
+Today, we’re discussing a
+<button class="vocab" type="button" data-word="timeless classic" data-pos="noun phrase" data-def="a famous work that stays popular and important no matter how much time passes">timeless classic</button>
+that has captured the public&#x27;s imagination for nearly 185 years.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>And I’m Mark. We’re talking about a famous holiday
+<button class="vocab" type="button" data-word="classic" data-pos="noun" data-def="a book, film, or song of high quality that people enjoy for many years">classic</button>.
+The name might
+<button class="vocab" type="button" data-word="ring a bell" data-pos="idiom" data-def="to sound familiar; to remind you of something you have heard before">ring a bell</button>.
+It&#x27;s Charles Dickens&#x27; <em>A Christmas Carol</em>, often called <em>Scrooge</em>.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>It’s incredible how this short book has managed to
+<button class="vocab" type="button" data-word="stand the test of time" data-pos="idiom" data-def="to stay popular, useful, or valued for a long time">stand the test of time</button>.
+Published in 1843, its popularity never
+<button class="vocab" type="button" data-word="fades" data-pos="verb" data-def="slowly becomes weaker or less noticeable until it disappears">fades</button>.
+In fact, the very name of &quot;Scrooge&quot; has become synonymous with the word
+<button class="vocab" type="button" data-word="miser" data-pos="noun" data-def="a person who loves money and hates spending it, even when they have a lot">miser</button>.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>Exactly. The story begins the day before Christmas, with Scrooge being cruel to his employee and his
+own family. But later that night, he
+<button class="vocab" type="button" data-word="goes through" data-pos="phrasal verb" data-def="experiences something, especially something difficult or unpleasant">goes through</button>
+a
+<button class="vocab" type="button" data-word="frightening" data-pos="adjective" data-def="making someone feel afraid; scary">frightening</button>
+experience.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>Right! He is visited by the ghost of his
+<button class="vocab" type="button" data-word="deceased" data-pos="adjective" data-def="dead; no longer living (a formal word)">deceased</button>
+business partner, followed by three other spirits: the Ghosts of Christmas Past, Present, and
+Future. They
+<button class="vocab" type="button" data-word="point out" data-pos="phrasal verb" data-def="to show or tell someone something so that they notice it">point out</button>
+where his life is
+<button class="vocab" type="button" data-word="heading" data-pos="verb (-ing)" data-def="moving or developing in a particular direction">heading</button>
+unless he has a
+<button class="vocab" type="button" data-word="change of heart" data-pos="noun phrase" data-def="a change in someone’s opinion, feelings, or attitude">change of heart</button>.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>For example, the first spirit shows him that his
+<button class="vocab" type="button" data-word="obsession" data-pos="noun" data-def="something a person thinks about all the time, often in an unhealthy way">obsession</button>
+with wealth pushed away the only woman he ever truly loved. She married another man and had a happy
+family.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>Then the Ghost of Christmas Present shows him how the Cratchit family finds joy even in
+<button class="vocab" type="button" data-word="poverty" data-pos="noun" data-def="the state of being very poor">poverty</button>.
+The spirit introduces him to Tiny Tim, a boy with a life-threatening illness. Despite his own
+<button class="vocab" type="button" data-word="condition" data-pos="noun" data-def="an illness or health problem that someone has for a long time">condition</button>,
+Tiny Tim chooses to bring happiness to everyone around him.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>Finally, the last ghost shows Scrooge the
+<button class="vocab" type="button" data-word="untimely" data-pos="adjective" data-def="happening too early or at the wrong time">untimely</button>
+death of warm-hearted Tiny Tim. He also shows Scrooge his own lonely,
+<button class="vocab" type="button" data-word="miserable" data-pos="adjective" data-def="very unhappy or uncomfortable">miserable</button>
+death. This fills Scrooge with terrible
+<button class="vocab" type="button" data-word="regret" data-pos="noun" data-def="a feeling of sadness about something you did or did not do">regret</button>
+over his selfish choices.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>But this isn&#x27;t just a sad ghost story; it’s a powerful story about
+<button class="vocab" type="button" data-word="redemption" data-pos="noun" data-def="being saved from evil or wrongdoing; making up for past mistakes">redemption</button>.
+It shows us that anyone can have a
+<button class="vocab" type="button" data-word="change of heart" data-pos="noun phrase" data-def="a change in someone’s opinion, feelings, or attitude">change of heart</button>.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>So Scrooge wakes up on Christmas morning and decides to
+<button class="vocab" type="button" data-word="turn over a new leaf" data-pos="idiom" data-def="to change your behavior and start acting in a better way">turn over a new leaf</button>.
+The angry old man becomes a completely different person.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>He really has an amazing
+<button class="vocab" type="button" data-word="transformation" data-pos="noun" data-def="a complete change in someone’s appearance or character">transformation</button>.
+He
+<button class="vocab" type="button" data-word="turns into" data-pos="phrasal verb" data-def="changes and becomes something different">turns into</button>
+a warm, happy, and
+<button class="vocab" type="button" data-word="generous" data-pos="adjective" data-def="happy to give money, time, or help to others">generous</button>
+person. This story tells us that people can change for the better.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>And there have been
+<button class="vocab" type="button" data-word="countless" data-pos="adjective" data-def="too many to be counted; very many">countless</button>
+movie
+<button class="vocab" type="button" data-word="adaptations" data-pos="noun" data-def="films, plays, or TV shows made from a book or another story">adaptations</button>
+over the years—more than twenty since 1950. The number of stage productions, TV shows, films, and
+spin-offs is
+<button class="vocab" type="button" data-word="staggering" data-pos="adjective" data-def="very surprising or shocking, especially because it is so large">staggering</button>.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>Oh, definitely! There are animated versions, Broadway versions, big musicals, and even modern
+comedies. It seems like every
+<button class="vocab" type="button" data-word="generation" data-pos="noun" data-def="all the people born and living at about the same time">generation</button>
+gets its own version.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>And in each
+<button class="vocab" type="button" data-word="rendition" data-pos="noun" data-def="a particular performance or version of a song, play, or story">rendition</button>,
+the universal message shines through.</p>
+</div>
+<div class="line" data-speaker="Sarah">
+  <span class="spk sarah">Sarah</span>
+  <p>It really does. The story&#x27;s
+<button class="vocab" type="button" data-word="influence" data-pos="noun" data-def="the power to affect how people think or behave">influence</button>
+reaches all over the world. Its core theme of personal transformation from selfishness to kindness
+&quot;resonates&quot; across cultures.</p>
+</div>
+<div class="line" data-speaker="Mark">
+  <span class="spk mark">Mark</span>
+  <p>And on that note, time has
+<button class="vocab" type="button" data-word="run out" data-pos="phrasal verb" data-def="to be used up or finished so that there is no more left">run out</button>
+for today&#x27;s show. Thanks for tuning in, and we’ll see you next time!</p>
+</div>
+</div>
+
+<div class="section links-section">
+  <h2>Practice the Vocabulary</h2>
+  <div class="links">
+<a class="link-card" href="christmas-carol-podc-study-cards.html" target="_blank" rel="noopener"><strong>Vocabulary Study Cards</strong><span>Definitions and examples for every word and phrase.</span></a>
+<a class="link-card" href="christmas-carol-podc-cloze.html" target="_blank" rel="noopener"><strong>Podcast Cloze</strong><span>Fill in the missing words in the full transcript.</span></a>
+<a class="link-card" href="christmas-carol-podc-def-cloze.html" target="_blank" rel="noopener"><strong>Definition Quiz</strong><span>Match each definition to the right word.</span></a>
+<a class="link-card" href="christmas-carol-podc-sentences-cloze.html" target="_blank" rel="noopener"><strong>Sentence Cloze</strong><span>Use the vocabulary in brand-new sentences.</span></a>
+  </div>
+</div>
+
+<div class="def-bar" id="defBar" role="status" aria-live="polite">
+  <button class="close" id="defClose" type="button" aria-label="Close">×</button>
+  <span class="word" id="defWord"></span><span class="pos" id="defPos"></span>
+  <p id="defText"></p>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ---- Tap a vocabulary word to see its definition ----
+  const bar = document.getElementById('defBar');
+  const barWord = document.getElementById('defWord');
+  const barPos = document.getElementById('defPos');
+  const barDef = document.getElementById('defText');
+  let activeBtn = null;
+  document.querySelectorAll('button.vocab').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (activeBtn) activeBtn.classList.remove('active');
+      activeBtn = b; b.classList.add('active');
+      barWord.textContent = b.dataset.word;
+      barPos.textContent = '(' + b.dataset.pos + ')';
+      barDef.textContent = b.dataset.def;
+      bar.classList.add('open');
+    });
+  });
+  document.getElementById('defClose').addEventListener('click', () => {
+    bar.classList.remove('open');
+    if (activeBtn) activeBtn.classList.remove('active');
+  });
+
+});
+</script>
+
+</body>
+</html>

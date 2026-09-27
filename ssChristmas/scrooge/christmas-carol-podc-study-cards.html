@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Christmas Carol — Vocabulary Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --purple:#26215C;
+  --purple-light:#3d3680;
+  --paper:#faf7f2;
+  --card:#ffffff;
+  --correct:#1f7a3d;
+  --correct-bg:#e3f6e9;
+  --incorrect:#a3231f;
+  --incorrect-bg:#fbe6e5;
+  --border:#e2ddd2;
+  --text:#2a2a2a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'DM Sans', system-ui, -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--text);
+  line-height:1.65;
+  padding:0 0 4rem;
+  max-width:50rem; margin:auto;
+}
+h1,h2,h3{
+  font-family:'Playfair Display', Georgia, serif;
+  color:var(--purple);
+  line-height:1.25;
+}
+.wrap{
+  max-width:44rem;
+  margin:0 auto;
+  padding:clamp(1rem,4vw,2rem);
+}
+header.page-header{
+  background:var(--purple);
+  color:#fff;
+  padding:clamp(1.25rem,4vw,2rem) clamp(1rem,4vw,2rem);
+  text-align:center;
+}
+header.page-header h1{
+  color:#fff;
+  font-size:clamp(1.4rem,4vw,2rem);
+  margin:0 0 .35rem;
+}
+header.page-header p{margin:0;opacity:.85;font-size:.95rem;}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:clamp(1rem,3vw,1.75rem);
+  margin:1.25rem 0;
+}
+.section h2{font-size:clamp(1.1rem,3vw,1.4rem);margin-top:0;}
+.passage p{margin:0 0 1rem;}
+select.blank{
+  font:inherit;
+  font-weight:600;
+  padding:.2rem .45rem;
+  border-radius:6px;
+  border:1.5px solid var(--purple);
+  background:#fff;
+  color:var(--purple);
+  margin:0 .15rem;
+}
+select.blank.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);}
+select.blank.incorrect{background:var(--incorrect-bg);border-color:var(--incorrect);color:var(--incorrect);}
+.vocab-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.9rem 1.1rem;
+  margin:0 0 .85rem;
+  background:var(--paper);
+}
+.vocab-card .word{font-weight:700;color:var(--purple);font-size:1.05rem;}
+.vocab-card .pos{font-style:italic;font-size:.85rem;color:#6a6a6a;margin-left:.4rem;}
+.vocab-card .def{margin:.3rem 0;}
+.vocab-card .example{font-size:.92rem;color:#4a4a4a;}
+.quiz-item{margin:0 0 1.1rem;}
+.quiz-item .qnum{font-weight:700;color:var(--purple);margin-right:.3rem;}
+
+/* Sticky toolbar */
+.toolbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  gap:.6rem;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--border);
+}
+.btn{
+  font:inherit;
+  font-weight:600;
+  font-size:.85rem;
+  padding:.5rem 1rem;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  transition:opacity .15s ease;
+}
+.btn:hover{opacity:.85;}
+.btn.secondary{
+  background:#fff;
+  color:var(--purple);
+  border:1.5px solid var(--purple);
+}
+
+/* Print-gate modal */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(38,33,92,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:#fff;
+  border-radius:12px;
+  padding:1.5rem;
+  max-width:22rem;
+  width:100%;
+}
+.modal-box h3{margin-top:0;}
+.modal-box label{display:block;font-size:.85rem;font-weight:600;margin:.7rem 0 .3rem;}
+.modal-box input{
+  width:100%;
+  padding:.5rem .6rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  font:inherit;
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.2rem;}
+
+.student-id-line{
+  display:none;
+  font-size:.85rem;
+  color:#555;
+  margin:0 0 1rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.5rem;
+}
+@media print{
+  .toolbar,.modal-overlay{display:none !important;}
+  .student-id-line{display:block !important;}
+  select.blank{border:none;background:none;-webkit-appearance:none;appearance:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="toolbar" style="display:none;">
+  <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+</div>
+
+<header class="page-header">
+  <h1>A Christmas Carol — Vocabulary Study</h1>
+  <p>30 key words and phrases from the podcast (reference)</p>
+</header>
+<div class="wrap">
+  <p class="student-id-line" id="studentIdLine"></p>
+
+<div class="section">
+  <h2>Word List</h2>
+<div class="vocab-card">
+  <span class="word">timeless classic</span><span class="pos">(noun phrase)</span>
+  <p class="def">a famous work that stays popular and important no matter how much time passes</p>
+  <p class="example"><em>"Today, we’re discussing a timeless classic that has captured the public&#x27;s imagination for nearly 185 years."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">classic</span><span class="pos">(noun)</span>
+  <p class="def">a book, film, or song of high quality that people enjoy for many years</p>
+  <p class="example"><em>"We’re talking about a famous holiday classic."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">ring a bell</span><span class="pos">(idiom)</span>
+  <p class="def">to sound familiar; to remind you of something you have heard before</p>
+  <p class="example"><em>"The name might ring a bell."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">stand the test of time</span><span class="pos">(idiom)</span>
+  <p class="def">to stay popular, useful, or valued for a long time</p>
+  <p class="example"><em>"It’s incredible how this short book has managed to stand the test of time."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">fades</span><span class="pos">(verb)</span>
+  <p class="def">slowly becomes weaker or less noticeable until it disappears</p>
+  <p class="example"><em>"Published in 1843, its popularity never fades."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">miser</span><span class="pos">(noun)</span>
+  <p class="def">a person who loves money and hates spending it, even when they have a lot</p>
+  <p class="example"><em>"The very name of &#x27;Scrooge&#x27; has become synonymous with the word miser."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">goes through</span><span class="pos">(phrasal verb)</span>
+  <p class="def">experiences something, especially something difficult or unpleasant</p>
+  <p class="example"><em>"But later that night, he goes through a frightening experience."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">frightening</span><span class="pos">(adjective)</span>
+  <p class="def">making someone feel afraid; scary</p>
+  <p class="example"><em>"But later that night, he goes through a frightening experience."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">deceased</span><span class="pos">(adjective)</span>
+  <p class="def">dead; no longer living (a formal word)</p>
+  <p class="example"><em>"He is visited by the ghost of his deceased business partner."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">point out</span><span class="pos">(phrasal verb)</span>
+  <p class="def">to show or tell someone something so that they notice it</p>
+  <p class="example"><em>"They point out where his life is heading unless he has a change of heart."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">heading</span><span class="pos">(verb (-ing))</span>
+  <p class="def">moving or developing in a particular direction</p>
+  <p class="example"><em>"They point out where his life is heading unless he has a change of heart."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">change of heart</span><span class="pos">(noun phrase)</span>
+  <p class="def">a change in someone’s opinion, feelings, or attitude</p>
+  <p class="example"><em>"It shows us that anyone can have a change of heart."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">obsession</span><span class="pos">(noun)</span>
+  <p class="def">something a person thinks about all the time, often in an unhealthy way</p>
+  <p class="example"><em>"The first spirit shows him that his obsession with wealth pushed away the only woman he ever truly loved."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">poverty</span><span class="pos">(noun)</span>
+  <p class="def">the state of being very poor</p>
+  <p class="example"><em>"The Ghost of Christmas Present shows him how the Cratchit family finds joy even in poverty."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">condition</span><span class="pos">(noun)</span>
+  <p class="def">an illness or health problem that someone has for a long time</p>
+  <p class="example"><em>"Despite his own condition, Tiny Tim chooses to bring happiness to everyone around him."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">untimely</span><span class="pos">(adjective)</span>
+  <p class="def">happening too early or at the wrong time</p>
+  <p class="example"><em>"The last ghost shows Scrooge the untimely death of warm-hearted Tiny Tim."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">miserable</span><span class="pos">(adjective)</span>
+  <p class="def">very unhappy or uncomfortable</p>
+  <p class="example"><em>"He also shows Scrooge his own lonely, miserable death."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">regret</span><span class="pos">(noun)</span>
+  <p class="def">a feeling of sadness about something you did or did not do</p>
+  <p class="example"><em>"This fills Scrooge with terrible regret over his selfish choices."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">redemption</span><span class="pos">(noun)</span>
+  <p class="def">being saved from evil or wrongdoing; making up for past mistakes</p>
+  <p class="example"><em>"This isn&#x27;t just a sad ghost story; it’s a powerful story about redemption."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">turn over a new leaf</span><span class="pos">(idiom)</span>
+  <p class="def">to change your behavior and start acting in a better way</p>
+  <p class="example"><em>"Scrooge wakes up on Christmas morning and decides to turn over a new leaf."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">transformation</span><span class="pos">(noun)</span>
+  <p class="def">a complete change in someone’s appearance or character</p>
+  <p class="example"><em>"He really has an amazing transformation."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">turns into</span><span class="pos">(phrasal verb)</span>
+  <p class="def">changes and becomes something different</p>
+  <p class="example"><em>"He turns into a warm, happy, and generous person."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">generous</span><span class="pos">(adjective)</span>
+  <p class="def">happy to give money, time, or help to others</p>
+  <p class="example"><em>"He turns into a warm, happy, and generous person."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">countless</span><span class="pos">(adjective)</span>
+  <p class="def">too many to be counted; very many</p>
+  <p class="example"><em>"There have been countless movie adaptations over the years."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">adaptations</span><span class="pos">(noun)</span>
+  <p class="def">films, plays, or TV shows made from a book or another story</p>
+  <p class="example"><em>"There have been countless movie adaptations over the years—more than twenty since 1950."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">staggering</span><span class="pos">(adjective)</span>
+  <p class="def">very surprising or shocking, especially because it is so large</p>
+  <p class="example"><em>"The number of stage productions, TV shows, films, and spin-offs is staggering."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">generation</span><span class="pos">(noun)</span>
+  <p class="def">all the people born and living at about the same time</p>
+  <p class="example"><em>"It seems like every generation gets its own version."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">rendition</span><span class="pos">(noun)</span>
+  <p class="def">a particular performance or version of a song, play, or story</p>
+  <p class="example"><em>"And in each rendition, the universal message shines through."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">influence</span><span class="pos">(noun)</span>
+  <p class="def">the power to affect how people think or behave</p>
+  <p class="example"><em>"The story&#x27;s influence reaches all over the world."</em></p>
+</div>
+<div class="vocab-card">
+  <span class="word">run out</span><span class="pos">(phrasal verb)</span>
+  <p class="def">to be used up or finished so that there is no more left</p>
+  <p class="example"><em>"And on that note, time has run out for today&#x27;s show."</em></p>
+</div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="nameIdOverlay">
+  <div class="modal-box">
+    <h3>Before you print and save as PDF…</h3>
+    <p style="font-size:.9rem;color:#555;margin:0;">Please enter your name and student ID.</p>
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" placeholder="Name">
+    <label for="studentId">Student ID</label>
+    <input type="text" id="studentId" placeholder="ID#">
+    <div class="modal-actions">
+      <button class="btn secondary" id="modalCancel" type="button">Cancel</button>
+      <button class="btn" id="modalConfirm" type="button">Continue &amp; Print</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const printBtn = document.getElementById('printBtn');
+  const overlay = document.getElementById('nameIdOverlay');
+  const nameInput = document.getElementById('studentName');
+  const idInput = document.getElementById('studentId');
+  const cancelBtn = document.getElementById('modalCancel');
+  const confirmBtn = document.getElementById('modalConfirm');
+  const idLine = document.getElementById('studentIdLine');
+
+  printBtn.addEventListener('click', () => {
+    overlay.classList.add('open');
+    nameInput.focus();
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  confirmBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
+    if (!name || !id) {
+      alert('Please enter both your name and student ID before printing.');
+      return;
+    }
+    idLine.textContent = `Name: ${name}    Student ID: ${id}`;
+    overlay.classList.remove('open');
+    window.print();
+  });
+});
+</script>
+
+</body>
+</html>
