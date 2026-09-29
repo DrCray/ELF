@@ -231,6 +231,46 @@ body{
   box-sizing: border-box;
 }
 
+
+
+    .copy-btn {
+        margin:1rem .3rem;
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.98);
+    }
+
+
+
+
+
+.listItems {
+  /* Forces the paragraph to behave like an <li> element */
+  display: list-item;
+
+  /* Adds a standard bullet point (or choose 'decimal' for numbers) */
+  list-style-type: disc;
+
+  /* Pushes the bullet inside the text box or keeps it outside */
+  list-style-position: outside;
+
+  /* moves the entire list item (including the bullet) to the right */
+  margin-left: 2.2rem;
+}
 </style>
 </head>
   
@@ -356,7 +396,7 @@ body{
     </script>         
 
 <div id="container">
-    <div id="column1" class="column1" contenteditable="false">The moon festival in Taiwan is also known as the mid-autumn festival. This day is a national holiday, so everyone in Taiwan has the
+    <div id="column1" class="column1" contenteditable="false"><p>The moon festival in Taiwan is also known as the mid-autumn festival. This day is a national holiday, so everyone in Taiwan has the
 <b>day off</b>. <br><br>The holiday usually
 <b>falls on</b> the 15th day of the 8th month of the lunar calendar, which is around September or October in the modern calendar.
 <b>Lunar</b>, by the way, means "of the moon," so the lunar calendar can be called the moon calendar. This holiday will be the full moon of the month. People love to go moon-
@@ -380,12 +420,14 @@ body{
 <b>flavors</b>, even green tea and chocolate. But traditional flavors include red bean paste, lotus seed paste, with salty egg yolks in the center. Sometimes a bit of pork is mixed into the paste. <br><br>But the biggest event of the night is the barbecue (BBQ). They use smaller
 <b>grills</b> compared with the USA, and usually only
 <b>grill out</b> on this particular holiday. In western countries, people grill out
-<b>all year round</b> whenever the weather is nice. Grilling out, or barbecuing, is not related to any particular holiday, although it is popular on July 4th in the USA. <br><br><div>Things you need for a barbecue.</div><div><ul><li>Plenty of meat&nbsp;</li><li>A barbecue grill <br></li><li>Charcoal&nbsp;</li><li>Some form of fire starter to light the charcoal&nbsp;</li><li>Tongs, for grabbing the food</li></ul></div></div>
+<b>all year round</b> whenever the weather is nice. Grilling out, or barbecuing, is not related to any particular holiday, although it is popular on July 4th in the USA.
+</p><P>Things you need for a barbecue.</p>
+<p class="listItems">Plenty of meat</p><p class="listItems">A barbecue grill <br></p><p class="listItems">Charcoal</p><p class="listItems">Fire starter (to light the charcoal)</p><p class="listItems">Tongs, for grabbing the food</p></div></div>
 </div> 
 
 <details>
 <summary id="compQsTitle" style="background:#63648F;">Comprehension Questions</summary>
-    <div id="compQs" contenteditable="false"><ol><li>When is Taiwan's moon festival?</li><li>What is a family get-together?</li><li>Explain the story of Chang'e, the cruel emporer, and the moon.</li><li>Describe a moon cake?</li><li>Which is your favorite kind of mooncake?</li><li>What's the biggest event at the family gathering?</li><li>What things do you need if you want to BBQ?</li></ol></div>
+    <div id="compQs" contenteditable="false"><ol><p class="listItems">When is Taiwan's moon festival?</p><p class="listItems">What is a family get-together?</p><p class="listItems">Explain the story of Chang'e, the cruel emporer, and the moon.</p><p class="listItems">Describe a moon cake.</p><p class="listItems">Which is your favorite kind of mooncake?</p><p class="listItems">What's the biggest event at the family gathering?</p><p class="listItems">What things do you need if you want to BBQ?</p></ol></div>
 </details> <br>
 
 <details>
@@ -656,7 +698,75 @@ function saveDom(){
 <a href="taiwan-moon-festival-vocab-def-cloze.html" target="_blank">Vocab Definitions Quiz</a>
 </div>
 
-
+<button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button><script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script>
             
 <footer style="margin:35px">     
       <p> ... end. </p>
