@@ -238,6 +238,27 @@ audio {
     width: 100%;
     height: 100%;
 }
+
+       .copy-btn {
+        margin:1rem .3rem;
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.98);
+    }
 </style>
 
 
@@ -257,7 +278,7 @@ audio {
 
       <img src="zombieWalk.webp" alt="image not available">
 
-      <div class="audio-player">
+ <div class="audio-player">
     <a href="https://youtu.be/mUQQPjm84GU" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
         <audio controls tabindex="-1">
             <source src="https://fake.player/asdflkj234k" type="audio/mp4" />
@@ -267,13 +288,14 @@ audio {
 </div>
 
       <div class="linkOut"><a href="#otherStuff">Exercises, Podcast, Music Videos (go to bottom)</a>&nbsp;</div>
+      <div class="copyThis">
       <h3>Zombie Walks</h3>
 
       <p class="section-intro">
       <span id="overview">
             Zombie walks are a fun and spooky modern tradition. In these parades, large groups of people dress up as "the living dead" or as others say, "the undead."
       </span>
-            While they might look scary, these gatherings are usually about community, creativity, and sometimes charity. As we move through 2026, zombie walks remain a popular way for fans of horror and pop culture to come together and express their creativity.
+            While they might look scary, these gatherings are usually about community, creativity, and sometimes charity. Zombie walks are a popular way for fans of horror and pop culture to come together and express their creativity.
       </p>
 
       <h3>How It All Began</h3>
@@ -293,7 +315,7 @@ audio {
       <p>Beyond the fun, some of these walks serve a serious purpose. Many organizers ask participants to bring canned food for local food banks or pay a small fee to support charities. It is a way to turn a "scary" monster into a symbol of community help.</p>
 
       <h3>The Future of the Horde</h3>
-      <p>In 2026, the zombie walk has become an organized event with required permits, security, and sponsors. Whether you are in London, Mexico City, or Tokyo, the sight of a "horde" of zombies is a sign of a creative community coming together to celebrate their favorite stories.</p>
+      <p>Many zombie walks have become an organized event with required permits, security, and sponsors. Whether you are in London, Mexico City, or Tokyo, the sight of a "horde" of zombies is a sign of a creative community coming together to celebrate their favorite stories.</p>
 
       <h3>Join the Fun</h3>
       <p>Your first zombie walk balances looking convincingly "dead" with staying comfortable—you'll be in costume for hours.</p>
@@ -326,10 +348,11 @@ audio {
           </ul>
         </li>
       </ol>
+      </div>
     </article>
 
-    <section>
-      <h2>Comprehension Questions</h2>
+    <section id="compQs">
+      <h2>Comprehension Questions</h2><p style="color:#b3b3b3;"> with suggested answers</p>
 
       <details>
         <summary>What is a "zombie walk"?</summary>
@@ -377,6 +400,14 @@ audio {
       </details>
     </section>
 
+    <section id="discussQs">
+      <h2>Discussion</h2>
+      <div  style="box-shadow: 0 0 5px 0px gray; padding: .5rem 1rem; border-radius:7px; margin: .5rem 0; background:#F5F6F5;">
+        <p> If you could create your own parade, what theme would you follow? Consider: holidays, festivals, or famous characters.</p><p> What kind of additional events might you plan?
+        </p>
+      </div>
+    </section>
+
     <section class="dictation-section">
       <h2>Dictation / Summary</h2>
       <div class="linkOut"><a href="https://youtu.be/J-l_h1gmw50" target="_blank">Dictation audioVid</a>&nbsp;</div>
@@ -409,6 +440,78 @@ audio {
       <div id="audioVidPodcast" class="linkOut"><a href="zombieWalksPodcast.html" target="_blank">Podcast and Exercises</a>&nbsp;  &#127911; </div>
       <div id="audioVidMusic1" class="linkOut"><a href="zombieWalkMtvHipRap.html" target="_blank">Music Video, Hip-Hop with Rap</a>&nbsp; &#127911; </div>
       <div id="audioVid2" class="linkOut"><a href="zombieWalkMtvRock.html" target="_blank">Music Video, Rock</a>&nbsp; &#127911; </div>
+
+
+     <button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button><script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('.copyThis');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('.copyThis');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script>
+
 
   </main>
 
