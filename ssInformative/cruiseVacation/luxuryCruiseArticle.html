@@ -232,6 +232,28 @@ audio {
     width: 100%;
     height: 100%;
 }
+
+
+         .copy-btn {
+        margin:1rem .3rem;
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+    .copy-btn:active {
+        transform: scale(0.98);
+    }
 </style>
 </head>
 <body>
@@ -256,36 +278,36 @@ audio {
 <div class="linkOut"><a href="#linksBottom">Exercises, Podcast, Music Videos (go to bottom)</a>  📚  🎧 </div>
 </div>
 <h3>The Ultimate Getaway</h3>
-<p class="firstPara">
+<p class="firstPara copyThis">
     A luxury cruise is the ultimate <strong>getaway</strong> vacation. It offers a rare chance to truly <strong>unplug</strong> from the <strong>fast pace</strong> of daily life. In today's world, planning a traditional holiday means booking flights, hunting for hotels, and coordinating luggage transfers, and it can often feel as <strong>draining</strong> as work itself. This is precisely why nearly 40 million people worldwide choose a cruise vacation every year. A modern cruise ship is far more than just a boat; it is a floating, <strong>sophisticated</strong> resort.
   </p>
 <h3>The Magic of Moving Without Moving</h3>
 <div data-img-align="left" data-img-container="" data-img-gap="1rem" data-img-min-width="10px" data-img-width="48%">
 <img alt="image" onerror="this.onerror=null;this.src=window.__PH;" src="movingWithoutMoving.png"/>
-<p>
+<p class="copyThis">
     One of the greatest joys of a cruise is the total lack of travel <strong>hassles</strong>. Imagine going to sleep in one country and waking up in another, all without the trouble of moving your suitcases from hotel to hotel. Whether you are sailing through the sunny Caribbean, exploring historic Mediterranean ports, or <strong>venturing</strong> to the Alaskan wilderness, your ship acts as your moving cabin. You can step outside, breathe in the fresh ocean air, and watch the horizon change while the <strong>chaotic</strong> world fades away. There are no airport lines, no train schedules, and no rental car worries — just pure relaxation as the ship <strong>handles</strong> all the <strong>logistics</strong>. For those who wish to explore ashore, the cruise line offers a wide selection of guided <strong>excursions</strong> — city tours, camel rides, and mountain hikes — ensuring you get the most out of every port of call.
   </p></div>
 <h3>Adventure for the Whole Family</h3>
 <div data-img-align="right" data-img-container="" data-img-gap="1rem" data-img-min-width="10px" data-img-width="48%">
 <img alt="image" onerror="this.onerror=null;this.src=window.__PH;" src="family.png"/>
-<p>
+<p class="copyThis">
     The modern cruise experience is defined by personal <strong>flexibility</strong> and incredible variety. You can <strong>customize</strong> each day to match your exact mood. For <strong>adventure</strong> seekers, many ships feature high-tech waterslides, zip lines, rock-climbing walls, and virtual reality gaming arenas. Families especially appreciate the supervised kids' clubs, which give parents some <strong>well-deserved</strong> time to themselves.
   </p></div>
 <h3>Quiet Corners and Lively Nights</h3>
 <div data-img-align="left" data-img-container="" data-img-gap="1rem" data-img-min-width="10px" data-img-width="48%">
 <img alt="image" onerror="this.onerror=null;this.src=window.__PH;" src="quietAndLively.webp"/>
-<p>
+<p class="copyThis">
     For those who prefer peace and quiet, adult-only lounges, luxurious spas offering massages, and <strong>serene</strong> library spaces provide the perfect environment to relax. You can enjoy mocktails by the pool while reading a book with an ocean view, or unwind in an observation lounge and simply watch the water go by. When the sun goes down, the entertainment becomes just as <strong>diverse</strong>. You can watch Broadway-style theater performances, enjoy live music, or dance the night away at a nightclub. For a touch of excitement, onboard <strong>casinos</strong> offer games like blackjack and roulette, adding a Las Vegas-style thrill to your evening.
   </p></div>
 <h3>Dining and Togetherness</h3>
 <div data-img-align="right" data-img-container="" data-img-gap="1rem" data-img-min-width="10px" data-img-width="48%">
 <img alt="image" onerror="this.onerror=null;this.src=window.__PH;" src="dining.webp"/>
-<p>
+<p class="copyThis">
     Dining is one of the best parts of a cruise. You can eat delicious food all day long — breakfast, lunch, dinner, and snacks at any time. Big buffets offer endless choices, including pasta, fresh fish, burgers, and decadent desserts, while sit-down lunches and dinners showcase a variety of international <strong>cuisines</strong>. Cruising offers a unique balance: it gives families a chance to bond through shared experiences, while allowing individuals the freedom to pursue their own interests. This flexibility is what makes the experience so <strong>appealing</strong> to such a wide range of travelers.
   </p></div>
 </article>
-<section>
-<h2>Comprehension Questions</h2>
+<section id="compQs">
+<h2>Comprehension Questions</h2><p style="color:#b3b3b3;"> with suggested answers</p>
 <details>
 <summary>How many people worldwide choose a cruise vacation every year?</summary>
 <div class="details-content">nearly 40 million people worldwide choose a cruise vacation every year</div>
@@ -321,7 +343,7 @@ audio {
 </section>
 <section>
 <h2>Discussion Questions</h2>
-<ul>
+<ul id="discussQs">
 <li>If you went on a cruise, would you rather spend your time relaxing in a quiet lounge or trying high-energy activities like waterslides and rock climbing? Why?</li>
 <li>Do you think traveling by cruise ship is a better way to see multiple countries than traditional travel? Why or why not?</li>
 </ul>
@@ -356,7 +378,85 @@ audio {
 
       <a href="cruiseSyntaxExc.html" rel="noopener noreferrer" target="_blank">Syntax Exercise</a>
 </div>
-</div></main>
+</div>
+
+
+     <button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div>
+
+     <button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button>
+
+     <script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('p.copyThis');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('p.copyThis');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script>
+
+
+</main>
 <script>
 
 (function () {
