@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joan's Story – Vocabulary Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #26215C;
+    --paper: #FBF8F1;
+    --ink: #2A2733;
+    --muted: #6B6680;
+    --tint: #ECE9F7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.2rem);
+    line-height: 1.7;
+  }
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 5vw, 3.5rem) 1.25rem 6rem;
+  }
+  h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    color: var(--brand);
+    font-size: clamp(1.8rem, 1.4rem + 2vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+  }
+  .hint {
+    color: var(--muted);
+    font-size: 0.9em;
+    margin: 0 0 2rem;
+  }
+  p { margin: 0 0 1.25rem; }
+
+  /* ===== zvocab component ===== */
+  .zvocab-ready {
+    cursor: pointer;
+    color: var(--brand);
+    text-decoration: underline dotted;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    border-radius: 3px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background: var(--tint); }
+  .zvocab-ready:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  /* Mobile: bottom sheet */
+  .zvocab-pop {
+    position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+    padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background: var(--brand); color: #fff;
+    font-size: 1rem; line-height: 1.45;
+    border-radius: 0.9rem 0.9rem 0 0;
+    box-shadow: 0 -6px 24px rgb(38 33 92 / 0.3);
+  }
+  .zvocab-pop strong {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.2em;
+  }
+  .zvocab-pop p { margin: 0.3rem 0 0; }
+  .zvocab-pop .ex { font-style: italic; opacity: 0.85; }
+
+  /* Wider screens: floating card near the word */
+  @media (min-width: 601px) {
+    .zvocab-pop {
+      right: auto; bottom: auto;
+      max-width: 20rem;
+      padding: 0.8rem 1rem;
+      font-size: 0.92rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 6px 20px rgb(38 33 92 / 0.25);
+    }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Joan's story</h1>
+  <p class="hint">Tap or hover over an underlined word to see what it means.</p>
+
+  <p>Joan was a shy girl who did not have many friends. Recently, she had also been <strong class="zvocab">struggling</strong> with her self-worth. As she moved into higher grades at school, her subjects became more difficult, and her grades began to fall. She started to doubt her own <strong class="zvocab">abilities</strong>.</p>
+
+  <p>Joan was not rich, but she lived in a <strong class="zvocab">sizeable</strong> mansion that had belonged to her family for <strong class="zvocab">generations</strong>.</p>
+</main>
+
+<script>
+const vocabulary = {
+  "struggling": {
+    definition: "having difficulty dealing with something",
+    example: "She was struggling to understand the difficult math problem."
+  },
+  "abilities": {
+    definition: "the skills or qualities that allow someone to do something",
+    example: "The teacher helped Joan recognize her abilities."
+  },
+  "sizeable": {
+    definition: "fairly large in size",
+    example: "They live in a sizeable house with a large garden."
+  },
+  "generations": {
+    definition: "groups of people in a family who are born at different times",
+    example: "The old house had belonged to the family for generations."
+  }
+};
+
+/* ===== zvocab component ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body>
+</html>
