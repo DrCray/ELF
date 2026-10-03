@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Secret Library - Podcast</title>
+    <style>
+        html { font-size: 100%; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            padding: .8rem .8rem .8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 3px 6px gray;
+        }
+        .container {
+            width: 100%;
+            max-width: 35rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background: #F7EDF4;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: .5rem;
+            transition: color .3s;
+        }
+        h2:hover { color: #FB6D6D; }
+        h3 {
+            font-size: 1rem;
+            color: #3CA29A;
+            font-weight: 600;
+        }
+        p, ul {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: .8rem;
+        }
+        ul {
+            padding-left: 1rem;
+            list-style: none;
+        }
+        ul > li {
+            margin-bottom: .8rem;
+            position: relative;
+            padding-left: .8rem;
+        }
+        li {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+        a {
+            color: #FF14BA;
+            text-decoration: none;
+            transition: color .3s;
+        }
+        a:hover {
+            color: #4ecdc4;
+            text-decoration: underline;
+        }
+        .section {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+        }
+        .sectionTop {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+        .audio-player {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        audio {
+            width: 100%;
+            max-width: 300px;
+            height: 40px;
+            pointer-events: none;
+        }
+
+        #aboutPodcast{
+            background:#DDF0ED;
+            box-shadow: 0 0 3px 1px #ADDBD4;
+            padding: .5rem;
+            border-radius: 6px;
+            font-size:90%;
+        }
+
+        .host {
+            font-weight:500; color: #0D8F82;
+        }
+
+        .guest {
+            font-weight:500; color: #F52FCF;
+        }
+
+        /* ===== zvocab: tap/hover definitions ===== */
+        .zv-hint { font-size: .85rem; color: #6b6b6b; margin: 0 0 .6rem; }
+        .zvocab-ready {
+            cursor: pointer;
+            color: #0B6E64;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .zvocab-ready[aria-expanded="true"] { background: #DDF0ED; }
+        .zvocab-ready:focus-visible { outline: 2px solid #0B6E64; outline-offset: 2px; }
+        /* Mobile: bottom sheet */
+        .zvocab-pop {
+            position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+            padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+            background: #0B6E64; color: #fff;
+            font-size: 1rem; line-height: 1.45;
+            border-radius: .9rem .9rem 0 0;
+            box-shadow: 0 -6px 24px rgb(0 0 0 / .25);
+        }
+        .zvocab-pop > strong { font-size: 1.15em; }
+        .zvocab-pop p { margin: .3rem 0 0; color: #fff; }
+        .zvocab-pop .ex { font-style: italic; opacity: .9; }
+        .zvocab-pop .ex strong { font-style: normal; text-decoration: underline; }
+        /* Wider screens: floating card near the word */
+        @media (min-width: 601px) {
+            .zvocab-pop {
+                right: auto; bottom: auto;
+                max-width: 20rem;
+                padding: .8rem 1rem;
+                font-size: .92rem;
+                border-radius: .5rem;
+                box-shadow: 0 6px 20px rgb(0 0 0 / .25);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">The Secret Library - Podcast</h2>
+            <p>Finding strength in family history</p> <p id="aboutPodcast">The hosts talk about a story they've read in which a shy girl finds a hidden library, learns about a brave ancestor, and starts to believe in herself.</p>
+
+            <a href="place-holder" target="_blank">
+                <span style="color:#0D6B92;">Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="podcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide
+                </a>
+                <a href="podcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz
+                </a>
+                <a href="podcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz
+                </a>
+            </div>
+        </div>
+        <br>
+
+        <div class="audio-player">
+            <a href="place-holder" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+                <audio controls tabindex="-1">
+                    <source src="place-holder" type="audio/mp4" />
+                    Your browser does not support the audio element.
+                </audio>
+            </a>
+        </div>
+
+        <div class="section">
+            <h3>The Secret Library - Podcast</h3>
+            <p class="zv-hint">Tap or hover over an underlined phrase to see what it means.</p>
+            <div>
+                <ul>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Welcome back to Story Time Weekly! Today we're chatting about "The Secret Library." Did you get a chance to read it?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I did! A hidden passage behind a wall in your own house? That's every kid's dream. Honestly, I <strong class="zvocab" data-word="couldn't put it down">couldn't put it down</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Same here. Although, if I found a dark, dusty tunnel in my house, I'd probably <strong class="zvocab" data-word="freak out">freak out</strong> and run straight to my parents.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Ha! Not Joan, though. She just walks right in. I think that tells us something about her, even before the big discovery.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Good point. At the start, she seems so quiet and unsure. Her grades are dropping, and she's basically <strong class="zvocab" data-word="lost faith in">lost faith in</strong> herself.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Right, and a lot of students can <strong class="zvocab" data-word="relate to">relate to</strong> that. When school suddenly gets harder, it's easy to think you're just not smart enough.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Totally. Then she finds this old family book, and it turns out her great-great-grandmother was a wartime nurse and a spy!&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Talk about a <strong class="zvocab" data-word="plot twist">plot twist</strong>! I did not see that coming.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> And not just any spy. Hanna worked inside a Nazi hospital, gathering information and helping people escape. That takes <strong class="zvocab" data-word="nerves of steel">nerves of steel</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Seriously. I can't even <strong class="zvocab" data-word="keep a secret">keep a secret</strong> about a birthday present.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Me neither. My little brother can always <strong class="zvocab" data-word="get it out of me">get it out of me</strong> in about five minutes.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> But here's the part I loved most. Joan doesn't suddenly become a genius or win some big prize. She just looks in the mirror and stands up a little straighter.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Yes! It's such a small moment, but it <strong class="zvocab" data-word="speaks volumes">speaks volumes</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Exactly. Nothing around her has changed, but the way she sees herself has.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Do you think that's realistic, though? Can learning about an ancestor really <strong class="zvocab" data-word="make a difference">make a difference</strong>?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I think so. Knowing where you come from can <strong class="zvocab" data-word="give you a boost">give you a boost</strong>. It's like realizing that <strong class="zvocab" data-word="deep down">deep down</strong>, you might have a bit of that same strength.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I like that. Hanna probably didn't know she was brave until she had to be. Maybe Joan's the same.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> And at the end, she <strong class="zvocab" data-word="makes up her mind">makes up her mind</strong> to work harder and believe in herself. No magic required.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Which is honestly the best kind of ending. It's not about becoming a hero overnight. It's about getting better <strong class="zvocab" data-word="one step at a time">one step at a time</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Well put. Now I kind of want to go home and <strong class="zvocab" data-word="dig into">dig into</strong> my own family history.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Ha! Check behind your bookshelves first. You never know what you'll find.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Good advice! Thanks for listening, everyone. See you next time!&nbsp;&nbsp;</li>
+
+                </ul>
+                <br>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+<script>
+/* Podcast vocabulary (generated from podcast_vocab in the content JSON) */
+const vocabulary = {
+  "couldn't put it down": {
+    "word": "couldn't put it down",
+    "definition": "(expression) Found a book or story so interesting that you kept reading without stopping.",
+    "example": "The mystery novel was so exciting that I <strong>couldn't put it down<\/strong>."
+  },
+  "freak out": {
+    "word": "freak out",
+    "definition": "(phrasal verb, informal) To suddenly become very scared, upset, or excited.",
+    "example": "Don't <strong>freak out<\/strong>, but there's a spider on your shoulder."
+  },
+  "lost faith in": {
+    "word": "lost faith in",
+    "definition": "(collocation) Stopped believing or trusting in someone or something.",
+    "example": "After failing his driving test three times, he <strong>lost faith in<\/strong> his own skills."
+  },
+  "relate to": {
+    "word": "relate to",
+    "definition": "(phrasal verb) To understand someone's feelings or situation because you have had a similar experience.",
+    "example": "Many young viewers can <strong>relate to<\/strong> the main character's problems at school."
+  },
+  "plot twist": {
+    "word": "plot twist",
+    "definition": "(collocation) A sudden, unexpected change in the direction of a story.",
+    "example": "The movie's final <strong>plot twist<\/strong> shocked the whole audience."
+  },
+  "nerves of steel": {
+    "word": "nerves of steel",
+    "definition": "(idiom) The ability to stay calm and brave in a dangerous or stressful situation.",
+    "example": "Surgeons need <strong>nerves of steel<\/strong> to stay calm during long, difficult operations."
+  },
+  "keep a secret": {
+    "word": "keep a secret",
+    "definition": "(collocation) To not tell other people something private or hidden.",
+    "example": "Can you <strong>keep a secret<\/strong>? I'm planning a surprise party for Mom."
+  },
+  "get it out of me": {
+    "word": "get it out of me",
+    "definition": "(expression) To make me tell information I was trying to keep private.",
+    "example": "I tried to hide where we were going on vacation, but my sister managed to <strong>get it out of me<\/strong>."
+  },
+  "speaks volumes": {
+    "word": "speaks volumes",
+    "definition": "(idiom) Shows something very clearly, without needing words.",
+    "example": "The way he treats restaurant staff <strong>speaks volumes<\/strong> about his character."
+  },
+  "make a difference": {
+    "word": "make a difference",
+    "definition": "(expression) To have a real, positive effect on a person or situation.",
+    "example": "Even a small donation can <strong>make a difference<\/strong> to families in need."
+  },
+  "give you a boost": {
+    "word": "give you a boost",
+    "definition": "(collocation) To make you feel more energetic, confident, or positive.",
+    "example": "A short walk in the morning can <strong>give you a boost<\/strong> for the whole day."
+  },
+  "deep down": {
+    "word": "deep down",
+    "definition": "(expression) In your true feelings or character, even if you don't show it.",
+    "example": "He acts tough, but <strong>deep down<\/strong> he's a very gentle person."
+  },
+  "makes up her mind": {
+    "word": "makes up her mind",
+    "definition": "(idiom) Makes a firm decision about something.",
+    "example": "Once my aunt <strong>makes up her mind<\/strong>, nothing can change it."
+  },
+  "one step at a time": {
+    "word": "one step at a time",
+    "definition": "(expression) Slowly and carefully, dealing with one small part before the next.",
+    "example": "Learning a new language is easier if you take it <strong>one step at a time<\/strong>."
+  },
+  "dig into": {
+    "word": "dig into",
+    "definition": "(phrasal verb) To search or study something carefully to learn more about it.",
+    "example": "Historians love to <strong>dig into<\/strong> old letters and diaries."
+  }
+};
+
+/* ===== zvocab component: hover (mouse) or tap (touch) to show definitions ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${e.word}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+
+</body>
+</html>
