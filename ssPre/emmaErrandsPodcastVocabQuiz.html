@@ -19,6 +19,10 @@
             padding:0; width:fit-content; font-size: 75%;
         }
         .toggle-button {
+          position: -webkit-sticky; /* For Safari compatibility */
+  position: sticky;         /* Activates sticky positioning */
+  top: 10px;                /* Gap from top of screen when stuck */
+  z-index: 100;
             background-color: #017BC6;
             color: white;
             border: none;
@@ -147,14 +151,13 @@
             box-shadow: 0px 0px 5px 2px #A598FF;
             }
     </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
     
 <div id="topHeading"><br><h2>Emma Runs Some Errands&nbsp;&nbsp;</h2><h3>Podcast vocabulary lesson</h3></div>
     <!-- Student Info Section -->
 
-    <input id="name" type="text" value="name">
-    <input id="id" type="text" value="id#">
+
     <hr>
     <input id="passCode" type="text" value="passcode" style="display:none;" "="">
     <button id="verifyYou" onclick="verifyStudent()" style="display:none;">Verify Your Name, ID, Passcode</button>
@@ -426,7 +429,7 @@ function showPopup(button, message) {
 </script>
 
 <script>
-let selectCounter = 0; // Counter for select element numbering        
+let selectCounter = 0; // Counter for select element numbering
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -440,9 +443,11 @@ function toggleAnswers(containerId) {
     const container = document.getElementById(containerId);
     const button = container.querySelector('.toggle-button');
     const selects = container.querySelectorAll('select[data-correct]');
-    
+
     if (button.textContent === 'Show Answers') {
-        // Show all answers
+        container._savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, backgroundColor: s.style.backgroundColor };
+        });
         selects.forEach(select => {
             const correctAnswer = select.getAttribute('data-correct');
             select.value = correctAnswer;
@@ -451,11 +456,16 @@ function toggleAnswers(containerId) {
         });
         button.textContent = 'Hide Answers';
     } else {
-        // Hide all answers
-        selects.forEach(select => {
-            select.value = '';
+        const saved = container._savedState;
+        selects.forEach((select, i) => {
             select.classList.remove('answer-shown');
-            select.style.backgroundColor = '';
+            if (saved && saved[i]) {
+                select.value = saved[i].value;
+                select.style.backgroundColor = saved[i].backgroundColor;
+            } else {
+                select.value = '';
+                select.style.backgroundColor = '';
+            }
         });
         button.textContent = 'Show Answers';
     }
@@ -471,7 +481,7 @@ function generateCloze() {
 
     const uniqueId = Date.now();
     clozeContainer.id = `cloze-div-${uniqueId}`;
-    
+
     clozeContainer.className = 'cloze-container';
 
     // Add toggle button at the top
@@ -491,7 +501,7 @@ function generateCloze() {
     if (dvOpenCount + dvCloseCount > 2) {
         alert(`only one ^dv...dv^ set allowed.`);
         return;
-    }            
+    }
 
     // Check heading tags
     const headings = [
@@ -526,7 +536,7 @@ function generateCloze() {
             console.log(`After ${heading.openTag} replacement:`, processedInfo);
         });
 
-        
+
 // Validate bold, italic, underline tags
 const textStyles = [
     { open: '^bb', close: 'bb^', name: 'bold' },
@@ -551,9 +561,9 @@ processedInfo = processedInfo.replaceAll('^br', '<br>')
     .replaceAll('ii^', '</i>')
     .replaceAll('^uu', '<u>')
     .replaceAll('uu^', '</u>');
-console.log('After ^br and text style replacement:', processedInfo);                
-        
-        
+console.log('After ^br and text style replacement:', processedInfo);
+
+
         infoSection = processedInfo;
         const infoDiv = document.createElement('div');
         infoDiv.innerHTML = infoSection;
@@ -588,8 +598,8 @@ if (caretCount < 2) {
 
         // Generate HTML for the group
         let clozeGroup = group;
-		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
-        
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');
+
         // Replace each bold word with a select element
         boldWords.forEach(word => {
             const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
@@ -607,7 +617,7 @@ if (caretCount < 2) {
         sentenceDiv.innerHTML = clozeGroup;
         clozeContainer.appendChild(sentenceDiv);
     });
-    
+
     const deleteThisSectionBtn = document.createElement('button');
     deleteThisSectionBtn.className='deleteThisSectionBtn editMode';
     deleteThisSectionBtn.textContent = 'Delete This Section';
@@ -623,7 +633,7 @@ function checkAnswer(select) {
     if (select.classList.contains('answer-shown')) {
         return;
     }
-    
+
     const correctAnswer = select.getAttribute('data-correct');
     if (select.value === correctAnswer) {
         select.style.backgroundColor = '#d4edda';
@@ -634,43 +644,47 @@ function checkAnswer(select) {
 </script>
 
 <!-- Student Verification Script -->
-<script>
-async function verifyStudent() {
-    const name = document.getElementById("name").value.trim();
-    const id = document.getElementById("id").value.trim();
-    const passCode = document.getElementById("passCode").value.trim();
-    
-    if (!name || !id || !passCode) {
-        alert("Please fill in all fields first!");
-        return;
-    }
-    
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('id', id);
-    formData.append('passCode', passCode);
-    
-    try {
-        const response = await fetch('./verify_student.php', {
-            method: 'POST',
-            body: formData
-        });
-        const result = await response.text();
-        alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
-        
-        if (result === 'SUCCESS') {
-          document.getElementById('output').style.pointerEvents = 'auto';  
-          document.getElementById('submitAssignment').disabled = false;
-        }
-        
-    } catch (error) {
-        alert("Verification error. Try again!");
-    }
-}
+       <!-- Print/Save PDF: when printing, check that name ID not blank or have initial values -->
 
-// Show verification button initially
-//document.getElementById('verifyYou').style.display = "block";
-</script>
+             <!-- !!!!!DELETE THIS IF if  using "show/hide name and ID" -->
+            <div id="nameAndID">
+                <input id="nameZ" type="text" value="name">
+                <input id="idZ" type="text" value="id#"><br>
+            </div>
+             <!-- delete if  using "show/hide name and ID" -->
+
+      <!-- !!!! turn button on with display:block toggleEditOn  -->
+    <br>
+    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>
+
+      <script>
+        function checkThenPrint(){
+
+            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
+
+            let Name =  document.getElementById("nameZ").value.trim();
+            let ID = document.getElementById("idZ").value.trim();
+
+            //=============================================================
+            //remove this IF statement when not using "show/Hide name and ID"
+            let nameAndIDdisplayValue=document.getElementById("nameAndID").style.display;
+
+            if (nameAndIDdisplayValue==="none"){
+                window.print(); return;}
+            //=============================================================
+
+            if (
+                (Name==="name" || ID==="id#" || Name==="" || ID==="")
+                ){
+                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+     </script>
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
+     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
 
 <!-- Save System Scripts -->
 <script>
@@ -729,7 +743,8 @@ async function saveAdminVersion(fileNM, serverLocation) {
         if (doctypeNode) {
             doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
         }
-        const htmlContent = `${doctypeString}\n${document.documentElement.outerHTML}`;
+        const htmlContent = `${doctypeString}
+${document.documentElement.outerHTML}`;
 
         // Wrap HTML content with basic PHP authentication (no auth_check yet)
         const phpWrappedContent = `${htmlContent}`;
@@ -812,7 +827,8 @@ async function savePublicVersion(fileNameHtml, serverLocation) {
         if (doctypeNode) {
             doctypeString = `<!DOCTYPE ${doctypeNode.name}${doctypeNode.publicId ? ` PUBLIC "${doctypeNode.publicId}"` : ''}${doctypeNode.systemId ? ` "${doctypeNode.systemId}"` : ''}>`;
         }
-        const fullHtml = `${doctypeString}\n${document.documentElement.outerHTML}`;
+        const fullHtml = `${doctypeString}
+${document.documentElement.outerHTML}`;
 
         // Show loading status
         saveStatus.className = 'save-status loading';
@@ -924,28 +940,8 @@ const domFileName = document.getElementById('domFileName').value;
 </script>
 <!--///// end edit HTML save as DOM =======================
 ========================================================-->
-    <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block;margin-top:.7rem;"> Print/Save as PDF </button>
-
-      <script>
-        function checkThenPrint(){
-
-            //console.log ("zzzzzzzz: " + nameAndIDdisplayValue);
-
-            let Name =  document.getElementById("name").value.trim();
-            let ID = document.getElementById("id").value.trim();
 
 
-            if (
-                (Name==="name" || ID==="id#" || Name==="" || ID==="")
-                ){
-                alert ("You forgot your name or ID# \r\n please enter them \r\n and print/save pdf again");
-                }
-            else{
-             window.print();
-            }
-         } // end checkThenPrint()
-     </script>
-     <!--===========   end print/save PDF , sometimes used with "show/hide name and ID"=====-->
      <footer style="margin-top:6rem;">...</footer>
 
 

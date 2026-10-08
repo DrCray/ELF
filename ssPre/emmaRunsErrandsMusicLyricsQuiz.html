@@ -19,6 +19,9 @@
             padding:0; width:fit-content; font-size: 75%;
         }
         .toggle-button {
+            position:sticky;
+            top: 8px;
+            z-index:1000;
             background-color: #017BC6;
             color: white;
             border: none;
@@ -147,7 +150,7 @@
             box-shadow: 0px 0px 5px 2px #A598FF;
             }
     </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
     
 <div id="topHeading"><br><h2>One of Those Days - Lyrics</h2><h3>for the article: Emma Runs Errands</h3></div>
@@ -411,9 +414,11 @@ function toggleAnswers(containerId) {
     const container = document.getElementById(containerId);
     const button = container.querySelector('.toggle-button');
     const selects = container.querySelectorAll('select[data-correct]');
-    
+
     if (button.textContent === 'Show Answers') {
-        // Show all answers
+        container._savedState = Array.from(selects).map(function(s) {
+            return { value: s.value, backgroundColor: s.style.backgroundColor };
+        });
         selects.forEach(select => {
             const correctAnswer = select.getAttribute('data-correct');
             select.value = correctAnswer;
@@ -422,11 +427,16 @@ function toggleAnswers(containerId) {
         });
         button.textContent = 'Hide Answers';
     } else {
-        // Hide all answers
-        selects.forEach(select => {
-            select.value = '';
+        const saved = container._savedState;
+        selects.forEach((select, i) => {
             select.classList.remove('answer-shown');
-            select.style.backgroundColor = '';
+            if (saved && saved[i]) {
+                select.value = saved[i].value;
+                select.style.backgroundColor = saved[i].backgroundColor;
+            } else {
+                select.value = '';
+                select.style.backgroundColor = '';
+            }
         });
         button.textContent = 'Show Answers';
     }
