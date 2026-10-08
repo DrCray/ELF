@@ -202,10 +202,24 @@
          details { background:#CDE0D2 !important; border-color:#053849 !important;}
     /*end new color scheme */
 
+
+.answer.ansRight { background-color:#D8F8E9 !important; color:darkgreen; font-weight:bold; }
+.answer.ansWrong { background-color:#EEE8EF !important; color:darkred;  font-weight:bold; }
+.answer:disabled { opacity:1; }
+#studyToggle {
+position:fixed; bottom:1rem; left:50%; transform:translateX(-50%); z-index:1000;    padding:.6em 1.2em; border-radius:999px; border:2px solid #053849;
+    background:#fff; color:#053849; font-weight:bold; cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+#studyToggle.on { background:#053849; color:#fff; }
+@media print { #studyToggle { display:none; } }
+
+
+
 #i, #j {display:none;}
     </style>
     
-  </head>
+  <style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
   
   <body>
       
@@ -864,24 +878,8 @@ everyone in the community.</p><style type="text/css">p { line-height: 115%; marg
       
       <script>
         function ansCheck(zselectNumb, thisAns, zselectDivID){
-            
-            let zzselected = document.getElementById(zselectDivID);
-            let zselected = zzselected.value; 
-            
-            let regex = /[^A-Za-z0-9]/g;              
-            zselected = zselected.replace(regex, '');
-
-            
-            if (zselected === thisAns){
-                zzselected.style.cssText="background-color: #D8F8E9; color: darkgreen; font-weight: bold;";
-            } else{
-                zzselected.style.cssText="background-color: #EEE8EF; color: darkred; font-weight: bold;";
-
-            }
-            console.log(zselected);
-            console.log(thisAns);
-            console.log(zselectNumb);
-        }
+    paintSelect(document.getElementById(zselectDivID));
+}
       
       </script>
 
@@ -1423,6 +1421,51 @@ function replaceNlines() {
         function dummy(){ console.log("dummyFunction activated");}    
     </script>     
       
+
+
+<button id="studyToggle" onclick="toggleStudyMode()">Study Mode</button>
+<script>
+(function(){
+  let snapshot = null;
+  const clean = s => s.replace(/[^A-Za-z0-9]/g, '');
+  const getAns = sel => {
+    const m = (sel.getAttribute('onchange') || '').match(/ansCheck\('[^']*','([^']*)'/);
+    return m ? m[1] : null;
+  };
+
+  window.paintSelect = function(sel){
+    sel.style.cssText = '';
+    sel.classList.remove('ansRight', 'ansWrong');
+    const ans = getAns(sel);
+    if (ans === null || sel.selectedIndex <= 0) return;   // unanswered = neutral
+    sel.classList.add(clean(sel.value) === ans ? 'ansRight' : 'ansWrong');
+  };
+
+  window.toggleStudyMode = function(){
+    const btn  = document.getElementById('studyToggle');
+    const sels = document.querySelectorAll('#allParags select.answer');
+    if (!snapshot){                                        // -> Study Mode
+      snapshot = [...sels].map(s => s.selectedIndex);
+      sels.forEach(s => {
+        const ans = getAns(s); if (ans === null) return;
+        const k = [...s.options].findIndex((o, n) => n > 0 && clean(o.text) === ans);
+        if (k > 0) s.selectedIndex = k;
+        paintSelect(s);
+        s.disabled = true;
+      });
+      btn.textContent = 'Return to Quiz'; btn.classList.add('on');
+    } else {                                               // -> back to quiz
+      sels.forEach((s, n) => {
+        s.disabled = false;
+        s.selectedIndex = snapshot[n] ?? 0;
+        paintSelect(s);
+      });
+      snapshot = null;
+      btn.textContent = 'Study Mode'; btn.classList.remove('on');
+    }
+  };
+})();
+</script>
 <p style="margin:35px"> ... end. </p>
   
   
