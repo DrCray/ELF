@@ -14,7 +14,7 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -110,12 +110,18 @@
 <a href="#menu-links">Exercises and other Audiovid links at bottom</a>
 </div><img alt="image" src="vampireBitesVictim.webp" style="display:block; margin:auto; width:97%; padding: 1rem 0 1rem 0"/>
 <div class="audio-player">
-<a href="https://youtu.be/6s-GZZFMG1c" rel="noopener noreferrer" style="text-decoration:none;" target="_blank">
-<audio controls="" tabindex="-1">
-<source src="https://fake.player/asdflkj234k" type="audio/mp4"/>
-            Your browser does not support the audio element.
-        </audio>
-</a>
+  <a href="https://youtu.be/6s-GZZFMG1c" class="audio-link" target="_blank" rel="noopener">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+    
+  </a>
 </div>
 <p>It was just after midnight when Ella arrived home from a night out with the girls. The night was quiet except for the sound of her own footsteps, and a small breeze rustling the leaves. As she reached her apartment door, she felt a strange chill, the kind that makes you glance over your shoulder when you feel someone is watching you. She <strong>fumbled</strong> with her keys, the metal jingling nervously in her hand. Just as the key turned in the lock and the door cracked open, something moved behind her—a blur of motion.
 </p>
@@ -397,12 +403,15 @@ function saveDom(){
 </script>
 <div class="menu-links" id="menu-links">
 <a href="#container">↑ Top</a>
-<a href="https://youtu.be/jrtpSsbKoYE" target="_blank">Dictation 🎧</a>
+<a href="https://youtu.be/jrtpSsbKoYE" target="_blank"><span class="swave"></span>
+Dictation</a>
 <a href="vampireBitesVictimUpdatedDictation.html" target="_blank">Dictation Check</a>
 <a href="vampireBitesVictimCloze.html" target="_blank">Quiz</a>
 <a href="vampireBitesVictimVocabSentences.html" target="_blank">Vocab Quiz</a>
-<a href="vampireBitesVictim_HiddenMonsters.html" target="_blank">Music</a>
-<a href="vampireBitesVictimPodcast.html" target="_blank">podcast</a>
+<a href="vampireBitesVictim_HiddenMonsters.html" target="_blank"><span class="swave"></span>
+Music</a>
+<a href="vampireBitesVictimPodcast.html" target="_blank"><span class="swave"></span>
+podcast</a>
 </div>
 <script>
   /*get the article innerHTML*/
@@ -500,4 +509,32 @@ document.addEventListener("DOMContentLoaded", function () {
 </script><script>
 document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
 document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
-</script></body></html>
+</script>
+
+
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Define the HTML block you want to reuse
+            const sharedHTML = `
+<svg class="wave" fill="currentColor" height="12" viewbox="0 0 24 12" width="24">
+<rect height="4" rx="1" width="2" x="0" y="4"></rect>
+<rect height="8" rx="1" width="2" x="4" y="2"></rect>
+<rect height="12" rx="1" width="2" x="8" y="0"></rect>
+<rect height="6" rx="1" width="2" x="12" y="3"></rect>
+<rect height="10" rx="1" width="2" x="16" y="1"></rect>
+<rect height="2" rx="1" width="2" x="20" y="5"></rect>
+</svg>&nbsp;
+            `;
+
+            // 2. Find all elements with the class "innerCode"
+            const targets = document.querySelectorAll(".swave");
+
+            // 3. Loop through them and insert the HTML
+            targets.forEach(element => {
+                element.innerHTML = sharedHTML;
+            });
+        });
+</script>
+
+
+</body></html>
