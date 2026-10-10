@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8" content="Dr Ray EFL ESL, English learning"/>
+<!-- content attribute is for search engines -->
+<meta content="English Learning Management Method" name="quizMaker"/>
+<!-- Mobile responsiveness -->
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- xxxx  NO Cache  xxx   -->
+<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+<meta content="no-cache" http-equiv="Pragma"/>
+<meta content="0" http-equiv="Expires"/>
+<title>SS2Unit15CarThievesK9sGatorsDict</title>
+<!-- link rel="stylesheet" href="style.css" -->
+<!-- <script src="script.js"></script -->
+<link href="../css/SS.css" rel="stylesheet"/>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<body>
+<p><b contenteditable="false">Car Thieves, K9s, and gators</b></p>
+<div contenteditable="false" id="dict" style="background-color:#fff; padding:1ex;"><ol><li>Car theft has become a common problem at Blinky's Casino in Florida.</li><li>Guests spotted two men attempting to break into a car and quickly called the security line.</li><li>When the guards ran to investigate, they discovered two men breaking into a parked vehicle.</li><li>The men tried to run, but the guard's K9 companion chased down and tackled one of the thieves.</li><li>The other one jumped into a lake and ignored the big sign that said: "Beware of gators".</li><li>When the bystanders saw a gator swimming toward the thief, they began screaming at him to swim back to shore.</li><li>Everyone heard the thief scream just before he was dragged under water by the gator.</li><li>Game and Fish officers later tracked down the nine-foot gator and killed it.</li><li>In America, it is generally the policy to put down any animal, pet or wild, that has attacked a human.</li></ol></div>
+<button id="text2list" onclick="textToList()" style="margin: 0px 0px 1em; display: none;">make List</button>
+<script>
+
+function textToList(){   
+    //------- dict text to List----------------    
+  const div = document.getElementById('dict');
+    
+  const text = div.innerHTML;
+  const listItems = text.split("<br>");
+    
+  const ol = document.createElement('ol');
+    
+  for (const li of listItems) {   
+    const liElement = document.createElement("li");
+    liElement.textContent = li;
+    div.appendChild(ol);
+    ol.appendChild(liElement);
+  }
+      div.innerHTML = ol.outerHTML;
+ // ------ end comppQs make List ----------------------   
+} //endt textToList()
+</script>
+<!--  ===============  SAVE THE DOM as FILE ==================== -->
+<div id="saveDom" style="background-color: cadetblue; width: fit-content; margin: 5px 0px 0px 1em; padding: 1ex; display: none;">
+<label style="background-color: antiquewhite;"> name the file before saving  
+          <input id="fileName" size="30" type="text" value="fileName"/>
+</label><br/>
+<button class="hlBtn" id="saveDownload" onclick="saveDom()">Save/Download</button>
+</div>
+<script>
+      function toggleEditOff(){
+          
+            document.getElementById("saveDom").style.display="none";
+            document.getElementById("text2list").style.display="none";
+
+          let contEdbls = document.querySelectorAll('[contentEditable="true"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=false;
+            }
+
+        // end remove all editables ************************
+      } //end toggleEditOFf
+          
+      function toggleEditOn(){
+          
+            document.getElementById("saveDom").style.display="block";
+            document.getElementById("text2list").style.display="block";
+              
+          let contEdbls = document.querySelectorAll('[contentEditable="false"]');
+            for (const contEdbl of contEdbls) {
+                contEdbl.contentEditable=true;
+            }      
+            
+            //end restore editabels **********************
+      }
+        
+      </script>
+<script>
+function saveDom(){
+    
+        oldTitle = document.title;
+        let fileName = document.getElementById("fileName").value;
+        document.title  = fileName; 
+    
+    
+    /*
+         //save theDom  editMode *************************
+        let theDom = document.documentElement.innerHTML;
+        //console.log(theDom);
+        const docHtml = '<!DOCTYPE html><html lang="en">';
+        const endHtml = '</html>';
+        const fullHtmlDoc = docHtml + theDom + endHtml;
+
+
+        // here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob = new Blob([fullHtmlDoc], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url = window.URL.createObjectURL(myBlob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = fileName + "EditMode.html";
+
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        //end save theDom editMode
+    */
+        toggleEditOff();
+    
+           //  theDOM study mode
+        let theDom2 = document.documentElement.innerHTML;
+        const docHtml2 = '<!DOCTYPE html><html lang="en">';
+        const endHtml2 = '</html>';
+        const fullHtmlDoc2 = docHtml2 + theDom2 + endHtml2;
+
+        // EditMode save .. here we use Blob to set up a download link
+
+        // (A) CREATE BLOB OBJECT
+        const myBlob2 = new Blob([fullHtmlDoc2], {type: "text/html"});
+
+        // (B) CREATE DOWNLOAD LINK
+        const url2 = window.URL.createObjectURL(myBlob2);
+        const anchor2 = document.createElement("a");
+        anchor2.href = url2;
+        anchor2.download = fileName + ".html";
+
+        anchor2.click();
+        window.URL.revokeObjectURL(url2);
+        //end the BLOB stuff and save
+        
+        alert("Check the browser's \n default download folder");
+        
+        toggleEditOn();
+        document.title = oldTitle;        
+
+}      
+</script>
+<div id="menu-links" style="display:none" class="menu-links" style="display:none" style="display:none">
+<a href="#container">&uarr; Top</a>
+</div><footer style="margin:35px">
+<p> ... end. </p>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function setupToggle(titleId, contentId) {
+    const title = document.getElementById(titleId);
+    const content = document.getElementById(contentId);
+    if (!title || !content) return;
+
+    const baseText = title.textContent.trim();
+    title.textContent = baseText + " +";
+    title.style.cursor = "pointer";
+    title.style.userSelect = "none";
+
+    title.addEventListener("click", function () {
+      const isHidden = getComputedStyle(content).display === "none";
+      content.style.display = isHidden ? "block" : "none";
+      title.textContent = baseText + (isHidden ? " -" : " +");
+    });
+  }
+
+  setupToggle("compQsTitle", "compQs");
+  setupToggle("discussQsTitle", "discussQs");
+});
+</script></body></html>
