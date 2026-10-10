@@ -3,7 +3,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Criminal and Victim Call 911</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet">
   <style>
     body{font-family:'Poppins',sans-serif;line-height:1.4;color:#1a1a1a;background:#f0f4f8;margin:0;padding:0}
     .header{padding:.8rem .8rem .8rem 1.8rem;font-weight:600;font-size:1.3rem;color:white;border-radius:3px;
@@ -38,53 +39,50 @@
     .edit-spacer{height:1px;margin:8px 0;user-select:none;contenteditable:false}
     .editMode{display:block}
 
-    #audioPlayer { margin: 0.3rem 0 !important; }                  /* was 1.5rem+ */
-    #audioWrapper { margin: 0.3rem 0 !important; padding:0 .75rem 0 .75rem; }  /* Tightens outer wrapper */
-#audioPlayer, #pseudoAudioPlayerWithLink {
-  margin: 0 !important; padding: 0 0 !important;  /* Zeroes player margins, tiny inner pad */
-}
-#audioPlayer audio, #pseudoAudioPlayerWithLink audio {
-  margin: 0 !important;  /* Targets the actual <audio> tag */
-}
+
 
 #btnSave{
   background-color:blue; font-size:1rem;
 }
 
-#pseudoAudioPlayerWithLink { display: none; border-radius:5px;}
-
-.native-audio-mock {
-  display: flex; align-items: center; height: 30px; width: 100%;
-  background: #424042; border-radius: 4px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.2);
-  overflow: hidden; position: relative; padding: 8px;
-}
-.play-triangle {
-  flex-shrink: 0; width: 0; height: 0; margin: 0 8px 0 6px;
-  border-left: 12px solid #ffffff; border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
-  cursor: pointer; transition: border-color 0.2s;
-}
-
-.play-triangle:hover { border-left-color: #555; }
-
-.progress-track {
-  flex: 1; height: 6px; background: #AFAFAF; border-radius: 3px;
-  position: relative; box-shadow:
-    inset 0 1px 2px #888888,
-    0 1px 2px #989898;
-  margin: 4px; border: 1px solid #bbb;
-}
-
-.progress-fill {
-  position: absolute; top: 0; height: 100%; width: 1%; /* Few pixels */
-  background: #4a90e2; border-radius: 2px; box-shadow: 0 0 2px rgba(74,144,226,0.4);
-  width:3%;
-}
-
-
-
   </style>
+
+
+<style>
+    .audio-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .audio-link {
+        display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;
+        align-items: center;
+        gap: 8px;
+        padding: .5rem 3rem;
+        background: #fff;
+        color: darkblue;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight:bold;
+        transition: background 0.2s;
+    }
+
+    .audio-link:hover {
+        box-shadow: 0 0 4px 0px #006B00; color:green;
+    }
+
+    .wave {
+        color: #006B00;   /* wave color */
+    }
+
+    .play {
+        font-size: 1rem;
+        transform: translateY(0.5px);
+    }
+</style>
+
+
 </head>
 <body>
   <!-- EDITOR PANEL -->
@@ -130,20 +128,26 @@
         Listen to the Podcast
         <button class="link-del editMode" style="font-size: 0.7rem; margin-left: 8px; display: none;" onclick="this.parentElement.parentElement.remove()">Delete Audio</button>
       </div>
-<div id="pseudoAudioPlayerWithLink" style="position: relative; justify-content: center; align-items: center; display: flex;">
-  <div class="native-audio-mock">
-    <div class="play-triangle"></div>
-    <div class="progress-track">
-      <div class="progress-fill"></div>
-    </div><span style="font-size:70%;color:#D8D8D8">&nbsp;&nbsp;0:00/---&nbsp;&nbsp;</span>
-  </div>
 
-  <a id="pseudoLinkOut" href="https://youtu.be/opt0xofW5X4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            text-indent: -9999px; background: rgba(0,0,0,0); z-index: 10;" target="blank"></a>
+
+<div class="audio-player">
+  <a href="https://youtu.be/opt0xofW5X4" class="audio-link" target="_blank" rel="noopener">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+    <span>Audio</span>
+  </a>
 </div>
-    </div><br>
+
+    </div>
     <!-- AUDIO BLOCK -->
-    <br>
+
 
 
 
@@ -160,28 +164,40 @@
     <div class="section">
       <h3>Home Intruder Foiled by Quick-Thinking Woman</h3>
         <div>A Restful Evening Turns to Chaos<ul>
+
 <li>Host: So picture this: Marsha's curled up on her couch, probably mid-binge-watch or flipping through a magazine, and suddenly—BAM—a huge crash echoes from the kitchen. That moment when your heart just jumps into your throat, you know what I mean?
 </li>
+
 <li>Guest: Oh, my stomach dropped just hearing that! I can imagine how terrifying that must have felt for her. You can practically feel her panic as she makes a run for the front door, just hoping she can get out before anything worse happens.
 </li>
+
 <li>Host: But she barely makes it a few steps before this guy—dressed head-to-toe in black—grabs her by the hair and slams her into the wall. Then, out comes the knife, and he demands her jewelry. That’s the kind of nightmare scenario you hope you never have to imagine.
 </li>
+
 <li>Guest: What gets me is how she managed to keep her head in that moment. I mean, instead of freezing or panicking, she comes up with this quick-thinking plan—leading him right upstairs, acting like she's just going to hand over the valuables. That takes some serious guts under pressure.
 </li>
-</ul>A Clever Twist and a Fierce Response<ul><li>Host: Here’s where it gets wild. Marsha isn’t just stalling—she’s got a gun hidden in her dresser. She tricks the guy into opening the wrong drawer, and right as he’s distracted, she grabs her gun from the middle one. Talk about turning the tables.
+</ul>A Clever Twist and a Fierce Response<ul>
+<li>Host: Here’s where it gets wild. Marsha isn’t just stalling—she’s got a gun hidden in her dresser. She tricks the guy into opening the wrong drawer, and right as he’s distracted, she grabs her gun from the middle one. Talk about turning the tables.
 </li>
+
 <li>Guest: Exactly! And when he hesitates after she tells him to get down, she fires a warning shot—right into the wall beside him. That’s not just for show; that’s her way of sending a crystal-clear message: she’s not backing down. The guy bolts straight for the bathroom and locks himself in.
 </li>
+
 <li>Host: He must’ve been terrified—hiding out in the bathtub, getting as low as he can while she’s literally shooting through the door. The power dynamic flips so fast, from him being in control to him being the one scared for his life.
 </li>
+
 <li>Guest: Both of them end up calling 911 at the same time. Marsha’s on the line saying she's got an intruder at gunpoint, and meanwhile, the guy’s panicking that a 'crazy woman' is shooting at him. Two totally different versions of the same chaos, all unfolding in real time.
 </li>
-</ul>The Aftermath and Marsha’s Determination<ul><li>Host: When the police finally show up, imagine the scene they walk into: Marsha, still holding everything together, and this guy probably trembling in the bathroom. And then they ask her that classic question—what was she thinking?
+</ul>The Aftermath and Marsha’s Determination<ul>
+<li>Host: When the police finally show up, imagine the scene they walk into: Marsha, still holding everything together, and this guy probably trembling in the bathroom. And then they ask her that classic question—what was she thinking?
 </li>
+
 <li>Guest: Her answer really stuck with me. She tells them, 'I was just worried that he wouldn't stop at taking my jewelry and would rape or murder me. I wasn't going down without a fight.' That kind of raw honesty, that survival instinct—it’s both heartbreaking and inspiring.
 </li>
+
 <li>Host: Yeah, and it makes you realize just how unpredictable people can be when they’re fighting for their lives. Marsha’s quick thinking totally changed the outcome of that night. It could’ve ended so differently.
 </li>
+
 <li>Guest: It also makes you wonder—how would any of us react, really, when pushed to the edge like that? Her story’s a reminder that fear can fuel courage in ways you wouldn’t expect.
 </li>
 </ul></div>
@@ -299,7 +315,8 @@ $('#btnSave').onclick = () => {
   });
 
   // 5. Capture clean HTML
-  const cleanHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const cleanHTML = '<!DOCTYPE html>
+' + document.documentElement.outerHTML;
 
   // 6. RESTORE contenteditable
   wasEditable.forEach(el => el.setAttribute('contenteditable', 'true'));
@@ -320,12 +337,14 @@ $('#btnSave').onclick = () => {
 title.textContent="webpageMaker";
 
   // 9. Alert and confirm save editable version
-let saveEditableVersion = confirm("Saved to default download folder.\nSave an editable version?");
+let saveEditableVersion = confirm("Saved to default download folder.
+Save an editable version?");
 
 if (!saveEditableVersion) return;  // Exit function if Cancel
 
   // === 10. SAVE EDITABLE VERSION ===
-const editHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+const editHTML = '<!DOCTYPE html>
+' + document.documentElement.outerHTML;
 const editBlob = new Blob([editHTML], { type: 'text/html' });
 const editUrl = URL.createObjectURL(editBlob);
 const editA = document.createElement('a');
@@ -401,13 +420,18 @@ document.getElementById('formatBtn').addEventListener('click', function() {
     selectedHTML = selectedHTML.replace(/\^\^$/, '').trim();
 
     // Create the list structure with the chosen list type
-    let newTextList = '<' + listTag + '><li>' + selectedHTML + '</li></' + listTag + '>';
+    let newTextList = '<' + listTag + '>
+<li>' + selectedHTML + '</li></' + listTag + '>';
 
     // Replace ^^ with list item breaks
-    let finalTextList = newTextList.replace(/\^\^/g, '</li><li>');
+    let finalTextList = newTextList.replace(/\^\^/g, '</li>
+<li>');
 
-    // Remove whitespace after <li> and before </li>
-    finalTextList = finalTextList.replace(/<li>\s+/g, '<li>');
+    // Remove whitespace after 
+<li> and before </li>
+    finalTextList = finalTextList.replace(/
+<li>\s+/g, '
+<li>');
     finalTextList = finalTextList.replace(/\s+<\/li>/g, '</li>');
 
     // Replace the selected text with the formatted list
