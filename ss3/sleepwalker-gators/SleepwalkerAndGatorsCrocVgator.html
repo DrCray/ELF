@@ -231,7 +231,7 @@
          .question { margin-right: 1rem; padding-top: .5rem; width:100%; max-width:55rem;}
     </style>
 
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body id="zbody">
 
 
@@ -1416,6 +1416,37 @@
             }
 		</script>
 
+		<!-- =====  begin toggle show/hide correct answers  ===== -->
+		<button id="showAnsBtn" class="scoreButton" onclick="zzShowHideAnswers()" style="display: block;">Show Correct Answers</button>
+
+		<script>
+		// toggles between showing and hiding the correct-choice highlights
+		let zzAnswersShown = false;
+		function zzShowHideAnswers() {
+		    const zzBtn = document.getElementById("showAnsBtn");
+		    const zzCorrects = document.querySelectorAll('input[value="correct"]');
+		    for (let i = 0; i < zzCorrects.length; i++) {
+		        let zzLab = zzCorrects[i].labels ? zzCorrects[i].labels[0]
+		                   : document.querySelector('label[for="' + zzCorrects[i].id + '"]');
+		        if (zzLab) {
+		            if (!zzAnswersShown) {
+		                zzLab.style.backgroundColor = "#C8F0C8"; // light pale green
+		            } else {
+		                zzLab.style.backgroundColor = "";
+		            }
+		        }
+		    }
+		    if (!zzAnswersShown) {
+		        zzBtn.innerHTML = "Hide Correct Answers";
+		        zzAnswersShown = true;
+		    } else {
+		        zzBtn.innerHTML = "Show Correct Answers";
+		        zzAnswersShown = false;
+		    }
+		} // end fn zzShowHideAnswers
+		</script>
+		<!-- =====  end toggle show/hide correct answers  ===== -->
+
 		<button id="scoreBtn" class="scoreButton" onclick="zzscore('printOff')" style="display: block;">Get score </button>
 
         <div id="results" style="display: block;">Score: xx</div>
@@ -1582,6 +1613,7 @@
         const scoreBtn = document.getElementById("scoreBtn");
         const results = document.getElementById("results");
         const zresults2b = document.getElementById("results2");
+        const showAnsBtn = document.getElementById("showAnsBtn");
 
         if ( document.getElementById('exam').checked === true ) {
             
@@ -1594,6 +1626,8 @@
         scoreBtn.style.display="none";
         results.style.display="none";
         zresults2b.style.visibility="visible";
+        if (zzAnswersShown) { zzShowHideAnswers(); } // un-highlight correct answers if shown
+        showAnsBtn.style.display="none"; // hide correct-answer toggle in Exam Mode
         }  else {
             
             document.getElementById("noNameRq").innerHTML="1";
@@ -1603,6 +1637,7 @@
             scoreBtn.style.display="block";
             results.style.display="block";
             zresults2b.style.visibility="hidden";
+            showAnsBtn.style.display="block"; // show correct-answer toggle in Study Mode
         }
         //end if-else exam
 
@@ -1665,6 +1700,7 @@
         const scoreBtn = document.getElementById("scoreBtn");
         const results = document.getElementById("results");
         const zresults2b = document.getElementById("results2");
+        const showAnsBtn = document.getElementById("showAnsBtn");
         const editMode = document.getElementById("editMode");
 
         const btnAddQuSet = document.getElementById("addQuSetz");
@@ -1746,6 +1782,10 @@
         scoreBtn.style.display="none";
 
         results.style.display="none";
+
+        if (zzAnswersShown) { zzShowHideAnswers(); } // un-highlight correct answers if shown
+
+        showAnsBtn.style.display="none"; // hide correct-answer toggle in Edit Mode
 
         examMode.style.display="block";
         
