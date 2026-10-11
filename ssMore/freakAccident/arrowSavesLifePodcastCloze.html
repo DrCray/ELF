@@ -150,7 +150,7 @@
             box-shadow: 0px 0px 5px 2px #A598FF;
             }
     </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
     
 <div id="topHeading">
@@ -423,7 +423,7 @@ function showPopup(button, message) {
 </script>
 
 <script>
-let selectCounter = 0; // Counter for select element numbering        
+let selectCounter = 0; // Counter for select element numbering
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -475,7 +475,7 @@ function generateCloze() {
 
     const uniqueId = Date.now();
     clozeContainer.id = `cloze-div-${uniqueId}`;
-    
+
     clozeContainer.className = 'cloze-container';
 
     // Add toggle button at the top
@@ -495,7 +495,7 @@ function generateCloze() {
     if (dvOpenCount + dvCloseCount > 2) {
         alert(`only one ^dv...dv^ set allowed.`);
         return;
-    }            
+    }
 
     // Check heading tags
     const headings = [
@@ -530,7 +530,7 @@ function generateCloze() {
             console.log(`After ${heading.openTag} replacement:`, processedInfo);
         });
 
-        
+
 // Validate bold, italic, underline tags
 const textStyles = [
     { open: '^bb', close: 'bb^', name: 'bold' },
@@ -555,9 +555,9 @@ processedInfo = processedInfo.replaceAll('^br', '<br>')
     .replaceAll('ii^', '</i>')
     .replaceAll('^uu', '<u>')
     .replaceAll('uu^', '</u>');
-console.log('After ^br and text style replacement:', processedInfo);                
-        
-        
+console.log('After ^br and text style replacement:', processedInfo);
+
+
         infoSection = processedInfo;
         const infoDiv = document.createElement('div');
         infoDiv.innerHTML = infoSection;
@@ -592,8 +592,8 @@ if (caretCount < 2) {
 
         // Generate HTML for the group
         let clozeGroup = group;
-		clozeGroup = clozeGroup.replaceAll('^br', '<br>');        
-        
+		clozeGroup = clozeGroup.replaceAll('^br', '<br>');
+
         // Replace each bold word with a select element
         boldWords.forEach(word => {
             const regex = new RegExp(`\\*\\*${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\*\\*`, 'g');
@@ -611,7 +611,7 @@ if (caretCount < 2) {
         sentenceDiv.innerHTML = clozeGroup;
         clozeContainer.appendChild(sentenceDiv);
     });
-    
+
     const deleteThisSectionBtn = document.createElement('button');
     deleteThisSectionBtn.className='deleteThisSectionBtn editMode';
     deleteThisSectionBtn.textContent = 'Delete This Section';
@@ -627,7 +627,7 @@ function checkAnswer(select) {
     if (select.classList.contains('answer-shown')) {
         return;
     }
-    
+
     const correctAnswer = select.getAttribute('data-correct');
     if (select.value === correctAnswer) {
         select.style.backgroundColor = '#d4edda';
@@ -643,17 +643,17 @@ async function verifyStudent() {
     const name = document.getElementById("name").value.trim();
     const id = document.getElementById("id").value.trim();
     const passCode = document.getElementById("passCode").value.trim();
-    
+
     if (!name || !id || !passCode) {
         alert("Please fill in all fields first!");
         return;
     }
-    
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('id', id);
     formData.append('passCode', passCode);
-    
+
     try {
         const response = await fetch('./verify_student.php', {
             method: 'POST',
@@ -661,12 +661,12 @@ async function verifyStudent() {
         });
         const result = await response.text();
         alert(result === 'SUCCESS' ? "Great! Continue." : "Try again!");
-        
+
         if (result === 'SUCCESS') {
-          document.getElementById('output').style.pointerEvents = 'auto';  
+          document.getElementById('output').style.pointerEvents = 'auto';
           document.getElementById('submitAssignment').disabled = false;
         }
-        
+
     } catch (error) {
         alert("Verification error. Try again!");
     }
@@ -721,10 +721,10 @@ async function saveBothVersions() {
 
 async function saveAdminVersion(fileNM, serverLocation) {
     const saveStatus = document.getElementById('adminSaveStatus');
-    
-    document.getElementById('output').style.pointerEvents = 'auto'; 
-    document.getElementById("backToHub").style.display = "block";     
-    document.getElementById("adminSaveStatus").style.display = "block";     
+
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";
+    document.getElementById("adminSaveStatus").style.display = "block";
 
     try {
         // Capture the HTML content
@@ -760,12 +760,12 @@ async function saveAdminVersion(fileNM, serverLocation) {
             // File saved successfully, now inject auth_check.php
             const injectFormData = new FormData();
             injectFormData.append('filename', fileNM);
-            
+
             const injectResponse = await fetch('./inject_auth.php', {
                 method: 'POST',
                 body: injectFormData
             });
-            
+
             if (injectResponse.ok) {
                 saveStatus.className = 'save-status success';
                 saveStatus.textContent = 'Admin PHP version saved successfully!';
@@ -790,25 +790,25 @@ async function saveAdminVersion(fileNM, serverLocation) {
 }
 
 async function savePublicVersion(fileNameHtml, serverLocation) {
-    
+
     const deleteButtons = document.querySelectorAll('.deleteThisSectionBtn');
     deleteButtons.forEach(button => {
         button.style.display = 'none';
     });
-    
-    document.getElementById('output').style.pointerEvents = 'none';
-    document.getElementById("backToHub").style.display = "none";     
-    document.getElementById("adminSaveStatus").style.display = "none";     
 
-    
+    document.getElementById('output').style.pointerEvents = 'none';
+    document.getElementById("backToHub").style.display = "none";
+    document.getElementById("adminSaveStatus").style.display = "none";
+
+
     const saveStatus = document.getElementById('publicSaveStatus');
-    
+
     // Hide all editMode elements before saving
     const editModeElements = document.querySelectorAll('.editMode');
     editModeElements.forEach(element => {
         element.style.display = 'none';
     });
-    
+
     try {
         // Capture DOCTYPE and full HTML
         const doctypeNode = document.doctype;
@@ -847,13 +847,13 @@ async function savePublicVersion(fileNameHtml, serverLocation) {
         saveStatus.className = 'save-status error';
         saveStatus.textContent = `Public Error: ${error.message}`;
     }
-    
-    
-    document.getElementById('output').style.pointerEvents = 'auto';
-    document.getElementById("backToHub").style.display = "block";  
-    document.getElementById("adminSaveStatus").style.display = "block";     
 
-    
+
+    document.getElementById('output').style.pointerEvents = 'auto';
+    document.getElementById("backToHub").style.display = "block";
+    document.getElementById("adminSaveStatus").style.display = "block";
+
+
 
     // Restore editMode elements
     editModeElements.forEach(element => {
