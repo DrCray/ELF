@@ -132,7 +132,64 @@
         }
 
 		
+
+
+		        /* ----- FIXED TOGGLE (upper right) ----- */
+        #toggleAnswersBtn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #007bff; /* blue */
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            letter-spacing: 0.5px;
+            border: 2px solid white;
+        }
+        #toggleAnswersBtn:hover {
+            transform: scale(1.02);
+            filter: brightness(1.05);
+        }
+        #toggleAnswersBtn.orange {
+            background-color: #e67e22; /* orange */
+        }
+        /* small screens adjust */
+        @media (max-width: 480px) {
+            #toggleAnswersBtn {
+                padding: 8px 14px;
+                font-size: 0.9rem;
+                top: 10px;
+                right: 10px;
+            }
+        }
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  #toggleAnswersBtn {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggleAnswersBtn {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+
     </style>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style>
+
+
+
 </head>
 <body>
 	
@@ -301,6 +358,8 @@
 	<label for="idInput">ID#:</label>
 	<input type="text" id="idInput" placeholder="Enter your ID" required="">
     
+      <button id="toggleAnswersBtn">Show answers</button>
+
     <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>When you go to the movies, what's the first 
                         <select id="select-1748247354027-0-0" class="default" data-correct="treat"><option value="snack">snack</option><option value="meal">meal</option><option value="ticket">ticket</option><option value="treat">treat</option></select>
                      that comes to mind? Popcorn, of course! But have you ever 
@@ -671,4 +730,142 @@ Whether at a theater or at home, the popcorn and movie {{association, connection
                         }
                     });
                 });
-            </script></body></html>
+            </script>
+
+
+               <!-- ========== SCRIPT: toggle + snapshot + restore ========== -->
+    <script>
+        (function() {
+            "use strict";
+
+            // ----- get all selects (once) -----
+            const allSelects = document.querySelectorAll('#output select');
+
+            // ----- state -----
+            let snapshot = null;          // array of { value, className } for each select
+            let showingAnswers = false;
+
+            // ----- helper: capture current state of all selects -----
+            function captureSnapshot() {
+                return Array.from(allSelects).map(sel => ({
+                    value: sel.value,
+                    className: sel.className  // 'default', 'correct', 'incorrect'
+                }));
+            }
+
+            // ----- helper: restore snapshot (values + classes) -----
+            function restoreSnapshot(snap) {
+                if (!snap || snap.length !== allSelects.length) return;
+                allSelects.forEach((sel, idx) => {
+                    const data = snap[idx];
+                    if (data) {
+                        sel.value = data.value;
+                        sel.className = data.className;
+                        // force any change event (if needed)
+                        sel.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            }
+
+            // ----- show answers: set each select to its data-correct -----
+            function showAnswers() {
+                allSelects.forEach(sel => {
+                    const correct = sel.getAttribute('data-correct');
+                    if (correct) {
+                        // set value to correct (if option exists)
+                        const optionExists = Array.from(sel.options).some(opt => opt.value === correct);
+                        if (optionExists) {
+                            sel.value = correct;
+                            sel.className = 'correct';
+                        } else {
+                            // fallback: if correct not found (should not happen)
+                            sel.className = 'default';
+                        }
+                    }
+                });
+                // update button
+                const btn = document.getElementById('toggleAnswersBtn');
+                if (btn) {
+                    btn.textContent = 'Hide Answers';
+                    btn.classList.add('orange');
+                }
+                showingAnswers = true;
+            }
+
+            // ----- hide answers: restore from snapshot (or reset to default) -----
+            function hideAnswers() {
+                if (snapshot) {
+                    restoreSnapshot(snapshot);
+                } else {
+                    // fallback: reset to first option (default)
+                    allSelects.forEach(sel => {
+                        sel.selectedIndex = 0;
+                        sel.value = sel.options[0].value;
+                        sel.className = 'default';
+                        sel.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                }
+                const btn = document.getElementById('toggleAnswersBtn');
+                if (btn) {
+                    btn.textContent = 'Show answers';
+                    btn.classList.remove('orange');
+                }
+                showingAnswers = false;
+            }
+
+            // ----- toggle -----
+            function toggleAnswers() {
+                if (showingAnswers) {
+                    // we are showing answers → hide them (restore snapshot)
+                    hideAnswers();
+                } else {
+                    // we are NOT showing answers → capture current state, then show correct
+                    snapshot = captureSnapshot();
+                    showAnswers();
+                }
+            }
+
+            // ----- wire up toggle button -----
+            const toggleBtn = document.getElementById('toggleAnswersBtn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', toggleAnswers);
+                // initial state: blue, "Show answers"
+                toggleBtn.textContent = 'Show answers';
+                toggleBtn.classList.remove('orange');
+            }
+
+            // ----- also capture snapshot when user manually changes any select (to keep snapshot fresh) -----
+            // We update snapshot only when NOT showing answers (so we don't overwrite the "answers shown" state)
+            allSelects.forEach(sel => {
+                sel.addEventListener('change', function() {
+                    if (!showingAnswers) {
+                        // user changed something while answers are hidden → update snapshot
+                        snapshot = captureSnapshot();
+                    }
+                    // if showingAnswers, we ignore changes (user can't change while answers shown)
+                });
+            });
+
+            // ----- on page load: initial snapshot -----
+            // wait a tick for selects to settle
+            window.addEventListener('load', function() {
+                snapshot = captureSnapshot();
+                // ensure button state
+                const btn = document.getElementById('toggleAnswersBtn');
+                if (btn) {
+                    btn.textContent = 'Show answers';
+                    btn.classList.remove('orange');
+                }
+                showingAnswers = false;
+            });
+
+            // ensure that if someone clicks show/hide, snapshot is current
+            // we already handle that inside toggleAnswers
+
+            // also if user uses print/save, we don't interfere.
+
+        })();
+    </script>
+
+
+            </body></html>
