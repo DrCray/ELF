@@ -45,10 +45,10 @@
             margin: 15px 0;
         }
     </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
     <h1>Soccer: The World's Most Popular Sport</h1>
-    <h2>Vocabulary Exercise</h2>
+    <h2>synonym Exercise</h2>
     
             <div id="nameAndID">
               <input id="name" type="text" value="name">
@@ -58,6 +58,8 @@
     <p style="border:thin solid black; padding:1rem;">Click on the blue word, then Select a synonym from the dropdown menu. <br>Correct choices turn green; incorrect choices turn red.</p>
     <div id="speech">
         
+        <button id="showSynonyms">Show Correct</button> <!-- /*toggles to "Back to Quiz" -->
+
         <p>Have you ever 
 <select class="default" data-word="wondered">
     <option value="wondered" selected>wondered</option>
@@ -400,7 +402,42 @@ kick the ball into the goal, and don't use your hands!</p>
             });
         });
     </script>
-    
+
+
+    <script>
+    (function () {
+        const btn = document.getElementById('showSynonyms');
+        let savedState = null;   // null = quiz mode; array = showing answers
+
+        btn.addEventListener('click', () => {
+            const selects = document.querySelectorAll('#speech select');
+
+            if (savedState === null) {
+                // 1. Capture current selections + colors
+                savedState = Array.from(selects, s => ({ value: s.value, cls: s.className }));
+
+                // 2. Show correct answers in green, lock selects
+                selects.forEach(s => {
+                    const entry = synonyms[s.dataset.word];
+                    if (!entry) return;
+                    s.value = entry.correct;
+                    s.className = 'correct';
+                    s.style.pointerEvents = 'none';
+                });
+                btn.textContent = 'Back to Quiz';
+            } else {
+                // 3. Restore captured selections + colors, unlock selects
+                selects.forEach((s, i) => {
+                    s.value = savedState[i].value;
+                    s.className = savedState[i].cls;
+                    s.style.pointerEvents = '';
+                });
+                savedState = null;
+                btn.textContent = 'Show Correct';
+            }
+        });
+    })();
+</script>
     
  <button id="printFullView" class="hlBtn" onclick="checkThenPrint();" style="display:block"> Print/Save as PDF </button>   
       
