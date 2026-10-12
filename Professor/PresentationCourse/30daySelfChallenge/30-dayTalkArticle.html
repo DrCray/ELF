@@ -185,7 +185,7 @@ body{
   }
   img { width:100%; margin:auto;}
 </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -276,8 +276,8 @@ body{
               } //  end fn xxlAbc          
     </script>
 <div contenteditable="false" id="unit">Example Talk</div>
-<img alt="image" src="speechFemale.jpg"/>
-<div id="title"><div contenteditable="false" id="mainTitle">Try something new for 30 days</div><div contenteditable="false" id="subTitle">[based on the TED Talk by Matt Cutts]</div></div>
+<img alt="image" src="30dayChallenge.webp"/>
+<div id="title"><div contenteditable="false" id="mainTitle">Try something new for 30 days</div><div contenteditable="false" id="subTitle">[Lesson based on the TED Talk by Matt Cutts, exercises at bottom]</div></div>
 <br/>
 <a href="#menuLinkOuts" id="topPage">Exercises and More at bottom</a>
 <div id="gettingStartedTitle">Getting Started<br/>
@@ -290,13 +290,18 @@ body{
 </ul></div>
 </div>
 <div class="audio-player">
-<a href="https://youtu.be/UNP03fDSj1U?si=iqxLLd0UFbBJiO2H" rel="noopener noreferrer" style="text-decoration:none;" target="_blank">
-<audio controls="" tabindex="-1">
-<source src="https://fake.player/asdflkj234k" type="audio/mp4"/>
-            Your browser does not support the audio element.
-        </audio>
-</a>
-<p style="text-align:center; width:fit-content; color:#AE5F00; background:#EEE9D9; padding-top:8px;">    Youtube     </p>
+  <a href="https://youtu.be/UNP03fDSj1U?si=iqxLLd0UFbBJiO2H" class="audio-link" target="_blank" rel="noopener">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+    <span>Audio</span>
+  </a>
 </div>
 <div id="container">
 <div class="column1" contenteditable="false" id="column1"><div>
@@ -647,7 +652,75 @@ function saveDom(){
 
 }      
 </script>
-<footer style="margin:35px">
+<button class="copy-btn" id="getArticleInnerHTML">Copy only article text</button><div id="articleCopy" style="background:white; color:blue; padding:1.3rem; display:none;">...</div><button class="copy-btn" id="copyAIprompt">Copy as Full AI voice Lesson Prompt</button><script>
+  /*get the article innerHTML*/
+function htmlToMarkdown(html) {
+  return html
+    .replace(/<p[^>]*>|<\/p>/gi, '')
+    .replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**')
+    .replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*')
+    .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+    .replace(/<[^>]+>/g, '') // strip any remaining tags
+    .trim();
+}
+function convertCol1ToMarkdown() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const markdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+    navigator.clipboard.writeText(markdown);
+  //document.getElementById('articleCopy').textContent = markdown;
+  alert("copied to clipboard\nPaste into any AI voice chat\nand ask it to quiz you\nor have a discussion.\nTell it your native language.");
+}
+function getCleanText(elementId) {
+  const el = document.getElementById(elementId);
+  return el.textContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+}
+function copyAIPrompt() {
+  const paragraphs = document.querySelectorAll('#column1 > p');
+  const articleMarkdown = Array.from(paragraphs)
+    .map(p => htmlToMarkdown(p.outerHTML))
+    .join('\n\n');
+  const compQsText = getCleanText('compQs');
+  const discussQsText = getCleanText('discussQs');
+  const prompt = `You are an English conversation tutor running a spoken tutoring session with an ESL/EFL student. Speak clearly and naturally, matching the CEFR level of the article below. Keep your turns short — this is a spoken conversation, not a lecture: make one point or ask one question at a time, then stop and wait for the student to respond.
+Bolded words in the article (**word**) are this lesson's key vocabulary.
+--- ARTICLE ---
+${articleMarkdown}
+--- COMPREHENSION QUESTIONS ---
+${compQsText}
+--- DISCUSSION QUESTION(S) ---
+${discussQsText}
+--- END ---
+Before you begin, say: "Got it — let's start with comprehension question 1." Then proceed.
+Run the session in exactly this order:
+1. COMPREHENSION CHECK
+Ask the comprehension questions one at a time, in order. Judge each spoken answer against the article content.
+- Correct: say "Good answer!" Then, only if there's a genuine grammar or word-choice issue worth mentioning, add ONE brief, gentle correction — skip this entirely if their English was already solid. Never stack more than one correction per answer.
+- Incorrect or incomplete: give them the correct answer in a natural sentence, then ask them to repeat it back in their own words before moving on.
+(Do not move to the discussion question until all comprehension questions have been answered.)
+2. DISCUSSION QUESTION
+Let the student speak freely. You may paraphrase or simplify the discussion question if it helps a weaker student. If they're stuck or give a one-word answer, help with a follow-up prompt or a simplified rephrasing — don't just repeat the question.
+(Do not move to vocabulary review until the discussion question has been addressed.)
+3. VOCABULARY REVIEW
+Go through the bolded words one at a time: short simple definition, then a new example sentence (not from the article), then a quick check they understood (e.g. ask them to use it in a sentence). After every two words, pause and ask: "Would you like to continue with the next vocabulary word?" Keep this two-words-then-check-in pattern until vocabulary is done or they want to stop.
+(Do not skip ahead to wrap-up until vocabulary review is finished or the student asks to stop.)
+4. WRAP-UP
+Ask: "Any questions?"
+- Yes → answer them.
+- No → ask: "Would you like to continue with a short discussion?" and follow their lead.
+Close with genuine positive feedback on what they did well, plus one or two brief, encouraging suggestions for improvement. Keep it warm, not a report card.
+Throughout: stay patient and encouraging, use natural spoken English (contractions, casual phrasing), and never say more than 2–3 sentences before pausing for the student to talk.`;
+  navigator.clipboard.writeText(prompt);
+  alert("Copied full AI voice lesson prompt to clipboard\nPaste into any AI voice chat.\nTell it your native language.");
+}
+document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
+document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
+</script><footer style="margin:35px">
 <p> ... end. </p>
 </footer>
 </body></html>

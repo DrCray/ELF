@@ -183,7 +183,30 @@
             border-color: blue;
             padding:1ex; border-radius: 10px; 
             margin: 1rem 0 0 .3rem;
-         }        
+         }
+
+         /* answer peek + / - */
+.peekBtn, .peekAns {
+    background:#E3F7E8; color:#1a3fa8; font-weight:bold;
+    border-radius:4px; padding:0 .6ex; margin-left:.5ex;
+}
+.peekBtn { cursor:pointer; user-select:none; display:inline-block; min-width:1.2em; text-align:center; }
+.peekAns { display:none; }
+.peekAns.show { display:inline; }
+@media print { .peekBtn, .peekAns { display:none !important; } } /* keep answers off printouts */
+
+.peekNote {
+    background:#E3F7E8; color:#1a3fa8;
+    border:thin solid #1a3fa8; border-radius:6px;
+    padding:1ex 1.5ex; margin:1ex 0 1.5ex 1ex;
+    max-width:45rem; font-size:.95em;
+}
+.peekNote .peekDemo {
+    display:inline-block; background:#fff; color:#1a3fa8; font-weight:bold;
+    border:thin solid #1a3fa8; border-radius:4px;
+    padding:0 .6ex; min-width:1.2em; text-align:center;
+}
+@media print { .peekNote { display:none; } }
 
  /*new color scheme for older FIB quizzes*/
         body {
@@ -213,7 +236,7 @@
 ============
     </style>  
     
-  </head>
+  <style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
   
   <body>
       
@@ -332,7 +355,9 @@ document.onreadystatechange = () => {
 </script>      
 <!-- END show name and ID and Javascript ==================-->      
 
-      
+      <div class="peekNote">
+  <b>Note:</b> Tap <span class="peekDemo">+</span> to see the correct answerand <span class="peekDemo">−</span> to hide it. <br>Try answering first!
+</div>
       
       
       
@@ -515,18 +540,7 @@ So here's one last thing I'd like to mention. I learned
 <option>guarantee</option>
 <option>give it a shot</option>
 </select></b>! For the next 30 days. Thanks.
-<details id="ansbox4" style="background-color: rgb(197, 248, 224); color: rgb(14, 35, 126); padding: 1ex; margin: 1.3em 0px; border-radius: 4px;" class="detlsAnsPk"><button id="delAnsBox4" class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
-        </button>
-<summary id="[object HTMLElement]" style="margin: 1ex;">Answer</summary>So here's one last thing I'd like to mention. I learned
-    that when I made small, <b>sustainable</b> changes, things I could keep
-    doing, they were more likely <b>to stick</b>. There's nothing wrong with
-    big, crazy challenges. In fact, they're a <b>ton of fun</b>. But
-    they're <b>less likely</b> to stick. When I gave up sugar for 30 days,
-    day 31 looked like this. [image of a pile of candy] (Laughter) So here's
-    my question to you: <i>What are you waiting for?</i> I
-    <b>guarantee</b> you the next 30 days are going to pass whether you like it
-    or not, so why not think about something you have always wanted to try and
-    <b>give it a shot</b>! For the next 30 days. Thanks.</details>
+
 </div>
 </section> 
       <br>
@@ -1304,7 +1318,31 @@ function replaceNlines() {
       
 <p style="margin:35px"> ... end. </p>
   
-  
+    <script>
+function addPeeks(){
+  document.querySelectorAll('select.answer').forEach(sel => {
+    // skip if already added (saved files keep their spans)
+    if (sel.nextElementSibling && sel.nextElementSibling.classList.contains('peekBtn')) return;
+    const m = (sel.getAttribute('onchange') || '').match(/ansCheck\('[^']*','([^']*)'/);
+    if (!m) return;
+    // onchange stores a stripped answer (e.g. "setgoals"), so match it back to the real option text
+    const opt = [...sel.options].find(o => o.text.replace(/[^A-Za-z0-9]/g,'') === m[1]);
+    const btn = document.createElement('span');
+    btn.className = 'peekBtn'; btn.textContent = '+';
+    const ans = document.createElement('span');
+    ans.className = 'peekAns'; ans.textContent = opt ? opt.text : m[1];
+    sel.after(btn, ans);
+  });
+}
+addPeeks();
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('.peekBtn');
+  if (!b) return;
+  const open = b.nextElementSibling.classList.toggle('show');
+  b.textContent = open ? '−' : '+';
+});
+</script>
   
 
 </body></html>
