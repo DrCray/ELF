@@ -133,7 +133,7 @@
 
 		
     </style>
-</head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
 <body>
 	
 	
@@ -300,6 +300,11 @@
 	<input type="text" id="nameInput" placeholder="Enter your name" required=""><br>
 	<label for="idInput">ID#:</label>
 	<input type="text" id="idInput" placeholder="Enter your ID" required="">
+
+
+	        <button id="showSynonyms">Show Correct</button> <!-- /*toggles to "Back to Quiz" -->
+
+
     
     <div id="output"><div class="output-section"><button class="delete-btn" style="display: none;">Delete Forever</button><p>Taylor Swift has become much more than just a pop star; for millions of fans she feels like a 
                         <select id="select-1748401455419-0-0" class="default" data-correct="intimate"><option value="close">close</option><option value="intimate">intimate</option><option value="distant">distant</option><option value="casual">casual</option></select>
@@ -673,4 +678,43 @@ In conclusion, Taylor Swift's {{significant, huge, insignificant, short-lived}} 
                         }
                     });
                 });
-            </script></body></html>
+            </script>
+
+
+
+ <script>
+(function () {
+    const btn = document.getElementById('showSynonyms');
+    let savedState = null;   // null = quiz mode; array = showing answers
+
+    btn.addEventListener('click', () => {
+        const selects = document.querySelectorAll('#output select');
+
+        if (savedState === null) {
+            // 1. Capture current selections + colors
+            savedState = Array.from(selects, s => ({ value: s.value, cls: s.className }));
+
+            // 2. Show correct answers in green, lock selects
+            selects.forEach(s => {
+                const correct = s.dataset.correct;
+                if (!correct) return;
+                s.value = correct;
+                s.className = 'correct';
+                s.style.pointerEvents = 'none';
+            });
+            btn.textContent = 'Back to Quiz';
+        } else {
+            // 3. Restore captured selections + colors, unlock selects
+            selects.forEach((s, i) => {
+                s.value = savedState[i].value;
+                s.className = savedState[i].cls;
+                s.style.pointerEvents = '';
+            });
+            savedState = null;
+            btn.textContent = 'Show Correct';
+        }
+    });
+})();
+</script>
+
+            </body></html>
