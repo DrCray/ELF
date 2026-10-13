@@ -25,6 +25,7 @@
             font-family: helvetica, arial, sans-serif;
             width:100%; max-width:50rem;
             margin:auto;
+            line-height:1.5;
         }  
         
         :focus {outline:none;}
@@ -171,6 +172,24 @@
 
 #i, #j {display:none;}
 
+
+.answer.ansRight { background-color:#D8F8E9 !important; color:darkgreen; font-weight:bold; }
+.answer.ansWrong { background-color:#EEE8EF !important; color:darkred;  font-weight:bold; }
+.answer:disabled { opacity:1; }
+#studyToggle {
+    position:fixed; top:1rem; left:65%; transform:translateX(-50%); z-index:1000;
+    padding:.6em 1.2em; border-radius:999px; border:2px solid #053849;
+    background:darkgreen; color:white; font-weight:bold; cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+#studyToggle.on { background:#053849; color:#fff; }
+body { padding-bottom:4rem; }
+@media print { #studyToggle { display:none; } }
+
+
+
+
+
  /*new color scheme for older FIB quizzes*/
         body {
             background-color: #F1F0EB !important; border-color:#053849 !important;}
@@ -200,7 +219,7 @@
 
     </style>  
     
-  </head>
+  <style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
   
   <body>
       
@@ -255,7 +274,9 @@
       <p><button id="closeAll2" onclick="closeAll('details')" style="display: none;">
           Hide all Answers </button></p>
     </div>
-      
+
+
+
    <section id="allParags" class="allParags">    <div id="thePara1" class="thePara" onclick="document.getElementById(&quot;noUndl&quot;).style.display=&quot;none&quot;;" contenteditable="false"><button id="delThis" class="delBtn" onclick="this.parentElement.remove()" style="display: none;"> delete forever 
         </button>
 Two Elderly men from Parson’s Nursing Home <u><code style="padding-left:1ex">1 </code><select id="selectDiv1" class="answer" onchange="ansCheck('1 ','escaped','selectDiv1')"><option>choices</option><option>rounds</option>
@@ -768,8 +789,7 @@ A staff from the nursing home responded, “Of course, anyone with no <u><code s
         </button>  
      <div id="noUndl" style="display:none; background-color:#fff8dc; color:darkred;"> Must Underline something</div>
 </div> 
-    <input id="name" type="text" placeholder="name">
-    <input id="id" type="text" placeholder="id#">
+
 
 
 
@@ -789,7 +809,11 @@ A staff from the nursing home responded, “Of course, anyone with no <u><code s
       </script>
 
     <div id="printOptions" style="display: block; width:fit-content;">
-        Print (save as PDF) <br>
+
+    <input id="name" type="text" placeholder="name">
+    <input id="id" type="text" placeholder="id#">
+
+       <p> Print (save as PDF) </p>
          <button id="printFullView" class="hlBtn" onclick="checkThenPrint();"> Print </button>
         <br>
          <!--button id="printSimpleView" class="hlBtn" onclick="noStyle()">Print Simple</button-->
@@ -876,21 +900,9 @@ A staff from the nursing home responded, “Of course, anyone with no <u><code s
       
       
       <script>
-        function ansCheck(zselectNumb, thisAns, zselectDivID){
-            
-            let zzselected = document.getElementById(zselectDivID);
-            let zselected = zzselected.value;
-            
-            if (zselected === thisAns){
-                zzselected.style.cssText="background-color: #D8F8E9; color: darkgreen; font-weight: bold;";
-            } else{
-                zzselected.style.cssText="background-color: #EEE8EF; color: darkred; font-weight: bold;";
-
-            }
-            console.log(zselected);
-            console.log(thisAns);
-            console.log(zselectNumb);
-        }
+function ansCheck(zselectNumb, thisAns, zselectDivID){
+    paintSelect(document.getElementById(zselectDivID));
+}
       
       </script>
 
@@ -1221,9 +1233,53 @@ function saveDom(){
 }
 </script>
       <!--  ===============  /  SAVE THE DOM as FILE ==================== -->
+
+      <button id="studyToggle" onclick="toggleStudyMode()">Study Mode</button>
+<script>
+(function(){
+  let snapshot = null;
+  const clean = s => s.replace(/[^A-Za-z0-9]/g, '');
+  const getAns = sel => {
+    const m = (sel.getAttribute('onchange') || '').match(/ansCheck\('[^']*','([^']*)'/);
+    return m ? clean(m[1]) : null;
+  };
+
+  window.paintSelect = function(sel){
+    sel.style.cssText = '';
+    sel.classList.remove('ansRight', 'ansWrong');
+    const ans = getAns(sel);
+    if (ans === null || sel.selectedIndex <= 0) return;
+    sel.classList.add(clean(sel.value) === ans ? 'ansRight' : 'ansWrong');
+  };
+
+  window.toggleStudyMode = function(){
+    const btn  = document.getElementById('studyToggle');
+    const sels = document.querySelectorAll('select.answer');
+    if (!snapshot){
+      snapshot = [...sels].map(s => s.selectedIndex);
+      sels.forEach(s => {
+        const ans = getAns(s); if (ans === null) return;
+        const k = [...s.options].findIndex((o, n) => n > 0 && clean(o.text) === ans);
+        if (k > 0) s.selectedIndex = k;
+        paintSelect(s);
+        s.disabled = true;
+      });
+      btn.textContent = 'Return to Quiz'; btn.classList.add('on');
+    } else {
+      sels.forEach((s, n) => {
+        s.disabled = false;
+        s.selectedIndex = snapshot[n] ?? 0;
+        paintSelect(s);
+      });
+      snapshot = null;
+      btn.textContent = 'Study Mode'; btn.classList.remove('on');
+    }
+  };
+})();
+</script>
 <p style="margin:35px"> ... end. </p>
   
   
-  
+
 
 </body></html>
