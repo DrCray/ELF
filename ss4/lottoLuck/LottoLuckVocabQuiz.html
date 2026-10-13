@@ -221,7 +221,13 @@
     #nameID { margin-left: 1rem;}
     </style>  
     
-  </head>
+  <style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style>
+<style>
+#studyModeToggle { position: sticky; top: 8px; z-index: 9999; display: block; margin: 8px 8px 12px auto; padding: .7rem 1.1rem; border: 2px solid #174b36; border-radius: 8px; background: #174b36; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 2px 7px #0003; }
+#studyModeToggle:hover { background: #226448; }
+#studyModeToggle:focus-visible { outline: 3px solid #f0c84b; outline-offset: 3px; }
+</style>
+</head>
   
   <body>
       
@@ -345,7 +351,7 @@ document.onreadystatechange = () => {
 <!-- END show name and ID and Javascript ==================-->      
 
       
-      
+    <button type="button" id="studyModeToggle" aria-pressed="false">Study Mode</button>
       
       
    <section id="allParags" class="allParags">    
@@ -1337,6 +1343,90 @@ function replaceNlines() {
 <p style="margin:35px"> ... end. </p>
   
   
-  
+
+  <script>
+    (function () {
+      const btn = document.getElementById('studyModeToggle');
+      let savedState = null;
+
+      // The existing onchange attribute contains the correct answer and select ID.
+      function getAnswer(select) {
+        const handler = select.getAttribute('onchange') || '';
+        const match = handler.match(/ansCheck\(\s*(['"])(.*?)\1\s*,\s*(['"])(.*?)\3\s*,/);
+        return match ? match[4] : null;
+      }
+
+      function normalize(value) {
+        return String(value || '').replace(/[^A-Za-z0-9]/g, '').toLowerCase();
+      }
+
+      function findCorrectOption(select, answer) {
+        return Array.from(select.options).find(option => normalize(option.value || option.textContent) === normalize(answer));
+      }
+
+      function colorAnswer(select, answer) {
+        const chosen = normalize(select.value || select.options[select.selectedIndex]?.textContent);
+        if (!chosen) {
+          select.style.cssText = '';
+        } else if (chosen === normalize(answer)) {
+          select.style.cssText = 'background-color: #D8F8E9; color: darkgreen; font-weight: bold;';
+        } else {
+          select.style.cssText = 'background-color: #EEE8EF; color: darkred; font-weight: bold;';
+        }
+
+        document.querySelectorAll("select.answer").forEach(s => {
+    if (s.value === "choices") {
+        s.style.color = "black";
+        s.style.fontWeight = "normal";
+        s.style.backgroundColor = "";
+    }
+});
+      }
+
+      btn.addEventListener('click', () => {
+        const selects = Array.from(document.querySelectorAll('select.answer'));
+
+        if (savedState === null) {
+          // Save the exact quiz state before revealing answers.
+          savedState = selects.map(select => ({
+            value: select.value,
+            style: select.getAttribute('style'),
+            disabled: select.disabled
+          }));
+
+          selects.forEach(select => {
+            const answer = getAnswer(select);
+            const option = answer === null ? null : findCorrectOption(select, answer);
+            if (option) {
+              select.value = option.value;
+              colorAnswer(select, answer);
+              select.disabled = true;
+            }
+          });
+          btn.textContent = 'Return to Quiz';
+          btn.setAttribute('aria-pressed', 'true');
+        } else {
+          // Restore each original choice, then recalculate its correct/incorrect color.
+          selects.forEach((select, index) => {
+            const state = savedState[index];
+            if (!state) return;
+            select.value = state.value;
+            select.disabled = state.disabled;
+            const answer = getAnswer(select);
+            if (answer !== null) {
+              colorAnswer(select, answer);
+            } else if (state.style === null) {
+              select.removeAttribute('style');
+            } else {
+              select.setAttribute('style', state.style);
+            }
+          });
+          savedState = null;
+          btn.textContent = 'Study Mode';
+          btn.setAttribute('aria-pressed', 'false');
+        }
+      });
+    })();
+  </script>
 
 </body></html>
