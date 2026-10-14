@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Study · How the Grinch Stole Christmas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #f1e9d2;
+    --paper: #faf4e3;
+    --paper-2: #f6eed8;
+    --ink: #1a2820;
+    --ink-soft: #4a5a4a;
+    --ink-mute: #7a8576;
+    --green: #1d4d2e;
+    --green-deep: #0c2b1a;
+    --green-soft: #2d5d3e;
+    --red: #842020;
+    --gold: #a8742a;
+    --gold-light: #c89a3e;
+    --cream: #fdf8eb;
+    --border: rgba(29, 77, 46, 0.18);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    margin: 0;
+    min-height: 100vh;
+    line-height: 1.6;
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 0%, rgba(168, 116, 42, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 85% 100%, rgba(132, 32, 32, 0.08) 0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+  .display { font-family: 'Cormorant Garamond', serif; }
+
+  /* Hero decorative SVGs */
+  .hero-deco { position: absolute; pointer-events: none; color: var(--green); opacity: 0.12; }
+
+  /* Ornament divider */
+  .ornament-deco { display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--gold); }
+  .ornament-deco .line { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); flex: 1; max-width: 100px; }
+
+  /* Sticky bar */
+  .sticky-bar {
+    background: linear-gradient(180deg, rgba(241, 233, 210, 0.96), rgba(241, 233, 210, 0.86));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .search-wrap { position: relative; flex: 1; max-width: 360px; min-width: 200px; }
+  .search-input {
+    background: rgba(253, 248, 235, 0.7);
+    border: 1px solid var(--border);
+    padding: 11px 18px 11px 42px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+    transition: all 0.25s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--green);
+    background: var(--cream);
+    box-shadow: 0 0 0 4px rgba(29, 77, 46, 0.10);
+  }
+  .search-input::placeholder { color: var(--ink-mute); }
+
+  .filter-pill {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .filter-pill:hover { border-color: var(--green); color: var(--green); }
+  .filter-pill.active { background: var(--green); border-color: var(--green); color: var(--cream); }
+
+  /* Progress */
+  .progress-track {
+    height: 5px;
+    background: rgba(29, 77, 46, 0.15);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-soft), var(--green));
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 100px;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2.5s linear infinite;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+  /* Stats */
+  .stat-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 16px;
+    background: rgba(168, 116, 42, 0.09);
+    border: 1px solid rgba(168, 116, 42, 0.20);
+    border-radius: 100px;
+  }
+  .stat-pill .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--green-deep);
+    line-height: 1;
+  }
+  .stat-pill .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* Card grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 22px;
+  }
+
+  .vocab-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 26px 24px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(12, 43, 26, 0.04), 0 4px 12px rgba(12, 43, 26, 0.04);
+    overflow: hidden;
+  }
+  .vocab-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    opacity: 0.75;
+    transition: opacity 0.4s;
+  }
+  .vocab-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1px 2px rgba(12, 43, 26, 0.04), 0 22px 44px rgba(12, 43, 26, 0.14);
+    border-color: rgba(29, 77, 46, 0.32);
+  }
+  .vocab-card:hover::before { opacity: 1; }
+  .vocab-card.learned {
+    background: linear-gradient(170deg, #e8efe2 0%, #dde8d4 100%);
+    border-color: rgba(29, 77, 46, 0.35);
+  }
+  .vocab-card.learned::before {
+    background: linear-gradient(180deg, var(--green-soft), var(--green));
+  }
+
+  .pos-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(168, 116, 42, 0.10);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(168, 116, 42, 0.18);
+  }
+  .word-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(1.85rem, 3.5vw, 2.4rem);
+    line-height: 1.05;
+    color: var(--green-deep);
+    margin: 12px 0 0;
+    letter-spacing: -0.01em;
+  }
+  .definition {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    padding: 14px 0;
+    border-top: 1px solid rgba(29, 77, 46, 0.15);
+    border-bottom: 1px solid rgba(29, 77, 46, 0.15);
+    margin: 16px 0 14px;
+  }
+  .micro-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .example {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    margin: 8px 0;
+  }
+  .example-number {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--cream);
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .highlight-word {
+    background: linear-gradient(180deg, transparent 55%, rgba(200, 154, 62, 0.45) 55%);
+    padding: 0 3px;
+    font-weight: 600;
+    color: var(--green-deep);
+  }
+  .learn-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(29, 77, 46, 0.3);
+    background: rgba(253, 248, 235, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    padding: 0;
+  }
+  .learn-btn:hover {
+    border-color: var(--green);
+    background: rgba(29, 77, 46, 0.08);
+    transform: scale(1.08);
+  }
+  .learn-btn svg { opacity: 0; transition: opacity 0.3s; color: var(--cream); }
+  .vocab-card.learned .learn-btn {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .vocab-card.learned .learn-btn svg { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--ink-mute);
+  }
+
+  @media (max-width: 768px) {
+    .sticky-bar-content { flex-direction: column; gap: 12px; align-items: stretch; }
+    .filter-row { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="relative overflow-hidden">
+  <svg class="hero-deco" style="top:-50px;right:-50px;width:300px;height:300px" viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="85" stroke="currentColor" stroke-width="0.6"/>
+    <circle cx="100" cy="100" r="65" stroke="currentColor" stroke-width="0.6"/>
+    <circle cx="100" cy="100" r="45" stroke="currentColor" stroke-width="0.6"/>
+    <circle cx="100" cy="100" r="25" stroke="currentColor" stroke-width="0.6"/>
+  </svg>
+  <svg class="hero-deco" style="bottom:-60px;left:-60px;width:240px;height:240px" viewBox="0 0 200 200" fill="none">
+    <path d="M100 20 L120 80 L180 100 L120 120 L100 180 L80 120 L20 100 L80 80 Z" stroke="currentColor" stroke-width="0.6"/>
+    <path d="M100 50 L110 90 L150 100 L110 110 L100 150 L90 110 L50 100 L90 90 Z" stroke="currentColor" stroke-width="0.6"/>
+  </svg>
+
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 pt-16 pb-10 relative">
+    <div class="text-center">
+      <div class="ornament-deco mb-8" style="max-width:340px;margin-left:auto;margin-right:auto">
+        <span class="line"></span>
+        <span class="text-xs font-bold tracking-[0.22em] uppercase" style="color:var(--gold)">Vocabulary Study Deck</span>
+        <span class="line"></span>
+      </div>
+
+      <h1 class="display font-bold leading-none mb-5" style="font-size: clamp(2.5rem, 6vw, 4.75rem); color:var(--green-deep)">
+        How the <em class="italic" style="color:var(--red)">Grinch</em><br>
+        Stole the Words
+      </h1>
+
+      <p class="text-[var(--ink-soft)] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+        Definition and 2 example sentences for each study word.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-3 mt-8">
+        <div class="stat-pill"><span class="num">23</span><span class="lbl">Words</span></div>
+        <div class="stat-pill"><span class="num">46</span><span class="lbl">Examples</span></div>
+        <div class="stat-pill"><span class="num">23</span><span class="lbl">Definitions</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sticky top-0 z-30 sticky-bar">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-3.5">
+    <div class="sticky-bar-content flex flex-wrap items-center gap-4 justify-between">
+      <div class="flex items-center gap-4">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.15em] font-bold text-[var(--ink-mute)] mb-1.5">Study Progress</div>
+          <div class="flex items-center gap-3">
+            <div class="progress-track w-32 md:w-44"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            <span class="text-sm font-semibold text-[var(--green-deep)] whitespace-nowrap"><span id="learnedCount">0</span>/<span id="totalCount">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--ink-mute)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input class="search-input" id="searchInput" placeholder="Search words, definitions, examples...">
+      </div>
+
+      <div class="filter-row flex items-center gap-2">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="unlearned">To Learn</button>
+        <button class="filter-pill" data-filter="learned">Learned</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="max-w-6xl mx-auto px-6 lg:px-10 py-10">
+  <div id="cardGrid" class="card-grid"></div>
+  <div id="emptyState" class="empty-state hidden">
+    <div class="display text-3xl mb-2" style="color:var(--green-deep)">Nothing to study here</div>
+    <div>Try a different search term or filter.</div>
+  </div>
+</main>
+
+<footer class="border-t border-[var(--border)] mt-10">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="text-sm text-[var(--ink-mute)]">
+      Deck inspired by Dr. Seuss's <em class="display italic">How the Grinch Stole Christmas!</em> · 23 entries
+    </div>
+    <button id="resetBtn" class="text-sm text-[var(--red)] hover:underline font-medium">Reset progress</button>
+  </div>
+</footer>
+
+<script>
+  // ====================================================================
+  //  DATA — three separate arrays, connected by `id` / `wordId`
+  //  You can lift any one of these arrays out independently.
+  // ====================================================================
+
+  // Array 1: Words (the headwords + part of speech)
+  const words = [
+    { id: 1,  word: "creature",              partOfSpeech: "noun" },
+    { id: 2,  word: "festive",               partOfSpeech: "adjective" },
+    { id: 3,  word: "cave",                  partOfSpeech: "noun" },
+    { id: 4,  word: "decorations",           partOfSpeech: "noun" },
+    { id: 5,  word: "gift",                  partOfSpeech: "noun" },
+    { id: 6,  word: "sleigh",                partOfSpeech: "noun" },
+    { id: 7,  word: "breaks into",           partOfSpeech: "phrasal verb" },
+    { id: 8,  word: "stockings",             partOfSpeech: "noun" },
+    { id: 9,  word: "caught",                partOfSpeech: "verb" },
+    { id: 10, word: "sly",                   partOfSpeech: "adjective" },
+    { id: 11, word: "stripped",              partOfSpeech: "verb / adj." },
+    { id: 12, word: "material possessions", partOfSpeech: "noun phrase" },
+    { id: 13, word: "celebration",           partOfSpeech: "noun" },
+    { id: 14, word: "presents",              partOfSpeech: "noun" },
+    { id: 15, word: "genuine",               partOfSpeech: "adjective" },
+    { id: 16, word: "undergoes",             partOfSpeech: "verb" },
+    { id: 17, word: "change of heart",       partOfSpeech: "noun phrase" },
+    { id: 18, word: "shriveled",             partOfSpeech: "adjective" },
+    { id: 19, word: "overwhelmed",           partOfSpeech: "adjective / verb" },
+    { id: 20, word: "newfound",              partOfSpeech: "adjective" },
+    { id: 21, word: "stolen",               partOfSpeech: "adjective / verb" },
+    { id: 22, word: "festivities",           partOfSpeech: "noun" },
+    { id: 23, word: "carving",               partOfSpeech: "noun / verb" }
+  ];
+
+  // Array 2: Definitions (linked via wordId)
+  const definitions = [
+    { wordId: 1,  definition: "A living being, especially an animal or a fictional entity, often with distinctive or unusual qualities." },
+    { wordId: 2,  definition: "Relating to or characteristic of a festival or celebration; cheerful, colorful, and full of excitement." },
+    { wordId: 3,  definition: "A natural underground chamber, typically formed in rock such as limestone over a long period of time." },
+    { wordId: 4,  definition: "Ornaments and adornments used to make something look more attractive, especially for a special occasion." },
+    { wordId: 5,  definition: "A thing given willingly to someone without payment; a present, often to mark a special occasion or show affection." },
+    { wordId: 6,  definition: "A vehicle on runners, typically pulled by horses, used for traveling across snow or ice." },
+    { wordId: 7,  definition: "To enter a place by force or without permission, often with the intent of taking something." },
+    { wordId: 8,  definition: "Close-fitting coverings for the foot and leg; in Christmas tradition, large sock-shaped hangings used to hold small gifts." },
+    { wordId: 9,  definition: "Past tense of 'catch'; to have captured, seized, or discovered someone or something, often after pursuit." },
+    { wordId: 10, definition: "Having or showing cunning and deceitful cleverness, often in a covert or charming manner." },
+    { wordId: 11, definition: "Having had something removed or taken away; left bare or without the usual covering or contents." },
+    { wordId: 12, definition: "Physical objects and belongings that a person owns, especially those considered valuable or desirable." },
+    { wordId: 13, definition: "The action of marking an important event or occasion with joyful activities and festivity." },
+    { wordId: 14, definition: "Items given to someone as a gift, especially on a special occasion such as a birthday or holiday." },
+    { wordId: 15, definition: "Truly what something is said to be; authentic, sincere, and not fake or pretended." },
+    { wordId: 16, definition: "Experiences or endures something, especially a significant change, process, or procedure." },
+    { wordId: 17, definition: "A complete reversal of one's opinions, feelings, or attitudes toward something or someone." },
+    { wordId: 18, definition: "Wrinkled and contracted, especially as a result of losing moisture, vitality, or fullness." },
+    { wordId: 19, definition: "Completely overcome in mind or feeling; strongly affected by emotion, often to the point of being unable to respond." },
+    { wordId: 20, definition: "Recently discovered, acquired, or developed; newly found or recognized." },
+    { wordId: 21, definition: "Taken without permission or by force; describes something that has been stolen from its owner." },
+    { wordId: 22, definition: "Activities and events that form part of a celebration; joyful occasions marked by festivity." },
+    { wordId: 23, definition: "The act of cutting something into a desired shape; also an object made by carving material such as wood or stone." }
+  ];
+
+  // Array 3: Example sentences (linked via wordId, indexed 1..2)
+  const sentences = [
+    { wordId: 1, index: 1, sentence: "The deep-sea diver encountered a strange creature with glowing tentacles near the ocean floor." },
+    { wordId: 1, index: 2, sentence: "The fantasy novel describes a magical creature that grants wishes to those who befriend it." },
+    { wordId: 2, index: 1, sentence: "The town square was decorated with festive lights and ribbons for the holiday season." },
+    { wordId: 2, index: 2, sentence: "She wore a festive red dress to the company's annual winter party." },
+    { wordId: 3, index: 1, sentence: "The explorers discovered ancient paintings deep inside the limestone cave." },
+    { wordId: 3, index: 2, sentence: "Bats roost in the dark cave during the day and emerge at dusk to hunt." },
+    { wordId: 4, index: 1, sentence: "The wedding decorations included fresh flowers, candles, and elegant ribbons." },
+    { wordId: 4, index: 2, sentence: "We spent the afternoon putting up Halloween decorations around the house." },
+    { wordId: 5, index: 1, sentence: "She received a beautiful gift from her grandmother on her eighteenth birthday." },
+    { wordId: 5, index: 2, sentence: "The teacher considered every student's curiosity a gift worth nurturing." },
+    { wordId: 6, index: 1, sentence: "The horses pulled the sleigh swiftly across the snowy field at dawn." },
+    { wordId: 6, index: 2, sentence: "Children gathered around to admire the decorated sleigh at the winter festival." },
+    { wordId: 7, index: 1, sentence: "The thief breaks into houses when no one is home, searching for valuables." },
+    { wordId: 7, index: 2, sentence: "A curious bear breaks into our trash cans every night looking for food." },
+    { wordId: 8, index: 1, sentence: "The children hung their Christmas stockings on the fireplace mantel before bed." },
+    { wordId: 8, index: 2, sentence: "She knitted warm stockings for her entire family as holiday gifts." },
+    { wordId: 9, index: 1, sentence: "The police caught the robber after a long chase through the city streets." },
+    { wordId: 9, index: 2, sentence: "He caught a glimpse of the sunset just as the plane began to descend." },
+    { wordId: 10, index: 1, sentence: "The fox gave a sly smile before sneaking into the chicken coop." },
+    { wordId: 10, index: 2, sentence: "She had a sly way of getting what she wanted without anyone noticing." },
+    { wordId: 11, index: 1, sentence: "The stripped trees stood bare against the pale winter sky." },
+    { wordId: 11, index: 2, sentence: "The thief was stripped of all his belongings before being sent to prison." },
+    { wordId: 12, index: 1, sentence: "After the fire, she realized that material possessions could be replaced but memories could not." },
+    { wordId: 12, index: 2, sentence: "Many philosophers argue that chasing material possessions leads to unhappiness." },
+    { wordId: 13, index: 1, sentence: "The city held a grand celebration for the team's championship victory." },
+    { wordId: 13, index: 2, sentence: "Their anniversary celebration included dinner at a five-star restaurant downtown." },
+    { wordId: 14, index: 1, sentence: "The children eagerly unwrapped their birthday presents on the living room floor." },
+    { wordId: 14, index: 2, sentence: "She always preferred handmade presents over store-bought ones." },
+    { wordId: 15, index: 1, sentence: "The painting was confirmed to be a genuine Rembrandt by a team of experts." },
+    { wordId: 15, index: 2, sentence: "His genuine concern for others made him a beloved teacher at the school." },
+    { wordId: 16, index: 1, sentence: "The caterpillar undergoes a remarkable transformation into a butterfly over several weeks." },
+    { wordId: 16, index: 2, sentence: "The old building undergoes extensive renovations every decade to preserve its structure." },
+    { wordId: 17, index: 1, sentence: "After meeting the orphan, the billionaire had a change of heart about his wealth." },
+    { wordId: 17, index: 2, sentence: "The stubborn manager experienced a change of heart after the team presented their case." },
+    { wordId: 18, index: 1, sentence: "The shriveled apples lay forgotten at the bottom of the fruit basket." },
+    { wordId: 18, index: 2, sentence: "Her hands looked shriveled after soaking in the hot bath for too long." },
+    { wordId: 19, index: 1, sentence: "She was overwhelmed by the kindness of strangers after the accident." },
+    { wordId: 19, index: 2, sentence: "The new student felt overwhelmed by the complexity of the syllabus on the first day." },
+    { wordId: 20, index: 1, sentence: "With his newfound wealth, he decided to travel the world for a year." },
+    { wordId: 20, index: 2, sentence: "Their newfound friendship quickly grew stronger over shared interests and hobbies." },
+    { wordId: 21, index: 1, sentence: "The police recovered the stolen jewelry from a hidden vault beneath the house." },
+    { wordId: 21, index: 2, sentence: "She was devastated to learn her stolen car had been stripped for parts." },
+    { wordId: 22, index: 1, sentence: "The wedding festivities lasted three days and included dancing and feasting." },
+    { wordId: 22, index: 2, sentence: "The town's annual festivities attract tourists from all over the country." },
+    { wordId: 23, index: 1, sentence: "The chef demonstrated his carving skills at the Thanksgiving dinner table." },
+    { wordId: 23, index: 2, sentence: "The wooden carving on the door told stories of ancient times and forgotten heroes." }
+  ];
+
+  // ====================================================================
+  //  STATE & LOGIC
+  // ====================================================================
+  const learnedState = {};
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  const getDefinition = (wordId) => definitions.find(d => d.wordId === wordId);
+  const getSentences = (wordId) => sentences
+    .filter(s => s.wordId === wordId)
+    .sort((a, b) => a.index - b.index);
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Highlight the study word inside an example sentence
+  function highlightWord(sentence, word) {
+    const wordLower = word.toLowerCase();
+    const sentenceLower = sentence.toLowerCase();
+    const idx = sentenceLower.indexOf(wordLower);
+    if (idx === -1) return escapeHtml(sentence);
+    const before = sentence.substring(0, idx);
+    const match  = sentence.substring(idx, idx + word.length);
+    const after  = sentence.substring(idx + word.length);
+    return escapeHtml(before)
+      + '<span class="highlight-word">' + escapeHtml(match) + '</span>'
+      + escapeHtml(after);
+  }
+
+  function renderCards() {
+    const grid = document.getElementById('cardGrid');
+    const empty = document.getElementById('emptyState');
+    grid.innerHTML = '';
+    let visibleCount = 0;
+
+    words.forEach(w => {
+      const def = getDefinition(w.id);
+      const exs = getSentences(w.id);
+      const isLearned = !!learnedState[w.id];
+
+      // Filter
+      if (currentFilter === 'learned' && !isLearned) return;
+      if (currentFilter === 'unlearned' && isLearned) return;
+
+      // Search across word, POS, definition, and example sentences
+      if (currentSearch) {
+        const haystack = (
+          w.word + ' ' +
+          w.partOfSpeech + ' ' +
+          def.definition + ' ' +
+          exs.map(e => e.sentence).join(' ')
+        ).toLowerCase();
+        if (!haystack.includes(currentSearch)) return;
+      }
+
+      visibleCount++;
+      const card = document.createElement('article');
+      card.className = 'vocab-card fade-up' + (isLearned ? ' learned' : '');
+      card.style.animationDelay = Math.min(visibleCount * 0.04, 0.5) + 's';
+
+      const sentencesHtml = exs.map(e => `
+        <div class="example">
+          <div class="example-number">${e.index}</div>
+          <div>${highlightWord(e.sentence, w.word)}</div>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <button class="learn-btn" data-word-id="${w.id}" aria-label="${isLearned ? 'Mark as not learned' : 'Mark as learned'}" title="${isLearned ? 'Mark as not learned' : 'Mark as learned'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+        <span class="pos-tag">${escapeHtml(w.partOfSpeech)}</span>
+        <h2 class="word-display">${escapeHtml(w.word)}</h2>
+        <div class="definition">
+          <span class="micro-label">Definition</span>
+          ${escapeHtml(def.definition)}
+        </div>
+        <div>
+          <span class="micro-label">In Context</span>
+          ${sentencesHtml}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    empty.classList.toggle('hidden', visibleCount > 0);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = words.length;
+    const learned = Object.keys(learnedState).filter(k => learnedState[k]).length;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('progressFill').style.width = (learned / total * 100) + '%';
+  }
+
+  // Events
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.learn-btn');
+    if (btn) {
+      const id = parseInt(btn.dataset.wordId);
+      if (learnedState[id]) delete learnedState[id];
+      else learnedState[id] = true;
+      renderCards();
+    }
+    const pill = e.target.closest('.filter-pill');
+    if (pill) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.dataset.filter;
+      renderCards();
+    }
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    renderCards();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    Object.keys(learnedState).forEach(k => delete learnedState[k]);
+    renderCards();
+  });
+
+  // Initial render
+  renderCards();
+</script>
+
+</body>
+</html>
