@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Study · A Christmas Carol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #efe5d0;
+    --paper: #faf4e3;
+    --paper-2: #f6eed8;
+    --ink: #2a2018;
+    --ink-soft: #5a4a3a;
+    --ink-mute: #8a7a6a;
+    --cocoa: #3a2614;
+    --cocoa-deep: #1f1408;
+    --cocoa-soft: #5a3a20;
+    --red: #842020;
+    --red-soft: #a13838;
+    --gold: #a8742a;
+    --gold-light: #c89a3e;
+    --cream: #fdf8eb;
+    --border: rgba(58, 38, 20, 0.20);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    margin: 0;
+    min-height: 100vh;
+    line-height: 1.6;
+    background-image:
+      radial-gradient(ellipse 60% 50% at 15% 0%, rgba(168, 116, 42, 0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 85% 100%, rgba(132, 32, 32, 0.09) 0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  }
+  .display { font-family: 'Cormorant Garamond', serif; }
+
+  /* Hero decorative SVGs — Victorian filigree feel */
+  .hero-deco { position: absolute; pointer-events: none; color: var(--cocoa); opacity: 0.14; }
+
+  .ornament-deco { display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--gold); }
+  .ornament-deco .line { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); flex: 1; max-width: 110px; }
+  .ornament-deco svg { color: var(--gold); flex-shrink: 0; }
+
+  /* Sticky bar */
+  .sticky-bar {
+    background: linear-gradient(180deg, rgba(239, 229, 208, 0.96), rgba(239, 229, 208, 0.86));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .search-wrap { position: relative; flex: 1; max-width: 360px; min-width: 200px; }
+  .search-input {
+    background: rgba(253, 248, 235, 0.7);
+    border: 1px solid var(--border);
+    padding: 11px 18px 11px 42px;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+    transition: all 0.25s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--cocoa);
+    background: var(--cream);
+    box-shadow: 0 0 0 4px rgba(58, 38, 20, 0.10);
+  }
+  .search-input::placeholder { color: var(--ink-mute); }
+
+  .filter-pill {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .filter-pill:hover { border-color: var(--cocoa); color: var(--cocoa); }
+  .filter-pill.active { background: var(--cocoa); border-color: var(--cocoa); color: var(--cream); }
+
+  .progress-track {
+    height: 5px;
+    background: rgba(58, 38, 20, 0.15);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cocoa-soft), var(--cocoa));
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 100px;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2.5s linear infinite;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+  .stat-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 16px;
+    background: rgba(168, 116, 42, 0.10);
+    border: 1px solid rgba(168, 116, 42, 0.22);
+    border-radius: 100px;
+  }
+  .stat-pill .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--cocoa-deep);
+    line-height: 1;
+  }
+  .stat-pill .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 22px;
+  }
+
+  .vocab-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 26px 24px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(31, 20, 8, 0.05), 0 4px 12px rgba(31, 20, 8, 0.04);
+    overflow: hidden;
+  }
+  .vocab-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    opacity: 0.78;
+    transition: opacity 0.4s;
+  }
+  .vocab-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1px 2px rgba(31, 20, 8, 0.05), 0 22px 44px rgba(31, 20, 8, 0.16);
+    border-color: rgba(58, 38, 20, 0.38);
+  }
+  .vocab-card:hover::before { opacity: 1; }
+  .vocab-card.learned {
+    background: linear-gradient(170deg, #ecf0e8 0%, #e0e8da 100%);
+    border-color: rgba(58, 38, 20, 0.38);
+  }
+  .vocab-card.learned::before {
+    background: linear-gradient(180deg, var(--cocoa-soft), var(--cocoa));
+  }
+
+  .pos-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(168, 116, 42, 0.10);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(168, 116, 42, 0.20);
+  }
+  .word-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(1.85rem, 3.5vw, 2.4rem);
+    line-height: 1.05;
+    color: var(--cocoa-deep);
+    margin: 12px 0 0;
+    letter-spacing: -0.01em;
+  }
+  .definition {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    padding: 14px 0;
+    border-top: 1px solid rgba(58, 38, 20, 0.18);
+    border-bottom: 1px solid rgba(58, 38, 20, 0.18);
+    margin: 16px 0 14px;
+  }
+  .micro-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .example {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    margin: 8px 0;
+  }
+  .example-number {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--cocoa);
+    color: var(--cream);
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .highlight-word {
+    background: linear-gradient(180deg, transparent 55%, rgba(200, 154, 62, 0.48) 55%);
+    padding: 0 3px;
+    font-weight: 600;
+    color: var(--cocoa-deep);
+  }
+  .learn-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(58, 38, 20, 0.32);
+    background: rgba(253, 248, 235, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    padding: 0;
+  }
+  .learn-btn:hover {
+    border-color: var(--cocoa);
+    background: rgba(58, 38, 20, 0.08);
+    transform: scale(1.08);
+  }
+  .learn-btn svg { opacity: 0; transition: opacity 0.3s; color: var(--cream); }
+  .vocab-card.learned .learn-btn {
+    background: var(--cocoa);
+    border-color: var(--cocoa);
+  }
+  .vocab-card.learned .learn-btn svg { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--ink-mute);
+  }
+
+  @media (max-width: 768px) {
+    .sticky-bar-content { flex-direction: column; gap: 12px; align-items: stretch; }
+    .filter-row { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="relative overflow-hidden">
+  <svg class="hero-deco" style="top:-50px;right:-50px;width:320px;height:320px" viewBox="0 0 200 200" fill="none">
+    <circle cx="100" cy="100" r="88" stroke="currentColor" stroke-width="0.7"/>
+    <circle cx="100" cy="100" r="66" stroke="currentColor" stroke-width="0.7"/>
+    <circle cx="100" cy="100" r="44" stroke="currentColor" stroke-width="0.7"/>
+    <circle cx="100" cy="100" r="22" stroke="currentColor" stroke-width="0.7"/>
+    <path d="M100 0 L100 200 M0 100 L200 100" stroke="currentColor" stroke-width="0.5"/>
+  </svg>
+  <svg class="hero-deco" style="bottom:-60px;left:-60px;width:260px;height:260px" viewBox="0 0 200 200" fill="none">
+    <path d="M100 20 L114 76 L172 100 L114 124 L100 180 L86 124 L28 100 L86 76 Z" stroke="currentColor" stroke-width="0.7"/>
+    <path d="M100 50 L108 88 L146 100 L108 112 L100 150 L92 112 L54 100 L92 88 Z" stroke="currentColor" stroke-width="0.7"/>
+  </svg>
+
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 pt-16 pb-10 relative">
+    <div class="text-center">
+      <div class="ornament-deco mb-8" style="max-width:380px;margin-left:auto;margin-right:auto">
+        <span class="line"></span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg>
+        <span class="text-xs font-bold tracking-[0.22em] uppercase" style="color:var(--gold)">Vocabulary Study Deck</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg>
+        <span class="line"></span>
+      </div>
+
+      <h1 class="display font-bold leading-none mb-5" style="font-size: clamp(2.5rem, 6vw, 4.75rem); color:var(--cocoa-deep)">
+        A Christmas <em class="italic" style="color:var(--red)">Carol</em><br>
+        Vocabulary Deck
+      </h1>
+
+      <p class="text-[var(--ink-soft)] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+        Forty study words each card with a definition and two fresh example sentences.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-3 mt-8">
+        <div class="stat-pill"><span class="num">40</span><span class="lbl">Words</span></div>
+        <div class="stat-pill"><span class="num">80</span><span class="lbl">Examples</span></div>
+        <div class="stat-pill"><span class="num">1843</span><span class="lbl">London Setting</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sticky top-0 z-30 sticky-bar">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-3.5">
+    <div class="sticky-bar-content flex flex-wrap items-center gap-4 justify-between">
+      <div class="flex items-center gap-4">
+        <div>
+          <div class="text-[10px] uppercase tracking-[0.15em] font-bold text-[var(--ink-mute)] mb-1.5">Study Progress</div>
+          <div class="flex items-center gap-3">
+            <div class="progress-track w-32 md:w-44"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            <span class="text-sm font-semibold text-[var(--cocoa-deep)] whitespace-nowrap"><span id="learnedCount">0</span>/<span id="totalCount">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--ink-mute)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input class="search-input" id="searchInput" placeholder="Search words, definitions, examples...">
+      </div>
+
+      <div class="filter-row flex items-center gap-2">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="unlearned">To Learn</button>
+        <button class="filter-pill" data-filter="learned">Learned</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="max-w-6xl mx-auto px-6 lg:px-10 py-10">
+  <div id="cardGrid" class="card-grid"></div>
+  <div id="emptyState" class="empty-state hidden">
+    <div class="display text-3xl mb-2" style="color:var(--cocoa-deep)">Nothing to study here</div>
+    <div>Try a different search term or filter.</div>
+  </div>
+</main>
+
+<footer class="border-t border-[var(--border)] mt-10">
+  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="text-sm text-[var(--ink-mute)]">
+      Deck inspired by Charles Dickens's <em class="display italic">A Christmas Carol</em> (1843) · 40 entries
+    </div>
+    <button id="resetBtn" class="text-sm text-[var(--red)] hover:underline font-medium">Reset progress</button>
+  </div>
+</footer>
+
+<script>
+  // ====================================================================
+  //  DATA — three separate arrays, connected by `id` / `wordId`
+  // ====================================================================
+
+  // Array 1: Words
+  const words = [
+    { id: 1,  word: "heartless",           partOfSpeech: "adjective" },
+    { id: 2,  word: "debtors",             partOfSpeech: "noun" },
+    { id: 3,  word: "property",            partOfSpeech: "noun" },
+    { id: 4,  word: "partner",             partOfSpeech: "noun" },
+    { id: 5,  word: "run-down",            partOfSpeech: "adjective" },
+    { id: 6,  word: "upkeep",              partOfSpeech: "noun" },
+    { id: 7,  word: "meager",              partOfSpeech: "adjective" },
+    { id: 8,  word: "charity",             partOfSpeech: "noun" },
+    { id: 9,  word: "prisons",             partOfSpeech: "noun" },
+    { id: 10, word: "mocked",              partOfSpeech: "verb" },
+    { id: 11, word: "made fun of",         partOfSpeech: "phrasal verb" },
+    { id: 12, word: "ventured",           partOfSpeech: "verb" },
+    { id: 13, word: "broth",               partOfSpeech: "noun" },
+    { id: 14, word: "chains",              partOfSpeech: "noun" },
+    { id: 15, word: "weighted down",       partOfSpeech: "phrasal verb / adj." },
+    { id: 16, word: "chests",              partOfSpeech: "noun" },
+    { id: 17, word: "greed",               partOfSpeech: "noun" },
+    { id: 18, word: "wander",              partOfSpeech: "verb" },
+    { id: 19, word: "burden",              partOfSpeech: "noun" },
+    { id: 20, word: "sufferings",          partOfSpeech: "noun" },
+    { id: 21, word: "the needy",           partOfSpeech: "noun phrase" },
+    { id: 22, word: "face the same fate", partOfSpeech: "phrase" },
+    { id: 23, word: "change his ways",     partOfSpeech: "phrase" },
+    { id: 24, word: "disappeared",         partOfSpeech: "verb" },
+    { id: 25, word: "hallucinating",       partOfSpeech: "verb / adj." },
+    { id: 26, word: "out of the blue",     partOfSpeech: "idiom" },
+    { id: 27, word: "save up",             partOfSpeech: "phrasal verb" },
+    { id: 28, word: "take care of",        partOfSpeech: "phrasal verb" },
+    { id: 29, word: "focused",              partOfSpeech: "adjective" },
+    { id: 30, word: "bitter",              partOfSpeech: "adjective" },
+    { id: 31, word: "turned down",         partOfSpeech: "phrasal verb" },
+    { id: 32, word: "could hardly afford", partOfSpeech: "phrase" },
+    { id: 33, word: "crippled",            partOfSpeech: "adjective" },
+    { id: 34, word: "medical treatment",    partOfSpeech: "noun phrase" },
+    { id: 35, word: "afford",              partOfSpeech: "verb" },
+    { id: 36, word: "deep sorrow",         partOfSpeech: "noun phrase" },
+    { id: 37, word: "shows up",            partOfSpeech: "phrasal verb" },
+    { id: 38, word: "behavior",            partOfSpeech: "noun" },
+    { id: 39, word: "festivities",          partOfSpeech: "noun" },
+    { id: 40, word: "generous",             partOfSpeech: "adjective" }
+  ];
+
+  // Array 2: Definitions
+  const definitions = [
+    { wordId: 1,  definition: "Completely lacking in sympathy, compassion, or feeling; cruel and cold toward others." },
+    { wordId: 2,  definition: "People who owe money to someone else, especially those unable to pay what they owe." },
+    { wordId: 3,  definition: "A thing or things that someone owns; possessions, land, or buildings belonging to a person." },
+    { wordId: 4,  definition: "A person who shares ownership of a business or shares in an enterprise with one or more others." },
+    { wordId: 5,  definition: "In a state of disrepair; shabby, neglected, and deteriorating from lack of maintenance." },
+    { wordId: 6,  definition: "The act of maintaining something in good condition; the cost or work of keeping something in proper order." },
+    { wordId: 7,  definition: "Deficient in quantity, quality, or extent; scanty and barely sufficient." },
+    { wordId: 8,  definition: "The voluntary giving of help, typically money, to those in need; also an organization that provides such help." },
+    { wordId: 9,  definition: "Buildings where people are confined as punishment for crimes; places of imprisonment." },
+    { wordId: 10, definition: "Spoke about someone or something in a ridiculing or contemptuous way; teased or made fun of." },
+    { wordId: 11, definition: "Ridiculed, teased, or made a joke of someone in an unkind manner." },
+    { wordId: 12, definition: "Dared to go somewhere that may be dangerous, unpleasant, or unfamiliar; went with hesitation." },
+    { wordId: 13, definition: "A thin, clear soup made by simmering meat, bones, or vegetables in water and straining the liquid." },
+    { wordId: 14, definition: "A series of connected metal rings used for fastening, securing, or binding; also used to restrain prisoners." },
+    { wordId: 15, definition: "Made heavy by an added load; pressed down by weight; figuratively, weighed down emotionally." },
+    { wordId: 16, definition: "Sturdy, often lockable boxes or containers used for storing valuables such as money or goods." },
+    { wordId: 17, definition: "An intense and selfish desire for wealth, possessions, or power, often at the expense of others." },
+    { wordId: 18, definition: "To move about without a definite destination or purpose, often over a wide area." },
+    { wordId: 19, definition: "A heavy load that is difficult to bear; a duty, responsibility, or hardship one must carry." },
+    { wordId: 20, definition: "States of physical or mental pain, distress, or hardship endured by a person or group." },
+    { wordId: 21, definition: "People who lack the basic necessities of life, such as food, shelter, or money; the poor." },
+    { wordId: 22, definition: "To experience the same outcome or destiny as another, especially a negative one." },
+    { wordId: 23, definition: "To alter one's habits, behavior, or attitude, especially to become a better person." },
+    { wordId: 24, definition: "Vanished from sight; ceased to be visible or present." },
+    { wordId: 25, definition: "Experiencing false perceptions of things that are not really present, often caused by illness, drugs, or exhaustion." },
+    { wordId: 26, definition: "Suddenly and unexpectedly; without any warning or prior indication." },
+    { wordId: 27, definition: "To set aside money or resources gradually over time for a particular purpose." },
+    { wordId: 28, definition: "To look after someone or something; to provide for the needs of." },
+    { wordId: 29, definition: "Concentrated attention or effort on a particular thing; directed toward a single goal." },
+    { wordId: 30, definition: "Showing resentment, cynicism, or anger, especially from a sense of injustice or disappointment over time." },
+    { wordId: 31, definition: "Refused an offer, request, or invitation; rejected." },
+    { wordId: 32, definition: "Barely had enough money or means to pay for something; almost unable to manage the cost." },
+    { wordId: 33, definition: "Having a physical disability that severely limits movement in the body, especially the legs; also dated for disabled." },
+    { wordId: 34, definition: "Care and attention given by medical professionals to treat illness or injury." },
+    { wordId: 35, definition: "To have enough money, resources, or means to pay for something without difficulty." },
+    { wordId: 36, definition: "A profound and intense feeling of sadness, grief, or loss." },
+    { wordId: 37, definition: "Arrives or appears somewhere, often unexpectedly or after being anticipated." },
+    { wordId: 38, definition: "The way a person acts or conducts themselves, especially toward others." },
+    { wordId: 39, definition: "Activities and events that form part of a celebration; joyful occasions marked by festivity." },
+    { wordId: 40, definition: "Willing to give more of something, especially money or time, than is strictly necessary; open-handed and kind." }
+  ];
+
+  // Array 3: Example sentences
+  const sentences = [
+    { wordId: 1, index: 1, sentence: "The heartless landlord evicted the family in the middle of a snowstorm without a second thought." },
+    { wordId: 1, index: 2, sentence: "Critics called the dictator's new policy heartless, since it cut off aid to the poorest regions." },
+    { wordId: 2, index: 1, sentence: "The court ordered that all debtors repay their loans within twelve months or face seizure of assets." },
+    { wordId: 2, index: 2, sentence: "In the 19th century, debtors were often thrown into prison until their families paid what they owed." },
+    { wordId: 3, index: 1, sentence: "The judge seized the businessman's property to settle the long-standing tax debt." },
+    { wordId: 3, index: 2, sentence: "Much of the family's property had been sold off before the youngest son was old enough to inherit." },
+    { wordId: 4, index: 1, sentence: "Marley was Scrooge's business partner for many years before his untimely death." },
+    { wordId: 4, index: 2, sentence: "She and her partner opened a small bakery on the corner of Maple Street last spring." },
+    { wordId: 5, index: 1, sentence: "They bought a run-down cottage in the countryside and spent two years restoring it." },
+    { wordId: 5, index: 2, sentence: "The run-down factory at the edge of town had been abandoned for over a decade." },
+    { wordId: 6, index: 1, sentence: "The upkeep of an old manor house can cost far more than the purchase price itself." },
+    { wordId: 6, index: 2, sentence: "She set aside a portion of her income each month for the upkeep of her garden." },
+    { wordId: 7, index: 1, sentence: "The refugees survived on a meager ration of bread and water for nearly a week." },
+    { wordId: 7, index: 2, sentence: "His meager salary barely covered the rent, let alone groceries for the month." },
+    { wordId: 8, index: 1, sentence: "She donated a quarter of her income to charity every year without fail." },
+    { wordId: 8, index: 2, sentence: "The local charity distributed warm coats and blankets to the homeless before winter set in." },
+    { wordId: 9, index: 1, sentence: "In Victorian London, debtors' prisons functioned much like ordinary prisons, only the crime was owing money." },
+    { wordId: 9, index: 2, sentence: "Several of the old prisons along the river have been turned into museums for tourists." },
+    { wordId: 10, index: 1, sentence: "The crowd mocked the visiting team as they walked off the field in defeat." },
+    { wordId: 10, index: 2, sentence: "She mocked his serious tone, imitating his deep voice until the whole table burst into laughter." },
+    { wordId: 11, index: 1, sentence: "The other children made fun of her accent on her very first day at the new school." },
+    { wordId: 11, index: 2, sentence: "He hated being made fun of, especially in front of people he was trying to impress." },
+    { wordId: 12, index: 1, sentence: "The hikers ventured deep into the forest before sundown, well past the marked trail." },
+    { wordId: 12, index: 2, sentence: "She ventured out into the storm, determined to reach the pharmacy before it closed." },
+    { wordId: 13, index: 1, sentence: "A bowl of warm broth was the only thing she could stomach after a week of illness." },
+    { wordId: 13, index: 2, sentence: "The recipe called for a chicken broth simmered slowly with garlic and ginger." },
+    { wordId: 14, index: 1, sentence: "The prisoner pulled at his chains, hoping the rust had weakened the oldest link." },
+    { wordId: 14, index: 2, sentence: "Gold chains hung from the curtains of the old theatre, framing the stage in tarnished luxury." },
+    { wordId: 15, index: 1, sentence: "Her shopping bags were weighted down with books she'd spent the afternoon choosing." },
+    { wordId: 15, index: 2, sentence: "The branches of the apple tree hung low, weighted down by the unseasonable October harvest." },
+    { wordId: 16, index: 1, sentence: "The pirates split the contents of three treasure chests between the entire crew." },
+    { wordId: 16, index: 2, sentence: "Old wooden chests lined the attic, each holding letters and photographs from another century." },
+    { wordId: 17, index: 1, sentence: "Greed drove the merchant to cheat his oldest customers in the end." },
+    { wordId: 17, index: 2, sentence: "The novel portrays greed as the slow poison that ruins every good relationship." },
+    { wordId: 18, index: 1, sentence: "The old dog would wander the neighborhood for hours before finding his way home." },
+    { wordId: 18, index: 2, sentence: "Legend says the ghost of the queen still wanders the corridors of the castle at midnight." },
+    { wordId: 19, index: 1, sentence: "Caring for her ailing mother became a heavy burden, yet she never once complained." },
+    { wordId: 19, index: 2, sentence: "The donkey carried its burden up the steep mountain path without faltering." },
+    { wordId: 20, index: 1, sentence: "The long war brought endless sufferings to the families caught on either side." },
+    { wordId: 20, index: 2, sentence: "Records from the period describe the sufferings of the poor in unsparing detail." },
+    { wordId: 21, index: 1, sentence: "Each winter the church opens its doors to the needy and offers hot meals and shelter." },
+    { wordId: 21, index: 2, sentence: "She had spent her life working for the needy, never asking anything in return." },
+    { wordId: 22, index: 1, sentence: "The general warned his officers that those who fled would face the same fate as the enemy." },
+    { wordId: 22, index: 2, sentence: "If he kept lying to his friends, he feared he would face the same fate as his brother — alone and untrusted." },
+    { wordId: 23, index: 1, sentence: "After years of trouble with the law, he swore he would change his ways for the sake of his children." },
+    { wordId: 23, index: 2, sentence: "The bishop urged the king to change his ways before the kingdom turned against him." },
+    { wordId: 24, index: 1, sentence: "The cat disappeared behind the curtain, only her twitching tail still visible." },
+    { wordId: 24, index: 2, sentence: "By the time the police arrived, the burglar had disappeared without a single trace." },
+    { wordId: 25, index: 1, sentence: "The feverish patient was hallucinating, calling out names of people who weren't in the room." },
+    { wordId: 25, index: 2, sentence: "She wondered if she was hallucinating from exhaustion, or whether the figure at the window was real." },
+    { wordId: 26, index: 1, sentence: "Out of the blue, an old friend sent her a letter after twenty years of silence." },
+    { wordId: 26, index: 2, sentence: "The storm rolled in out of the blue, catching the fishermen far from the harbor." },
+    { wordId: 27, index: 1, sentence: "They had been saving up for years to finally afford a small house of their own." },
+    { wordId: 27, index: 2, sentence: "She saved up enough for a single train ticket home and left the next morning." },
+    { wordId: 28, index: 1, sentence: "She quit her job in the city to take care of her aging grandparents in the village." },
+    { wordId: 28, index: 2, sentence: "The gardener took great care to take care of the roses through every frost." },
+    { wordId: 29, index: 1, sentence: "He remained so focused on his work that he barely noticed the storm building outside." },
+    { wordId: 29, index: 2, sentence: "The team was focused on a single goal: finishing the bridge before the river flooded again." },
+    { wordId: 30, index: 1, sentence: "Losing the championship made him bitter for months, snapping at anyone who mentioned the game." },
+    { wordId: 30, index: 2, sentence: "The tea had gone cold and bitter, but she drank it anyway, not wanting to waste a leaf." },
+    { wordId: 31, index: 1, sentence: "She turned down the job offer, even though the salary was twice what she currently earned." },
+    { wordId: 31, index: 2, sentence: "He was turned down for the scholarship by a single point on the entrance exam." },
+    { wordId: 32, index: 1, sentence: "The family could hardly afford groceries, let alone the cost of a birthday cake." },
+    { wordId: 32, index: 2, sentence: "Even the travel-worn soldiers could hardly afford a single night's rest before the next march." },
+    { wordId: 33, index: 1, sentence: "The crippled veteran walked with a wooden cane he had carved himself one summer." },
+    { wordId: 33, index: 2, sentence: "The crippled old ship still limped into port, its masts splintered by the storm." },
+    { wordId: 34, index: 1, sentence: "Without proper medical treatment, the infection could become serious within days." },
+    { wordId: 34, index: 2, sentence: "The clinic offered free medical treatment to children under twelve years old." },
+    { wordId: 35, index: 1, sentence: "Few families in the village could afford a doctor when illness struck in winter." },
+    { wordId: 35, index: 2, sentence: "She worked two jobs so her children could afford the college tuition she never had." },
+    { wordId: 36, index: 1, sentence: "A deep sorrow settled over the household after the news of the accident arrived." },
+    { wordId: 36, index: 2, sentence: "He spoke of his father's passing with a deep sorrow that quiet words could not ease." },
+    { wordId: 37, index: 1, sentence: "An unexpected guest shows up just as the host is announcing the toast." },
+    { wordId: 37, index: 2, sentence: "The magician shows up at every child's birthday party in town, never once late." },
+    { wordId: 38, index: 1, sentence: "His rude behavior at the dinner table embarrassed his parents in front of the guests." },
+    { wordId: 38, index: 2, sentence: "The teacher praised the student's improved behavior after just two weeks of effort." },
+    { wordId: 39, index: 1, sentence: "The town's annual festivities draw visitors from across the entire region." },
+    { wordId: 39, index: 2, sentence: "Wedding festivities lasted three days, with dancing and feasting far into each night." },
+    { wordId: 40, index: 1, sentence: "Generous neighbors left baskets of food at the doorsteps of families in need." },
+    { wordId: 40, index: 2, sentence: "She was generous with her praise, quick to notice what others had done well." }
+  ];
+
+  // ====================================================================
+  //  STATE & LOGIC
+  // ====================================================================
+  const learnedState = {};
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  const getDefinition = (wordId) => definitions.find(d => d.wordId === wordId);
+  const getSentences = (wordId) => sentences
+    .filter(s => s.wordId === wordId)
+    .sort((a, b) => a.index - b.index);
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Highlight the study word inside an example sentence
+  function highlightWord(sentence, word) {
+    const wordLower = word.toLowerCase();
+    const sentenceLower = sentence.toLowerCase();
+    const idx = sentenceLower.indexOf(wordLower);
+    if (idx === -1) return escapeHtml(sentence);
+    const before = sentence.substring(0, idx);
+    const match  = sentence.substring(idx, idx + word.length);
+    const after  = sentence.substring(idx + word.length);
+    return escapeHtml(before)
+      + '<span class="highlight-word">' + escapeHtml(match) + '</span>'
+      + escapeHtml(after);
+  }
+
+  function renderCards() {
+    const grid = document.getElementById('cardGrid');
+    const empty = document.getElementById('emptyState');
+    grid.innerHTML = '';
+    let visibleCount = 0;
+
+    words.forEach(w => {
+      const def = getDefinition(w.id);
+      const exs = getSentences(w.id);
+      const isLearned = !!learnedState[w.id];
+
+      if (currentFilter === 'learned' && !isLearned) return;
+      if (currentFilter === 'unlearned' && isLearned) return;
+
+      if (currentSearch) {
+        const haystack = (
+          w.word + ' ' +
+          w.partOfSpeech + ' ' +
+          def.definition + ' ' +
+          exs.map(e => e.sentence).join(' ')
+        ).toLowerCase();
+        if (!haystack.includes(currentSearch)) return;
+      }
+
+      visibleCount++;
+      const card = document.createElement('article');
+      card.className = 'vocab-card fade-up' + (isLearned ? ' learned' : '');
+      card.style.animationDelay = Math.min(visibleCount * 0.025, 0.5) + 's';
+
+      const sentencesHtml = exs.map(e => `
+        <div class="example">
+          <div class="example-number">${e.index}</div>
+          <div>${highlightWord(e.sentence, w.word)}</div>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <button class="learn-btn" data-word-id="${w.id}" aria-label="${isLearned ? 'Mark as not learned' : 'Mark as learned'}" title="${isLearned ? 'Mark as not learned' : 'Mark as learned'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+        <span class="pos-tag">${escapeHtml(w.partOfSpeech)}</span>
+        <h2 class="word-display">${escapeHtml(w.word)}</h2>
+        <div class="definition">
+          <span class="micro-label">Definition</span>
+          ${escapeHtml(def.definition)}
+        </div>
+        <div>
+          <span class="micro-label">In Context</span>
+          ${sentencesHtml}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    empty.classList.toggle('hidden', visibleCount > 0);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = words.length;
+    const learned = Object.keys(learnedState).filter(k => learnedState[k]).length;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('progressFill').style.width = (learned / total * 100) + '%';
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.learn-btn');
+    if (btn) {
+      const id = parseInt(btn.dataset.wordId);
+      if (learnedState[id]) delete learnedState[id];
+      else learnedState[id] = true;
+      renderCards();
+    }
+    const pill = e.target.closest('.filter-pill');
+    if (pill) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.dataset.filter;
+      renderCards();
+    }
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    renderCards();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    Object.keys(learnedState).forEach(k => delete learnedState[k]);
+    renderCards();
+  });
+
+  renderCards();
+</script>
+
+</body>
+</html>
