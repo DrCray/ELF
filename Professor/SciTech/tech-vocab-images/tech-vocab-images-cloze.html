@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloze Exercise</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #f4f6f8; color: #222; margin: 0; padding: 20px 16px; line-height: 1.8; }
+  h1 { text-align: center; margin: 0 0 24px; }
+  #exercise { max-width: 760px; margin: 0 auto; padding: 0; list-style: none; }
+  #exercise li { background: #fff; border-radius: 10px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,.08); font-size: 1.1rem; }
+  #exercise li .num { font-weight: bold; color: #0b5cad; margin-right: 6px; }
+  #exercise em { color: #8a4b00; }
+  select { font-size: 1rem; padding: 2px 4px; border: 1px solid #9aa7b4; border-radius: 6px; background: #f9fbfd; }
+  .controls { max-width: 760px; margin: 20px auto; text-align: center; }
+  #scoreBtn { font-size: 1.1rem; padding: 10px 28px; background: #0b5cad; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+  #scoreBtn:hover { background: #094a8c; }
+  #result { margin-top: 16px; font-size: 1.15rem; }
+  #result .missed { color: #b00020; }
+</style>
+</head>
+<body>
+<h1>Cloze Exercise</h1>
+<ol id="exercise"></ol>
+<div class="controls">
+  <button id="scoreBtn">Get Score</button>
+  <div id="result"></div>
+</div>
+
+<script>
+// Each {n} is a blank; a[n] = [answer, distractor, distractor]
+const DATA = [
+  { t: "The circle appears in many places, such as wheels and {0}.", a: [["coins","tiles","pipes"]] },
+  { t: "A square has equal sides, making it a common shape for windows and {0}.", a: [["tiles","coins","cones"]] },
+  { t: "{0} are often seen in everyday objects, like books and doors.", a: [["Rectangles","Ovals","Pyramids"]] },
+  { t: "Triangles are strong shapes and are used in construction for {0}.", a: [["stability","tension","crease"]] },
+  { t: "{0} can be found in nature, such as in the shape of some fruits and leaves (watermelon, egg, mango).", a: [["Ovals","Cubes","Rectangles"]] },
+  { t: "Boxes, such as delivery packages, are {0} shaped.", a: [["cube","cone","sphere"]] },
+  { t: "Basketballs, soap bubbles, and the earth are examples of {0}.", a: [["spheres","pyramids","ovals"]] },
+  { t: "Cylinders are often used in everyday items, like {0} and cans.", a: [["pipes","coins","tiles"]] },
+  { t: "{0} shaped waffles are used to hold ice-cream.", a: [["Cone","Cube","Sphere"]] },
+  { t: "{0} were built in Egypt in ancient times.", a: [["Pyramids","Spheres","Ovals"]] },
+  { t: "A regular shape has all sides equal and all {0} equal.", a: [["angles","tiles","slots"]] },
+  { t: "An {0} shape has sides or angles that are different.", a: [["irregular","narrow","tilted"]] },
+  { t: "To {0} the screw, <em>rotate</em> it <em>clockwise</em> with the screwdriver.", a: [["tighten","compress","coil"]] },
+  { t: "To open a jar of jam, turn the lid {0} until it comes loose.", a: [["counterclockwise","vertically","horizontally"]] },
+  { t: "{0} the credit card through the side of the card reader to pay the <em>cashier</em>.", a: [["Slide","Coil","Tug"]] },
+  { t: "To save space in the cupboard, stack the plates {0} on top of each other.", a: [["vertically","counterclockwise","horizontally"]] },
+  { t: "A boomerang is bent with a <em>slight</em> {0}.", a: [["angle","slot","tension"]] },
+  { t: "After using the garden hose, {0} the hose neatly so it doesn’t <em>tangle</em>.", a: [["coil","pry","tug"]] },
+  { t: "To make a clothesline, <em>extend</em> the washing line {0} between the two poles.", a: [["horizontally","vertically","counterclockwise"]] },
+  { t: "To close the overpacked suitcase, sit on the top to {0} the clothes and then zip it shut.", a: [["compress","tighten","pry"]] },
+  { t: "To turn on the hotel room's power, <em>insert</em> the room's key card into the {0} of the card reader next to the door.", a: [["slot","crease","incline"]] },
+  { t: "The poster on the wall is {0}; move the top a little to the right to <em>straighten</em> it.", a: [["tilted","narrow","coiled"]] },
+  { t: "Walking up the {0} of the hill takes more <em>effort</em> than walking on a <em>level</em> sidewalk.", a: [["incline","slot","tension"]] },
+  { t: "To tear a piece of paper into two equal parts, first <em>fold</em> the paper in half, then tear or cut along the {0}.", a: [["crease","slot","tension"]] },
+  { t: "If the drawer is <em>stuck</em>, {0} it gently from <em>side to side</em> instead of pulling <em>straight</em>.", a: [["tug","spread","compress"]] },
+  { t: "To move the heavy box, {0} your knees and <em>lift it up</em> carefully with both hands.", a: [["bend","spread","pry"]] },
+  { t: "After stretching the <em>elastic band</em> around the package, <em>release</em> the {0} slowly so it doesn’t <em>snap back</em> too hard.", a: [["tension","crease","incline"]] },
+  { t: "<em>Press</em> the <em>lid</em> of the pill bottle down firmly until you hear it {0} into place.", a: [["snapping","dragging","peeling"]] },
+  { t: "The cat was able to escape by squeezing through a {0} <em>gap</em> under the fence.", a: [["narrow","tilted","compressed"]] },
+  { t: "When climbing the rope, {0} <em>firmly</em> with both hands so you don’t {1}.", a: [["grip it","peel it","flip it"], ["slip","tug","pry"]] },
+  { t: "To eat a banana, {0} the outer <em>layer</em>.", a: [["peel back","flip over","tug"]] },
+  { t: "After frying one side of the pancake, {0} with the <em>spatula</em> to cook the <em>other side</em>.", a: [["flip it over","peel it back","grip it"]] },
+  { t: "Use a spoon to {0} the tab of a soda can to open it.", a: [["pry","spread","coil"]] },
+  { t: "Use a knife to {0} the butter <em>evenly</em> across the <em>surface</em> of the toast.", a: [["spread","tug","pry"]] },
+  { t: "The box was too heavy to carry, so we {0} it across the floor.", a: [["dragged","coiled","peeled"]] }
+];
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildSelect(opts) {
+  const answer = opts[0];
+  let html = `<select data-answer="${answer}"><option value="">--choices--</option>`;
+  shuffle(opts).forEach(o => { html += `<option value="${o}">${o}</option>`; });
+  return html + `</select>`;
+}
+
+function build() {
+  const list = document.getElementById('exercise');
+  list.innerHTML = '';
+  shuffle(DATA).forEach((item, i) => {
+    const text = item.t.replace(/\{(\d+)\}/g, (_, k) => buildSelect(item.a[k]));
+    const li = document.createElement('li');
+    li.dataset.num = i + 1;
+    li.innerHTML = `<span class="num">${i + 1}.</span>${text}`;
+    list.appendChild(li);
+  });
+}
+
+function joinNums(nums) {
+  if (nums.length === 1) return nums[0];
+  return nums.slice(0, -1).join(', ') + ', and ' + nums[nums.length - 1];
+}
+
+document.getElementById('scoreBtn').addEventListener('click', () => {
+  const selects = document.querySelectorAll('#exercise select');
+  let correct = 0;
+  const missed = [];
+  document.querySelectorAll('#exercise li').forEach(li => {
+    let sentenceOk = true;
+    li.querySelectorAll('select').forEach(s => {
+      if (s.value === s.dataset.answer) correct++;
+      else sentenceOk = false;
+    });
+    if (!sentenceOk) missed.push(li.dataset.num);
+  });
+  const pct = Math.round(correct / selects.length * 100);
+  let msg = `Your score: ${correct} / ${selects.length} (${pct}%)`;
+  if (pct < 100) {
+    const label = missed.length === 1 ? 'sentence number' : 'sentence numbers';
+    msg += `<div class="missed">You missed ${label}: ${joinNums(missed)}.</div>`;
+  }
+  document.getElementById('result').innerHTML = msg;
+});
+
+build();
+</script>
+</body>
+</html>
