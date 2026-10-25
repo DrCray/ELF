@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terror at 16,000 Feet - Podcast</title>
+    <style>
+        html { font-size: 100%; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            padding: .8rem .8rem .8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 3px 6px gray;
+        }
+        .container {
+            width: 100%;
+            max-width: 35rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background: #F7EDF4;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: .5rem;
+            transition: color .3s;
+        }
+        h2:hover { color: #FB6D6D; }
+        h3 {
+            font-size: 1rem;
+            color: #3CA29A;
+            font-weight: 600;
+        }
+        p, ul {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: .8rem;
+        }
+        ul {
+            padding-left: 1rem;
+            list-style: none;
+        }
+        ul > li {
+            margin-bottom: .8rem;
+            position: relative;
+            padding-left: .8rem;
+        }
+        li {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+        a {
+            color: #FF14BA;
+            text-decoration: none;
+            transition: color .3s;
+        }
+        a:hover {
+            color: #4ecdc4;
+            text-decoration: underline;
+        }
+        .section {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+        }
+        .sectionTop {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+
+        #aboutPodcast{
+            background:#DDF0ED;
+            box-shadow: 0 0 3px 1px #ADDBD4;
+            padding: .5rem;
+            border-radius: 6px;
+            font-size:90%;
+        }
+
+        .host {
+            font-weight:500; color: #0D8F82;
+        }
+
+        .guest {
+            font-weight:500; color: #F52FCF;
+        }
+
+        /* ===== zvocab: tap/hover definitions ===== */
+        .zv-hint { font-size: .85rem; color: #6b6b6b; margin: 0 0 .6rem; }
+        .zvocab-ready {
+            cursor: pointer;
+            color: #0B6E64;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .zvocab-ready[aria-expanded="true"] { background: #DDF0ED; }
+        .zvocab-ready:focus-visible { outline: 2px solid #0B6E64; outline-offset: 2px; }
+        /* Mobile: bottom sheet */
+        .zvocab-pop {
+            position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+            padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+            background: #0B6E64; color: #fff;
+            font-size: 1rem; line-height: 1.45;
+            border-radius: .9rem .9rem 0 0;
+            box-shadow: 0 -6px 24px rgb(0 0 0 / .25);
+        }
+        .zvocab-pop > strong { font-size: 1.15em; }
+        .zvocab-pop p { margin: .3rem 0 0; color: #fff; }
+        .zvocab-pop .ex { font-style: italic; opacity: .9; }
+        .zvocab-pop .ex strong { font-style: normal; text-decoration: underline; }
+        /* Wider screens: floating card near the word */
+        @media (min-width: 601px) {
+            .zvocab-pop {
+                right: auto; bottom: auto;
+                max-width: 20rem;
+                padding: .8rem 1rem;
+                font-size: .92rem;
+                border-radius: .5rem;
+                box-shadow: 0 6px 20px rgb(0 0 0 / .25);
+            }
+        }
+    </style>
+
+
+<style>
+    .audio-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .audio-link {
+        display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;
+        align-items: center;
+        gap: 8px;
+        padding: .5rem 3rem;
+        background: #fff;
+        color: darkblue;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight:bold;
+        transition: background 0.2s;
+    }
+
+    .audio-link:hover {
+        box-shadow: 0 0 4px 0px #006B00; color:green;
+    }
+
+    .wave {
+        color: #006B00;   /* wave color */
+    }
+
+    .play {
+        font-size: 1rem;
+        transform: translateY(0.5px);
+    }
+</style>
+
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">Terror at 16,000 Feet - Podcast</h2>
+            <p>A scary flight, a calm crew, and four missing bolts</p> <p id="aboutPodcast">The hosts talk about a news story they've read in which a hole suddenly opens in the side of a passenger plane, the crew brings everyone home safely, and investigators find out what went wrong.</p>
+
+            <a href="terror-at-16000-feet.html" target="_blank">
+                <span style="color:#0D6B92;">Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="podcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide
+                </a>
+                <a href="podcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz
+                </a>
+                <a href="podcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz
+                </a>
+            </div>
+        </div>
+        <br>
+
+
+<div class="audio-player">
+  <a href="{{ audio_link | default('place-holder') }}" class="audio-link" target="_blank" rel="noopener" aria-label="Listen to the podcast">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor" aria-hidden="true">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play" aria-hidden="true">▶</span>
+  </a>
+</div>
+
+        <div class="section">
+            <h3>Terror at 16,000 Feet - Podcast</h3>
+            <p class="zv-hint">Tap or hover over an underlined phrase to see what it means.</p>
+            <div>
+                <ul>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Welcome back to Story Time Weekly. Today's story is a bit different. It's called "Terror at 16,000 Feet." Did you read it?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I did, and honestly, it <strong class="zvocab" data-word="sent shivers down my spine">sent shivers down my spine</strong>. I'm already a <strong class="zvocab" data-word="nervous flyer">nervous flyer</strong>, and I read it the night before a flight. Terrible idea.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Oh no! Did you still get on the plane?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I did, but I checked the wall next to my seat about twenty times.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I don't blame you. Everything seemed normal, and then, <strong class="zvocab" data-word="out of nowhere">out of nowhere</strong>, there's a hole in the side of the plane.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Right. One minute you're reading a magazine, and the next, your phone is flying out into the night sky.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> What really stood out to me was that the two seats next to the hole were empty.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Absolutely. Everyone sitting near that wall can <strong class="zvocab" data-word="count themselves lucky">count themselves lucky</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> And I have to give the crew a lot of credit. In a situation like that, I think I'd completely <strong class="zvocab" data-word="fall apart">fall apart</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Same here. But the pilots and flight attendants <strong class="zvocab" data-word="stuck to">stuck to</strong> their training, and they got everyone back on the ground.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I guess that's why they practice so much. When something terrible happens, they don't have to stop and think.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Exactly. It becomes <strong class="zvocab" data-word="muscle memory">muscle memory</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Now, the second half of the story was really interesting to me. The investigators wanted to <strong class="zvocab" data-word="get to the bottom of">get to the bottom of</strong> what happened.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> And it <strong class="zvocab" data-word="turned out">turned out</strong> that four bolts were simply missing. Not broken. Just never put back.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> That's the scary part. It wasn't a storm or a bird. It was a basic mistake that <strong class="zvocab" data-word="slipped through the cracks">slipped through the cracks</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> And because nobody wrote it down, nobody checked it. It makes you wonder how often companies <strong class="zvocab" data-word="cut corners">cut corners</strong> to save time.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> That's a fair question. But I don't think we should <strong class="zvocab" data-word="point the finger at">point the finger at</strong> one or two factory workers. It sounds like the whole system failed.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Good point. When a company is rushing to build planes faster, safety can easily get <strong class="zvocab" data-word="pushed aside">pushed aside</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Which is why people want the company to <strong class="zvocab" data-word="take responsibility">take responsibility</strong> and fix the problem properly.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Agreed. And to be fair, flying is still incredibly safe. Millions of people fly every day without any problems.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> True. The drive to the airport is usually more dangerous than the flight. Still, stories like this remind us that safety is something we should never <strong class="zvocab" data-word="take for granted">take for granted</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Well said. Although next time I fly, I'm still going to look at that wall.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Me too! Thanks for listening, everyone. Fly safe, and see you next time.&nbsp;&nbsp;</li>
+
+                </ul>
+                <br>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+<script>
+/* Podcast vocabulary (generated from podcast_vocab in the content JSON) */
+const vocabulary = {
+  "sent shivers down my spine": {
+    "word": "sent shivers down my spine",
+    "definition": "(idiom) Made me feel very frightened or nervous, almost like a cold feeling running down my back.",
+    "example": "The strange noise in the empty house <strong>sent shivers down my spine<\/strong>."
+  },
+  "nervous flyer": {
+    "word": "nervous flyer",
+    "definition": "(collocation) A person who feels worried or afraid when traveling by plane.",
+    "example": "My mother is a <strong>nervous flyer<\/strong>, so she always chooses a seat near the front."
+  },
+  "out of nowhere": {
+    "word": "out of nowhere",
+    "definition": "(expression) Suddenly and without any warning.",
+    "example": "A deer ran onto the road <strong>out of nowhere<\/strong>, and I had to brake hard."
+  },
+  "count themselves lucky": {
+    "word": "count themselves lucky",
+    "definition": "(expression) Feel thankful because their situation could have been much worse.",
+    "example": "The hikers lost their way in the storm, but they can <strong>count themselves lucky<\/strong> that a farmer found them."
+  },
+  "fall apart": {
+    "word": "fall apart",
+    "definition": "(phrasal verb) To lose control of your emotions and become unable to deal with a situation.",
+    "example": "She was calm at the hospital, but she started to <strong>fall apart<\/strong> when she got home."
+  },
+  "stuck to": {
+    "word": "stuck to",
+    "definition": "(phrasal verb) Continued doing what was planned or expected, without changing.",
+    "example": "Even when it got difficult, the team <strong>stuck to<\/strong> the plan and finished the project on time."
+  },
+  "muscle memory": {
+    "word": "muscle memory",
+    "definition": "(collocation) The ability to do something automatically, without thinking, because you have practiced it many times.",
+    "example": "After years of practice, playing the piano became <strong>muscle memory<\/strong> for him."
+  },
+  "get to the bottom of": {
+    "word": "get to the bottom of",
+    "definition": "(idiom) To find out the true cause of a problem or situation.",
+    "example": "The manager promised to <strong>get to the bottom of<\/strong> the missing money."
+  },
+  "turned out": {
+    "word": "turned out",
+    "definition": "(phrasal verb) Was discovered to be true in the end, often surprisingly.",
+    "example": "The noise in the kitchen <strong>turned out<\/strong> to be our cat knocking over a cup."
+  },
+  "slipped through the cracks": {
+    "word": "slipped through the cracks",
+    "definition": "(idiom) Was missed or not noticed because a system or process failed to catch it.",
+    "example": "Her application <strong>slipped through the cracks<\/strong>, and nobody called her back for weeks."
+  },
+  "cut corners": {
+    "word": "cut corners",
+    "definition": "(idiom) To do something in the cheapest or fastest way, often by ignoring rules or safety.",
+    "example": "The builders tried to <strong>cut corners<\/strong>, and now the roof leaks every time it rains."
+  },
+  "point the finger at": {
+    "word": "point the finger at",
+    "definition": "(idiom) To blame someone for something bad that happened.",
+    "example": "It's easy to <strong>point the finger at<\/strong> the new employee, but the whole team made mistakes."
+  },
+  "pushed aside": {
+    "word": "pushed aside",
+    "definition": "(phrasal verb) Treated as less important and ignored.",
+    "example": "His health was <strong>pushed aside<\/strong> while he worked long hours to finish his degree."
+  },
+  "take responsibility": {
+    "word": "take responsibility",
+    "definition": "(collocation) To accept that something is your job or your fault and deal with it.",
+    "example": "Good leaders <strong>take responsibility<\/strong> when things go wrong instead of blaming others."
+  },
+  "take for granted": {
+    "word": "take for granted",
+    "definition": "(expression) To expect something to always be there, so you stop noticing or valuing it.",
+    "example": "We often <strong>take for granted<\/strong> clean water until the supply is cut off."
+  }
+};
+
+/* ===== zvocab component: hover (mouse) or tap (touch) to show definitions ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${e.word}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+
+</body>
+</html>
