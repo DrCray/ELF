@@ -148,7 +148,179 @@
 
       .play {         font-size: 1rem;         transform: translateY(0.5px);     }
 
- </style></head>
+ </style>
+
+
+ <style>
+  .dict-popover {
+    position: absolute;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    z-index: 999;
+    font: 14px/1.4 sans-serif;
+  }
+
+  .dict-popover .g-link {
+    display: inline-block;
+    background: #1a5fb4;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .dict-popover .g-link:hover {
+    background: #124a8f;
+  }
+
+  b.vocab, strong.vocab {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+(function () {
+  let pop = null;
+  let hideTimer = null;
+
+  // ---- On load: tag every <b> and <strong> as vocabulary ----
+  function tagVocab() {
+    document.querySelectorAll('b, strong, i, em').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (text && text.length > 1 && text.length < 60) {
+        el.classList.add('vocab');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagVocab);
+  } else {
+    tagVocab();
+  }
+
+  // ---- Escape HTML characters ----
+  function escapeHTML(text) {
+    return text.replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  // ---- Central Google search URL builder ----
+  function googleLink(word) {
+    const query = `Need a definition and example sentence for "${word}"`;
+    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  }
+
+  // ---- Hide popover ----
+  function hidePopover() {
+    clearTimeout(hideTimer);
+    if (pop) {
+      pop.remove();
+      pop = null;
+    }
+  }
+
+  // ---- Delayed hide ----
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hidePopover, 300);
+  }
+
+  // ---- Display popover ----
+  function showPopover(anchor, html) {
+    clearTimeout(hideTimer);
+    hidePopover();
+
+    pop = document.createElement('div');
+    pop.className = 'dict-popover';
+    pop.innerHTML = html;
+
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mouseenter', function () {
+      clearTimeout(hideTimer);
+    });
+
+    pop.addEventListener('mouseleave', scheduleHide);
+
+    const r = anchor.getBoundingClientRect();
+    const popWidth = pop.offsetWidth;
+
+    const left = Math.max(
+      5,
+      Math.min(r.left, window.innerWidth - popWidth - 5)
+    );
+
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (r.bottom + window.scrollY + 2) + 'px';
+  }
+
+  // ---- Open vocabulary card ----
+  function openCard(el) {
+    const word = el.textContent.trim();
+    const safeWord = escapeHTML(word);
+
+    showPopover(el,
+      '<b>' + safeWord + '</b>' +
+      '<div style="margin-top:8px">' +
+      '<a class="g-link" href="' + googleLink(word) +
+      '" target="_blank" rel="noopener noreferrer">- Definition &amp; Sentence -</a>' +
+      '</div>'
+    );
+  }
+
+  // ---- Events: hover (desktop) + tap (mobile) ----
+  document.addEventListener('mouseover', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    const to = e.relatedTarget;
+
+    if (to && (
+      to.closest('.dict-popover') ||
+      to.closest('b.vocab, strong.vocab, i.vocab, em.vocab')
+    )) return;
+
+    scheduleHide();
+  });
+
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      e.preventDefault();
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+    else if (!e.target.closest('.dict-popover')) {
+      hidePopover();
+    }
+  });
+
+})();
+</script>
+
+ </head>
 <body>
     <div class="article-container">
         <h1>Halloween vs. Day of the Dead:<br>Unique Traditions</h1>
@@ -182,43 +354,43 @@
 
 
 
-        <div class="transcript-section">
+       <div class="transcript-section">
             <h2>Podcast Transcript</h2>
             <div class="transcript-line">
-                <span class="speaker host">Host:</span> It’s funny how October and November give us this back-to-back double feature: Halloween first, then Day of the Dead—both with their own flavors, even though they’re just days apart. Have you noticed how people sometimes mix them up just because of the timing?
+                <span class="speaker host">Host:</span> It’s funny how October and November give us this <strong>back-to-back</strong> double feature: Halloween first, then Day of the Dead—both with their own flavors, even though they’re just days apart. Have you noticed how people sometimes <strong>mix them up</strong> just because of the timing?
             </div>
             <div class="transcript-line">
-                <span class="speaker guest">Guest:</span> You’re so right! The calendar overlap definitely causes confusion, even though the vibe of each holiday couldn’t be more different. Halloween’s all about costumes, haunted houses, and that sugar rush from trick-or-treating, but Day of the Dead feels so much more connected to family and memories.
+                <span class="speaker guest">Guest:</span> You’re so right! The calendar <strong>overlap</strong> definitely causes confusion, even though the <strong>vibe</strong> of each holiday couldn’t be more different. Halloween’s all about costumes, haunted houses, and that <strong>sugar rush</strong> from trick-or-treating, but Day of the Dead feels so much more connected to family and memories.
             </div>
             <div class="transcript-line">
-                <span class="speaker host">Host:</span> Exactly! Halloween has that whole thrill of being spooked, with ghost stories and skeletons everywhere—it’s fun, but not what I’d call spiritual. I love that Day of the Dead, or Dia de los Muertos, is really about honoring people who’ve passed away, not trying to scare anyone.
+                <span class="speaker host">Host:</span> Exactly! Halloween has that whole thrill of being spooked, with ghost stories and skeletons everywhere—it’s fun, but not what I’d call spiritual. I love that Day of the Dead, or Dia de los Muertos, is really about honoring people who’ve <strong>passed away</strong>, not trying to scare anyone.
             </div>
             <div class="transcript-line">
-                <span class="speaker guest">Guest:</span> What stands out to me is the mood shift—Halloween leans into the eerie, while Day of the Dead is vibrant and almost celebratory. It’s like a reunion where the family gets together, including the ones who aren’t physically here anymore. There’s something beautiful about that.
+                <span class="speaker guest">Guest:</span> What <strong>stands out</strong> to me is the mood shift—Halloween <strong>leans into</strong> the eerie, while Day of the Dead is vibrant and almost celebratory. It’s like a <strong>reunion</strong> where the family gets together, including the ones who aren’t physically here anymore. There’s something beautiful about that.
             </div>
             <div class="transcript-line">
-                <span class="speaker host">Host:</span> Speaking of that, I was totally fascinated learning about the ofrendas people build at home. There’s so much intention behind it—the photos, the foods, the marigolds. It’s a sensory way of inviting memories back for a visit.
+                <span class="speaker host">Host:</span> <strong>Speaking of</strong> that, I was totally <strong>fascinated</strong> learning about the ofrendas people build at home. There’s so much intention behind it—the photos, the foods, the marigolds. It’s a <strong>sensory</strong> way of inviting memories back for a visit.
             </div>
             <div class="transcript-line">
-                <span class="speaker guest">Guest:</span> Absolutely, and those marigolds are such a key detail—they aren’t just for decoration! Their bright orange color is supposed to guide spirits home, and the scent is almost like a calling card. Plus, papel picado and all the treats make the altar feel festive, not somber.
+                <span class="speaker guest">Guest:</span> Absolutely, and those marigolds are such a key detail—they aren’t just for decoration! Their bright orange color is supposed to guide spirits home, and the <strong>scent</strong> is almost like a calling card. Plus, papel picado and all the treats make the altar feel festive, not <strong>somber</strong>.
             </div>
             <div class="transcript-line">
                 <span class="speaker host">Host:</span> The sugar skulls, too—I used to think they were creepy, but now I get that they’re part of the joyful side. It’s a way of saying, 'Hey, we remember you—and we’re glad you’re here.'
             </div>
             <div class="transcript-line">
-                <span class="speaker guest">Guest:</span> Exactly, it’s this gentle macabre, not meant to frighten at all. I even saw someone include photos of their pets on an ofrenda, which honestly made me tear up. It’s about celebrating every life that touched us, not just mourning the loss.
+                <span class="speaker guest">Guest:</span> Exactly, it’s this gentle macabre, not meant to frighten at all. I even saw someone include photos of their pets on an ofrenda, which honestly made me tear up. It’s about celebrating every life that touched us, not just <strong>mourning</strong> the loss.
             </div>
             <div class="transcript-line">
-                <span class="speaker host">Host:</span> That actually reminds me—events like the one at Pan Am Park really bring these traditions to life for everyone. Live music, art installations, food trucks, and those elaborate face paintings—it becomes this huge, colorful gathering.
+                <span class="speaker host">Host:</span> That actually reminds me—events like the one at Pan Am Park really <strong>bring</strong> these traditions <strong>to life</strong> for everyone. Live music, art installations, food trucks, and those <strong>elaborate</strong> face paintings—it becomes this huge, colorful gathering.
             </div>
             <div class="transcript-line">
                 <span class="speaker guest">Guest:</span> What I love is how open those celebrations are. You see families, friends, kids with calavera face paint and even people who are just learning about the holiday for the first time. It’s welcoming—like, 'Come celebrate with us, no matter your background.'
             </div>
             <div class="transcript-line">
-                <span class="speaker host">Host:</span> Totally. And I think even little touches—like putting together a small ofrenda at home, or adding your pet’s photo—can make the season feel more connected. It’s a reminder that joy and remembrance can go hand in hand.
+                <span class="speaker host">Host:</span> Totally. And I think even <strong>little touches</strong>—like putting together a small ofrenda at home, or adding your pet’s photo—can make the season feel more connected. It’s a reminder that joy and remembrance can go hand in hand.
             </div>
             <div class="transcript-line">
-                <span class="speaker guest">Guest:</span> Couldn’t agree more. Whether you’re carving pumpkins or sharing pan dulce, it’s a special time to honor our stories—both the spooky and the sweet. I think that’s what makes this season so unique.
+                <span class="speaker guest">Guest:</span> Couldn’t agree more. Whether you’re carving pumpkins or sharing pan dulce, it’s a special time to honor our stories—both the <strong>spooky</strong> and the sweet. I think that’s what makes this season so <strong>unique</strong>.
             </div>
         </div>
     </div>
