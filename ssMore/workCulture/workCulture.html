@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cultural Differences at Work — Language Learning Magazine</title>
+  <meta name="description" content="Short, easy article for CEFR A2 learners moving to B1: stories of cultural misunderstanding in international companies." />
+  <style>
+    :root{
+      --max-width:900px;
+      --accent:#2b6cb0;
+      --muted:#555;
+      --card-bg:#fff;
+      --page-bg:#f6f8fb;
+      --radius:12px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color:#111;
+    }
+    body{
+      margin:0;
+      background:var(--page-bg);
+      display:flex;
+      justify-content:center;
+      padding:.6rem;
+    }
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      box-shadow:0 8px 30px rgba(20,30,40,0.08);
+      overflow:hidden;
+    }
+    header.lead{
+      position:relative;
+    }
+    header.lead img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+      display:block;
+    }
+    header.lead .badge{
+      position:absolute;
+      left:20px;
+      bottom:20px;
+      background:rgba(255,255,255,0.9);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      color:var(--accent);
+      box-shadow:0 4px 12px rgba(10,20,40,0.07);
+      font-size:14px;
+    }
+    main.article{
+      padding:.8rem;
+    }
+    h1{margin:0 0 10px 0;font-size:26px;}
+    p.lead-text{color:var(--muted);margin-bottom:18px;}
+    article p{margin-bottom:14px;line-height:1.6;font-size:17px;}
+    h2{margin-top:40px;margin-bottom:14px;color:var(--accent);}
+    details{
+      background:#f8fafc;
+      border:1px solid #e1e7ef;
+      border-radius:10px;
+      padding:10px 14px;
+      margin-bottom:10px;
+      cursor:pointer;
+    }
+    details summary{
+      font-weight:600;
+      color:#222;
+      cursor:pointer;
+    }
+    details[open]{background:#eef5ff;border-color:#cddffb;}
+    details p{margin:8px 0 0 0;font-size:16px;}
+    select{
+      font-size:16px;
+      padding:4px 8px;
+      margin:0 4px;
+      border-radius:6px;
+      border:1px solid #ccc;
+    }
+    .vocab-item{margin-bottom:12px;}
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+    }
+    .btn-print{
+      background:var(--accent);
+      color:white;
+    }
+    footer.actions{
+      padding:18px 32px;
+      border-top:1px solid #eef2f6;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:linear-gradient(0deg,rgba(255,255,255,0.7),transparent);
+    }
+    .small{color:var(--muted);font-size:13px;}
+    
+    .correct {
+  background-color: #d4edda; /* light green */
+}
+
+.incorrect {
+  background-color: #f8d7da; /* light pink */
+}
+
+b, strong {
+    color:blue; font-weight:bold;
+}
+i, em { 
+    color:#D7773F; font-weight:bold;
+}
+
+    
+    @media print{
+      footer.actions, select, details summary::after{display:none;}
+    }
+  </style>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     }
+</style>
+
+<style>
+  .dict-popover {
+    position: absolute;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    z-index: 999;
+    font: 14px/1.4 sans-serif;
+  }
+
+  .dict-popover .g-link {
+    display: inline-block;
+    background: #1a5fb4;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .dict-popover .g-link:hover {
+    background: #124a8f;
+  }
+
+  b.vocab, strong.vocab {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+(function () {
+  let pop = null;
+  let hideTimer = null;
+
+  // ---- On load: tag every <b> and <strong> as vocabulary ----
+  function tagVocab() {
+    document.querySelectorAll('b, strong, i, em').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (text && text.length > 1 && text.length < 60) {
+        el.classList.add('vocab');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagVocab);
+  } else {
+    tagVocab();
+  }
+
+  // ---- Escape HTML characters ----
+  function escapeHTML(text) {
+    return text.replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  // ---- Central Google search URL builder ----
+  function googleLink(word) {
+    const query = `Need a definition and example sentence for "${word}"`;
+    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  }
+
+  // ---- Hide popover ----
+  function hidePopover() {
+    clearTimeout(hideTimer);
+    if (pop) {
+      pop.remove();
+      pop = null;
+    }
+  }
+
+  // ---- Delayed hide ----
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hidePopover, 300);
+  }
+
+  // ---- Display popover ----
+  function showPopover(anchor, html) {
+    clearTimeout(hideTimer);
+    hidePopover();
+
+    pop = document.createElement('div');
+    pop.className = 'dict-popover';
+    pop.innerHTML = html;
+
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mouseenter', function () {
+      clearTimeout(hideTimer);
+    });
+
+    pop.addEventListener('mouseleave', scheduleHide);
+
+    const r = anchor.getBoundingClientRect();
+    const popWidth = pop.offsetWidth;
+
+    const left = Math.max(
+      5,
+      Math.min(r.left, window.innerWidth - popWidth - 5)
+    );
+
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (r.bottom + window.scrollY + 2) + 'px';
+  }
+
+  // ---- Open vocabulary card ----
+  function openCard(el) {
+    const word = el.textContent.trim();
+    const safeWord = escapeHTML(word);
+
+    showPopover(el,
+      '<b>' + safeWord + '</b>' +
+      '<div style="margin-top:8px">' +
+      '<a class="g-link" href="' + googleLink(word) +
+      '" target="_blank" rel="noopener noreferrer">- Definition &amp; Sentence -</a>' +
+      '</div>'
+    );
+  }
+
+  // ---- Events: hover (desktop) + tap (mobile) ----
+  document.addEventListener('mouseover', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    const to = e.relatedTarget;
+
+    if (to && (
+      to.closest('.dict-popover') ||
+      to.closest('b.vocab, strong.vocab, i.vocab, em.vocab')
+    )) return;
+
+    scheduleHide();
+  });
+
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      e.preventDefault();
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+    else if (!e.target.closest('.dict-popover')) {
+      hidePopover();
+    }
+  });
+
+})();
+</script>
+
+
+</head>
+<body>
+  <div class="container">
+    <header class="lead">
+      <img src="https://i.postimg.cc/4NpYMwMn/culrural-Meeting.jpg?q=80&w=1600&auto=format&fit=crop"
+           alt="A modern office with international coworkers" />
+      <div class="badge">Dr. Ray's Cultural Awareness</div>
+    </header>
+
+    <main class="article">
+      <h1>Cultural Differences at Work</h1>
+      <p class="lead-text">Short examples of how people from different countries may act at work.</p>
+
+      <article>
+        <p>When working in an international company, people can sometimes experience cultural misunderstandings. Here are a few examples.</p>
+
+        <p>First, there was Ravi from India. In meetings, Ravi <i>often stayed silent</i>. This was because in his culture, younger people do not speak much when older people are talking. He wanted to show <b>respect</b> by <i>listening carefully</i>. But some of his colleagues thought he was not interested or did not have ideas to share.</p>
+
+        <p>Then came Li, who was from China. In conversations, Li often said "yes" even when he did not agree. This was a way to avoid saying "no" directly, because saying "no" can be seen as rude or cause <b>conflict</b> in his culture. But this sometimes <i>caused confusion</i> because others thought he agreed with them when he really did not.</p>
+
+        <p>Sarah was from South Africa and worked in Japan for the first time. She was surprised when her Japanese coworkers stayed late at the office every day, even if they finished their work early. Sarah thought she should leave on time. But in Japan, staying late shows <b>dedication</b> and respect. Sarah’s behavior was misunderstood as being <i>less serious</i> about her job.</p>
+
+        <p>Finally, there was Johan from Sweden. He was frustrated when his Mexican colleague, Carlos, often joined virtual meetings late. Johan valued <b>punctuality</b> and expected everyone to <i>be on time</i>. However, Carlos’s culture has a more <i>relaxed view</i> of time, where being a few minutes late is normal. This caused some tension during their meetings.</p>
+
+        <p>These stories show how cultural differences in communication and behavior can make work difficult. Since it is difficult to know every nuance of every cultural difference between peoples, it is important to keep an <b>open mind</b>. When you are <i>experiencing difficulties</i> with someone from another country, assume first that there may be a cultural difference you are <i>not aware of</i>, rather than judge the other person as incompetent.</p>
+      </article>
+
+      <h2>Comprehension Check</h2>
+      <details>
+        <summary>1. Why did Ravi stay silent in meetings?</summary>
+        <p>He wanted to show respect to older people by listening carefully, not because he lacked ideas.</p>
+      </details>
+      <details>
+        <summary>2. Why did Li often say “yes” even when he did not agree?</summary>
+        <p>Because saying “no” directly can be seen as rude or cause conflict in his culture.</p>
+      </details>
+      <details>
+        <summary>3. What mistake did Sarah make in Japan?</summary>
+        <p>She left work on time while her coworkers stayed late. She didn’t realize that staying late shows dedication in Japan.</p>
+      </details>
+      <details>
+        <summary>4. Why was Johan frustrated with Carlos?</summary>
+        <p>Because Carlos often joined meetings late, while Johan expected everyone to be on time.</p>
+      </details>
+      <details>
+        <summary>5. What general lesson do these stories teach?</summary>
+        <p>We should keep an open mind and remember that misunderstandings can come from cultural differences, not from incompetence.</p>
+      </details>
+
+      <h2>Vocabulary Focus</h2>
+      <p style="color:gray">
+      &nbsp;&nbsp;&nbsp;correct answers will highlight in <span style="background-color:#d4edda;">&nbsp;green&nbsp;</span>
+      </p>
+      <div class="vocab-item">
+        1. Ravi wanted to show 
+        <select data-correct="respect">
+          <option value="">— choose —</option>
+          <option>politeness</option>
+          <option>respect</option>
+          <option>curiosity</option>
+        </select> 
+        to older people by listening carefully.
+      </div>
+      <div class="vocab-item">
+        2. In some cultures, saying “no” directly in can be seen as rude or cause 
+        <select data-correct="conflict">
+          <option value="">— choose —</option>
+          <option>concern</option>
+          <option>conflict</option>
+          <option>agreement</option>
+        </select> 
+        in some cultures.
+      </div>
+      <div class="vocab-item">
+        3. Sarah’s coworkers thought she was not very 
+        <select data-correct="dedicated">
+          <option value="">— choose —</option>
+          <option>dedicated</option>
+          <option>friendly</option>
+          <option>lazy</option>
+        </select> 
+        because she left on time.
+      </div>
+      <div class="vocab-item">
+        4. Johan expected everyone to be 
+        <select data-correct="punctual">
+          <option value="">— choose —</option>
+          <option>relaxed</option>
+          <option>punctual</option>
+          <option>flexible</option>
+        </select> 
+        for meetings.
+      </div>
+      <div class="vocab-item">
+        5. When working with people from another country, keep an 
+        <select data-correct="open mind">
+          <option value="">— choose —</option>
+          <option>open mind</option>
+          <option>angry tone</option>
+          <option>impatient attitude</option>
+        </select> 
+        and try to understand their culture.
+      </div>
+    </main>
+
+
+
+
+        <script>
+        function checkThenPrint(){
+            let Name =  document.getElementById("name").value.trim();
+            let ID = document.getElementById("id").value.trim();
+
+        // Check if either field has fewer than 2 characters
+        if (Name.length < 2 || ID.length < 2){
+                alert ("Name and ID# required \r\n for Print/Save as PDF ");
+                }
+            else{
+             window.print();
+            }
+         } // end checkThenPrint()
+      </script>
+
+    <div id="printOptions" style="display: block; width:fit-content;">
+      <input id="name" type="text" placeholder="name">
+      <input id="id" type="text" placeholder="id#">
+    </div>
+
+<br>
+
+    <div class="actions">
+      <button id="printFullView" class="btn btn-print" onclick="checkThenPrint();">Print / Save as PDF</button>
+      <br><br>
+      <span class="small">Language Learning Magazine • CEFR B1 → B2</span>
+    </div>
+    
+
+
+    <script>
+    document.querySelectorAll('select').forEach(select => {
+  select.addEventListener('change', () => {
+    const correct = select.dataset.correct;
+    if (select.value === correct) {
+      select.classList.remove('incorrect');
+      select.classList.add('correct');
+    } else {
+      select.classList.remove('correct');
+      select.classList.add('incorrect');
+    }
+  });
+});
+    </script>
+
+
+  </div>
+</body>
+</html>
+
