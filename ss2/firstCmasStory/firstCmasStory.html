@@ -89,7 +89,34 @@
     display: none;
   }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <!-- Spinner overlay -->
 <div id="image-loader">
@@ -235,6 +262,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p></p><p><b><span><span>For many, Christmas is a celebration of the birth of Christ.</span></span></b></p><p><span><span>According
 to popular statistics,  between 70-80% of Americans consider
 themselves Christians, even if they don’t belong to any particular
@@ -261,7 +289,7 @@ was Mary's <b>fiance </b>and when he <i>found out </i>that Mary was
 pregnant, he was upset and wanted to leave her. However, an angel
 told Joseph that he should still marry her because her child was from
 god.</span></span></p>
-<p><span><span>When Mary was <b>pregnant,</b> she and Joseph had to travel a very long way
+<p><span><span>When Mary was <b>pregnant</b>, she and Joseph had to travel a very long way
  to the small town of Bethlehem <i>in order to</i>
 <b>register</b> their name with the government. Tradition holds that Mary had to ride on a donkey. </span></span></p><p><div class="image"><img alt="an Image" class="zimage reader-mode" src="maryOnDonkey4.webp"/></div></p><p><span><span>Because the city was
 so <b>crowded</b>, no rooms were <b>available</b> in the <b>inns</b>.
@@ -675,5 +703,127 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+</script>
+<script>
+const vocabulary = {
+  "influence": {
+    "definition": "The power to affect how people think or act.",
+    "example": "Parents have a big influence on their children."
+  },
+  "primarily": {
+    "definition": "Mainly; mostly.",
+    "example": "The store sells primarily books and magazines."
+  },
+  "centerpiece": {
+    "definition": "The most important or central part of something.",
+    "example": "The turkey was the centerpiece of the dinner."
+  },
+  "miracles": {
+    "definition": "Amazing events that cannot be explained by science, often believed to be from God.",
+    "example": "Her recovery was like a miracle."
+  },
+  "blind": {
+    "definition": "Not able to see.",
+    "example": "The blind man walked with a white cane."
+  },
+  "immortal": {
+    "definition": "Living forever; never dying.",
+    "example": "In the myth, the gods were immortal."
+  },
+  "virgin": {
+    "definition": "A person who has never had sex.",
+    "example": "In the story, Mary was a virgin when Jesus was born."
+  },
+  "fiance": {
+    "definition": "The man a woman has promised to marry.",
+    "example": "Her fiance is a teacher."
+  },
+  "pregnant": {
+    "definition": "Having a baby growing inside the body.",
+    "example": "My sister is pregnant with her second child."
+  },
+  "register": {
+    "definition": "To put your name on an official list.",
+    "example": "You must register for the class by Friday."
+  },
+  "crowded": {
+    "definition": "Full of people.",
+    "example": "The train was so crowded we had to stand."
+  },
+  "available": {
+    "definition": "Free to be used or taken.",
+    "example": "Are there any rooms available tonight?"
+  },
+  "inns": {
+    "definition": "Small hotels, especially old ones in the countryside.",
+    "example": "Travelers stopped at inns along the road."
+  },
+  "stable": {
+    "definition": "A building where horses or other animals are kept.",
+    "example": "The horses sleep in the stable at night."
+  },
+  "shepherds": {
+    "definition": "People whose job is to take care of sheep.",
+    "example": "The shepherds led their sheep up the hill."
+  },
+  "sign": {
+    "definition": "Something that shows something else exists or will happen.",
+    "example": "Dark clouds are a sign of rain."
+  },
+  "symbol": {
+    "definition": "Something that represents an idea or thing.",
+    "example": "The dove is a symbol of peace."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
 </script>
 </body></html>
