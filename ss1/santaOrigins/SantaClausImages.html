@@ -75,7 +75,34 @@
     display: none;
   }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <!-- Spinner overlay -->
 <div id="image-loader">
@@ -221,6 +248,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 </p><p><span><span></span></span></p><p><span><span>Modern
 day Santa Claus is known as a jolly fat man with a long white beard
@@ -239,7 +267,7 @@ modern day cities, you can find Santa Claus in <b>parades</b> and at
 every mall or shopping center, and on many street corner's where he
 collects money for the poor.</span></span></p>
 <img alt="image" class="zimage" src="santa-mall-street.webp"/>
-<p><span><span></span></span></p><p><span><span><b>The First Santa Clause</b></span></span></p>
+<p><span><span></span></span></p><p><span><span><b>The First Santa Claus</b></span></span></p>
 <p><span><span>The
 <b>legend</b> of Santa Claus can be traced back hundreds of years to
 a Greek <b>bishop</b> named Saint Nicholas, or Saint Nick for short.
@@ -654,4 +682,134 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
 document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "sleigh": {
+    "definition": "A vehicle that slides over snow, often pulled by horses or reindeer.",
+    "example": "The children rode in a sleigh through the snowy forest."
+  },
+  "elves": {
+    "definition": "Small magical people in stories; Santa's helpers who make toys.",
+    "example": "In the story, the elves work all year making toys."
+  },
+  "chimney": {
+    "definition": "A pipe or passage that carries smoke from a fireplace up through the roof.",
+    "example": "Smoke was coming out of the chimney."
+  },
+  "parades": {
+    "definition": "Public celebrations where people march or ride through the streets.",
+    "example": "The city holds parades on national holidays."
+  },
+  "legend": {
+    "definition": "An old, famous story that may or may not be true.",
+    "example": "There's a legend about a dragon living in the mountains."
+  },
+  "bishop": {
+    "definition": "A senior Christian priest who is in charge of churches in an area.",
+    "example": "The bishop visited the village church."
+  },
+  "admired": {
+    "definition": "Respected and liked very much.",
+    "example": "She is admired for her honesty."
+  },
+  "devotion": {
+    "definition": "Very strong love, loyalty, or commitment.",
+    "example": "His devotion to his family is clear."
+  },
+  "epidemic": {
+    "definition": "A disease that spreads quickly to many people in one area.",
+    "example": "The flu epidemic closed many schools."
+  },
+  "needy": {
+    "definition": "Poor and needing help.",
+    "example": "The charity gives food to needy families."
+  },
+  "inheritance": {
+    "definition": "Money or property you receive from someone after they die.",
+    "example": "She used her inheritance to buy a house."
+  },
+  "selflessly": {
+    "definition": "In a way that cares more about others than yourself.",
+    "example": "The nurse worked selflessly to help her patients."
+  },
+  "generosity": {
+    "definition": "Being willing to give money, time, or help to others.",
+    "example": "Thank you for your generosity."
+  },
+  "slavery": {
+    "definition": "The system of owning people and forcing them to work without pay.",
+    "example": "Slavery is illegal in every country today."
+  },
+  "dowry": {
+    "definition": "Money or property a bride's family gives when she marries.",
+    "example": "In the past, a dowry was common in many cultures."
+  },
+  "stockings": {
+    "definition": "Long socks; at Christmas, large socks hung up for gifts.",
+    "example": "The children hung their stockings by the fireplace."
+  },
+  "nuns": {
+    "definition": "Women who live in a religious community and devote their lives to God.",
+    "example": "The nuns ran a small school for girls."
+  },
+  "taken over": {
+    "definition": "Taken control of or responsibility for something.",
+    "example": "Her son has taken over the family business."
+  },
+  "associated with": {
+    "definition": "Connected with something in people's minds.",
+    "example": "Red roses are associated with love."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
