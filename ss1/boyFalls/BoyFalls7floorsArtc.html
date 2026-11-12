@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span>The
 Clamdens live on the seventh floor of their apartment building. This
@@ -147,7 +175,7 @@ was too early to go out and play, they <i>turned on</i> the TV.</span></span></p
 dad went into his office and began working on a <i><span>last-minute</span></i>
 <span><span>report</span></span>;
 he had <i>to meet</i><span> a</span><i><span>
-deadline</span></i><i><b> </b></i>by <i>this coming</i> Tuesday. The
+deadline</span></i> by <i>this coming</i> Tuesday. The
 mom closed all the windows and the sliding glass doors by the <b>balcony</b>
 and then <i>turned on</i> the air conditioner.  The mom made a call
 to her best friend and they began chatting about <i>who-knows-what</i>.
@@ -155,7 +183,7 @@ to her best friend and they began chatting about <i>who-knows-what</i>.
 </p>
 <p>
 <span><span>When
-the dad came out of his office for a drink <b>refill,</b> he noticed
+the dad came out of his office for a drink <b>refill</b>, he noticed
 that the balcony  doors were open. “The air conditioner is on! Who
 left the doors open?” he asked angrily.  The mom looked <b>puzzled</b>.
 “<i>I could have sworn</i> I closed those doors,” she said. </span></span>
@@ -174,7 +202,7 @@ The mom ran to the elevator and the dad ran down the stairs. An
 ambulance <span>siren</span> began
 <span>howling</span> in the distance,
 getting louder as it got nearer. An <i><span>off-duty</span></i>
-policeman who was nearby in his <b>patrol </b><span>car</span>
+policeman who was nearby in his <b>patrol car</b>
 had already arrived at the scene. </span></span>
 </p>
 <p><span><span>When
@@ -533,4 +561,102 @@ document.addEventListener("DOMContentLoaded", function () {
 </script><script>
 document.getElementById('copyAIprompt').addEventListener('click', copyAIPrompt);
 document.getElementById('getArticleInnerHTML').addEventListener('click', convertCol1ToMarkdown);
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "ignoring": {
+    "definition": "Not paying attention to someone or something on purpose.",
+    "example": "She kept ignoring my messages."
+  },
+  "balcony": {
+    "definition": "A small platform outside an upper window or door of a building.",
+    "example": "We had coffee on the balcony."
+  },
+  "refill": {
+    "definition": "Another serving of a drink after your glass or cup is empty.",
+    "example": "The waiter offered me a free coffee refill."
+  },
+  "puzzled": {
+    "definition": "Confused because you don't understand something.",
+    "example": "He looked puzzled by the question."
+  },
+  "crashing": {
+    "definition": "Falling or hitting something with a loud noise.",
+    "example": "The plates came crashing to the floor."
+  },
+  "rail": {
+    "definition": "A bar that people can hold, or that keeps them from falling.",
+    "example": "Hold the rail as you go down the stairs."
+  },
+  "patrol car": {
+    "definition": "A police car used to drive around an area and watch for trouble.",
+    "example": "A patrol car stopped outside the bank."
+  },
+  "injured": {
+    "definition": "Hurt or physically harmed.",
+    "example": "Nobody was injured in the fire."
+  },
+  "scratches": {
+    "definition": "Thin cuts or marks on the skin.",
+    "example": "The kitten left scratches on my hand."
+  },
+  "bruised": {
+    "definition": "Having a dark mark on the skin from being hit or falling.",
+    "example": "He bruised his knee playing soccer."
+  },
+  "pile": {
+    "definition": "A lot of things placed on top of each other.",
+    "example": "There's a pile of laundry on the bed."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
