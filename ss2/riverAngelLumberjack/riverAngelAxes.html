@@ -30,7 +30,34 @@
     display:none; background:white; box-shadow: 0 0 5px 0 gray; padding:.5rem;
 }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -139,6 +166,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span>A
 lumberjack was chopping down a tree on the <b>bank</b> of a river
@@ -183,7 +211,7 @@ you see, honesty is  the best policy.</span></span></p>
 <div id="compQsTitle">Comprehension Questions</div>
 <div contenteditable="false" id="compQs"><ol><li>What happened after the ax fell into the water?</li><li>In response to the angel's question about the lost ax, why did the man say he needed his ax?</li><li>How many axes did the angel bring to the surface. Explain each case.</li><li>Why did the angel want to reward the man?</li><li>How did the angel reward the man?</li><li>After hearing the story, what idea did the lumberjack's friend have?</li><li>When the angel presented the golden ax to the friend, what did the man do?</li><li>Why was the angel disgusted?</li><li>What was the man's punishment for trying to cheat the angel?</li></ol></div>
 <div id="discussQsTitle">Discussion</div>
-<div contenteditable="false" id="discussQs"><ol><li>You are getting off a train in a subway. You see a big bag of money sitting by a bench. No one is around. You wait ten minutes. No one shows. What do you do?</li><li>In some places, lost items can be turned in to the local police. If no one claims the item within 60 to 90 days, the item becomes the property of the person who found it. What laws apply in your area for lost items that have been turned in?</li><li>A stranger approaches you and says he will give you&amp;nbsp; $200,00 U.S. dollars if you take his briefcase to a certain location and leave it there and walk away. He asks you not to look inside the case. He will give you half the money now and the other half later at another specified place. What will you do?</li></ol></div>
+<div contenteditable="false" id="discussQs"><ol><li>What are white lies? Look it up and explain to each other.</li><li>Is a white lie really a lie? Explain</li><li>Is it okay to tell a big lie if no one gets hurt? Explain. (Consider "unforseen circumstances" and how things sometimes "backfire")</li></ol></div>
 <button id="text2list" onclick="textToList()" style="margin: 0px 0px 1em; display: none;">make Ordered List</button>
 <button id="editOff" onclick="toggleEditOff()" style="display: none;">Preview</button>
 <button id="editOn" onclick="toggleEditOn()" style="display: none;">Edit Mode</button>
@@ -533,4 +561,114 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("discussQsTitle", "discussQs");
     setupToggle("dictTitle", "dict-li");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "bank": {
+    "definition": "The land along the side of a river.",
+    "example": "We had a picnic on the bank of the river."
+  },
+  "edge": {
+    "definition": "The outer side or end of something.",
+    "example": "Don't stand too close to the edge of the cliff."
+  },
+  "pity": {
+    "definition": "A feeling of sadness for someone who is suffering.",
+    "example": "She felt pity for the hungry dog."
+  },
+  "circumstance": {
+    "definition": "The situation or condition someone is in.",
+    "example": "Under the circumstances, we had to cancel the trip."
+  },
+  "overjoyed": {
+    "definition": "Extremely happy.",
+    "example": "She was overjoyed to hear she got the job."
+  },
+  "recovering": {
+    "definition": "Getting back something that was lost.",
+    "example": "Police are working on recovering the stolen jewelry."
+  },
+  "property": {
+    "definition": "Something that belongs to someone.",
+    "example": "Please don't touch other people's property."
+  },
+  "wholeheartedly": {
+    "definition": "Completely and sincerely, with all your feelings.",
+    "example": "I wholeheartedly agree with you."
+  },
+  "honesty": {
+    "definition": "The quality of telling the truth and not cheating.",
+    "example": "Honesty is very important in a friendship."
+  },
+  "presented": {
+    "definition": "Gave something to someone, often formally.",
+    "example": "The mayor presented her with a medal."
+  },
+  "reward": {
+    "definition": "Something given to someone for doing something good.",
+    "example": "He got a reward for finding the lost dog."
+  },
+  "support": {
+    "definition": "To provide money, food, and other things someone needs to live.",
+    "example": "She works two jobs to support her children."
+  },
+  "disgusted": {
+    "definition": "Feeling strong dislike or disapproval.",
+    "example": "I was disgusted by the dirty kitchen."
+  },
+  "dishonesty": {
+    "definition": "Lying, cheating, or not telling the truth.",
+    "example": "He lost his job because of his dishonesty."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
