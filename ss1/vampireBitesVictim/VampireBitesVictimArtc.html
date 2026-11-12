@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>It was just after midnight when Ella arrived home from a night out with the girls. The night was quiet except for the sound of her own footsteps, and a small breeze rustling the leaves. As she reached her apartment door, she felt a strange chill, the kind that makes you glance over your shoulder when you feel someone is watching you. She <strong>fumbled</strong> with her keys, the metal jingling nervously in her hand. Just as the key turned in the lock and the door cracked open, something moved behind her—a blur of motion.
 </p>
 <p>A man sprang from the shadows and slammed her to the floor. He <b>hissed</b> and <b>growled</b> like an animal, his eyes wild and unfocused. “I need your blood,” he said before trying to bite Ella's neck. Terrified but <b>determined</b>, Ella fought back, kicking and clawing until she managed to break free. She bolted into the parking lot, screaming for help. The vampire followed,<em> fast on her heels</em>. Lucky for her, a friend who was <b>pulling up</b> saw her and yelled for her to jump in the car. As Ella slammed the door shut, the attacker pounded on the car, <b>shrieking</b>, as the two women sped away to safety.
@@ -537,4 +565,122 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "fumbled": {
+    "definition": "Used your hands in a clumsy, nervous way.",
+    "example": "He fumbled with his phone and dropped it."
+  },
+  "hissed": {
+    "definition": "Made a long 'sss' sound, often to show anger.",
+    "example": "The snake hissed at us."
+  },
+  "growled": {
+    "definition": "Made a low, angry sound in the throat, like a dog.",
+    "example": "The dog growled at the stranger."
+  },
+  "determined": {
+    "definition": "Having a strong decision to do something, even if it is hard.",
+    "example": "She was determined to win the race."
+  },
+  "pulling up": {
+    "definition": "Driving a car to a place and stopping.",
+    "example": "A taxi was pulling up outside the hotel."
+  },
+  "shrieking": {
+    "definition": "Screaming in a loud, high voice.",
+    "example": "The children were shrieking with excitement."
+  },
+  "howling": {
+    "definition": "Making a long, loud cry, like a wolf.",
+    "example": "We heard wolves howling in the night."
+  },
+  "crazed": {
+    "definition": "Acting wild and out of control, as if mad.",
+    "example": "A crazed fan ran onto the stage."
+  },
+  "trembled": {
+    "definition": "Shook slightly because of fear, cold, or weakness.",
+    "example": "Her hands trembled as she opened the letter."
+  },
+  "blackout": {
+    "definition": "A time when someone cannot remember anything or loses consciousness.",
+    "example": "After the accident, he had a blackout and remembered nothing."
+  },
+  "innocent": {
+    "definition": "Harmless; not meant to hurt anyone.",
+    "example": "It was just an innocent joke."
+  },
+  "lightheaded": {
+    "definition": "Feeling dizzy, as if you might faint.",
+    "example": "I felt lightheaded after standing up too fast."
+  },
+  "investigators": {
+    "definition": "People whose job is to find out the facts about a crime or problem.",
+    "example": "Investigators are looking into the cause of the fire."
+  },
+  "spiked": {
+    "definition": "Secretly added a drug or alcohol to a drink.",
+    "example": "Someone spiked her drink at the club."
+  },
+  "distorts": {
+    "definition": "Changes something so that it looks or seems different from what is real.",
+    "example": "This mirror distorts your face."
+  },
+  "shaken": {
+    "definition": "Upset and frightened after a bad experience.",
+    "example": "He was shaken but not hurt after the car accident."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
