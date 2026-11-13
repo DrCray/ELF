@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -120,7 +147,8 @@
 </svg>
 <span class="play">▶</span>
 
-</a></div><p>One
+</a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div><p>One
 sunny Saturday morning, Tom woke up to find his wife, Lisa, busy in
 the kitchen. She was preparing breakfast and looked a bit worried.
 “Tom,” she said, “can you please take our <b>clothes</b> to the <b>dry
@@ -543,4 +571,138 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
         });
 </script>
 
+<script>
+const vocabulary = {
+  "clothes": {
+    "definition": "Things you wear, such as shirts, pants, and dresses.",
+    "example": "I packed enough clothes for a week."
+  },
+  "dry cleaners": {
+    "definition": "A shop that cleans clothes with special chemicals instead of water.",
+    "example": "I took my wool coat to the dry cleaners."
+  },
+  "gathered": {
+    "definition": "Collected things from different places and put them together.",
+    "example": "She gathered her books and left the classroom."
+  },
+  "conveyor racks": {
+    "definition": "Long moving rails that carry hanging clothes around a shop.",
+    "example": "The worker pressed a button, and the conveyor racks brought my shirt to the front."
+  },
+  "counter": {
+    "definition": "A long, flat surface in a shop where customers are served.",
+    "example": "Please pay at the counter by the door."
+  },
+  "attendant": {
+    "definition": "A person whose job is to serve or help customers.",
+    "example": "The parking attendant showed us where to park."
+  },
+  "ticket": {
+    "definition": "A small piece of paper that proves you left something and lets you get it back.",
+    "example": "Don't lose your coat check ticket."
+  },
+  "handing": {
+    "definition": "Giving something to someone with your hand.",
+    "example": "He was handing out flyers at the train station."
+  },
+  "sizes": {
+    "definition": "How big or small clothes are, such as small, medium, or large.",
+    "example": "These shoes come in many sizes."
+  },
+  "mix-up": {
+    "definition": "A mistake where one thing is confused with another.",
+    "example": "There was a mix-up at the hotel, and they gave us the wrong room."
+  },
+  "misread": {
+    "definition": "Read something incorrectly.",
+    "example": "I misread the schedule and missed my bus."
+  },
+  "records": {
+    "definition": "Written or saved information about past events or business.",
+    "example": "The clinic keeps records of every patient visit."
+  },
+  "double-check": {
+    "definition": "To check something again to make sure it is correct.",
+    "example": "Always double-check your answers before you hand in the test."
+  },
+  "frowned": {
+    "definition": "Moved the eyebrows together to show worry, anger, or confusion.",
+    "example": "The teacher frowned when she saw the messy desk."
+  },
+  "shrunk": {
+    "definition": "Became smaller, often after being washed.",
+    "example": "My sweater shrunk in the hot water."
+  },
+  "stain": {
+    "definition": "A dirty mark that is hard to remove.",
+    "example": "There's a coffee stain on my shirt."
+  },
+  "pinkish": {
+    "definition": "Slightly pink in color.",
+    "example": "The sky turned pinkish at sunset."
+  },
+  "headed back": {
+    "definition": "Went back toward a place.",
+    "example": "After lunch, we headed back to the office."
+  },
+  "reimburse": {
+    "definition": "To pay back money that someone spent or lost.",
+    "example": "The company will reimburse you for your travel costs."
+  },
+  "turned out": {
+    "definition": "Happened or ended in a particular way.",
+    "example": "The weather turned out nicer than we expected."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
