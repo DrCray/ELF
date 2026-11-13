@@ -8,7 +8,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
 <style>
-    body{font-family:'Poppins',sans-serif;line-height:1.4;color:#1a1a1a;background:#f0f4f8;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;line-height:1.6;color:#1a1a1a;background:#f0f4f8;margin:0;padding:0}
     .header{padding:.8rem .8rem .8rem 1.8rem;font-weight:600;font-size:1.3rem;color:white;border-radius:3px;
             background:linear-gradient(135deg,#ff6b6b,#4ecdc4);box-shadow:0 3px 6px gray}
     .container{width:100%;max-width:35rem;margin:0 auto;padding:1.5rem 1rem;background:#F7EDF4;
@@ -111,7 +111,180 @@ summary {background:#E9F1F8; padding: 1rem;}
     }
 
   </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     }
+</style>
+
+
+<style>
+  .dict-popover {
+    position: absolute;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    z-index: 999;
+    font: 14px/1.4 sans-serif;
+  }
+
+  .dict-popover .g-link {
+    display: inline-block;
+    background: #1a5fb4;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .dict-popover .g-link:hover {
+    background: #124a8f;
+  }
+
+  b.vocab, strong.vocab, i.vocab, em.vocab {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+(function () {
+  let pop = null;
+  let hideTimer = null;
+
+  // ---- On load: tag every <b> and <strong> as vocabulary ----
+  function tagVocab() {
+    document.querySelectorAll('b, strong, i, em').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (text && text.length > 1 && text.length < 60) {
+        el.classList.add('vocab');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagVocab);
+  } else {
+    tagVocab();
+  }
+
+  // ---- Escape HTML characters ----
+  function escapeHTML(text) {
+    return text.replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  // ---- Central Google search URL builder ----
+  function googleLink(word) {
+    const query = `Need a definition and example sentence for "${word}"`;
+    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  }
+
+  // ---- Hide popover ----
+  function hidePopover() {
+    clearTimeout(hideTimer);
+    if (pop) {
+      pop.remove();
+      pop = null;
+    }
+  }
+
+  // ---- Delayed hide ----
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hidePopover, 300);
+  }
+
+  // ---- Display popover ----
+  function showPopover(anchor, html) {
+    clearTimeout(hideTimer);
+    hidePopover();
+
+    pop = document.createElement('div');
+    pop.className = 'dict-popover';
+    pop.innerHTML = html;
+
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mouseenter', function () {
+      clearTimeout(hideTimer);
+    });
+
+    pop.addEventListener('mouseleave', scheduleHide);
+
+    const r = anchor.getBoundingClientRect();
+    const popWidth = pop.offsetWidth;
+
+    const left = Math.max(
+      5,
+      Math.min(r.left, window.innerWidth - popWidth - 5)
+    );
+
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (r.bottom + window.scrollY + 2) + 'px';
+  }
+
+  // ---- Open vocabulary card ----
+  function openCard(el) {
+    const word = el.textContent.trim();
+    const safeWord = escapeHTML(word);
+
+    showPopover(el,
+      '<b>' + safeWord + '</b>' +
+      '<div style="margin-top:8px">' +
+      '<a class="g-link" href="' + googleLink(word) +
+      '" target="_blank" rel="noopener noreferrer">- Definition &amp; Sentence -</a>' +
+      '</div>'
+    );
+  }
+
+  // ---- Events: hover (desktop) + tap (mobile) ----
+  document.addEventListener('mouseover', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    const to = e.relatedTarget;
+
+    if (to && (
+      to.closest('.dict-popover') ||
+      to.closest('b.vocab, strong.vocab, i.vocab, em.vocab')
+    )) return;
+
+    scheduleHide();
+  });
+
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      e.preventDefault();
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+    else if (!e.target.closest('.dict-popover')) {
+      hidePopover();
+    }
+  });
+
+})();
+</script>
+
+</head>
 <body>
 <!-- EDITOR PANEL -->
 <div class="editor-panel editMode" style="display: none;">
@@ -193,156 +366,144 @@ sustains it?</p><p></p>
 </div>
 <!-- SECTION 1 -->
 <div class="section" id="column1"><div><h3>When Christmas Meets Commerce</h3>
-
+<p style="color:darkorange; background:white;">Tap/hover a word then tap/click <span style="color:blue;">Definition &amp; Sentence</span> to get its meaning and example sentence<p>
 <div><div><ul>
-<li>SARAH: Welcome to "Perspective Matters." I'm Sarah Chen.</li>
-<li>MARK: And I'm Mark Williams. Today we're tackling the annual complaint that Christmas has become too commercialized.</li>
-<li>SARAH:
- I'll admit, I've been that person. Last week I saw an AI-generated 
-Christmas ad and thought, "We've officially lost the true spirit of 
-
-Christmas."</li>
-<li>MARK: So you're in the "commercialization has ruined Christmas" camp?</li>
-<li>SARAH:
- I was. But then I learned that Christmas actually became popular in 
-America through commercialization. The holiday wasn't widely celebrated 
-here until the 1840s, when stores started marketing it.</li>
-<li>MARK: So commercialization isn't a recent corruption—it's baked into American Christmas.</li>
-<li>SARAH: Exactly. Which made me wonder if I've been looking at this all wrong.</li>
-<li>MARK:
- But people go into debt buying gifts. Companies manipulate emotions. 
-
-For religious people, Jesus has been buried under wrapping paper.</li>
-<li>SARAH:
- True. But what if commercialization isn't the enemy of Christmas 
-spirit, but actually a vehicle for it? Shoppers are buying gifts for 
-
-people they care about—that represents love, thoughtfulness, generosity.</li>
-<li>SARAH:
- Santa Claus—used to sell everything from Coca-Cola to cars—is based on 
-St. Nicholas, a bishop who gave away his wealth to help the poor. And 
-gift-giving comes from the Wise Men bringing gifts to baby Jesus. Even 
-
-commercial gift-buying has roots in profound generosity.</li>
-<li>MARK: But doesn't commercialization distort that when people just check items off lists?</li>
-<li>SARAH:
- Sometimes. But commercialization itself is neutral—it's a system. What 
-matters is the intention behind it. When you walk into a decorated 
-store, you can see manipulative marketing, or you can see a community 
-
-creating beauty together. Both are true.</li>
-<li>MARK: So it's about perspective.</li>
-<li>SARAH:
- Yes.  Without the pursuit of commerce through advertising,  extravagant
- displays,  and lavish decorations,  Christmas might have 
-disappeared--or at least been less popular.  I mean,  anything that 
-helps spread the message of kindness and sharing,  how bad can that be? 
- Christmas being everywhere keeps it alive, spreading its values even in
-
- secular contexts.</li>
-<li>MARK: So you're saying, the commercial transaction is just the mechanism.</li>
-<li>SARAH:
- Right. And commercialization keeps Christmas alive and widespread. 
-Radio stations play music about Jesus. Charities launch campaigns. The 
-Salvation Army stands outside stores. Commercial activity enables real 
-
-generosity and community connection.</li>
-<li>MARK: So the spirit of Christmas was never separate from these activities?</li>
-<li>SARAH:
- I wouldn't say that, exactly, but it's certainly true for the last 
-several generations. In modern times, and I mean the last 100 years or 
-more, gift-giving, feasting, decorating—all involve commerce. We live in
- a commercial society. That's just reality. I mean, even for hand-made 
-decorations and gifts, you need to buy materials, which entails 
-shopping. And stores will enhance their decorations to attract more 
-customers. You can see the cycle, right? I mean, it's almost enivitable,
-
- is it not?</li>
-<li>MARK: What about people who feel the religious meaning has been lost?</li>
-<li>SARAH:
- Here's the crucial point, Mark—and this is what people really need to 
-understand. The stores, the shopping, the commercialization—none of that
- can actually take away the meaning of Christmas. That's impossible. 
-Because the spirit of Christmas doesn't live in stores or 
-
-advertisements. It lives in our hearts.</li>
-<li>MARK: So it's entirely personal.</li>
-<li>SARAH:
- Yes. The meaning of Christmas hasn't been lost—it can't be lost—unless 
-we personally lose it in our own hearts. No amount of marketing or 
-consumer culture can destroy what you choose to carry inside you. When 
-you buy a gift, you decide whether it's just a transaction or a tangible
- expression of love. Same action, completely different meaning, based 
-
-entirely on what's in your heart.</li>
-<li>MARK: That's actually empowering.</li>
-<li>SARAH:
- It is! Two people can look at the same Christmas display. One sees 
-crass commercialism. The other sees community celebration. The display 
-hasn't changed—their hearts have determined what they experience. The 
-complaint about commercialization often says more about the complainer's
-
- internal state than about Christmas itself.</li>
-<li>MARK: So we're in control.</li>
-<li>SARAH:
- Completely. The commercial infrastructure provides options, but we make
- the choices. Whether Christmas has meaning for you is entirely up to 
-what you bring to it. You can shop at the same stores as everyone else, 
-but if your heart is focused on expressing love and generosity, you're 
-experiencing the true spirit of Christmas—regardless of what's happening
-
- around you.</li>
-<li>MARK: This reminds me of that article about Jesus and Santa Claus working together.</li>
-<li>SARAH:
- Yes! Christ provides the aspiring foundation—love, forgiveness, 
-compassion—and Santa brings that message to life through gift-giving. 
-Ideas need action. For many people, purchasing and giving gifts is how 
-they put those values into practice, whether they frame it spiritually 
-
-or not.</li>
-<li>MARK: So commercialization has actually democratized Christmas?</li>
-<li>SARAH:
- In a way. It's become a broader cultural celebration that anyone can 
-participate in. And isn't that aligned with the original message anyway?
-
- Love your neighbor, care for others, be generous?</li>
-<li>MARK: When you put it that way, complaining that too many people celebrate Christmas seems ironic.</li>
-<li>SARAH:
- Right? The practical takeaway: when you're in a crowded mall, remember 
-everyone there cares enough to brave the crowds. See people expressing 
-love. The decorations are community art. And you're in control—set a 
-
-budget, shop mindfully.</li>
-<li>MARK: And most importantly, remember that spirit is internal.</li>
-<li>SARAH:
- Exactly. The spirit of Christmas—love, generosity, hope, joy—lives in 
-your heart. It can't be destroyed by marketing or crowds or 
-commercialization. It exists in people who choose to express it. Other 
-people can celebrate however they want, stores can sell whatever they 
-want, but none of that determines whether Christmas has meaning for you.
-
- That's your choice, based on what's in your own heart.</li>
-<li>MARK: So we've been blaming external commercialization for what's really an internal decision.</li>
-<li>SARAH:
- Yes. The world around you is neutral. You give it meaning through your 
-intentions and choices. If Christmas feels too commercial, it's not 
-because of the stores—it's because you've allowed your focus to drift 
-from what matters in your own heart. And the beautiful thing is, you can
-
- shift that focus anytime.</li>
-<li>MARK: That's a powerful message. 
-Commercialization isn't the enemy of Christmas spirit—it's a neutral 
-
-system that reflects our intentions.</li>
-<li>SARAH: And when we 
-recognize that the spirit lives within us, not around us, we're free to 
-
-engage with everything on our own terms.</li>
-<li>MARK: Well, I'm afraid 
-it's time to wrap-up today's podcast. Thank you Sarah for sharing your 
-
-perspective on keeping the Christmas Spirit during this holiday season.</li>
-<li>SARAH: Thanks, Mark. To everyone listening—the spirit of Christmas is yours to claim, regardless of what's happening around you.</li></ul></div></div></div>
+<li>SARAH: Welcome to "Perspective Matters." I'm Sarah Chen.
+</li>
+<li>MARK: And I'm Mark Williams. Today we're tackling the annual <strong>complaint
+</strong> that Christmas has become too <strong>commercialized
+</strong>.
+</li>
+<li>SARAH: I'll admit, I've been that person. Last week I saw an AI-generated Christmas ad and thought, "We've officially lost the true spirit of Christmas."
+</li>
+<li>MARK: So you're in the "<strong>commercialization
+</strong> has <strong>ruined
+</strong> Christmas" <strong>camp
+</strong>?
+</li>
+<li>SARAH: I was. But then I learned that Christmas actually became popular in America through commercialization. The holiday wasn't widely celebrated here until the 1840s, when stores started marketing it.
+</li>
+<li>MARK: So commercialization isn't a recent <strong>corruption
+</strong>—it's <strong>baked into
+</strong> American Christmas.
+</li>
+<li>SARAH: Exactly. Which made me wonder if I've been looking at this all wrong.
+</li>
+<li>MARK: But people go into debt buying gifts. Companies <strong>manipulate
+</strong> emotions. For religious people, Jesus has been buried under wrapping paper.
+</li>
+<li>SARAH: True. But what if commercialization isn't the enemy of Christmas spirit, but actually a <strong>vehicle
+</strong> for it? Shoppers are buying gifts for people they care about—that represents love, thoughtfulness, generosity.
+</li>
+<li>SARAH: Santa Claus—used to sell everything from Coca-Cola to cars—is based on St. Nicholas, a bishop who gave away his wealth to help the poor. And gift-giving comes from the Wise Men bringing gifts to baby Jesus. Even commercial gift-buying <strong>has roots in
+</strong> profound generosity.
+</li>
+<li>MARK: But doesn't commercialization distort that when people just check items off lists?
+</li>
+<li>SARAH: Sometimes. But commercialization itself is <strong>neutral
+</strong>—it's a system. What matters is the <strong>intention
+</strong> behind it. When you walk into a <strong>decorated
+</strong> store, you can see <strong>manipulative
+</strong> marketing, or you can see a community creating beauty together. Both are true.
+</li>
+<li>MARK: So it's about <strong>perspective
+</strong>.
+</li>
+<li>SARAH: Yes. Without the <strong>pursuit
+</strong> of <strong>commerce
+</strong> through advertising, <strong>extravagant
+</strong> displays, and <strong>lavish
+</strong> decorations, Christmas might have disappeared--or at least been less popular. I mean, anything that helps spread the message of kindness and sharing, how bad can that be? Christmas being everywhere keeps it alive, spreading its values even in <strong>secular
+</strong> contexts.
+</li>
+<li>MARK: So you're saying, the commercial <strong>transaction
+</strong> is just the <strong>mechanism
+</strong>.
+</li>
+<li>SARAH: Right. And commercialization keeps Christmas alive and widespread. Radio stations play music about Jesus. Charities launch campaigns. The Salvation Army stands outside stores. <strong>Commercial activity
+</strong> &nbsp;<strong>enables
+</strong> real generosity and community connection.
+</li>
+<li>MARK: So the spirit of Christmas was never separate from these activities?
+</li>
+<li>SARAH: I wouldn't say that, exactly, but it's certainly true for the last several generations. In modern times, and I mean the last 100 years or more, gift-giving, feasting, decorating—all involve commerce. We live in a commercial society. That's just reality. I mean, even for hand-made decorations and gifts, you need to buy materials, which <strong>entails
+</strong> shopping. And stores will <strong>enhance
+</strong> their decorations to attract more customers. You can see the <strong>cycle
+</strong>, right? I mean, it's almost enivitable, is it not?
+</li>
+<li>MARK: What about people who feel the religious meaning has been lost?
+</li>
+<li>SARAH: Here's the <strong>crucial
+</strong> point, Mark—and this is what people really need to understand. The stores, the shopping, the commercialization—none of that can actually take away the meaning of Christmas. That's impossible. Because the spirit of Christmas doesn't live in stores or advertisements. It lives in our hearts.
+</li>
+<li>MARK: So it's entirely personal.
+</li>
+<li>SARAH: Yes. The meaning of Christmas hasn't been lost—it can't be lost—unless we personally lose it in our own hearts. No amount of marketing or consumer culture can destroy what you choose to carry inside you. When you buy a gift, you decide whether it's just a <strong>transaction
+</strong> or a <strong>tangible
+</strong> expression of love. Same action, completely different meaning, based entirely on what's in your heart.
+</li>
+<li>MARK: That's actually <strong>empowering
+</strong>.
+</li>
+<li>SARAH: It is! Two people can look at the same Christmas display. One sees crass commercialism. The other sees community celebration. The display hasn't changed—their hearts have determined what they experience. The <strong>complaint
+</strong> about commercialization often says more about the complainer's <strong>internal
+</strong> state than about Christmas itself.
+</li>
+<li>MARK: So we're in control.
+</li>
+<li>SARAH: Completely. The commercial <strong>infrastructure
+</strong> provides options, but we make the choices. Whether Christmas has meaning for you is entirely up to what you bring to it. You can shop at the same stores as everyone else, but if your heart is focused on expressing love and generosity, you're experiencing the true spirit of Christmas—regardless of what's happening around you.
+</li>
+<li>MARK: This reminds me of that article about Jesus and Santa Claus working together.
+</li>
+<li>SARAH: Yes! Christ provides the <strong>aspiring
+</strong> foundation—love, forgiveness, <strong>compassion
+</strong>—and Santa brings that message to life through gift-giving. Ideas need action. For many people, <strong>purchasing
+</strong> and giving gifts is how they put those values into practice, whether they frame it spiritually or not.
+</li>
+<li>MARK: So commercialization has actually <strong>democratized
+</strong> Christmas?
+</li>
+<li>SARAH: In a way. It's become a broader cultural celebration that anyone can participate in. And isn't that <strong>aligned
+</strong> with the original message anyway? Love your neighbor, care for others, be generous?
+</li>
+<li>MARK: When you put it that way, complaining that too many people celebrate Christmas seems ironic.
+</li>
+<li>SARAH: Right? The <strong>practical
+</strong> <strong>takeaway
+</strong>: when you're in a crowded mall, remember everyone there cares enough to brave the crowds. See people expressing love. The decorations are community art. And you're in control—set a <strong>budget
+</strong>, shop mindfully.
+</li>
+<li>MARK: And most importantly, remember that spirit is <strong>internal
+</strong>.
+</li>
+<li>SARAH: Exactly. The spirit of Christmas—love, generosity, hope, joy—lives in your heart. It can't be destroyed by marketing or crowds or commercialization. It exists in people who choose to express it. Other people can celebrate however they want, stores can sell whatever they want, but none of that determines whether Christmas has meaning for you. That's your choice, based on what's in your own heart.
+</li>
+<li>MARK: So we've been blaming <strong>external
+</strong> commercialization for what's really an internal decision.
+</li>
+<li>SARAH: Yes. The world around you is <strong>neutral
+</strong>. You give it meaning through your <strong>intentions
+</strong> and choices. If Christmas feels too commercial, it's not because of the stores—it's because you've allowed your <strong>focus
+</strong> to drift from what matters in your own heart. And the beautiful thing is, you can shift that <strong>focus
+</strong> anytime.
+</li>
+<li>MARK: That's a powerful message. Commercialization isn't the enemy of Christmas spirit—it's a <strong>neutral
+</strong> system that reflects our <strong>intentions
+</strong>.
+</li>
+<li>SARAH: And when we recognize that the spirit lives within us, not around us, we're free to <strong>engage with
+</strong> everything on our own terms.
+</li>
+<li>MARK: Well, I'm afraid it's time to <strong>wrap-up
+</strong> today's podcast. Thank you Sarah for sharing your <strong>perspective
+</strong> on keeping the Christmas Spirit during this holiday season.
+</li>
+<li>SARAH: Thanks, Mark. To everyone listening—the spirit of Christmas is yours to claim, regardless of what's happening around you.
+</li>
+</ul>
+</div>
+</div></div>
 <button class="delBtn editMode" onclick="this.parentElement.remove()" style="display: none;">delete section</button>
 </div>
 <div class="edit-spacer editMode" style="display: none;"></div>
