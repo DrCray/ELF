@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -124,6 +151,7 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 </div></div>
 <div id="toBottomMenu"><a href="#menu-links">Exercises and other Audiovid links at bottom</a></div>
 <div id="gettingStartedTitle">Getting Started
@@ -549,4 +577,154 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
         });
 </script>
 
+<script>
+const vocabulary = {
+  "anxious": {
+    "definition": "Worried and nervous about something that might happen.",
+    "example": "I always feel anxious before a job interview."
+  },
+  "charity": {
+    "definition": "Raising money or giving help for people or animals in need.",
+    "example": "The school held a charity concert for the hospital."
+  },
+  "sponsor": {
+    "definition": "A person or group that supports an event or person, often with money.",
+    "example": "Our soccer team's sponsor paid for new uniforms."
+  },
+  "logo": {
+    "definition": "A small picture or design that represents a company or group.",
+    "example": "The company's logo is a blue bird."
+  },
+  "adoption": {
+    "definition": "Taking an animal or child into your home to care for as your own.",
+    "example": "The shelter has ten cats ready for adoption."
+  },
+  "participating": {
+    "definition": "Taking part in an activity or event.",
+    "example": "Thank you for participating in today's survey."
+  },
+  "stretched": {
+    "definition": "Moved arms and legs to make the muscles long and loose.",
+    "example": "She stretched for five minutes before her run."
+  },
+  "vests": {
+    "definition": "Sleeveless jackets, often brightly colored so people can be easily seen.",
+    "example": "The road workers wore orange vests."
+  },
+  "laced": {
+    "definition": "Having the shoelaces tied.",
+    "example": "Make sure your boots are tightly laced before hiking."
+  },
+  "footwear": {
+    "definition": "Things you wear on your feet, like shoes and boots.",
+    "example": "The store sells sports clothing and footwear."
+  },
+  "joint": {
+    "definition": "A place in the body where two bones meet, like the knee.",
+    "example": "Running on hard roads can hurt your joints."
+  },
+  "blisters": {
+    "definition": "Small painful bubbles on the skin, often caused by rubbing.",
+    "example": "New shoes gave me blisters on my heels."
+  },
+  "pace": {
+    "definition": "The speed at which someone moves or does something.",
+    "example": "He walked at a slow pace through the park."
+  },
+  "pledged": {
+    "definition": "Promised to give money or help.",
+    "example": "My parents pledged $50 to the school fundraiser."
+  },
+  "precautions": {
+    "definition": "Actions taken to stop something bad from happening.",
+    "example": "We took precautions against the storm by closing the windows."
+  },
+  "bandaged": {
+    "definition": "Covered a wound with a strip of cloth.",
+    "example": "The nurse bandaged my cut finger."
+  },
+  "hydrated": {
+    "definition": "Having enough water in your body.",
+    "example": "Drink plenty of water to stay hydrated in summer."
+  },
+  "determined": {
+    "definition": "Having a strong decision to do something, even if it's hard.",
+    "example": "He was determined to learn to swim this year."
+  },
+  "cheering": {
+    "definition": "Shouting loudly to support or praise someone.",
+    "example": "The fans were cheering for their team."
+  },
+  "encourage": {
+    "definition": "To give someone support and confidence.",
+    "example": "My teacher always encourages me to try my best."
+  },
+  "tough": {
+    "definition": "Difficult to do or deal with.",
+    "example": "The math test was really tough."
+  },
+  "focused": {
+    "definition": "Gave all your attention to one thing.",
+    "example": "She focused on her studies before the exam."
+  },
+  "exhausted": {
+    "definition": "Extremely tired.",
+    "example": "After moving all day, we were exhausted."
+  },
+  "achieved": {
+    "definition": "Succeeded in doing something through effort.",
+    "example": "He achieved his goal of losing 10 kilograms."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
