@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -122,7 +149,8 @@
 </svg>
 <span class="play">▶</span>
 
-</a></div></div>
+</a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div></div>
 <p>Agatha was excited for her dinner party later that evening. She needed to buy some <b>groceries</b> from the big <b>supercenter</b>, so she decided to take her 4-year-old son Riley with her. She told Riley to <b>hold onto</b> the shopping cart tightly as they walked through the store. "Stay close, Riley," she reminded him, “and <i>don’t let go of</i> the <b>cart</b>.”
 </p>
 <p>As Agatha looked for the <b>ingredients</b> she needed, they first went to the fruit and vegetable <b>aisle</b> to <b>pick out</b> some fresh <b>produce</b> for the <b>dinner party</b>. Agatha carefully selected <b>ripe</b> tomatoes and <b>crisp</b> lettuce.
@@ -516,4 +544,230 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "groceries": {
+    "definition": "Food and other things you buy for the home.",
+    "example": "Can you help me carry the groceries inside?"
+  },
+  "supercenter": {
+    "definition": "A very large store that sells food, clothes, electronics, and many other things.",
+    "example": "The supercenter is open 24 hours a day."
+  },
+  "hold onto": {
+    "definition": "To keep holding something and not let go.",
+    "example": "Hold onto the railing when you go down the stairs."
+  },
+  "cart": {
+    "definition": "A metal basket on wheels used for shopping.",
+    "example": "She pushed the cart down the aisle."
+  },
+  "ingredients": {
+    "definition": "The foods you use to make a dish.",
+    "example": "Flour, eggs, and sugar are the main ingredients of a cake."
+  },
+  "aisle": {
+    "definition": "A long walkway between shelves in a store.",
+    "example": "The bread is in aisle five."
+  },
+  "pick out": {
+    "definition": "To choose something from a group.",
+    "example": "Let's pick out a birthday card for Mom."
+  },
+  "produce": {
+    "definition": "Fresh fruit and vegetables.",
+    "example": "This market sells local produce."
+  },
+  "dinner party": {
+    "definition": "A social event where guests are invited for dinner.",
+    "example": "We're having a dinner party for eight people on Saturday."
+  },
+  "ripe": {
+    "definition": "Fully grown and ready to eat.",
+    "example": "These bananas are ripe and sweet."
+  },
+  "crisp": {
+    "definition": "Fresh and firm, making a sound when you bite it.",
+    "example": "I love a crisp green apple."
+  },
+  "headed to": {
+    "definition": "Went toward a place.",
+    "example": "After school, we headed to the library."
+  },
+  "main": {
+    "definition": "Most important or biggest.",
+    "example": "The main reason I moved was for my job."
+  },
+  "dish": {
+    "definition": "Food prepared in a particular way as part of a meal.",
+    "example": "Pad Thai is my favorite Thai dish."
+  },
+  "various": {
+    "definition": "Several different.",
+    "example": "The shop sells various kinds of tea."
+  },
+  "dessert": {
+    "definition": "Sweet food eaten at the end of a meal.",
+    "example": "We had ice cream for dessert."
+  },
+  "nowhere": {
+    "definition": "Not in any place.",
+    "example": "My keys are nowhere to be found."
+  },
+  "panic": {
+    "definition": "A sudden strong feeling of fear that makes you unable to think clearly.",
+    "example": "There was panic when the fire alarm went off."
+  },
+  "frantically": {
+    "definition": "In a fast, wild, and worried way.",
+    "example": "She searched frantically for her passport."
+  },
+  "scenarios": {
+    "definition": "Possible situations that might happen.",
+    "example": "We planned for several scenarios, including bad weather."
+  },
+  "section": {
+    "definition": "A separate part of a store or area.",
+    "example": "The children's books are in the back section."
+  },
+  "clothes": {
+    "definition": "Things you wear, like shirts and pants.",
+    "example": "I need to buy some new clothes for winter."
+  },
+  "racks": {
+    "definition": "Frames or stands for hanging or holding things.",
+    "example": "The dresses were hanging on racks."
+  },
+  "electronics": {
+    "definition": "Electric devices such as TVs, phones, and computers.",
+    "example": "The electronics department has a sale on laptops."
+  },
+  "display": {
+    "definition": "An arrangement of products for people to look at.",
+    "example": "The window display showed the new summer clothes."
+  },
+  "spot": {
+    "definition": "To see or notice something, often after looking.",
+    "example": "Can you spot the mistake in this sentence?"
+  },
+  "curly": {
+    "definition": "Having curls or spiral shapes.",
+    "example": "The baby has soft, curly hair."
+  },
+  "alerted": {
+    "definition": "Warned someone about a problem.",
+    "example": "The neighbor alerted us that our door was open."
+  },
+  "security": {
+    "definition": "The people whose job is to protect a place.",
+    "example": "Security checked our bags at the entrance."
+  },
+  "safety": {
+    "definition": "Being protected from danger or harm.",
+    "example": "For your safety, please wear a seatbelt."
+  },
+  "initiated": {
+    "definition": "Started something.",
+    "example": "The school initiated a new reading program."
+  },
+  "lockdown": {
+    "definition": "A situation where people can't enter or leave a building for safety reasons.",
+    "example": "The school was in lockdown for an hour."
+  },
+  "announcement": {
+    "definition": "A public statement giving information.",
+    "example": "There was an announcement about a delayed train."
+  },
+  "speakers": {
+    "definition": "Devices that make sound louder so many people can hear.",
+    "example": "Music played through the speakers in the mall."
+  },
+  "service counter": {
+    "definition": "A desk in a store where staff help customers.",
+    "example": "Return the item at the service counter."
+  },
+  "desperately": {
+    "definition": "In a very worried way, wanting something very much.",
+    "example": "He desperately wanted to find his lost dog."
+  },
+  "accompanied": {
+    "definition": "Went somewhere with someone.",
+    "example": "My father accompanied me to the doctor."
+  },
+  "stuffed animals": {
+    "definition": "Soft toys shaped like animals.",
+    "example": "Her bed is covered with stuffed animals."
+  },
+  "tears": {
+    "definition": "Drops of water that come from your eyes when you cry.",
+    "example": "Tears of joy ran down her face."
+  },
+  "grateful": {
+    "definition": "Feeling thankful.",
+    "example": "I'm so grateful for your kindness."
+  },
+  "safe and sound": {
+    "definition": "Safe and not hurt.",
+    "example": "The kids came home safe and sound after the trip."
+  },
+  "scary": {
+    "definition": "Making you feel afraid.",
+    "example": "That was a really scary movie."
+  },
+  "wander off": {
+    "definition": "To walk away from a place or group without telling anyone.",
+    "example": "Don't let the children wander off at the beach."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
