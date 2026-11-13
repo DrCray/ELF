@@ -30,7 +30,34 @@
     display:none; background:white; box-shadow: 0 0 5px 0 gray; padding:.5rem;
 }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -139,9 +166,10 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span>A
-sixteen-year-old camp <b>counselor</b> <i>fought-off</i> a cougar to
+sixteen-year-old camp <b>counselor</b> <i>fought off</i> a cougar to
 rescue a six-year-old boy. The boy was <b>injured</b> and <b>rushed</b>
 to the hospital. The cougar was shot and killed. The <b>victim</b>,
 Danny Sands, received <b>wounds</b> to the neck and <b>scrapes</b> to
@@ -168,14 +196,14 @@ child around the neck and head, Parsels said, forcing the boy to his
 knees. </span></span>
 </p>
 <p><span><span>Allen,
-without <b>hesitation</b>, ran to the boy to fight-off the cougar.
-“He didn’t even think, He just <i>sprang into action</i>,” said
+without <b>hesitation</b>, ran to the boy to fight off the cougar.
+“He didn’t even think, he just <i>sprang into action</i>,” said
 one of the fellow hikers. By the time Allen had reached the boy, the
 cougar was <b>dragging</b> the boy towards the woods.</span></span></p>
 <p>
 <span><span>But Allen
 was able to get to them and began kicking and hitting the cougar. “I
-was just kicking and hitting like a wild man. I wasn’t gonna’
+was just kicking and hitting like a wild man. I wasn’t gonna
 stop till that cougar let go.” The cougar finally <b>backed off</b>
 a short distance, and Allen ran forward and picked up the boy and
 began <i><span>administering</span></i>
@@ -189,7 +217,7 @@ was waiting at the bottom of the mountain. </span></span>
 </p>
 <p><span><span>Danny
 was taken to the nearest hospital where he received <b>stitches</b>
-to the bite wounds on his neck. The scratch wounds from the cougars
+to the bite wounds on his neck. The scratch wounds from the cougar's
 claws were cleaned up, <b>sterilized</b>, and then covered.  Danny’s
 parents were called and had been waiting for him at the hospital, so
 after Danny’s <b>treatment</b>, he was sent home with his parents.</span></span></p>
@@ -546,4 +574,134 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("discussQsTitle", "discussQs");
     setupToggle("dictTitle", "dict-li");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "counselor": {
+    "definition": "A young adult who looks after children at a summer camp.",
+    "example": "My older brother works as a counselor at a swimming camp."
+  },
+  "injured": {
+    "definition": "Hurt.",
+    "example": "Two players were injured during the game."
+  },
+  "rushed": {
+    "definition": "Taken somewhere very quickly.",
+    "example": "The sick baby was rushed to the doctor."
+  },
+  "victim": {
+    "definition": "A person who has been hurt or attacked.",
+    "example": "The victim of the dog bite went to the hospital."
+  },
+  "wounds": {
+    "definition": "Injuries where the skin is cut or broken.",
+    "example": "The nurse cleaned the wounds on his arm."
+  },
+  "scrapes": {
+    "definition": "Small injuries where the skin is rubbed off.",
+    "example": "She got a few scrapes when she fell off her bike."
+  },
+  "encounter": {
+    "definition": "A sudden or unexpected meeting, often a dangerous one.",
+    "example": "He told us about his encounter with a bear."
+  },
+  "wilderness": {
+    "definition": "A wild natural area where few or no people live.",
+    "example": "They spent a week camping in the wilderness."
+  },
+  "pouncing": {
+    "definition": "Jumping suddenly on something to catch it.",
+    "example": "The cat was pouncing on a toy mouse."
+  },
+  "attacking": {
+    "definition": "Trying to hurt someone with violence.",
+    "example": "The guard dog started attacking the stranger."
+  },
+  "hesitation": {
+    "definition": "A pause before you do something because you are unsure.",
+    "example": "She answered the question without hesitation."
+  },
+  "dragging": {
+    "definition": "Pulling something heavy along the ground.",
+    "example": "He was dragging a big bag of rice across the floor."
+  },
+  "backed off": {
+    "definition": "Moved away from someone or something.",
+    "example": "The angry dog finally backed off when I shouted."
+  },
+  "first aid": {
+    "definition": "Simple medical help given to an injured person before a doctor arrives.",
+    "example": "Every teacher should learn basic first aid."
+  },
+  "maintenance": {
+    "definition": "The work of keeping buildings and equipment in good condition.",
+    "example": "Call maintenance if the light in your room is broken."
+  },
+  "ambulance": {
+    "definition": "A vehicle that takes sick or injured people to the hospital.",
+    "example": "The ambulance arrived in five minutes."
+  },
+  "stitches": {
+    "definition": "Pieces of thread a doctor uses to sew a cut closed.",
+    "example": "He needed six stitches in his chin."
+  },
+  "sterilized": {
+    "definition": "Cleaned so that there are no germs.",
+    "example": "The dentist's tools are sterilized after every use."
+  },
+  "treatment": {
+    "definition": "Medical care for an illness or injury.",
+    "example": "She is getting treatment for a broken leg."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
