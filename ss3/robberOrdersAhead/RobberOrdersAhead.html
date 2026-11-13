@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -125,6 +152,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span>A</span>
 bank robber thought it would be more convenient and faster if he
@@ -139,7 +167,7 @@ that there be no <b>explosive dye</b> in the money bag. </span></span>
 </p>
 <p><span><span>The
 clerk took the <b>threat</b> seriously and told her manager who immediately
-called the police. The manager new that the police would be <b>hiding in wait</b> for the robber,
+called the police. The manager knew that the police would be <b>lying in wait</b> for the robber,
 so he decided to prank the robber by filling the money bag with copy paper and a red-dye pack—<i>just for
 good measure—</i>and then placed the bag by the door.</span></span></p>
 <p><span><span><b>Approximately</b>
@@ -162,7 +190,7 @@ exploded. The robber was covered <i>from head to toe</i> with red dye.
 <p><span><span><span><span><span><span><span>[inspired
 by actual events]</span></span></span></span></span></span></span></p>
 <p><span><span>Two
-<b>drug </b><b>dealers</b> were taking a <b>joy-ride</b> in a stolen
+<b>drug dealers</b> were taking a <b>joy-ride</b> in a stolen
 car when they were <i>pulled over</i> by the police for <i>speeding</i>.
 One of the officers saw a bag in the back seat that was <b>labelled</b>,
  <i>Bag Full of Drugs</i>. </span></span>
@@ -542,4 +570,130 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "beforehand": {
+    "definition": "before something else happens; in advance.",
+    "example": "Please call the restaurant beforehand to book a table."
+  },
+  "demanding": {
+    "definition": "asking for something strongly, as if you have the right to it.",
+    "example": "The customers were demanding their money back."
+  },
+  "major": {
+    "definition": "very large, serious or important.",
+    "example": "There was a major accident on the highway this morning."
+  },
+  "explosive dye": {
+    "definition": "a small pack hidden with stolen money that bursts and covers the money and robber with colored ink.",
+    "example": "Banks use explosive dye so stolen money is easy to recognize."
+  },
+  "threat": {
+    "definition": "a statement that someone will cause harm or trouble if they do not get what they want.",
+    "example": "The school closed for the day after a bomb threat."
+  },
+  "lying in wait": {
+    "definition": "staying hidden while waiting for someone to arrive, usually to catch them.",
+    "example": "The cat was hiding in wait behind the sofa for the mouse."
+  },
+  "approximately": {
+    "definition": "close to an exact number; about.",
+    "example": "The trip takes approximately three hours by train."
+  },
+  "spun around": {
+    "definition": "turned around very quickly.",
+    "example": "When she heard her name, she spun around to see who it was."
+  },
+  "arrested": {
+    "definition": "taken away by the police because of a crime.",
+    "example": "The man was arrested for driving without a license."
+  },
+  "drug dealers": {
+    "definition": "people who sell illegal drugs.",
+    "example": "The police caught two drug dealers near the train station."
+  },
+  "joy-ride": {
+    "definition": "a fast, careless drive for fun, often in a stolen car.",
+    "example": "The teenagers took their father's car for a joy-ride."
+  },
+  "labelled": {
+    "definition": "having a small piece of paper or writing that tells what something is.",
+    "example": "Each box was clearly labelled with the person's name."
+  },
+  "warrant": {
+    "definition": "an official paper from a judge that allows the police to search a place or arrest someone.",
+    "example": "The police needed a warrant to search the apartment."
+  },
+  "suspicious": {
+    "definition": "making you think something is wrong or illegal.",
+    "example": "A suspicious bag was left alone at the airport."
+  },
+  "serving time": {
+    "definition": "spending time in prison as punishment for a crime.",
+    "example": "He is serving time for stealing cars."
+  },
+  "drug possession": {
+    "definition": "the crime of having illegal drugs with you.",
+    "example": "She was charged with drug possession after the search."
+  },
+  "intent": {
+    "definition": "what someone plans or means to do.",
+    "example": "He entered the house with the intent to steal jewelry."
+  },
+  "distribute": {
+    "definition": "to give or sell things to many people.",
+    "example": "Volunteers will distribute food to families in need."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
