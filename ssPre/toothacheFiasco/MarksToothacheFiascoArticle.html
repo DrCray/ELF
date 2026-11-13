@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -119,7 +146,8 @@
 </svg>
 <span class="play">▶</span>
 
-</a></div><p>Mark <b>woke up</b> with a terrible <b>toothache</b> so he called his <b>dentist</b> to
+</a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div><p>Mark <b>woke up</b> with a terrible <b>toothache</b> so he called his <b>dentist</b> to
 make an appointment. The dentist was able to <b>squeeze</b> Mark into his
 <b>schedule</b>, but he told Mark that he couldn’t be late, <b>if so</b>, he’d
 have to wait till tomorrow.</p><p>Mark got his
@@ -480,7 +508,7 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
   function setupToggle(titleId, contentId) {
     const title = document.getElementById(titleId);
     const content = document.getElementById(contentId);
-    if (!title  !content) return;
+    if (!title || !content) return;
 
     const baseText = title.textContent.trim();
     title.textContent = baseText + " +";
@@ -524,4 +552,246 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
         });
 </script>
 
+<script>
+const vocabulary = {
+  "woke up": {
+    "definition": "Stopped sleeping.",
+    "example": "I woke up early this morning."
+  },
+  "toothache": {
+    "definition": "A pain in a tooth.",
+    "example": "I have a terrible toothache, so I can't eat."
+  },
+  "dentist": {
+    "definition": "A doctor who takes care of teeth.",
+    "example": "You should visit the dentist twice a year."
+  },
+  "squeeze": {
+    "definition": "To fit someone or something into a small space or busy schedule.",
+    "example": "The doctor can squeeze you in at 3 p.m."
+  },
+  "schedule": {
+    "definition": "A plan of times when things will happen.",
+    "example": "My schedule is very busy this week."
+  },
+  "if so": {
+    "definition": "If that happens or is true.",
+    "example": "It might rain. If so, we'll stay home."
+  },
+  "painful": {
+    "definition": "Causing pain; hurting.",
+    "example": "My sprained ankle is very painful."
+  },
+  "breath": {
+    "definition": "The air that goes in and out of your mouth.",
+    "example": "Garlic gives you bad breath."
+  },
+  "grabbed": {
+    "definition": "Took something quickly.",
+    "example": "He grabbed his bag and ran out."
+  },
+  "locking": {
+    "definition": "Closing something with a key so it can't be opened.",
+    "example": "Always remember locking the door when you leave."
+  },
+  "beeping": {
+    "definition": "Making short, high electronic sounds.",
+    "example": "The microwave was beeping to say the food was ready."
+  },
+  "door handle": {
+    "definition": "The part of a door you hold to open it.",
+    "example": "The door handle is broken."
+  },
+  "electronic key": {
+    "definition": "A small device that opens a car with a button or signal.",
+    "example": "Press the button on the electronic key to unlock the car."
+  },
+  "tripped": {
+    "definition": "Hit your foot on something and fell or almost fell.",
+    "example": "She tripped on the stairs."
+  },
+  "flew out of": {
+    "definition": "Came out of something suddenly and quickly.",
+    "example": "The ball flew out of his hands."
+  },
+  "in front of": {
+    "definition": "Ahead of; facing.",
+    "example": "There's a tree in front of my house."
+  },
+  "pick up": {
+    "definition": "To lift something from the ground.",
+    "example": "Please pick up your toys."
+  },
+  "swooped": {
+    "definition": "Flew down quickly and suddenly.",
+    "example": "The eagle swooped down to catch a fish."
+  },
+  "beak": {
+    "definition": "The hard, pointed mouth of a bird.",
+    "example": "The parrot cracked the nut with its beak."
+  },
+  "shiny": {
+    "definition": "Bright and reflecting light.",
+    "example": "She wore shiny new shoes."
+  },
+  "nest": {
+    "definition": "A home that birds build for their eggs.",
+    "example": "There's a bird's nest in our tree."
+  },
+  "swiped": {
+    "definition": "Swung your arm quickly to try to hit or grab something.",
+    "example": "The cat swiped at the toy mouse."
+  },
+  "catch": {
+    "definition": "To grab something that is moving.",
+    "example": "Can you catch the ball?"
+  },
+  "mud puddle": {
+    "definition": "A small pool of muddy water on the ground.",
+    "example": "The kids jumped in every mud puddle."
+  },
+  "from head to toe": {
+    "definition": "Over your whole body.",
+    "example": "He was dressed in black from head to toe."
+  },
+  "worsened": {
+    "definition": "Became worse.",
+    "example": "The weather worsened in the afternoon."
+  },
+  "disappear": {
+    "definition": "To go out of sight.",
+    "example": "The sun disappeared behind the clouds."
+  },
+  "locksmith": {
+    "definition": "A person whose job is to open, fix, and make locks.",
+    "example": "We called a locksmith to open the car."
+  },
+  "ladder": {
+    "definition": "A tool with steps used to climb up to high places.",
+    "example": "He used a ladder to clean the roof."
+  },
+  "garage": {
+    "definition": "A building where a car is kept.",
+    "example": "We keep our bikes in the garage."
+  },
+  "leaned": {
+    "definition": "Rested something at an angle against something else.",
+    "example": "She leaned her bike against the wall."
+  },
+  "climbed up": {
+    "definition": "Went up something using your hands and feet.",
+    "example": "The boy climbed up the tree."
+  },
+  "bit": {
+    "definition": "A little; slightly.",
+    "example": "I'm a bit tired today."
+  },
+  "stretch out": {
+    "definition": "To reach your arm or body as far as possible.",
+    "example": "Stretch out your arms above your head."
+  },
+  "slipped": {
+    "definition": "Slid by accident and lost balance.",
+    "example": "He slipped on the wet floor."
+  },
+  "fell off": {
+    "definition": "Dropped down from something.",
+    "example": "The book fell off the table."
+  },
+  "landed": {
+    "definition": "Came down onto the ground or a surface.",
+    "example": "The ball landed on the roof."
+  },
+  "thorny": {
+    "definition": "Having sharp points, like a rose bush.",
+    "example": "Be careful—those plants are thorny."
+  },
+  "covered": {
+    "definition": "Having something all over the surface.",
+    "example": "The car was covered with snow."
+  },
+  "scratches": {
+    "definition": "Thin cuts or marks on the skin or a surface.",
+    "example": "The cat left scratches on my arm."
+  },
+  "pulled into": {
+    "definition": "Drove a vehicle into a place and stopped.",
+    "example": "The bus pulled into the station."
+  },
+  "driveway": {
+    "definition": "A private road from the street to a house or garage.",
+    "example": "Park your car in the driveway."
+  },
+  "ran over": {
+    "definition": "Ran quickly to someone or something.",
+    "example": "When she fell, her friend ran over to help."
+  },
+  "going on": {
+    "definition": "Happening.",
+    "example": "What's going on here?"
+  },
+  "politely": {
+    "definition": "In a kind and respectful way.",
+    "example": "He politely asked for directions."
+  },
+  "ride": {
+    "definition": "A trip in a car or other vehicle.",
+    "example": "Can you give me a ride to the airport?"
+  },
+  "shoulder": {
+    "definition": "The part of the body between the neck and the arm.",
+    "example": "She carried her bag on her shoulder."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
