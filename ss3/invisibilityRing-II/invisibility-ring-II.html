@@ -14,7 +14,40 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+
+
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style>
+
+
+
+<style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +156,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span><span>There
 once was a witch who had told a little girl, Carey, that she owned an
@@ -189,19 +223,19 @@ it. But he surely did not want to drop the bag full of riches. </span></span></s
 </p>
 <p>
 <span><span><span><span>Marley
-was just far enough ahead of everyone that he made out for the woods.
+was just far enough ahead of everyone that he made off for the woods.
  When he ran into the woods, not far along, he saw a <b>hollow</b>
 tree trunk and he <b>tossed</b> the bag inside of it and sat down to
 take a rest. </span></span></span></span>
 </p>
 <p>
 <span><span><span><span>After
-all the people finally left. Marley <i>took off</i> his ring. He was
+all the people finally left, Marley <i>took off</i> his ring. He was
 now a 70-year-old man. But he was a rich old man.</span></span></span></span></p>
 </div>
 </div>
 <div id="compQsTitle">Comprehension Questions</div>
-<div contenteditable="false" id="compQs"><ol><li>How did Carey, the little girl, get the invisibility ring?</li><li>What are some of the ways Marley first used the ring?</li><li>After using the ring, how did Marley feel? What did he see in the mirror? </li><li>After Marley realized the ring was making him old, what was his plan?</li><li>How did Marley get inside the bank vault?</li><li>What were some of the stolen items in Marley’s bag?</li><li>What did Mrs. Pennington see? What did she yell? &amp;nbsp;</li><li>When Marley ran for the woods, what did he do when he got there?</li><li>When Marley finally removed the ring, how old was he?</li></ol></div>
+<div contenteditable="false" id="compQs"><ol><li>How did Carey, the little girl, get the invisibility ring?</li><li>What are some of the ways Marley first used the ring?</li><li>After using the ring, how did Marley feel? What did he see in the mirror? </li><li>After Marley realized the ring was making him old, what was his plan?</li><li>How did Marley get inside the bank vault?</li><li>What were some of the stolen items in Marley’s bag?</li><li>What did Mrs. Pennington see? What did she yell?</li><li>When Marley ran for the woods, what did he do when he got there?</li><li>When Marley finally removed the ring, how old was he?</li></ol></div>
 <div id="discussQsTitle">Discussion</div>
 <div contenteditable="false" id="discussQs"><ol><li>How old would you be willing to be to get 500 million dollars (TWD)?</li><li>How much money would you need today to live out the rest of your life? (consider inflation)</li></ol></div>
 <button id="text2list" onclick="textToList()" style="margin: 0px 0px 1em; display: none;">make Ordered List</button>
@@ -539,4 +573,122 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "lured": {
+    "definition": "Tempted someone to go somewhere, often by tricking them.",
+    "example": "The smell of fresh bread lured us into the bakery."
+  },
+  "intent": {
+    "definition": "Plan or purpose.",
+    "example": "He came to the meeting with the intent of asking for a raise."
+  },
+  "escaped": {
+    "definition": "Got away from a place or person.",
+    "example": "The bird escaped from its cage."
+  },
+  "pocket": {
+    "definition": "A small bag sewn into clothes for carrying things.",
+    "example": "I keep my keys in my coat pocket."
+  },
+  "floating": {
+    "definition": "Moving slowly through the air or on water.",
+    "example": "A plastic bag was floating in the wind."
+  },
+  "draining": {
+    "definition": "Slowly taking away energy, strength, or something valuable.",
+    "example": "Working night shifts is draining all my energy."
+  },
+  "get rid of": {
+    "definition": "To throw away or remove something you don't want.",
+    "example": "I need to get rid of these old clothes."
+  },
+  "safe": {
+    "definition": "A strong metal box with a lock for keeping money and valuables.",
+    "example": "The hotel room has a small safe for passports."
+  },
+  "vault": {
+    "definition": "A strong, locked room in a bank for keeping money and valuables.",
+    "example": "The gold is kept in an underground vault."
+  },
+  "locked": {
+    "definition": "Closed with a key so that no one can get in or out.",
+    "example": "She locked the door before going to bed."
+  },
+  "items": {
+    "definition": "Single things or objects.",
+    "example": "I bought three items at the store."
+  },
+  "slipped": {
+    "definition": "Moved quietly and quickly so no one noticed.",
+    "example": "He slipped out of the room during the speech."
+  },
+  "backside": {
+    "definition": "The back part of something; informally, a person's bottom. (Here it means he moved behind the manager.)",
+    "example": "The painter forgot to paint the backside of the fence."
+  },
+  "stolen": {
+    "definition": "Taken without permission (past participle of steal).",
+    "example": "My bike was stolen last night."
+  },
+  "hollow": {
+    "definition": "Empty inside.",
+    "example": "Birds made a nest in a hollow log."
+  },
+  "tossed": {
+    "definition": "Threw something lightly or carelessly.",
+    "example": "She tossed her keys onto the table."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
