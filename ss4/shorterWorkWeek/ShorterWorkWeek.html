@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span><span>A
 </span></span>worldwide and well-known high-tech company in Japan has
@@ -169,7 +197,7 @@ results were similar to that of Japan’s trial, with worker
 productivity either increasing or staying the same. Shorter
 work-weeks translated into increased <b>well-being</b> of employees
 including less life stress, and less worker <b>burnout</b>, which all
-leads to more <b>mental</b> <b>alertness</b> at work. </span></span>
+leads to more <b>mental alertness</b> at work. </span></span>
 </p>
 <p><span><span>The
 benefits clearly fit the worker, but it also benefits the
@@ -534,4 +562,138 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "positive": {
+    "definition": "good or hopeful",
+    "example": "The doctor said the test results were positive, so we were happy."
+  },
+  "experiment": {
+    "definition": "a test done to find out what happens or whether something works",
+    "example": "The class did an experiment to see which plants grew fastest."
+  },
+  "trial": {
+    "definition": "a test of something over a period of time to see how well it works",
+    "example": "The gym offers a one-week free trial."
+  },
+  "period": {
+    "definition": "a length of time",
+    "example": "The road will be closed for a period of two months."
+  },
+  "deviation": {
+    "definition": "a change from what is normal or expected",
+    "example": "Wearing jeans to the meeting was a deviation from the company dress code."
+  },
+  "overtime": {
+    "definition": "extra time spent working after your normal working hours",
+    "example": "She worked ten hours of overtime last week."
+  },
+  "astounding": {
+    "definition": "very surprising or amazing",
+    "example": "The view from the mountain top was astounding."
+  },
+  "productivity": {
+    "definition": "how much work a person or company gets done",
+    "example": "A quiet office can improve productivity."
+  },
+  "focus": {
+    "definition": "the ability to keep your attention on one thing",
+    "example": "Music without words helps my focus when I study."
+  },
+  "errands": {
+    "definition": "short trips to do small jobs, like shopping or going to the bank",
+    "example": "I have a few errands to run before dinner."
+  },
+  "motivation": {
+    "definition": "the desire or reason to do something",
+    "example": "Good grades give students motivation to keep working."
+  },
+  "side effect": {
+    "definition": "an extra result that was not planned or expected",
+    "example": "One side effect of walking to work is that I sleep better."
+  },
+  "workforce": {
+    "definition": "all the people who work for a company or in a country",
+    "example": "Half of the company's workforce works from home."
+  },
+  "deceiving": {
+    "definition": "giving a wrong or false idea of something",
+    "example": "Looks can be deceiving; the small dog is actually very strong."
+  },
+  "well-being": {
+    "definition": "the state of being healthy and happy",
+    "example": "Getting enough sleep is important for your well-being."
+  },
+  "burnout": {
+    "definition": "a state of being very tired and stressed from working too hard for too long",
+    "example": "Many nurses suffered burnout after months of long shifts."
+  },
+  "mental alertness": {
+    "definition": "the ability to think clearly and notice things quickly",
+    "example": "A short walk at lunch can improve your mental alertness."
+  },
+  "remote": {
+    "definition": "(of work) done from home or another place, not in the office",
+    "example": "He has a remote job, so he works from a café sometimes."
+  },
+  "flexible": {
+    "definition": "able to change easily to fit different needs",
+    "example": "My boss allows flexible hours, so I can start at 10."
+  },
+  "limit": {
+    "definition": "the greatest amount of something that is possible or allowed",
+    "example": "I have reached my limit; I can't study any more tonight."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
