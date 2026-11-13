@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p></p><p>Alex was coming out of his kitchen when he saw that his <b>front door</b>
 had been left open. he began <b>calling out</b> for his pet dog, Pokey. But
 Pokey didn’t answer with a bark, nor come running to greet him. 
@@ -539,4 +567,166 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "front door": {
+    "definition": "The main door at the front of a house.",
+    "example": "Someone is knocking at the front door."
+  },
+  "calling out": {
+    "definition": "Shouting someone's name to get their attention.",
+    "example": "The teacher was calling out names from the list."
+  },
+  "noticing": {
+    "definition": "Seeing or becoming aware of something.",
+    "example": "He left without noticing his phone on the table."
+  },
+  "grabbed": {
+    "definition": "Took something quickly and firmly.",
+    "example": "She grabbed her umbrella and ran out."
+  },
+  "leash": {
+    "definition": "A long strap or rope used to hold and walk a dog.",
+    "example": "Dogs must be on a leash in the park."
+  },
+  "in search of": {
+    "definition": "Looking for someone or something.",
+    "example": "Many people move to cities in search of work."
+  },
+  "determined": {
+    "definition": "Having a strong decision to do something, even if it is difficult.",
+    "example": "She was determined to pass the exam."
+  },
+  "describing": {
+    "definition": "Telling what someone or something is like.",
+    "example": "He was describing his new apartment to us."
+  },
+  "took out": {
+    "definition": "Removed something from a bag, pocket, or container.",
+    "example": "She took out her wallet to pay."
+  },
+  "knocked": {
+    "definition": "Hit a door with your hand to get attention.",
+    "example": "I knocked twice, but nobody answered."
+  },
+  "neighborhood": {
+    "definition": "The area around your home and the people who live there.",
+    "example": "Our neighborhood has a nice park."
+  },
+  "keep an eye out": {
+    "definition": "To watch carefully for someone or something.",
+    "example": "Keep an eye out for a red car—that's my friend."
+  },
+  "give up": {
+    "definition": "To stop trying.",
+    "example": "Never give up on your dreams."
+  },
+  "posters": {
+    "definition": "Large printed notices put on walls to share information.",
+    "example": "We put up posters for the school concert."
+  },
+  "losing hope": {
+    "definition": "Starting to believe that something good won't happen.",
+    "example": "After hours of searching, they were losing hope."
+  },
+  "porch": {
+    "definition": "A covered area at the entrance of a house.",
+    "example": "Grandpa likes to sit on the porch in the evening."
+  },
+  "wagging": {
+    "definition": "Moving from side to side quickly, like a happy dog's tail.",
+    "example": "The puppy was wagging its tail when I came home."
+  },
+  "rocking chair": {
+    "definition": "A chair that moves back and forth on curved legs.",
+    "example": "She read a book in her rocking chair."
+  },
+  "approached": {
+    "definition": "Moved closer to someone or something.",
+    "example": "A waiter approached our table."
+  },
+  "collar": {
+    "definition": "A band worn around an animal's neck.",
+    "example": "The cat's collar has a little bell on it."
+  },
+  "name tag": {
+    "definition": "A small label showing someone's name, or a pet's name.",
+    "example": "The dog's name tag said 'Max.'"
+  },
+  "owner": {
+    "definition": "A person who has something that belongs to them.",
+    "example": "The owner of the lost phone came back for it."
+  },
+  "first thing": {
+    "definition": "As soon as possible, before doing anything else.",
+    "example": "I'll call you first thing in the morning."
+  },
+  "relief": {
+    "definition": "A good feeling when worry or stress goes away.",
+    "example": "What a relief that the test is over!"
+  },
+  "grateful": {
+    "definition": "Feeling thankful.",
+    "example": "I'm grateful for your help."
+  },
+  "watched over": {
+    "definition": "Took care of and protected someone or something.",
+    "example": "My aunt watched over the kids while we were out."
+  },
+  "safety precautions": {
+    "definition": "Actions taken to prevent accidents or danger.",
+    "example": "Wearing a helmet is an important safety precaution."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
