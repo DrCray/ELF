@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><b>Self-learning.</b>
 No matter who you are and what your dreams of <b>success</b> are, you
@@ -162,7 +190,7 @@ later, people can wait, and they should wait—You’re important. </span></span
 <p><span><span><b>Curiosity.
 </b>Curiosity is <span style="font-weight: normal">creativity’s</span>
 first cousin. You can’t be <b>creative</b> if you’ve never been
-<b>curious.</b> Try things you’ve never done before. Watch
+<b>curious</b>. Try things you’ve never done before. Watch
 <b>documentaries</b> on things you don’t know, or places you’ve
 never been. Always be curious about <i>people, places, and things</i>.
 Always ask the questions “why” and “how.” And especially, “Is
@@ -509,4 +537,146 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "success": {
+    "definition": "Getting what you hoped or planned for, such as a good job, money, or respect.",
+    "example": "Hard work was the key to her success."
+  },
+  "self-made": {
+    "definition": "Rich or successful because of your own hard work, not because of family money.",
+    "example": "He is a self-made businessman who started with nothing."
+  },
+  "time is money": {
+    "definition": "A saying that means wasting time is like wasting money, so use your time well.",
+    "example": "Let's start the meeting now. Time is money!"
+  },
+  "transcript": {
+    "definition": "A written copy of words that were spoken, for example in a talk or podcast.",
+    "example": "The teacher gave us a transcript of the interview."
+  },
+  "drop out": {
+    "definition": "To leave school or college before you finish.",
+    "example": "He dropped out of university to start his own company."
+  },
+  "self-taught": {
+    "definition": "Having learned a skill by yourself, without a teacher or classes.",
+    "example": "My uncle is a self-taught guitar player."
+  },
+  "spreading": {
+    "definition": "Using something, like time or money, on many different things at the same time.",
+    "example": "She is spreading her savings across several small projects."
+  },
+  "efforts": {
+    "definition": "The work and energy you use to try to do something.",
+    "example": "Thanks to his efforts, the project finished on time."
+  },
+  "newsworthy": {
+    "definition": "Interesting or important enough to be reported in the news.",
+    "example": "Nothing newsworthy happened in our town this week."
+  },
+  "headlines": {
+    "definition": "The titles in large letters above news stories.",
+    "example": "I only had time to read the headlines this morning."
+  },
+  "dings": {
+    "definition": "Makes a short, high ringing sound, like a bell or a phone alert.",
+    "example": "The oven dings when the cake is ready."
+  },
+  "follow-up": {
+    "definition": "To do something later to continue an earlier action, such as answering messages.",
+    "example": "I'll follow up with the client by email tomorrow."
+  },
+  "creative": {
+    "definition": "Able to make new and original ideas or things.",
+    "example": "She found a creative way to decorate her small room."
+  },
+  "curious": {
+    "definition": "Wanting to know or learn about something.",
+    "example": "Children are curious about everything around them."
+  },
+  "documentaries": {
+    "definition": "Films or TV shows that give facts about real people, places, or events.",
+    "example": "We watched a documentary about life in the Arctic."
+  },
+  "experience gained": {
+    "definition": "Knowledge or skill you get from doing something or from something that happened to you.",
+    "example": "The experience gained from her first job helped her later."
+  },
+  "failures": {
+    "definition": "Attempts that do not succeed.",
+    "example": "His early failures taught him to plan more carefully."
+  },
+  "envision": {
+    "definition": "To imagine something in your mind, especially something in the future.",
+    "example": "I envision a small house by the sea when I retire."
+  },
+  "micro-manage": {
+    "definition": "To control every small detail of other people's work.",
+    "example": "Good bosses trust their staff and don't micro-manage them."
+  },
+  "volunteer": {
+    "definition": "To offer to do work without being paid.",
+    "example": "Every weekend he volunteers at the animal shelter."
+  },
+  "charity": {
+    "definition": "Help, such as money or food, given to people in need, or an organization that gives this help.",
+    "example": "The concert raised money for a children's charity."
+  },
+  "get involved": {
+    "definition": "To take part in an activity yourself.",
+    "example": "Parents are encouraged to get involved in school events."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
