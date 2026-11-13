@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span><b>H</b></span>eatwaves,
 or hot weather that can last for several days or weeks, can have a
@@ -149,7 +177,7 @@ heat, and this can make the city as much as 6<span>°</span>C
 hotter than the surrounding area. </span></span>
 </p>
 <p><span><span>Heatwaves
-cause water <b>shortages</b> and <b>power</b> <b>outages</b>. With
+cause water <b>shortages</b> and <b>power outages</b>. With
 all the buildings running air conditioners, it <b>strains</b> the
 cities power grid. Some cities have to do <b>rolling blackouts</b>,
 that is, where sections of the city don’t have power for a few
@@ -468,4 +496,126 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "significant impact": {
+    "definition": "A big or important effect.",
+    "example": "The new factory had a significant impact on local jobs."
+  },
+  "phenomena": {
+    "definition": "Things that happen or exist in nature, especially ones that are studied (plural of phenomenon).",
+    "example": "Rainbows and lightning are natural phenomena."
+  },
+  "greater intensity": {
+    "definition": "More strength or force.",
+    "example": "The storm returned with greater intensity during the night."
+  },
+  "urban": {
+    "definition": "Relating to a town or city.",
+    "example": "More people now live in urban areas than in the countryside."
+  },
+  "absorb": {
+    "definition": "To take in heat, liquid, or energy.",
+    "example": "Dark clothes absorb more heat from the sun."
+  },
+  "shortages": {
+    "definition": "Situations where there is not enough of something.",
+    "example": "The dry season caused food shortages in the region."
+  },
+  "power outages": {
+    "definition": "Times when the electricity supply stops working.",
+    "example": "The storm caused power outages across the city."
+  },
+  "strains": {
+    "definition": "Puts too much pressure on something, so it may stop working well.",
+    "example": "Too many users strain the school's internet connection."
+  },
+  "rolling blackouts": {
+    "definition": "Planned power cuts that move from area to area, so each area loses electricity for a short time.",
+    "example": "During the energy crisis, the city had rolling blackouts every evening."
+  },
+  "heat exhaustion": {
+    "definition": "An illness caused by too much heat, which makes you weak, dizzy, and sweaty.",
+    "example": "Drink water often to avoid heat exhaustion."
+  },
+  "burden": {
+    "definition": "To give someone or something too much work or responsibility.",
+    "example": "The extra paperwork burdens the small office."
+  },
+  "dehydration": {
+    "definition": "A condition where your body has lost too much water.",
+    "example": "Long runs in hot weather can cause dehydration."
+  },
+  "evaporates": {
+    "definition": "Changes from a liquid into a gas.",
+    "example": "Water evaporates faster on a windy day."
+  },
+  "comprised": {
+    "definition": "Made up of; having as its parts.",
+    "example": "The team is comprised of five engineers and two designers."
+  },
+  "preparation": {
+    "definition": "Things you do to get ready for something.",
+    "example": "Good preparation is the key to passing exams."
+  },
+  "power grids": {
+    "definition": "Networks of wires and stations that carry electricity to homes and businesses.",
+    "example": "The country is upgrading its power grid to use more solar energy."
+  },
+  "relief": {
+    "definition": "A feeling of comfort when something unpleasant stops or gets less.",
+    "example": "A cold drink gave us some relief from the summer heat."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
