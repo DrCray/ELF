@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,6 +150,7 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 Gary
 Krugle and Marissa Teller made a very <b>fateful</b> decision a few
@@ -148,7 +176,7 @@ want to say goodbye, but we didn’t want to continue fighting.
 Something had to be done”</span></span></p>
 <p><span><span>Marissa
 thought that being stuck together for ninety days would force them to
-face their issues and appreciate each other’s <b>vantage</b> point.
+face their issues and appreciate each other’s <b>vantage point</b>.
 “When we fought, we fixed the problem by running away from it. One
 of us would leave and we would calm down, but when we got back
 together, we never really discussed the issue.”</span></span></p>
@@ -491,4 +519,134 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "fateful": {
+    "definition": "Having an important, often bad, effect on the future.",
+    "example": "That fateful phone call changed his life forever."
+  },
+  "handcuff": {
+    "definition": "To lock someone's wrist to another wrist or object with a pair of metal rings.",
+    "example": "The police handcuffed the thief and put him in the car."
+  },
+  "fate": {
+    "definition": "A power that some people believe decides what will happen in the future.",
+    "example": "They believed fate brought them together."
+  },
+  "horrendous": {
+    "definition": "Extremely bad or unpleasant.",
+    "example": "The traffic this morning was horrendous."
+  },
+  "cooled off": {
+    "definition": "Became calm again after being angry.",
+    "example": "Wait until he cools off before you talk to him."
+  },
+  "vantage point": {
+    "definition": "A way of seeing or thinking about a situation; a point of view.",
+    "example": "From a teacher's vantage point, the new rule makes sense."
+  },
+  "fatigued": {
+    "definition": "Very tired.",
+    "example": "After the long flight, I felt completely fatigued."
+  },
+  "emotional ups and downs": {
+    "definition": "Changes between good feelings and bad feelings.",
+    "example": "Starting a new job can bring many emotional ups and downs."
+  },
+  "figured": {
+    "definition": "Thought or decided that something was probably true (informal).",
+    "example": "I figured you'd be hungry, so I made sandwiches."
+  },
+  "bound": {
+    "definition": "Tied or held tightly together.",
+    "example": "The old letters were bound with a red ribbon."
+  },
+  "welded": {
+    "definition": "Joined pieces of metal together by heating them.",
+    "example": "The broken gate was welded back together."
+  },
+  "24/7": {
+    "definition": "All the time; 24 hours a day, 7 days a week.",
+    "example": "The convenience store is open 24/7."
+  },
+  "obstacles": {
+    "definition": "Things that make it difficult to do something.",
+    "example": "Lack of money was the biggest obstacle to her plans."
+  },
+  "alter": {
+    "definition": "To change something, especially clothes so they fit better.",
+    "example": "I had my trousers altered because they were too long."
+  },
+  "hygiene": {
+    "definition": "Keeping yourself and things clean so you stay healthy.",
+    "example": "Washing your hands often is good hygiene."
+  },
+  "problematic": {
+    "definition": "Causing problems; difficult to deal with.",
+    "example": "Parking in the city center can be problematic."
+  },
+  "chores": {
+    "definition": "Regular jobs you do at home, like cleaning or washing dishes.",
+    "example": "On Saturdays we do the household chores together."
+  },
+  "ended up": {
+    "definition": "Finally were in a situation you did not plan or expect.",
+    "example": "We got lost and ended up in a different town."
+  },
+  "meant for each other": {
+    "definition": "Perfect as a couple; right to be together.",
+    "example": "Everyone says my grandparents were meant for each other."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
