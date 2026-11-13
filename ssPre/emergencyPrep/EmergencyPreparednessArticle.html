@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -122,7 +149,8 @@
 </svg>
 <span class="play">▶</span>
 
-</a></div></div><div></div>
+</a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div></div><div></div>
 <p>Being prepared, just in case of an emergency, is a good idea. Many things can suddenly happen in life; <i>hurricanes, earthquakes, blizzards, power outages</i>, and even war. Here are a few things you should know in order to be prepared.
 </p>
 <p>Depending on the type of emergency, <b>lack</b> of power and <b>damaged</b> cell towers will likely <b>hinder</b> communications. But some cell towers have backup power and may still work. So it’s a good idea to keep your cell phone <b>charged</b> at all times. On a daily basis, don’t let the charge on your phone get too low before <b>recharging</b>. Also, have extra <b>power banks</b>, at least two or three, and rotate them for <i>daily use</i> so that at least one or two is always full. Your cell phone can save you if you’re <b>trapped</b> somewhere, and it might be your only chance to <b>contact</b> loved ones.
@@ -478,7 +506,7 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
   function setupToggle(titleId, contentId) {
     const title = document.getElementById(titleId);
     const content = document.getElementById(contentId);
-    if (!title  !content) return;
+    if (!title || !content) return;
 
     const baseText = title.textContent.trim();
     title.textContent = baseText + " +";
@@ -522,4 +550,206 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
         });
 </script>
 
+<script>
+const vocabulary = {
+  "lack": {
+    "definition": "Not having something, or not having enough of it.",
+    "example": "The plants died from lack of water."
+  },
+  "damaged": {
+    "definition": "Harmed or broken so that it does not work well.",
+    "example": "The storm damaged the roof of our house."
+  },
+  "hinder": {
+    "definition": "To make something difficult to do or slow it down.",
+    "example": "Heavy snow hindered the rescue teams."
+  },
+  "charged": {
+    "definition": "Filled with electric power, like a battery.",
+    "example": "Make sure your laptop is charged before the meeting."
+  },
+  "recharging": {
+    "definition": "Filling a battery with electric power again.",
+    "example": "My phone is recharging next to the bed."
+  },
+  "power banks": {
+    "definition": "Small portable batteries used to charge phones and other devices.",
+    "example": "I always carry two power banks when I travel."
+  },
+  "trapped": {
+    "definition": "Stuck in a place and unable to get out.",
+    "example": "The cat was trapped in the garage all night."
+  },
+  "contact": {
+    "definition": "To call, message, or write to someone.",
+    "example": "Please contact me if you have any questions."
+  },
+  "survive": {
+    "definition": "To stay alive, especially in a dangerous situation.",
+    "example": "Camels can survive for days without water."
+  },
+  "on hand": {
+    "definition": "Available and ready to use when needed.",
+    "example": "Keep some cash on hand in case the ATM is broken."
+  },
+  "cases": {
+    "definition": "Boxes containing a set number of bottles or cans.",
+    "example": "We bought three cases of soda for the party."
+  },
+  "storage": {
+    "definition": "A place where things are kept until they are needed.",
+    "example": "We keep our winter clothes in storage during summer."
+  },
+  "pantry": {
+    "definition": "A small room or cupboard where food is kept.",
+    "example": "There's rice and pasta in the pantry."
+  },
+  "replenish": {
+    "definition": "To fill something up again after some has been used.",
+    "example": "The store replenishes its shelves every morning."
+  },
+  "rotate": {
+    "definition": "To use older items first and replace them with newer ones in turn.",
+    "example": "Restaurants rotate their stock so food doesn't go bad."
+  },
+  "first aid": {
+    "definition": "Basic medical help given to someone who is hurt, before a doctor arrives.",
+    "example": "All the teachers took a first aid class."
+  },
+  "injured": {
+    "definition": "Hurt or physically harmed.",
+    "example": "Two people were injured in the car accident."
+  },
+  "medical supplies.": {
+    "definition": "Items used to treat injuries or illness, such as bandages and medicine.",
+    "example": "The clinic ran low on medical supplies after the storm."
+  },
+  "wounds": {
+    "definition": "Injuries where the skin is cut or broken.",
+    "example": "The nurse cleaned the wounds on his arm."
+  },
+  "bandages": {
+    "definition": "Strips of cloth used to cover and protect a wound.",
+    "example": "She wrapped bandages around her sprained wrist."
+  },
+  "ointments": {
+    "definition": "Thick creams put on the skin to heal or protect it.",
+    "example": "The doctor gave me ointments for my burn."
+  },
+  "infections": {
+    "definition": "Illnesses caused by germs entering the body or a wound.",
+    "example": "Washing your hands helps prevent infections."
+  },
+  "fever": {
+    "definition": "A body temperature that is higher than normal, often a sign of illness.",
+    "example": "The child stayed home from school with a fever."
+  },
+  "removal": {
+    "definition": "The act of taking something away or off.",
+    "example": "Snow removal is expensive in cold cities."
+  },
+  "splinters": {
+    "definition": "Small, sharp pieces of wood or glass that get stuck in the skin.",
+    "example": "I got splinters in my hand from the old fence."
+  },
+  "particles": {
+    "definition": "Very small pieces of something.",
+    "example": "Dust particles floated in the sunlight."
+  },
+  "picking up": {
+    "definition": "Lifting something from a surface with your hand or a tool.",
+    "example": "He was picking up toys from the floor."
+  },
+  "medication": {
+    "definition": "Medicine used to treat an illness.",
+    "example": "Take this medication twice a day after meals."
+  },
+  "refill": {
+    "definition": "To get more of a medicine when you have used up what you had.",
+    "example": "I need to refill my allergy medicine before my trip."
+  },
+  "prescription": {
+    "definition": "A doctor's written order for a specific medicine.",
+    "example": "You can't buy this medicine without a prescription."
+  },
+  "personal hygiene": {
+    "definition": "Keeping your body clean to stay healthy.",
+    "example": "Brushing your teeth is part of good personal hygiene."
+  },
+  "pass the time": {
+    "definition": "To do something so that time seems to go faster while waiting.",
+    "example": "We played cards to pass the time on the long train ride."
+  },
+  "deck": {
+    "definition": "A complete set of playing cards.",
+    "example": "A standard deck has 52 cards."
+  },
+  "entertainment": {
+    "definition": "Things that people enjoy, such as games, music, or movies.",
+    "example": "The hotel offers live music for entertainment."
+  },
+  "never hurts to": {
+    "definition": "Used to say that doing something is a good idea and has no downside.",
+    "example": "It never hurts to bring an umbrella in spring."
+  },
+  "cash": {
+    "definition": "Money in the form of coins and paper bills.",
+    "example": "This small shop only accepts cash."
+  },
+  "mobile pay": {
+    "definition": "Paying for things with a phone app instead of cash or a card.",
+    "example": "More and more people use mobile pay at convenience stores."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
