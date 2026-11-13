@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -131,6 +158,7 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 </div>
 <p>James was <b>on his way
 </b>
@@ -606,4 +634,218 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "on his way": {
+    "definition": "Going toward a place; traveling there.",
+    "example": "He called to say he's on his way."
+  },
+  "pulling away": {
+    "definition": "Starting to move away from a place, like a vehicle leaving.",
+    "example": "The train was pulling away when we got to the platform."
+  },
+  "strict": {
+    "definition": "Demanding that rules are followed carefully.",
+    "example": "Our teacher is strict about homework deadlines."
+  },
+  "no time to waste": {
+    "definition": "There is no time to lose; you must hurry.",
+    "example": "The store closes in ten minutes—there's no time to waste!"
+  },
+  "catch": {
+    "definition": "To get on a bus, train, or plane before it leaves.",
+    "example": "I need to catch the 7:15 train."
+  },
+  "reached": {
+    "definition": "Stretched out your arm to touch or take something.",
+    "example": "She reached for the salt."
+  },
+  "drove off": {
+    "definition": "Left in a vehicle.",
+    "example": "The taxi drove off before I could get in."
+  },
+  "frustrated": {
+    "definition": "Annoyed because you can't do what you want.",
+    "example": "He felt frustrated when his computer kept crashing."
+  },
+  "options": {
+    "definition": "Choices; things you can choose from.",
+    "example": "There are three options on the menu for vegetarians."
+  },
+  "hail": {
+    "definition": "To wave or call to get a taxi to stop.",
+    "example": "It's hard to hail a taxi in the rain."
+  },
+  "order": {
+    "definition": "To ask for something to be brought or delivered, often using an app.",
+    "example": "Let's order a pizza tonight."
+  },
+  "either way": {
+    "definition": "Whichever choice you make; in both cases.",
+    "example": "We can take the bus or walk—either way, we'll be late."
+  },
+  "give up": {
+    "definition": "To stop trying.",
+    "example": "He almost gave up, but he finished the race."
+  },
+  "missed": {
+    "definition": "Arrived too late to get on a bus, train, or plane.",
+    "example": "I missed my flight because of traffic."
+  },
+  "ruin": {
+    "definition": "To spoil or destroy something completely.",
+    "example": "The rain ruined our picnic."
+  },
+  "looked around": {
+    "definition": "Looked in different directions to see what is there.",
+    "example": "She looked around the room for a free seat."
+  },
+  "card reader": {
+    "definition": "A machine that reads a credit card or ID card.",
+    "example": "Tap your card on the card reader to pay."
+  },
+  "pedaling": {
+    "definition": "Pushing the pedals of a bicycle with your feet.",
+    "example": "He was pedaling hard up the hill."
+  },
+  "best chance": {
+    "definition": "The way most likely to succeed.",
+    "example": "Studying every day is your best chance to pass."
+  },
+  "on time": {
+    "definition": "At the correct time; not late.",
+    "example": "The bus arrived right on time."
+  },
+  "workplace": {
+    "definition": "The place where someone works.",
+    "example": "Our workplace has a small gym."
+  },
+  "distance": {
+    "definition": "A place that is far away.",
+    "example": "We could see mountains in the distance."
+  },
+  "pushed": {
+    "definition": "Made yourself try harder.",
+    "example": "She pushed herself to run the last mile."
+  },
+  "clear": {
+    "definition": "To get past something without stopping.",
+    "example": "The horse cleared the fence easily."
+  },
+  "turned": {
+    "definition": "Changed to a different color or state.",
+    "example": "The leaves turned red in autumn."
+  },
+  "make it": {
+    "definition": "To arrive in time or succeed.",
+    "example": "If we hurry, we can make it before the movie starts."
+  },
+  "crosswalk": {
+    "definition": "A marked place where people walk across a street.",
+    "example": "Always cross the street at the crosswalk."
+  },
+  "swerved": {
+    "definition": "Suddenly changed direction to avoid hitting something.",
+    "example": "The driver swerved to miss a dog in the road."
+  },
+  "avoid": {
+    "definition": "To stay away from or keep from hitting something.",
+    "example": "Try to avoid the busy roads at rush hour."
+  },
+  "curb": {
+    "definition": "The raised edge between the sidewalk and the street.",
+    "example": "Park close to the curb."
+  },
+  "headfirst": {
+    "definition": "With the head going first.",
+    "example": "He dove headfirst into the pool."
+  },
+  "coffee stand": {
+    "definition": "A small outdoor stall that sells coffee.",
+    "example": "I buy my morning latte at the coffee stand by the station."
+  },
+  "accident": {
+    "definition": "Something bad that happens by chance, often causing damage or injury.",
+    "example": "Nobody was hurt in the car accident."
+  },
+  "nor": {
+    "definition": "Used after a negative to mean 'and also not.'",
+    "example": "She didn't call, nor did she send a message."
+  },
+  "damaged": {
+    "definition": "Harmed or broken.",
+    "example": "The package arrived damaged."
+  },
+  "catch his breath": {
+    "definition": "To rest until you can breathe normally again after running or exercise.",
+    "example": "After climbing the stairs, he stopped to catch his breath."
+  },
+  "standing over": {
+    "definition": "Standing very close to and above someone who is lower down.",
+    "example": "The doctor was standing over the patient's bed."
+  },
+  "rough": {
+    "definition": "Difficult or unpleasant.",
+    "example": "I had a rough day at work."
+  },
+  "on me": {
+    "definition": "I will pay for it.",
+    "example": "Lunch is on me today."
+  },
+  "retorted": {
+    "definition": "Replied quickly, often in a funny or sharp way.",
+    "example": "'Not my fault!' he retorted."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
