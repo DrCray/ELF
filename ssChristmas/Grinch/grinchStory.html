@@ -13,9 +13,12 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <style>
+
+* { line-height:1.7rem; }
 body{
     font-family: sans-serif; 
     padding: 1rem;  max-width:40rem; margin:auto;
+
 }
 
 :focus {outline:none;}
@@ -76,7 +79,7 @@ body{
 
 
     b, strong{
-        color:#066306; font-size:1.2rem;
+        color:#066306; font-size:1.1rem;
     }
     i, em {
         color:#B60200; font-weight:bold;
@@ -222,7 +225,180 @@ body{
 
 
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     }
+</style>
+
+<style>
+  .dict-popover {
+    position: absolute;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    z-index: 999;
+    font: 14px/1.4 sans-serif;
+  }
+
+  .dict-popover .g-link {
+    display: inline-block;
+    background: #1a5fb4;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .dict-popover .g-link:hover {
+    background: #124a8f;
+  }
+
+  b.vocab, strong.vocab {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+(function () {
+  let pop = null;
+  let hideTimer = null;
+
+  // ---- On load: tag every <b> and <strong> as vocabulary ----
+  function tagVocab() {
+    document.querySelectorAll('b, strong').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (text && text.length > 1 && text.length < 60) {
+        el.classList.add('vocab');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagVocab);
+  } else {
+    tagVocab();
+  }
+
+  // ---- Escape HTML characters ----
+  function escapeHTML(text) {
+    return text.replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  // ---- Central Google search URL builder ----
+  function googleLink(word) {
+    const query = `Need a definition and example sentence for "${word}"`;
+    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  }
+
+  // ---- Hide popover ----
+  function hidePopover() {
+    clearTimeout(hideTimer);
+    if (pop) {
+      pop.remove();
+      pop = null;
+    }
+  }
+
+  // ---- Delayed hide ----
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hidePopover, 300);
+  }
+
+  // ---- Display popover ----
+  function showPopover(anchor, html) {
+    clearTimeout(hideTimer);
+    hidePopover();
+
+    pop = document.createElement('div');
+    pop.className = 'dict-popover';
+    pop.innerHTML = html;
+
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mouseenter', function () {
+      clearTimeout(hideTimer);
+    });
+
+    pop.addEventListener('mouseleave', scheduleHide);
+
+    const r = anchor.getBoundingClientRect();
+    const popWidth = pop.offsetWidth;
+
+    const left = Math.max(
+      5,
+      Math.min(r.left, window.innerWidth - popWidth - 5)
+    );
+
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (r.bottom + window.scrollY + 2) + 'px';
+  }
+
+  // ---- Open vocabulary card ----
+  function openCard(el) {
+    const word = el.textContent.trim();
+    const safeWord = escapeHTML(word);
+
+    showPopover(el,
+      '<b>' + safeWord + '</b>' +
+      '<div style="margin-top:8px">' +
+      '<a class="g-link" href="' + googleLink(word) +
+      '" target="_blank" rel="noopener noreferrer">- Definition &amp; Sentence -</a>' +
+      '</div>'
+    );
+  }
+
+  // ---- Events: hover (desktop) + tap (mobile) ----
+  document.addEventListener('mouseover', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab');
+
+    if (el) {
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    const to = e.relatedTarget;
+
+    if (to && (
+      to.closest('.dict-popover') ||
+      to.closest('b.vocab, strong.vocab')
+    )) return;
+
+    scheduleHide();
+  });
+
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab');
+
+    if (el) {
+      e.preventDefault();
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+    else if (!e.target.closest('.dict-popover')) {
+      hidePopover();
+    }
+  });
+
+})();
+</script>
+</head>
+
+
 <body>
 <div id="seussVille">
 <details><summary id="seusseVilleCredits">Suesseville Books</summary><br/>
@@ -394,14 +570,14 @@ with the Whos.</p>
 <br>
 <a href="https://youtu.be/ZVgHGodD5wY?si=F8XNaxxcEz_1n-07" target="_blank">YouTube Audio Book; Book in Bed</a>
 </p>
-<b> Mean One <span style="color:black;"> 🎧</span> (original theme song)</b><br/>
+<span style="font-weight:bold; font-size: 1.2rem; color:#066306"> Mean One <span style="color:black;"> 🎧</span> (original theme song)</span><br/>
 <p style="display:block; background:#F5EBEB;margin-bottom:1rem;padding:1rem;">
  🎧
 <a class="links1" href="https://e.pcloud.link/publink/show?code=XZtO3nZFnY0wlIIE4LM8QzRceb6tbi7SL7y" target="_blank">Original</a> (w/lyrics)     <span style="color:gray;">|</span>    
 <span style="padding:0 .5rem; background:#D1C6C6; display:inline-block;">📄
 <a class="links1" href="theGrinchSong.html" target="_blank">Lyrics Lesson</a> </span>     <br/>
 </p>
-<b> Other Versions<span style="color:black;"> 🎧</span></b><br/>
+<span style="font-weight:bold; font-size: 1.2rem; color:#066306"> Other Versions<span style="color:black;"> 🎧</span></span><br/>
 <p style="display:block; background:#F5EBEB;margin-bottom:1rem;padding:1rem;">
 <a href="https://youtu.be/kQb0DJZLhRM?si=XiG6nT1H75Bt35gu" target="_blank">Lindsey Stirling w/Sabrina Carpenter</a>      <span style="color:gray;">|</span>    
 <a href="https://youtu.be/nytpYtLtHpE?si=0bBk-TrRL_zpMfK1" target="_blank">Illumination, Tyler the Creator</a>      <span style="color:gray;">|</span>    
