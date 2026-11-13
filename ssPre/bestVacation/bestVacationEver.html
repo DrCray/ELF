@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -121,6 +148,7 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>Emma and Jake sat down on their living room couch, ready to plan
 their <b>upcoming</b> vacation. They browsed through travel <b>brochures</b> and
 websites looking for the perfect <b>getaway</b>. 
@@ -551,4 +579,154 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "upcoming": {
+    "definition": "Happening soon; coming in the near future.",
+    "example": "We're excited about our upcoming trip to Japan."
+  },
+  "brochures": {
+    "definition": "Small booklets with pictures and information about a place, product, or service.",
+    "example": "The hotel had brochures about local tours in the lobby."
+  },
+  "getaway": {
+    "definition": "A short vacation, usually to relax and escape from everyday life.",
+    "example": "They planned a weekend getaway to the beach."
+  },
+  "cabin": {
+    "definition": "A small, simple house, usually made of wood, in the countryside or mountains.",
+    "example": "We stayed in a cabin by the river with no TV or internet."
+  },
+  "noise": {
+    "definition": "Loud or unpleasant sounds.",
+    "example": "I can't sleep because of the noise from the street."
+  },
+  "prefer": {
+    "definition": "To like one thing more than another.",
+    "example": "I prefer tea to coffee in the morning."
+  },
+  "thrill": {
+    "definition": "A strong feeling of excitement and pleasure.",
+    "example": "Skydiving gave him the thrill of his life."
+  },
+  "at odds": {
+    "definition": "Disagreeing with each other.",
+    "example": "The two brothers are always at odds about politics."
+  },
+  "prioritize": {
+    "definition": "To decide which things are most important so you can deal with them first.",
+    "example": "During exam week, you need to prioritize studying over gaming."
+  },
+  "routines": {
+    "definition": "The usual things you do regularly, often in the same order.",
+    "example": "My morning routines include coffee, a shower, and checking email."
+  },
+  "priority": {
+    "definition": "Something that is more important than other things.",
+    "example": "Safety is our top priority."
+  },
+  "complicated": {
+    "definition": "Difficult to understand or deal with because it has many parts.",
+    "example": "The instructions for the new printer were very complicated."
+  },
+  "complaining": {
+    "definition": "Saying that you are unhappy or annoyed about something.",
+    "example": "The customers were complaining about the slow service."
+  },
+  "independently": {
+    "definition": "Alone, without help or control from others.",
+    "example": "Students should be able to finish the homework independently."
+  },
+  "unique": {
+    "definition": "Very special or unusual; unlike anything else.",
+    "example": "The restaurant has a unique mix of Thai and Mexican food."
+  },
+  "theme park": {
+    "definition": "A large park with rides, games, and shows, often based on one idea or theme.",
+    "example": "The kids spent all day riding roller coasters at the theme park."
+  },
+  "rides": {
+    "definition": "Machines at a fair or theme park that people ride for fun, like roller coasters.",
+    "example": "The scariest rides had the longest lines."
+  },
+  "twisty": {
+    "definition": "Having many turns and curves.",
+    "example": "The twisty mountain road made me feel carsick."
+  },
+  "spin": {
+    "definition": "To turn around and around quickly.",
+    "example": "The dancer can spin on one foot."
+  },
+  "trails": {
+    "definition": "Paths through forests, mountains, or countryside, often used for walking or hiking.",
+    "example": "The park has hiking trails for beginners and experts."
+  },
+  "preferences": {
+    "definition": "Things you like or want more than other things.",
+    "example": "Tell the waiter if you have any food preferences."
+  },
+  "cozy": {
+    "definition": "Small, warm, and comfortable.",
+    "example": "We spent the evening in a cozy café drinking hot chocolate."
+  },
+  "eager": {
+    "definition": "Wanting very much to do or have something.",
+    "example": "The new students were eager to make friends."
+  },
+  "turned out": {
+    "definition": "Happened or ended in a particular way, often a surprising one.",
+    "example": "The test was easier than I expected—it turned out fine."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
