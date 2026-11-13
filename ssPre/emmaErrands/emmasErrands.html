@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -121,13 +148,14 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>Emma
 had a long list of <b>errands </b><span>to
 run today</span>. Before leaving, she <b>called ahead</b> to the
 pharmacy to <i>place an order</i> for her grandmother’s <b>meds</b>.
 </p>
 <p>First, she went to the <strong>supermarket</strong> to do her
-<strong>grocery shopping</strong>. As she was <b>picking </b><b>out</b>
+<strong>grocery shopping</strong>. As she was <b>picking out</b>
 fresh vegetables, she bumped her cart and <b>accidentally</b> knocked
 a carton of eggs onto the floor, breaking nearly every egg. She was
 so embarrassed when a clerk <b>announced</b> over the <b>intercom</b>,
@@ -157,11 +185,11 @@ where she had fallen.</span></p>
 grandma’s <b>medicine</b>. At the counter, however, they said that
 her <b>prescription</b> wasn't ready yet and she would have to come
 back later.</p>
-<p>She left the pharmacist and went to the <strong>dry cleane</strong><strong>rs</strong><strong><span>.</span></strong>
+<p>She left the pharmacist and went to the <strong>dry cleaners</strong>.
 There, things <i>seemed to</i><i> go smoothly</i> as she <i>dropped off</i>
 her work clothes. 
 </p>
-<p>The next errand on Emma’s <b>t</b><b>o-do</b> list was getting
+<p>The next errand on Emma’s <b>to-do</b> list was getting
 her car’s oil changed, so she went to the <strong>mechanic</strong>
 for her usual <strong>vehicle maintenance</strong>. The mechanic
 found several other issues with her car, which would take longer and
@@ -548,4 +576,198 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
         });
 </script>
 
+<script>
+const vocabulary = {
+  "errands": {
+    "definition": "Short trips to do small jobs, such as shopping or going to the bank.",
+    "example": "I have a few errands to run before dinner."
+  },
+  "called ahead": {
+    "definition": "Phoned a place before going there, to arrange or check something.",
+    "example": "We called ahead to make sure the restaurant was open."
+  },
+  "meds": {
+    "definition": "An informal word for medicine or medication.",
+    "example": "Don't forget to take your meds after breakfast."
+  },
+  "supermarket": {
+    "definition": "A large store that sells food and household items.",
+    "example": "The supermarket near my house is open 24 hours."
+  },
+  "grocery shopping": {
+    "definition": "Buying food and other things for the home.",
+    "example": "We usually do our grocery shopping on Sunday mornings."
+  },
+  "picking out": {
+    "definition": "Choosing something from a group.",
+    "example": "She spent an hour picking out a dress for the party."
+  },
+  "accidentally": {
+    "definition": "By mistake; not on purpose.",
+    "example": "I accidentally deleted the photo."
+  },
+  "announced": {
+    "definition": "Said something publicly so that many people could hear.",
+    "example": "The pilot announced that we would land soon."
+  },
+  "intercom": {
+    "definition": "A speaker system for talking to people in other parts of a building.",
+    "example": "The teacher was called to the office over the intercom."
+  },
+  "post office": {
+    "definition": "A place where you can send letters and packages.",
+    "example": "I need to go to the post office to mail this package."
+  },
+  "turn": {
+    "definition": "The time when it is a person's chance to do something, especially in a line.",
+    "example": "Please wait your turn."
+  },
+  "locksmith": {
+    "definition": "A person whose job is to make, fix, and open locks.",
+    "example": "We called a locksmith when we locked ourselves out of the house."
+  },
+  "headed": {
+    "definition": "Went in a particular direction.",
+    "example": "After class, we headed to the cafeteria."
+  },
+  "bank": {
+    "definition": "A business where people keep and borrow money.",
+    "example": "She opened a savings account at the bank."
+  },
+  "deposit": {
+    "definition": "To put money into a bank account.",
+    "example": "I deposit part of my paycheck every month."
+  },
+  "tripped": {
+    "definition": "Hit your foot on something and almost fell or fell.",
+    "example": "He tripped over a toy on the floor."
+  },
+  "tore": {
+    "definition": "Pulled or ripped something so that it got a hole or split (past of tear).",
+    "example": "The dog tore the newspaper into pieces."
+  },
+  "bruised": {
+    "definition": "Got a dark mark on the skin from being hit or falling.",
+    "example": "She bruised her arm when she fell off her bike."
+  },
+  "teller’s window": {
+    "definition": "The counter at a bank where a worker helps customers with money.",
+    "example": "There was a long line at the teller’s window."
+  },
+  "retraced": {
+    "definition": "Went back over the same path to find something.",
+    "example": "I retraced my steps to find my lost keys."
+  },
+  "pharmacy": {
+    "definition": "A store where medicines are prepared and sold.",
+    "example": "The pharmacy closes at 9 p.m."
+  },
+  "medicine": {
+    "definition": "Something you take to treat or prevent an illness.",
+    "example": "This medicine helps with headaches."
+  },
+  "prescription": {
+    "definition": "A doctor's written order for a specific medicine.",
+    "example": "The pharmacist filled my prescription in ten minutes."
+  },
+  "dry cleaners": {
+    "definition": "A shop that cleans clothes with special chemicals instead of water.",
+    "example": "I pick up my suits from the dry cleaners every Friday."
+  },
+  "to-do": {
+    "definition": "Things you need to do, often written as a list.",
+    "example": "My to-do list is getting longer every day."
+  },
+  "mechanic": {
+    "definition": "A person whose job is to fix cars and machines.",
+    "example": "The mechanic said my brakes need to be replaced."
+  },
+  "vehicle maintenance": {
+    "definition": "Regular work to keep a car in good, safe condition, like oil changes.",
+    "example": "Good vehicle maintenance helps your car last longer."
+  },
+  "anticipated": {
+    "definition": "Expected or predicted.",
+    "example": "The trip took longer than we anticipated."
+  },
+  "coffee shop": {
+    "definition": "A small café that serves coffee, tea, and snacks.",
+    "example": "Let's meet at the coffee shop on the corner."
+  },
+  "exhausted": {
+    "definition": "Extremely tired.",
+    "example": "After the long hike, we were exhausted."
+  },
+  "chaotic": {
+    "definition": "Very confused and without any order.",
+    "example": "The airport was chaotic during the holiday rush."
+  },
+  "mishaps": {
+    "definition": "Small accidents or bad luck that are not serious.",
+    "example": "Our camping trip had a few mishaps, but we had fun."
+  },
+  "glanced": {
+    "definition": "Looked at something quickly.",
+    "example": "She glanced at her watch and hurried out."
+  },
+  "donate": {
+    "definition": "To give money or things to help others, often to a charity.",
+    "example": "We donate our old toys to the children's hospital."
+  },
+  "charity": {
+    "definition": "An organization that helps people in need.",
+    "example": "She volunteers for a charity that feeds homeless people."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
