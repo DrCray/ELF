@@ -260,7 +260,175 @@ audio {
         transform: scale(0.98);
     }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  .dict-popover {
+    position: absolute;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    z-index: 999;
+    font: 14px/1.4 sans-serif;
+  }
+
+  .dict-popover .g-link {
+    display: inline-block;
+    background: #1a5fb4;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .dict-popover .g-link:hover {
+    background: #124a8f;
+  }
+
+  b.vocab, strong.vocab, i.vocab, em.vocab {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+(function () {
+  let pop = null;
+  let hideTimer = null;
+
+  // ---- On load: tag every <b> and <strong> as vocabulary ----
+  function tagVocab() {
+    document.querySelectorAll('b, strong, i, em').forEach(function (el) {
+      const text = el.textContent.trim();
+      if (text && text.length > 1 && text.length < 60) {
+        el.classList.add('vocab');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tagVocab);
+  } else {
+    tagVocab();
+  }
+
+  // ---- Escape HTML characters ----
+  function escapeHTML(text) {
+    return text.replace(/[&<>"']/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char];
+    });
+  }
+
+  // ---- Central Google search URL builder ----
+  function googleLink(word) {
+    const query = `Need a definition and example sentence for "${word}"`;
+    return 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  }
+
+  // ---- Hide popover ----
+  function hidePopover() {
+    clearTimeout(hideTimer);
+    if (pop) {
+      pop.remove();
+      pop = null;
+    }
+  }
+
+  // ---- Delayed hide ----
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hidePopover, 300);
+  }
+
+  // ---- Display popover ----
+  function showPopover(anchor, html) {
+    clearTimeout(hideTimer);
+    hidePopover();
+
+    pop = document.createElement('div');
+    pop.className = 'dict-popover';
+    pop.innerHTML = html;
+
+    document.body.appendChild(pop);
+
+    pop.addEventListener('mouseenter', function () {
+      clearTimeout(hideTimer);
+    });
+
+    pop.addEventListener('mouseleave', scheduleHide);
+
+    const r = anchor.getBoundingClientRect();
+    const popWidth = pop.offsetWidth;
+
+    const left = Math.max(
+      5,
+      Math.min(r.left, window.innerWidth - popWidth - 5)
+    );
+
+    pop.style.left = (left + window.scrollX) + 'px';
+    pop.style.top = (r.bottom + window.scrollY + 2) + 'px';
+  }
+
+  // ---- Open vocabulary card ----
+  function openCard(el) {
+    const word = el.textContent.trim();
+    const safeWord = escapeHTML(word);
+
+    showPopover(el,
+      '<b>' + safeWord + '</b>' +
+      '<div style="margin-top:8px">' +
+      '<a class="g-link" href="' + googleLink(word) +
+      '" target="_blank" rel="noopener noreferrer">- Definition &amp; Sentence -</a>' +
+      '</div>'
+    );
+  }
+
+  // ---- Events: hover (desktop) + tap (mobile) ----
+  document.addEventListener('mouseover', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    const to = e.relatedTarget;
+
+    if (to && (
+      to.closest('.dict-popover') ||
+      to.closest('b.vocab, strong.vocab, i.vocab, em.vocab')
+    )) return;
+
+    scheduleHide();
+  });
+
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('b.vocab, strong.vocab, i.vocab, em.vocab');
+
+    if (el) {
+      e.preventDefault();
+      clearTimeout(hideTimer);
+      openCard(el);
+    }
+    else if (!e.target.closest('.dict-popover')) {
+      hidePopover();
+    }
+  });
+
+})();
+</script>
+</head>
 <body>
 <header>
 <h1>English Learning Magazine</h1>
@@ -295,14 +463,14 @@ audio {
             While they might look scary, these gatherings are usually about community, creativity, and sometimes charity. Zombie walks are a popular way for fans of horror and pop culture to come together and express their creativity.
       </p>
 <h3>How It All Began</h3>
-<p>The origin of the zombie walk is often debated, but most experts agree it started in North America. The first recorded event similar to a modern walk took place in <strong>Sacramento, California, in 2001</strong>. It was called "The Zombie Parade" and was organized to promote a film festival.</p>
+<p>The origin of the zombie walk is often debated, but most experts agree it started in North America. The first recorded event similar to a modern walk took place in <span style="font-style:italic;">Sacramento, California, in 2001</span>. It was called "The Zombie Parade" and was organized to promote a film festival.</p>
 <p>By 2010, the phenomenon had spread across the ocean to Europe, South America, and Asia. Today, there are hundreds of walks worldwide, from small town gatherings to massive festivals with thousands of participants. These walks remain a significant part of urban culture.</p>
 <h3>Regional Differences</h3>
 <p>Although the core concept is the same everywhere—dress like a zombie and walk slowly—different countries have added their own unique "flavor" to the events:</p>
 <ul>
-<li><strong>North America:</strong> In the United States and Canada, many walks focus on <strong>breaking world records</strong>. Cities like Asbury Park, New Jersey, have hosted thousands of people at once. These events often include "zombie pub crawls," where participants visit different bars while in costume. They experience the local nightlife while "bar hopping" as zombies.</li>
-<li><strong>Europe:</strong> European walks are often connected to <strong>art and film festivals</strong>. For example, the Sitges Zombie Walk in Spain is a major part of its famous horror film festival. In the United Kingdom, "World Zombie Day" in London has a strong focus on <strong>charity</strong>, raising money for causes like homelessness and hunger. Proving that the "undead" can have a positive social impact.</li>
-<li><strong>Latin America:</strong> In cities like Mexico City, zombie walks are massive and very <strong>theatrical</strong>. Participants often spend hours on professional-grade makeup. These events take on a carnival-like atmosphere that attracts families and tourists alike.</li>
+<li><span style="font-style:italic;">North America:</span> In the United States and Canada, many walks focus on <strong>breaking world records</strong>. Cities like Asbury Park, New Jersey, have hosted thousands of people at once. These events often include "zombie pub crawls," where participants visit different bars while in costume. They experience the local nightlife while "bar hopping" as zombies.</li>
+<li><span style="font-style:italic;">Europe:</span> European walks are often connected to <strong>art and film festivals</strong>. For example, the Sitges Zombie Walk in Spain is a major part of its famous horror film festival. In the United Kingdom, "World Zombie Day" in London has a strong focus on <strong>charity</strong>, raising money for causes like homelessness and hunger. Proving that the "undead" can have a positive social impact.</li>
+<li><span style="font-style:italic;">Latin America:</span> In cities like Mexico City, zombie walks are massive and very <strong>theatrical</strong>. Participants often spend hours on professional-grade makeup. These events take on a carnival-like atmosphere that attracts families and tourists alike.</li>
 </ul>
 <h3>Why Do People Do It?</h3>
 <p>The main goal of these walks is <strong>entertainment</strong>. For many, it is a form of "artistic expression." People enjoy the challenge of creating an elaborate costume using old clothes and "SFX" (special effects) makeup like fake blood and liquid latex. As well, participating in a walk allows individuals to step out of their daily drudgery and engage in a shared experience.</p>
@@ -311,16 +479,16 @@ audio {
 <p>Many zombie walks have become an organized event with required permits, security, and sponsors. Whether you are in London, Mexico City, or Tokyo, the sight of a "horde" of zombies is a sign of a creative community coming together to celebrate their favorite stories.</p>
 <h3>Join the Fun</h3>
 <p>Your first zombie walk balances looking convincingly "dead" with staying comfortable—you'll be in costume for hours.</p>
-<p><strong>Essentials checklist:</strong></p>
+<p><span style="font-weight:bold;">Essentials checklist:</span></p>
 <ol class="checklist">
-<li><strong>Costume</strong>
+<li><span style="font-weight:bold;">Costume</span>
 <ul>
 <li>Old clothes to rip and stain with blood</li>
 <li>Sandpaper or wire brush for worn texture</li>
 <li>Comfortable shoes for miles of shuffling</li>
 </ul>
 </li>
-<li><strong>Face</strong>
+<li><span style="font-weight:bold;">Face</span>
 <ul>
 <li>Pale gray/white base makeup</li>
 <li>Liquid latex or glue-soaked tissue for peeling skin/wounds</li>
@@ -328,12 +496,12 @@ audio {
 <li>Heavy-duty setting spray or powder to prevent makeup from smearing</li>
 </ul>
 </li>
-<li><strong>Gore</strong>
+<li><span style="font-weight:bold;">Gore</span>
 <ul>
 <li>Fake blood (buy or make with corn syrup + red food coloring)</li>
 </ul>
 </li>
-<li><strong>Survivor Essentials</strong>
+<li><span style="font-weight:bold;">Survivor Essentials</span>
 <ul>
 <li>Water bottle (it's easy to dehydrate under layers of costume and makeup!)</li>
 <li>Wet wipes for cleanup afterwards</li>
