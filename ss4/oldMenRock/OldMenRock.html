@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,10 +150,11 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span><span>T</span></span>wo
-<b>e</b><b>lderly</b> men from Parson’s Nursing Home <b>escaped</b>
-on Saturday Night. When the <b>night</b> <b>guard</b> was making his
+<b>elderly</b> men from Parson’s Nursing Home <b>escaped</b>
+on Saturday Night. When the <b>night guard</b> was making his
 10 p.m. <b>rounds</b>, he noticed that Mr Bud’s door was open and
 all the lights were off. Looking inside, he noticed an empty bed.
 <i>Turning on</i> the lights, no one was to be found. </span></span>
@@ -154,7 +182,7 @@ him he was on police business. The attendant <i>let him pass</i>. </span></span>
 <p><span><span>Officer
 Caldwell had another great idea. <i>Considering</i> the age of the
 missing men, Caldwell <i>took a chance</i> that he might find them at
-the <b>f</b><b>irst-aid </b><b>station</b>. He was directed to the
+the <b>first-aid station</b>. He was directed to the
 <b>medical tent</b> by the concert staff. </span></span>
 </p>
 <p><span><span>The
@@ -527,4 +555,138 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "elderly": {
+    "definition": "old (a polite word for older people)",
+    "example": "The young man helped an elderly woman cross the street."
+  },
+  "escaped": {
+    "definition": "got away from a place where they were kept",
+    "example": "The dog escaped from the yard and ran down the street."
+  },
+  "night guard": {
+    "definition": "a person whose job is to watch and protect a building at night",
+    "example": "The night guard checks every door at midnight."
+  },
+  "rounds": {
+    "definition": "a regular walk around a place to check that everything is OK",
+    "example": "The nurse does her rounds every two hours."
+  },
+  "dementia": {
+    "definition": "a medical condition, often in older people, that causes serious memory loss and confusion",
+    "example": "His grandmother has dementia and sometimes forgets his name."
+  },
+  "staff": {
+    "definition": "all the people who work at a place",
+    "example": "The hotel staff were very friendly."
+  },
+  "going on": {
+    "definition": "happening",
+    "example": "What is going on outside? I hear a lot of noise."
+  },
+  "concert": {
+    "definition": "a show where musicians play music for an audience",
+    "example": "We bought tickets for a jazz concert on Friday."
+  },
+  "front gate": {
+    "definition": "the main entrance into an area with a fence or wall",
+    "example": "Please meet me at the front gate of the park."
+  },
+  "attendant": {
+    "definition": "a person whose job is to help or check people at a place",
+    "example": "The parking attendant showed us where to park."
+  },
+  "first-aid station": {
+    "definition": "a place where people get basic medical help at an event",
+    "example": "She went to the first-aid station after she cut her hand."
+  },
+  "medical tent": {
+    "definition": "a tent at an outdoor event where people can get medical help",
+    "example": "Runners who felt sick went to the medical tent."
+  },
+  "attention": {
+    "definition": "interest or care that people give to someone",
+    "example": "The new baby got a lot of attention from the family."
+  },
+  "hesitant": {
+    "definition": "slow to do something because you are not sure about it",
+    "example": "I was hesitant to ask my boss for a day off."
+  },
+  "reluctant": {
+    "definition": "not wanting to do something",
+    "example": "The children were reluctant to leave the beach."
+  },
+  "interference": {
+    "definition": "someone getting involved in something when they are not wanted",
+    "example": "She wants to plan her wedding without any interference."
+  },
+  "psychological": {
+    "definition": "related to the mind and feelings",
+    "example": "Stress can cause psychological problems as well as physical ones."
+  },
+  "legal conservator": {
+    "definition": "a person chosen by a court to make decisions for someone who cannot take care of themselves",
+    "example": "His daughter became his legal conservator after his illness."
+  },
+  "court order": {
+    "definition": "an official decision from a judge that people must follow",
+    "example": "The court order says he must pay the money by June."
+  },
+  "notify": {
+    "definition": "to tell someone officially about something",
+    "example": "Please notify us if you change your address."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
