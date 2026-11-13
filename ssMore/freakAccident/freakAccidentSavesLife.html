@@ -23,7 +23,34 @@
         margin: .3rem auto;
     }
 </style>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -131,7 +158,8 @@
     <span class="play">▶</span>
     
   </a>
-</div><div id="gettingStartedTitle">Getting Started<br/>
+</div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div><div id="gettingStartedTitle">Getting Started<br/>
 <div contenteditable="false" id="gettingStarted">Talk about a time when a bad experience turned out to be a good one instead.</div>
 </div><p>It was a warm April evening in Texas, and Fran Gretski had just returned home from work. She decided to work in her flower garden before <i>preparing dinner</i>. As she walked across her <b>patio</b>, something terrible happened. She felt a horrifying blow to the right side of her neck, as if someone had hit her with a baseball bat.</p>
 <p>Confused and shocked, Fran reached up to touch her neck. To her horror, she discovered that she had been shot with an arrow. She grabbed the arrow tightly and ran inside, screaming for her husband Ed who immediately called 911.</p>
@@ -154,13 +182,13 @@ The arrow went between her carotid artery and jugular vein. The arrow pushed the
 </div></details><details><summary>What medical condition did doctors discover when they performed the CT scan, and why was this discovery so important?<div class="fakebutton">show/hide answer</div></summary><div class="detailsParag">
 The CT scan revealed a brain tumor. This tumor was benign but located in a dangerous position and needed immediate removal.
 </div></details><details><summary>What would have happened if the brain tumor had not been found and removed?<div class="fakebutton">show/hide answer</div></summary><div class="detailsParag">
-The tumor was about to cross the midline of her brain. It it continued to grow, it would have caused a massive stroke.
+The tumor was about to cross the midline of her brain. If it continued to grow, it would have caused a massive stroke.
 </div></details><details><summary>What second medical problem was discovered two years later, and how is this condition normally detected?<div class="fakebutton">show/hide answer</div></summary><div class="detailsParag">A brain aneurysm was discovered during a routine MRI check as a follow-up on her tumor removal. Aneurysms are usually only detected after they rupture, which is almost always fatal.
 
 </div></details><details><summary>Describe the condition of the aneurysm and explain why immediate surgery was necessary.<div class="fakebutton">show/hide answer</div></summary><div class="detailsParag">
 The aneurysm was fragile, covered with blisters, and ready to burst at any moment. Surgery was necessary to clip it before it ruptured.
 </div></details><details><summary>How did the arrow accident ultimately save Fran's life? List the two ways she could have died without this accident.<div class="fakebutton">show/hide answer</div></summary><div class="detailsParag">
-The accident led to a CT scan which ultimately uncovered two potentially fatal situations.
+The accident led to a CT scan which ultimately uncovered two potentially fatal situations. She could have died of the brain tumor or a ruptured aneurysm.
 </div></details></div>
 <div id="discussQsTitle">Discussion</div>
 <div contenteditable="false" id="discussQs">Should the neighbor face consequences for the accident, even though it wasn't intentional?</div>
@@ -402,7 +430,7 @@ function saveDom(){
 </script>
 <p style="background: #f8f8f8; padding:.35rem 1.3rem; box-shadow: 0 0 3px 0 gray; width:fit-content; font-size:90%">
 <a href="https://youtu.be/9b27B6lroHE" target="_blank">Dictation (audioVid)</a>
-<p>
+</p>
 <details style="margin: 0 0 1.5rem 0; background:white;"><summary id="dictation">Dictation Check</summary>
 <ol><li>
   Fran was accidentally shot with an arrow that had bounced off several objects in her neighbor's yard.</li><li>
@@ -411,8 +439,7 @@ function saveDom(){
   Without treatment, the tumor would have caused a deadly stroke.</li><li>
   Two years later, doctors found a dangerous aneurysm during a routine check-up.</li><li>
   The aneurysm was ready to burst and needed emergency surgery to prevent death.</li><li>
-  Ironically, the arrow accident saved her life by revealing two potentially fatal medical conditions.</li><ol>
-</ol></ol></details>
+  Ironically, the arrow accident saved her life by revealing two potentially fatal medical conditions.</li></ol></details>
 <div class="menu-links" id="menu-links">
 <a href="#container">↑ Top</a>
  <a href="freakAccidentSavesLifeClozePt1.html" target="_blank">quiz 1</a>
@@ -512,4 +539,146 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></p></p></body></html>
+</script><script>
+const vocabulary = {
+  "patio": {
+    "definition": "A flat, paved area next to a house, used for sitting outside.",
+    "example": "We ate dinner on the patio."
+  },
+  "alley": {
+    "definition": "A narrow road or path between or behind buildings.",
+    "example": "The garbage truck comes down the alley on Mondays."
+  },
+  "ricocheted": {
+    "definition": "Hit a surface and bounced off in a different direction.",
+    "example": "The ball ricocheted off the wall and hit the window."
+  },
+  "shrubs": {
+    "definition": "Small, low bushes.",
+    "example": "She planted shrubs along the front of the house."
+  },
+  "paramedics": {
+    "definition": "Trained medical workers who give emergency care and work in ambulances.",
+    "example": "The paramedics checked his heart before taking him to hospital."
+  },
+  "trauma center": {
+    "definition": "A hospital department that treats people with very serious injuries.",
+    "example": "After the car crash, the driver was flown to a trauma center."
+  },
+  "ct scan": {
+    "definition": "A medical test that uses X-rays and a computer to make detailed pictures of the inside of the body.",
+    "example": "The doctor ordered a CT scan of his chest."
+  },
+  "carotid artery": {
+    "definition": "One of the two large blood vessels in the neck that carry blood from the heart to the head.",
+    "example": "The nurse checked his pulse at the carotid artery."
+  },
+  "jugular vein": {
+    "definition": "A large blood vessel in the neck that carries blood from the head back to the heart.",
+    "example": "The jugular vein is close to the skin on the side of the neck."
+  },
+  "brain tumor": {
+    "definition": "A lump of cells growing in the brain that should not be there.",
+    "example": "Headaches can sometimes be a sign of a brain tumor."
+  },
+  "benign": {
+    "definition": "Not cancer; not likely to spread through the body.",
+    "example": "The doctor said the lump was benign."
+  },
+  "midline": {
+    "definition": "An imaginary line down the center of the body or brain.",
+    "example": "The cut was just to the left of the midline of his chest."
+  },
+  "aneurysm": {
+    "definition": "A weak spot in a blood vessel that swells like a balloon and may burst.",
+    "example": "Doctors found an aneurysm in his leg during a check-up."
+  },
+  "anomalies": {
+    "definition": "Things that are different from what is normal or expected.",
+    "example": "The test found no anomalies in her blood."
+  },
+  "rupture": {
+    "definition": "To break or burst open suddenly.",
+    "example": "If a pipe ruptures, water floods the room."
+  },
+  "fatal": {
+    "definition": "Causing death.",
+    "example": "The fall from the roof was nearly fatal."
+  },
+  "fragile": {
+    "definition": "Weak and easily broken or damaged.",
+    "example": "Be careful with that box; the glasses inside are fragile."
+  },
+  "blisters": {
+    "definition": "Small bubbles on a surface, often filled with liquid.",
+    "example": "New shoes gave me blisters on my feet."
+  },
+  "burst": {
+    "definition": "To break open suddenly.",
+    "example": "The balloon burst with a loud pop."
+  },
+  "medical conditions": {
+    "definition": "Illnesses or health problems.",
+    "example": "Tell your doctor about any medical conditions you have."
+  },
+  "incident": {
+    "definition": "An event, especially an unpleasant or unusual one.",
+    "example": "The incident at the factory was reported to the police."
+  },
+  "disguise": {
+    "definition": "Here: something that hides what a thing really is (\"a blessing in disguise\" = a bad thing that turns out to be good).",
+    "example": "Losing that job was a blessing in disguise; I found a better one."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
