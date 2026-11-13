@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -123,11 +150,12 @@
     
   </a>
 </div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 <p>
 <span><span><span><b>S</b></span>ome
 people have all the luck. This week a 50-year old man named Trent
 Larken won a 319 million dollar state <b>lottery</b>. Mr. Larken had
-gone to a local <b>convenience</b> <b>store</b> to buy his ticket.
+gone to a local <b>convenience store</b> to buy his ticket.
 When he <i>reached over</i> to grab a chocolate candy bar, another
 rude person <i>cut in front of </i>him. Mr. Larken was upset and
 started to say something, but he decided to let it go. “Life is
@@ -163,8 +191,7 @@ lottery , worth 34 million dollars. “I had 20 dollars in my <b>pocket</b>
 that my sister had given me. She had told me to do something fun with
 it, so I had bought two lottery tickets, I got lucky, for sure!”
 Now, Mr. Faraday is not bored at all. He gets <b>loads of</b> calls
-and emails from family, past friends, old classmates, <b>mere</b>
-<b>acquaintances</b>, and <i>total strangers</i>. “It’s <i>driving
+and emails from family, past friends, old classmates, <b>mere acquaintances</b>, and <i>total strangers</i>. “It’s <i>driving
 me crazy</i>,” he said, “but in a much better way than being
 unemployed. I <b>can handle</b> this kind of crazy.”</span></span></p>
 <div style="text-align: center; margin:1.2rem;">
@@ -530,4 +557,126 @@ document.addEventListener("DOMContentLoaded", function () {
   setupToggle("compQsTitle", "compQs");
   setupToggle("discussQsTitle", "discussQs");
 });
-</script></body></html>
+</script><script>
+const vocabulary = {
+  "lottery": {
+    "definition": "A game where people buy numbered tickets and winners are chosen by chance to get prizes.",
+    "example": "She buys a lottery ticket every Friday, hoping to win."
+  },
+  "convenience store": {
+    "definition": "A small shop that is open long hours and sells food, drinks, and everyday items.",
+    "example": "I stopped at the convenience store for milk on my way home."
+  },
+  "turned out": {
+    "definition": "Was discovered to be, in the end.",
+    "example": "The quiet new student turned out to be a great singer."
+  },
+  "deserved": {
+    "definition": "Should have received something because of how someone acted.",
+    "example": "After all her hard work, she deserved the promotion."
+  },
+  "patient": {
+    "definition": "Able to wait calmly without getting angry or upset.",
+    "example": "Be patient; the bus will come soon."
+  },
+  "economy": {
+    "definition": "The system of money, business, and jobs in a country or area.",
+    "example": "The economy grew quickly after the new factories opened."
+  },
+  "unemployed": {
+    "definition": "Without a job.",
+    "example": "He has been unemployed since the company closed."
+  },
+  "moment": {
+    "definition": "A very short period of time.",
+    "example": "Can you wait a moment while I find my keys?"
+  },
+  "skills": {
+    "definition": "Abilities to do something well, usually because you learned or practiced it.",
+    "example": "Good communication skills are important in any job."
+  },
+  "pocket": {
+    "definition": "A small bag sewn into clothes, used to carry small things.",
+    "example": "He kept his phone in his jacket pocket."
+  },
+  "loads of": {
+    "definition": "A lot of; many (informal).",
+    "example": "We have loads of time before the movie starts."
+  },
+  "mere acquaintances": {
+    "definition": "People you know only a little, not close friends.",
+    "example": "Most of the guests at the wedding were mere acquaintances."
+  },
+  "can handle": {
+    "definition": "Am able to deal with something successfully.",
+    "example": "Don't worry, I can handle a little extra work."
+  },
+  "stressed": {
+    "definition": "Worried and nervous because of problems or too much work.",
+    "example": "Students often feel stressed before final exams."
+  },
+  "paperwork": {
+    "definition": "Work that involves writing letters, reports, and filling in forms.",
+    "example": "Doctors spend a lot of time on paperwork."
+  },
+  "medicine": {
+    "definition": "Something you take to treat an illness or pain.",
+    "example": "Take this medicine twice a day after meals."
+  },
+  "counter": {
+    "definition": "A long, flat surface in a shop where you pay or are served.",
+    "example": "Please pay for your items at the counter."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+</body></html>
