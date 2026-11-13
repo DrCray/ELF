@@ -14,7 +14,34 @@
 <!-- link rel="stylesheet" href="style.css" -->
 <!-- <script src="script.js"></script -->
 <link href="../css/SS.css" rel="stylesheet"/>
-<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style></head>
+<style>    .audio-player {         display: flex;         justify-content: center;     }      .audio-link {         display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;         align-items: center;         gap: 8px;         padding: .5rem 3rem;         background: #fff;         color: darkblue;         text-decoration: none;         border-radius: 999px;         font-weight:bold;         transition: background 0.2s;     }      .audio-link:hover {         box-shadow: 0 0 4px 0px #006B00; color:green;     }      .wave {         color: #006B00;   /* wave color */         transform: scale(1.25);     }      .play {         font-size: 1rem;         transform: translateY(0.5px);     } </style><style>
+  :root { --brand:#26215C; --muted:#6B6680; --tint:#ECE9F7; }
+  .tapHover { color:var(--muted); font-size:.9em; margin:1rem 0; text-align:center; }
+  .zvocab-ready {
+    cursor:pointer; color:var(--brand);
+    text-decoration:underline dotted; text-decoration-thickness:2px; text-underline-offset:4px;
+    border-radius:3px; -webkit-tap-highlight-color:transparent;
+  }
+  .zvocab-ready[aria-expanded="true"] { background:var(--tint); }
+  .zvocab-ready:focus-visible { outline:2px solid var(--brand); outline-offset:2px; }
+  .zvocab-pop {
+    position:fixed; z-index:1000; left:0; right:0; bottom:0;
+    padding:1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+    background:var(--brand); color:#fff; font-size:1rem; line-height:1.45;
+    border-radius:.9rem .9rem 0 0; box-shadow:0 -6px 24px rgb(38 33 92 / .3);
+  }
+  .zvocab-pop[hidden] { display:none; }
+  .zvocab-pop strong { font-family:"Playfair Display", Georgia, serif; font-size:1.2em; color:#fff; }
+  .zvocab-pop p { margin:.3rem 0 0; }
+  .zvocab-pop .ex { font-style:italic; opacity:.85; }
+  @media (min-width:601px) {
+    .zvocab-pop {
+      right:auto; bottom:auto; max-width:20rem; padding:.8rem 1rem;
+      font-size:.92rem; border-radius:.5rem; box-shadow:0 6px 20px rgb(38 33 92 / .25);
+    }
+  }
+</style>
+</head>
 <body>
 <div class="styleEditor" id="styleEditor" style="display: none;">
 <div class="styleBtn">
@@ -134,6 +161,7 @@
 <span class="play">▶</span>
 
 </a></div>
+<div class="tapHover">Tap or hover the marked word/phrase to see what it means.</div>
 </div>
 <div>
 </div>
@@ -642,4 +670,258 @@ document.getElementById('getArticleInnerHTML').addEventListener('click', convert
 </script>
 
 
+<script>
+const vocabulary = {
+  "slip away": {
+    "definition": "To leave quietly without anyone noticing.",
+    "example": "He slipped away from the party early."
+  },
+  "farther away": {
+    "definition": "At a greater distance.",
+    "example": "The beach is farther away than I thought."
+  },
+  "metal detector": {
+    "definition": "A machine that finds metal objects, used for airport security.",
+    "example": "My belt set off the metal detector."
+  },
+  "security checkpoint": {
+    "definition": "A place where people and bags are checked for safety.",
+    "example": "We waited 20 minutes at the security checkpoint."
+  },
+  "snuck past": {
+    "definition": "Went past someone or something secretly without being noticed.",
+    "example": "The cat snuck past me and ran outside."
+  },
+  "boarding pass": {
+    "definition": "A ticket that lets you get on a plane.",
+    "example": "Please show your boarding pass at the gate."
+  },
+  "halfway": {
+    "definition": "In the middle between two places or points.",
+    "example": "We stopped for lunch halfway to the city."
+  },
+  "going on": {
+    "definition": "Happening.",
+    "example": "What's going on outside? It's so noisy."
+  },
+  "spokesman": {
+    "definition": "A person who speaks officially for a company or group.",
+    "example": "A spokesman for the company answered reporters' questions."
+  },
+  "reported missing": {
+    "definition": "Officially told the police that someone cannot be found.",
+    "example": "The hiker was reported missing after two days."
+  },
+  "lost track": {
+    "definition": "Stopped knowing where someone or something is.",
+    "example": "I lost track of my friend in the crowd."
+  },
+  "shopping center": {
+    "definition": "A large building or area with many stores.",
+    "example": "The new shopping center has a movie theater."
+  },
+  "unaware": {
+    "definition": "Not knowing about something.",
+    "example": "She was unaware that the meeting had been canceled."
+  },
+  "personnel": {
+    "definition": "The people who work for an organization.",
+    "example": "Only medical personnel may enter this room."
+  },
+  "lone": {
+    "definition": "Alone; without other people.",
+    "example": "A lone tree stood in the middle of the field."
+  },
+  "took off": {
+    "definition": "Left the ground and began to fly.",
+    "example": "The plane took off on time."
+  },
+  "somehow": {
+    "definition": "In a way that is not known or clear.",
+    "example": "Somehow, the dog got out of the yard."
+  },
+  "evaded": {
+    "definition": "Escaped or avoided something, often by being clever.",
+    "example": "The thief evaded the police for weeks."
+  },
+  "checks": {
+    "definition": "Examinations to make sure something is correct or safe.",
+    "example": "There are ID checks at the entrance."
+  },
+  "ended up": {
+    "definition": "Finally arrived in a place or situation, often without planning it.",
+    "example": "We got lost and ended up in a small village."
+  },
+  "noticed": {
+    "definition": "Seen or recognized by someone.",
+    "example": "His new haircut was noticed by everyone."
+  },
+  "running away": {
+    "definition": "Leaving home secretly to live somewhere else.",
+    "example": "The teenager was running away from family problems."
+  },
+  "suspicious": {
+    "definition": "Feeling that something is wrong or not right.",
+    "example": "The guard became suspicious when he saw the open door."
+  },
+  "alerted": {
+    "definition": "Warned someone about a problem or danger.",
+    "example": "A neighbor alerted the police about the fire."
+  },
+  "attendants": {
+    "definition": "People whose job is to help and serve customers, such as on a plane.",
+    "example": "The flight attendants served drinks and snacks."
+  },
+  "unnoticed": {
+    "definition": "Not seen or noticed by anyone.",
+    "example": "She left the room unnoticed."
+  },
+  "genuine": {
+    "definition": "Real; truly what it is said to be.",
+    "example": "This is a genuine leather bag."
+  },
+  "dangerous": {
+    "definition": "Able to cause harm or injury.",
+    "example": "It's dangerous to swim here."
+  },
+  "runaways": {
+    "definition": "Young people who have left home without permission.",
+    "example": "The shelter helps runaways find a safe place to stay."
+  },
+  "arriving": {
+    "definition": "Reaching a place.",
+    "example": "After arriving at the hotel, we went straight to sleep."
+  },
+  "authorities": {
+    "definition": "Official groups or people with power to make decisions, such as police.",
+    "example": "The authorities closed the road because of the flood."
+  },
+  "departed": {
+    "definition": "Left a place, especially to start a trip.",
+    "example": "The train departed at 9 a.m."
+  },
+  "spokesperson": {
+    "definition": "A person who speaks officially for a company or group.",
+    "example": "The school spokesperson announced the new rules."
+  },
+  "suspended": {
+    "definition": "Stopped from working or attending for a period of time as punishment.",
+    "example": "The player was suspended for three games."
+  },
+  "investigation": {
+    "definition": "An official process of finding out the facts about something.",
+    "example": "The investigation into the accident is still going on."
+  },
+  "under way": {
+    "definition": "Already started and happening now.",
+    "example": "Repairs to the bridge are under way."
+  },
+  "officials": {
+    "definition": "People who have important positions in an organization or government.",
+    "example": "City officials met to discuss the new budget."
+  },
+  "insist": {
+    "definition": "To say firmly that something is true or must happen.",
+    "example": "He insists that he didn't break the window."
+  },
+  "incident": {
+    "definition": "An event, especially an unusual or unpleasant one.",
+    "example": "The police are looking into the incident."
+  },
+  "breach": {
+    "definition": "A failure to keep something safe or follow a rule.",
+    "example": "The data breach exposed thousands of passwords."
+  },
+  "screening": {
+    "definition": "A check of people or things to find problems or dangers.",
+    "example": "All bags go through screening at the airport."
+  },
+  "compromised": {
+    "definition": "Put in danger or made weaker.",
+    "example": "The weak password compromised the whole system."
+  },
+  "assured": {
+    "definition": "Certain; confident that something is true.",
+    "example": "Rest assured, we will fix the problem today."
+  },
+  "administrative": {
+    "definition": "Related to the management and paperwork of an organization.",
+    "example": "The delay was caused by an administrative error."
+  },
+  "top priority": {
+    "definition": "The most important thing.",
+    "example": "Customer safety is our top priority."
+  },
+  "terrorists": {
+    "definition": "People who use violence to frighten others for political reasons.",
+    "example": "Airport security works to stop terrorists."
+  },
+  "criminal intent": {
+    "definition": "A plan or wish to commit a crime.",
+    "example": "The court found no criminal intent in his actions."
+  },
+  "committed": {
+    "definition": "Did something wrong or illegal.",
+    "example": "No crime was committed, so he was free to go."
+  },
+  "charges": {
+    "definition": "Official statements by the police saying someone did a crime.",
+    "example": "The charges against him were dropped."
+  },
+  "filed": {
+    "definition": "Officially made or recorded, such as a complaint or charges.",
+    "example": "She filed a complaint with the manager."
+  }
+};
+
+/* ===== zvocab component (b/strong aware) ===== */
+(() => {
+  document.getElementById('zvocab-pop')?.remove();
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).replace(/\s+/g, ' ').trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${el.textContent.replace(/\s+/g, ' ').trim()}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('#column1 b, #column1 strong, .zvocab').forEach(el => {
+    if (el.parentElement.closest('b, strong')) return;
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
 </body></html>
