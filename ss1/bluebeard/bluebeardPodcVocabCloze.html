@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Dive — Cloze Vocabulary Exercise</title>
+    <style>
+        :root {
+            --cream-50: #FDFBF7;
+            --cream-100: #F7F3EB;
+            --cream-200: #EDE5D5;
+            --terra-50: #FDF4F0;
+            --terra-500: #C85A32;
+            --terra-600: #B04A25;
+            --ink-900: #1E1B18;
+            --ink-700: #443E38;
+            --ink-500: #787067;
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--cream-50);
+            color: var(--ink-900);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--terra-500); color: #fff; }
+
+        button { font: inherit; cursor: pointer; }
+        p { margin: 0; }
+        .hidden { display: none !important; }
+
+        /* ---------- Header ---------- */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            width: 100%;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cream-200);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .header-inner {
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 0.875rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .title-row { display: flex; align-items: center; gap: 0.5rem; }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--terra-600);
+        }
+
+        .study-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #D1FAE5;
+            color: #064E3B;
+            border: 1px solid #6EE7B7;
+        }
+
+        .pulse-dot {
+            width: 0.375rem;
+            height: 0.375rem;
+            border-radius: 9999px;
+            background: #059669;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse { 50% { opacity: 0.5; } }
+
+        .site-header h1 {
+            margin: 0;
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+
+        .score-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .score-pill .lbl { font-size: 0.75rem; font-weight: 500; color: var(--ink-500); }
+        #score-display { font-size: 0.875rem; font-weight: 700; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #fff;
+            color: var(--ink-700);
+            border: 1px solid var(--cream-200);
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover { background: var(--cream-100); }
+        .btn:active { transform: scale(0.95); }
+
+        #btn-hints.active { background: var(--terra-50); color: var(--terra-600); border-color: rgba(200, 90, 50, 0.3); }
+
+        #btn-reset:hover { background: #FFF1F2; color: #BE123C; border-color: #FECDD3; }
+        #btn-reset.is-disabled { opacity: 0.4; pointer-events: none; }
+
+        .btn-study {
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            background: var(--ink-900);
+            color: #fff;
+            border-color: var(--ink-900);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-study:hover { background: var(--ink-700); }
+        .btn-study svg { width: 1rem; height: 1rem; }
+
+        .btn-study.active {
+            background: #047857;
+            border-color: #047857;
+            box-shadow: 0 0 0 2px #6EE7B7;
+        }
+
+        .btn-study.active:hover { background: #065F46; }
+
+        .study-banner {
+            background: #ECFDF5;
+            border-top: 1px solid #A7F3D0;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #064E3B;
+        }
+
+        /* ---------- Main ---------- */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .instructions {
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .instructions p { font-size: 0.875rem; line-height: 1.625; color: var(--ink-700); }
+
+        .legend { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; font-size: 0.75rem; font-weight: 500; }
+
+        .legend-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 0.5rem;
+        }
+
+        .legend-chip .d { width: 0.5rem; height: 0.5rem; border-radius: 9999px; }
+        .legend-correct { background: #DCFCE7; color: #14532D; border: 1px solid #4ADE80; }
+        .legend-correct .d { background: #16A34A; }
+        .legend-incorrect { background: #FFE4E6; color: #881337; border: 1px solid #FB7185; }
+        .legend-incorrect .d { background: #E11D48; }
+
+        .exercise-list { display: flex; flex-direction: column; gap: 1rem; }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 0.75rem; }
+
+        .num {
+            flex-shrink: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 9999px;
+            background: var(--cream-100);
+            border: 1px solid var(--cream-200);
+            color: var(--ink-700);
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.125rem;
+        }
+
+        .card-body { flex: 1; min-width: 0; }
+        .sentence { font-size: 1rem; line-height: 2.15; color: var(--ink-900); }
+
+        .hint {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--ink-500);
+            background: var(--cream-50);
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(237, 229, 213, 0.8);
+        }
+
+        .hint strong { font-weight: 600; color: var(--terra-600); }
+
+        /* Custom styling for inline cloze <select> elements */
+        .cloze-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-family: inherit;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23443E38'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.65rem center;
+            background-size: 0.95rem;
+            padding: 0.25rem 2.1rem 0.25rem 0.7rem;
+            border-radius: 0.6rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            max-width: 100%;
+            vertical-align: baseline;
+            margin: 0.15rem 0.2rem;
+        }
+
+        .cloze-select:focus { outline: none; box-shadow: 0 0 0 3px rgba(200, 90, 50, 0.25); }
+
+        .cloze-neutral { background-color: #FFFFFF; border: 1.5px solid #D6CCBA; color: #443E38; }
+        .cloze-neutral:hover { border-color: #B04A25; }
+
+        .cloze-correct {
+            background-color: #DCFCE7 !important;
+            border: 1.5px solid #4ADE80 !important;
+            color: #14532D !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2314532d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+        }
+
+        .cloze-incorrect {
+            background-color: #FFE4E6 !important;
+            border: 1.5px solid #FB7185 !important;
+            color: #881337 !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23881337'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M6 18L18 6M6 6l12 12'/%3E%3C/svg%3E");
+        }
+
+        .cloze-select:disabled { cursor: default; opacity: 0.96; }
+
+        /* ---------- Summary ---------- */
+        .summary {
+            margin-top: 2rem;
+            background: var(--cream-100);
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        #footer-status { font-size: 0.875rem; font-weight: 500; color: var(--ink-700); margin-bottom: 0.75rem; }
+        .success { color: #065F46; font-weight: 700; }
+
+        .summary-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; }
+
+        .btn-md {
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.15s ease;
+        }
+
+        .btn-md.secondary { background: #fff; color: var(--ink-900); border: 1px solid var(--cream-200); }
+        .btn-md.secondary:hover { background: var(--cream-50); }
+        .btn-md.primary { background: var(--terra-500); color: #fff; border: 1px solid var(--terra-500); }
+        .btn-md.primary:hover { background: var(--terra-600); }
+
+        footer {
+            width: 100%;
+            margin-top: auto;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--ink-500);
+            border-top: 1px solid rgba(237, 229, 213, 0.6);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (min-width: 640px) {
+            .header-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .site-header h1 { font-size: 1.5rem; }
+            .header-actions { gap: 0.625rem; }
+            .btn { font-size: 0.875rem; }
+            .study-banner { font-size: 0.875rem; }
+            main { padding: 2rem 1.5rem; }
+            .instructions { flex-direction: row; align-items: center; padding: 1.25rem; }
+            .card { padding: 1.25rem; }
+            .card-inner { gap: 1rem; }
+            .num { width: 2rem; height: 2rem; font-size: 0.875rem; }
+            .sentence { font-size: 17px; }
+            #footer-status { font-size: 1rem; }
+        }
+
+        @media (min-width: 768px) {
+            .header-inner { flex-direction: row; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="sticky-header">
+        <div class="header-inner">
+            <div>
+                <div class="title-row">
+                    <span class="eyebrow">Story Dive Practice</span>
+                    <span id="study-mode-pill" class="study-pill hidden">
+                        <span class="pulse-dot"></span>
+                        Previewing All Answers
+                    </span>
+                </div>
+                <h1>Idioms &amp; Collocations Gap-Fill</h1>
+            </div>
+
+            <div class="header-actions">
+                <div class="score-pill">
+                    <span class="lbl">Score:</span>
+                    <span id="score-display">0 / 40</span>
+                </div>
+
+                <button id="btn-hints" onclick="toggleHints()" class="btn">Show Hints</button>
+                <button id="btn-reset" onclick="resetAll()" class="btn">Reset All</button>
+
+                <button id="btn-study-mode" onclick="toggleStudyMode()" class="btn btn-study">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span id="study-btn-label">Study Mode</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="study-banner" class="study-banner hidden">
+            <strong>Study Mode Active:</strong> All correct answers are displayed below. Click <strong>"Exit Study Mode"</strong> at the top to restore your previous selections.
+        </div>
+    </header>
+
+    <main>
+        <div class="instructions">
+            <p>Choose the phrase that best completes each everyday sentence. Your answers are checked automatically.</p>
+            <div class="legend">
+                <span class="legend-chip legend-correct"><span class="d"></span> Correct</span>
+                <span class="legend-chip legend-incorrect"><span class="d"></span> Try Again</span>
+            </div>
+        </div>
+
+        <div id="exercise-list" class="exercise-list">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <div class="summary">
+            <p id="footer-status">Complete all 40 sentences to test your mastery of the Story Dive podcast vocabulary!</p>
+            <div class="summary-actions">
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="btn-md secondary">Back to Top ↑</button>
+                <button onclick="toggleStudyMode()" class="btn-md primary">Toggle Study Mode</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>Story Dive Podcast &bull; Interactive Cloze Vocabulary Practice</footer>
+
+    <script>
+        const CLOZE_ITEMS = [
+            { id: 1, before: "The journalist spent the entire podcast episode", after: "the complex financial scandal so ordinary listeners could understand it.", correct: "unpacking", distractors: ["wrapping up", "glossing over"], hint: "Analyzing or explaining something complex in detail." },
+            { id: 2, before: "We have a lot of items on today's meeting agenda, so let's", after: "with the quarterly budget update.", correct: "get the ball rolling", distractors: ["draw a line in the sand", "call it a day"], hint: "Start an activity, conversation, or process." },
+            { id: 3, before: "Before we submit the final group project, I have to", after: "—I accidentally deleted the backup spreadsheet last night.", correct: "confess something", distractors: ["take your word for it", "raise an eyebrow"], hint: "Admit a mistake or lack of knowledge." },
+            { id: 4, before: "", after: ", I didn't really enjoy the sequel as much as the original movie.", correct: "To be completely honest", distractors: ["Out of the blue", "Saved by the bell"], hint: "Phrase used to emphasize sincerity and candor." },
+            { id: 5, before: "If you don't understand how the new software works, there is", after: "for help during training.", correct: "no shame in asking", distractors: ["no kidding", "a fate worse than death"], hint: "Reassurance that it is completely fine not to know something." },
+            { id: 6, before: "The new restaurant manager", after: "and fires anyone who shows up even five minutes late.", correct: "rules with an iron fist", distractors: ["shows up out of the blue", "takes his word for it"], hint: "Controls a group or workplace with extreme strictness." },
+            { id: 7, before: "As the sole founder and owner of the private company, she", after: "when making major business decisions.", correct: "answers to no one", distractors: ["ties the knot", "packs her bags"], hint: "Does not have to explain actions to any higher authority." },
+            { id: 8, before: "Even the wealthiest politicians must remember that nobody is", after: "and everyone faces consequences for fraud.", correct: "above the law", distractors: ["rolling in dough", "on the brink of starvation"], hint: "Exempt from obeying rules or facing legal consequences." },
+            { id: 9, before: "When I finally saw the secret text messages on his phone,", after: "and I understood why he had been acting so strangely.", correct: "now the pieces fall into place", distractors: ["curiosity killed the cat", "every cloud has a silver lining"], hint: "Everything suddenly makes sense after learning a missing detail." },
+            { id: 10, before: "Nobody at the dinner table said a word, though several guests", after: "when he claimed he had climbed Mount Everest barefoot.", correct: "raised an eyebrow", distractors: ["tied the knot", "wrapped up"], hint: "Showed mild surprise, doubt, or suspicion." },
+            { id: 11, before: "Ever since his tech startup went public last spring, Marcus has been", after: "and driving a brand-new sports car.", correct: "rolling in dough", distractors: ["rotting in the dark", "begging for trouble"], hint: "Extremely wealthy; having lots of money." },
+            { id: 12, before: "If you want to keep your job at this firm, you'd better", after: "about the confidential merger until Friday.", correct: "keep your mouth shut", distractors: ["hit the nail on the head", "poke the bear"], hint: "Remain silent and not reveal secrets." },
+            { id: 13, before: "He didn't show us any receipts for the repairs, so we simply had to", after: "that the parts cost five hundred dollars.", correct: "take his word for it", distractors: ["give in to temptation", "split it down the middle"], hint: "Believe what someone says without requiring proof." },
+            { id: 14, before: "The irritable security guard is already in a terrible mood today, so don't", after: "by complaining about parking.", correct: "poke the bear", distractors: ["tie the knot", "get the ball rolling"], hint: "Deliberately provoke or annoy someone powerful or angry." },
+            { id: 15, before: "", after: "—the real reason our sales dropped is because our website checkout is broken.", correct: "You hit the nail on the head", distractors: ["Curiosity killed the cat", "Catch you on the flip side"], hint: "You described the exact problem with complete accuracy." },
+            { id: 16, before: "After dating for seven years in college and grad school, Maya and Liam finally plan to", after: "next autumn in Italy.", correct: "tie the knot", distractors: ["poke the bear", "rot in the dark"], hint: "Get married." },
+            { id: 17, before: "Whenever winter temperatures drop below freezing in Chicago, my grandfather", after: "and flies down to Florida for three months.", correct: "packs his bags", distractors: ["draws a line in the sand", "raises an eyebrow"], hint: "Prepares luggage to leave a place for a trip." },
+            { id: 18, before: "The director gave the lead designer", after: "to redecorate the entire hotel lobby without needing approval for every chair.", correct: "free rein", distractors: ["a silver lining", "no kidding"], hint: "Complete freedom to act or make choices independently." },
+            { id: 19, before: "Leaving an expensive laptop visible on the front seat of an unlocked car downtown is just", after: ".", correct: "begging for trouble", distractors: ["alive and kicking", "saved by the bell"], hint: "Acting in a way almost guaranteed to cause problems." },
+            { id: 20, before: "Telling a stubborn toddler that broccoli is 'only for grown-ups' is classic", after: "to get them to eat their vegetables.", correct: "reverse psychology 101", distractors: ["a fate worse than death", "a brand-new lease on life"], hint: "Getting someone to do something by telling them not to." },
+            { id: 21, before: "I peeked inside my birthday present closet and ruined the surprise—I guess", after: "!", correct: "curiosity killed the cat", distractors: ["every cloud has a silver lining", "no shame in asking"], hint: "Proverb: Being overly inquisitive leads to trouble." },
+            { id: 22, before: "After months of unpaid overtime, the engineering team decided to", after: "and refuse any weekend work.", correct: "draw a line in the sand", distractors: ["walk away with a small fortune", "show up out of the blue"], hint: "Establish a strict limit or boundary that must not be crossed." },
+            { id: 23, before: "Those freshly baked chocolate chip cookies are for tomorrow's charity bake sale, so", after: "until morning!", correct: "hands off", distractors: ["no kidding", "wraps up"], hint: "A warning not to touch or take something." },
+            { id: 24, before: "Even when you try to stick to a strict diet, late-night hunger often", after: "and leads you straight to the fridge.", correct: "takes the wheel", distractors: ["packs its bags", "answers to no one"], hint: "Takes control of a situation or behavior." },
+            { id: 25, before: "I promised myself I wouldn't check social media while studying, but I always", after: "after twenty minutes.", correct: "give in to temptation", distractors: ["rule with an iron fist", "catch it red-handed"], hint: "Surrender to the urge to do something unwise or forbidden." },
+            { id: 26, before: "Rescue hikers found the lost dog", after: "after it had been trapped in the canyon for nearly two weeks.", correct: "on the brink of starvation", distractors: ["rolling in dough", "above the law"], hint: "Extremely close to dying from lack of food." },
+            { id: 27, before: "Many people thought that classic 1990s video game had been forgotten, but its online community is still", after: ".", correct: "alive and kicking", distractors: ["rotting in the dark", "begging for trouble"], hint: "Still living, active, and thriving." },
+            { id: 28, before: "We hadn't heard from my cousin in five years, and then he", after: "at our family reunion in Seattle.", correct: "showed up out of the blue", distractors: ["hit the nail on the head", "kept his mouth shut"], hint: "Arrived unexpectedly without any prior warning." },
+            { id: 29, before: "The store manager checked the security camera and", after: "slipping three luxury watches into her handbag.", correct: "caught her red-handed", distractors: ["took her word for it", "gave her free rein"], hint: "Discovered someone in the exact act of doing something wrong." },
+            { id: 30, before: "The teacher was just about to call on me for the hardest math problem when the dismissal chime rang—I was truly", after: "!", correct: "saved by the bell", distractors: ["above the law", "rolling in dough"], hint: "Rescued from a bad spot at the very last second." },
+            { id: 31, before: "You won two VIP concert tickets in a radio contest?", after: "! That's the luckiest thing I've heard all year.", correct: "No kidding", distractors: ["Hands off", "Free rein"], hint: "Expression of surprise or strong agreement ('Seriously!')." },
+            { id: 32, before: "For an extreme introvert like Sam, being forced to sing karaoke in front of five hundred strangers is", after: ".", correct: "a fate worse than death", distractors: ["a brand-new lease on life", "reverse psychology 101"], hint: "An experience so miserable or terrifying that dying seems preferable." },
+            { id: 33, before: "Instead of donating the antique paintings to a local museum, the collector left them to", after: "inside a damp basement.", correct: "rot in the dark", distractors: ["get the ball rolling", "tie the knot"], hint: "Be abandoned and left to deteriorate in a grim, isolated place." },
+            { id: 34, before: "Missing my connecting flight was frustrating, though", after: "was getting upgraded to a first-class seat the next morning.", correct: "a silver lining", distractors: ["curiosity killed the cat", "no shame in asking"], hint: "A positive aspect inside an otherwise bad situation." },
+            { id: 35, before: "Since we both ordered the exact same pasta dish and dessert, let's just", after: "when the waiter brings the check.", correct: "split the bill down the middle", distractors: ["rule with an iron fist", "poke the bear"], hint: "Divide something completely equally among the people involved." },
+            { id: 36, before: "After selling his rare vintage comic book collection at auction, he", after: "and paid off his mortgage.", correct: "walked away with a small fortune", distractors: ["showed up out of the blue", "gave in to temptation"], hint: "Left a situation having gained a very large amount of money." },
+            { id: 37, before: "Recovering from the surgery and moving to the coast gave my aunt", after: "and the energy to start painting again.", correct: "a brand-new lease on life", distractors: ["a fate worse than death", "free rein"], hint: "A fresh start or renewed opportunity for a much better life." },
+            { id: 38, before: "Losing that retail job led me to go back to nursing school, proving that", after: ".", correct: "every cloud has a silver lining", distractors: ["now the pieces fall into place", "catch you on the flip side"], hint: "Proverb: Even the worst situations contain a positive outcome." },
+            { id: 39, before: "Once the keynote speaker", after: "her presentation, there will be a fifteen-minute Q&A session in the lobby.", correct: "wraps up", distractors: ["unpacks", "confesses"], hint: "Finishes or brings a talk or event to a close." },
+            { id: 40, before: "Thanks for tuning in to our Friday livestream—have a great weekend, and we'll", after: "!", correct: "catch you on the flip side", distractors: ["take your word for it", "hit the nail on the head"], hint: "Casual slang way of saying 'goodbye, see you next time.'" }
+        ];
+
+        // State Management
+        let isStudyMode = false;
+        let showHints = false;
+        let savedUserSelections = {};
+
+        // Deterministic shuffle per item so option order is mixed but stable
+        function buildShuffledOptions(item) {
+            return [item.correct, ...item.distractors]
+                .map((val, idx) => ({ val, sortKey: ((item.id * 17 + idx * 31) % 13) }))
+                .sort((a, b) => a.sortKey - b.sortKey)
+                .map(obj => obj.val);
+        }
+
+        function renderExercise() {
+            const container = document.getElementById('exercise-list');
+
+            container.innerHTML = CLOZE_ITEMS.map(item => {
+                const optionsHtml = buildShuffledOptions(item)
+                    .map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`)
+                    .join('');
+                const noSpace = /^[.,!?—]/.test(item.after);
+
+                return `
+                    <article id="card-${item.id}" class="card">
+                        <div class="card-inner">
+                            <span class="num">${item.id}</span>
+                            <div class="card-body">
+                                <p class="sentence">${item.before ? `<span>${escapeHtml(item.before)} </span>` : ''}<select
+                                        id="select-${item.id}"
+                                        data-id="${item.id}"
+                                        aria-label="Blank for item ${item.id}"
+                                        class="cloze-select cloze-neutral">
+                                        <option value="">— choose phrase —</option>
+                                        ${optionsHtml}
+                                    </select>${item.after ? `<span>${noSpace ? '' : ' '}${escapeHtml(item.after)}</span>` : ''}</p>
+                                <p id="hint-${item.id}" class="hint ${showHints ? '' : 'hidden'}">
+                                    <strong>Hint:</strong> ${escapeHtml(item.hint)}
+                                </p>
+                            </div>
+                        </div>
+                    </article>`;
+            }).join('');
+
+            updateScore();
+        }
+
+        function applySelectStyling(selectEl, item) {
+            const val = selectEl.value;
+            selectEl.classList.remove('cloze-neutral', 'cloze-correct', 'cloze-incorrect');
+            if (!val) selectEl.classList.add('cloze-neutral');
+            else if (val === item.correct) selectEl.classList.add('cloze-correct');
+            else selectEl.classList.add('cloze-incorrect');
+        }
+
+        function handleSelectChange(id) {
+            if (isStudyMode) return;
+            const item = CLOZE_ITEMS.find(i => i.id === id);
+            applySelectStyling(document.getElementById(`select-${id}`), item);
+            updateScore();
+        }
+
+        document.getElementById('exercise-list').addEventListener('change', (e) => {
+            if (e.target.matches('.cloze-select')) handleSelectChange(Number(e.target.dataset.id));
+        });
+
+        function updateScore() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            CLOZE_ITEMS.forEach(item => {
+                const selectEl = document.getElementById(`select-${item.id}`);
+                if (!selectEl) return;
+                const val = isStudyMode ? (savedUserSelections[item.id] || '') : selectEl.value;
+                if (val !== '') {
+                    answeredCount++;
+                    if (val === item.correct) correctCount++;
+                }
+            });
+
+            document.getElementById('score-display').textContent = `${correctCount} / ${CLOZE_ITEMS.length}`;
+
+            const footerStatus = document.getElementById('footer-status');
+            if (correctCount === CLOZE_ITEMS.length) {
+                footerStatus.innerHTML = `<span class="success">Amazing work! You got all 40 out of 40 phrases right!</span>`;
+            } else {
+                footerStatus.textContent = `Progress: ${answeredCount} of 40 answered (${correctCount} correct so far).`;
+            }
+        }
+
+        /**
+         * Study Mode: entering saves every selection and shows all correct answers (locked);
+         * exiting restores the saved selections and their styling.
+         */
+        function toggleStudyMode() {
+            const btn = document.getElementById('btn-study-mode');
+            const resetBtn = document.getElementById('btn-reset');
+
+            if (!isStudyMode) {
+                savedUserSelections = {};
+                CLOZE_ITEMS.forEach(item => {
+                    const selectEl = document.getElementById(`select-${item.id}`);
+                    savedUserSelections[item.id] = selectEl.value;
+                    selectEl.value = item.correct;
+                    applySelectStyling(selectEl, item);
+                    selectEl.disabled = true;
+                });
+                isStudyMode = true;
+            } else {
+                isStudyMode = false;
+                CLOZE_ITEMS.forEach(item => {
+                    const selectEl = document.getElementById(`select-${item.id}`);
+                    selectEl.disabled = false;
+                    selectEl.value = savedUserSelections[item.id] || '';
+                    applySelectStyling(selectEl, item);
+                });
+                updateScore();
+            }
+
+            document.getElementById('study-btn-label').textContent = isStudyMode ? 'Exit Study Mode' : 'Study Mode';
+            btn.classList.toggle('active', isStudyMode);
+            document.getElementById('study-banner').classList.toggle('hidden', !isStudyMode);
+            document.getElementById('study-mode-pill').classList.toggle('hidden', !isStudyMode);
+            resetBtn.disabled = isStudyMode;
+            resetBtn.classList.toggle('is-disabled', isStudyMode);
+        }
+
+        function toggleHints() {
+            showHints = !showHints;
+            const btn = document.getElementById('btn-hints');
+            btn.textContent = showHints ? 'Hide Hints' : 'Show Hints';
+            btn.classList.toggle('active', showHints);
+
+            CLOZE_ITEMS.forEach(item => {
+                const hintEl = document.getElementById(`hint-${item.id}`);
+                if (hintEl) hintEl.classList.toggle('hidden', !showHints);
+            });
+        }
+
+        function resetAll() {
+            if (isStudyMode) return;
+            savedUserSelections = {};
+            CLOZE_ITEMS.forEach(item => {
+                const selectEl = document.getElementById(`select-${item.id}`);
+                selectEl.value = '';
+                applySelectStyling(selectEl, item);
+            });
+            updateScore();
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        renderExercise();
+    </script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluebeard Podcast — Vocabulary Study Cards</title>
+    <style>
+        :root {
+            --cream-50: #FDFBF7;
+            --cream-100: #F7F3EB;
+            --cream-200: #EDE5D5;
+            --terra-50: #FDF4F0;
+            --terra-500: #C85A32;
+            --terra-600: #B04A25;
+            --ink-900: #1E1B18;
+            --ink-700: #443E38;
+            --ink-500: #787067;
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(30, 27, 24, 0.05), 0 4px 6px -4px rgba(30, 27, 24, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--cream-50);
+            color: var(--ink-900);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--terra-500); color: #fff; }
+
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+        p, h1, h2, h3 { margin: 0; }
+        svg { display: block; }
+        .hidden { display: none !important; }
+
+        /* Subtle custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F7F3EB; }
+        ::-webkit-scrollbar-thumb { background: #D6CCBA; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #B8AC96; }
+
+        /* ---------- Header ---------- */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            width: 100%;
+            background: rgba(253, 251, 247, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cream-200);
+        }
+
+        .header-inner {
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .header-title { text-align: center; }
+
+        .eyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--terra-600);
+        }
+
+        .site-header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .mode-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--cream-100);
+            padding: 0.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--cream-200);
+        }
+
+        .mode-btn {
+            padding: 0.5rem 0.875rem;
+            border-radius: 0.5rem;
+            border: none;
+            background: transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ink-700);
+            transition: all 0.15s ease;
+        }
+
+        .mode-btn:hover { color: var(--ink-900); }
+        .mode-btn.active { background: #fff; color: var(--ink-900); font-weight: 600; box-shadow: var(--shadow-sm); }
+
+        /* ---------- Main ---------- */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ---------- Study View ---------- */
+        .study-view {
+            width: 100%;
+            max-width: 42rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .util-bar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0 0.25rem;
+        }
+
+        .util-left { display: flex; align-items: center; gap: 0.75rem; }
+
+        #progress-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--ink-700);
+            background: var(--cream-100);
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid var(--cream-200);
+        }
+
+        #shuffle-badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--terra-600);
+            background: var(--terra-50);
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(200, 90, 50, 0.2);
+        }
+
+        .shuffle-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ink-700);
+            background: #fff;
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            border: 1px solid var(--cream-200);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.15s ease;
+        }
+
+        .shuffle-btn:hover { color: var(--ink-900); background: var(--cream-100); }
+        .shuffle-btn:active { transform: scale(0.95); }
+        .shuffle-btn svg { width: 1rem; height: 1rem; }
+
+        .progress-track {
+            width: 100%;
+            height: 0.375rem;
+            background: var(--cream-200);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--terra-500);
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+
+        /* 3D Flip Card Mechanics */
+        .card-scene {
+            width: 100%;
+            perspective: 1000px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #flashcard-inner {
+            position: relative;
+            width: 100%;
+            min-height: 340px;
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #flashcard-inner.is-flipped { transform: rotateY(180deg); }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .face-front { background: #fff; border: 1px solid var(--cream-200); transition: box-shadow 0.15s ease; }
+        .card-scene:hover .face-front { box-shadow: var(--shadow-xl); }
+
+        .face-back {
+            transform: rotateY(180deg);
+            background: var(--cream-100);
+            border: 2px solid rgba(200, 90, 50, 0.3);
+        }
+
+        .face-top { display: flex; align-items: center; justify-content: space-between; }
+
+        .tap-hint { font-size: 0.75rem; font-weight: 500; color: var(--ink-500); display: flex; align-items: center; gap: 0.25rem; }
+        .tap-hint svg { width: 0.875rem; height: 0.875rem; }
+
+        .face-mid { margin: auto 0; }
+        .face-front .face-mid { text-align: center; padding: 0 0.5rem; }
+
+        #card-phrase {
+            font-family: var(--font-serif);
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .face-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(120, 112, 103, 0.7);
+        }
+
+        #card-back-term {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--terra-600);
+            max-width: 70%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .back-mid > * + * { margin-top: 1.25rem; }
+
+        .field-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink-500);
+            margin-bottom: 0.25rem;
+        }
+
+        #card-meaning { font-size: 1.125rem; font-weight: 500; line-height: 1.625; }
+
+        .context-box {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--cream-200);
+        }
+
+        .context-box .field-label { color: var(--terra-600); display: flex; align-items: center; gap: 0.375rem; }
+        .context-box .field-label svg { width: 0.875rem; height: 0.875rem; }
+
+        #card-context { font-size: 0.875rem; font-style: italic; color: var(--ink-700); line-height: 1.625; }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            border: 1px solid;
+        }
+
+        .badge-idiom { background: #FEF3C7; color: #78350F; border-color: #FDE68A; }
+        .badge-colloc { background: #D1FAE5; color: #064E3B; border-color: #A7F3D0; }
+        .badge-phrasal { background: #F3E8FF; color: #581C87; border-color: #E9D5FF; }
+        .badge-common { background: #E0F2FE; color: #0C4A6E; border-color: #BAE6FD; }
+
+        /* Nav controls */
+        .nav-controls {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.25rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+
+        .nav-btn:active { transform: scale(0.95); }
+        .nav-btn svg { width: 1.25rem; height: 1.25rem; }
+        .nav-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+        .nav-prev { background: #fff; color: var(--ink-900); border: 1px solid var(--cream-200); box-shadow: var(--shadow-xs); }
+        .nav-prev:hover { background: var(--cream-100); }
+        .nav-next { background: var(--terra-500); color: #fff; border: 1px solid var(--terra-500); box-shadow: var(--shadow-sm); }
+        .nav-next:hover { background: var(--terra-600); }
+
+        .flip-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            background: var(--cream-100);
+            color: var(--ink-900);
+            border: 1px solid var(--cream-200);
+            transition: all 0.15s ease;
+        }
+
+        .flip-btn:hover { background: var(--cream-200); }
+        .flip-btn:active { transform: scale(0.95); }
+
+        .kbd-hint { display: none; font-size: 0.75rem; color: var(--ink-500); margin-top: 1.25rem; text-align: center; }
+
+        kbd {
+            padding: 0.125rem 0.375rem;
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 0.25rem;
+            color: var(--ink-700);
+            font-family: var(--font-mono);
+        }
+
+        /* ---------- Grid View ---------- */
+        .grid-view { width: 100%; }
+
+        .filter-bar { display: flex; flex-direction: column; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .search-wrap { position: relative; flex: 1; }
+
+        #search-input {
+            width: 100%;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--ink-900);
+        }
+
+        #search-input::placeholder { color: var(--ink-500); }
+
+        #search-input:focus, #type-filter:focus {
+            outline: none;
+            border-color: var(--terra-500);
+            box-shadow: 0 0 0 2px rgba(200, 90, 50, 0.4);
+        }
+
+        .search-icon { position: absolute; left: 0.875rem; top: 0.75rem; width: 1rem; height: 1rem; color: var(--ink-500); pointer-events: none; }
+
+        #type-filter {
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 0.75rem;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ink-700);
+        }
+
+.cards-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+        .grid-card {
+             min-width: 0;
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: var(--shadow-xs);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .grid-card:hover { background: rgba(247, 243, 235, 0.6); box-shadow: var(--shadow-md); }
+
+.grid-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.625rem; }        .grid-id { font-size: 0.75rem; font-weight: 700; color: var(--ink-500); }
+        .grid-card .badge { padding: 0.125rem 0.625rem; font-size: 11px; letter-spacing: normal; }
+
+        .grid-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.375rem;
+            transition: color 0.15s ease;
+        }
+
+        .grid-card:hover h3 { color: var(--terra-600); }
+        .grid-meaning { font-size: 0.875rem; color: var(--ink-700); line-height: 1.625; margin-bottom: 0.75rem; }
+
+        .grid-bottom {
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(237, 229, 213, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--ink-500);
+        }
+
+.grid-context { font-style: italic; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }        .grid-study { font-weight: 600; color: var(--terra-600); flex-shrink: 0; }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 0;
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            color: var(--ink-700);
+            font-weight: 500;
+        }
+
+        footer {
+            width: 100%;
+            margin-top: auto;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--ink-500);
+            border-top: 1px solid rgba(237, 229, 213, 0.6);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (min-width: 640px) {
+            .header-inner { flex-direction: row; padding-left: 1.5rem; padding-right: 1.5rem; }
+            .header-title { text-align: left; }
+            .site-header h1 { font-size: 1.875rem; }
+            main { padding: 2.5rem 1.5rem; }
+            #flashcard-inner { min-height: 380px; }
+            .face { padding: 2.5rem; }
+            #card-phrase { font-size: 2.25rem; }
+            #card-meaning { font-size: 1.25rem; }
+            #card-context { font-size: 1rem; }
+            .nav-btn { flex: none; min-width: 140px; }
+            .flip-btn { display: flex; }
+            .kbd-hint { display: block; }
+            .filter-bar { flex-direction: row; align-items: center; }
+        }
+
+        @media (min-width: 768px) {
+            #card-phrase { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="header-title">
+                <span class="eyebrow">Story Dive Podcast</span>
+                <h1>Bluebeard Vocabulary Deck</h1>
+            </div>
+
+            <div class="mode-switch">
+                <button id="btn-mode-study" onclick="setViewMode('study')" class="mode-btn active">Study Cards</button>
+                <button id="btn-mode-grid" onclick="setViewMode('grid')" class="mode-btn">Browse All (40)</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ==================== STUDY CARD VIEW ==================== -->
+        <section id="study-view" class="study-view">
+
+            <div class="util-bar">
+                <div class="util-left">
+                    <span id="progress-text">1 / 40</span>
+                    <span id="shuffle-badge" class="hidden">Shuffled</span>
+                </div>
+                <button id="btn-shuffle" onclick="toggleShuffle()" title="Shuffle Deck" class="shuffle-btn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span id="shuffle-label">Shuffle</span>
+                </button>
+            </div>
+
+            <div class="progress-track">
+                <div id="progress-bar" style="width: 2.5%;"></div>
+            </div>
+
+            <div class="card-scene" onclick="flipCard()">
+                <div id="flashcard-inner">
+
+                    <!-- FRONT -->
+                    <div class="face face-front">
+                        <div class="face-top">
+                            <span id="card-type-badge" class="badge badge-idiom">Idiom</span>
+                            <span class="tap-hint">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Tap or Space to flip
+                            </span>
+                        </div>
+
+                        <div class="face-mid">
+                            <h2 id="card-phrase">Unpacking</h2>
+                        </div>
+
+                        <div class="face-label">Front &bull; Term</div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="face face-back">
+                        <div class="face-top">
+                            <span id="card-back-term">Unpacking</span>
+                            <span class="tap-hint">Tap to flip back</span>
+                        </div>
+
+                        <div class="face-mid back-mid">
+                            <div>
+                                <p class="field-label">Meaning</p>
+                                <p id="card-meaning">Analyzing or explaining something complex in detail.</p>
+                            </div>
+
+                            <div class="context-box">
+                                <p class="field-label">
+                                    <svg fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"/>
+                                    </svg>
+                                    Podcast Context
+                                </p>
+                                <p id="card-context">"Today, Jenny and I are unpacking a chilling fairy tale we just read about a guy named Bluebeard."</p>
+                            </div>
+                        </div>
+
+                        <div class="face-label">Back &bull; Definition &amp; Context</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button id="btn-prev" onclick="prevCard()" class="nav-btn nav-prev">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                </button>
+
+                <button onclick="flipCard()" class="flip-btn">Flip Card</button>
+
+                <button id="btn-next" onclick="nextCard()" class="nav-btn nav-next">
+                    Next
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <p class="kbd-hint">
+                Keyboard shortcuts: <kbd>←</kbd> Previous &bull; <kbd>Space</kbd> Flip &bull; <kbd>→</kbd> Next
+            </p>
+        </section>
+
+        <!-- ==================== GRID / BROWSE ALL VIEW ==================== -->
+        <section id="grid-view" class="grid-view hidden">
+            <div class="filter-bar">
+                <div class="search-wrap">
+                    <input type="text" id="search-input" oninput="renderGrid()" placeholder="Search phrases or meanings...">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+
+                <select id="type-filter" onchange="renderGrid()">
+                    <option value="ALL">All Types (40)</option>
+                    <option value="Idiom">Idioms</option>
+                    <option value="Common Phrase">Common Phrases</option>
+                    <option value="Collocation">Collocations</option>
+                    <option value="Phrasal Verb">Phrasal Verbs</option>
+                </select>
+            </div>
+
+            <div id="cards-grid-container" class="cards-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer>Story Dive Podcast Glossary &bull; Interactive Study Deck</footer>
+
+    <script>
+        const VOCAB_DATA = [
+            { id: 1, phrase: "Unpacking", type: "Common Phrase / Metaphor", meaning: "Analyzing or explaining something complex in detail.", context: "Today, Jenny and I are unpacking a chilling fairy tale we just read about a guy named Bluebeard." },
+            { id: 2, phrase: "Get the ball rolling", type: "Idiom", meaning: "To start an activity, conversation, or process.", context: "Okay, before we get the ball rolling, I have to confess something..." },
+            { id: 3, phrase: "Confess something", type: "Collocation", meaning: "To admit something, especially a mistake or lack of knowledge.", context: "Okay, before we get the ball rolling, I have to confess something—the article calls him a powerful 'warlord.'" },
+            { id: 4, phrase: "To be completely honest", type: "Common Phrase", meaning: "Used to emphasize sincerity or candor before stating a fact.", context: "To be completely honest, I have no idea what a warlord actually is." },
+            { id: 5, phrase: "No shame in asking", type: "Common Phrase", meaning: "Reassurance that it is completely okay not to know something.", context: "No shame in asking! Basically, it’s a military leader who rules with an iron fist..." },
+            { id: 6, phrase: "Rules with an iron fist", type: "Idiom", meaning: "To control a group or area with extreme strictness and harshness.", context: "Basically, it’s a military leader who rules with an iron fist, controlling a region through sheer force." },
+            { id: 7, phrase: "Answers to no one", type: "Common Phrase", meaning: "Not having to explain one's actions to any higher authority.", context: "Think of him as a local boss who answers to no one and is above the law." },
+            { id: 8, phrase: "Above the law", type: "Idiom", meaning: "Exempt from obeying laws or facing consequences for breaking them.", context: "Think of him as a local boss who answers to no one and is above the law." },
+            { id: 9, phrase: "Now the pieces fall into place", type: "Idiom", meaning: "Everything suddenly makes sense after learning a missing detail.", context: "Ah, now the pieces fall into place!" },
+            { id: 10, phrase: "Raised an eyebrow", type: "Idiom", meaning: "Showed mild surprise, doubt, or suspicion.", context: "His wives kept dying of 'strange diseases' or 'bizarre accidents,' and nobody ever raised an eyebrow." },
+            { id: 11, phrase: "Rolling in dough", type: "Idiom (Slang)", meaning: "Extremely wealthy; having a lot of money.", context: "When a guy is rolling in dough and commands his own army, you keep your mouth shut..." },
+            { id: 12, phrase: "Keep your mouth shut", type: "Idiom", meaning: "To remain silent and not ask questions or reveal secrets.", context: "When a guy is rolling in dough and commands his own army, you keep your mouth shut and take his word for it." },
+            { id: 13, phrase: "Take his word for it", type: "Common Phrase", meaning: "To believe what someone says without requiring proof.", context: "You keep your mouth shut and take his word for it." },
+            { id: 14, phrase: "Poke the bear", type: "Idiom", meaning: "To deliberately provoke or annoy someone powerful or dangerous.", context: "Nobody wants to poke the bear." },
+            { id: 15, phrase: "You hit the nail on the head", type: "Idiom", meaning: "You described the situation or problem with complete accuracy.", context: "You hit the nail on the head. So, Bluebeard ties the knot with the sister of his top swordsman..." },
+            { id: 16, phrase: "Ties the knot", type: "Idiom", meaning: "Gets married.", context: "So, Bluebeard ties the knot with the sister of his top swordsman, packs his bags for war..." },
+            { id: 17, phrase: "Packs his bags", type: "Common Phrase / Idiom", meaning: "Prepares to leave a place (often suddenly or for a trip).", context: "Bluebeard ties the knot with the sister of his top swordsman, packs his bags for war, and hands her the castle keys." },
+            { id: 18, phrase: "Free rein", type: "Idiom", meaning: "Complete freedom to act or go wherever one wants.", context: "He tells her she has free rein over the place, except for one room at the end of the hall." },
+            { id: 19, phrase: "Begging for trouble", type: "Collocation", meaning: "Acting in a way that is almost guaranteed to cause problems.", context: "Which is begging for trouble! Telling someone 'you are forbidden to open this door' is reverse psychology 101." },
+            { id: 20, phrase: "Reverse psychology 101", type: "Common Phrase", meaning: "A basic example of getting someone to do something by telling them not to do it.", context: "Telling someone 'you are forbidden to open this door' is reverse psychology 101." },
+            { id: 21, phrase: "Curiosity killed the cat", type: "Idiom / Proverb", meaning: "Being overly inquisitive can lead you into dangerous situations.", context: "Curiosity killed the cat, right?" },
+            { id: 22, phrase: "Draw a line in the sand", type: "Idiom", meaning: "To establish a strict limit or boundary that must not be crossed.", context: "The second you draw a line in the sand and say 'hands off,' human nature takes the wheel..." },
+            { id: 23, phrase: "Hands off", type: "Common Phrase", meaning: "A warning not to touch, interfere with, or take something.", context: "The second you draw a line in the sand and say 'hands off,' human nature takes the wheel..." },
+            { id: 24, phrase: "Takes the wheel", type: "Idiom", meaning: "Takes control of a situation or behavior.", context: "Human nature takes the wheel and people just have to know what’s behind it." },
+            { id: 25, phrase: "Gives in to temptation", type: "Collocation", meaning: "Surrenders to the urge to do something forbidden or unwise.", context: "Naturally, she gives in to temptation, unlocks the door, and heads down into a freezing dungeon." },
+            { id: 26, phrase: "On the brink of starvation", type: "Collocation", meaning: "Extremely close to dying from a lack of food.", context: "She finds all his previous wives chained up and on the brink of starvation..." },
+            { id: 27, phrase: "Alive and kicking", type: "Idiom", meaning: "Living and active (often said when someone was thought to be dead or gone).", context: "On the brink of starvation—alive and kicking, just trapped!" },
+            { id: 28, phrase: "Shows up out of the blue", type: "Idiom", meaning: "Arrives unexpectedly without any prior warning.", context: "And then Bluebeard shows up out of the blue, catches her red-handed..." },
+            { id: 29, phrase: "Catches her red-handed", type: "Idiom", meaning: "Discovers someone in the exact act of doing something wrong.", context: "Bluebeard shows up out of the blue, catches her red-handed, and is about to end her life..." },
+            { id: 30, phrase: "Saved by the bell", type: "Idiom", meaning: "Rescued from a bad or fatal situation at the very last second.", context: "Talk about saved by the bell—or by the sword!" },
+            { id: 31, phrase: "No kidding", type: "Common Phrase", meaning: "An expression of strong agreement ('I completely agree' or 'Seriously').", context: "No kidding. Honestly, the whole ordeal was a fate worse than death for those women..." },
+            { id: 32, phrase: "A fate worse than death", type: "Idiom", meaning: "An experience so miserable or terrifying that dying seems preferable.", context: "Honestly, the whole ordeal was a fate worse than death for those women, left to rot in the dark like that." },
+            { id: 33, phrase: "Rot in the dark", type: "Collocation", meaning: "To be abandoned and left to suffer in a grim, isolated place.", context: "The whole ordeal was a fate worse than death for those women, left to rot in the dark like that." },
+            { id: 34, phrase: "A silver lining", type: "Idiom", meaning: "A positive or hopeful aspect inside an otherwise terrible situation.", context: "Though, if we’re looking for a silver lining, they sold his massive castle..." },
+            { id: 35, phrase: "Split [something] down the middle", type: "Idiom", meaning: "Divided something completely equally among the people involved.", context: "They sold his massive castle and split his fortune down the middle." },
+            { id: 36, phrase: "Walked away with a small fortune", type: "Collocation", meaning: "Left a situation having gained a very large amount of money.", context: "At least they all walked away with a small fortune and a brand-new lease on life." },
+            { id: 37, phrase: "A brand-new lease on life", type: "Idiom", meaning: "A fresh start or renewed opportunity for a much better life.", context: "At least they all walked away with a small fortune and a brand-new lease on life." },
+            { id: 38, phrase: "Every cloud has a silver lining", type: "Idiom / Proverb", meaning: "Even the worst situations contain at least one positive outcome.", context: "Every cloud has a silver lining, I suppose!" },
+            { id: 39, phrase: "Wraps up", type: "Phrasal Verb", meaning: "Finishes or brings something (like a show or meeting) to a close.", context: "That wraps up today's episode—thanks for tuning in..." },
+            { id: 40, phrase: "Catch you on the flip side", type: "Idiom (Slang)", meaning: "A casual way of saying 'goodbye, see you next time.'", context: "Thanks for tuning in, and we'll catch you on the flip side!" }
+        ];
+
+        // State
+        let currentDeck = [...VOCAB_DATA];
+        let currentIndex = 0;
+        let isFlipped = false;
+        let isShuffled = false;
+        let currentView = 'study';
+
+        function getBadgeClass(type) {
+            if (type.includes('Idiom')) return 'badge-idiom';
+            if (type.includes('Collocation')) return 'badge-colloc';
+            if (type.includes('Phrasal Verb')) return 'badge-phrasal';
+            return 'badge-common';
+        }
+
+        function renderCard() {
+            const card = currentDeck[currentIndex];
+
+            if (isFlipped) {
+                isFlipped = false;
+                document.getElementById('flashcard-inner').classList.remove('is-flipped');
+            }
+
+            document.getElementById('card-phrase').textContent = card.phrase;
+            document.getElementById('card-back-term').textContent = `${card.id}. ${card.phrase}`;
+            document.getElementById('card-meaning').textContent = card.meaning;
+            document.getElementById('card-context').textContent = `"${card.context}"`;
+
+            const badge = document.getElementById('card-type-badge');
+            badge.textContent = card.type;
+            badge.className = `badge ${getBadgeClass(card.type)}`;
+
+            const total = currentDeck.length;
+            document.getElementById('progress-text').textContent = `${currentIndex + 1} / ${total}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / total) * 100}%`;
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('flashcard-inner').classList.toggle('is-flipped', isFlipped);
+        }
+
+        function nextCard() {
+            currentIndex = currentIndex < currentDeck.length - 1 ? currentIndex + 1 : 0; // loop back
+            renderCard();
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCard();
+            }
+        }
+
+        function toggleShuffle() {
+            isShuffled = !isShuffled;
+            currentDeck = [...VOCAB_DATA];
+
+            if (isShuffled) {
+                // Fisher-Yates shuffle
+                for (let i = currentDeck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
+                }
+            }
+
+            document.getElementById('shuffle-badge').classList.toggle('hidden', !isShuffled);
+            document.getElementById('shuffle-label').textContent = isShuffled ? 'Reset Order' : 'Shuffle';
+            currentIndex = 0;
+            renderCard();
+        }
+
+        function setViewMode(mode) {
+            currentView = mode;
+            const isStudy = mode === 'study';
+            document.getElementById('study-view').classList.toggle('hidden', !isStudy);
+            document.getElementById('grid-view').classList.toggle('hidden', isStudy);
+            document.getElementById('btn-mode-study').classList.toggle('active', isStudy);
+            document.getElementById('btn-mode-grid').classList.toggle('active', !isStudy);
+            if (!isStudy) renderGrid();
+        }
+
+        function jumpToCard(id) {
+            const foundIndex = currentDeck.findIndex(item => item.id === id);
+            if (foundIndex !== -1) currentIndex = foundIndex;
+            setViewMode('study');
+            renderCard();
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('cards-grid-container');
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const typeFilter = document.getElementById('type-filter').value;
+
+            const filtered = VOCAB_DATA.filter(item => {
+                const matchesSearch = item.phrase.toLowerCase().includes(query) ||
+                                      item.meaning.toLowerCase().includes(query) ||
+                                      item.context.toLowerCase().includes(query);
+                const matchesType = typeFilter === 'ALL' || item.type.includes(typeFilter);
+                return matchesSearch && matchesType;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="empty-state">No matching vocabulary terms found.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <div class="grid-card" data-id="${item.id}">
+                    <div>
+                        <div class="grid-top">
+                            <span class="grid-id">#${item.id}</span>
+                            <span class="badge ${getBadgeClass(item.type)}">${item.type}</span>
+                        </div>
+                        <h3>${item.phrase}</h3>
+                        <p class="grid-meaning">${item.meaning}</p>
+                    </div>
+                    <div class="grid-bottom">
+                        <span class="grid-context">"${item.context}"</span>
+                        <span class="grid-study">Study →</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('cards-grid-container').addEventListener('click', (e) => {
+            const card = e.target.closest('.grid-card');
+            if (card) jumpToCard(Number(card.dataset.id));
+        });
+
+        // Keyboard navigation (Study view)
+        document.addEventListener('keydown', (e) => {
+            const tag = document.activeElement.tagName;
+            if (tag === 'INPUT' || tag === 'SELECT') return;
+            if (currentView !== 'study') return;
+
+            if (e.code === 'Space') {
+                e.preventDefault();
+                flipCard();
+            } else if (e.code === 'ArrowRight') {
+                e.preventDefault();
+                nextCard();
+            } else if (e.code === 'ArrowLeft') {
+                e.preventDefault();
+                prevCard();
+            }
+        });
+
+        renderCard();
+    </script>
+</body>
+</html>
