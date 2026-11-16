@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluebeard — Vocabulary Practice Exercise</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom styling for inline cloze select elements */
+        .cloze-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.55rem center;
+            background-size: 0.95rem;
+            padding-right: 1.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Feedback states */
+        .state-neutral {
+            background-color: #ffffff;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .state-correct {
+            background-color: #dcfce7 !important; /* Pale pastel green */
+            border-color: #4ade80 !important;
+            color: #14532d !important;
+            font-weight: 600;
+        }
+
+        .state-incorrect {
+            background-color: #ffe4e6 !important; /* Pale pastel pink */
+            border-color: #fb7185 !important;
+            color: #881337 !important;
+            font-weight: 600;
+        }
+
+        /* Print / Save to PDF Styles */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-container {
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            .student-info-box {
+                border: 1px solid #94a3b8 !important;
+                background-color: #f8fafc !important;
+                box-shadow: none !important;
+                margin-bottom: 1rem !important;
+                padding: 0.75rem 1rem !important;
+            }
+            .student-input {
+                border: none !important;
+                border-bottom: 1px solid #475569 !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                padding: 0.15rem 0.25rem !important;
+                font-weight: 600 !important;
+            }
+            .question-item {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                padding-top: 0.45rem !important;
+                padding-bottom: 0.45rem !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+            }
+            .cloze-select {
+                background-image: none !important;
+                padding-right: 0.6rem !important;
+                padding-left: 0.6rem !important;
+                border: 1px solid #64748b !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            /* Hide placeholder text on print if left unanswered so students can write on paper if needed */
+            .cloze-select.is-empty {
+                color: transparent !important;
+                min-width: 7.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-24">
+
+    <!-- Sticky Top Action Bar -->
+    <div class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Live Score & Status Pill -->
+            <div class="flex items-center gap-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-sm font-medium text-slate-700">
+                    <span>Score:</span>
+                    <span id="score-display" class="font-bold text-indigo-600">0 / 22</span>
+                </div>
+                <span id="mode-badge" class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                    Study Mode Active — Viewing Answers
+                </span>
+            </div>
+
+            <!-- Action Buttons: Study Mode Toggle & Print / Save to PDF -->
+            <div class="flex items-center gap-2.5">
+                <button
+                    id="study-mode-btn"
+                    type="button"
+                    onclick="toggleStudyMode()"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white shadow-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    <svg id="study-mode-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span id="study-mode-label">Study Mode</span>
+                </button>
+
+                <button
+                    id="print-btn"
+                    type="button"
+                    onclick="handlePrint()"
+                    disabled
+                    aria-disabled="true"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed transition-all"
+                    title="Enter at least 2 characters in both Student Name and ID to enable printing"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    <span>Print / Save to PDF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Worksheet Container -->
+    <div class="print-container max-w-4xl mx-auto px-4 sm:px-6 pt-8">
+
+        <!-- Worksheet Header -->
+        <header class="mb-6">
+            <p class="text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-1">Vocabulary Cloze Practice</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Bluebeard — Vocabulary Practice Exercise</h1>
+            <p class="no-print text-sm text-slate-500 mt-1">
+                Choose the best vocabulary word from each dropdown menu to complete the sentences. Sentences and options are shuffled on every refresh.
+            </p>
+        </header>
+
+        <!-- Student Identification & Print Validation Card -->
+        <section class="student-info-box bg-white rounded-2xl border border-slate-200 shadow-sm p-5 mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="student-name" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+                        Student Name <span class="text-rose-500 no-print">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="student-name"
+                        placeholder="Enter your full name (min. 2 characters)"
+                        oninput="validateStudentInfo()"
+                        class="student-input w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    />
+                </div>
+                <div>
+                    <label for="student-id" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+                        Student ID <span class="text-rose-500 no-print">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="student-id"
+                        placeholder="Enter your student ID (min. 2 characters)"
+                        oninput="validateStudentInfo()"
+                        class="student-input w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    />
+                </div>
+            </div>
+
+            <!-- Print Validation Status Message -->
+            <div id="print-status-banner" class="no-print mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span id="print-helper-text" class="text-amber-700 font-medium flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Enter at least 2 characters in both Student Name and Student ID to unlock Print / Save to PDF.
+                </span>
+                <span class="hidden sm:inline text-slate-400">Print Score: <strong id="print-score-summary" class="text-slate-600">0 / 22</strong></span>
+            </div>
+        </section>
+
+        <!-- Custom Alert Banner (Replaces native alert() for Ctrl+P / Print blocking) -->
+        <div id="custom-alert" class="no-print hidden mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span id="custom-alert-text" class="font-medium">Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.</span>
+            </div>
+            <button type="button" onclick="hideCustomAlert()" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 rounded-lg">✕</button>
+        </div>
+
+        <!-- Questions List Card -->
+        <main class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8">
+            <ol id="questions-container" class="divide-y divide-slate-100">
+                <!-- 22 shuffled cloze items rendered here via JS -->
+            </ol>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-slate-400">
+            Bluebeard Vocabulary Practice • 22 Questions
+        </footer>
+
+    </div>
+
+    <script>
+        // Master list of all 11 vocabulary words (lowercase for consistent matching)
+        const ALL_VOCAB_WORDS = [
+            "splendid",
+            "diseases",
+            "bizarre",
+            "bunch",
+            "instructions",
+            "forbidden",
+            "curiosity",
+            "discovered",
+            "burst",
+            "property",
+            "wealth"
+        ];
+
+        // All 22 example sentences with [target] word marker
+        const RAW_SENTENCES = [
+            { answer: "splendid", template: "The king wore a [splendid] cloak made of velvet and gold thread." },
+            { answer: "splendid", template: "We had a [splendid] view of the ocean from our hotel balcony." },
+            { answer: "diseases", template: "Modern medicine has helped wipe out many dangerous [diseases]." },
+            { answer: "diseases", template: "Washing your hands frequently helps prevent the spread of infectious [diseases]." },
+            { answer: "bizarre", template: "We heard a [bizarre] noise coming from the attic in the middle of the night." },
+            { answer: "bizarre", template: "The movie had a [bizarre] plot that left everyone confused at the end." },
+            { answer: "bunch", template: "She bought a fresh [bunch] of bananas from the local market." },
+            { answer: "bunch", template: "He handed me a large [bunch] of keys to open all the storage rooms." },
+            { answer: "instructions", template: "Please read the assembly [instructions] carefully before building the desk." },
+            { answer: "instructions", template: "The teacher gave clear [instructions] on how to complete the science project." },
+            { answer: "forbidden", template: "Entering the construction site without a hard hat is strictly [forbidden]." },
+            { answer: "forbidden", template: "Eating candy before dinner was [forbidden] in her house." },
+            { answer: "curiosity", template: "Out of pure [curiosity], she looked inside the mysterious wrapped box." },
+            { answer: "curiosity", template: "Children often ask many questions because of their natural [curiosity] about the world." },
+            { answer: "discovered", template: "The scientists [discovered] a new species of frog deep in the rainforest." },
+            { answer: "discovered", template: "When I opened the dusty drawer, I [discovered] my long-lost childhood diary." },
+            { answer: "burst", template: "The water balloon grew too large and finally [burst] with a loud pop." },
+            { answer: "burst", template: "Strong winds caused the old wooden door to [burst] open during the storm." },
+            { answer: "property", template: "Walking onto private [property] without permission is against the law." },
+            { answer: "property", template: "They invested a lot of money into buying residential [property] downtown." },
+            { answer: "wealth", template: "He accumulated great [wealth] through his successful technology business." },
+            { answer: "wealth", template: "True [wealth] is measured not just in money, but in health, family, and happiness." }
+        ];
+
+        // Application State
+        let quizItems = [];
+        let isStudyMode = false;
+        let savedStudentSelections = []; // Captures student's choices before entering Study Mode
+
+        /**
+         * Fisher-Yates (Knuth) unbiased in-place shuffle algorithm
+         */
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        /**
+         * Picks 2 random distractors from ALL_VOCAB_WORDS excluding the correct answer,
+         * combines them with the correct answer, and shuffles the 3 options.
+         */
+        function generateOptionsForWord(correctWord) {
+            const distractorsPool = ALL_VOCAB_WORDS.filter(word => word !== correctWord);
+            const shuffledDistractors = shuffleArray(distractorsPool);
+            const selectedDistractors = shuffledDistractors.slice(0, 2);
+            return shuffleArray([correctWord, ...selectedDistractors]);
+        }
+
+        /**
+         * Initializes the quiz data by shuffling all 22 sentences and generating 3 shuffled options per item
+         */
+        function initializeQuiz() {
+            const shuffledSentences = shuffleArray(RAW_SENTENCES);
+            quizItems = shuffledSentences.map((item, index) => {
+                const parts = item.template.split(`[${item.answer}]`);
+                return {
+                    id: index,
+                    prefix: parts[0],
+                    suffix: parts[1] || "",
+                    answer: item.answer,
+                    options: generateOptionsForWord(item.answer)
+                };
+            });
+
+            renderQuestions();
+            updateScoreDisplay();
+            validateStudentInfo();
+        }
+
+        /**
+         * Renders all 22 shuffled cloze items into the DOM
+         */
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            if (!container) return;
+
+            container.innerHTML = quizItems.map((item, index) => {
+                const optionsHTML = item.options.map(opt => `
+                    <option value="${opt}">${opt}</option>
+                `).join('');
+
+                return `
+                    <li class="question-item py-4 first:pt-0 last:pb-0 flex items-start gap-3.5 text-base leading-relaxed text-slate-800">
+                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200 shrink-0 mt-0.5 select-none">
+                            ${index + 1}
+                        </span>
+                        <div class="flex-1">
+                            <span>${item.prefix}</span><select
+                                id="select-${item.id}"
+                                data-index="${item.id}"
+                                onchange="handleSelectionChange(${item.id})"
+                                aria-label="Question ${index + 1} vocabulary choice"
+                                class="cloze-select state-neutral is-empty inline-block mx-1 my-0.5 px-3 py-1 rounded-lg border text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            >
+                                <option value="" disabled selected>-- select --</option>
+                                ${optionsHTML}
+                            </select><span>${item.suffix}</span>
+                        </div>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Applies visual feedback (pale pastel green, pale pastel pink, or neutral) to a select element
+         */
+        function applySelectStyling(selectEl, selectedValue, correctValue) {
+            selectEl.classList.remove('state-neutral', 'state-correct', 'state-incorrect', 'is-empty');
+
+            if (!selectedValue) {
+                selectEl.classList.add('state-neutral', 'is-empty');
+            } else if (selectedValue === correctValue) {
+                selectEl.classList.add('state-correct');
+            } else {
+                selectEl.classList.add('state-incorrect');
+            }
+        }
+
+        /**
+         * Handles student changing an answer in Quiz Mode
+         */
+        function handleSelectionChange(itemIndex) {
+            if (isStudyMode) return;
+            const selectEl = document.getElementById(`select-${itemIndex}`);
+            const item = quizItems[itemIndex];
+            if (!selectEl || !item) return;
+
+            applySelectStyling(selectEl, selectEl.value, item.answer);
+            updateScoreDisplay();
+        }
+
+        /**
+         * Updates the live score counter in the sticky bar and print header
+         */
+        function updateScoreDisplay() {
+            let correctCount = 0;
+            quizItems.forEach((item, index) => {
+                const selectEl = document.getElementById(`select-${index}`);
+                if (selectEl && selectEl.value === item.answer) {
+                    correctCount++;
+                }
+            });
+
+            const scoreText = `${correctCount} / ${quizItems.length}`;
+            const scoreDisplay = document.getElementById('score-display');
+            const printScoreSummary = document.getElementById('print-score-summary');
+            if (scoreDisplay) scoreDisplay.textContent = scoreText;
+            if (printScoreSummary) printScoreSummary.textContent = scoreText;
+        }
+
+        /**
+         * Toggles between Quiz Mode and Study Mode:
+         * - Entering Study Mode: snapshots all student selections, reveals all correct answers, disables dropdowns.
+         * - Returning to Quiz: restores exact captured selections and colors, re-enables dropdowns.
+         */
+        function toggleStudyMode() {
+            const btn = document.getElementById('study-mode-btn');
+            const label = document.getElementById('study-mode-label');
+            const badge = document.getElementById('mode-badge');
+
+            if (!isStudyMode) {
+                // Capture current student state across all 22 dropdowns
+                savedStudentSelections = quizItems.map((_, index) => {
+                    const selectEl = document.getElementById(`select-${index}`);
+                    return selectEl ? selectEl.value : "";
+                });
+
+                // Populate every dropdown with the correct answer and disable editing
+                quizItems.forEach((item, index) => {
+                    const selectEl = document.getElementById(`select-${index}`);
+                    if (selectEl) {
+                        selectEl.value = item.answer;
+                        selectEl.disabled = true;
+                        selectEl.classList.add('cursor-default');
+                        applySelectStyling(selectEl, item.answer, item.answer);
+                    }
+                });
+
+                isStudyMode = true;
+                label.textContent = "Return to Quiz";
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'active:bg-indigo-800');
+                btn.classList.add('bg-amber-600', 'hover:bg-amber-700', 'active:bg-amber-800');
+                if (badge) badge.classList.remove('hidden');
+            } else {
+                // Restore captured student selections and styling
+                quizItems.forEach((item, index) => {
+                    const selectEl = document.getElementById(`select-${index}`);
+                    const previousValue = savedStudentSelections[index] || "";
+                    if (selectEl) {
+                        selectEl.value = previousValue;
+                        selectEl.disabled = false;
+                        selectEl.classList.remove('cursor-default');
+                        applySelectStyling(selectEl, previousValue, item.answer);
+                    }
+                });
+
+                isStudyMode = false;
+                label.textContent = "Study Mode";
+                btn.classList.remove('bg-amber-600', 'hover:bg-amber-700', 'active:bg-amber-800');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'active:bg-indigo-800');
+                if (badge) badge.classList.add('hidden');
+            }
+
+            updateScoreDisplay();
+        }
+
+        /**
+         * Checks whether both Student Name and Student ID have at least 2 non-whitespace characters
+         */
+        function isStudentInfoValid() {
+            const nameInput = document.getElementById('student-name');
+            const idInput = document.getElementById('student-id');
+            if (!nameInput || !idInput) return false;
+
+            const nameValid = nameInput.value.trim().length >= 2;
+            const idValid = idInput.value.trim().length >= 2;
+            return nameValid && idValid;
+        }
+
+        /**
+         * Enables or disables the Print / Save to PDF button based on Name & ID length
+         */
+        function validateStudentInfo() {
+            const valid = isStudentInfoValid();
+            const printBtn = document.getElementById('print-btn');
+            const helperText = document.getElementById('print-helper-text');
+
+            if (valid) {
+                hideCustomAlert();
+                printBtn.disabled = false;
+                printBtn.setAttribute('aria-disabled', 'false');
+                printBtn.classList.remove('bg-slate-200', 'text-slate-400', 'border-slate-300', 'cursor-not-allowed');
+                printBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'active:bg-emerald-800', 'text-white', 'border-transparent', 'shadow-sm', 'cursor-pointer');
+                printBtn.title = "Print worksheet or save as PDF";
+
+                helperText.classList.remove('text-amber-700');
+                helperText.classList.add('text-emerald-700');
+                helperText.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Student Name and ID verified. Print / Save to PDF is ready.
+                `;
+            } else {
+                printBtn.disabled = true;
+                printBtn.setAttribute('aria-disabled', 'true');
+                printBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'active:bg-emerald-800', 'text-white', 'border-transparent', 'shadow-sm', 'cursor-pointer');
+                printBtn.classList.add('bg-slate-200', 'text-slate-400', 'border-slate-300', 'cursor-not-allowed');
+                printBtn.title = "Enter at least 2 characters in both Student Name and ID to enable printing";
+
+                helperText.classList.remove('text-emerald-700');
+                helperText.classList.add('text-amber-700');
+                helperText.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Enter at least 2 characters in both Student Name and Student ID to unlock Print / Save to PDF.
+                `;
+            }
+        }
+
+        /**
+         * Handles Print / Save to PDF button click
+         */
+        function handlePrint() {
+            if (!isStudentInfoValid()) {
+                showCustomAlert("Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.");
+                return;
+            }
+            window.print();
+        }
+
+        function showCustomAlert(message) {
+            const alertBox = document.getElementById('custom-alert');
+            const alertText = document.getElementById('custom-alert-text');
+            if (alertBox && alertText) {
+                alertText.textContent = message;
+                alertBox.classList.remove('hidden');
+            }
+        }
+
+        function hideCustomAlert() {
+            const alertBox = document.getElementById('custom-alert');
+            if (alertBox) {
+                alertBox.classList.add('hidden');
+            }
+        }
+
+        // Intercept keyboard shortcuts (Ctrl+P / Cmd+P) if Name & ID are not filled in
+        window.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+                if (!isStudentInfoValid()) {
+                    e.preventDefault();
+                    showCustomAlert("Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.");
+                }
+            }
+        });
+
+        // Initialize exercise on page load
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Dive Ep. 42 — The Forbidden Door of Bluebeard</title>
+    <style>
+        :root {
+            --cream-50: #FDFBF7;
+            --cream-100: #F7F3EB;
+            --cream-200: #EDE5D5;
+            --terra-50: #FDF4F0;
+            --terra-500: #C85A32;
+            --terra-600: #B04A25;
+            --ink-900: #1E1B18;
+            --ink-700: #443E38;
+            --ink-500: #787067;
+            --indigo-700: #4338CA;
+            --indigo-900: #312E81;
+            --amber-100: #FEF3C7;
+            --amber-300: #FCD34D;
+            --amber-500: #F59E0B;
+            --amber-900: #78350F;
+            --rose-600: #E11D48;
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--cream-50);
+            color: var(--ink-900);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--terra-500); color: #fff; }
+
+        button { font: inherit; cursor: pointer; }
+        svg { display: block; }
+        .hidden { display: none !important; }
+
+        /* ---------- Header ---------- */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            width: 100%;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cream-200);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .header-inner {
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 0.875rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .brand { display: flex; align-items: center; gap: 0.75rem; }
+
+        .brand-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.75rem;
+            background: var(--terra-500);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .brand-icon svg { width: 1.25rem; height: 1.25rem; }
+
+        .eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--terra-600);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-family: var(--font-serif);
+            font-size: 1.125rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .header-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--ink-900);
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.15s ease;
+        }
+
+        .chip:hover { background: var(--cream-100); }
+        .chip svg { width: 1rem; height: 1rem; color: var(--terra-500); }
+        .chip:active { transform: scale(0.95); }
+
+        .chip.toggle-on { background: var(--amber-100); color: var(--amber-900); border-color: var(--amber-300); box-shadow: none; }
+        .chip.toggle-on:hover { background: var(--amber-100); }
+        .chip.toggle-off { font-weight: 500; color: var(--ink-700); box-shadow: none; }
+
+        .dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: var(--amber-500); }
+        .toggle-off .dot { background: rgba(120, 112, 103, 0.4); }
+
+        /* ---------- Main ---------- */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 56rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* ---------- Player ---------- */
+        .player {
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .player-row { display: flex; flex-direction: column; gap: 1rem; }
+        .player-left { display: flex; align-items: center; gap: 1rem; }
+
+        .cover {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1rem;
+            background: linear-gradient(to bottom right, #1E293B, #1E1B4B, var(--terra-600));
+            padding: 0.625rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .cover svg { width: 100%; height: 100%; }
+
+        .play-btn {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            border: none;
+            background: var(--terra-500);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 6px -1px rgba(200, 90, 50, 0.2), 0 2px 4px -2px rgba(200, 90, 50, 0.2);
+            transition: all 0.15s ease;
+        }
+
+        .play-btn:hover { background: var(--terra-600); }
+        .play-btn:active { transform: scale(0.95); }
+        .play-btn svg { width: 1.5rem; height: 1.5rem; }
+        #svg-icon-play { margin-left: 0.125rem; }
+
+        .player-meta { flex: 1; min-width: 0; }
+
+        .meta-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hosts { margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--ink-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .host-mark { color: var(--indigo-700); font-weight: 700; }
+        .host-jenny { color: var(--terra-600); font-weight: 700; }
+
+        .player-controls { display: flex; align-items: center; gap: 0.5rem; }
+
+        .speed-btn {
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: var(--cream-100);
+            color: var(--ink-700);
+            border: 1px solid var(--cream-200);
+            transition: background 0.15s ease;
+        }
+
+        .speed-btn:hover { background: var(--cream-200); }
+
+        .mute-btn {
+            padding: 0.375rem;
+            border-radius: 0.5rem;
+            border: none;
+            background: transparent;
+            color: var(--ink-700);
+            transition: background 0.15s ease;
+        }
+
+        .mute-btn:hover { background: var(--cream-100); }
+        .mute-btn svg { width: 1rem; height: 1rem; }
+        #svg-vol-off { color: var(--rose-600); }
+
+        .waveform-wrapper { position: relative; width: 100%; padding: 0.25rem 0; cursor: pointer; user-select: none; }
+        #svg-waveform { width: 100%; height: 2.75rem; overflow: visible; }
+
+        .times {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--ink-500);
+        }
+
+        .times-hint { display: none; font-family: var(--font-sans); font-size: 11px; color: rgba(120, 112, 103, 0.8); }
+
+        /* ---------- Definition Drawer ---------- */
+.definition-drawer {
+    position: fixed;
+    left: 50%;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    width: calc(100% - 2rem);
+    max-width: 54rem;
+    z-index: 40;
+    margin: 0;
+    background: var(--ink-900);
+    color: var(--cream-50);
+    border: 1px solid var(--ink-700);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.18), var(--shadow-lg);
+    animation: drawer-up 0.2s ease-out;
+}
+
+@keyframes drawer-up {
+    from { opacity: 0; transform: translate(-50%, 1rem); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Leave room at the bottom so the drawer never covers the last lines or footer */
+body:has(#definition-drawer:not(.hidden)) { padding-bottom: 9rem; }
+
+        .def-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+        .def-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+
+        #def-type {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            background: rgba(251, 191, 36, 0.2);
+            color: #FCD34D;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        #def-phrase { margin: 0; font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: #fff; }
+        #def-meaning { margin: 0; font-size: 0.75rem; line-height: 1.625; color: rgba(247, 243, 235, 0.9); }
+
+        .def-close {
+            padding: 0.375rem;
+            border-radius: 0.5rem;
+            border: none;
+            background: transparent;
+            color: rgba(237, 229, 213, 0.7);
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+
+        .def-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+        .def-close svg { width: 1rem; height: 1rem; }
+
+        /* ---------- Transcript ---------- */
+        .transcript { display: flex; flex-direction: column; gap: 1rem; }
+
+        .turn {
+            background: #fff;
+            border: 1px solid var(--cream-200);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.15s ease;
+        }
+
+        .turn.is-mark:hover { border-color: #C7D2FE; }
+        .turn.is-jenny:hover { border-color: #EBC3B2; }
+
+        .turn.is-active {
+            background: #FEFAF8;
+            box-shadow: 0 0 0 2px rgba(200, 90, 50, 0.35);
+        }
+
+        .turn-inner { display: flex; align-items: flex-start; gap: 0.875rem; }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .is-mark .avatar { background: var(--indigo-900); color: #EEF2FF; border-color: var(--indigo-700); }
+        .is-jenny .avatar { background: var(--terra-600); color: #fff; border-color: var(--terra-500); }
+
+        .turn-body { flex: 1; min-width: 0; }
+        .turn-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.375rem; }
+
+        .speaker { font-weight: 700; font-size: 0.875rem; }
+        .is-mark .speaker { color: var(--indigo-900); }
+        .is-jenny .speaker { color: var(--terra-600); }
+
+        .ts-btn {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--ink-500);
+            background: var(--cream-50);
+            border: 1px solid var(--cream-200);
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.15s ease;
+        }
+
+        .ts-btn:hover { color: var(--terra-600); background: var(--terra-50); }
+
+        .turn-text { margin: 0; font-size: 15.5px; line-height: 1.8; color: var(--ink-900); }
+
+        /* Key phrase interactive highlight styling */
+        .key-phrase {
+            position: relative;
+            cursor: pointer;
+            border-radius: 0.35rem;
+            padding: 0.05rem 0.25rem;
+            transition: all 0.18s ease;
+        }
+
+        .key-phrase:focus-visible { outline: 2px solid var(--terra-500); outline-offset: 1px; }
+
+        .highlights-enabled .key-phrase {
+            background-color: #FEF3C7;
+            color: #78350F;
+            border-bottom: 2px solid #F59E0B;
+            font-weight: 600;
+        }
+
+        .highlights-enabled .key-phrase:hover,
+        .highlights-enabled .key-phrase.active-phrase {
+            background-color: #FDE68A;
+            border-bottom-color: #B45309;
+        }
+
+        .highlights-disabled .key-phrase {
+            background-color: transparent;
+            color: inherit;
+            border-bottom: 1px dashed transparent;
+            font-weight: inherit;
+            padding: 0;
+        }
+
+        .highlights-disabled .key-phrase:hover { border-bottom-color: #A8A29E; }
+
+        /* ---------- Practice Callout ---------- */
+        .callout {
+            margin-top: 2.5rem;
+            background: var(--cream-100);
+            border: 1px solid var(--cream-200);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .callout .label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terra-600); }
+        .callout h2 { margin: 0.25rem 0 0.5rem; font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; }
+        .callout p { margin: 0 auto 1.25rem; max-width: 32rem; font-size: 0.875rem; line-height: 1.5; color: var(--ink-700); }
+
+        .callout-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; }
+
+        .btn-lg {
+            padding: 0.75rem 1.25rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: var(--shadow-xs);
+            transition: all 0.15s ease;
+        }
+
+        .btn-lg.secondary { background: #fff; color: var(--ink-900); border: 1px solid var(--cream-200); }
+        .btn-lg.secondary:hover { background: var(--cream-50); }
+        .btn-lg.primary { background: var(--terra-500); color: #fff; border: 1px solid var(--terra-500); }
+        .btn-lg.primary:hover { background: var(--terra-600); }
+
+        /* ---------- Footer ---------- */
+        footer {
+            width: 100%;
+            margin-top: auto;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--ink-500);
+            border-top: 1px solid rgba(237, 229, 213, 0.6);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (min-width: 640px) {
+            .header-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .site-header h1 { font-size: 1.25rem; }
+            .chip { font-size: 0.875rem; }
+            main { padding: 2.25rem 1.5rem; }
+            .player { padding: 0 1.5rem; background:#EBE6DD }
+            .player-row { flex-direction: row; align-items: center; gap: 1.25rem; }
+            .cover { width: 5rem; height: 5rem; }
+            .times-hint { display: inline; }
+            #def-phrase { font-size: 1.125rem; }
+            #def-meaning { font-size: 0.875rem; }
+            .transcript { gap: 1.25rem; }
+            .turn { padding: 1.5rem; }
+            .turn-inner { gap: 1rem; }
+            .speaker { font-size: 1rem; }
+            .turn-text { font-size: 17px; }
+            .callout { padding: 2rem; }
+        }
+
+        @media (min-width: 768px) {
+            .header-inner { flex-direction: row; align-items: center; }
+        }
+    </style>
+
+    <style>
+    a.player-link { margin: .2rem 3rem 2rem 3rem;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+a.player-link:hover .play-btn,
+a.player-link:focus-visible .play-btn {
+    transform: scale(1.06);
+}
+a.player-link:focus-visible {
+    outline: 2px solid #C85A32;
+    outline-offset: 4px;
+}
+</style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="eyebrow">Story Dive &bull; Episode 42</span>
+                    <h1>Bluebeard - Podcast</h1>
+                </div>
+            </div>
+
+            <nav aria-label="Study Exercises" class="header-nav">
+                <a href="bluebeardPodcVocabCards.html" class="chip" target="_blank">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    Vocabulary Flashcards
+                </a>
+
+                <a href="bluebeardPodcVocabCloze.html" class="chip" target="_blank">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Cloze Gap-Fill Exercise
+                </a>
+             <div>
+                <button id="btn-toggle-highlights" onclick="toggleHighlights()" class="chip toggle-on" title="Toggle yellow highlights on the 40 target vocabulary phrases">
+                    <span class="dot"></span>
+                    <span id="highlight-label">Highlights: ON</span>
+                </button> <span style="font-size:85%;">(when on, click to get definition)</span>
+             </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ==================== AUDIO PLAYER LINK ==================== -->
+        <a href="https://youtu.be/r0CJX8NLq4Q" class="player player-link" aria-label="Listen to the episode: hosted by Mark and Jenny" target="_blank">
+            <div class="player-row">
+                <div class="player-left">
+                    <span class="play-btn" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5.14v13.72a1 1 0 001.52.85l11-6.86a1 1 0 000-1.7l-11-6.86A1 1 0 008 5.14z"/>
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="player-meta">
+                    <div class="meta-top">
+                        <p class="hosts">
+                            Hosted by <span class="host-mark">Mark</span> &amp; <span class="host-jenny">Jenny</span>
+                        </p>
+                        <div class="player-controls" aria-hidden="true">
+                            <span class="speed-btn">1.0x</span>
+                            <span class="mute-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="waveform-wrapper" id="waveform-wrapper" aria-hidden="true">
+                        <svg id="svg-waveform" viewBox="0 0 600 44" preserveAspectRatio="none">
+                            <defs>
+                                <clipPath id="progress-clip">
+                                    <rect id="clip-rect" x="0" y="0" width="0" height="44" />
+                                </clipPath>
+                            </defs>
+                            <g id="waveform-bg" fill="#CEB78B"></g>
+                            <g id="waveform-fg" fill="#C85A32" clip-path="url(#progress-clip)"></g>
+                            <line id="scrubber-line" x1="0" y1="2" x2="0" y2="42" stroke="#1E1B18" stroke-width="2" stroke-linecap="round" />
+                            <circle id="scrubber-thumb" cx="0" cy="22" r="5" fill="#1E1B18" stroke="#FFFFFF" stroke-width="1.5" />
+                        </svg>
+                    </div>
+
+                    <div class="times">
+                        <span>00:00</span>
+                        <span class="times-hint">Click to listen to the episode</span>
+                        <span>03:45</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <!-- ==================== DEFINITION DRAWER ==================== -->
+        <div id="definition-drawer" class="definition-drawer hidden">
+            <div class="def-inner">
+                <div>
+                    <div class="def-head">
+                        <span id="def-type">Idiom</span>
+                        <h2 id="def-phrase">Phrase</h2>
+                    </div>
+                    <p id="def-meaning">Definition appears here.</p>
+                </div>
+                <button onclick="closeDefinition()" aria-label="Close definition" class="def-close">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== DIALOGUE TRANSCRIPT ==================== -->
+        <section aria-label="Episode Transcript" id="transcript-container" class="transcript highlights-enabled">
+            <!-- Populated dynamically via JS -->
+        </section>
+
+        <!-- Bottom Practice Callout -->
+        <section class="callout">
+            <span class="label">Ready to Practice?</span>
+            <h2>Test Your Retention</h2>
+            <p>Now that you've read the transcript in context, review all 40 phrases with interactive flashcards or test yourself in the gap-fill exercise.</p>
+            <div class="callout-actions">
+                <a href="bluebeardPodcVocabCards.html" class="btn-lg secondary" target="_blank">Vocabulary Flashcards</a>
+                <a href="bluebeardPodcVocabCloze.html" class="btn-lg primary" target="_blank">Start Cloze/Select Exercise →</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>Story Dive Podcast &bull; Episode 42 Companion Transcript</footer>
+
+    <script>
+        // Glossary dictionary mapping exact lowercase phrase keys to type & meaning
+        const PHRASE_GLOSSARY = {
+            "unpacking": { type: "Common Phrase / Metaphor", meaning: "Analyzing or explaining something complex in detail." },
+            "get the ball rolling": { type: "Idiom", meaning: "To start an activity, conversation, or process." },
+            "confess something": { type: "Collocation", meaning: "To admit something, especially a mistake or lack of knowledge." },
+            "to be completely honest": { type: "Common Phrase", meaning: "Used to emphasize sincerity or candor before stating a fact." },
+            "no shame in asking": { type: "Common Phrase", meaning: "Reassurance that it is completely okay not to know something." },
+            "rules with an iron fist": { type: "Idiom", meaning: "To control a group or area with extreme strictness and harshness." },
+            "answers to no one": { type: "Common Phrase", meaning: "Not having to explain one's actions to any higher authority." },
+            "above the law": { type: "Idiom", meaning: "Exempt from obeying laws or facing consequences for breaking them." },
+            "now the pieces fall into place": { type: "Idiom", meaning: "Everything suddenly makes sense after learning a missing detail." },
+            "raised an eyebrow": { type: "Idiom", meaning: "Showed mild surprise, doubt, or suspicion." },
+            "rolling in dough": { type: "Idiom (Slang)", meaning: "Extremely wealthy; having a lot of money." },
+            "keep your mouth shut": { type: "Idiom", meaning: "To remain silent and not ask questions or reveal secrets." },
+            "take his word for it": { type: "Common Phrase", meaning: "To believe what someone says without requiring proof." },
+            "poke the bear": { type: "Idiom", meaning: "To deliberately provoke or annoy someone powerful or dangerous." },
+            "you hit the nail on the head": { type: "Idiom", meaning: "You described the situation or problem with complete accuracy." },
+            "ties the knot": { type: "Idiom", meaning: "Gets married." },
+            "packs his bags": { type: "Common Phrase / Idiom", meaning: "Prepares to leave a place (often suddenly or for a trip)." },
+            "free rein": { type: "Idiom", meaning: "Complete freedom to act or go wherever one wants." },
+            "begging for trouble": { type: "Collocation", meaning: "Acting in a way that is almost guaranteed to cause problems." },
+            "reverse psychology 101": { type: "Common Phrase", meaning: "A basic example of getting someone to do something by telling them not to do it." },
+            "curiosity killed the cat": { type: "Idiom / Proverb", meaning: "Being overly inquisitive can lead you into dangerous situations." },
+            "draw a line in the sand": { type: "Idiom", meaning: "To establish a strict limit or boundary that must not be crossed." },
+            "hands off": { type: "Common Phrase", meaning: "A warning not to touch, interfere with, or take something." },
+            "takes the wheel": { type: "Idiom", meaning: "Takes control of a situation or behavior." },
+            "gives in to temptation": { type: "Collocation", meaning: "Surrenders to the urge to do something forbidden or unwise." },
+            "on the brink of starvation": { type: "Collocation", meaning: "Extremely close to dying from a lack of food." },
+            "alive and kicking": { type: "Idiom", meaning: "Living and active (often said when someone was thought to be dead or gone)." },
+            "shows up out of the blue": { type: "Idiom", meaning: "Arrives unexpectedly without any prior warning." },
+            "catches her red-handed": { type: "Idiom", meaning: "Discovers someone in the exact act of doing something wrong." },
+            "saved by the bell": { type: "Idiom", meaning: "Rescued from a bad or fatal situation at the very last second." },
+            "no kidding": { type: "Common Phrase", meaning: "An expression of strong agreement ('I completely agree' or 'Seriously')." },
+            "a fate worse than death": { type: "Idiom", meaning: "An experience so miserable or terrifying that dying seems preferable." },
+            "rot in the dark": { type: "Collocation", meaning: "To be abandoned and left to suffer in a grim, isolated place." },
+            "a silver lining": { type: "Idiom", meaning: "A positive or hopeful aspect inside an otherwise terrible situation." },
+            "split his fortune down the middle": { type: "Idiom", meaning: "Divided something completely equally among the people involved." },
+            "walked away with a small fortune": { type: "Collocation", meaning: "Left a situation having gained a very large amount of money." },
+            "a brand-new lease on life": { type: "Idiom", meaning: "A fresh start or renewed opportunity for a much better life." },
+            "every cloud has a silver lining": { type: "Idiom / Proverb", meaning: "Even the worst situations contain at least one positive outcome." },
+            "wraps up": { type: "Phrasal Verb", meaning: "Finishes or brings something (like a show or meeting) to a close." },
+            "catch you on the flip side": { type: "Idiom (Slang)", meaning: "A casual way of saying 'goodbye, see you next time.'" }
+        };
+
+        // Exact Podcast Dialogue Turns with Timestamps
+        const TRANSCRIPT_TURNS = [
+            { speaker: "Mark", timestamp: "00:00", seconds: 0,
+              text: "Welcome back to Story Dive! Today, Jenny and I are [[unpacking]] a chilling fairy tale we just read about a guy named Bluebeard." },
+            { speaker: "Jenny", timestamp: "00:14", seconds: 14,
+              text: "Okay, before we [[get the ball rolling]], I have to [[confess something]]—the article calls him a powerful \"warlord.\" [[To be completely honest]], I have no idea what a warlord actually is." },
+            { speaker: "Mark", timestamp: "00:32", seconds: 32,
+              text: "[[No shame in asking]]! Basically, it’s a military leader who [[rules with an iron fist]], controlling a region through sheer force and a private army. Think of him as a local boss who [[answers to no one]] and is [[above the law]]." },
+            { speaker: "Jenny", timestamp: "00:54", seconds: 54,
+              text: "Ah, [[now the pieces fall into place]]! Because the story mentions his wives kept dying of \"strange diseases\" or \"bizarre accidents,\" and nobody ever [[raised an eyebrow]]. When a guy is [[rolling in dough]] and commands his own army, you [[keep your mouth shut]] and [[take his word for it]]. Nobody wants to [[poke the bear]]." },
+            { speaker: "Mark", timestamp: "01:22", seconds: 82,
+              text: "[[You hit the nail on the head]]. So, Bluebeard [[ties the knot]] with the sister of his top swordsman, [[packs his bags]] for war, and hands her the castle keys. He tells her she has [[free rein]] over the place, except for one room at the end of the hall." },
+            { speaker: "Jenny", timestamp: "01:46", seconds: 106,
+              text: "Which is [[begging for trouble]]! Telling someone \"you are forbidden to open this door\" is [[reverse psychology 101]]. [[Curiosity killed the cat]], right? The second you [[draw a line in the sand]] and say \"[[hands off]],\" human nature [[takes the wheel]] and people just have to know what’s behind it." },
+            { speaker: "Mark", timestamp: "02:14", seconds: 134,
+              text: "Couldn't agree more. Naturally, she [[gives in to temptation]], unlocks the door, and heads down into a freezing dungeon. Instead of treasure, she finds all his previous wives chained up and [[on the brink of starvation]]—[[alive and kicking]], just trapped!" },
+            { speaker: "Jenny", timestamp: "02:40", seconds: 160,
+              text: "Total nightmare fuel. And then Bluebeard [[shows up out of the blue]], [[catches her red-handed]], and is about to end her life when her brother bursts through the doors and defeats Bluebeard in a sword fight. Talk about [[saved by the bell]]—or by the sword!" },
+            { speaker: "Mark", timestamp: "03:05", seconds: 185,
+              text: "[[No kidding]]. Honestly, the whole ordeal was [[a fate worse than death]] for those women, left to [[rot in the dark]] like that." },
+            { speaker: "Jenny", timestamp: "03:18", seconds: 198,
+              text: "Truly horrific. Though, if we’re looking for [[a silver lining]], they sold his massive castle and [[split his fortune down the middle]]. As terrible as that trauma was, at least they all [[walked away with a small fortune]] and [[a brand-new lease on life]]." },
+            { speaker: "Mark", timestamp: "03:34", seconds: 214,
+              text: "[[Every cloud has a silver lining]], I suppose! That [[wraps up]] today's episode—thanks for tuning in, and we'll [[catch you on the flip side]]!" }
+        ];
+
+        // ==================== TRANSCRIPT RENDERING & HIGHLIGHTS ====================
+        let highlightsEnabled = true;
+
+        function formatDialogueText(rawText) {
+            return rawText.replace(/\[\[(.*?)\]\]/g, (match, phraseText) => {
+                const lookupKey = phraseText.toLowerCase();
+                return `<span role="button" tabindex="0"
+                    data-phrase="${escapeHtml(phraseText)}"
+                    data-key="${escapeHtml(lookupKey)}"
+                    class="key-phrase">${escapeHtml(phraseText)}</span>`;
+            });
+        }
+
+        function renderTranscript() {
+            const container = document.getElementById('transcript-container');
+
+            container.innerHTML = TRANSCRIPT_TURNS.map((turn, index) => {
+                const speakerClass = turn.speaker === "Mark" ? "is-mark" : "is-jenny";
+                return `
+                    <article id="turn-${index}" data-seconds="${turn.seconds}" class="turn ${speakerClass}">
+                        <div class="turn-inner">
+                            <div class="avatar">${turn.speaker[0]}</div>
+                            <div class="turn-body">
+                                <div class="turn-head">
+                                    <span class="speaker">${turn.speaker}</span>
+                                    <button class="ts-btn" data-seek="${turn.seconds}" title="Jump audio player to ${turn.timestamp}">${turn.timestamp}</button>
+                                </div>
+                                <p class="turn-text">${formatDialogueText(turn.text)}</p>
+                            </div>
+                        </div>
+                    </article>`;
+            }).join('');
+        }
+
+        function toggleHighlights() {
+            highlightsEnabled = !highlightsEnabled;
+            const container = document.getElementById('transcript-container');
+            const btn = document.getElementById('btn-toggle-highlights');
+
+            container.classList.toggle('highlights-enabled', highlightsEnabled);
+            container.classList.toggle('highlights-disabled', !highlightsEnabled);
+            btn.classList.toggle('toggle-on', highlightsEnabled);
+            btn.classList.toggle('toggle-off', !highlightsEnabled);
+            document.getElementById('highlight-label').textContent = highlightsEnabled ? "Highlights: ON" : "Highlights: OFF";
+
+            if (!highlightsEnabled) closeDefinition();
+        }
+
+        function showDefinition(el) {
+            const entry = PHRASE_GLOSSARY[el.dataset.key];
+            if (!entry) return;
+
+            document.querySelectorAll('.key-phrase.active-phrase').forEach(node => node.classList.remove('active-phrase'));
+            el.classList.add('active-phrase');
+
+            document.getElementById('def-phrase').textContent = el.dataset.phrase;
+            document.getElementById('def-type').textContent = entry.type;
+            document.getElementById('def-meaning').textContent = entry.meaning;
+            document.getElementById('definition-drawer').classList.remove('hidden');
+        }
+
+        function closeDefinition() {
+            document.getElementById('definition-drawer').classList.add('hidden');
+            document.querySelectorAll('.key-phrase.active-phrase').forEach(node => node.classList.remove('active-phrase'));
+        }
+
+        // Event delegation for phrases & timestamp buttons
+        const transcriptEl = document.getElementById('transcript-container');
+
+        transcriptEl.addEventListener('click', (e) => {
+            const phrase = e.target.closest('.key-phrase');
+            if (phrase) { showDefinition(phrase); return; }
+            const ts = e.target.closest('[data-seek]');
+            if (ts) seekToSeconds(Number(ts.dataset.seek));
+        });
+
+        transcriptEl.addEventListener('keydown', (e) => {
+            const phrase = e.target.closest('.key-phrase');
+            if (phrase && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                showDefinition(phrase);
+            }
+        });
+
+        // ==================== FAKE SVG AUDIO PLAYER LOGIC ====================
+        const TOTAL_DURATION = 225; // 03:45 in seconds
+        let currentSeconds = 0;
+        let isPlaying = false;
+        let isMuted = false;
+        const SPEEDS = [1.0, 1.25, 1.5];
+        let speedIndex = 0;
+        let playbackInterval = null;
+
+        function generateSvgWaveform() {
+            const numBars = 85;
+            const totalWidth = 600;
+            const slotWidth = totalWidth / numBars;
+            const barWidth = slotWidth * 0.58;
+
+            let barsMarkup = '';
+            for (let i = 0; i < numBars; i++) {
+                const wave1 = Math.sin(i * 0.35) * 10;
+                const wave2 = Math.cos(i * 0.85) * 7;
+                const wave3 = ((i * 19) % 11);
+                const height = Math.max(6, Math.min(38, Math.round(16 + wave1 + wave2 + wave3)));
+                const y = (44 - height) / 2;
+                const x = i * slotWidth;
+                barsMarkup += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${height}" rx="2" />`;
+            }
+
+            document.getElementById('waveform-bg').innerHTML = barsMarkup;
+            document.getElementById('waveform-fg').innerHTML = barsMarkup;
+        }
+
+        function formatTime(sec) {
+            const clamped = Math.max(0, Math.min(TOTAL_DURATION, Math.floor(sec)));
+            const mins = String(Math.floor(clamped / 60)).padStart(2, '0');
+            const secs = String(clamped % 60).padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        function updatePlayerUI() {
+            const pct = Math.max(0, Math.min(1, currentSeconds / TOTAL_DURATION));
+            const xPos = (pct * 600).toFixed(1);
+
+            document.getElementById('clip-rect').setAttribute('width', xPos);
+            document.getElementById('scrubber-line').setAttribute('x1', xPos);
+            document.getElementById('scrubber-line').setAttribute('x2', xPos);
+            document.getElementById('scrubber-thumb').setAttribute('cx', xPos);
+            document.getElementById('time-current').textContent = formatTime(currentSeconds);
+
+            highlightCurrentTurn();
+        }
+
+        function highlightCurrentTurn() {
+            let activeIndex = -1;
+
+            if (isPlaying || currentSeconds > 0) {
+                TRANSCRIPT_TURNS.forEach((turn, idx) => {
+                    if (currentSeconds >= turn.seconds) activeIndex = idx;
+                });
+            }
+
+            document.querySelectorAll('.turn').forEach((el, idx) => {
+                el.classList.toggle('is-active', idx === activeIndex);
+            });
+        }
+
+
+
+        function seekToSeconds(sec) {
+            currentSeconds = sec;
+            updatePlayerUI();
+            if (!isPlaying) togglePlay();
+        }
+
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Initialize Page
+        generateSvgWaveform();
+        renderTranscript();
+        updatePlayerUI();
+
+    </script>
+</body>
+</html>
