@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vocabulary Study · How the Grinch Stole Christmas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
     --bg: #f1e9d2;
@@ -25,8 +21,10 @@
     --cream: #fdf8eb;
     --border: rgba(29, 77, 46, 0.18);
   }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+
   body {
     font-family: 'Manrope', sans-serif;
     background: var(--bg);
@@ -39,23 +37,189 @@
       radial-gradient(ellipse 70% 60% at 85% 100%, rgba(132, 32, 32, 0.08) 0%, transparent 55%),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
-  .display { font-family: 'Cormorant Garamond', serif; }
 
-  /* Hero decorative SVGs */
+  .display { font-family: 'Cormorant Garamond', serif; }
+  .hero { position: relative; overflow: hidden; }
   .hero-deco { position: absolute; pointer-events: none; color: var(--green); opacity: 0.12; }
 
-  /* Ornament divider */
-  .ornament-deco { display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--gold); }
-  .ornament-deco .line { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); flex: 1; max-width: 100px; }
+  .container {
+    width: 100%;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 
-  /* Sticky bar */
+  .hero-content {
+    position: relative;
+    padding-top: 64px;
+    padding-bottom: 40px;
+  }
+
+  .hero-copy { text-align: center; }
+
+  .ornament-deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: var(--gold);
+    max-width: 340px;
+    margin: 0 auto 32px;
+  }
+
+  .ornament-deco .line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    flex: 1;
+    max-width: 100px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    color: var(--green-deep);
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 20px;
+  }
+
+  h1 em { color: var(--red); }
+
+  .intro {
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 672px;
+    margin: 0 auto;
+    line-height: 1.625;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .stat-pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 16px;
+    background: rgba(168, 116, 42, 0.09);
+    border: 1px solid rgba(168, 116, 42, 0.20);
+    border-radius: 100px;
+  }
+
+  .stat-pill .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--green-deep);
+    line-height: 1;
+  }
+
+  .stat-pill .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
   .sticky-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
     background: linear-gradient(180deg, rgba(241, 233, 210, 0.96), rgba(241, 233, 210, 0.86));
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
   }
-  .search-wrap { position: relative; flex: 1; max-width: 360px; min-width: 200px; }
+
+  .sticky-bar-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .progress-area { display: flex; align-items: center; gap: 16px; }
+
+  .progress-label {
+    color: var(--ink-mute);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .progress-row { display: flex; align-items: center; gap: 12px; }
+
+  .progress-track {
+    width: 128px;
+    height: 5px;
+    background: rgba(29, 77, 46, 0.15);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-soft), var(--green));
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 100px;
+    position: relative;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2.5s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .progress-count {
+    color: var(--green-deep);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 360px;
+    min-width: 200px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--ink-mute);
+  }
+
   .search-input {
     background: rgba(253, 248, 235, 0.7);
     border: 1px solid var(--border);
@@ -67,13 +231,17 @@
     width: 100%;
     transition: all 0.25s;
   }
+
   .search-input:focus {
     outline: none;
     border-color: var(--green);
     background: var(--cream);
     box-shadow: 0 0 0 4px rgba(29, 77, 46, 0.10);
   }
+
   .search-input::placeholder { color: var(--ink-mute); }
+
+  .filter-row { display: flex; align-items: center; gap: 8px; }
 
   .filter-pill {
     padding: 8px 16px;
@@ -87,58 +255,12 @@
     transition: all 0.25s;
     white-space: nowrap;
   }
+
   .filter-pill:hover { border-color: var(--green); color: var(--green); }
   .filter-pill.active { background: var(--green); border-color: var(--green); color: var(--cream); }
 
-  /* Progress */
-  .progress-track {
-    height: 5px;
-    background: rgba(29, 77, 46, 0.15);
-    border-radius: 100px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--green-soft), var(--green));
-    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: 100px;
-    position: relative;
-  }
-  .progress-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    animation: shimmer 2.5s linear infinite;
-  }
-  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  main { padding-top: 40px; padding-bottom: 40px; }
 
-  /* Stats */
-  .stat-pill {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 8px;
-    padding: 7px 16px;
-    background: rgba(168, 116, 42, 0.09);
-    border: 1px solid rgba(168, 116, 42, 0.20);
-    border-radius: 100px;
-  }
-  .stat-pill .num {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--green-deep);
-    line-height: 1;
-  }
-  .stat-pill .lbl {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-  }
-
-  /* Card grid */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
@@ -155,25 +277,32 @@
     box-shadow: 0 1px 2px rgba(12, 43, 26, 0.04), 0 4px 12px rgba(12, 43, 26, 0.04);
     overflow: hidden;
   }
+
   .vocab-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
-    width: 4px; height: 100%;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
     background: linear-gradient(180deg, var(--gold-light), var(--gold));
     opacity: 0.75;
     transition: opacity 0.4s;
   }
+
   .vocab-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 1px 2px rgba(12, 43, 26, 0.04), 0 22px 44px rgba(12, 43, 26, 0.14);
     border-color: rgba(29, 77, 46, 0.32);
   }
+
   .vocab-card:hover::before { opacity: 1; }
+
   .vocab-card.learned {
     background: linear-gradient(170deg, #e8efe2 0%, #dde8d4 100%);
     border-color: rgba(29, 77, 46, 0.35);
   }
+
   .vocab-card.learned::before {
     background: linear-gradient(180deg, var(--green-soft), var(--green));
   }
@@ -190,6 +319,7 @@
     border-radius: 3px;
     border: 1px solid rgba(168, 116, 42, 0.18);
   }
+
   .word-display {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 600;
@@ -199,6 +329,7 @@
     margin: 12px 0 0;
     letter-spacing: -0.01em;
   }
+
   .definition {
     font-size: 14.5px;
     color: var(--ink-soft);
@@ -208,6 +339,7 @@
     border-bottom: 1px solid rgba(29, 77, 46, 0.15);
     margin: 16px 0 14px;
   }
+
   .micro-label {
     display: block;
     font-size: 10px;
@@ -217,6 +349,7 @@
     color: var(--ink-mute);
     margin-bottom: 6px;
   }
+
   .example {
     display: flex;
     gap: 10px;
@@ -225,9 +358,11 @@
     line-height: 1.55;
     margin: 8px 0;
   }
+
   .example-number {
     flex-shrink: 0;
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: var(--green);
     color: var(--cream);
@@ -238,16 +373,20 @@
     justify-content: center;
     margin-top: 1px;
   }
+
   .highlight-word {
     background: linear-gradient(180deg, transparent 55%, rgba(200, 154, 62, 0.45) 55%);
     padding: 0 3px;
     font-weight: 600;
     color: var(--green-deep);
   }
+
   .learn-btn {
     position: absolute;
-    top: 20px; right: 20px;
-    width: 30px; height: 30px;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: 1.5px solid rgba(29, 77, 46, 0.3);
     background: rgba(253, 248, 235, 0.6);
@@ -258,22 +397,27 @@
     transition: all 0.3s;
     padding: 0;
   }
+
   .learn-btn:hover {
     border-color: var(--green);
     background: rgba(29, 77, 46, 0.08);
     transform: scale(1.08);
   }
+
   .learn-btn svg { opacity: 0; transition: opacity 0.3s; color: var(--cream); }
+
   .vocab-card.learned .learn-btn {
     background: var(--green);
     border-color: var(--green);
   }
+
   .vocab-card.learned .learn-btn svg { opacity: 1; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
   .fade-up { animation: fadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
 
   .empty-state {
@@ -282,15 +426,60 @@
     color: var(--ink-mute);
   }
 
+  .empty-title {
+    color: var(--green-deep);
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+
+  .hidden { display: none !important; }
+
+  footer { border-top: 1px solid var(--border); margin-top: 40px; }
+
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .footer-note { color: var(--ink-mute); font-size: 14px; }
+
+  .reset-btn {
+    color: var(--red);
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .reset-btn:hover { text-decoration: underline; }
+
+  @media (min-width: 768px) {
+    .intro { font-size: 18px; }
+    .progress-track { width: 176px; }
+  }
+
   @media (max-width: 768px) {
-    .sticky-bar-content { flex-direction: column; gap: 12px; align-items: stretch; }
+    .container { padding-left: 24px; padding-right: 24px; }
+    .sticky-bar-content {
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+    }
     .filter-row { justify-content: center; }
   }
 </style>
 </head>
 <body>
 
-<header class="relative overflow-hidden">
+<header class="hero">
   <svg class="hero-deco" style="top:-50px;right:-50px;width:300px;height:300px" viewBox="0 0 200 200" fill="none">
     <circle cx="100" cy="100" r="85" stroke="currentColor" stroke-width="0.6"/>
     <circle cx="100" cy="100" r="65" stroke="currentColor" stroke-width="0.6"/>
@@ -302,24 +491,22 @@
     <path d="M100 50 L110 90 L150 100 L110 110 L100 150 L90 110 L50 100 L90 90 Z" stroke="currentColor" stroke-width="0.6"/>
   </svg>
 
-  <div class="max-w-6xl mx-auto px-6 lg:px-10 pt-16 pb-10 relative">
-    <div class="text-center">
-      <div class="ornament-deco mb-8" style="max-width:340px;margin-left:auto;margin-right:auto">
+  <div class="container hero-content">
+    <div class="hero-copy">
+      <div class="ornament-deco">
         <span class="line"></span>
-        <span class="text-xs font-bold tracking-[0.22em] uppercase" style="color:var(--gold)">Vocabulary Study Deck</span>
+        <span class="eyebrow">Vocabulary Study Deck</span>
         <span class="line"></span>
       </div>
 
-      <h1 class="display font-bold leading-none mb-5" style="font-size: clamp(2.5rem, 6vw, 4.75rem); color:var(--green-deep)">
-        How the <em class="italic" style="color:var(--red)">Grinch</em><br>
+      <h1 class="display">
+        How the <em class="display"><span class="italic">Grinch</span></em><br>
         Stole the Words
       </h1>
 
-      <p class="text-[var(--ink-soft)] text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-        Definition and 2 example sentences for each study word.
-      </p>
+      <p class="intro">Definition and 2 example sentences for each study word.</p>
 
-      <div class="flex flex-wrap justify-center gap-3 mt-8">
+      <div class="stats">
         <div class="stat-pill"><span class="num">23</span><span class="lbl">Words</span></div>
         <div class="stat-pill"><span class="num">46</span><span class="lbl">Examples</span></div>
         <div class="stat-pill"><span class="num">23</span><span class="lbl">Definitions</span></div>
@@ -328,27 +515,27 @@
   </div>
 </header>
 
-<section class="sticky top-0 z-30 sticky-bar">
-  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-3.5">
-    <div class="sticky-bar-content flex flex-wrap items-center gap-4 justify-between">
-      <div class="flex items-center gap-4">
+<section class="sticky-bar">
+  <div class="container">
+    <div class="sticky-bar-content">
+      <div class="progress-area">
         <div>
-          <div class="text-[10px] uppercase tracking-[0.15em] font-bold text-[var(--ink-mute)] mb-1.5">Study Progress</div>
-          <div class="flex items-center gap-3">
-            <div class="progress-track w-32 md:w-44"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
-            <span class="text-sm font-semibold text-[var(--green-deep)] whitespace-nowrap"><span id="learnedCount">0</span>/<span id="totalCount">0</span></span>
+          <div class="progress-label">Study Progress</div>
+          <div class="progress-row">
+            <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            <span class="progress-count"><span id="learnedCount">0</span>/<span id="totalCount">0</span></span>
           </div>
         </div>
       </div>
 
       <div class="search-wrap">
-        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--ink-mute)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input class="search-input" id="searchInput" placeholder="Search words, definitions, examples...">
       </div>
 
-      <div class="filter-row flex items-center gap-2">
+      <div class="filter-row">
         <button class="filter-pill active" data-filter="all">All</button>
         <button class="filter-pill" data-filter="unlearned">To Learn</button>
         <button class="filter-pill" data-filter="learned">Learned</button>
@@ -357,67 +544,60 @@
   </div>
 </section>
 
-<main class="max-w-6xl mx-auto px-6 lg:px-10 py-10">
+<main class="container">
   <div id="cardGrid" class="card-grid"></div>
   <div id="emptyState" class="empty-state hidden">
-    <div class="display text-3xl mb-2" style="color:var(--green-deep)">Nothing to study here</div>
+    <div class="display empty-title">Nothing to study here</div>
     <div>Try a different search term or filter.</div>
   </div>
 </main>
 
-<footer class="border-t border-[var(--border)] mt-10">
-  <div class="max-w-6xl mx-auto px-6 lg:px-10 py-8 flex flex-wrap items-center justify-between gap-4">
-    <div class="text-sm text-[var(--ink-mute)]">
-      Deck inspired by Dr. Seuss's <em class="display italic">How the Grinch Stole Christmas!</em> · 23 entries
+<footer>
+  <div class="container footer-content">
+    <div class="footer-note">
+      Deck inspired by Dr. Seuss's <em class="display"><span class="italic">How the Grinch Stole Christmas!</span></em> · 23 entries
     </div>
-    <button id="resetBtn" class="text-sm text-[var(--red)] hover:underline font-medium">Reset progress</button>
+    <button id="resetBtn" class="reset-btn">Reset progress</button>
   </div>
 </footer>
 
 <script>
-  // ====================================================================
-  //  DATA — three separate arrays, connected by `id` / `wordId`
-  //  You can lift any one of these arrays out independently.
-  // ====================================================================
-
-  // Array 1: Words (the headwords + part of speech)
   const words = [
-    { id: 1,  word: "creature",              partOfSpeech: "noun" },
-    { id: 2,  word: "festive",               partOfSpeech: "adjective" },
-    { id: 3,  word: "cave",                  partOfSpeech: "noun" },
-    { id: 4,  word: "decorations",           partOfSpeech: "noun" },
-    { id: 5,  word: "gift",                  partOfSpeech: "noun" },
-    { id: 6,  word: "sleigh",                partOfSpeech: "noun" },
-    { id: 7,  word: "breaks into",           partOfSpeech: "phrasal verb" },
-    { id: 8,  word: "stockings",             partOfSpeech: "noun" },
-    { id: 9,  word: "caught",                partOfSpeech: "verb" },
-    { id: 10, word: "sly",                   partOfSpeech: "adjective" },
-    { id: 11, word: "stripped",              partOfSpeech: "verb / adj." },
+    { id: 1, word: "creature", partOfSpeech: "noun" },
+    { id: 2, word: "festive", partOfSpeech: "adjective" },
+    { id: 3, word: "cave", partOfSpeech: "noun" },
+    { id: 4, word: "decorations", partOfSpeech: "noun" },
+    { id: 5, word: "gift", partOfSpeech: "noun" },
+    { id: 6, word: "sleigh", partOfSpeech: "noun" },
+    { id: 7, word: "breaks into", partOfSpeech: "phrasal verb" },
+    { id: 8, word: "stockings", partOfSpeech: "noun" },
+    { id: 9, word: "caught", partOfSpeech: "verb" },
+    { id: 10, word: "sly", partOfSpeech: "adjective" },
+    { id: 11, word: "stripped", partOfSpeech: "verb / adj." },
     { id: 12, word: "material possessions", partOfSpeech: "noun phrase" },
-    { id: 13, word: "celebration",           partOfSpeech: "noun" },
-    { id: 14, word: "presents",              partOfSpeech: "noun" },
-    { id: 15, word: "genuine",               partOfSpeech: "adjective" },
-    { id: 16, word: "undergoes",             partOfSpeech: "verb" },
-    { id: 17, word: "change of heart",       partOfSpeech: "noun phrase" },
-    { id: 18, word: "shriveled",             partOfSpeech: "adjective" },
-    { id: 19, word: "overwhelmed",           partOfSpeech: "adjective / verb" },
-    { id: 20, word: "newfound",              partOfSpeech: "adjective" },
-    { id: 21, word: "stolen",               partOfSpeech: "adjective / verb" },
-    { id: 22, word: "festivities",           partOfSpeech: "noun" },
-    { id: 23, word: "carving",               partOfSpeech: "noun / verb" }
+    { id: 13, word: "celebration", partOfSpeech: "noun" },
+    { id: 14, word: "presents", partOfSpeech: "noun" },
+    { id: 15, word: "genuine", partOfSpeech: "adjective" },
+    { id: 16, word: "undergoes", partOfSpeech: "verb" },
+    { id: 17, word: "change of heart", partOfSpeech: "noun phrase" },
+    { id: 18, word: "shriveled", partOfSpeech: "adjective" },
+    { id: 19, word: "overwhelmed", partOfSpeech: "adjective / verb" },
+    { id: 20, word: "newfound", partOfSpeech: "adjective" },
+    { id: 21, word: "stolen", partOfSpeech: "adjective / verb" },
+    { id: 22, word: "festivities", partOfSpeech: "noun" },
+    { id: 23, word: "carving", partOfSpeech: "noun / verb" }
   ];
 
-  // Array 2: Definitions (linked via wordId)
   const definitions = [
-    { wordId: 1,  definition: "A living being, especially an animal or a fictional entity, often with distinctive or unusual qualities." },
-    { wordId: 2,  definition: "Relating to or characteristic of a festival or celebration; cheerful, colorful, and full of excitement." },
-    { wordId: 3,  definition: "A natural underground chamber, typically formed in rock such as limestone over a long period of time." },
-    { wordId: 4,  definition: "Ornaments and adornments used to make something look more attractive, especially for a special occasion." },
-    { wordId: 5,  definition: "A thing given willingly to someone without payment; a present, often to mark a special occasion or show affection." },
-    { wordId: 6,  definition: "A vehicle on runners, typically pulled by horses, used for traveling across snow or ice." },
-    { wordId: 7,  definition: "To enter a place by force or without permission, often with the intent of taking something." },
-    { wordId: 8,  definition: "Close-fitting coverings for the foot and leg; in Christmas tradition, large sock-shaped hangings used to hold small gifts." },
-    { wordId: 9,  definition: "Past tense of 'catch'; to have captured, seized, or discovered someone or something, often after pursuit." },
+    { wordId: 1, definition: "A living being, especially an animal or a fictional entity, often with distinctive or unusual qualities." },
+    { wordId: 2, definition: "Relating to or characteristic of a festival or celebration; cheerful, colorful, and full of excitement." },
+    { wordId: 3, definition: "A natural underground chamber, typically formed in rock such as limestone over a long period of time." },
+    { wordId: 4, definition: "Ornaments and adornments used to make something look more attractive, especially for a special occasion." },
+    { wordId: 5, definition: "A thing given willingly to someone without payment; a present, often to mark a special occasion or show affection." },
+    { wordId: 6, definition: "A vehicle on runners, typically pulled by horses, used for traveling across snow or ice." },
+    { wordId: 7, definition: "To enter a place by force or without permission, often with the intent of taking something." },
+    { wordId: 8, definition: "Close-fitting coverings for the foot and leg; in Christmas tradition, large sock-shaped hangings used to hold small gifts." },
+    { wordId: 9, definition: "Past tense of 'catch'; to have captured, seized, or discovered someone or something, often after pursuit." },
     { wordId: 10, definition: "Having or showing cunning and deceitful cleverness, often in a covert or charming manner." },
     { wordId: 11, definition: "Having had something removed or taken away; left bare or without the usual covering or contents." },
     { wordId: 12, definition: "Physical objects and belongings that a person owns, especially those considered valuable or desirable." },
@@ -434,7 +614,6 @@
     { wordId: 23, definition: "The act of cutting something into a desired shape; also an object made by carving material such as wood or stone." }
   ];
 
-  // Array 3: Example sentences (linked via wordId, indexed 1..2)
   const sentences = [
     { wordId: 1, index: 1, sentence: "The deep-sea diver encountered a strange creature with glowing tentacles near the ocean floor." },
     { wordId: 1, index: 2, sentence: "The fantasy novel describes a magical creature that grants wishes to those who befriend it." },
@@ -484,34 +663,33 @@
     { wordId: 23, index: 2, sentence: "The wooden carving on the door told stories of ancient times and forgotten heroes." }
   ];
 
-  // ====================================================================
-  //  STATE & LOGIC
-  // ====================================================================
   const learnedState = {};
   let currentFilter = 'all';
   let currentSearch = '';
 
-  const getDefinition = (wordId) => definitions.find(d => d.wordId === wordId);
-  const getSentences = (wordId) => sentences
-    .filter(s => s.wordId === wordId)
+  const getDefinition = wordId => definitions.find(definition => definition.wordId === wordId);
+  const getSentences = wordId => sentences
+    .filter(sentence => sentence.wordId === wordId)
     .sort((a, b) => a.index - b.index);
 
-  function escapeHtml(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  function escapeHtml(value) {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  // Highlight the study word inside an example sentence
   function highlightWord(sentence, word) {
     const wordLower = word.toLowerCase();
     const sentenceLower = sentence.toLowerCase();
-    const idx = sentenceLower.indexOf(wordLower);
-    if (idx === -1) return escapeHtml(sentence);
-    const before = sentence.substring(0, idx);
-    const match  = sentence.substring(idx, idx + word.length);
-    const after  = sentence.substring(idx + word.length);
-    return escapeHtml(before)
-      + '<span class="highlight-word">' + escapeHtml(match) + '</span>'
-      + escapeHtml(after);
+    const index = sentenceLower.indexOf(wordLower);
+
+    if (index === -1) return escapeHtml(sentence);
+
+    const before = sentence.substring(0, index);
+    const match = sentence.substring(index, index + word.length);
+    const after = sentence.substring(index + word.length);
+
+    return escapeHtml(before) +
+      '<span class="highlight-word">' + escapeHtml(match) + '</span>' +
+      escapeHtml(after);
   }
 
   function renderCards() {
@@ -520,55 +698,58 @@
     grid.innerHTML = '';
     let visibleCount = 0;
 
-    words.forEach(w => {
-      const def = getDefinition(w.id);
-      const exs = getSentences(w.id);
-      const isLearned = !!learnedState[w.id];
+    words.forEach(word => {
+      const definition = getDefinition(word.id);
+      const examples = getSentences(word.id);
+      const isLearned = !!learnedState[word.id];
 
-      // Filter
       if (currentFilter === 'learned' && !isLearned) return;
       if (currentFilter === 'unlearned' && isLearned) return;
 
-      // Search across word, POS, definition, and example sentences
       if (currentSearch) {
         const haystack = (
-          w.word + ' ' +
-          w.partOfSpeech + ' ' +
-          def.definition + ' ' +
-          exs.map(e => e.sentence).join(' ')
+          word.word + ' ' +
+          word.partOfSpeech + ' ' +
+          definition.definition + ' ' +
+          examples.map(example => example.sentence).join(' ')
         ).toLowerCase();
+
         if (!haystack.includes(currentSearch)) return;
       }
 
       visibleCount++;
+
       const card = document.createElement('article');
       card.className = 'vocab-card fade-up' + (isLearned ? ' learned' : '');
       card.style.animationDelay = Math.min(visibleCount * 0.04, 0.5) + 's';
 
-      const sentencesHtml = exs.map(e => `
+      const sentencesHtml = examples.map(example => `
         <div class="example">
-          <div class="example-number">${e.index}</div>
-          <div>${highlightWord(e.sentence, w.word)}</div>
+          <div class="example-number">${example.index}</div>
+          <div>${highlightWord(example.sentence, word.word)}</div>
         </div>
       `).join('');
 
       card.innerHTML = `
-        <button class="learn-btn" data-word-id="${w.id}" aria-label="${isLearned ? 'Mark as not learned' : 'Mark as learned'}" title="${isLearned ? 'Mark as not learned' : 'Mark as learned'}">
+        <button class="learn-btn" data-word-id="${word.id}"
+          aria-label="${isLearned ? 'Mark as not learned' : 'Mark as learned'}"
+          title="${isLearned ? 'Mark as not learned' : 'Mark as learned'}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </button>
-        <span class="pos-tag">${escapeHtml(w.partOfSpeech)}</span>
-        <h2 class="word-display">${escapeHtml(w.word)}</h2>
+        <span class="pos-tag">${escapeHtml(word.partOfSpeech)}</span>
+        <h2 class="word-display">${escapeHtml(word.word)}</h2>
         <div class="definition">
           <span class="micro-label">Definition</span>
-          ${escapeHtml(def.definition)}
+          ${escapeHtml(definition.definition)}
         </div>
         <div>
           <span class="micro-label">In Context</span>
           ${sentencesHtml}
         </div>
       `;
+
       grid.appendChild(card);
     });
 
@@ -578,41 +759,43 @@
 
   function updateProgress() {
     const total = words.length;
-    const learned = Object.keys(learnedState).filter(k => learnedState[k]).length;
+    const learned = Object.keys(learnedState).filter(key => learnedState[key]).length;
+
     document.getElementById('totalCount').textContent = total;
     document.getElementById('learnedCount').textContent = learned;
     document.getElementById('progressFill').style.width = (learned / total * 100) + '%';
   }
 
-  // Events
-  document.addEventListener('click', e => {
-    const btn = e.target.closest('.learn-btn');
-    if (btn) {
-      const id = parseInt(btn.dataset.wordId);
+  document.addEventListener('click', event => {
+    const learnButton = event.target.closest('.learn-btn');
+
+    if (learnButton) {
+      const id = parseInt(learnButton.dataset.wordId, 10);
       if (learnedState[id]) delete learnedState[id];
       else learnedState[id] = true;
       renderCards();
     }
-    const pill = e.target.closest('.filter-pill');
-    if (pill) {
-      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      currentFilter = pill.dataset.filter;
+
+    const filterButton = event.target.closest('.filter-pill');
+
+    if (filterButton) {
+      document.querySelectorAll('.filter-pill').forEach(button => button.classList.remove('active'));
+      filterButton.classList.add('active');
+      currentFilter = filterButton.dataset.filter;
       renderCards();
     }
   });
 
-  document.getElementById('searchInput').addEventListener('input', e => {
-    currentSearch = e.target.value.trim().toLowerCase();
+  document.getElementById('searchInput').addEventListener('input', event => {
+    currentSearch = event.target.value.trim().toLowerCase();
     renderCards();
   });
 
   document.getElementById('resetBtn').addEventListener('click', () => {
-    Object.keys(learnedState).forEach(k => delete learnedState[k]);
+    Object.keys(learnedState).forEach(key => delete learnedState[key]);
     renderCards();
   });
 
-  // Initial render
   renderCards();
 </script>
 
