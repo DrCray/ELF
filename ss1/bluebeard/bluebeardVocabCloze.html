@@ -4,61 +4,480 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bluebeard — Vocabulary Practice Exercise</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Google Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
+    <style>
+        /* ---------- Design tokens (mirror the original Tailwind palette) ---------- */
+        :root {
+            --slate-50:  #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --indigo-500: #6366f1;
+            --indigo-600: #4f46e5;
+            --indigo-700: #4338ca;
+            --indigo-800: #3730a3;
+            --amber-100: #fef3c7;
+            --amber-200: #fde68a;
+            --amber-600: #d97706;
+            --amber-700: #b45309;
+            --amber-800: #92400e;
+            --rose-50:  #fff1f2;
+            --rose-200: #fecdd3;
+            --rose-500: #f43f5e;
+            --rose-600: #e11d48;
+            --rose-700: #be123c;
+            --rose-800: #9f1239;
+            --emerald-600: #059669;
+            --emerald-700: #047857;
+            --emerald-800: #065f46;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --ring-indigo: 0 0 0 2px var(--indigo-500);
+        }
+
+        /* ---------- Base reset ---------- */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body { margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--slate-50);
+            color: var(--slate-800);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            padding-bottom: 6rem;
+            line-height: 1.5;
+        }
+
+        button { font-family: inherit; }
+        input, select, textarea { font-family: inherit; }
+
+        /* ---------- Main worksheet container ---------- */
+        .main-container {
+            max-width: 56rem;        /* max-w-4xl */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;      /* px-4 */
+            padding-right: 1rem;
+            padding-top: 2rem;       /* pt-8 */
+        }
+        @media (min-width: 640px) {
+            .main-container {
+                padding-left: 1.5rem;  /* sm:px-6 */
+                padding-right: 1.5rem;
             }
         }
-    </script>
 
-    <style>
-        /* Custom styling for inline cloze select elements */
+        /* ---------- Sticky top action bar ---------- */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: rgba(255, 255, 255, 0.95);  /* bg-white/95 */
+            -webkit-backdrop-filter: blur(8px);            /* backdrop-blur */
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .top-bar-inner {
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.75rem 1rem;          /* py-3 px-4 */
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;                   /* gap-3 */
+        }
+        @media (min-width: 640px) {
+            .top-bar-inner {
+                padding-left: 1.5rem;       /* sm:px-6 */
+                padding-right: 1.5rem;
+            }
+        }
+
+        .score-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;                   /* gap-3 */
+        }
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;                    /* gap-2 */
+            padding: 0.375rem 0.75rem;      /* py-1.5 px-3 */
+            border-radius: 0.75rem;         /* rounded-xl */
+            background-color: var(--slate-100);
+            border: 1px solid var(--slate-200);
+            font-size: 0.875rem;            /* text-sm */
+            line-height: 1.25rem;           /* text-sm paired lh */
+            font-weight: 500;               /* font-medium */
+            color: var(--slate-700);
+        }
+        .score-value {
+            font-weight: 700;               /* font-bold */
+            color: var(--indigo-600);
+        }
+
+        /* Mode badge — hidden by default, inline-flex on sm+, JS toggles .is-hidden.
+           The wrapping <div> in markup also has inline display:none, so the badge
+           never renders visually; the structure is preserved for parity. */
+        .mode-badge {
+            display: none;
+            align-items: center;
+            padding: 0.25rem 0.625rem;      /* py-1 px-2.5 */
+            border-radius: 0.5rem;          /* rounded-lg */
+            font-size: 0.75rem;             /* text-xs */
+            line-height: 1rem;              /* text-xs paired lh */
+            font-weight: 600;               /* font-semibold */
+            background-color: var(--amber-100);
+            color: var(--amber-800);
+            border: 1px solid var(--amber-200);
+        }
+        .mode-badge.is-hidden { display: none !important; }
+        @media (min-width: 640px) {
+            .mode-badge { display: inline-flex; }
+            .mode-badge.is-hidden { display: none !important; }
+        }
+
+        /* ---------- Action buttons ---------- */
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;                  /* gap-2.5 */
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;                    /* gap-2 */
+            padding: 0.5rem 1rem;           /* py-2 px-4 */
+            border-radius: 0.75rem;         /* rounded-xl */
+            font-size: 0.875rem;            /* text-sm */
+            line-height: 1.25rem;           /* text-sm paired lh */
+            font-weight: 600;               /* font-semibold */
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                        color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .action-btn svg {
+            width: 1rem;                    /* h-4 w-4 */
+            height: 1rem;
+            flex-shrink: 0;                 /* shrink-0 */
+        }
+
+        /* Study Mode button — indigo by default, amber when .is-studying */
+        .btn-study {
+            background-color: var(--indigo-600);
+            color: #ffffff;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-study:hover { background-color: var(--indigo-700); }
+        .btn-study:active { background-color: var(--indigo-800); }
+        .btn-study:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--indigo-500);  /* ring-2 ring-offset-2 */
+        }
+        .btn-study.is-studying {
+            background-color: var(--amber-600);
+        }
+        .btn-study.is-studying:hover { background-color: var(--amber-700); }
+        .btn-study.is-studying:active { background-color: var(--amber-800); }
+
+        /* Print button — disabled slate by default, emerald when .is-enabled */
+        .btn-print {
+            background-color: var(--slate-200);
+            color: var(--slate-400);
+            border-color: var(--slate-300);
+            cursor: not-allowed;
+        }
+        .btn-print.is-enabled {
+            background-color: var(--emerald-600);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+        .btn-print.is-enabled:hover { background-color: var(--emerald-700); }
+        .btn-print.is-enabled:active { background-color: var(--emerald-800); }
+
+        /* ---------- Worksheet header ---------- */
+        .worksheet-header { margin-bottom: 1.5rem; }    /* mb-6 */
+        .header-eyebrow {
+            margin: 0 0 0.25rem 0;                       /* mb-1 */
+            font-size: 0.75rem;                          /* text-xs */
+            line-height: 1rem;                           /* text-xs paired lh */
+            font-weight: 600;                            /* font-semibold */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;                      /* tracking-wider */
+            color: var(--indigo-600);
+        }
+        .header-title {
+            margin: 0;
+            font-size: 1.5rem;                           /* text-2xl */
+            line-height: 2rem;                           /* text-2xl paired lh */
+            font-weight: 700;                            /* font-bold */
+            color: var(--slate-900);
+            letter-spacing: -0.025em;                    /* tracking-tight */
+        }
+        @media (min-width: 640px) {
+            .header-title { font-size: 1.875rem; line-height: 2.25rem; }  /* sm:text-3xl */
+        }
+        .header-subtitle {
+            margin: 0.25rem 0 0 0;                       /* mt-1 */
+            font-size: 0.875rem;                         /* text-sm */
+            line-height: 1.25rem;                        /* text-sm paired lh */
+            color: var(--slate-500);
+        }
+
+        /* ---------- Student identification card ---------- */
+        .student-info-box {
+            background-color: #ffffff;
+            border-radius: 1rem;                         /* rounded-2xl */
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            padding: 1.25rem;                            /* p-5 */
+            margin-bottom: 1.5rem;                       /* mb-6 */
+        }
+        .student-grid {
+            display: grid;
+            grid-template-columns: 1fr;                  /* grid-cols-1 */
+            gap: 1rem;                                   /* gap-4 */
+        }
+        @media (min-width: 640px) {
+            .student-grid { grid-template-columns: 1fr 1fr; }  /* sm:grid-cols-2 */
+        }
+        .field-label {
+            display: block;
+            margin-bottom: 0.375rem;                     /* mb-1.5 */
+            font-size: 0.75rem;                          /* text-xs */
+            line-height: 1rem;                           /* text-xs paired lh */
+            font-weight: 600;                            /* font-semibold */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;                      /* tracking-wider */
+            color: var(--slate-500);
+        }
+        .required-mark { color: var(--rose-500); }       /* text-rose-500 */
+        .student-input {
+            width: 100%;                                 /* w-full */
+            padding: 0.5rem 0.875rem;                    /* py-2 px-3.5 */
+            border-radius: 0.75rem;                      /* rounded-xl */
+            border: 1px solid var(--slate-300);
+            font-size: 0.875rem;                         /* text-sm */
+            line-height: 1.25rem;                        /* text-sm paired lh */
+            color: var(--slate-800);
+            background-color: #ffffff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .student-input::placeholder { color: var(--slate-400); }
+        .student-input:focus {
+            outline: none;
+            border-color: var(--indigo-500);
+            box-shadow: var(--ring-indigo);
+        }
+
+        /* Print validation status banner */
+        .print-status-banner {
+            margin-top: 0.75rem;                         /* mt-3 */
+            padding-top: 0.75rem;                        /* pt-3 */
+            border-top: 1px solid var(--slate-100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;                          /* text-xs */
+            line-height: 1rem;                           /* text-xs paired lh */
+        }
+        .print-helper-text {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;                               /* gap-1.5 */
+            font-weight: 500;                            /* font-medium */
+            color: var(--amber-700);                     /* default warning */
+        }
+        .print-helper-text.is-success { color: var(--emerald-700); }
+        .print-helper-text svg {
+            width: 1rem;                                 /* h-4 w-4 */
+            height: 1rem;
+            flex-shrink: 0;
+        }
+        .print-score-summary-label {
+            display: none;                               /* hidden */
+            color: var(--slate-400);
+            line-height: 1rem;                           /* text-xs paired lh */
+        }
+        @media (min-width: 640px) {
+            .print-score-summary-label { display: inline; }  /* sm:inline */
+        }
+        .print-score-summary {
+            color: var(--slate-600);
+            font-weight: 700;
+        }
+
+        /* ---------- Custom alert banner ---------- */
+        .custom-alert {
+            display: none;                               /* hidden by default */
+            margin-bottom: 1.5rem;                       /* mb-6 */
+            padding: 1rem;                               /* p-4 */
+            border-radius: 0.75rem;                      /* rounded-xl */
+            background-color: var(--rose-50);
+            border: 1px solid var(--rose-200);
+            color: var(--rose-800);
+            font-size: 0.875rem;                         /* text-sm */
+            line-height: 1.25rem;                        /* text-sm paired lh */
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;                                /* gap-3 */
+        }
+        .custom-alert.is-visible { display: flex; }
+        .custom-alert-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;                               /* gap-2.5 */
+        }
+        .custom-alert svg {
+            width: 1.25rem;                              /* h-5 w-5 */
+            height: 1.25rem;
+            color: var(--rose-600);
+            flex-shrink: 0;
+        }
+        .custom-alert-text { font-weight: 500; }
+        .custom-alert-close {
+            background: none;
+            border: none;
+            color: var(--rose-500);
+            font-weight: 700;                            /* font-bold */
+            padding: 0.25rem 0.5rem;                     /* py-1 px-2 */
+            border-radius: 0.5rem;                       /* rounded-lg */
+            cursor: pointer;
+            font-size: inherit;
+        }
+        .custom-alert-close:hover { color: var(--rose-700); }
+
+        /* ---------- Questions card ---------- */
+        .questions-card {
+            background-color: #ffffff;
+            border-radius: 1rem;                         /* rounded-2xl */
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            padding: 1.25rem;                            /* p-5 */
+        }
+        @media (min-width: 640px) {
+            .questions-card { padding: 2rem; }            /* sm:p-8 */
+        }
+        .questions-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        /* divide-y divide-slate-100 — border between siblings */
+        .questions-list > li + li {
+            border-top: 1px solid var(--slate-100);
+        }
+        .question-item {
+            padding: 1rem 0;                             /* py-4 */
+            display: flex;
+            align-items: flex-start;                     /* items-start */
+            gap: 0.875rem;                               /* gap-3.5 */
+            font-size: 1rem;                             /* text-base */
+            line-height: 1.625;                          /* leading-relaxed */
+            color: var(--slate-800);
+        }
+        /* first:pt-0 last:pb-0 */
+        .questions-list > li:first-child { padding-top: 0; }
+        .questions-list > li:last-child { padding-bottom: 0; }
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;                              /* w-7 */
+            height: 1.75rem;                             /* h-7 */
+            border-radius: 0.5rem;                       /* rounded-lg */
+            background-color: var(--slate-100);
+            color: var(--slate-600);
+            font-size: 0.75rem;                          /* text-xs */
+            line-height: 1rem;                           /* text-xs paired lh */
+            font-weight: 700;                            /* font-bold */
+            border: 1px solid var(--slate-200);
+            flex-shrink: 0;                              /* shrink-0 */
+            margin-top: 0.125rem;                        /* mt-0.5 */
+            user-select: none;                           /* select-none */
+        }
+        .question-text {
+            flex: 1;                                     /* flex-1 */
+            min-width: 0;
+        }
+
+        /* ---------- Inline cloze <select> ---------- */
         .cloze-select {
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
+            display: inline-block;
+            margin: 0.125rem 0.25rem;                    /* my-0.5 mx-1 */
+            padding: 0.25rem 1.9rem 0.25rem 0.75rem;     /* py-1 px-3 (+ custom pr) */
+            border-radius: 0.5rem;                       /* rounded-lg */
+            border: 1px solid var(--slate-300);
+            font-size: 0.875rem;                         /* text-sm */
+            line-height: 1.25rem;                        /* text-sm paired lh */
+            font-weight: 500;                            /* font-medium */
+            color: var(--slate-800);
+            background-color: #ffffff;
+            cursor: pointer;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.55rem center;
             background-size: 0.95rem;
-            padding-right: 1.9rem;
             transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
+        .cloze-select:focus {
+            outline: none;
+            box-shadow: var(--ring-indigo);
+        }
+        .cloze-select.is-locked { cursor: default; }    /* study-mode locked cursor */
 
         /* Feedback states */
         .state-neutral {
             background-color: #ffffff;
-            border-color: #cbd5e1;
-            color: #1e293b;
+            border-color: var(--slate-300);
+            color: var(--slate-800);
         }
-
         .state-correct {
-            background-color: #dcfce7 !important; /* Pale pastel green */
+            background-color: #dcfce7 !important;        /* pale pastel green */
             border-color: #4ade80 !important;
             color: #14532d !important;
             font-weight: 600;
         }
-
         .state-incorrect {
-            background-color: #ffe4e6 !important; /* Pale pastel pink */
+            background-color: #ffe4e6 !important;        /* pale pastel pink */
             border-color: #fb7185 !important;
             color: #881337 !important;
             font-weight: 600;
         }
 
-        /* Print / Save to PDF Styles */
+        /* ---------- Footer ---------- */
+        .worksheet-footer {
+            margin-top: 2rem;                            /* mt-8 */
+            text-align: center;
+            font-size: 0.75rem;                          /* text-xs */
+            line-height: 1rem;                           /* text-xs paired lh */
+            color: var(--slate-400);
+        }
+
+        /* ---------- Print / Save to PDF Styles ---------- */
         @media print {
             body {
                 background-color: #ffffff !important;
@@ -68,7 +487,7 @@
             .no-print {
                 display: none !important;
             }
-            .print-container {
+            .main-container {
                 max-width: 100% !important;
                 box-shadow: none !important;
                 border: none !important;
@@ -112,33 +531,33 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-24">
+<body>
 
     <!-- Sticky Top Action Bar -->
-    <div class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+    <div class="no-print top-bar">
+        <div class="top-bar-inner">
             <!-- Live Score & Status Pill -->
-            <div class="flex items-center gap-3">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-sm font-medium text-slate-700">
+            <div class="score-section">
+                <div class="score-pill">
                     <span>Score:</span>
-                    <span id="score-display" class="font-bold text-indigo-600">0 / 22</span>
+                    <span id="score-display" class="score-value">0 / 22</span>
                 </div>
                 <div style="display:none;">
-                <span id="mode-badge" class="hidden sm:inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
-                    Study Mode Active — Viewing Answers
-                </span>
+                    <span id="mode-badge" class="mode-badge is-hidden">
+                        Study Mode Active — Viewing Answers
+                    </span>
                 </div>
             </div>
 
             <!-- Action Buttons: Study Mode Toggle & Print / Save to PDF -->
-            <div class="flex items-center gap-2.5">
+            <div class="action-buttons">
                 <button
                     id="study-mode-btn"
                     type="button"
                     onclick="toggleStudyMode()"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white shadow-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="action-btn btn-study"
                 >
-                    <svg id="study-mode-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg id="study-mode-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                     <span id="study-mode-label">Study Mode</span>
@@ -150,10 +569,10 @@
                     onclick="handlePrint()"
                     disabled
                     aria-disabled="true"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed transition-all"
+                    class="action-btn btn-print"
                     title="Enter at least 2 characters in both Student Name and ID to enable printing"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
                     <span>Print / Save to PDF</span>
@@ -163,78 +582,78 @@
     </div>
 
     <!-- Main Worksheet Container -->
-    <div class="print-container max-w-4xl mx-auto px-4 sm:px-6 pt-8">
+    <div class="main-container">
 
         <!-- Worksheet Header -->
-        <header class="mb-6">
-            <p class="text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-1">Vocabulary Cloze Practice</p>
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Bluebeard — Vocabulary Practice Exercise</h1>
-            <p class="no-print text-sm text-slate-500 mt-1">
+        <header class="worksheet-header">
+            <p class="header-eyebrow">Vocabulary Cloze Practice</p>
+            <h1 class="header-title">Bluebeard — Vocabulary Practice Exercise</h1>
+            <p class="no-print header-subtitle">
                 Choose the best vocabulary word from each dropdown menu to complete the sentences. Sentences and options are shuffled on every refresh.
             </p>
         </header>
 
         <!-- Student Identification & Print Validation Card -->
-        <section class="student-info-box bg-white rounded-2xl border border-slate-200 shadow-sm p-5 mb-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <section class="student-info-box">
+            <div class="student-grid">
                 <div>
-                    <label for="student-name" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-                        Student Name <span class="text-rose-500 no-print">*</span>
+                    <label for="student-name" class="field-label">
+                        Student Name <span class="required-mark no-print">*</span>
                     </label>
                     <input
                         type="text"
                         id="student-name"
                         placeholder="Enter your full name (min. 2 characters)"
                         oninput="validateStudentInfo()"
-                        class="student-input w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                        class="student-input"
                     />
                 </div>
                 <div>
-                    <label for="student-id" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-                        Student ID <span class="text-rose-500 no-print">*</span>
+                    <label for="student-id" class="field-label">
+                        Student ID <span class="required-mark no-print">*</span>
                     </label>
                     <input
                         type="text"
                         id="student-id"
                         placeholder="Enter your student ID (min. 2 characters)"
                         oninput="validateStudentInfo()"
-                        class="student-input w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                        class="student-input"
                     />
                 </div>
             </div>
 
             <!-- Print Validation Status Message -->
-            <div id="print-status-banner" class="no-print mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span id="print-helper-text" class="text-amber-700 font-medium flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div id="print-status-banner" class="no-print print-status-banner">
+                <span id="print-helper-text" class="print-helper-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Enter at least 2 characters in both Student Name and Student ID to unlock Print / Save to PDF.
                 </span>
-                <span class="hidden sm:inline text-slate-400">Print Score: <strong id="print-score-summary" class="text-slate-600">0 / 22</strong></span>
+                <span class="print-score-summary-label">Print Score: <strong id="print-score-summary" class="print-score-summary">0 / 22</strong></span>
             </div>
         </section>
 
         <!-- Custom Alert Banner (Replaces native alert() for Ctrl+P / Print blocking) -->
-        <div id="custom-alert" class="no-print hidden mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <div id="custom-alert" class="no-print custom-alert">
+            <div class="custom-alert-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <span id="custom-alert-text" class="font-medium">Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.</span>
+                <span id="custom-alert-text" class="custom-alert-text">Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.</span>
             </div>
-            <button type="button" onclick="hideCustomAlert()" class="text-rose-500 hover:text-rose-700 font-bold px-2 py-1 rounded-lg">✕</button>
+            <button type="button" onclick="hideCustomAlert()" class="custom-alert-close">✕</button>
         </div>
 
         <!-- Questions List Card -->
-        <main class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8">
-            <ol id="questions-container" class="divide-y divide-slate-100">
+        <main class="questions-card">
+            <ol id="questions-container" class="questions-list">
                 <!-- 22 shuffled cloze items rendered here via JS -->
             </ol>
         </main>
 
         <!-- Footer -->
-        <footer class="mt-8 text-center text-xs text-slate-400">
+        <footer class="worksheet-footer">
             Bluebeard Vocabulary Practice • 22 Questions
         </footer>
 
@@ -344,17 +763,17 @@
                 `).join('');
 
                 return `
-                    <li class="question-item py-4 first:pt-0 last:pb-0 flex items-start gap-3.5 text-base leading-relaxed text-slate-800">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200 shrink-0 mt-0.5 select-none">
+                    <li class="question-item">
+                        <span class="question-number">
                             ${index + 1}
                         </span>
-                        <div class="flex-1">
+                        <div class="question-text">
                             <span>${item.prefix}</span><select
                                 id="select-${item.id}"
                                 data-index="${item.id}"
                                 onchange="handleSelectionChange(${item.id})"
                                 aria-label="Question ${index + 1} vocabulary choice"
-                                class="cloze-select state-neutral is-empty inline-block mx-1 my-0.5 px-3 py-1 rounded-lg border text-sm font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                class="cloze-select state-neutral is-empty"
                             >
                                 <option value="" disabled selected>-- select --</option>
                                 ${optionsHTML}
@@ -435,16 +854,15 @@
                     if (selectEl) {
                         selectEl.value = item.answer;
                         selectEl.disabled = true;
-                        selectEl.classList.add('cursor-default');
+                        selectEl.classList.add('is-locked');
                         applySelectStyling(selectEl, item.answer, item.answer);
                     }
                 });
 
                 isStudyMode = true;
                 label.textContent = "Return to Quiz";
-                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'active:bg-indigo-800');
-                btn.classList.add('bg-amber-600', 'hover:bg-amber-700', 'active:bg-amber-800');
-                if (badge) badge.classList.remove('hidden');
+                btn.classList.add('is-studying');
+                if (badge) badge.classList.remove('is-hidden');
             } else {
                 // Restore captured student selections and styling
                 quizItems.forEach((item, index) => {
@@ -453,16 +871,15 @@
                     if (selectEl) {
                         selectEl.value = previousValue;
                         selectEl.disabled = false;
-                        selectEl.classList.remove('cursor-default');
+                        selectEl.classList.remove('is-locked');
                         applySelectStyling(selectEl, previousValue, item.answer);
                     }
                 });
 
                 isStudyMode = false;
                 label.textContent = "Study Mode";
-                btn.classList.remove('bg-amber-600', 'hover:bg-amber-700', 'active:bg-amber-800');
-                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'active:bg-indigo-800');
-                if (badge) badge.classList.add('hidden');
+                btn.classList.remove('is-studying');
+                if (badge) badge.classList.add('is-hidden');
             }
 
             updateScoreDisplay();
@@ -493,14 +910,12 @@
                 hideCustomAlert();
                 printBtn.disabled = false;
                 printBtn.setAttribute('aria-disabled', 'false');
-                printBtn.classList.remove('bg-slate-200', 'text-slate-400', 'border-slate-300', 'cursor-not-allowed');
-                printBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'active:bg-emerald-800', 'text-white', 'border-transparent', 'shadow-sm', 'cursor-pointer');
+                printBtn.classList.add('is-enabled');
                 printBtn.title = "Print worksheet or save as PDF";
 
-                helperText.classList.remove('text-amber-700');
-                helperText.classList.add('text-emerald-700');
+                helperText.classList.add('is-success');
                 helperText.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Student Name and ID verified. Print / Save to PDF is ready.
@@ -508,14 +923,12 @@
             } else {
                 printBtn.disabled = true;
                 printBtn.setAttribute('aria-disabled', 'true');
-                printBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'active:bg-emerald-800', 'text-white', 'border-transparent', 'shadow-sm', 'cursor-pointer');
-                printBtn.classList.add('bg-slate-200', 'text-slate-400', 'border-slate-300', 'cursor-not-allowed');
+                printBtn.classList.remove('is-enabled');
                 printBtn.title = "Enter at least 2 characters in both Student Name and ID to enable printing";
 
-                helperText.classList.remove('text-emerald-700');
-                helperText.classList.add('text-amber-700');
+                helperText.classList.remove('is-success');
                 helperText.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Enter at least 2 characters in both Student Name and Student ID to unlock Print / Save to PDF.
@@ -539,14 +952,14 @@
             const alertText = document.getElementById('custom-alert-text');
             if (alertBox && alertText) {
                 alertText.textContent = message;
-                alertBox.classList.remove('hidden');
+                alertBox.classList.add('is-visible');
             }
         }
 
         function hideCustomAlert() {
             const alertBox = document.getElementById('custom-alert');
             if (alertBox) {
-                alertBox.classList.add('hidden');
+                alertBox.classList.remove('is-visible');
             }
         }
 
@@ -555,7 +968,7 @@
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
                 if (!isStudentInfoValid()) {
                     e.preventDefault();
-                    showCustomAlert("Please enter at least 2 characters in both the Student Name and Student ID boxes before printing or saving to PDF.");
+                    showCustomAlert("Please enter at least 2 characters in both the Student Name and the Student ID boxes before printing or saving to PDF.");
                 }
             }
         });
