@@ -1,0 +1,460 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea {
+            max-width: 100%; box-sizing: border-box;
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-nurseJollyJane" class="cloze-container"><button id="studyModeBtn" class="toggle-button" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button><div class="sentence-div"><em>She was cheerful, friendly, and highly recommended by doctors. Her patients trusted her with their lives. Unfortunately, that was exactly what made her so dangerous.</em>
+</div>
+<div class="sentence-div">In the late 1800s, doctors in Massachusetts regularly recommended a private nurse named Jane Toppan to wealthy families. Known as "Jolly Jane," she had a warm personality and seemed to enjoy caring for the sick and <span style="font-size: 70%;">1</span><select data-correct="elderly" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="elderly">elderly</option>
+<option value="poison">poison</option>
+<option value="revenge">revenge</option>
+<option value="thrill">thrill</option></select>. But behind her friendly smile was a terrifying secret. She was killing her patients with <span style="font-size: 70%;">2</span><select data-correct="poison" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="elderly">elderly</option>
+<option value="poison">poison</option>
+<option value="revenge">revenge</option>
+<option value="thrill">thrill</option></select>. She wasn't doing it for money, jealousy, or <span style="font-size: 70%;">3</span><select data-correct="revenge" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="elderly">elderly</option>
+<option value="poison">poison</option>
+<option value="revenge">revenge</option>
+<option value="thrill">thrill</option></select>; she was doing it just for the <span style="font-size: 70%;">4</span><select data-correct="thrill" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="elderly">elderly</option>
+<option value="poison">poison</option>
+<option value="revenge">revenge</option>
+<option value="thrill">thrill</option></select>.
+</div>
+<div class="sentence-div">Jane started her nursing career after training as a nurse at Cambridge Hospital. Her cheerful personality earned her the nickname "Jolly Jane," and she became popular with many patients. However, some of her <span style="font-size: 70%;">5</span><select data-correct="colleagues" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="colleagues">colleagues</option>
+<option value="fascination">fascination</option>
+<option value="autopsies">autopsies</option></select> noticed that she had a strange <span style="font-size: 70%;">6</span><select data-correct="fascination" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="colleagues">colleagues</option>
+<option value="fascination">fascination</option>
+<option value="autopsies">autopsies</option></select> with death and <span style="font-size: 70%;">7</span><select data-correct="autopsies" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="colleagues">colleagues</option>
+<option value="fascination">fascination</option>
+<option value="autopsies">autopsies</option></select>.
+</div>
+<div class="sentence-div">While working at the hospital, Jane began experimenting on her patients with morphine and atropine, two powerful drugs. Using different <span style="font-size: 70%;">8</span><select data-correct="doses" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="doses">doses</option>
+<option value="looking after">looking after</option>
+<option value="disturbing">disturbing</option></select>, she became fascinated by her patients' reactions to the drugs.
+</div>
+<div class="sentence-div">At some point, she began using this deadly combination of drugs for murder. Jane later admitted that she enjoyed watching people die. She sometimes climbed into bed with them, holding and <span style="font-size: 70%;">9</span><select data-correct="caressing" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="caressing">caressing</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="revenge">revenge</option></select> them as they slowly died.
+</div>
+<div class="sentence-div">After leaving hospital work, Jane became a private nurse, <span style="font-size: 70%;">10</span><select data-correct="looking after" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="looking after">looking after</option>
+<option value="recommended">recommended</option>
+<option value="good reputation">good reputation</option>
+<option value="caregiver">caregiver</option></select> wealthy families. Doctors trusted and <span style="font-size: 70%;">11</span><select data-correct="recommended" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="looking after">looking after</option>
+<option value="recommended">recommended</option>
+<option value="good reputation">good reputation</option>
+<option value="caregiver">caregiver</option></select> her, and she had a <span style="font-size: 70%;">12</span><select data-correct="good reputation" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="looking after">looking after</option>
+<option value="recommended">recommended</option>
+<option value="good reputation">good reputation</option>
+<option value="caregiver">caregiver</option></select> as a skilled <span style="font-size: 70%;">13</span><select data-correct="caregiver" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="looking after">looking after</option>
+<option value="recommended">recommended</option>
+<option value="good reputation">good reputation</option>
+<option value="caregiver">caregiver</option></select>.
+</div>
+<div class="sentence-div">Jane's victims were not limited to strangers. She also poisoned friends, <span style="font-size: 70%;">14</span><select data-correct="acquaintances" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="acquaintances">acquaintances</option>
+<option value="suspicious">suspicious</option>
+<option value="recommended">recommended</option></select>, and even people who had once been kind to her.
+</div>
+<div class="sentence-div">One of her most <span style="font-size: 70%;">15</span><select data-correct="disturbing" data-group="7" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="disturbing">disturbing</option>
+<option value="revenge">revenge</option>
+<option value="good reputation">good reputation</option></select> crimes was the murder of her foster sister, Elizabeth, with whom she had grown up. Jane wanted to marry Elizabeth's husband, Oramel, so she poisoned her. Jane later confessed that as she held Elizabeth, she enjoyed watching her die in her arms.
+</div>
+<div class="sentence-div">Her plan to marry Oramel failed. She even tried poisoning him and then nursing him back to health, hoping to make him <span style="font-size: 70%;">16</span><select data-correct="grateful" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="grateful">grateful</option>
+<option value="unrelated">unrelated</option>
+<option value="committed">committed</option></select> enough to marry her. But in the end, he ordered her out of his home.
+</div>
+<div class="sentence-div">In 1901, Jane was caring for the Davis family. Several family members died after sudden illnesses. At first, their deaths seemed <span style="font-size: 70%;">17</span><select data-correct="unrelated" data-group="9" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unrelated">unrelated</option>
+<option value="natural causes">natural causes</option>
+<option value="doses">doses</option></select> and were blamed on <span style="font-size: 70%;">18</span><select data-correct="natural causes" data-group="9" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unrelated">unrelated</option>
+<option value="natural causes">natural causes</option>
+<option value="doses">doses</option></select>.
+</div>
+<div class="sentence-div">With so many family members dying in a short time, relatives became <span style="font-size: 70%;">19</span><select data-correct="suspicious" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="suspicious">suspicious</option>
+<option value="investigation">investigation</option>
+<option value="exhumed">exhumed</option>
+<option value="traces">traces</option></select>. They demanded an <span style="font-size: 70%;">20</span><select data-correct="investigation" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="suspicious">suspicious</option>
+<option value="investigation">investigation</option>
+<option value="exhumed">exhumed</option>
+<option value="traces">traces</option></select>, and the <span style="font-size: 70%;">21</span><select data-correct="exhumed" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="suspicious">suspicious</option>
+<option value="investigation">investigation</option>
+<option value="exhumed">exhumed</option>
+<option value="traces">traces</option></select> bodies were found with <span style="font-size: 70%;">22</span><select data-correct="traces" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="suspicious">suspicious</option>
+<option value="investigation">investigation</option>
+<option value="exhumed">exhumed</option>
+<option value="traces">traces</option></select> of poison.
+</div>
+<div class="sentence-div">Investigators began examining other suspicious deaths connected to Jane, and on October 29, 1901, police <span style="font-size: 70%;">23</span><select data-correct="arrested" data-group="11" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="arrested">arrested</option>
+<option value="investigation">investigation</option>
+<option value="committed">committed</option></select> her.
+</div>
+<div class="sentence-div">During her 1902 murder trial, Jane <span style="font-size: 70%;">24</span><select data-correct="admitted" data-group="12" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="admitted">admitted</option>
+<option value="no remorse">no remorse</option>
+<option value="victims">victims</option></select> to killing 31 people. She showed <span style="font-size: 70%;">25</span><select data-correct="no remorse" data-group="12" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="admitted">admitted</option>
+<option value="no remorse">no remorse</option>
+<option value="victims">victims</option></select> for her <span style="font-size: 70%;">26</span><select data-correct="victims" data-group="12" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="admitted">admitted</option>
+<option value="no remorse">no remorse</option>
+<option value="victims">victims</option></select>.
+</div>
+<div class="sentence-div">Three <span style="font-size: 70%;">27</span><select data-correct="psychiatrists" data-group="13" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="psychiatrists">psychiatrists</option>
+<option value="mentally ill">mentally ill</option>
+<option value="committed">committed</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="criminally insane">criminally insane</option></select> testified that Jane was <span style="font-size: 70%;">28</span><select data-correct="mentally ill" data-group="13" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="psychiatrists">psychiatrists</option>
+<option value="mentally ill">mentally ill</option>
+<option value="committed">committed</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="criminally insane">criminally insane</option></select>, and the jury eventually found her "not guilty by reason of insanity". Instead of going free, however, Jane was <span style="font-size: 70%;">29</span><select data-correct="committed" data-group="13" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="psychiatrists">psychiatrists</option>
+<option value="mentally ill">mentally ill</option>
+<option value="committed">committed</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="criminally insane">criminally insane</option></select> to Taunton State Hospital, a <span style="font-size: 70%;">30</span><select data-correct="psychiatric institution" data-group="13" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="psychiatrists">psychiatrists</option>
+<option value="mentally ill">mentally ill</option>
+<option value="committed">committed</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="criminally insane">criminally insane</option></select> for the <span style="font-size: 70%;">31</span><select data-correct="criminally insane" data-group="13" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="psychiatrists">psychiatrists</option>
+<option value="mentally ill">mentally ill</option>
+<option value="committed">committed</option>
+<option value="psychiatric institution">psychiatric institution</option>
+<option value="criminally insane">criminally insane</option></select>. She remained there for the rest of her life, dying in 1938.
+</div>
+<div class="sentence-div">Was Jane <span style="font-size: 70%;">32</span><select data-correct="genuinely" data-group="14" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="genuinely">genuinely</option>
+<option value="criminally insane">criminally insane</option>
+<option value="mentally ill">mentally ill</option></select> insane, or had she discovered a way to escape the death penalty? Even today, that question remains part of the mystery surrounding Jolly Jane.
+</div>
+<div class="sentence-div"><em>Not guilty by reason of insanity:</em> Does not mean the person is set free. It means that the person committed the act, but because of mental illness, they were not in control of their actions or didn't clearly understand right from wrong. Usually, they are committed to a psychiatric facility until they no longer pose a danger to society.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// ---- Study Mode / Return to Quiz ----
+let inStudyMode = false;
+let savedSelections = [];
+
+// Show every correct answer, remembering the student's choices first
+function studyMode() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    savedSelections = Array.from(selects).map(select => select.value);
+    selects.forEach(select => {
+        select.value = select.getAttribute('data-correct');
+        select.classList.add('answer-shown');
+        select.style.backgroundColor = '#d4edda';
+    });
+    inStudyMode = true;
+    document.getElementById('studyModeBtn').textContent = 'Return to Quiz';
+}
+
+// Hide the answers and restore the student's choices exactly as they were
+function returnToQuiz() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    selects.forEach((select, i) => {
+        select.value = savedSelections[i] || '';
+        select.classList.remove('answer-shown');
+        select.style.backgroundColor = '';
+        if (select.value) checkAnswer(select);
+    });
+    savedSelections = [];
+    inStudyMode = false;
+    document.getElementById('studyModeBtn').textContent = 'Study Mode';
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>

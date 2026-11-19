@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die - Podcast</title>
+    <style>
+        html { font-size: 100%; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            padding: .8rem .8rem .8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 3px 6px gray;
+        }
+        .container {
+            width: 100%;
+            max-width: 35rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background: #F7EDF4;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: .5rem;
+            transition: color .3s;
+        }
+        h2:hover { color: #FB6D6D; }
+        h3 {
+            font-size: 1rem;
+            color: #3CA29A;
+            font-weight: 600;
+        }
+        p, ul {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: .8rem;
+        }
+        ul {
+            padding-left: 1rem;
+            list-style: none;
+        }
+        ul > li {
+            margin-bottom: .8rem;
+            position: relative;
+            padding-left: .8rem;
+        }
+        li {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+        a {
+            color: #FF14BA;
+            text-decoration: none;
+            transition: color .3s;
+        }
+        a:hover {
+            color: #4ecdc4;
+            text-decoration: underline;
+        }
+        .section {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+        }
+        .sectionTop {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+    .audio-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .audio-link {
+        display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;
+        align-items: center;
+        gap: 8px;
+        padding: .5rem 3rem;
+        background: #fff;
+        color: darkblue;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight:bold;
+        transition: background 0.2s;
+    }
+
+    .audio-link:hover {
+        box-shadow: 0 0 4px 0px #006B00; color:green;
+    }
+
+    .wave {
+        color: #006B00;   /* wave color */
+    }
+
+    .play {
+        font-size: 1rem;
+        transform: translateY(0.5px);
+    }
+        #aboutPodcast{
+            background:#DDF0ED;
+            box-shadow: 0 0 3px 1px #ADDBD4;
+            padding: .5rem;
+            border-radius: 6px;
+            font-size:90%;
+        }
+
+        .host {
+            font-weight:500; color: #0D8F82;
+        }
+
+        .guest {
+            font-weight:500; color: #F52FCF;
+        }
+
+        /* ===== zvocab: tap/hover definitions ===== */
+        .zv-hint { font-size: .85rem; color: #6b6b6b; margin: 0 0 .6rem; }
+        .zvocab-ready {
+            cursor: pointer;
+            color: #0B6E64;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .zvocab-ready[aria-expanded="true"] { background: #DDF0ED; }
+        .zvocab-ready:focus-visible { outline: 2px solid #0B6E64; outline-offset: 2px; }
+        /* Mobile: bottom sheet */
+        .zvocab-pop {
+            position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+            padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+            background: #0B6E64; color: #fff;
+            font-size: 1rem; line-height: 1.45;
+            border-radius: .9rem .9rem 0 0;
+            box-shadow: 0 -6px 24px rgb(0 0 0 / .25);
+        }
+        .zvocab-pop > strong { font-size: 1.15em; }
+        .zvocab-pop p { margin: .3rem 0 0; color: #fff; }
+        .zvocab-pop .ex { font-style: italic; opacity: .9; }
+        .zvocab-pop .ex strong { font-style: normal; text-decoration: underline; }
+        /* Wider screens: floating card near the word */
+        @media (min-width: 601px) {
+            .zvocab-pop {
+                right: auto; bottom: auto;
+                max-width: 20rem;
+                padding: .8rem 1rem;
+                font-size: .92rem;
+                border-radius: .5rem;
+                box-shadow: 0 6px 20px rgb(0 0 0 / .25);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">Jolly Jane: The Nurse Who Loved to Watch Her Patients Die - Podcast</h2>
+            <p>When the person caring for you is the danger</p> <p id="aboutPodcast">Our hosts talk about Jane Toppan, the cheerful nurse who poisoned her patients, and ask how she stayed hidden for so long.</p>
+
+            <a href="nurseJollyJane.html" target="_blank">
+                <span style="color:#0D6B92;">Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="podcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide
+                </a>
+                <a href="podcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz
+                </a>
+                <a href="podcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz
+                </a>
+            </div>
+        </div>
+        <br>
+
+<div class="audio-player">
+  <a href="https://youtu.be/MnNQw1YuHuY" class="audio-link" target="_blank" rel="noopener" aria-label="Listen to the podcast">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+  </a>
+</div>
+
+        <div class="section">
+            <h3>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die - Podcast</h3>
+            <p class="zv-hint">Tap or hover over an underlined phrase to see what it means.</p>
+            <div>
+                <ul>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Today's article was a dark one: Jane Toppan, a nurse in the late 1800s who killed dozens of her patients. Honestly, it <strong class="zvocab" data-word="gives me chills">gives me chills</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Same here. What got me was the nickname, "Jolly Jane." Everyone thought she was this warm, cheerful person, and she was <strong class="zvocab" data-word="hiding in plain sight">hiding in plain sight</strong> the whole time.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Right. And she <strong class="zvocab" data-word="took advantage of">took advantage of</strong> the one thing a nurse really has: trust. Families let her into their homes because doctors kept sending her there.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> She had a great <strong class="zvocab" data-word="track record">track record</strong>, at least on paper. Nobody imagined that a friendly nurse could be the danger.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> But were there <strong class="zvocab" data-word="red flags">red flags</strong>? The article mentions that some of her coworkers noticed she was strangely interested in death.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Maybe, but back then that probably just seemed odd, not criminal.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Fair point. The part I really can't <strong class="zvocab" data-word="wrap my head around">wrap my head around</strong> is her foster sister, Elizabeth. They grew up together!&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> And then she poisoned Elizabeth's husband and nursed him back to health so he'd want to marry her? It's like something out of a horror movie.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I guess <strong class="zvocab" data-word="deep down">deep down</strong> she didn't see people as people. They were just experiments to her.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> So how did she finally get caught?&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> The Davis family. Several of them died within a short time, and their relatives finally <strong class="zvocab" data-word="put two and two together">put two and two together</strong>. They pushed the police to look into it, and the tests found poison.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> And from there, investigators started to <strong class="zvocab" data-word="piece together">piece together</strong> her other cases. It makes you wonder how many deaths were never connected to her.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Exactly. How did she <strong class="zvocab" data-word="get away with">get away with</strong> it for so long?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Partly the time period, I think. <strong class="zvocab" data-word="in hindsight">In hindsight</strong>, the signs seem obvious, but there were no modern lab tests back then.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I should <strong class="zvocab" data-word="point out">point out</strong> the ending, too, because a lot of people misunderstand it. "Not guilty by reason of insanity" doesn't mean she walked free.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> No, she spent the rest of her life in a state hospital. She died there in 1938.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> So was she really ill, or was she clever enough to fool the doctors?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I honestly don't know. People who do terrible things like this are hard to <strong class="zvocab" data-word="make sense of">make sense of</strong>. Three psychiatrists said she was ill, and she confessed to thirty-one murders without any regret. That doesn't sound like a healthy mind.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> <strong class="zvocab" data-word="on the other hand">On the other hand</strong>, she planned things carefully for years. That takes a lot of control.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> That's the puzzle. Either way, the real story is the people she hurt and the families who trusted her.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Well said. Maybe the lesson is that trust matters, but it shouldn't be blind. Definitely <strong class="zvocab" data-word="food for thought">food for thought</strong>. Thanks for joining me.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Thanks for having me.&nbsp;&nbsp;</li>
+
+                </ul>
+                <br>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+<script>
+/* Podcast vocabulary (generated from podcast_vocab in the content JSON) */
+const vocabulary = {
+  "gives me chills": {
+    "word": "gives me chills",
+    "definition": "(expression) Makes me feel suddenly scared, shocked, or deeply moved, as if I were cold.",
+    "example": "That old photo of the empty hospital always <strong>gives me chills<\/strong>."
+  },
+  "hiding in plain sight": {
+    "word": "hiding in plain sight",
+    "definition": "(idiom) Not noticed even though easy to see, often because it looks normal or harmless.",
+    "example": "The spare key was <strong>hiding in plain sight<\/strong> under the welcome mat."
+  },
+  "took advantage of": {
+    "word": "took advantage of",
+    "definition": "(phrasal verb) Used someone's trust, kindness, or weakness unfairly to get what you wanted.",
+    "example": "The fake repairman <strong>took advantage of<\/strong> the old man's kindness and stole his wallet."
+  },
+  "track record": {
+    "word": "track record",
+    "definition": "(collocation) All the past successes or failures of a person or organization.",
+    "example": "The company has a strong <strong>track record<\/strong> of finishing projects on time."
+  },
+  "red flags": {
+    "word": "red flags",
+    "definition": "(idiom) Warning signs that something may be wrong or dangerous.",
+    "example": "A job offer that asks for your bank password has serious <strong>red flags<\/strong>."
+  },
+  "wrap my head around": {
+    "word": "wrap my head around",
+    "definition": "(idiom, informal) Understand something that is strange, difficult, or shocking.",
+    "example": "I still can't <strong>wrap my head around<\/strong> how fast the year went by."
+  },
+  "deep down": {
+    "word": "deep down",
+    "definition": "(expression) In your true, hidden feelings or nature, even if you don't show it.",
+    "example": "He acts tough, but <strong>deep down<\/strong> he's very shy."
+  },
+  "put two and two together": {
+    "word": "put two and two together",
+    "definition": "(idiom) Understand the truth by connecting the facts you have noticed.",
+    "example": "When she saw the empty cookie jar and her son's messy face, she <strong>put two and two together<\/strong>."
+  },
+  "piece together": {
+    "word": "piece together",
+    "definition": "(phrasal verb) Build an understanding of something slowly by collecting separate pieces of information.",
+    "example": "Detectives used phone records to <strong>piece together<\/strong> the night of the robbery."
+  },
+  "get away with": {
+    "word": "get away with",
+    "definition": "(phrasal verb) Do something wrong without being caught or punished.",
+    "example": "He thought he could <strong>get away with<\/strong> copying his friend's homework."
+  },
+  "in hindsight": {
+    "word": "in hindsight",
+    "definition": "(expression) When you think about a past event now, with the knowledge you have now.",
+    "example": "<strong>In hindsight<\/strong>, we should have left for the airport an hour earlier."
+  },
+  "point out": {
+    "word": "point out",
+    "definition": "(phrasal verb) Tell someone a fact or mention something so that they notice it.",
+    "example": "My teacher was kind enough to <strong>point out<\/strong> the mistakes in my essay."
+  },
+  "make sense of": {
+    "word": "make sense of",
+    "definition": "(expression) Understand something that is confusing or hard to explain.",
+    "example": "It took me an hour to <strong>make sense of<\/strong> the instructions for my new printer."
+  },
+  "on the other hand": {
+    "word": "on the other hand",
+    "definition": "(expression) Used to introduce a different or opposite point of view.",
+    "example": "The city is exciting. <strong>On the other hand<\/strong>, it's very expensive to live there."
+  },
+  "food for thought": {
+    "word": "food for thought",
+    "definition": "(idiom) Something that makes you think seriously about an idea.",
+    "example": "The speaker's talk about online privacy gave everyone <strong>food for thought<\/strong>."
+  }
+};
+
+/* ===== zvocab component: hover (mouse) or tap (touch) to show definitions ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${e.word}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+
+</body>
+</html>

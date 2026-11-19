@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .dialogLine {
+            margin: .9rem 0;
+            font-size: .9rem;
+            line-height: 1.5;
+            border: thin solid #D2C8C8;
+            box-shadow: 0 0 4px #D2C8C8;
+            border-radius: 7px;
+            padding: .5rem
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid lightblue;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        footer { margin-top: 15rem; }
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+ #theWordList {
+    display: none;
+  }
+  .show-hide-button {
+    margin: 0 0 1rem 0;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .show-hide-button:hover {
+    background-color: #218838;
+  }
+  #subtitle {
+    font-size: 120%;
+  }
+
+#toggleAnswersBtn {
+  position: fixed;
+  top: 6px;
+  right: 16px;
+  z-index: 9999;
+}
+
+@media (min-width: 1025px) {
+  #toggleAnswersBtn {
+    top:0px;
+    right: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggleAnswersBtn {
+    right: 40px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+    <div class="header">
+        <h1>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die Podcast</h1>
+        <p id="subtitle">Cloze/Select Quiz</p>
+        <p>Complete the sentences using vocabulary from the podcast</p>
+    </div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+    <button class="toggle-button" onclick="toggleView()">View as Column</button>
+    <div class="output" id="output">
+</div>
+</div>
+<button id="toggleAnswersBtn" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button>
+
+    <div class="section">
+        <h3>Podcast Script with Blanks</h3>
+<h2>Jolly Jane: The Nurse Who Loved to Watch Her Patients Die - Podcast</h2><div class="dialogLine"><strong>Host:</strong> Today's article was a dark one: Jane Toppan, a nurse in the late 1800s who killed dozens of her patients. Honestly, it <select data-answer="gives me chills"><option value="">-- Select --</option>
+<option value="gives me chills">gives me chills</option>
+<option value="hiding in plain sight">hiding in plain sight</option>
+<option value="took advantage of">took advantage of</option>
+<option value="track record">track record</option>
+<option value="red flags">red flags</option></select>.
+</div><div class="dialogLine"><strong>Guest:</strong> Same here. What got me was the nickname, "Jolly Jane." Everyone thought she was this warm, cheerful person, and she was <select data-answer="hiding in plain sight"><option value="">-- Select --</option>
+<option value="hiding in plain sight">hiding in plain sight</option>
+<option value="took advantage of">took advantage of</option>
+<option value="track record">track record</option>
+<option value="red flags">red flags</option>
+<option value="wrap my head around">wrap my head around</option></select> the whole time.
+</div><div class="dialogLine"><strong>Host:</strong> Right. And she <select data-answer="took advantage of"><option value="">-- Select --</option>
+<option value="took advantage of">took advantage of</option>
+<option value="track record">track record</option>
+<option value="red flags">red flags</option>
+<option value="wrap my head around">wrap my head around</option>
+<option value="deep down">deep down</option></select> the one thing a nurse really has: trust. Families let her into their homes because doctors kept sending her there.
+</div><div class="dialogLine"><strong>Guest:</strong> She had a great <select data-answer="track record"><option value="">-- Select --</option>
+<option value="track record">track record</option>
+<option value="red flags">red flags</option>
+<option value="wrap my head around">wrap my head around</option>
+<option value="deep down">deep down</option>
+<option value="put two and two together">put two and two together</option></select>, at least on paper. Nobody imagined that a friendly nurse could be the danger.
+</div><div class="dialogLine"><strong>Host:</strong> But were there <select data-answer="red flags"><option value="">-- Select --</option>
+<option value="red flags">red flags</option>
+<option value="wrap my head around">wrap my head around</option>
+<option value="deep down">deep down</option>
+<option value="put two and two together">put two and two together</option>
+<option value="piece together">piece together</option></select>? The article mentions that some of her coworkers noticed she was strangely interested in death.
+</div><div class="dialogLine"><strong>Guest:</strong> Maybe, but back then that probably just seemed odd, not criminal.
+</div><div class="dialogLine"><strong>Host:</strong> Fair point. The part I really can't <select data-answer="wrap my head around"><option value="">-- Select --</option>
+<option value="wrap my head around">wrap my head around</option>
+<option value="deep down">deep down</option>
+<option value="put two and two together">put two and two together</option>
+<option value="piece together">piece together</option>
+<option value="get away with">get away with</option></select> is her foster sister, Elizabeth. They grew up together!
+</div><div class="dialogLine"><strong>Guest:</strong> And then she poisoned Elizabeth's husband and nursed him back to health so he'd want to marry her? It's like something out of a horror movie.
+</div><div class="dialogLine"><strong>Host:</strong> I guess <select data-answer="deep down"><option value="">-- Select --</option>
+<option value="deep down">deep down</option>
+<option value="put two and two together">put two and two together</option>
+<option value="piece together">piece together</option>
+<option value="get away with">get away with</option>
+<option value="In hindsight">In hindsight</option></select> she didn't see people as people. They were just experiments to her.
+</div><div class="dialogLine"><strong>Guest:</strong> So how did she finally get caught?
+</div><div class="dialogLine"><strong>Host:</strong> The Davis family. Several of them died within a short time, and their relatives finally <select data-answer="put two and two together"><option value="">-- Select --</option>
+<option value="put two and two together">put two and two together</option>
+<option value="piece together">piece together</option>
+<option value="get away with">get away with</option>
+<option value="In hindsight">In hindsight</option>
+<option value="point out">point out</option></select>. They pushed the police to look into it, and the tests found poison.
+</div><div class="dialogLine"><strong>Guest:</strong> And from there, investigators started to <select data-answer="piece together"><option value="">-- Select --</option>
+<option value="piece together">piece together</option>
+<option value="get away with">get away with</option>
+<option value="In hindsight">In hindsight</option>
+<option value="point out">point out</option>
+<option value="make sense of">make sense of</option></select> her other cases. It makes you wonder how many deaths were never connected to her.
+</div><div class="dialogLine"><strong>Host:</strong> Exactly. How did she <select data-answer="get away with"><option value="">-- Select --</option>
+<option value="get away with">get away with</option>
+<option value="In hindsight">In hindsight</option>
+<option value="point out">point out</option>
+<option value="make sense of">make sense of</option>
+<option value="On the other hand">On the other hand</option></select> it for so long?
+</div><div class="dialogLine"><strong>Guest:</strong> Partly the time period, I think. <select data-answer="In hindsight"><option value="">-- Select --</option>
+<option value="In hindsight">In hindsight</option>
+<option value="point out">point out</option>
+<option value="make sense of">make sense of</option>
+<option value="On the other hand">On the other hand</option>
+<option value="food for thought">food for thought</option></select>, the signs seem obvious, but there were no modern lab tests back then.
+</div><div class="dialogLine"><strong>Host:</strong> I should <select data-answer="point out"><option value="">-- Select --</option>
+<option value="point out">point out</option>
+<option value="make sense of">make sense of</option>
+<option value="On the other hand">On the other hand</option>
+<option value="food for thought">food for thought</option>
+<option value="gives me chills">gives me chills</option></select> the ending, too, because a lot of people misunderstand it. "Not guilty by reason of insanity" doesn't mean she walked free.
+</div><div class="dialogLine"><strong>Guest:</strong> No, she spent the rest of her life in a state hospital. She died there in 1938.
+</div><div class="dialogLine"><strong>Host:</strong> So was she really ill, or was she clever enough to fool the doctors?
+</div><div class="dialogLine"><strong>Guest:</strong> I honestly don't know. People who do terrible things like this are hard to <select data-answer="make sense of"><option value="">-- Select --</option>
+<option value="make sense of">make sense of</option>
+<option value="On the other hand">On the other hand</option>
+<option value="food for thought">food for thought</option>
+<option value="gives me chills">gives me chills</option>
+<option value="hiding in plain sight">hiding in plain sight</option></select>. Three psychiatrists said she was ill, and she confessed to thirty-one murders without any regret. That doesn't sound like a healthy mind.
+</div><div class="dialogLine"><strong>Host:</strong> <select data-answer="On the other hand"><option value="">-- Select --</option>
+<option value="On the other hand">On the other hand</option>
+<option value="food for thought">food for thought</option>
+<option value="gives me chills">gives me chills</option>
+<option value="hiding in plain sight">hiding in plain sight</option>
+<option value="took advantage of">took advantage of</option></select>, she planned things carefully for years. That takes a lot of control.
+</div><div class="dialogLine"><strong>Guest:</strong> That's the puzzle. Either way, the real story is the people she hurt and the families who trusted her.
+</div><div class="dialogLine"><strong>Host:</strong> Well said. Maybe the lesson is that trust matters, but it shouldn't be blind. Definitely <select data-answer="food for thought"><option value="">-- Select --</option>
+<option value="food for thought">food for thought</option>
+<option value="gives me chills">gives me chills</option>
+<option value="hiding in plain sight">hiding in plain sight</option>
+<option value="took advantage of">took advantage of</option>
+<option value="track record">track record</option></select>. Thanks for joining me.
+</div><div class="dialogLine"><strong>Guest:</strong> Thanks for having me.
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+window.addEventListener('beforeunload', function() {
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+});
+
+// ---- Study Mode / Return to Quiz ----
+let inStudyMode = false;
+let savedSelections = [];
+
+// Show every correct answer, remembering the student's choices first
+function studyMode() {
+    const selects = document.querySelectorAll('select[data-answer]');
+    savedSelections = Array.from(selects).map(select => ({
+        value: select.value,
+        correct: select.classList.contains('correct'),
+        incorrect: select.classList.contains('incorrect')
+    }));
+    selects.forEach(select => {
+        select.value = select.getAttribute('data-answer');
+        select.classList.add('correct');
+        select.classList.remove('incorrect');
+    });
+    inStudyMode = true;
+    document.getElementById('toggleAnswersBtn').textContent = 'Return to Quiz';
+}
+
+// Hide the answers and restore the student's choices exactly as they were
+function returnToQuiz() {
+    const selects = document.querySelectorAll('select[data-answer]');
+    selects.forEach((select, i) => {
+        const saved = savedSelections[i];
+        if (!saved) return;
+        select.value = saved.value;
+        select.classList.toggle('correct', saved.correct);
+        select.classList.toggle('incorrect', saved.incorrect);
+    });
+    savedSelections = [];
+    inStudyMode = false;
+    document.getElementById('toggleAnswersBtn').textContent = 'Study Mode';
+}
+</script>
+
+<script>
+    function updateOutput() {
+      const selects = document.querySelectorAll('select[data-answer]');
+      const output = document.getElementById('output');
+      const isColumnView = output.classList.contains('column');
+      const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+      if (isColumnView) {
+        output.innerHTML = answers.map(answer => `<span>${answer}
+</span>`).join('');
+      } else {
+        output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+      }
+    }
+
+    function toggleView() {
+      const output = document.getElementById('output');
+      const button = document.querySelector('.toggle-button');
+      output.classList.toggle('column');
+      button.textContent = output.classList.contains('column')
+        ? 'Close Column View'
+        : 'View as Column';
+      updateOutput();
+    }
+
+    updateOutput();
+</script>
+
+  <script>
+  function toggleWordList() {
+    const wordList = document.getElementById('theWordList');
+    const showHideButton = document.querySelector('.show-hide-button');
+    if (wordList.style.display === 'none' || wordList.style.display === '') {
+      wordList.style.display = 'block';
+      showHideButton.textContent = 'Hide Word List';
+    } else {
+      wordList.style.display = 'none';
+      showHideButton.textContent = 'Show Word List';
+    }
+  }
+</script>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+    <footer>...
+</footer>
+
+</body>
+
+</html>
