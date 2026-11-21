@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retirement Countdown</title>
+
+  <style>
+    :root {
+      --ink: #29332f;
+      --muted: #77817b;
+      --line: #e7ebe7;
+      --today: #fff3bd;
+      --accent: #7a9b83;
+      --surface: #ffffff;
+      --background: #f5f7f3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px 16px;
+      background: var(--background);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(520px, 100%);
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    h3 {
+background: #F7F7D5; padding:.5rem;
+    }
+
+    .subtitle {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .calendar {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 12px 32px rgb(41 51 47 / 7%);
+    }
+
+    #months {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .month-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .month-title {
+      margin: 0;
+      padding: 9px 12px;
+      background: #f8faf7;
+      font-size: 0.98rem;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .weekdays,
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .weekdays {
+      padding: 6px 8px 2px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.63rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .days {
+      padding: 2px 4px 4px;
+    }
+
+    .day {
+      display: grid;
+      min-height: 24px;
+      place-items: center;
+      margin: 2px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .day.empty {
+      visibility: hidden;
+    }
+
+    .day.today {
+      background: var(--today);
+      font-weight: 750;
+      box-shadow: inset 0 0 0 1px #f0dfa0;
+    }
+
+    .day.retirement {
+      background: var(--accent);
+      color: white;
+      font-weight: 750;
+    }
+
+    .day.today.retirement {
+      background: var(--today);
+      color: var(--ink);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 0 12px 14px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border: 1px solid #f0dfa0;
+      border-radius: 4px;
+      background: var(--today);
+    }
+
+    .swatch.retirement {
+      border: 0;
+      background: var(--accent);
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      #months {
+        padding: 8px;
+        gap: 8px;
+      }
+
+      .day {
+        min-height: 28px;
+        margin: 1px;
+        font-size: 0.74rem;
+      }
+
+      .weekdays {
+        font-size: 0.56rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h3 id="countdown">— days to retirement</h3>
+      <p class="subtitle" style="display:none;">Counting down to January 13, 2027</p>
+    </header>
+
+    <section class="calendar" aria-label="Retirement countdown calendar">
+      <div id="months"></div>
+
+      <div class="legend">
+        <span><i class="swatch"></i>Today</span>
+        <span><i class="swatch retirement"></i>Retirement day</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Dates use the visitor's local time zone.
+    const retirementDate = new Date(2027, 0, 13);
+    retirementDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const daysLeft = Math.max(
+      0,
+      Math.ceil((retirementDate - today) / (1000 * 60 * 60 * 24))
+    );
+
+    document.getElementById("countdown").textContent =
+      `${daysLeft} ${daysLeft === 1 ? "day" : "days"} to retirement`;
+
+    const monthsContainer = document.getElementById("months");
+    const monthsToShow = [
+      [2026, 10], // November
+      [2026, 11], // December
+      [2027, 0]   // January
+    ];
+
+    function renderCalendar() {
+      monthsContainer.innerHTML = "";
+
+      for (const [year, month] of monthsToShow) {
+        const card = document.createElement("section");
+        card.className = "month-card";
+
+        const title = document.createElement("h2");
+        title.className = "month-title";
+        title.textContent = new Date(year, month, 1).toLocaleDateString(
+          undefined,
+          { month: "long", year: "numeric" }
+        );
+        card.appendChild(title);
+
+        const weekdays = document.createElement("div");
+        weekdays.className = "weekdays";
+        weekdays.innerHTML = `
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+          <div>Thu</div><div>Fri</div><div>Sat</div>
+        `;
+        card.appendChild(weekdays);
+
+        const days = document.createElement("div");
+        days.className = "days";
+
+        const firstWeekday = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstWeekday; i++) {
+          const empty = document.createElement("div");
+          empty.className = "day empty";
+          days.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const date = new Date(year, month, day);
+          const cell = document.createElement("div");
+          cell.className = "day";
+          cell.textContent = day;
+
+          if (date.getTime() === today.getTime()) {
+            cell.classList.add("today");
+            cell.setAttribute("aria-current", "date");
+          }
+
+          if (date.getTime() === retirementDate.getTime()) {
+            cell.classList.add("retirement");
+            cell.title = "Retirement day";
+          }
+
+          days.appendChild(cell);
+        }
+
+        card.appendChild(days);
+        monthsContainer.appendChild(card);
+      }
+    }
+
+    renderCalendar();
+  </script>
+  <script>
+  window.addEventListener("load", () => {
+    document.getElementById("countdown")?.scrollIntoView();
+  });
+</script>
+</body>
+</html>
