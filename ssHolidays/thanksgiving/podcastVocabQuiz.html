@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving Weekend - Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 40rem;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #4A0004;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .header {
+            background-color: #00274D;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .student-info input {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .section {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px; margin-top:1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size:1.1rem
+        }
+        .sentence {
+            margin: 10px 0;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+        select {
+            font-size: .8rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            min-width: 4rem;
+        }
+        select.correct {
+            background-color: #CFFFE2;
+            color: #0404D0;
+            border-color: #27ae60;
+        }
+        select.incorrect {
+            background-color: #FEE2E5;
+            color: #940D0D;
+            border-color: #C70000;
+        }
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+        }
+        button {
+            padding: .33rem;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @media print {
+            .print-section {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+        }
+        footer { margin-top: 15rem; }
+    .toggle-button {
+      padding: 5px 10px;
+      font-size: .8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .toggle-button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      font-size: 16px;
+      word-wrap: break-word;
+      text-align:left;
+    }
+    .output.column {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .output.column span {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    #theWordList {
+        display: none;
+    }
+    .show-hide-button {
+        margin: 0 0 1rem 0;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .show-hide-button:hover {
+        background-color: #218838;
+    }
+    #subtitle {
+        font-size: 120%;
+    }
+
+#toggleAnswersBtn {
+  position: fixed;
+  top: 6px;
+  right: 16px;
+  z-index: 9999;
+}
+
+@media (min-width: 1025px) {
+  #toggleAnswersBtn {
+    top:0px;
+    right: 30%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #toggleAnswersBtn {
+    right: 40px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Thanksgiving Weekend</h1>
+        <p id="subtitle">Vocabulary Quiz - Podcast</p>
+        <p>Complete the sentences by selecting the correct vocabulary word</p>
+    </div>
+
+
+    <button class="show-hide-button" onclick="toggleWordList()">Show Word List</button>
+    <div id="theWordList">
+        <button class="toggle-button" onclick="toggleView()">View as Column</button>
+        <div class="output" id="output"></div>
+    </div>
+    <button id="toggleAnswersBtn" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button>
+
+
+    <div class="section">
+        <h3>Section 1</h3>
+        <div class="sentence">
+            1. Let's meet for coffee next week and <select data-answer="catch up"><option value="">-- Select --</option>
+<option value="on the road">on the road</option>
+<option value="sleep in">sleep in</option>
+<option value="catch up">catch up</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option></select>.
+        </div>
+        <div class="sentence">
+            2. The band spent three months <select data-answer="on the road"><option value="">-- Select --</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="sleep in">sleep in</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option>
+<option value="on the road">on the road</option>
+<option value="wind down">wind down</option></select> last summer.
+        </div>
+        <div class="sentence">
+            3. We were stuck in <select data-answer="bumper-to-bumper"><option value="">-- Select --</option>
+<option value="go all out">go all out</option>
+<option value="on the road">on the road</option>
+<option value="wind down">wind down</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option>
+<option value="catch up">catch up</option></select> traffic on the way to the airport.
+        </div>
+        <div class="sentence">
+            4. Of course your cousin can come to the picnic. <select data-answer="the more, the merrier"><option value="">-- Select --</option>
+<option value="the more, the merrier">the more, the merrier</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="polish off">polish off</option>
+<option value="sleep in">sleep in</option>
+<option value="wind down">wind down</option></select>!
+        </div>
+        <div class="sentence">
+            5. Our neighbors always <select data-answer="go all out"><option value="">-- Select --</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option>
+<option value="go all out">go all out</option>
+<option value="kick off">kick off</option>
+<option value="holiday spirit">holiday spirit</option>
+<option value="catch up">catch up</option></select> for Halloween and decorate the whole house.
+        </div>
+        <div class="sentence">
+            6. Dinner is on the table, so everybody <select data-answer="dig in"><option value="">-- Select --</option>
+<option value="kick off">kick off</option>
+<option value="the more, the merrier">the more, the merrier</option>
+<option value="on the road">on the road</option>
+<option value="save room for">save room for</option>
+<option value="dig in">dig in</option></select>!
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h3>Section 2</h3>
+        <div class="sentence">
+            7. Don't eat too much pizza. You need to <select data-answer="save room for"><option value="">-- Select --</option>
+<option value="holiday spirit">holiday spirit</option>
+<option value="go all out">go all out</option>
+<option value="dig in">dig in</option>
+<option value="bargain hunters">bargain hunters</option>
+<option value="save room for">save room for</option></select> cake.
+        </div>
+        <div class="sentence">
+            8. You ordered three desserts? I think <select data-answer="your eyes are bigger than your stomach"><option value="">-- Select --</option>
+<option value="wind down">wind down</option>
+<option value="your eyes are bigger than your stomach">your eyes are bigger than your stomach</option>
+<option value="on the road">on the road</option>
+<option value="polish off">polish off</option>
+<option value="save room for">save room for</option></select>.
+        </div>
+        <div class="sentence">
+            9. After the barbecue, the whole family was in a <select data-answer="food coma"><option value="">-- Select --</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="catch up">catch up</option>
+<option value="food coma">food coma</option>
+<option value="on the road">on the road</option>
+<option value="sleep in">sleep in</option></select> on the grass.
+        </div>
+        <div class="sentence">
+            10. The kids managed to <select data-answer="polish off"><option value="">-- Select --</option>
+<option value="go all out">go all out</option>
+<option value="holiday spirit">holiday spirit</option>
+<option value="polish off">polish off</option>
+<option value="on the road">on the road</option>
+<option value="save room for">save room for</option></select> a large pizza in ten minutes.
+        </div>
+        <div class="sentence">
+            11. The flea market is popular with <select data-answer="bargain hunters"><option value="">-- Select --</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="go all out">go all out</option>
+<option value="the more, the merrier">the more, the merrier</option>
+<option value="dig in">dig in</option>
+<option value="bargain hunters">bargain hunters</option></select> every Sunday morning.
+        </div>
+        <div class="sentence">
+            12. Horror movies aren't really <select data-answer="my cup of tea"><option value="">-- Select --</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="save room for">save room for</option>
+<option value="your eyes are bigger than your stomach">your eyes are bigger than your stomach</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option>
+<option value="go all out">go all out</option></select>.
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h3>Section 3</h3>
+        <div class="sentence">
+            13. I love to <select data-answer="sleep in"><option value="">-- Select --</option>
+<option value="wind down">wind down</option>
+<option value="kick off">kick off</option>
+<option value="catch up">catch up</option>
+<option value="sleep in">sleep in</option>
+<option value="holiday spirit">holiday spirit</option></select> on Saturday mornings.
+        </div>
+        <div class="sentence">
+            14. The city will <select data-answer="kick off"><option value="">-- Select --</option>
+<option value="kick off">kick off</option>
+<option value="the more, the merrier">the more, the merrier</option>
+<option value="polish off">polish off</option>
+<option value="go all out">go all out</option>
+<option value="on the road">on the road</option></select> the festival with a big parade.
+        </div>
+        <div class="sentence">
+            15. The carol singers put everyone on the street in the <select data-answer="holiday spirit"><option value="">-- Select --</option>
+<option value="bumper-to-bumper">bumper-to-bumper</option>
+<option value="your eyes are bigger than your stomach">your eyes are bigger than your stomach</option>
+<option value="holiday spirit">holiday spirit</option>
+<option value="save room for">save room for</option>
+<option value="bargain hunters">bargain hunters</option></select>.
+        </div>
+        <div class="sentence">
+            16. A warm bath helps me <select data-answer="wind down"><option value="">-- Select --</option>
+<option value="my cup of tea">my cup of tea</option>
+<option value="kick off">kick off</option>
+<option value="wind down">wind down</option>
+<option value="polish off">polish off</option>
+<option value="save room for">save room for</option></select> after a long day.
+        </div>
+    </div>
+
+
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const correctAnswer = this.getAttribute('data-answer');
+                const selectedValue = this.value;
+
+                if (selectedValue === correctAnswer) {
+                    this.classList.remove('incorrect');
+                    this.classList.add('correct');
+                } else if (selectedValue !== '') {
+                    this.classList.remove('correct');
+                    this.classList.add('incorrect');
+                } else {
+                    this.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+        });
+
+        // ---- Study Mode / Return to Quiz ----
+        let inStudyMode = false;
+        let savedSelections = [];
+
+        // Show every correct answer, remembering the student's choices first
+        function studyMode() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            savedSelections = Array.from(selects).map(select => ({
+                value: select.value,
+                correct: select.classList.contains('correct'),
+                incorrect: select.classList.contains('incorrect')
+            }));
+            selects.forEach(select => {
+                select.value = select.getAttribute('data-answer');
+                select.classList.add('correct');
+                select.classList.remove('incorrect');
+            });
+            inStudyMode = true;
+            document.getElementById('toggleAnswersBtn').textContent = 'Return to Quiz';
+        }
+
+        // Hide the answers and restore the student's choices exactly as they were
+        function returnToQuiz() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            selects.forEach((select, i) => {
+                const saved = savedSelections[i];
+                if (!saved) return;
+                select.value = saved.value;
+                select.classList.toggle('correct', saved.correct);
+                select.classList.toggle('incorrect', saved.incorrect);
+            });
+            savedSelections = [];
+            inStudyMode = false;
+            document.getElementById('toggleAnswersBtn').textContent = 'Study Mode';
+        }
+    </script>
+
+    <script>
+        function updateOutput() {
+            const selects = document.querySelectorAll('select[data-answer]');
+            const output = document.getElementById('output');
+            const isColumnView = output.classList.contains('column');
+            const answers = Array.from(selects).map(select => select.getAttribute('data-answer'));
+
+            if (isColumnView) {
+                output.innerHTML = answers.map(answer => `<span>${answer}</span>`).join('');
+            } else {
+                output.innerHTML = answers.join(' &nbsp; &nbsp; &nbsp; ');
+            }
+        }
+
+        function toggleView() {
+            const output = document.getElementById('output');
+            const button = document.querySelector('.toggle-button');
+            output.classList.toggle('column');
+            button.textContent = output.classList.contains('column')
+                ? 'Close Column View'
+                : 'View as Column';
+            updateOutput();
+        }
+
+        updateOutput();
+    </script>
+
+    <script>
+        function toggleWordList() {
+            const wordList = document.getElementById('theWordList');
+            const showHideButton = document.querySelector('.show-hide-button');
+            if (wordList.style.display === 'none' || wordList.style.display === '') {
+                wordList.style.display = 'block';
+                showHideButton.textContent = 'Hide Word List';
+            } else {
+                wordList.style.display = 'none';
+                showHideButton.textContent = 'Show Word List';
+            }
+        }
+    </script>
+
+    <footer>...</footer>
+</body>
+</html>
