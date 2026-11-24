@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving Weekend - Vocabulary Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .vocab-card {
+            background: linear-gradient(145deg, #2d2d44, #252536);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #39395a;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #e94560;
+        }
+        .card-closed {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e94560;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-open {
+            padding: 0;
+            display: none;
+        }
+        .card-header {
+            background-color: #e94560;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .definition {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #ccccdd;
+        }
+        .example {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #aaccff;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff5773;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        .hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8888aa;
+            font-style: italic;
+        }
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #1d1d1f;
+}
+body.light-mode h1 {
+    color: #1e40af;
+    text-shadow: 0 0 8px rgba(30, 64, 175, 0.25);
+}
+body.light-mode .vocab-card {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);
+    border: 1px solid #dbeafe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+body.light-mode .vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+body.light-mode .card-closed {
+    color: #1e40af;
+}
+body.light-mode .card-header {
+    background-color: #1e40af;
+    color: white;
+}
+body.light-mode .definition {
+    color: #1E40AF;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: rgba(59, 130, 246, 0.10);
+    padding: .2rem .3rem;
+    border-radius: 0 10px 10px 0;
+    border-left: 5px solid #3b82f6;
+}
+body.light-mode .example {
+    border-left: 5px solid #3b82f6;
+    padding: 16px 18px 16px 22px;
+    border-radius: 0 10px 10px 0;
+    color: #1e293b;
+    line-height: 1.65;
+    font-size: 1.08rem;
+    font-weight: 500;
+    margin: 16px 0;
+}
+body.light-mode .example-title {
+    color: #1d4ed8;
+}
+body.light-mode button {
+    background-color: #1d4ed8;
+    color: white;
+}
+body.light-mode button:hover {
+    background-color: #3b82f6;
+}
+body.light-mode .hint,
+body.light-mode footer {
+    color: #4b5563;
+}
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+body.dark-mode h1 {
+    color: #e94560;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+    </style>
+</head>
+<body>
+    <h1>Thanksgiving Weekend Vocabulary Cards</h1>
+    <div class="hint">Click on any card to reveal the definition and example. Click again to close it.</div>
+
+    <div class="controls">
+        <button id="openAll">Open All Cards</button>
+        <button id="closeAll">Close All Cards</button>
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+
+    <div class="cards-container" id="cardsContainer">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+
+    <footer>
+        Vocabulary extracted from "Thanksgiving Weekend" text | Created for learning purposes
+    </footer>
+
+    <script>
+        const vocabulary = [
+  {
+    "word": "reconnect",
+    "definition": "To see and spend time with people again after being apart for a while.",
+    "example": "She went to the class reunion to reconnect with old school friends."
+  },
+  {
+    "word": "head start",
+    "definition": "An advantage you get by starting something earlier than usual or before other people.",
+    "example": "Reading the textbook over the summer gave him a head start in the new semester."
+  },
+  {
+    "word": "leading up to",
+    "definition": "During the period of time just before an important event.",
+    "example": "In the weeks leading up to the wedding, the bride was very busy."
+  },
+  {
+    "word": "exceptionally",
+    "definition": "Extremely; much more than usual.",
+    "example": "The weather was exceptionally hot for April."
+  },
+  {
+    "word": "crowded",
+    "definition": "Full of people, with very little free space.",
+    "example": "The train was so crowded that we had to stand the whole way."
+  },
+  {
+    "word": "chaotic",
+    "definition": "Noisy, busy, and without order or organization (here, in a fun and happy way).",
+    "example": "Mornings in a house with four small children can be chaotic."
+  },
+  {
+    "word": "spread",
+    "definition": "A large meal with many different dishes laid out on a table.",
+    "example": "The hotel breakfast had an amazing spread of fruit, breads, and hot dishes."
+  },
+  {
+    "word": "impressive",
+    "definition": "Causing admiration because of its size, quality, or skill.",
+    "example": "The view from the top of the mountain was impressive."
+  },
+  {
+    "word": "takes center stage",
+    "definition": "Is the most important or most noticeable part of something.",
+    "example": "At every birthday party, the chocolate cake takes center stage."
+  },
+  {
+    "word": "helpings",
+    "definition": "Amounts of food served to one person at one time; portions.",
+    "example": "The soup was so good that he had three helpings."
+  },
+  {
+    "word": "stuffed",
+    "definition": "(informal) Very full after eating a lot of food.",
+    "example": "I can't eat dessert — I'm completely stuffed."
+  },
+  {
+    "word": "stretched out",
+    "definition": "Lying down with the body and legs fully extended, in a relaxed way.",
+    "example": "The cat was stretched out in the warm sunshine."
+  },
+  {
+    "word": "slumped",
+    "definition": "Sitting with the body leaning or sinking down heavily, usually because of tiredness.",
+    "example": "After the long exam, she sat slumped at her desk."
+  },
+  {
+    "word": "leftovers",
+    "definition": "Food that remains after a meal and is saved to eat later.",
+    "example": "We had pizza leftovers for lunch the next day."
+  },
+  {
+    "word": "abound",
+    "definition": "To exist in very large numbers or amounts.",
+    "example": "Tourists abound in the city during the summer months."
+  },
+  {
+    "word": "enormous",
+    "definition": "Extremely large.",
+    "example": "The new shopping center is enormous — it has over 300 stores."
+  },
+  {
+    "word": "appliances",
+    "definition": "Electrical machines used in the home, such as refrigerators, washing machines, and microwaves.",
+    "example": "They bought all new kitchen appliances for their apartment."
+  },
+  {
+    "word": "crack of dawn",
+    "definition": "Very early in the morning, when the sun first begins to rise.",
+    "example": "The fishermen left the harbor at the crack of dawn."
+  },
+  {
+    "word": "special offers",
+    "definition": "Products sold at a lower price than usual for a short time.",
+    "example": "The supermarket has special offers on fruit every Monday."
+  },
+  {
+    "word": "ornaments",
+    "definition": "Small decorative objects, such as glass balls or stars, hung on a Christmas tree.",
+    "example": "Some of the ornaments on our tree belonged to my grandmother."
+  },
+  {
+    "word": "untangle",
+    "definition": "To separate things, like wires or string, that are twisted and knotted together.",
+    "example": "It took me ten minutes to untangle my headphone cables."
+  },
+  {
+    "word": "elaborate",
+    "definition": "Having many carefully designed, detailed parts.",
+    "example": "The hotel lobby had an elaborate flower display."
+  },
+  {
+    "word": "drawing to a close",
+    "definition": "Coming to an end.",
+    "example": "As the summer was drawing to a close, the children got ready for school."
+  },
+  {
+    "word": "underway",
+    "definition": "Already started and now in progress.",
+    "example": "Construction of the new bridge is already underway."
+  },
+  {
+    "word": "anticipation",
+    "definition": "A feeling of excitement about something that is going to happen.",
+    "example": "The children waited for the fireworks with great anticipation."
+  }
+];
+
+        function createCards() {
+            const container = document.getElementById('cardsContainer');
+
+            vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.dataset.word = item.word;
+
+                const closedDiv = document.createElement('div');
+                closedDiv.className = 'card-closed';
+                closedDiv.textContent = item.word;
+
+                const openDiv = document.createElement('div');
+                openDiv.className = 'card-open';
+
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = item.word;
+
+                const content = document.createElement('div');
+                content.className = 'card-content';
+
+                const definition = document.createElement('div');
+                definition.className = 'definition';
+                definition.innerHTML = `<strong>Definition:</strong> ${item.definition}`;
+
+                const example = document.createElement('div');
+                example.className = 'example';
+                example.innerHTML = `<div class="example-title">Example</div>${item.example}`;
+
+                content.appendChild(definition);
+                content.appendChild(example);
+
+                openDiv.appendChild(header);
+                openDiv.appendChild(content);
+
+                card.appendChild(closedDiv);
+                card.appendChild(openDiv);
+
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+
+                    const isOpen = this.querySelector('.card-open').style.display === 'block';
+
+                    if (isOpen) {
+                        this.querySelector('.card-open').style.display = 'none';
+                        this.querySelector('.card-closed').style.display = 'flex';
+                    } else {
+                        this.querySelector('.card-open').style.display = 'block';
+                        this.querySelector('.card-closed').style.display = 'none';
+                    }
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function openAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'block';
+                card.querySelector('.card-closed').style.display = 'none';
+            });
+        }
+
+        function closeAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'none';
+                card.querySelector('.card-closed').style.display = 'flex';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createCards();
+
+            document.getElementById('openAll').addEventListener('click', openAllCards);
+            document.getElementById('closeAll').addEventListener('click', closeAllCards);
+        });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    body.classList.add('light-mode');
+    toggleBtn.textContent = 'Switch to Dark Mode';
+
+    toggleBtn.addEventListener('click', function() {
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Switch to Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            toggleBtn.textContent = 'Switch to Dark Mode';
+        }
+    });
+});
+</script>
+</body>
+</html>

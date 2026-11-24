@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving Weekend - Podcast</title>
+    <style>
+        html { font-size: 100%; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            padding: .8rem .8rem .8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 3px 6px gray;
+        }
+        .container {
+            width: 100%;
+            max-width: 35rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background: #F7EDF4;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: .5rem;
+            transition: color .3s;
+        }
+        h2:hover { color: #FB6D6D; }
+        h3 {
+            font-size: 1rem;
+            color: #3CA29A;
+            font-weight: 600;
+        }
+        p, ul {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: .8rem;
+        }
+        ul {
+            padding-left: 1rem;
+            list-style: none;
+        }
+        ul > li {
+            margin-bottom: .8rem;
+            position: relative;
+            padding-left: .8rem;
+        }
+        li {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+        a {
+            color: #FF14BA;
+            text-decoration: none;
+            transition: color .3s;
+        }
+        a:hover {
+            color: #4ecdc4;
+            text-decoration: underline;
+        }
+        .section {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+        }
+        .sectionTop {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+    .audio-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .audio-link {
+        display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;
+        align-items: center;
+        gap: 8px;
+        padding: .5rem 3rem;
+        background: #fff;
+        color: darkblue;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight:bold;
+        transition: background 0.2s;
+    }
+
+    .audio-link:hover {
+        box-shadow: 0 0 4px 0px #006B00; color:green;
+    }
+
+    .wave {
+        color: #006B00;   /* wave color */
+    }
+
+    .play {
+        font-size: 1rem;
+        transform: translateY(0.5px);
+    }
+        #aboutPodcast{
+            background:#DDF0ED;
+            box-shadow: 0 0 3px 1px #ADDBD4;
+            padding: .5rem;
+            border-radius: 6px;
+            font-size:90%;
+        }
+
+        .host {
+            font-weight:500; color: #0D8F82;
+        }
+
+        .guest {
+            font-weight:500; color: #F52FCF;
+        }
+
+        /* ===== zvocab: tap/hover definitions ===== */
+        .zv-hint { font-size: .85rem; color: #6b6b6b; margin: 0 0 .6rem; }
+        .zvocab-ready {
+            cursor: pointer;
+            color: #0B6E64;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .zvocab-ready[aria-expanded="true"] { background: #DDF0ED; }
+        .zvocab-ready:focus-visible { outline: 2px solid #0B6E64; outline-offset: 2px; }
+        /* Mobile: bottom sheet */
+        .zvocab-pop {
+            position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+            padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+            background: #0B6E64; color: #fff;
+            font-size: 1rem; line-height: 1.45;
+            border-radius: .9rem .9rem 0 0;
+            box-shadow: 0 -6px 24px rgb(0 0 0 / .25);
+        }
+        .zvocab-pop > strong { font-size: 1.15em; }
+        .zvocab-pop p { margin: .3rem 0 0; color: #fff; }
+        .zvocab-pop .ex { font-style: italic; opacity: .9; }
+        .zvocab-pop .ex strong { font-style: normal; text-decoration: underline; }
+        /* Wider screens: floating card near the word */
+        @media (min-width: 601px) {
+            .zvocab-pop {
+                right: auto; bottom: auto;
+                max-width: 20rem;
+                padding: .8rem 1rem;
+                font-size: .92rem;
+                border-radius: .5rem;
+                box-shadow: 0 6px 20px rgb(0 0 0 / .25);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">Thanksgiving Weekend - Podcast</h2>
+            <p>Turkey, traffic, and Black Friday</p> <p id="aboutPodcast">Our hosts swap family memories after reading about the long Thanksgiving weekend in the United States, from the big Thursday meal to the start of the Christmas season.</p>
+
+            <a href="Thanksgiving.html" target="_blank">
+                <span style="color:#0D6B92;">Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="podcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide
+                </a>
+                <a href="podcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz
+                </a>
+                <a href="podcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz
+                </a>
+            </div>
+        </div>
+        <br>
+
+<div class="audio-player">
+  <a href="YOUR_YOUTUBE_URL" class="audio-link" target="_blank" rel="noopener">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+  </a>
+</div>
+
+        <div class="section">
+            <h3>Thanksgiving Weekend - Podcast</h3>
+            <p class="zv-hint">Tap or hover over an underlined phrase to see what it means.</p>
+            <div>
+                <ul>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Welcome back to the show! Today we're talking about an article on Thanksgiving weekend in the U.S. Did you get a chance to read it?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I did, and honestly, it made me hungry. And a little homesick, too.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Same here. What surprised me first was the travel. People drive eight hours just to <strong class="zvocab" data-word="catch up">catch up</strong> with their families.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Oh, totally. I spent half my childhood <strong class="zvocab" data-word="on the road">on the road</strong> every November. My dad would sit in <strong class="zvocab" data-word="bumper-to-bumper">bumper-to-bumper</strong> traffic for hours and never complain once. Well, almost never.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> And then you finally get there, and the house is packed with people.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Right, but my grandma always said, "<strong class="zvocab" data-word="the more, the merrier">The more, the merrier</strong>." She'd invite neighbors, coworkers, anyone who didn't have somewhere to go.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I love that. And the food! Turkey, stuffing, three kinds of pie. Families really <strong class="zvocab" data-word="go all out">go all out</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> They do. In my family, nobody was allowed to <strong class="zvocab" data-word="dig in">dig in</strong> until Grandpa finished his speech. And believe me, it was a long speech.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> So, do you <strong class="zvocab" data-word="save room for">save room for</strong> dessert, or are you a "turkey first, worry later" kind of person?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I always try to save some space, but I fail every single year. <strong class="zvocab" data-word="your eyes are bigger than your stomach">Your eyes are bigger than your stomach</strong> on Thanksgiving.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> That's why everyone ends up in a <strong class="zvocab" data-word="food coma">food coma</strong> in front of the football game!&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Guilty. Although my favorite part is Friday morning, when you <strong class="zvocab" data-word="polish off">polish off</strong> the pie for breakfast.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Pie for breakfast. Now that's a tradition I can support.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> What about Black Friday? Have you ever gone shopping at five in the morning?&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Once. Never again. Standing outside in the cold with a thousand <strong class="zvocab" data-word="bargain hunters">bargain hunters</strong> just isn't <strong class="zvocab" data-word="my cup of tea">my cup of tea</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I'm with you. I'd rather <strong class="zvocab" data-word="sleep in">sleep in</strong> and shop online in my pajamas.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Agree. My family usually skips the mall completely. We go see a movie, walk around a little town nearby, and just take it easy.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Honestly, that sounds perfect. No alarm clock, no long lines, and more pie.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Smart move. The article also says that this is the weekend when families <strong class="zvocab" data-word="kick off">kick off</strong> the Holiday season. You know, trees, lights, music in every shop.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Oh, my mom would put on Christmas songs the second the dishes were done. She said it helped everyone get into the <strong class="zvocab" data-word="holiday spirit">holiday spirit</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> And then by Sunday night, it's time to <strong class="zvocab" data-word="wind down">wind down</strong> and get ready for work again.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> With a suitcase full of turkey sandwiches, of course.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Of course! Well, that's all for today. Happy Thanksgiving, everyone, and thanks for listening!&nbsp;&nbsp;</li>
+
+                </ul>
+                <br>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+<script>
+/* Podcast vocabulary (generated from podcast_vocab in the content JSON) */
+const vocabulary = {
+  "catch up": {
+    "word": "catch up",
+    "definition": "(phrasal verb) To talk with someone you haven't seen for a while and learn what has happened in their life.",
+    "example": "Let's meet for coffee next week and <strong>catch up<\/strong>."
+  },
+  "on the road": {
+    "word": "on the road",
+    "definition": "(expression) Traveling, especially by car, for a long time or a long distance.",
+    "example": "The band spent three months <strong>on the road<\/strong> last summer."
+  },
+  "bumper-to-bumper": {
+    "word": "bumper-to-bumper",
+    "definition": "(collocation) Describes traffic that is so heavy the cars are very close together and moving very slowly.",
+    "example": "We were stuck in <strong>bumper-to-bumper<\/strong> traffic on the way to the airport."
+  },
+  "the more, the merrier": {
+    "word": "the more, the merrier",
+    "definition": "(idiom) Used to say that an event will be more fun if more people join.",
+    "example": "Of course your cousin can come to the picnic. <strong>The more, the merrier<\/strong>!"
+  },
+  "go all out": {
+    "word": "go all out",
+    "definition": "(idiom) To make a very big effort or spend a lot of money to do something well.",
+    "example": "Our neighbors always <strong>go all out<\/strong> for Halloween and decorate the whole house."
+  },
+  "dig in": {
+    "word": "dig in",
+    "definition": "(phrasal verb, informal) To start eating, often with enthusiasm.",
+    "example": "Dinner is on the table, so everybody <strong>dig in<\/strong>!"
+  },
+  "save room for": {
+    "word": "save room for",
+    "definition": "(expression) To eat less of one food so that you can still eat something later, usually dessert.",
+    "example": "Don't eat too much pizza. You need to <strong>save room for<\/strong> cake."
+  },
+  "your eyes are bigger than your stomach": {
+    "word": "your eyes are bigger than your stomach",
+    "definition": "(idiom) Used when someone takes more food than they can actually eat.",
+    "example": "You ordered three desserts? I think <strong>your eyes are bigger than your stomach<\/strong>."
+  },
+  "food coma": {
+    "word": "food coma",
+    "definition": "(expression, informal) A very sleepy, lazy feeling after eating a large meal.",
+    "example": "After the barbecue, the whole family was in a <strong>food coma<\/strong> on the grass."
+  },
+  "polish off": {
+    "word": "polish off",
+    "definition": "(phrasal verb, informal) To finish eating or drinking all of something, often quickly.",
+    "example": "The kids managed to <strong>polish off<\/strong> a large pizza in ten minutes."
+  },
+  "bargain hunters": {
+    "word": "bargain hunters",
+    "definition": "(collocation) People who search carefully for things to buy at the lowest possible price.",
+    "example": "The flea market is popular with <strong>bargain hunters<\/strong> every Sunday morning."
+  },
+  "my cup of tea": {
+    "word": "my cup of tea",
+    "definition": "(idiom) Something you enjoy or are interested in; usually used in the negative, as in \"not my cup of tea.\"",
+    "example": "Horror movies aren't really <strong>my cup of tea<\/strong>."
+  },
+  "sleep in": {
+    "word": "sleep in",
+    "definition": "(phrasal verb) To sleep later than usual in the morning, on purpose.",
+    "example": "I love to <strong>sleep in<\/strong> on Saturday mornings."
+  },
+  "kick off": {
+    "word": "kick off",
+    "definition": "(phrasal verb) To start an event, activity, or period of time.",
+    "example": "The city will <strong>kick off<\/strong> the festival with a big parade."
+  },
+  "holiday spirit": {
+    "word": "holiday spirit",
+    "definition": "(collocation) A happy, friendly, generous feeling that people have during a holiday season.",
+    "example": "The carol singers put everyone on the street in the <strong>holiday spirit<\/strong>."
+  },
+  "wind down": {
+    "word": "wind down",
+    "definition": "(phrasal verb) To relax and rest after a busy or exciting period, or to slowly come to an end.",
+    "example": "A warm bath helps me <strong>wind down<\/strong> after a long day."
+  }
+};
+
+/* ===== zvocab component: hover (mouse) or tap (touch) to show definitions ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${e.word}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+
+</body>
+</html>

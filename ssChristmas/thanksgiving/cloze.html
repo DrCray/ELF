@@ -1,0 +1,412 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea {
+            max-width: 100%; box-sizing: border-box;
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Thanksgiving Weekend</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-thanksgiving" class="cloze-container"><button id="studyModeBtn" class="toggle-button" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button><div class="sentence-div">For millions of Americans, Thanksgiving is more than just a meal with family. It's a four day holiday, and an opportunity to travel, <span style="font-size: 70%;">1</span><select data-correct="reconnect" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="reconnect">reconnect</option>
+<option value="head start">head start</option>
+<option value="drawing to a close">drawing to a close</option></select> with relatives, enjoy good food, and get a <span style="font-size: 70%;">2</span><select data-correct="head start" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="reconnect">reconnect</option>
+<option value="head start">head start</option>
+<option value="drawing to a close">drawing to a close</option></select> on Christmas shopping.
+</div>
+<div class="sentence-div">In the days <span style="font-size: 70%;">3</span><select data-correct="leading up to" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leading up to">leading up to</option>
+<option value="exceptionally">exceptionally</option>
+<option value="crowded">crowded</option>
+<option value="chaotic">chaotic</option></select> Thanksgiving, airports, highways, and train stations become <span style="font-size: 70%;">4</span><select data-correct="exceptionally" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leading up to">leading up to</option>
+<option value="exceptionally">exceptionally</option>
+<option value="crowded">crowded</option>
+<option value="chaotic">chaotic</option></select> busy. Given the size of the country, it isn't unusual for people to drive for eight hours or fly across the whole continent. Once they arrive at their parents' or grandparents' home, the house can quickly become <span style="font-size: 70%;">5</span><select data-correct="crowded" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leading up to">leading up to</option>
+<option value="exceptionally">exceptionally</option>
+<option value="crowded">crowded</option>
+<option value="chaotic">chaotic</option></select>, noisy, and wonderfully <span style="font-size: 70%;">6</span><select data-correct="chaotic" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leading up to">leading up to</option>
+<option value="exceptionally">exceptionally</option>
+<option value="crowded">crowded</option>
+<option value="chaotic">chaotic</option></select>.
+</div>
+<div class="sentence-div">The main event, the Thanksgiving meal, takes place on Thursday. Some families sit down around noon, while others wait until four or five o'clock. Either way, nobody is expected to rush.
+</div>
+<div class="sentence-div">The traditional <span style="font-size: 70%;">7</span><select data-correct="spread" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="spread">spread</option>
+<option value="impressive">impressive</option>
+<option value="takes center stage">takes center stage</option></select> is <span style="font-size: 70%;">8</span><select data-correct="impressive" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="spread">spread</option>
+<option value="impressive">impressive</option>
+<option value="takes center stage">takes center stage</option></select>. A large roasted turkey usually <span style="font-size: 70%;">9</span><select data-correct="takes center stage" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="spread">spread</option>
+<option value="impressive">impressive</option>
+<option value="takes center stage">takes center stage</option></select>, accompanied by mashed potatoes, gravy, stuffing, sweet potatoes, cranberry sauce, and vegetables. Pumpkin pie, pecan pie, and apple pie often make an appearance for dessert.
+</div>
+<div class="sentence-div">There is usually more food than everyone can eat in one meal. After several <span style="font-size: 70%;">10</span><select data-correct="helpings" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="helpings">helpings</option>
+<option value="stuffed">stuffed</option>
+<option value="stretched out">stretched out</option>
+<option value="slumped">slumped</option></select>, guests begin to feel completely <span style="font-size: 70%;">11</span><select data-correct="stuffed" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="helpings">helpings</option>
+<option value="stuffed">stuffed</option>
+<option value="stretched out">stretched out</option>
+<option value="slumped">slumped</option></select>, and conversation gradually slows down. In many households, the father and uncles can be found <span style="font-size: 70%;">12</span><select data-correct="stretched out" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="helpings">helpings</option>
+<option value="stuffed">stuffed</option>
+<option value="stretched out">stretched out</option>
+<option value="slumped">slumped</option></select> on the sofa, or <span style="font-size: 70%;">13</span><select data-correct="slumped" data-group="4" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="helpings">helpings</option>
+<option value="stuffed">stuffed</option>
+<option value="stretched out">stretched out</option>
+<option value="slumped">slumped</option></select> in chairs, fast asleep in front of a televised football game.
+</div>
+<div class="sentence-div">One advantage of preparing such a large meal is that nobody needs to cook much for the next few days. Refrigerators are packed with <span style="font-size: 70%;">14</span><select data-correct="leftovers" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leftovers">leftovers</option>
+<option value="abound">abound</option>
+<option value="stretched out">stretched out</option></select>, and turkey sandwiches <span style="font-size: 70%;">15</span><select data-correct="abound" data-group="5" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="leftovers">leftovers</option>
+<option value="abound">abound</option>
+<option value="stretched out">stretched out</option></select> well into the next week.
+</div>
+<div class="sentence-div">Black Friday is famous for its <span style="font-size: 70%;">16</span><select data-correct="enormous" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="enormous">enormous</option>
+<option value="appliances">appliances</option>
+<option value="crack of dawn">crack of dawn</option>
+<option value="special offers">special offers</option></select> discounts on electronics, clothing, household <span style="font-size: 70%;">17</span><select data-correct="appliances" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="enormous">enormous</option>
+<option value="appliances">appliances</option>
+<option value="crack of dawn">crack of dawn</option>
+<option value="special offers">special offers</option></select>, and Christmas gifts. Some shoppers get up at the <span style="font-size: 70%;">18</span><select data-correct="crack of dawn" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="enormous">enormous</option>
+<option value="appliances">appliances</option>
+<option value="crack of dawn">crack of dawn</option>
+<option value="special offers">special offers</option></select> to find <span style="font-size: 70%;">19</span><select data-correct="special offers" data-group="6" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="enormous">enormous</option>
+<option value="appliances">appliances</option>
+<option value="crack of dawn">crack of dawn</option>
+<option value="special offers">special offers</option></select>, while others prefer to browse online from home. Some even stand in long lines before the shops open.
+</div>
+<div class="sentence-div">Not everyone wants to spend Friday in a shopping mall. Some families prefer to visit restaurants, catch a movie, explore a nearby town, visit old friends, or simply relax together.
+</div>
+<div class="sentence-div">For many households, the weekend also marks the start of the Holiday Season. Saturday or Sunday is a popular time to put up the Christmas tree. Children help hang <span style="font-size: 70%;">20</span><select data-correct="ornaments" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ornaments">ornaments</option>
+<option value="untangle">untangle</option>
+<option value="enormous">enormous</option></select> while parents <span style="font-size: 70%;">21</span><select data-correct="untangle" data-group="8" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="ornaments">ornaments</option>
+<option value="untangle">untangle</option>
+<option value="enormous">enormous</option></select> strings of lights.
+</div>
+<div class="sentence-div">By Friday, city streets have turned on the Christmas lights, and department stores have put up holiday displays and <span style="font-size: 70%;">22</span><select data-correct="elaborate" data-group="9" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="elaborate">elaborate</option>
+<option value="impressive">impressive</option>
+<option value="appliances">appliances</option></select> window decorations. Christmas music begins to fill the shops, and the excitement of the approaching season begins.
+</div>
+<div class="sentence-div">By Sunday evening, the long weekend is <span style="font-size: 70%;">23</span><select data-correct="drawing to a close" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="drawing to a close">drawing to a close</option>
+<option value="underway">underway</option>
+<option value="anticipation">anticipation</option></select>. Suitcases are packed, visitors head home, and everyone prepares to return to work. But the transition into the Christmas season is already <span style="font-size: 70%;">24</span><select data-correct="underway" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="drawing to a close">drawing to a close</option>
+<option value="underway">underway</option>
+<option value="anticipation">anticipation</option></select>. For many Americans, Thanksgiving weekend is the perfect combination of family time, good food, shopping madness, and the <span style="font-size: 70%;">25</span><select data-correct="anticipation" data-group="10" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="drawing to a close">drawing to a close</option>
+<option value="underway">underway</option>
+<option value="anticipation">anticipation</option></select> of the weeks ahead.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// ---- Study Mode / Return to Quiz ----
+let inStudyMode = false;
+let savedSelections = [];
+
+// Show every correct answer, remembering the student's choices first
+function studyMode() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    savedSelections = Array.from(selects).map(select => select.value);
+    selects.forEach(select => {
+        select.value = select.getAttribute('data-correct');
+        select.classList.add('answer-shown');
+        select.style.backgroundColor = '#d4edda';
+    });
+    inStudyMode = true;
+    document.getElementById('studyModeBtn').textContent = 'Return to Quiz';
+}
+
+// Hide the answers and restore the student's choices exactly as they were
+function returnToQuiz() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    selects.forEach((select, i) => {
+        select.value = savedSelections[i] || '';
+        select.classList.remove('answer-shown');
+        select.style.backgroundColor = '';
+        if (select.value) checkAnswer(select);
+    });
+    savedSelections = [];
+    inStudyMode = false;
+    document.getElementById('studyModeBtn').textContent = 'Study Mode';
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
