@@ -1,0 +1,390 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea {
+            max-width: 100%; box-sizing: border-box;
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>The Magic of the Holiday Season</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-cmasMagicOf" class="cloze-container"><button id="studyModeBtn" class="toggle-button" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button><div class="sentence-div">For many Americans, Christmas is more than a single day on the calendar. It is an entire season filled with familiar sights, sounds, and traditions. Although Christmas Day falls on December 25, the holiday season usually begins around Thanksgiving in late November. By then, stores are already <span style="font-size: 70%;">1</span><select data-correct="decorated" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="decorated">decorated</option>
+<option value="festive">festive</option>
+<option value="decorations">decorations</option>
+<option value="liven up">liven up</option></select>, holiday music is playing, and people are beginning to prepare for the most <span style="font-size: 70%;">2</span><select data-correct="festive" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="decorated">decorated</option>
+<option value="festive">festive</option>
+<option value="decorations">decorations</option>
+<option value="liven up">liven up</option></select> time of the year.
+</div>
+<div class="sentence-div">One of the first signs of the approaching holidays is the appearance of Christmas <span style="font-size: 70%;">3</span><select data-correct="decorations" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="decorated">decorated</option>
+<option value="festive">festive</option>
+<option value="decorations">decorations</option>
+<option value="liven up">liven up</option></select>. Shopping malls, department stores, restaurants, and even office buildings begin to <span style="font-size: 70%;">4</span><select data-correct="liven up" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="decorated">decorated</option>
+<option value="festive">festive</option>
+<option value="decorations">decorations</option>
+<option value="liven up">liven up</option></select> with colorful decorations. Red and green are the traditional Christmas colors, although gold, silver, and white are also popular.
+</div>
+<div class="sentence-div">The Christmas tree is perhaps the most recognizable decoration. Many American families put up a real or <span style="font-size: 70%;">5</span><select data-correct="artificial" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="artificial">artificial</option>
+<option value="atop">atop</option>
+<option value="wreaths">wreaths</option>
+<option value="miniature">miniature</option>
+<option value="illuminated">illuminated</option></select> tree and decorate it with colorful  ornaments, ribbons, and  strings of lights. A  star or angel  often sits <span style="font-size: 70%;">6</span><select data-correct="atop" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="artificial">artificial</option>
+<option value="atop">atop</option>
+<option value="wreaths">wreaths</option>
+<option value="miniature">miniature</option>
+<option value="illuminated">illuminated</option></select> the tree. Other familiar decorations include <span style="font-size: 70%;">7</span><select data-correct="wreaths" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="artificial">artificial</option>
+<option value="atop">atop</option>
+<option value="wreaths">wreaths</option>
+<option value="miniature">miniature</option>
+<option value="illuminated">illuminated</option></select>  hanging on front doors, green  garlands wrapped around stair railings,  stockings displayed near fireplaces, and <span style="font-size: 70%;">8</span><select data-correct="miniature" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="artificial">artificial</option>
+<option value="atop">atop</option>
+<option value="wreaths">wreaths</option>
+<option value="miniature">miniature</option>
+<option value="illuminated">illuminated</option></select>  Christmas villages with tiny <span style="font-size: 70%;">9</span><select data-correct="illuminated" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="artificial">artificial</option>
+<option value="atop">atop</option>
+<option value="wreaths">wreaths</option>
+<option value="miniature">miniature</option>
+<option value="illuminated">illuminated</option></select> houses. Some families display  nativity scenes as part of their traditional holiday decorations.
+</div>
+<div class="sentence-div">As December approaches, entire neighborhoods begin to <span style="font-size: 70%;">10</span><select data-correct="light up" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="light up">light up</option>
+<option value="impressive">impressive</option>
+<option value="synchronized">synchronized</option>
+<option value="rhythm">rhythm</option></select> with Christmas decorations. Some homeowners cover their roofs, windows, trees, and gardens with thousands of colorful lights. Others create  elaborate displays featuring illuminated reindeer, snowmen, Santa Claus, and even moving figures.
+</div>
+<div class="sentence-div">In some neighborhoods, families go all out, creating displays so <span style="font-size: 70%;">11</span><select data-correct="impressive" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="light up">light up</option>
+<option value="impressive">impressive</option>
+<option value="synchronized">synchronized</option>
+<option value="rhythm">rhythm</option></select> that people drive from miles away just to see them. Some displays are even <span style="font-size: 70%;">12</span><select data-correct="synchronized" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="light up">light up</option>
+<option value="impressive">impressive</option>
+<option value="synchronized">synchronized</option>
+<option value="rhythm">rhythm</option></select> to music, with the lights flashing and changing colors to the <span style="font-size: 70%;">13</span><select data-correct="rhythm" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="light up">light up</option>
+<option value="impressive">impressive</option>
+<option value="synchronized">synchronized</option>
+<option value="rhythm">rhythm</option></select> of Christmas songs.
+</div>
+<div class="sentence-div">Cities also decorate their downtown areas, shopping streets, and public squares. Giant Christmas trees become popular gathering places, especially during public tree-lighting ceremonies. Crowds gather, often on Black Friday Eve, to watch the tree lights switch on for the first time.
+</div>
+<div class="sentence-div">Christmas has its own unmistakable sounds. Familiar holiday songs fill shopping malls, restaurants, and radio stations. Some are cheerful and lively, while others are slow and <span style="font-size: 70%;">14</span><select data-correct="sentimental" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sentimental">sentimental</option>
+<option value="memorable">memorable</option>
+<option value="atmosphere">atmosphere</option>
+<option value="folklore">folklore</option></select>. Many people have favorite songs they look forward to hearing every year. Classic Christmas movies also return to television, becoming part of the season's familiar routine. Movies include "It's a Wonderful Life," "Home Alone," "The Grinch," and even the action film "Die Hard." There are hundreds more—literally.
+</div>
+<div class="sentence-div">The holidays are equally <span style="font-size: 70%;">15</span><select data-correct="memorable" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sentimental">sentimental</option>
+<option value="memorable">memorable</option>
+<option value="atmosphere">atmosphere</option>
+<option value="folklore">folklore</option></select> for their smells. The scent of fresh pine from a real Christmas tree, cinnamon and ginger from holiday baking, and warm cookies coming out of the oven all help create a festive <span style="font-size: 70%;">16</span><select data-correct="atmosphere" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sentimental">sentimental</option>
+<option value="memorable">memorable</option>
+<option value="atmosphere">atmosphere</option>
+<option value="folklore">folklore</option></select>. Even the smell of a fireplace burning on a cold evening can bring back childhood memories.
+</div>
+<div class="sentence-div">Of course, no American Christmas season would be complete without Santa Claus. With his red suit, white beard, and cheerful personality, Santa is practically everywhere during December. You can see Santas on street corners and in front of stores collecting charity donations. Shopping malls set up special areas where children can visit Santa, tell him what they want for Christmas, and have their photographs taken with him.
+</div>
+<div class="sentence-div">Santa <span style="font-size: 70%;">17</span><select data-correct="folklore" data-group="3" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="sentimental">sentimental</option>
+<option value="memorable">memorable</option>
+<option value="atmosphere">atmosphere</option>
+<option value="folklore">folklore</option></select> says he lives at the North Pole with his elves, who help him prepare presents for children around the world. His famous sleigh, pulled by flying reindeer, is another familiar part of the Christmas story.
+</div>
+<div class="sentence-div">For children and adults alike, these familiar images help create the magic of Christmas. Year after year, the decorations, music, lights, and traditions return, making the holiday season feel exciting and familiar at the same time.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// ---- Study Mode / Return to Quiz ----
+let inStudyMode = false;
+let savedSelections = [];
+
+// Show every correct answer, remembering the student's choices first
+function studyMode() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    savedSelections = Array.from(selects).map(select => select.value);
+    selects.forEach(select => {
+        select.value = select.getAttribute('data-correct');
+        select.classList.add('answer-shown');
+        select.style.backgroundColor = '#d4edda';
+    });
+    inStudyMode = true;
+    document.getElementById('studyModeBtn').textContent = 'Return to Quiz';
+}
+
+// Hide the answers and restore the student's choices exactly as they were
+function returnToQuiz() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    selects.forEach((select, i) => {
+        select.value = savedSelections[i] || '';
+        select.classList.remove('answer-shown');
+        select.style.backgroundColor = '';
+        if (select.value) checkAnswer(select);
+    });
+    savedSelections = [];
+    inStudyMode = false;
+    document.getElementById('studyModeBtn').textContent = 'Study Mode';
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>

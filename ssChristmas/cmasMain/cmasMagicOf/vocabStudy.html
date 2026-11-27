@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magic of the Holiday Season - Vocabulary Cards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #e94560;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .vocab-card {
+            background: linear-gradient(145deg, #2d2d44, #252536);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #39395a;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #e94560;
+        }
+        .card-closed {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e94560;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-open {
+            padding: 0;
+            display: none;
+        }
+        .card-header {
+            background-color: #e94560;
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .definition {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #ccccdd;
+        }
+        .example {
+            background-color: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid #e94560;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #aaccff;
+        }
+        .example-title {
+            font-weight: bold;
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 8px 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff5773;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        .hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #8888aa;
+            font-style: italic;
+        }
+body.light-mode {
+    background-color: #f8f9fa;
+    color: #1d1d1f;
+}
+body.light-mode h1 {
+    color: #1e40af;
+    text-shadow: 0 0 8px rgba(30, 64, 175, 0.25);
+}
+body.light-mode .vocab-card {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);
+    border: 1px solid #dbeafe;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+body.light-mode .vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+body.light-mode .card-closed {
+    color: #1e40af;
+}
+body.light-mode .card-header {
+    background-color: #1e40af;
+    color: white;
+}
+body.light-mode .definition {
+    color: #1E40AF;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background-color: rgba(59, 130, 246, 0.10);
+    padding: .2rem .3rem;
+    border-radius: 0 10px 10px 0;
+    border-left: 5px solid #3b82f6;
+}
+body.light-mode .example {
+    border-left: 5px solid #3b82f6;
+    padding: 16px 18px 16px 22px;
+    border-radius: 0 10px 10px 0;
+    color: #1e293b;
+    line-height: 1.65;
+    font-size: 1.08rem;
+    font-weight: 500;
+    margin: 16px 0;
+}
+body.light-mode .example-title {
+    color: #1d4ed8;
+}
+body.light-mode button {
+    background-color: #1d4ed8;
+    color: white;
+}
+body.light-mode button:hover {
+    background-color: #3b82f6;
+}
+body.light-mode .hint,
+body.light-mode footer {
+    color: #4b5563;
+}
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+}
+body.dark-mode h1 {
+    color: #e94560;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+    </style>
+</head>
+<body>
+    <h1>The Magic of the Holiday Season Vocabulary Cards</h1>
+    <div class="hint">Click on any card to reveal the definition and example. Click again to close it.</div>
+
+    <div class="controls">
+        <button id="openAll">Open All Cards</button>
+        <button id="closeAll">Close All Cards</button>
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+
+    <div class="cards-container" id="cardsContainer">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+
+    <footer>
+        Vocabulary extracted from "The Magic of the Holiday Season" text | Created for learning purposes
+    </footer>
+
+    <script>
+        const vocabulary = [
+  {
+    "word": "decorated",
+    "definition": "Made more attractive by adding colorful or pretty things, such as lights, ornaments, or ribbons.",
+    "example": "The classroom was decorated with paper snowflakes for the winter party."
+  },
+  {
+    "word": "festive",
+    "definition": "Happy and cheerful in a way that is typical of a holiday or celebration.",
+    "example": "The restaurant had a festive mood, with music playing and lights on every table."
+  },
+  {
+    "word": "decorations",
+    "definition": "Colorful or pretty objects used to make a place look attractive for a holiday or special event.",
+    "example": "We put away the birthday decorations after the party was over."
+  },
+  {
+    "word": "liven up",
+    "definition": "To become (or make something) brighter, more cheerful, and more exciting.",
+    "example": "A few bright paintings can really liven up a dull office."
+  },
+  {
+    "word": "artificial",
+    "definition": "Made by people to look like something natural; not real.",
+    "example": "She keeps artificial flowers on her desk because they never die."
+  },
+  {
+    "word": "atop",
+    "definition": "On the top of something.",
+    "example": "A small flag waved atop the sandcastle."
+  },
+  {
+    "word": "wreaths",
+    "definition": "Circles made of leaves, branches, or flowers, often hung on doors as a decoration at Christmas.",
+    "example": "My grandmother makes wreaths from pine branches and red ribbon every December."
+  },
+  {
+    "word": "miniature",
+    "definition": "Very small; a much smaller copy of something.",
+    "example": "He collects miniature cars that fit in the palm of his hand."
+  },
+  {
+    "word": "illuminated",
+    "definition": "Lit up with lights so that it shines or glows.",
+    "example": "The bridge was illuminated with blue lights at night."
+  },
+  {
+    "word": "light up",
+    "definition": "To become bright and colorful with many lights.",
+    "example": "Every New Year's Eve, fireworks light up the night sky over the city."
+  },
+  {
+    "word": "impressive",
+    "definition": "So big, beautiful, or well done that people admire it.",
+    "example": "The view from the top of the mountain was truly impressive."
+  },
+  {
+    "word": "synchronized",
+    "definition": "Made to happen at exactly the same time as something else, so the two match perfectly.",
+    "example": "The dancers' movements were perfectly synchronized with the music."
+  },
+  {
+    "word": "rhythm",
+    "definition": "The regular, repeated pattern of beats or sounds in music.",
+    "example": "The children clapped their hands to the rhythm of the song."
+  },
+  {
+    "word": "sentimental",
+    "definition": "Causing feelings of love, sadness, or fond memories of the past.",
+    "example": "My dad gets sentimental when he looks at old family photos."
+  },
+  {
+    "word": "memorable",
+    "definition": "Special or unusual enough to be easily remembered.",
+    "example": "Our trip to the beach was the most memorable vacation we've had."
+  },
+  {
+    "word": "atmosphere",
+    "definition": "The feeling or mood of a place or situation.",
+    "example": "The little café had a warm, friendly atmosphere."
+  },
+  {
+    "word": "folklore",
+    "definition": "Traditional stories and beliefs that people pass down from one generation to the next.",
+    "example": "In local folklore, a dragon once lived in the hills above the village."
+  }
+];
+
+        function createCards() {
+            const container = document.getElementById('cardsContainer');
+
+            vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.dataset.word = item.word;
+
+                const closedDiv = document.createElement('div');
+                closedDiv.className = 'card-closed';
+                closedDiv.textContent = item.word;
+
+                const openDiv = document.createElement('div');
+                openDiv.className = 'card-open';
+
+                const header = document.createElement('div');
+                header.className = 'card-header';
+                header.textContent = item.word;
+
+                const content = document.createElement('div');
+                content.className = 'card-content';
+
+                const definition = document.createElement('div');
+                definition.className = 'definition';
+                definition.innerHTML = `<strong>Definition:</strong> ${item.definition}`;
+
+                const example = document.createElement('div');
+                example.className = 'example';
+                example.innerHTML = `<div class="example-title">Example</div>${item.example}`;
+
+                content.appendChild(definition);
+                content.appendChild(example);
+
+                openDiv.appendChild(header);
+                openDiv.appendChild(content);
+
+                card.appendChild(closedDiv);
+                card.appendChild(openDiv);
+
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON') return;
+
+                    const isOpen = this.querySelector('.card-open').style.display === 'block';
+
+                    if (isOpen) {
+                        this.querySelector('.card-open').style.display = 'none';
+                        this.querySelector('.card-closed').style.display = 'flex';
+                    } else {
+                        this.querySelector('.card-open').style.display = 'block';
+                        this.querySelector('.card-closed').style.display = 'none';
+                    }
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function openAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'block';
+                card.querySelector('.card-closed').style.display = 'none';
+            });
+        }
+
+        function closeAllCards() {
+            document.querySelectorAll('.vocab-card').forEach(card => {
+                card.querySelector('.card-open').style.display = 'none';
+                card.querySelector('.card-closed').style.display = 'flex';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createCards();
+
+            document.getElementById('openAll').addEventListener('click', openAllCards);
+            document.getElementById('closeAll').addEventListener('click', closeAllCards);
+        });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    body.classList.add('light-mode');
+    toggleBtn.textContent = 'Switch to Dark Mode';
+
+    toggleBtn.addEventListener('click', function() {
+        if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            body.classList.add('dark-mode');
+            toggleBtn.textContent = 'Switch to Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            body.classList.add('light-mode');
+            toggleBtn.textContent = 'Switch to Dark Mode';
+        }
+    });
+});
+</script>
+</body>
+</html>

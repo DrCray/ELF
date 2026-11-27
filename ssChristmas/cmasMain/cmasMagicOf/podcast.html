@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Magic of the Holiday Season - Podcast</title>
+    <style>
+        html { font-size: 100%; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            padding: .8rem .8rem .8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            border-radius: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 3px 6px gray;
+        }
+        .container {
+            width: 100%;
+            max-width: 35rem;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            background: #F7EDF4;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.05);
+            box-sizing: border-box;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.3rem;
+            font-weight: 700;
+            border-bottom: 3px solid #ff6b6b;
+            padding-bottom: .5rem;
+            transition: color .3s;
+        }
+        h2:hover { color: #FB6D6D; }
+        h3 {
+            font-size: 1rem;
+            color: #3CA29A;
+            font-weight: 600;
+        }
+        p, ul {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: .8rem;
+        }
+        ul {
+            padding-left: 1rem;
+            list-style: none;
+        }
+        ul > li {
+            margin-bottom: .8rem;
+            position: relative;
+            padding-left: .8rem;
+        }
+        li {
+            padding-left: 1rem;
+            text-indent: -1rem;
+        }
+        a {
+            color: #FF14BA;
+            text-decoration: none;
+            transition: color .3s;
+        }
+        a:hover {
+            color: #4ecdc4;
+            text-decoration: underline;
+        }
+        .section {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+        }
+        .sectionTop {
+            border: thin solid #F6C1E6;
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+    .audio-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .audio-link {
+        display: inline-flex;  box-shadow: 0 0 4px 0px #533ABF;
+        align-items: center;
+        gap: 8px;
+        padding: .5rem 3rem;
+        background: #fff;
+        color: darkblue;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight:bold;
+        transition: background 0.2s;
+    }
+
+    .audio-link:hover {
+        box-shadow: 0 0 4px 0px #006B00; color:green;
+    }
+
+    .wave {
+        color: #006B00;   /* wave color */
+    }
+
+    .play {
+        font-size: 1rem;
+        transform: translateY(0.5px);
+    }
+        #aboutPodcast{
+            background:#DDF0ED;
+            box-shadow: 0 0 3px 1px #ADDBD4;
+            padding: .5rem;
+            border-radius: 6px;
+            font-size:90%;
+        }
+
+        .host {
+            font-weight:500; color: #0D8F82;
+        }
+
+        .guest {
+            font-weight:500; color: #F52FCF;
+        }
+
+        /* ===== zvocab: tap/hover definitions ===== */
+        .zv-hint { font-size: .85rem; color: #6b6b6b; margin: 0 0 .6rem; }
+        .zvocab-ready {
+            cursor: pointer;
+            color: #0B6E64;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            border-radius: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .zvocab-ready[aria-expanded="true"] { background: #DDF0ED; }
+        .zvocab-ready:focus-visible { outline: 2px solid #0B6E64; outline-offset: 2px; }
+        /* Mobile: bottom sheet */
+        .zvocab-pop {
+            position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+            padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+            background: #0B6E64; color: #fff;
+            font-size: 1rem; line-height: 1.45;
+            border-radius: .9rem .9rem 0 0;
+            box-shadow: 0 -6px 24px rgb(0 0 0 / .25);
+        }
+        .zvocab-pop > strong { font-size: 1.15em; }
+        .zvocab-pop p { margin: .3rem 0 0; color: #fff; }
+        .zvocab-pop .ex { font-style: italic; opacity: .9; }
+        .zvocab-pop .ex strong { font-style: normal; text-decoration: underline; }
+        /* Wider screens: floating card near the word */
+        @media (min-width: 601px) {
+            .zvocab-pop {
+                right: auto; bottom: auto;
+                max-width: 20rem;
+                padding: .8rem 1rem;
+                font-size: .92rem;
+                border-radius: .5rem;
+                box-shadow: 0 6px 20px rgb(0 0 0 / .25);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">Dr. Ray's English Lessons</div>
+        <br>
+
+        <div class="sectionTop">
+            <h2 id="articleTitle" style="color:#3CA29A;">The Magic of the Holiday Season - Podcast</h2>
+            <p>Lights, songs, Santa... and one very long line at the mall</p> <p id="aboutPodcast">On Thanksgiving Day, our two hosts chat about the article "The Magic of the Holiday Season": over-the-top light displays, songs you can't escape, the great Die Hard debate, and childhood photos with Santa.</p>
+
+            <a href="cmasMagicOf.html" target="_blank">
+                <span style="color:#0D6B92;">Read the Article</span>
+            </a>
+
+            <div id="linksSection" style="text-align:right;width:100%">
+                <a href="podcastVocabStudy.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Study Guide
+                </a>
+                <a href="podcastCloze.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Cloze/Select Quiz
+                </a>
+                <a href="podcastVocabQuiz.html" target="_blank" style="font-size: 92%; display: block; text-align: right;">
+                    Vocab Sentences Quiz
+                </a>
+            </div>
+        </div>
+        <br>
+
+<div class="audio-player">
+  <a href="https://youtu.be/XgvMogZxAh8" class="audio-link" target="_blank" rel="noopener" aria-label="Listen to the podcast">
+    <svg class="wave" viewBox="0 0 24 12" width="24" height="12" fill="currentColor">
+      <rect x="0"  y="4" width="2" height="4" rx="1"/>
+      <rect x="4"  y="2" width="2" height="8" rx="1"/>
+      <rect x="8"  y="0" width="2" height="12" rx="1"/>
+      <rect x="12" y="3" width="2" height="6" rx="1"/>
+      <rect x="16" y="1" width="2" height="10" rx="1"/>
+      <rect x="20" y="5" width="2" height="2" rx="1"/>
+    </svg>
+    <span class="play">▶</span>
+  </a>
+</div>
+
+        <div class="section">
+            <h3>The Magic of the Holiday Season - Podcast</h3>
+            <p class="zv-hint">Tap or hover over an underlined phrase to see what it means.</p>
+            <div>
+                <ul>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Welcome back, everyone! Today we're talking about an article called "The Magic of the Holiday Season." And honestly, the timing is perfect, because today is Thanksgiving.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Right, so officially the season starts now. Although some stores <strong class="zvocab" data-word="jump the gun">jump the gun</strong> a little, don't they? I saw Christmas trees for sale in October!&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> October? Before Halloween was even over?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Yep. Skeletons on one side of the aisle, Santa on the other. It was a strange mix.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I do like how the article describes everything, though. The lights, the music, the smells... it really helps you <strong class="zvocab" data-word="get into the holiday spirit">get into the holiday spirit</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> It does. And that part about the neighborhood light displays? Some people really <strong class="zvocab" data-word="go overboard">go overboard</strong>. There's a house near me with something like fifty thousand lights.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Fifty thousand? Their electric bill must go <strong class="zvocab" data-word="through the roof">through the roof</strong> every December.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> You'd think so, but they say it's worth it. People come from all over to see it. On weekends, families <strong class="zvocab" data-word="drive around">drive around</strong> slowly with their windows down, just staring.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> That sounds lovely, actually.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> It is, until you're stuck in <strong class="zvocab" data-word="bumper-to-bumper">bumper-to-bumper</strong> traffic trying to get home from the grocery store.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Okay, fair. What about the music? The article says some songs are cheerful and some are sentimental. Do you have a favorite?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> I have a least favorite. There's one song that gets <strong class="zvocab" data-word="stuck in my head">stuck in my head</strong> every single year. By mid-December, it starts to <strong class="zvocab" data-word="drive me up the wall">drive me up the wall</strong>.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Let me guess. The mall plays it <strong class="zvocab" data-word="on repeat">on repeat</strong>?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Every ten minutes! I can't escape it.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Now, I have to ask you something important. The article lists "Die Hard" as a Christmas movie. Can we <strong class="zvocab" data-word="settle the debate">settle the debate</strong> right now?&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Oh, it's a Christmas movie. <strong class="zvocab" data-word="hands down">Hands down</strong>. The whole story takes place at a Christmas party! What more do you need?&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I knew you'd say that. For me, the best part of the Holiday Season are the smells, cinnamon, fresh pine, cookies in the oven... it <strong class="zvocab" data-word="takes me back">takes me back</strong> to my grandmother's kitchen.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> For sure. Did you ever visit Santa at the mall when you were a kid?&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> Every year. My parents made us <strong class="zvocab" data-word="wait in line">wait in line</strong> for almost an hour, just for one photo. And in every single picture, my little brother is crying.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> That's a classic holiday photo! Every family has one.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> So true. And then, of course, in January, everyone has to <strong class="zvocab" data-word="take down">take down</strong> all those decorations.&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Which is the least magical part of the whole season. In fact, mine don't usually come down until February.&nbsp;&nbsp;</li>
+
+                    <li><span class="host"><span class="host">Host:</span></span> I like that. Keep the spirit alive till Valentine's Day. Well, that's about all the time we have, so let's <strong class="zvocab" data-word="wrap up">wrap up</strong> there. Happy holidays, everyone!&nbsp;&nbsp;</li>
+
+                    <li><span class="guest"><span class="guest">Guest:</span></span> Merry Christmas and a Happy New Year.&nbsp;&nbsp;</li>
+
+                </ul>
+                <br>&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+
+<script>
+/* Podcast vocabulary (generated from podcast_vocab in the content JSON) */
+const vocabulary = {
+  "jump the gun": {
+    "word": "jump the gun",
+    "definition": "(idiom) To do something too early, before the right or expected time.",
+    "example": "Don't <strong>jump the gun<\/strong>. Wait until everyone arrives before you start eating."
+  },
+  "get into the holiday spirit": {
+    "word": "get into the holiday spirit",
+    "definition": "(expression) To start feeling happy and excited about a holiday and the things people do to celebrate it.",
+    "example": "Baking cookies with my kids always helps me <strong>get into the holiday spirit<\/strong>."
+  },
+  "go overboard": {
+    "word": "go overboard",
+    "definition": "(idiom) To do something too much, or with more energy or money than is needed.",
+    "example": "We agreed not to <strong>go overboard<\/strong> with gifts this year."
+  },
+  "through the roof": {
+    "word": "through the roof",
+    "definition": "(idiom) Rising to a very high level, often much higher than expected.",
+    "example": "After the storm, vegetable prices went <strong>through the roof<\/strong>."
+  },
+  "drive around": {
+    "word": "drive around",
+    "definition": "(phrasal verb) To drive from place to place without hurrying, often just to look at things.",
+    "example": "On Sunday afternoons, we like to <strong>drive around<\/strong> the countryside with no plan."
+  },
+  "bumper-to-bumper": {
+    "word": "bumper-to-bumper",
+    "definition": "(collocation) Describing traffic that is so heavy the cars are very close together and moving very slowly.",
+    "example": "The highway was <strong>bumper-to-bumper<\/strong> all the way to the beach."
+  },
+  "stuck in my head": {
+    "word": "stuck in my head",
+    "definition": "(expression) Used when a song or tune keeps playing in your mind and you can't stop thinking about it.",
+    "example": "That advertising jingle has been <strong>stuck in my head<\/strong> all morning."
+  },
+  "drive me up the wall": {
+    "word": "drive me up the wall",
+    "definition": "(idiom) To make someone feel very annoyed or irritated.",
+    "example": "My neighbor's barking dog is starting to <strong>drive me up the wall<\/strong>."
+  },
+  "on repeat": {
+    "word": "on repeat",
+    "definition": "(expression) Played again and again, many times in a row.",
+    "example": "She played her new favorite song <strong>on repeat<\/strong> for the whole bus ride."
+  },
+  "settle the debate": {
+    "word": "settle the debate",
+    "definition": "(collocation) To finally decide an argument or question that people disagree about.",
+    "example": "Let's check the dictionary and <strong>settle the debate<\/strong> about how to spell it."
+  },
+  "hands down": {
+    "word": "hands down",
+    "definition": "(idiom) Easily and without any doubt; clearly the best or the winner.",
+    "example": "This is <strong>hands down<\/strong> the best pizza in town."
+  },
+  "takes me back": {
+    "word": "takes me back",
+    "definition": "(phrasal verb) Makes me remember a time or place in the past.",
+    "example": "The smell of sunscreen always <strong>takes me back<\/strong> to summer vacations as a kid."
+  },
+  "wait in line": {
+    "word": "wait in line",
+    "definition": "(collocation) To stand in a row of people until it is your turn.",
+    "example": "We had to <strong>wait in line<\/strong> for two hours to buy concert tickets."
+  },
+  "take down": {
+    "word": "take down",
+    "definition": "(phrasal verb) To remove something that was hung up or set up, such as decorations or a tent.",
+    "example": "It took us all afternoon to <strong>take down<\/strong> the tent after the camping trip."
+  },
+  "wrap up": {
+    "word": "wrap up",
+    "definition": "(phrasal verb) To finish or bring something, such as a meeting or a show, to an end.",
+    "example": "Let's <strong>wrap up<\/strong> the meeting so everyone can go to lunch."
+  }
+};
+
+/* ===== zvocab component: hover (mouse) or tap (touch) to show definitions ===== */
+(() => {
+  const wide = matchMedia('(min-width: 601px)'), canHover = matchMedia('(hover: hover)');
+  const pop = Object.assign(document.createElement('div'), { className: 'zvocab-pop', id: 'zvocab-pop', hidden: true });
+  pop.setAttribute('role', 'tooltip');
+  document.body.append(pop);
+  let current = null;
+  const key = el => (el.dataset.word || el.textContent).trim().toLowerCase();
+
+  function place(el) {
+    if (!wide.matches) { pop.style.left = pop.style.top = ''; return; }
+    const r = el.getClientRects()[0], p = pop.getBoundingClientRect(), m = 8;
+    const left = Math.max(m, Math.min(r.left + r.width / 2 - p.width / 2, innerWidth - p.width - m));
+    let top = r.top - p.height - m;
+    if (top < m) top = r.bottom + m;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function show(el) {
+    const e = vocabulary[key(el)];
+    current?.setAttribute('aria-expanded', 'false');
+    current = el; el.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = `<strong>${e.word}</strong><p>${e.definition}</p>${e.example ? `<p class="ex">${e.example}</p>` : ''}`;
+    pop.hidden = false; place(el);
+  }
+  function hide() { pop.hidden = true; current?.setAttribute('aria-expanded', 'false'); current = null; }
+
+  document.querySelectorAll('.zvocab').forEach(el => {
+    if (!vocabulary[key(el)]) return console.warn('No vocab entry:', key(el));
+    el.classList.add('zvocab-ready'); el.tabIndex = 0;
+    el.setAttribute('role', 'button'); el.setAttribute('aria-expanded', 'false'); el.setAttribute('aria-controls', 'zvocab-pop');
+    el.addEventListener('mouseenter', () => canHover.matches && show(el));
+    el.addEventListener('mouseleave', () => canHover.matches && hide());
+  });
+
+  document.addEventListener('click', ev => {
+    const el = ev.target.closest('.zvocab-ready');
+    if (!el) return pop.contains(ev.target) || hide();
+    (el === current && !canHover.matches) ? hide() : show(el);
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') return hide();
+    const el = ev.target.closest?.('.zvocab-ready');
+    if (el && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); el === current ? hide() : show(el); }
+  });
+  addEventListener('scroll', () => current && place(current), { passive: true });
+  addEventListener('resize', () => current && place(current));
+})();
+</script>
+
+</body>
+</html>
