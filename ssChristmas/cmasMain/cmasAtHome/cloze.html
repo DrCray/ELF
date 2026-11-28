@@ -1,0 +1,362 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloze Exercise Generator</title>
+    <style>
+       body {
+            width:100%;
+            max-width:50rem;
+            margin:auto;
+            font-family: Arial, sans-serif;
+
+            background-color: #F2F4F2; /* Lightish gray background */
+        }
+
+        .button2 {
+            padding:0; width:fit-content; font-size: 75%;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 9999;
+            background-color: #017BC6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .toggle-button:hover {
+            background-color: #0056a3;
+        }
+
+/* --- LAPTOPS & DESKTOPS (PC) --- */
+@media (min-width: 1025px) {
+  .toggle-button {
+    top:0px;
+    right: 30%; /* Moves the button inward on wide screens */
+  }
+}
+
+/* --- TABLETS (Notepad / iPad) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .toggle-button {
+    right: 40px; /* Medium spacing for tablets */
+  }
+}
+
+        #output {
+            margin-bottom: 10px;
+        }
+        select {
+            margin: 0 5px; background-color: white; border: thin solid #B6D1B6;
+            border-radius: 4px; height:1.8rem; font-size:1.1rem;
+        }
+        select > option {
+            font-size: 1.3rem;
+        }
+
+        .answer-shown {
+            background-color: #d4edda !important;
+
+        }
+        h1 {
+            color: #1B263B; /* Dark blue for H1 */
+        }
+        h2 {
+            color: #017BC6; /* Soft blue for H2 */
+        }
+        h3 {
+            color: #0057B1; /* Slightly dark orange for H3 */
+        }
+        .sentence-div {
+            background-color: #EFEDE8; /* Slightly darker gray for sentence divs */
+            padding: 7px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            line-height: 2rem;
+            font-size: 1.3rem;
+        }
+        .cloze-container {
+            border: 1px solid #B6D1B6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+        }
+        textarea {
+            max-width: 100%; box-sizing: border-box;
+            margin-bottom: 10px; display:block;
+        }
+
+         #topHeading {
+            margin: .7rem 0 1.5rem 0;
+            padding: 0.1rem .7rem .2rem .7rem;
+            background: #EFE9FB;
+            box-shadow: 0px 0px 5px 2px #A598FF;
+            }
+
+hr {
+  border: none;
+  height: 3px;
+  background-color: #CCBB91;
+}
+#nameID {
+margin: .7rem .3rem;
+}
+#name, #id {
+height: 1.8rem;
+font-size: 1.3rem;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="topHeading"><h1>English Learning</h1><h2>Christmas Traditions at Home</h2>
+</div>
+
+    <div id="output"><div id="cloze-div-cmasAtHome" class="cloze-container"><button id="studyModeBtn" class="toggle-button" onclick="inStudyMode ? returnToQuiz() : studyMode()">Study Mode</button><div class="sentence-div">For many American families, the weeks leading up to Christmas are almost as exciting as the holiday itself. Homes become busier, kitchens fill with delicious smells, and children eagerly count down the days. Although every family has its own traditions, many households share similar activities that make Christmas a special time to spend together.
+</div>
+<div class="sentence-div">One popular way to count down to Christmas is with an <span style="font-size: 70%;">1</span><select data-correct="Advent calendar" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Advent calendar">Advent calendar</option>
+<option value="storage">storage</option>
+<option value="assembled">assembled</option>
+<option value="passed down">passed down</option></select>. These calendars have small numbered doors, one for each day leading up to December 25. Children open one door each morning to discover a small chocolate, picture, or surprise.
+</div>
+<div class="sentence-div">Another important activity is putting up and decorating the Christmas tree. Some families choose a real tree from a Christmas tree farm, while others bring an artificial one out of <span style="font-size: 70%;">2</span><select data-correct="storage" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Advent calendar">Advent calendar</option>
+<option value="storage">storage</option>
+<option value="assembled">assembled</option>
+<option value="passed down">passed down</option></select>. Once it is <span style="font-size: 70%;">3</span><select data-correct="assembled" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Advent calendar">Advent calendar</option>
+<option value="storage">storage</option>
+<option value="assembled">assembled</option>
+<option value="passed down">passed down</option></select>, everyone can join in decorating it with ornaments, lights, ribbons, and other decorations. Many families have special ornaments that have been <span style="font-size: 70%;">4</span><select data-correct="passed down" data-group="0" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="Advent calendar">Advent calendar</option>
+<option value="storage">storage</option>
+<option value="assembled">assembled</option>
+<option value="passed down">passed down</option></select> through <span style="font-size: 70%;">5</span><select data-correct="generations" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="generations">generations</option>
+<option value="last minute">last minute</option>
+<option value="hidden away">hidden away</option></select>, making the activity even more meaningful.
+</div>
+<div class="sentence-div">Gift shopping is another major part of the preparations. Although Black Friday is the biggest shopping day of the year, it also marks the first shopping day of the holiday season. People continue to shop throughout December. Some are organized shoppers, finishing early, while others do <span style="font-size: 70%;">6</span><select data-correct="last minute" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="generations">generations</option>
+<option value="last minute">last minute</option>
+<option value="hidden away">hidden away</option></select> shopping on Christmas Eve! Once the presents have been purchased, they need to be wrapped, labeled with gift tags, and <span style="font-size: 70%;">7</span><select data-correct="hidden away" data-group="1" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="generations">generations</option>
+<option value="last minute">last minute</option>
+<option value="hidden away">hidden away</option></select> until Christmas morning.
+</div>
+<div class="sentence-div">The kitchen becomes one of the busiest places in the house during the holidays. Baking Christmas cookies is a favorite family activity. Sugar cookies are especially popular because they can be cut into different shapes, such as stars, Christmas trees, and snowmen. Children enjoy decorating them with colorful icing, sprinkles, and small candies.
+</div>
+<div class="sentence-div">Gingerbread is another holiday favorite. Families sometimes bake gingerbread men or make elaborate gingerbread houses decorated with frosting, gumdrops, and candy canes. Some people buy ready-made kits, making it easier for everyone to join in.
+</div>
+<div class="sentence-div">Other seasonal treats include homemade fudge, chocolate-covered candies, and a variety of pies and cakes. Candy canes are also popular, both as sweet treats and as decorations.
+</div>
+<div class="sentence-div">Christmas Eve, December 24, is often filled with excitement. Families may gather for a special dinner, attend a Christmas Eve church service, or simply spend a relaxing evening together. In some households, children are allowed to open one present before bedtime.
+</div>
+<div class="sentence-div">A particularly popular tradition is putting a plate of cookies and a glass of milk on the table for Santa Claus. Before going to bed, the children hang their Christmas stockings near the fireplace or another special place, hoping Santa will fill them with small gifts and treats.
+</div>
+<div class="sentence-div">Of course, getting children to sleep can be a challenge when they are so excited about the following morning!
+</div>
+<div class="sentence-div">For many children, Christmas morning is the most exciting part of the entire season. Some wake up early and rush to see what Santa has left under the tree. Others gather around the fireplace to open their stockings before the family begins exchanging presents.
+</div>
+<div class="sentence-div">There is usually plenty of excitement as people <span style="font-size: 70%;">8</span><select data-correct="unwrap" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unwrap">unwrap</option>
+<option value="preserve">preserve</option>
+<option value="glazed">glazed</option>
+<option value="look forward to">look forward to</option></select> gifts, take photographs, and enjoy the surprises. Parents often record the moment to <span style="font-size: 70%;">9</span><select data-correct="preserve" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unwrap">unwrap</option>
+<option value="preserve">preserve</option>
+<option value="glazed">glazed</option>
+<option value="look forward to">look forward to</option></select> the memories for years to come.
+</div>
+<div class="sentence-div">Christmas dinner is often the main family meal of the holiday. Many households serve roasted turkey or <span style="font-size: 70%;">10</span><select data-correct="glazed" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unwrap">unwrap</option>
+<option value="preserve">preserve</option>
+<option value="glazed">glazed</option>
+<option value="look forward to">look forward to</option></select> ham, accompanied by mashed potatoes and gravy, stuffing, green beans, corn, cranberry sauce, and dinner rolls.
+</div>
+<div class="sentence-div">Dessert is another important part of the meal. Pumpkin pie, pecan pie, apple pie, cheesecake, and chocolate cake are common choices. Some families also serve Christmas cookies and other homemade sweets.
+</div>
+<div class="sentence-div">Popular holiday drinks include eggnog, hot chocolate, and warm apple cider. Whether the meal is large or simple, the most important part is often gathering around the table and enjoying time together.
+</div>
+<div class="sentence-div">For many families, these familiar activities are what make Christmas feel like Christmas. The presents may change, and the decorations may look different each year, but the traditions create memories that people <span style="font-size: 70%;">11</span><select data-correct="look forward to" data-group="2" onchange="checkAnswer(this)">
+<option value="">Select...</option>
+<option value="unwrap">unwrap</option>
+<option value="preserve">preserve</option>
+<option value="glazed">glazed</option>
+<option value="look forward to">look forward to</option></select> repeating.
+</div>
+
+</div>
+
+</div>
+
+    <style>
+        .student-info-container{
+        max-width:30rem;
+        margin: 2rem auto;
+        background:#E6F2EE;
+        padding: 2rem;
+        border-radius: 6px;
+        box-shadow: 0 0 2px 5px gray;
+
+        }
+        #pdfButton{
+            padding:.7rem;
+            border-radius:6px;
+            font-weight:bold;
+        }
+        .inputZ{
+            padding: .3rem;
+            border-radius: 6px;
+        }
+    </style>
+
+
+    <div class="student-info-container">
+        <div class="input-group">
+            <input type="text" id="studentName" class="inputZ" value="Name" maxlength="25">
+            <input type="text" id="studentID" value="ID" class="inputZ" maxlength="25">
+        </div>
+        <p class="note">Name and ID required for Print/Save PDF.</p>
+        <button id="pdfButton" class="pdf-button">Print/Save as PDF</button>
+    </div>
+
+
+    <script>
+        const nameInput = document.getElementById('studentName');
+        const idInput = document.getElementById('studentID');
+        const pdfButton = document.getElementById('pdfButton');
+
+        // Placeholder text shown in the empty fields
+        const DEFAULTS = { name: 'Name', id: 'ID' };
+
+        // A field counts only if it was changed from its default and has 2+ characters
+        function isFilled(input, defaultValue) {
+            const value = input.value.trim();
+            return value !== defaultValue && value.length >= 2;
+        }
+
+        // Clear the placeholder text when a field gets focus, restore it if left empty
+        function bindPlaceholder(input, defaultValue) {
+            input.addEventListener('focus', function () {
+                if (this.value === defaultValue) this.value = '';
+            });
+            input.addEventListener('blur', function () {
+                this.value = this.value.trim() || defaultValue;
+            });
+        }
+
+        bindPlaceholder(nameInput, DEFAULTS.name);
+        bindPlaceholder(idInput, DEFAULTS.id);
+
+        pdfButton.addEventListener('click', function () {
+            if (!isFilled(nameInput, DEFAULTS.name) || !isFilled(idInput, DEFAULTS.id)) {
+                alert('Name and ID required for Print/Save PDF');
+                return;
+            }
+            window.print();
+        });
+    </script>
+
+<script>
+let selectCounter = 0;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// ---- Study Mode / Return to Quiz ----
+let inStudyMode = false;
+let savedSelections = [];
+
+// Show every correct answer, remembering the student's choices first
+function studyMode() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    savedSelections = Array.from(selects).map(select => select.value);
+    selects.forEach(select => {
+        select.value = select.getAttribute('data-correct');
+        select.classList.add('answer-shown');
+        select.style.backgroundColor = '#d4edda';
+    });
+    inStudyMode = true;
+    document.getElementById('studyModeBtn').textContent = 'Return to Quiz';
+}
+
+// Hide the answers and restore the student's choices exactly as they were
+function returnToQuiz() {
+    const selects = document.querySelectorAll('select[data-correct]');
+    selects.forEach((select, i) => {
+        select.value = savedSelections[i] || '';
+        select.classList.remove('answer-shown');
+        select.style.backgroundColor = '';
+        if (select.value) checkAnswer(select);
+    });
+    savedSelections = [];
+    inStudyMode = false;
+    document.getElementById('studyModeBtn').textContent = 'Study Mode';
+}
+
+function checkAnswer(select) {
+    if (select.classList.contains('answer-shown')) {
+        return;
+    }
+
+    const correctAnswer = select.getAttribute('data-correct');
+    if (select.value === correctAnswer) {
+        select.style.backgroundColor = '#d4edda';
+    } else {
+        select.style.backgroundColor = '#f8d7da';
+    }
+}
+</script>
+
+     <footer style="margin-top:6rem;">...</footer>
+
+<script>
+(function () {
+    function shuffleSelectOptions(select) {
+        const opts = Array.from(select.options);
+        if (opts.length <= 2) return;
+
+        const placeholder = opts.shift(); // pull off the "-- Select --" / "Select..." option
+
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+
+        opts.unshift(placeholder); // put it back on top
+
+        select.innerHTML = '';
+        opts.forEach(o => select.appendChild(o));
+        select.value = ""; // force the placeholder to actually display
+    }
+
+    document.querySelectorAll('select[data-correct], select[data-answer]')
+        .forEach(shuffleSelectOptions);
+})();
+</script>
+
+</body></html>
